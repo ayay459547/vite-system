@@ -1,0 +1,30 @@
+.table {
+  &-wrapper {
+    overflow: auto;
+    transition: 0.1s;
+  }
+
+  &-container {
+    width: fit-content;
+  }
+
+  &-header {
+    display: flex;
+    position: sticky;
+    background-color: #2a2a2a;
+  }
+
+  &-body {
+    background-color: #404040;
+  }
+
+  &-row {
+    display: flex;
+  }
+
+  &-column {
+    flex: 1;
+    border: 1px solid #818184;
+    padding: 8px;
+  }
+}
