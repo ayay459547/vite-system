@@ -2,27 +2,33 @@
 import type { ComputedRef } from 'vue'
 import type { RouterTree } from '@/declare/router'
 import { computed } from 'vue'
-// import routes from '@/router/routes'
+import { routes, getRouterLeaf } from '@/router/routes'
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    title: '首頁'
-  },
-  {
-    path: '/about',
-    name: 'about',
-    title: '關於'
-  }
-]
+// const _routes = [
+//   {
+//     path: '/',
+//     name: 'home',
+//     title: '首頁'
+//   },
+//   {
+//     path: '/about',
+//     name: 'about',
+//     title: '關於'
+//   }
+// ]
 
-const showRoutes:ComputedRef<RouterTree[]> = computed(() => {
-  return routes ?? []
+const level1Routes: ComputedRef<RouterTree[]> = computed(() => {
+  return getRouterLeaf(routes, 1, false)
 })
 
-const level1NavList: typeof showRoutes = computed(() => {
-  return showRoutes.value.map(route => {
+const level2Routes: ComputedRef<RouterTree[]> = computed(() => {
+  return getRouterLeaf(routes, 2, true)
+})
+
+console.log(level2Routes)
+
+const level1NavList: typeof level1Routes = computed(() => {
+  return level1Routes.value.map(route => {
     return {
       ...route
     }
@@ -41,7 +47,6 @@ const level1NavList: typeof showRoutes = computed(() => {
       <div
         v-for="navItem in level1NavList"
         :key="navItem.name"
-        :to="navItem.path"
         class="side-nav-item"
       >
         {{ navItem.title }}
@@ -60,7 +65,7 @@ const level1NavList: typeof showRoutes = computed(() => {
 
 <style lang="scss" scoped>
 $bg-color: #535353;
-$nav-width: 300px;
+$nav-width: 260px;
 
 .side {
   &-container {
@@ -71,6 +76,7 @@ $nav-width: 300px;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    transition-duration: 0.3;
   }
 
   &-logo {
