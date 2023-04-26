@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 
-const props = defineProps({
-    type: {
-        type: String,
-        default: 'fas',
-        description: `類型:
-            fas: solid
-            far: regular
-            fab: brands `
-    },
-    icon: {
-        type: String,
-        default: 'user'
-    }
+interface Props {
+  icon?: String[]
+  type?: String
+  name?: String
+}
+const props = withDefaults(defineProps<Props>(), {
+  icon: () => [],
+  type: () => 'fas',
+  name: () => 'user'
 })
+
 
 </script>
 
 <template>
   <div class="icon-container">
-    <font-awesome-icon :icon="[props.type, props.icon]" />
+    <font-awesome-icon v-if="props.icon.length > 0" :icon="props.icon" />
+    <font-awesome-icon v-else :icon="[props.type, props.name]" />
   </div>
 </template>
 

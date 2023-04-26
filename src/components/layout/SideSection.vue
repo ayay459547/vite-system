@@ -6,7 +6,7 @@ import { routes, getRouterLeaf } from '@/router/routes'
 import NavigationView from './NavigationView.vue'
 
 const level1Routes: ComputedRef<RouterTree[]> = computed(() => {
-  return getRouterLeaf(routes, 1, false)
+  return getRouterLeaf(routes, 1, true)
 })
 
 const showRoutes: typeof level1Routes = computed(() => {
@@ -21,7 +21,7 @@ const showRoutes: typeof level1Routes = computed(() => {
 
 <template>
   <div class="side-container">
-    <RouterLink to="/" class="side-logo">
+    <RouterLink to="/home" class="side-logo">
       <div>LOGO</div>
     </RouterLink>
 
