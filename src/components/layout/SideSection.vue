@@ -3,31 +3,13 @@ import type { ComputedRef } from 'vue'
 import type { RouterTree } from '@/declare/router'
 import { computed } from 'vue'
 import { routes, getRouterLeaf } from '@/router/routes'
-
-// const _routes = [
-//   {
-//     path: '/',
-//     name: 'home',
-//     title: '首頁'
-//   },
-//   {
-//     path: '/about',
-//     name: 'about',
-//     title: '關於'
-//   }
-// ]
+import NavigationView from './NavigationView.vue'
 
 const level1Routes: ComputedRef<RouterTree[]> = computed(() => {
   return getRouterLeaf(routes, 1, false)
 })
 
-const level2Routes: ComputedRef<RouterTree[]> = computed(() => {
-  return getRouterLeaf(routes, 2, true)
-})
-
-console.log(level2Routes)
-
-const level1NavList: typeof level1Routes = computed(() => {
+const showRoutes: typeof level1Routes = computed(() => {
   return level1Routes.value.map(route => {
     return {
       ...route
@@ -43,22 +25,8 @@ const level1NavList: typeof level1Routes = computed(() => {
       <div>LOGO</div>
     </RouterLink>
 
-    <nav class="side-nav-list">
-      <div
-        v-for="navItem in level1NavList"
-        :key="navItem.name"
-        class="side-nav-item"
-      >
-        {{ navItem.title }}
-      </div>
-      <!-- <RouterLink
-        v-for="navItem in level1NavList"
-        :key="navItem.name"
-        :to="navItem.path"
-        class="side-nav-item"
-      >
-        {{ navItem.title }}
-      </RouterLink> -->
+    <nav class="side-nav">
+      <NavigationView :router="showRoutes"></NavigationView>
     </nav>
   </div>
 </template>
@@ -87,28 +55,8 @@ $nav-width: 260px;
   }
 
   &-nav {
-    &-list {
-      width: calc(100% - 32px);
-      height: 100%;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    &-item {
-      width: inherit;
-      font-size: 1.5em;
-      padding: 12px 16px;
-      color: #fff;
-      background-color: $bg-color;
-      transition-duration: 0.3s;
-      border-radius: 6px;
-
-      &:hover {
-        background-color: #606060;
-      }
-    }
+    width: calc(100% - 32px);
+    height: 100%;
   }
 }
 
