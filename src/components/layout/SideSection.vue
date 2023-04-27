@@ -17,6 +17,9 @@ const showRoutes: typeof level1Routes = computed(() => {
   })
 })
 
+const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
+const version = (import.meta as any).env.VITE_API_VERSION
+
 </script>
 
 <template>
@@ -25,21 +28,22 @@ const showRoutes: typeof level1Routes = computed(() => {
       <div>LOGO</div>
     </RouterLink>
 
-    <nav class="side-nav">
+    <div class="side-nav">
       <NavigationView :router="showRoutes"></NavigationView>
-    </nav>
+    </div>
+
+    <div class="side-version">
+      {{ `${system} version ${version}` }}
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$bg-color: #535353;
-$nav-width: 260px;
-
 .side {
   &-container {
     width: $nav-width;
     height: 100%;
-    background-color: $bg-color;
+    background-color: $side-bg-color;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -55,8 +59,16 @@ $nav-width: 260px;
   }
 
   &-nav {
-    width: calc(100% - 32px);
+    width: 100%;
     height: 100%;
+    overflow: hidden;
+  }
+
+  &-version {
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 6px;
+    background-color: #e6e6e6;
   }
 }
 

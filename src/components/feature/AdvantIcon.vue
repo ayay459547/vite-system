@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 
+type IconType = 'fas' | 'far' | 'fab'
+/**
+ * icon 和 type, name 選一種給
+ */
 interface Props {
-  icon?: String[]
-  type?: String
+  icon?: [IconType, String] | []
+  type?: IconType
   name?: String
 }
 const props = withDefaults(defineProps<Props>(), {

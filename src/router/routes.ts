@@ -22,7 +22,7 @@ export const routes: Array<RouterTree> = [
         name: 'nav-1-1',
         title: '選單1-1',
         inject: true,
-        complete: true,
+        complete: false,
         leaves: [
           {
             name: 'nav-1-1-1',
@@ -110,6 +110,46 @@ export const routes: Array<RouterTree> = [
             inject: true,
             complete: true,
             path: '/nav-1-2-5',
+            component: () => import('@/views/EmptyView.vue')
+          }
+        ]
+      },
+      {
+        name: 'nav-1-3',
+        title: '選單1-3',
+        inject: true,
+        complete: true,
+        path: '/nav-1-3',
+        component: () => import('@/views/EmptyView.vue')
+      },
+      {
+        name: 'nav-1-4',
+        title: '選單1-4',
+        inject: true,
+        complete: true,
+        leaves: [
+          {
+            name: 'nav-1-4-1',
+            title: '選單1-4-1',
+            inject: true,
+            complete: true,
+            path: '/nav-1-4-1',
+            component: () => import('@/views/EmptyView.vue')
+          },
+          {
+            name: 'nav-1-4-2',
+            title: '選單1-4-1',
+            inject: true,
+            complete: true,
+            path: '/nav-1-4-2',
+            component: () => import('@/views/EmptyView.vue')
+          },
+          {
+            name: 'nav-1-4-3',
+            title: '選單1-4-3',
+            inject: true,
+            complete: true,
+            path: '/nav-1-4-3',
             component: () => import('@/views/EmptyView.vue')
           }
         ]
@@ -242,11 +282,11 @@ export const routes: Array<RouterTree> = [
 
 /**
  * @author Caleb
- * 取的指定的階層的子路由
+ * @description 取的指定的階層的子路由
  * @param routerList 路由
  * @param level 想取的的階層
  * @param hasLeaves 是否包含子路由
- * @returns {Array}
+ * @returns {Array} 返回路由
  */
 export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = true): Array<RouterTree> => {
   const res = []

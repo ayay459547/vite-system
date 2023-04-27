@@ -2,13 +2,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { RouterTree } from '@/declare/router'
 import { defineProps, computed, ref } from 'vue'
-
-// interface Props {
-//   router: RouterTree[]
-// }
-// const props = withDefaults(defineProps<Props>(), {
-//   router: () => []
-// })
+import SubNavigationView from './SubNavigationView.vue'
 
 const props = defineProps<{
   router: RouterTree[]
@@ -17,23 +11,28 @@ const props = defineProps<{
 const level1List: ComputedRef<RouterTree[]> = computed(() => {
   return props.router
 })
+
+const level2IsOpen: Ref<boolean> = ref(false)
+const level2Title: Ref<string> = ref('')
 const level2List: Ref<RouterTree[]> = ref([])
 
-const setLevel2Router = (level2Router: RouterTree[]): void => {
-  level2List.value = level2Router
+const setLevel2Router = (level2Router: RouterTree): void => {
+  level2IsOpen.value = true
+  level2Title.value = level2Router.title
+  level2List.value = level2Router.leaves
 }
 
 </script>
 
 <template>
-  <div class="nav-container">
+  <div class="nav-container" :class="level2IsOpen ? 'is-open': 'is-clse'">
     <nav class="nav-list level1">
       <template v-for="level1Item in level1List" :key="level1Item.name">
-        <div v-if="Object.hasOwnProperty.call(level1Item, 'leaves')" class="nav-item" @click="setLevel2Router(level1Item.leaves)">
+        <div v-if="Object.hasOwnProperty.call(level1Item, 'leaves')" class="nav-item" @click="setLevel2Router(level1Item)">
           <div class="nav-item-left">
             <AdvantIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></AdvantIcon>
             <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
-            <span>{{ level1Item.title }}</span>
+            <span class="item-title">{{ level1Item.title }}</span>
           </div>
 
           <AdvantIcon :icon="['fas', 'angle-right']" class="nav-item-right"></AdvantIcon>
@@ -43,7 +42,7 @@ const setLevel2Router = (level2Router: RouterTree[]): void => {
           <div class="nav-item-left">
             <AdvantIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></AdvantIcon>
             <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
-            <span>{{ level1Item.title }}</span>
+            <span class="item-title">{{ level1Item.title }}</span>
           </div>
 
           <div class="nav-item-right"></div>
@@ -52,44 +51,36 @@ const setLevel2Router = (level2Router: RouterTree[]): void => {
       </template>
     </nav>
 
-    <nav class="nav-list level2">
-      <template v-for="level2Item in level2List" :key="level2Item.name">
-        <div v-if="Object.hasOwnProperty.call(level2Item, 'leaves')" class="nav-item" @click="setLevel2Router(level2Item.leaves)">
-          <div class="nav-item-left">
-            <div v-if="level2Item.complete" class="item-icon"></div>
-            <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
-            <span>{{ level2Item.title }}</span>
-          </div>
-
-          <AdvantIcon :icon="['fas', 'angle-left']" class="nav-item-right"></AdvantIcon>
-        </div>
-
-        <RouterLink v-else :to="level2Item.path" class="nav-item">
-          <div class="nav-item-left">
-            <div v-if="level2Item.complete" class="item-icon"></div>
-            <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
-            <span>{{ level2Item.title }}</span>
-          </div>
-
-          <div class="nav-item-right"></div>
-        </RouterLink>
-
-      </template>
-    </nav>
-
+    <div class="nav-list level2">
+      <SubNavigationView
+        v-model:isOpen="level2IsOpen"
+        :title="level2Title"
+        :router="level2List"
+      ></SubNavigationView>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$bg-color: #535353;
-
 .nav {
   &-container {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    transition-duration: 0.3s;
+    will-change: margin-left;
+    &.is-open {
+      margin-left: -$nav-width;
+    }
+    &.is-close {
+      margin-left: 0;
+    }
   }
 
   &-list {
+    min-width: $nav-width;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -98,7 +89,9 @@ $bg-color: #535353;
   &-item {
     width: 100%;
     color: #fff;
-    background-color: $bg-color;
+    font-weight: 600;
+    letter-spacing: 1px;
+    background-color: $side-bg-color;
     transition-duration: 0.3s;
 
     border-radius: 6px;
@@ -107,10 +100,13 @@ $bg-color: #535353;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    font-size: 1.3em;
 
     &:hover {
       background-color: #606060;
+
+      .item-title {
+        transform: translateX(4px);
+      }
     }
 
     &-left {
@@ -118,14 +114,23 @@ $bg-color: #535353;
       align-items: center;
       gap: 8px;
       flex: 1;
-
+      .item-title {
+        font-size: 1.3em;
+        transform: translateX(0);
+        transition-duration: 0.3s;
+      }
       .item-icon {
+        font-size: 1.2em;
         width: 30px;
         height: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
       }
+    }
+
+    &-right {
+      font-size: 1.2em;
     }
   }
 }

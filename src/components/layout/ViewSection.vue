@@ -16,17 +16,19 @@
   &-wrapper {
     width: 100%;
     height: 100%;
-    overflow: auto;
+    padding: 12px;
     background-color: #e6e6e6;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   &-container {
-    width: calc(100% - 32px);
-    height: calc(100% - 32px);
+    width: 100%;
+    height: 100%;
+    overflow: auto;
     border-radius: 6px;
     background-color: #fff;
+    box-sizing: border-box;
   }
 }
 </style>

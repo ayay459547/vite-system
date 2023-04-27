@@ -1,19 +1,23 @@
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue'
+
 import SideSection from '@/components/layout/SideSection.vue'
 import HeaderSection from '@/components/layout/HeaderSection.vue'
 import ViewSection from '@/components/layout/ViewSection.vue'
+
+const navIsOpen = ref(true)
 
 </script>
 
 <template>
   <div class="layout-wrapper">
-    <div class="layout-left layout-side">
+    <div class="layout-left layout-side" :class="navIsOpen ? 'is-open': 'is-close'">
       <SideSection />
     </div>
 
     <div class="layout-right">
       <div class="layout-header">
-        <HeaderSection />
+        <HeaderSection v-model:isOpen="navIsOpen"/>
       </div>
       <div class="layout-view">
         <ViewSection>
@@ -37,6 +41,13 @@ import ViewSection from '@/components/layout/ViewSection.vue'
   &-left {
     width: fit-content;
     height: 100%;
+    transition-duration: 0.3s;
+    &.is-open {
+      margin-left: 0;
+    }
+    &.is-close {
+      margin-left: -$nav-width;
+    }
   }
 
   &-right {
