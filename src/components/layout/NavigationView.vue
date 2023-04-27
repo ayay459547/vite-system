@@ -16,10 +16,22 @@ const level2IsOpen: Ref<boolean> = ref(false)
 const level2Title: Ref<string> = ref('')
 const level2List: Ref<RouterTree[]> = ref([])
 
+const level2OpenMap: Ref<Record<string, boolean>> = ref({})
+const changeMap = (name: string): void => {
+  level2OpenMap.value[name] = !level2OpenMap.value[name]
+  console.log(level2OpenMap.value)
+}
+
 const setLevel2Router = (level2Router: RouterTree): void => {
   level2IsOpen.value = true
   level2Title.value = level2Router.title
   level2List.value = level2Router.leaves
+
+  level2Router.leaves.forEach(leaf => {
+    if(!Object.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
+      level2OpenMap.value[leaf.name] = true
+    }
+  })
 }
 
 </script>
@@ -56,6 +68,8 @@ const setLevel2Router = (level2Router: RouterTree): void => {
         v-model:isOpen="level2IsOpen"
         :title="level2Title"
         :router="level2List"
+        :open-map="level2OpenMap"
+        @change-map="changeMap"
       ></SubNavigationView>
     </div>
   </div>

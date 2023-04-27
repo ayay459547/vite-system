@@ -1,7 +1,7 @@
 <script lang="ts">
-import { ComputedRef, PropType, WritableComputedRef, Ref } from 'vue'
+import { ComputedRef, PropType, WritableComputedRef } from 'vue'
 import type { RouterTree } from '@/declare/router'
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 export default defineComponent({
   name: 'SubNavigationView',
@@ -17,9 +17,13 @@ export default defineComponent({
     router: {
       type: Array as PropType<RouterTree[]>,
       required: true
+    },
+    openMap: {
+      type: Object as PropType<Record<string, boolean>>,
+      required: true
     }
   },
-  emits: ['update:isOpen'],
+  emits: ['update:isOpen', 'changeMap'],
   setup (props, { emit }) {
     const tempIsOpen: WritableComputedRef<Boolean> = computed({
       get: () => props.isOpen,
@@ -33,14 +37,13 @@ export default defineComponent({
       return props.router
     })
 
-    const closeList: Ref<string[]> = ref([])
-    const addClose = (name: string) => {
-      closeList.value.push(name)
+    const changeOpen = (name: string): void => {
+      emit('changeMap', name)
     }
 
     return {
-      addClose,
-      closeList,
+      navHeight: 54,
+      changeOpen,
       routerList,
       tempIsOpen,
       onTitleClick
@@ -61,34 +64,43 @@ export default defineComponent({
       <template v-for="routerItem in routerList" :key="routerItem.name">
           <!-- 有子路由 -->
           <template v-if="Object.hasOwnProperty.call(routerItem, 'leaves')">
-            <div class="nav-item">
+            <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div class="nav-item-left">
                 <div v-if="routerItem.complete" class="item-icon"></div>
                 <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
                 <span class="item-title">{{ routerItem.title }}</span>
               </div>
 
-              <AdvantIcon 
+              <AdvantIcon
                 :icon="['fas', 'angle-left']"
-                class="nav-item-right"
-                :class="closeList.includes(routerItem.title) ? 'is-open' : 'is-close'"
+                class="nav-item-right nav-arrow"
+                :class="openMap[routerItem.name] ? 'is-open' : 'is-close'"
               ></AdvantIcon>
             </div>
 
-            <RouterLink
-              v-for="leaf in routerItem.leaves"
-              :key="leaf.name"
-              :to="leaf.path"
-              class="nav-item"
+            <div
+              class="nav-sub-list"
+              :class="openMap[routerItem.name] ? 'is-open' : 'is-close'"
+              :style="{
+                'min-height': `${navHeight * (routerItem.leaves.length)}px`,
+                'max-height': `${navHeight * (routerItem.leaves.length)}px`
+              }"
             >
-              <div class="nav-item-left">
-                <div v-if="leaf.complete" class="item-icon"></div>
-                <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
-                <span class="item-title">{{ leaf.title }}</span>
-              </div>
+              <RouterLink
+                v-for="leaf in routerItem.leaves"
+                :key="leaf.name"
+                :to="leaf.path"
+                class="nav-sub-item"
+              >
+                <div class="nav-item-left">
+                  <div v-if="leaf.complete" class="item-icon"></div>
+                  <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
+                  <span class="item-title">{{ leaf.title }}</span>
+                </div>
 
-              <div class="nav-item-right"></div>
-            </RouterLink>
+                <div class="nav-item-right"></div>
+              </RouterLink>
+            </div>
           </template>
 
           <!-- 無子路由 -->
@@ -139,14 +151,18 @@ export default defineComponent({
       }
     }
   }
+  &-list {
+    overflow: auto;
+  }
 
+  &-sub-list,
   &-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: auto;
   }
 
+  &-sub-item,
   &-item {
     width: 100%;
     color: #fff;
@@ -184,6 +200,28 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
       }
+    }
+  }
+
+  // 與第二層相關
+  &-arrow {
+    transition-duration: 0.3s;
+    &.is-open {
+      transform: rotateZ(-90deg);
+    }
+    &.is-close {
+      transform: rotateZ(0deg);
+    }
+  }
+
+  &-sub-list {
+    width: 100%;
+    overflow: hidden;
+    transition-duration: 0.3s;
+    will-change: min-height max-height;
+    &.is-close {
+      min-height: 0 !important;
+      max-height: 0 !important;
     }
   }
 }
