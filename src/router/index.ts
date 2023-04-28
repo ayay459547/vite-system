@@ -18,18 +18,20 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
 
   const _treeToRoutes = (routes: RouterTree[], res: RouteRecordRaw[]): void => {
     routes.forEach(route => {
-      const { title, name,  meta, path, component } = route
+      if (Object.hasOwnProperty.call(route, 'path')) {
+        const { title, name,  meta, path, component } = route
 
-      const pushItem = {
-        path,
-        name,
-        component,
-        meta: {
-          ...meta,
-          title
+        const pushItem = {
+          path,
+          name,
+          component,
+          meta: {
+            ...meta,
+            title
+          }
         }
+        res.push(pushItem)
       }
-      res.push(pushItem)
       if (Object.hasOwnProperty.call(route, 'leaves')) {
         _treeToRoutes(route.leaves, res)
       }

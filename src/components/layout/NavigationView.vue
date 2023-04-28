@@ -80,6 +80,7 @@ const setLevel2Router = (level2Router: RouterTree): void => {
   &-container {
     width: 100%;
     height: 100%;
+    // overflow-y: auto;
     display: flex;
     flex-wrap: nowrap;
     transition-duration: 0.3s;
@@ -98,6 +99,10 @@ const setLevel2Router = (level2Router: RouterTree): void => {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    &.level1 {
+      overflow-y: auto;
+    }
   }
 
   &-item {
