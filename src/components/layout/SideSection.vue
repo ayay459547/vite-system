@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
-import type { RouterTree } from '@/declare/router'
-import { computed } from 'vue'
-import { routes, getRouterLeaf } from '@/router/routes'
-import NavigationView from './NavigationView.vue'
+import { computed, onMounted } from 'vue'
 
-const level1Routes: ComputedRef<RouterTree[]> = computed(() => {
-  return getRouterLeaf(routes, 1, true)
+import type { Navigation } from '@/declare/router'
+import { refactorRoutes } from '@/lib/routes'
+import routes from '@/router/routes'
+import NavigationView from './NavigationView.vue'
+import { useRoutesStore } from '@/stores/routes'
+
+const level1Routes: ComputedRef<Navigation[]> = computed(() => {
+  return refactorRoutes<Navigation>((leafNode, parentsNode) => {
+    const nextNode: Navigation = {
+      ...leafNode
+    }
+    if (parentsNode === null) {
+      nextNode.breadcrumb = [leafNode.title]
+    } else{
+      nextNode.breadcrumb = [...parentsNode.breadcrumb, leafNode.title]
+    }
+    return nextNode
+  }, routes)
 })
 
 const showRoutes: typeof level1Routes = computed(() => {
@@ -17,6 +30,15 @@ const showRoutes: typeof level1Routes = computed(() => {
   })
 })
 
+const routesStore = useRoutesStore()
+const setHome = () => {
+  routesStore.setBreadcrumb(['首頁'])
+  routesStore.setCurrentNavigation(null)
+}
+onMounted(() => {
+  setHome()
+})
+
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 const version = (import.meta as any).env.VITE_API_VERSION
 
@@ -24,7 +46,7 @@ const version = (import.meta as any).env.VITE_API_VERSION
 
 <template>
   <div class="side-container">
-    <RouterLink to="/home" class="side-logo">
+    <RouterLink to="/home" class="side-logo" @click="setHome()">
       <div>LOGO</div>
     </RouterLink>
 

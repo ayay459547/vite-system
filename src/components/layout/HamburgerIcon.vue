@@ -3,14 +3,14 @@ import type { WritableComputedRef } from 'vue'
 import { defineProps, computed } from 'vue'
 
 const props = defineProps<{
-  isOpen: Boolean
+  isOpen: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:isOpen', value: Boolean): void
+  (e: 'update:isOpen', value: boolean): void
 }>()
 
-const tempIsOpen: WritableComputedRef<Boolean> = computed({
+const tempIsOpen: WritableComputedRef<boolean> = computed({
   get: () => props.isOpen,
   set: value => emit('update:isOpen', value)
 })

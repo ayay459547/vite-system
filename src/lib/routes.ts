@@ -58,8 +58,6 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
   return res
 }
 
-type Refactor<T> = Partial<RouterTree> | T
-
 /**
  * @author Caleb
  * @description 將路由樹重構
@@ -67,19 +65,23 @@ type Refactor<T> = Partial<RouterTree> | T
  * @param routes 路由
  * @returns {Array} T 指定格式
  */
-export const refactorRoutes = <T>(callback: (leafNode: RouterTree, parentsNode: Refactor<T>) => Refactor<T>, routes: RouterTree[]): Array<Refactor<T>> => {
-  const res = []
+export const refactorRoutes = <T>(callback: (leafNode: RouterTree, parentsNode: T) => T, routes: RouterTree[]): Array<T> => {
+  const res: Array<T> = []
 
-  const _refactorRoutes = (leafNode: RouterTree[], parentsNode: Refactor<T> | null, res: Array<Refactor<T>>) => {
+  const _refactorRoutes = (leafNode: RouterTree[], parentsNode: T | null, res: Array<T>) => {
     leafNode.forEach((route, routeIndex) => {
       const currentNode = callback(route, parentsNode)
       // 不可自訂 leaves
       if (Object.hasOwnProperty.call(currentNode, 'leaves')) {
         delete (currentNode as any).leaves
       }
-      res[routeIndex] = {
-        ...currentNode,
-        leaves: route.leaves
+      if (Object.hasOwnProperty.call(route, 'leaves')) {
+        res[routeIndex] = {
+          ...currentNode,
+          leaves: route.leaves
+        }
+      } else {
+        res[routeIndex] = { ...currentNode }
       }
 
       if (Object.hasOwnProperty.call(route, 'leaves')) {

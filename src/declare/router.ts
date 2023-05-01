@@ -17,3 +17,8 @@ export declare interface RouterTree {
   path?: string           // 網址
   component?: () => void  // 頁面組件
 }
+
+export declare interface Navigation extends RouterTree {
+  leaves?: Navigation[]
+  breadcrumb?: Array<string>
+}

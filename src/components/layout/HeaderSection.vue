@@ -1,23 +1,50 @@
 <script setup lang="ts">
-import type { WritableComputedRef } from 'vue'
+import type { WritableComputedRef, ComputedRef } from 'vue'
 import { defineProps, computed } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
+import { useRoutesStore } from '@/stores/routes'
 
 const props = defineProps<{
-  isOpen: Boolean
+  isOpen: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:isOpen', value: Boolean): void
+  (e: 'update:isOpen', value: boolean): void
 }>()
 
-const tempIsOpen: WritableComputedRef<Boolean> = computed({
+const tempIsOpen: WritableComputedRef<boolean> = computed({
   get: () => props.isOpen,
   set: value => emit('update:isOpen', value)
 })
 
-const currPath = '選單1 / 選單1-1 / 選單1-1-1'
+const routesStore = useRoutesStore()
+
+type Breadcrumb = {
+  type: string
+  name: string
+}
+const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
+  return routesStore.breadcrumb.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
+    if (crumbIndex === 0){
+      res.push({
+        type: 'text',
+        name: crumb
+      })
+    } else {
+      res.push({
+        type: 'icon',
+        name: '/'
+      }, {
+        type: 'text',
+        name: crumb
+      })
+    }
+
+    return res
+  }, [])
+})
+
 
 </script>
 
@@ -25,7 +52,10 @@ const currPath = '選單1 / 選單1-1 / 選單1-1-1'
   <div class="header-container">
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen"></HamburgerIcon>
-      <span>{{ currPath }}</span>
+      <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
+        <span v-if="path.type === 'text'">{{ path.name }}</span>
+        <span v-else>{{ ' / ' }}</span>
+      </template>
     </div>
     <div class="header-right">
       <AdvantIcon></AdvantIcon>
@@ -37,7 +67,7 @@ const currPath = '選單1 / 選單1-1 / 選單1-1-1'
 .header {
   &-container {
     width: 100%;
-    height: 80px;
+    height: 64px;
     background-color: #e6e6e6;
 
     display: flex;
@@ -50,7 +80,7 @@ const currPath = '選單1 / 選單1-1 / 選單1-1-1'
   &-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
   }
 
   &-right {

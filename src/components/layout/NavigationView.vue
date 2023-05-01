@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import type { ComputedRef, Ref } from 'vue'
-import type { RouterTree } from '@/declare/router'
+import type { Navigation } from '@/declare/router'
 import { defineProps, computed, ref } from 'vue'
 import SubNavigationView from './SubNavigationView.vue'
+import { useRoutesStore } from '@/stores/routes'
 
 const props = defineProps<{
-  router: RouterTree[]
+  router: Navigation[]
 }>()
 
-const level1List: ComputedRef<RouterTree[]> = computed(() => {
+const level1List: ComputedRef<Navigation[]> = computed(() => {
   return props.router
 })
 
 const level2IsOpen: Ref<boolean> = ref(false)
 const level2Title: Ref<string> = ref('')
-const level2List: Ref<RouterTree[]> = ref([])
+const level2List: Ref<Navigation[]> = ref([])
 
 const level2OpenMap: Ref<Record<string, boolean>> = ref({})
 const changeMap = (name: string): void => {
   level2OpenMap.value[name] = !level2OpenMap.value[name]
-  console.log(level2OpenMap.value)
 }
 
-const setLevel2Router = (level2Router: RouterTree): void => {
+const setLevel2Router = (level2Router: Navigation): void => {
   level2IsOpen.value = true
   level2Title.value = level2Router.title
   level2List.value = level2Router.leaves
@@ -32,6 +32,13 @@ const setLevel2Router = (level2Router: RouterTree): void => {
       level2OpenMap.value[leaf.name] = true
     }
   })
+}
+
+const routesStore = useRoutesStore()
+const setRoutesConfig = (route: Navigation) => {
+  routesStore.setBreadcrumb(route.breadcrumb)
+  routesStore.setCurrentNavigation(route)
+  routesStore.addHistoryNavigation(route.name, route)
 }
 
 </script>
@@ -50,7 +57,7 @@ const setLevel2Router = (level2Router: RouterTree): void => {
           <AdvantIcon :icon="['fas', 'angle-right']" class="nav-item-right"></AdvantIcon>
         </div>
 
-        <RouterLink v-else :to="level1Item.path" class="nav-item">
+        <RouterLink v-else :to="level1Item.path" class="nav-item" @click="setRoutesConfig(level1Item)">
           <div class="nav-item-left">
             <AdvantIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></AdvantIcon>
             <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
@@ -142,9 +149,7 @@ const setLevel2Router = (level2Router: RouterTree): void => {
         font-size: 1.2em;
         width: 30px;
         height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @extend %flex-center;
       }
     }
 

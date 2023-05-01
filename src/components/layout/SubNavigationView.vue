@@ -1,7 +1,8 @@
 <script lang="ts">
-import { ComputedRef, PropType, WritableComputedRef } from 'vue'
-import type { RouterTree } from '@/declare/router'
+import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
+import type { Navigation } from '@/declare/router'
 import { defineComponent, computed } from 'vue'
+import { useRoutesStore } from '@/stores/routes'
 
 export default defineComponent({
   name: 'SubNavigationView',
@@ -15,7 +16,7 @@ export default defineComponent({
       default: ''
     },
     router: {
-      type: Array as PropType<RouterTree[]>,
+      type: Array as PropType<Navigation[]>,
       required: true
     },
     openMap: {
@@ -33,7 +34,7 @@ export default defineComponent({
       tempIsOpen.value = !tempIsOpen.value
     }
 
-    const routerList: ComputedRef<RouterTree[]> = computed(() => {
+    const routerList: ComputedRef<Navigation[]> = computed(() => {
       return props.router
     })
 
@@ -41,12 +42,20 @@ export default defineComponent({
       emit('changeMap', name)
     }
 
+    const routesStore = useRoutesStore()
+    const setRoutesConfig = (route: Navigation) => {
+      routesStore.setBreadcrumb(route.breadcrumb)
+      routesStore.setCurrentNavigation(route)
+      routesStore.addHistoryNavigation(route.name, route)
+    }
+
     return {
       navHeight: 54,
       changeOpen,
       routerList,
       tempIsOpen,
-      onTitleClick
+      onTitleClick,
+      setRoutesConfig
     }
   }
 })
@@ -91,6 +100,7 @@ export default defineComponent({
                 :key="leaf.name"
                 :to="leaf.path"
                 class="nav-sub-item"
+                @click="setRoutesConfig(leaf)"
               >
                 <div class="nav-item-left">
                   <div v-if="leaf.complete" class="item-icon"></div>
@@ -104,7 +114,12 @@ export default defineComponent({
           </template>
 
           <!-- 無子路由 -->
-          <RouterLink v-else :to="routerItem.path" class="nav-item">
+          <RouterLink
+            v-else
+            :to="routerItem.path"
+            class="nav-item"
+            @click="setRoutesConfig(routerItem)"
+          >
             <div class="nav-item-left">
               <div v-if="routerItem.complete" class="item-icon"></div>
               <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
@@ -196,9 +211,7 @@ export default defineComponent({
       .item-icon {
         width: 30px;
         height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @extend %flex-center;
       }
     }
   }

@@ -14,6 +14,7 @@ import 'element-plus/dist/index.css'
 
 // feature
 import AdvantIcon from './feature/AdvantIcon.vue'
+import AdvantTabs from './feature/AdvantTabs.vue'
 
 const pluginComponents = {
   install (app: App): void {
@@ -23,6 +24,7 @@ const pluginComponents = {
     app.component('font-awesome-icon', FontAwesomeIcon)
 
     app.component('AdvantIcon', AdvantIcon)
+    app.component('AdvantTabs', AdvantTabs)
   }
 }
 
