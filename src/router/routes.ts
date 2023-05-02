@@ -1,4 +1,4 @@
-import type { RouterTree } from '@/declare/router'
+import type { RouterTree } from '@/declare/routes'
 
 const routes: Array<RouterTree> = [
   {

@@ -1,22 +1,63 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import type { WritableComputedRef } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
+import type { Navigation } from '@/declare/routes'
 
 const currentTab = ref('')
 const routesStore = useRoutesStore()
 const { historyNavigation } = storeToRefs(routesStore)
 
-const tabs = computed(() => {
-  const res = []
-  historyNavigation.value.forEach((value, key) => {
-    res.push({ key, value })
-  })
-  return res
+const { currentNavigation } = storeToRefs(routesStore)
+watch(currentNavigation, (newValue) => {
+  currentTab.value = newValue.name
 })
 
-const log = () => {
-  console.log(historyNavigation.value)
+type ListType = Array<{
+  key: string
+  value: any
+}>
+
+const sortTabs = ref<ListType>([])
+
+const tabs: WritableComputedRef<ListType> = computed({
+  get: () => {
+    const res = new Array(sortTabs.value.length)
+
+    historyNavigation.value.forEach((value, key) => {
+      const insertIndex = sortTabs.value.findIndex(tab => {
+        return tab.key === key
+      })
+
+      if (insertIndex >= 0) {
+        res[insertIndex] = { key, value }
+      } else {
+        res.push({ key, value })
+      }
+    })
+
+    return res
+  },
+  set: (value: ListType) => { sortTabs.value = value}
+})
+
+const removeHistory = (value: Navigation) => {
+  routesStore.removeHistoryNavigation(value.name)
+}
+
+const clearHistory = () => {
+  const temp = currentNavigation.value
+  if (historyNavigation.value.size > 0) {
+    routesStore.clearHistoryNavigation()
+    routesStore.addHistoryNavigation(temp.name, temp)
+  }
+}
+
+const setRoutesConfig = (route: Navigation) => {
+  routesStore.setBreadcrumb(route.breadcrumb)
+  routesStore.setCurrentNavigation(route)
+  routesStore.addHistoryNavigation(route.name, route)
 }
 
 </script>
@@ -25,14 +66,26 @@ const log = () => {
   <div class="history-wrapper">
     <AdvantTabs
       v-model="currentTab"
-      :list="tabs"
+      v-model:list="tabs"
       class="history-tabs"
+      @remove="removeHistory"
     >
       <template #default="slotProps">
-        {{ slotProps.data.title }}
+        <RouterLink
+          :to="slotProps.data.path"
+          class="history-tab"
+          :class="{ 'is-active': currentTab === slotProps.data.name }"
+          @click="setRoutesConfig(slotProps.data)"
+        >
+          {{ slotProps.data.title }}
+        </RouterLink>
       </template>
     </AdvantTabs>
-    <div class="history-clear" @click="log">test</div>
+    <div class="history-clear">
+      <AdvantButton icon-name="trash-can" @click="clearHistory">
+        清除
+      </AdvantButton>
+    </div>
   </div>
 </template>
 
@@ -47,8 +100,16 @@ const log = () => {
     width: inherit;
     flex: 1;
   }
+  &-tab {
+    color: #303133;
+
+    &.is-active {
+      color: #409EFF;
+    }
+  }
   &-clear {
-    width: 56px;
+    width: fit-content;
+    height: 100%;
     @extend %flex-center;
   }
 }

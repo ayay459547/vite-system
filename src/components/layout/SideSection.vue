@@ -2,7 +2,7 @@
 import type { ComputedRef } from 'vue'
 import { computed, onMounted } from 'vue'
 
-import type { Navigation } from '@/declare/router'
+import type { Navigation } from '@/declare/routes'
 import { refactorRoutes } from '@/lib/routes'
 import routes from '@/router/routes'
 import NavigationView from './NavigationView.vue'

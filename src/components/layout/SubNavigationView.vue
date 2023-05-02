@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
-import type { Navigation } from '@/declare/router'
+import type { Navigation } from '@/declare/routes'
 import { defineComponent, computed } from 'vue'
 import { useRoutesStore } from '@/stores/routes'
 

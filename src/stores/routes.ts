@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue'
 import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { Navigation } from '@/declare/router'
+import type { Navigation } from '@/declare/routes'
 import { getRouterLeaf } from '@/lib/routes'
 import routes from '@/router/routes'
 
@@ -27,6 +27,11 @@ export const useRoutesStore = defineStore('routes', () => {
       historyNavigation.set(key, value)
     }
   }
+  const removeHistoryNavigation = (key: string) => {
+    if (historyNavigation.has(key)) {
+      historyNavigation.delete(key)
+    }
+  }
   const clearHistoryNavigation = () => {
     historyNavigation.clear()
   }
@@ -47,6 +52,7 @@ export const useRoutesStore = defineStore('routes', () => {
     setBreadcrumb,
     historyNavigation,
     addHistoryNavigation,
+    removeHistoryNavigation,
     clearHistoryNavigation,
     currentNavigation,
     setCurrentNavigation,

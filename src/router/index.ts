@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
-import type { RouterTree } from '@/declare/router'
+import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 
 import HomeView from '@/views/HomeView.vue'
