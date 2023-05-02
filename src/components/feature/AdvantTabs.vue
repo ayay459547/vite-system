@@ -171,7 +171,6 @@ const draggableList: WritableComputedRef<ListType> = computed({
     width: 0;
     height: 100%;
     @extend %flex-center;
-    // background-color: #fff;
     cursor: pointer;
     overflow: hidden;
     transition-duration: 0.3s;
@@ -190,6 +189,7 @@ const draggableList: WritableComputedRef<ListType> = computed({
     overflow-x: scroll;
     display: flex;
     align-items: center;
+    will-change: width;
   }
   &-list {
     display: flex;

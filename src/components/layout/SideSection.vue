@@ -39,23 +39,24 @@ onMounted(() => {
   setHome()
 })
 
-const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
-const version = (import.meta as any).env.VITE_API_VERSION
-
 </script>
 
 <template>
   <div class="side-container">
     <RouterLink to="/home" class="side-logo" @click="setHome()">
-      <div>LOGO</div>
+      <slot name="logo">
+        <div>LOGO</div>
+      </slot>
     </RouterLink>
 
     <div class="side-nav">
       <NavigationView :router="showRoutes"></NavigationView>
     </div>
 
-    <div class="side-version">
-      {{ `${system} version ${version}` }}
+    <div class="side-footer">
+      <slot name="footer">
+        <div>Footer</div>
+      </slot>
     </div>
   </div>
 </template>
@@ -86,7 +87,7 @@ const version = (import.meta as any).env.VITE_API_VERSION
     overflow: hidden;
   }
 
-  &-version {
+  &-footer {
     border-radius: 6px;
     padding: 6px 12px;
     margin: 6px;

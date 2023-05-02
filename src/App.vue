@@ -1,31 +1,62 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
+import { ref, provide, onBeforeMount } from 'vue'
 import SideSection from '@/components/layout/SideSection.vue'
 import HeaderSection from '@/components/layout/HeaderSection.vue'
 import ViewSection from '@/components/layout/ViewSection.vue'
 
+import { ElConfigProvider } from 'element-plus'
+import ElzhTw from 'element-plus/dist/locale/zh-tw.min.js'
+import ElzhCn from 'element-plus/dist/locale/zh-cn.min.js'
+import Elen from 'element-plus/dist/locale/en.min.js'
+
 const navIsOpen = ref(true)
+
+enum LangType {
+  zhTw = ElzhTw,
+  zhCn = ElzhCn,
+  en = Elen,
+}
+
+const locale = ref('zhTw')
+
+onBeforeMount(() => {
+  locale.value = 'zhTw'
+})
+
+provide('locale', locale.value)
+
+const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
+const version = (import.meta as any).env.VITE_API_VERSION
 
 </script>
 
 <template>
-  <div class="layout-wrapper">
-    <div class="layout-left layout-side" :class="navIsOpen ? 'is-open': 'is-close'">
-      <SideSection />
-    </div>
+  <ElConfigProvider :locale="LangType[locale]">
+    <div class="layout-wrapper">
+      <div class="layout-left layout-side" :class="navIsOpen ? 'is-open': 'is-close'">
+        <SideSection>
+          <template #logo>
+            <div>LOGO</div>
+          </template>
 
-    <div class="layout-right">
-      <div class="layout-header">
-        <HeaderSection v-model:isOpen="navIsOpen"/>
+          <template #footer>
+            {{ `${system} version ${version}` }}
+          </template>
+        </SideSection>
       </div>
-      <div class="layout-view">
-        <ViewSection>
-          <RouterView />
-        </ViewSection>
+
+      <div class="layout-right">
+        <div class="layout-header">
+          <HeaderSection v-model:isOpen="navIsOpen"/>
+        </div>
+        <div class="layout-view">
+          <ViewSection>
+            <RouterView />
+          </ViewSection>
+        </div>
       </div>
     </div>
-  </div>
+  </ElConfigProvider>
 </template>
 
 <style lang="scss" scoped>
