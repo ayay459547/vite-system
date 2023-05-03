@@ -31,19 +31,19 @@ const showRoutes: typeof level1Routes = computed(() => {
 })
 
 const routesStore = useRoutesStore()
-const setHome = () => {
+const setRoutesConfig = () => {
   routesStore.setBreadcrumb(['首頁'])
   routesStore.setCurrentNavigation(null)
 }
 onMounted(() => {
-  setHome()
+  setRoutesConfig()
 })
 
 </script>
 
 <template>
   <div class="side-container">
-    <RouterLink to="/home" class="side-logo" @click="setHome()">
+    <RouterLink to="/home" class="side-logo" @click="setRoutesConfig()">
       <slot name="logo">
         <div>LOGO</div>
       </slot>

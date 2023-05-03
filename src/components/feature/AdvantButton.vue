@@ -103,7 +103,7 @@ const onClick = ($event: Event) => {
         />
       </template>
       <slot>
-        <span>{{ props.label }}</span>
+        <span class="button-label">{{ props.label }}</span>
       </slot>
     </el-button>
   </div>
@@ -114,6 +114,10 @@ const onClick = ($event: Event) => {
   &-container {
     width: fit-content;
     height: fit-content;
+  }
+  &-label {
+    display: inline-block;
+    padding-top: 2px;
   }
 }
 </style>

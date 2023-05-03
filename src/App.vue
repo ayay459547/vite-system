@@ -36,7 +36,7 @@ const version = (import.meta as any).env.VITE_API_VERSION
       <div class="layout-left layout-side" :class="navIsOpen ? 'is-open': 'is-close'">
         <SideSection>
           <template #logo>
-            <div>LOGO</div>
+            <div>LOGO-TEST</div>
           </template>
 
           <template #footer>

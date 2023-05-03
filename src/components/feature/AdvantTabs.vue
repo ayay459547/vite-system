@@ -1,5 +1,4 @@
 <script setup lang="ts">
- import draggable from 'vuedraggable'
 import type { Ref, PropType, WritableComputedRef } from 'vue'
 import { ref, defineProps, defineEmits, computed, onMounted, onUnmounted } from 'vue'
 import throttle from '@/lib/throttle'
@@ -19,7 +18,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'update:list', 'remove'])
+const emit = defineEmits(['update:modelValue', 'remove'])
 
 const tempValue: WritableComputedRef<string> = computed({
   get: () => props.modelValue,
@@ -102,13 +101,6 @@ onUnmounted(() => {
   listRO.disconnect()
 })
 
-// 拖拉
-const drag = ref(false)
-const draggableList: WritableComputedRef<ListType> = computed({
-  get: () => props.list,
-  set: (value: ListType) => emit('update:list', value)
-})
-
 </script>
 
 <template>
@@ -117,33 +109,24 @@ const draggableList: WritableComputedRef<ListType> = computed({
       <AdvantIcon name="chevron-left"/>
     </div>
     <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }">
-      <div ref="listRef">
-        <draggable
-          v-model="draggableList"
-          @start="drag=true"
-          @end="drag=false"
-          item-key="key"
-          class="tabs-list"
+      <div ref="listRef" class="tabs-list">
+        <div
+          v-for="element in props.list"
+          class="tabs-item"
+          :class="{ 'is-active': props.modelValue === element.key }"
+          :key="element.key"
+          @click="onTabClick(element.key)"
         >
-          <template #item="{element}">
-            <div
-              class="tabs-item"
-              :class="{ 'is-active': props.modelValue === element.key }"
-              :key="element.key"
-              @click="onTabClick(element.key)"
-            >
-              <slot :data="element.value">
-                <span>{{ element.value }}</span>
-              </slot>
-              <AdvantIcon
-                name="xmark"
-                class="tabs-item-remove"
-                :class="{ 'is-active': props.modelValue === element.key }"
-                @click="removeTab(element.value)"
-              />
-            </div>
-          </template>
-        </draggable>
+          <slot :data="element.value">
+            <span>{{ element.value }}</span>
+          </slot>
+          <AdvantIcon
+            name="xmark"
+            class="tabs-item-remove"
+            :class="{ 'is-active': props.modelValue === element.key }"
+            @click="removeTab(element.value)"
+          />
+        </div>
       </div>
     </div>
     <div class="tabs-right-arrow" :class="{'is-show': arrowIsShow}" @click="decreaseScroll">

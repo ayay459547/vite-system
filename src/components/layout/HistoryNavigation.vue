@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WritableComputedRef } from 'vue'
+import type { ComputedRef } from 'vue'
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
@@ -19,27 +19,14 @@ type ListType = Array<{
   value: any
 }>
 
-const sortTabs = ref<ListType>([])
+const tabs: ComputedRef<ListType> = computed(() => {
+  const res = []
 
-const tabs: WritableComputedRef<ListType> = computed({
-  get: () => {
-    const res = new Array(sortTabs.value.length)
+  historyNavigation.value.forEach((value, key) => {
+    res.push({ key, value })
+  })
 
-    historyNavigation.value.forEach((value, key) => {
-      const insertIndex = sortTabs.value.findIndex(tab => {
-        return tab.key === key
-      })
-
-      if (insertIndex >= 0) {
-        res[insertIndex] = { key, value }
-      } else {
-        res.push({ key, value })
-      }
-    })
-
-    return res
-  },
-  set: (value: ListType) => { sortTabs.value = value}
+  return res
 })
 
 const removeHistory = (value: Navigation) => {
@@ -66,7 +53,7 @@ const setRoutesConfig = (route: Navigation) => {
   <div class="history-wrapper">
     <AdvantTabs
       v-model="currentTab"
-      v-model:list="tabs"
+      :list="tabs"
       class="history-tabs"
       @remove="removeHistory"
     >
@@ -82,9 +69,11 @@ const setRoutesConfig = (route: Navigation) => {
       </template>
     </AdvantTabs>
     <div class="history-clear">
-      <AdvantButton icon-name="trash-can" @click="clearHistory">
-        清除
-      </AdvantButton>
+      <AdvantButton
+        icon-name="trash-can"
+        label="清除"
+        @click="clearHistory"
+      />
     </div>
   </div>
 </template>
