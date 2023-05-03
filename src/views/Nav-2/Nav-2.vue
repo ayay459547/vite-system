@@ -10,7 +10,12 @@ const locale = inject('locale')
   <div class="nav-2">
     <h1 class="i-mb-md">This is Nav-2 page</h1>
     <h2 class="i-mb-md">{{ locale }}</h2>
-    <FormInput v-model="value" label="測試" />
+    <FormInput
+      v-model="value"
+      label="測試"
+      required
+      validate="password"
+    />
   </div>
 </template>
 
