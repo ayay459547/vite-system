@@ -2,6 +2,7 @@
 import { ref, inject } from 'vue'
 
 const value = ref<string>('')
+const valuePhone = ref<string>('')
 const locale = inject('locale')
 
 </script>
@@ -12,9 +13,15 @@ const locale = inject('locale')
     <h2 class="i-mb-md">{{ locale }}</h2>
     <FormInput
       v-model="value"
-      label="測試"
+      label="測試密碼"
       required
-      validate="password"
+      :validate="['password']"
+    />
+    <FormInput
+      v-model="valuePhone"
+      label="測試phone"
+      required
+      :validate="['phone']"
     />
   </div>
 </template>

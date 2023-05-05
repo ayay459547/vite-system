@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElInput } from 'element-plus'
 import type { PropType, WritableComputedRef } from 'vue'
-import { ref, defineProps, defineEmits, computed, useSlots } from 'vue'
+import { defineProps, defineEmits, computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
 import validateFun from '@/lib/validate'
 
@@ -29,42 +29,89 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits([
+  'update:modelValue',
+  'blur',
+  'focus',
+  'change',
+  'input',
+  'clear'
+])
 
 const tempValue: WritableComputedRef<string> = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 })
 
-function validateField (value: string) {
+const validateRes = computed<string>(() => {
+  if ([null, undefined, ''].includes(errorMessage.value)) return 'error'
+  return 'success'
+})
+
+// 驗證
+const validateField = (veeValue: string) => {
   if (!props.required) return true
 
-  if ([null, undefined, ''].includes(value.trim())) {
+  if ([null, undefined, ''].includes(veeValue.trim())) {
     return '此輸入框為必填'
   }
 
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {
     for (let type of (props.validate as ValidateType[])) {
-      const { res, msg } = validateFun[type](value)
+      const { res, msg } = validateFun[type](veeValue)
       if (!res) return msg
     }
   }
 
   if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { res, msg } = validateFun[(props.validate as ValidateType)](value)
+    const { res, msg } = validateFun[(props.validate as ValidateType)](veeValue)
     if (!res) return msg
   }
 
   return true
 }
 
-const validateValue = ref(null)
-const setValidateValue = () => {
-  validateValue.value = tempValue.value
-  console.log('value => ', value)
-}
-const { errorMessage, value } = useField(() => validateValue.value, validateField)
+const tempVeeValue: WritableComputedRef<string> = computed({
+  get: () => veeValue.value,
+  set: (value: string) => tempValue.value = value
+})
 
+const { errorMessage, value: veeValue, handleChange } = useField('field', validateField, { validateOnValueUpdate: false })
+
+// event
+const focus = (e: FocusEvent): void => {
+  emit('focus', e)
+}
+const clear = (): void => {
+  emit('clear')
+}
+
+const validationListeners = computed(() => {
+  if (!errorMessage.value) {
+    return {
+      blur: (e: FocusEvent): void => {
+        emit('blur', e)
+        handleChange(e)
+      },
+      change: (value: string | number): void => {
+        emit('change', value)
+        handleChange(value)
+      },
+      input: (value: string | number): void => {
+        emit('input', value)
+        handleChange(value, false)
+      }
+    }
+  }
+
+  return {
+    blur: handleChange,
+    change: handleChange,
+    input: handleChange
+  }
+})
+
+// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
@@ -79,10 +126,13 @@ const hasSlot = (prop: string): boolean => {
     </label>
 
     <el-input
-      v-model="tempValue"
+      v-model="tempVeeValue"
       placeholder="Please input"
       class="input-main"
-      @blur="setValidateValue"
+      :class="[`validate-${validateRes}`]"
+      @focus="focus"
+      @clear="clear"
+      v-on="validationListeners"
     >
       <!-- 輸入框用 -->
       <template v-if="hasSlot('prepend')" #prepend>
@@ -108,7 +158,10 @@ const hasSlot = (prop: string): boolean => {
 .input {
   &-container {
     width: fit-content;
-    height: fit-content;
+    height: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   &-error {
