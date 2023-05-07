@@ -19,3 +19,10 @@ $nav-width: 260px;
 /* z-index */
 $side-index: 9999;
 $loading: 999;
+
+%flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

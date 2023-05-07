@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ElInput } from 'element-plus'
-import type { PropType, WritableComputedRef } from 'vue'
+import type { PropType } from 'vue'
 import { defineProps, defineEmits, computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
+import type { VeeRes } from '@/lib/validate'
 import validateFun from '@/lib/validate'
 
 type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
@@ -38,77 +39,83 @@ const emit = defineEmits([
   'clear'
 ])
 
-const tempValue: WritableComputedRef<string> = computed({
-  get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
-})
-
 const validateRes = computed<string>(() => {
-  if ([null, undefined, ''].includes(errorMessage.value)) return 'error'
-  return 'success'
+  if ([null, undefined, ''].includes(errorMessage.value)) return 'success'
+  return 'error'
 })
 
 // 驗證
 const validateField = (veeValue: string) => {
-  if (!props.required) return true
-
-  if ([null, undefined, ''].includes(veeValue.trim())) {
+  // 必填
+  if (props.required && [null, undefined, ''].includes(veeValue.trim())) {
     return '此輸入框為必填'
   }
+  // 非必填
+  if ([null, undefined, ''].includes(veeValue.trim())) return true
 
+  // 多個驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {
     for (let type of (props.validate as ValidateType[])) {
-      const { res, msg } = validateFun[type](veeValue)
-      if (!res) return msg
+      const { test, msg } = (validateFun[type](veeValue) as VeeRes)
+      if (!test) return msg
     }
   }
 
+  // 單一驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { res, msg } = validateFun[(props.validate as ValidateType)](veeValue)
-    if (!res) return msg
+    const { test, msg } = (validateFun[(props.validate as ValidateType)](veeValue) as VeeRes)
+    if (!test) return msg
   }
 
   return true
 }
 
-const tempVeeValue: WritableComputedRef<string> = computed({
-  get: () => veeValue.value,
-  set: (value: string) => tempValue.value = value
-})
-
-const { errorMessage, value: veeValue, handleChange } = useField('field', validateField, { validateOnValueUpdate: false })
+/**
+ * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
+ * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
+ * 每當useField值發生變化時，它都會發出update:modelValue事件，
+ * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
+ */
+// const tempValue: WritableComputedRef<string> = computed({
+//   get: () => props.modelValue,
+//   set: (value: string) => emit('update:modelValue', value)
+// })
+const { errorMessage, value: tempValue, handleChange } = useField('field', validateField, { validateOnValueUpdate: false })
 
 // event
-const focus = (e: FocusEvent): void => {
-  emit('focus', e)
-}
-const clear = (): void => {
-  emit('clear')
-}
-
 const validationListeners = computed(() => {
-  if (!errorMessage.value) {
+  const event = {
+    focus: (e: FocusEvent): void => {
+      emit('focus', e)
+    },
+    clear: (): void => {
+      emit('clear')
+    },
+    blur: (e: FocusEvent): void => {
+      emit('blur', e)
+      handleChange(e, true)
+    },
+    change: (value: string | number): void => {
+      emit('change', value)
+      handleChange(value, true)
+    },
+    input: (value: string | number): void => {
+      emit('input', value)
+      handleChange(value, true)
+    }
+  }
+  if ([null, undefined, ''].includes(errorMessage.value)) {
     return {
-      blur: (e: FocusEvent): void => {
-        emit('blur', e)
-        handleChange(e)
-      },
-      change: (value: string | number): void => {
-        emit('change', value)
-        handleChange(value)
-      },
+      ...event,
       input: (value: string | number): void => {
         emit('input', value)
         handleChange(value, false)
       }
     }
+  } else {
+    return event
   }
 
-  return {
-    blur: handleChange,
-    change: handleChange,
-    input: handleChange
-  }
 })
 
 // slot
@@ -122,16 +129,15 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <div class="input-container">
     <label v-if="props.label.length > 0" class="input-label">
-      {{ props.label }}
+      <span v-if="props.required" class="input-required">*</span>
+      <span>{{ props.label }}</span>
     </label>
 
     <el-input
-      v-model="tempVeeValue"
+      v-model="tempValue"
       placeholder="Please input"
       class="input-main"
       :class="[`validate-${validateRes}`]"
-      @focus="focus"
-      @clear="clear"
       v-on="validationListeners"
     >
       <!-- 輸入框用 -->
@@ -155,13 +161,33 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
+:deep(.input-main) {
+  .el-input__wrapper {
+    transition-duration: 0.3s;
+    box-shadow: 0 0 0 1px inherit inset;
+  }
+  &.validate-error .el-input__wrapper {
+    box-shadow: 0 0 0 1px $danger inset;
+    background-color: lighten($danger, 20%);
+  }
+}
 .input {
   &-container {
-    width: fit-content;
+    width: 100%;
     height: 88px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+
+  &-required {
+    color: $danger;
+    display: inline-block;
+    padding-right: 2px;
+  }
+
+  &-main {
+    height: fit-content;
   }
 
   &-error {

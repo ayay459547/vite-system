@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 
-const value = ref<string>('')
+const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 const locale = inject('locale')
 
@@ -20,7 +20,6 @@ const locale = inject('locale')
     <FormInput
       v-model="valuePhone"
       label="測試phone"
-      required
       :validate="['phone']"
     />
   </div>
