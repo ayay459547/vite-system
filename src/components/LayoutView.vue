@@ -1,34 +1,26 @@
 <script setup lang="ts">
-import { ref, provide, onBeforeMount } from 'vue'
+import { ref, computed, provide } from 'vue'
 import SideSection from '@/components/layout/SideSection.vue'
 import HeaderSection from '@/components/layout/HeaderSection.vue'
 import ViewSection from '@/components/layout/ViewSection.vue'
 
 import { ElConfigProvider } from 'element-plus'
-import ElzhTw from 'element-plus/dist/locale/zh-tw.min.js'
-import ElzhCn from 'element-plus/dist/locale/zh-cn.min.js'
-import Elen from 'element-plus/dist/locale/en.min.js'
+
+import { useLocaleStore } from '@/stores/locale'
 
 const navIsOpen = ref(true)
 
-enum LangType {
-  zhTw = ElzhTw,
-  zhCn = ElzhCn,
-  en = Elen,
-}
-
-const locale = ref('zhTw')
-
-onBeforeMount(() => {
-  locale.value = 'zhTw'
+const localeStore = useLocaleStore()
+const locale = computed(() => {
+  return localeStore.locale
 })
 
-provide('locale', locale.value)
+provide('locale', locale.value.lang)
 
 </script>
 
 <template>
-  <ElConfigProvider :locale="LangType[locale]">
+  <ElConfigProvider :locale="locale.el">
     <div class="layout-wrapper">
       <div class="layout-left layout-side" :class="navIsOpen ? 'is-open': 'is-close'">
         <SideSection>

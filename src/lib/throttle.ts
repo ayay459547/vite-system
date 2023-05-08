@@ -1,9 +1,10 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
+type ThrottleOptions = {
+  noLeading?: boolean
+  noTrailing?: boolean
+}
 /**
- * 節流函數
+ * @author Caleb
+ * @description 節流函數
  * @param {Function} callback 回調函數
  * @param {Number} delay 延遲
  * @param {Object} options 選用設定
@@ -11,12 +12,12 @@
  *                 noTrailing: 是否不執行setTimeout的回調函數
  * @returns {Object} 包含回調函數的Proxy
  */
-export const throttle = (callback, delay, options = {}) => {
-  let now
-  let timeoutId
-  let lastTime
+export const throttle = (callback: Function, delay: number, options: ThrottleOptions = {}): Function => {
+  let now: number
+  let timeoutId: NodeJS.Timeout | null
+  let lastTime: number | null
 
-  const defaultOptions = {
+  const defaultOptions: ThrottleOptions = {
     noLeading: false,
     noTrailing: false,
     ...options
@@ -31,14 +32,16 @@ export const throttle = (callback, delay, options = {}) => {
   }
 
   return new Proxy(() => {}, {
-    // set (obj, key, value) {
-    //   if (scopeData.hasOwnProperty(key)) {
-    //     scopeData[key] = value
-    //     return true
-    //   }
-    // },
+    set (obj, key, value) {
+      if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
+        scopeData[key] = value
+      } else {
+        obj[key] = value
+      }
+      return true
+    },
     get (obj, key) {
-      if (scopeData.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
         return scopeData[key]
       }
       return obj[key]

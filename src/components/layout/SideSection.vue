@@ -55,7 +55,7 @@ onMounted(() => {
 
     <div class="side-footer">
       <slot name="footer">
-        <div>Footer</div>
+        <div>FOOTER</div>
       </slot>
     </div>
   </div>

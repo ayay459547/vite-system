@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LayoutViewVue from '@/components/layout/LayoutView.vue'
+import LayoutViewVue from '@/components/LayoutView.vue'
 
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 const version = (import.meta as any).env.VITE_API_VERSION

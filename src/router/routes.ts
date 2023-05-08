@@ -29,7 +29,7 @@ const routes: Array<RouterTree> = [
             inject: true,
             complete: true,
             path: '/nav-1-1-1',
-            component: () => import('@/views/EmptyView.vue')
+            component: () => import('@/views/nav-1-1-1/nav-1-1-1.vue')
           },
           {
             name: 'nav-1-1-2',

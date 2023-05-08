@@ -2,7 +2,6 @@ import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
-const hasOwnProperty = Object.prototype.hasOwnProperty
 
 type AjaxResponse<T> = {
   data: T
@@ -23,6 +22,7 @@ type AjaxOptions<T> = {
  * @param {Object} options
  *              getFakeData: 是否取的假資料
  *              fakeData: 如果是取假資料 返回的資料
+ *              status: 資料返回狀態
  * @returns {Promise}
  */
 export const ajax = <T, D>(config: AxiosRequestConfig<D>, options: AjaxOptions<T> = {}): Promise<AjaxResponse<T>> => {
@@ -79,6 +79,7 @@ export const ajax = <T, D>(config: AxiosRequestConfig<D>, options: AjaxOptions<T
  */
 export const deepClone = <T>(targetElement: any, origin: T): T => {
   const toStr = Object.prototype.toString
+  const hasOwnProperty = Object.prototype.hasOwnProperty
   const target = targetElement
 
   function setFun (obj: Array<any> | Record<any, any>, key: string | number, value: any): void {
@@ -140,6 +141,7 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
  */
 export const getColumns = (columns: Record<string, any>, type: string, resType: 'Array' | 'Object'): Array<any> | Record<string, any> => {
   let resColumns = null
+  const hasOwnProperty = Object.prototype.hasOwnProperty
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
@@ -221,116 +223,6 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   if ( re.test(Object.prototype.toString.call(el)) ) {
     el.scrollIntoView(setting)
   }
-}
-
-
-type ThrottleOptions = {
-  noLeading?: boolean
-  noTrailing?: boolean
-}
-/**
- * @author Caleb
- * @description 節流函數
- * @param {Function} callback 回調函數
- * @param {Number} delay 延遲
- * @param {Object} options 選用設定
- *                 noLeading: 是否不執行第一次回調函數
- *                 noTrailing: 是否不執行setTimeout的回調函數
- * @returns {Object} 包含回調函數的Proxy
- */
-export const throttle = (callback: Function, delay: number, options: ThrottleOptions = {}): Function => {
-  let now: number
-  let timeoutId: NodeJS.Timeout | null
-  let lastTime: number | null
-
-  const defaultOptions: ThrottleOptions = {
-    noLeading: false,
-    noTrailing: false,
-    ...options
-  }
-  let { noLeading } = defaultOptions
-  const { noTrailing } = defaultOptions
-
-  const scopeData = {
-    clearLastTime () {
-      lastTime = null
-    }
-  }
-
-  return new Proxy(() => {}, {
-      set (obj, key, value) {
-        if (hasOwnProperty.call(scopeData, key)) {
-          scopeData[key] = value
-        } else {
-          obj[key] = value
-        }
-        return true
-      },
-      get (obj, key) {
-          if (hasOwnProperty.call(scopeData, key)) {
-            return scopeData[key]
-          }
-          return obj[key]
-      },
-      apply (obj, thisArg, params) {
-          now = +new Date()
-
-          // 如果不是第一次執行 && 現在時間 < 上次執行時先 + 延遲時間
-          if (lastTime && now < lastTime + delay) {
-            if (noTrailing) return
-
-            clearTimeout(timeoutId)
-            timeoutId = setTimeout(() => {
-              lastTime = now
-              callback.call(thisArg, ...params)
-            }, delay)
-          } else {
-            if (noLeading) {
-              noLeading = false
-            } else {
-              lastTime = now
-              callback.call(thisArg, ...params)
-            }
-          }
-      }
-  })
-}
-
-/**
- * @author Caleb
- * @description 防抖函數
- * @param {Function} callback 回調函數
- * @param {Number} delay 延遲
- * @returns {Function}
- */
-export const debounce = (callback: Function, delay: number): Function => {
-  let timeoutId: NodeJS.Timeout | null
-
-  const scopeData = {}
-
-  return new Proxy(() => {}, {
-    set (obj, key, value) {
-      if (hasOwnProperty.call(scopeData, key)) {
-        scopeData[key] = value
-      } else {
-        obj[key] = value
-      }
-      return true
-    },
-    get (obj, key) {
-      if (hasOwnProperty.call(scopeData, key)) {
-        return scopeData[key]
-      }
-      return obj[key]
-    },
-    apply (obj, thisArg, params) {
-      if (timeoutId) { clearInterval(timeoutId) }
-
-      timeoutId = setTimeout(() => {
-        callback.call(thisArg, ...params)
-      }, delay)
-    }
-  })
 }
 
 /**
