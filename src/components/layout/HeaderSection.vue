@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WritableComputedRef, ComputedRef } from 'vue'
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 import { useRoutesStore } from '@/stores/routes'

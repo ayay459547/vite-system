@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WritableComputedRef } from 'vue'
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   isOpen: boolean

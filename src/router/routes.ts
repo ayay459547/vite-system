@@ -1,4 +1,5 @@
 import type { RouterTree } from '@/declare/routes'
+import testRoutes from './test'
 
 const routes: Array<RouterTree> = [
   {
@@ -279,4 +280,4 @@ const routes: Array<RouterTree> = [
   }
 ]
 
-export default routes
+export default [...routes, ...testRoutes]

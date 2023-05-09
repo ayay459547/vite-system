@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ComputedRef, Ref } from 'vue'
 import type { Navigation } from '@/declare/routes'
-import { defineProps, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import SubNavigationView from './SubNavigationView.vue'
 import { useRoutesStore } from '@/stores/routes'
 

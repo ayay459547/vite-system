@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { Ref, PropType, WritableComputedRef } from 'vue'
-import { ref, defineProps, defineEmits, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import throttle from '@/lib/throttle'
 
+interface ResizeObserverCallback {
+    (entries: ResizeObserverEntry[], observer: ResizeObserver): void;
+}
 type ListType = Array<{
   key: string
   value: any
@@ -65,7 +68,7 @@ const wrapROcallback = throttle((entries) => {
       arrowIsShow.value = listWidth.value > conWidth.value
     }
   })
-}, 10)
+}, 10) as ResizeObserverCallback
 const wrapRO = new ResizeObserver(wrapROcallback)
 
 const conWidth = ref(0)
@@ -86,7 +89,7 @@ const listROcallback = throttle((entries) => {
       })
     }
   })
-}, 100)
+}, 100) as ResizeObserverCallback
 const listRO = new ResizeObserver(listROcallback)
 onMounted(() => {
   if (wrapRef.value !== null) {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { defineProps, defineEmits } from 'vue'
 
 enum ElType {
   default = '',

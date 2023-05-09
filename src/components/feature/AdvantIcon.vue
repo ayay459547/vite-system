@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 type IconType = 'fas' | 'far' | 'fab'
 /**
  * icon 和 type, name 選一種給

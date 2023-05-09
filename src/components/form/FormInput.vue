@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElInput } from 'element-plus'
 import type { PropType } from 'vue'
-import { defineProps, defineEmits, computed, useSlots } from 'vue'
+import { computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
 import type { VeeRes } from '@/lib/validate'
 import validateFun from '@/lib/validate'
