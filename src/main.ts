@@ -1,13 +1,4 @@
-import objectFunction from './lib/objectFunction'
-for (const key in objectFunction) {
-  if (!Object.prototype[key]) {
-    Object.defineProperty(Object.prototype, key, {
-      get () {
-        return objectFunction[key]
-      }
-    })
-  }
-}
+import './lib/objectFunction'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

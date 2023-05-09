@@ -19,6 +19,7 @@ import AdvantButton from './feature/AdvantButton.vue'
 
 // form
 import FormInput from './form/FormInput.vue'
+import FormSelect from './form/FormSelect.vue'
 
 const pluginComponents = {
   install (app: App): void {
@@ -32,6 +33,7 @@ const pluginComponents = {
     app.component('AdvantButton', AdvantButton)
 
     app.component('FormInput', FormInput)
+    app.component('FormSelect', FormSelect)
   }
 }
 

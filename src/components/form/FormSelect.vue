@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { ElInput } from 'element-plus'
+import { ElSelect, ElOption } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
-import type { VeeRes } from '@/lib/validate'
-import validateFun from '@/lib/validate'
-
-type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
 
 const props = defineProps({
   modelValue: {
@@ -23,10 +19,12 @@ const props = defineProps({
     required: false,
     default: false
   },
-  validate: {
-    type: [Array, String, null] as PropType<ValidateType[] | ValidateType>,
+  options: {
+    type: Array as PropType<{ label: string, value: string }[]>,
     required: false,
-    default: ''
+    default () {
+      return []
+    }
   }
 })
 
@@ -35,7 +33,8 @@ const emit = defineEmits([
   'blur',
   'focus',
   'change',
-  'input',
+  'remove-tag',
+  'visible-change',
   'clear'
 ])
 
@@ -46,26 +45,13 @@ const validateRes = computed<string>(() => {
 
 // 驗證
 const validateField = (veeValue: string) => {
+  console.log(veeValue)
   // 必填
-  if (props.required && [null, undefined, ''].includes(veeValue.trim())) {
+  if (props.required && [null, undefined, ''].includes(veeValue)) {
     return '此輸入框為必填'
   }
   // 非必填
-  if ([null, undefined, ''].includes(veeValue.trim())) return true
-
-  // 多個驗證格式
-  if (Object.prototype.toString.call(props.validate) === '[object Array]') {
-    for (let type of (props.validate as ValidateType[])) {
-      const { test, msg } = (validateFun[type](veeValue) as VeeRes)
-      if (!test) return msg
-    }
-  }
-
-  // 單一驗證格式
-  if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { test, msg } = (validateFun[(props.validate as ValidateType)](veeValue) as VeeRes)
-    if (!test) return msg
-  }
+  if ([null, undefined, ''].includes(veeValue)) return true
 
   return true
 }
@@ -95,22 +81,21 @@ const validationListeners = computed(() => {
       emit('blur', e)
       handleChange(e, true)
     },
-    change: (value: string | number): void => {
+    change: (value: string): void => {
       emit('change', value)
       handleChange(value, true)
     },
-    input: (value: string | number): void => {
-      emit('input', value)
+    'remove-tag': (value: string): void => {
+      emit('remove-tag', value)
       handleChange(value, true)
+    },
+    'visible-change': (value: boolean): void => {
+      emit('visible-change', value)
     }
   }
   if ([null, undefined, ''].includes(errorMessage.value)) {
     return {
-      ...event,
-      input: (value: string | number): void => {
-        emit('input', value)
-        handleChange(value, false)
-      }
+      ...event
     }
   } else {
     return event
@@ -133,28 +118,28 @@ const hasSlot = (prop: string): boolean => {
       <span>{{ props.label }}</span>
     </label>
 
-    <ElInput
+    <ElSelect
       v-model="tempValue"
       placeholder="Please input"
       class="input-main"
       :class="[`validate-${validateRes}`]"
       v-on="validationListeners"
     >
-      <!-- 輸入框用 -->
-      <template v-if="hasSlot('prepend')" #prepend>
-        <slot name="prepend"></slot>
-      </template>
-      <template v-if="hasSlot('append')" #append>
-        <slot name="append"></slot>
-      </template>
-      <!-- 圖示用 -->
-      <template #prefix>
+      <slot>
+        <ElOption
+          v-for="item in props.options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </slot>
+      <template v-if="hasSlot('prefix')" #prefix>
         <slot name="prefix"></slot>
       </template>
-      <template #suffix>
-        <slot name="suffix"></slot>
+      <template v-if="hasSlot('empty')" #empty>
+        <slot name="empty"></slot>
       </template>
-    </ElInput>
+    </ElSelect>
 
     <span class="input-error">{{ errorMessage }}</span>
   </div>

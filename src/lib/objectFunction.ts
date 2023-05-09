@@ -65,4 +65,14 @@ const objectFunction = {
   }
 }
 
+for (const key in objectFunction) {
+  if (!Object.prototype[key]) {
+    Object.defineProperty(Object.prototype, key, {
+      get () {
+        return objectFunction[key]
+      }
+    })
+  }
+}
+
 export default objectFunction

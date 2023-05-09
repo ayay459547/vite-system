@@ -42,6 +42,7 @@ export const useCounterStore = defineStore('counter', () => {
 	 * @returns {Number} 經過 互斥或閘 更新
 	 */
 	const updatePermission: ChangePermission<number> = (currentPermission, diffPermission): number  => {
+		if (currentPermission === 0) return
 		return diffPermission
 	}
 
