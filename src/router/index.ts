@@ -9,7 +9,7 @@ import HomeView from '@/views/HomeView.vue'
 
 /**
  * @author Caleb
- * @description 將路由樹轉換成可使用路由
+ * @description 用DFS的方式 將路由樹轉換成可使用路由
  * @param routes 路由樹
  * @returns {Array} vue-router 指定格式
  */

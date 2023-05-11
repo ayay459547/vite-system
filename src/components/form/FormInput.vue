@@ -115,7 +115,13 @@ const validationListeners = computed(() => {
   } else {
     return event
   }
+})
 
+defineExpose({
+  currentValue: tempValue.value,
+  validateValue: (v: string) => {
+    handleChange(v, true)
+  }
 })
 
 // slot
@@ -148,10 +154,10 @@ const hasSlot = (prop: string): boolean => {
         <slot name="append"></slot>
       </template>
       <!-- 圖示用 -->
-      <template #prefix>
+      <template v-if="hasSlot('prefix')" #prefix>
         <slot name="prefix"></slot>
       </template>
-      <template #suffix>
+      <template v-if="hasSlot('suffix')" #suffix>
         <slot name="suffix"></slot>
       </template>
     </ElInput>

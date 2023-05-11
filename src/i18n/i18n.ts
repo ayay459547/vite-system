@@ -21,8 +21,24 @@ export const messages = (langMap as any).$reduce((res: Messages, value: Record<s
   en: {}
 })
 
+export const options = [
+  {
+    label: '繁體中文',
+    value: 'zhTw'
+  },
+  {
+    label: '简体中文',
+    value: 'zhCn'
+  },
+  {
+    label: 'English',
+    value: 'en'
+  }
+]
+
 
 const i18n = createI18n({
+  legacy: false,
   locale: 'zhTw',           // 設定語言
   fallbackLocale: 'zhTw',   // 若選擇的語言缺少翻譯則退回的語言
   messages: messages

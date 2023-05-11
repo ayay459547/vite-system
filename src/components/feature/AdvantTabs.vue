@@ -59,7 +59,7 @@ const arrowIsShow = ref(false)
 
 const wrapROcallback = throttle((entries) => {
   entries.forEach((entry) => {
-    conWidth.value = entry.contentRect.width - 84
+    conWidth.value = entry.contentRect.width - 204
 
     if (listRef.value !== null) {
       const listRect = listRef.value.getBoundingClientRect()

@@ -2,7 +2,7 @@ import type { RouterTree } from '@/declare/routes'
 
 /**
  * @author Caleb
- * @description 取的指定的階層的子路由
+ * @description 用BFS的方式 取的指定的階層的子路由
  * @param routerList 路由
  * @param level 想取的的階層
  * @param hasLeaves 是否包含子路由
@@ -25,6 +25,9 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
 
     if (currLevel > getLevel) return  // 超過指定層數就結束
 
+    const nextLeaves = []
+    let parentName = ''
+
     routerList.forEach(routerItem => {
       if (currLevel === getLevel) {
         const pushItem = {
@@ -38,14 +41,19 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
         res.push(pushItem)
       }
       if (Object.hasOwnProperty.call(routerItem, 'leaves')) {
-        _getRouterLeaf(routerItem.leaves, res, {
-          currLevel: currLevel + 1,
-          getLevel,
-          hasLeaves,
-          parent: routerItem.name
-        })
+        parentName = routerItem.name
+        nextLeaves.push(...routerItem.leaves)
       }
     })
+
+    if (nextLeaves.length > 0) {
+      _getRouterLeaf(nextLeaves, res, {
+        currLevel: currLevel + 1,
+        getLevel,
+        hasLeaves,
+        parent: parentName
+      })
+    }
   }
 
   _getRouterLeaf(routerList, res, {
@@ -60,7 +68,7 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
 
 /**
  * @author Caleb
- * @description 將路由樹重構
+ * @description 用DFS的方式 將路由樹重構
  * @param callback 回掉函數 可自訂格式
  * @param routes 路由
  * @returns {Array} T 指定格式

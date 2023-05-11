@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ElSelect, ElOption } from 'element-plus'
+import { options as langOptions } from '@/i18n/i18n'
 import HistoryNavigation from './HistoryNavigation.vue'
 
 const isFullScreen = ref(false)
@@ -25,6 +27,25 @@ const toggleFullScreen = () => {
       <AdvantButton :icon-name="isFullScreen ? 'down-left-and-up-right-to-center' : 'expand'" @click="toggleFullScreen">
         <div class="i-pt-xxs">{{ isFullScreen ? '取消全螢幕' : '切換全螢幕' }}</div>
       </AdvantButton>
+
+      <div style="width: 160px;">
+        <ElSelect
+          v-model="$i18n.locale"
+          placeholder="Please input"
+          class="input-main"
+        >
+          <ElOption
+            v-for="item in langOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+          <template #prefix>
+            <AdvantIcon name="earth-americas"/>
+          </template>
+          <template #empty>empty</template>
+        </ElSelect>
+      </div>
     </div>
     <main class="view-container">
       <slot></slot>

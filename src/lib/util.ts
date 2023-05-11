@@ -89,31 +89,12 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
   for (const prop in origin) {
     if (hasOwnProperty.call(origin, prop)) {
       switch (toStr.call(target[prop])) {
-        // 如果 target 是 array
         case '[object Array]':
-          switch (toStr.call(origin[prop])) {
-            case '[object Array]':
-              target[prop] = []
-              deepClone(target[prop], origin[prop])
-              break
-            case '[object Object]':
-              target[prop] = {}
-              deepClone(target[prop], origin[prop])
-              break
-            default:
-              setFun(target, prop, origin[prop])
-              break
-          }
-          break
-        // 如果 target 是 object
         case '[object Object]':
           switch (toStr.call(origin[prop])) {
             case '[object Array]':
-              target[prop] = []
-              deepClone(target[prop], origin[prop])
-              break
             case '[object Object]':
-              target[prop] = {}
+              target[prop] = origin[prop].constructor()
               deepClone(target[prop], origin[prop])
               break
             default:
