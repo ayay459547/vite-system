@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
-import { reactive } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { reactive, onMounted } from 'vue'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
 
@@ -112,6 +113,7 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
   return (target as T)
 }
 
+type RefItem = Element | ComponentPublicInstance | null
 /**
  * @author Caleb
  * @description 取的 Columns 設定
@@ -123,13 +125,18 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
  */
 export const getColumns = (columns: Record<string, any>, type: string, resType: 'Array' | 'Object'): Record<string, any> => {
   let resColumns = null
-  const resForms = reactive<Record<string, any>>({})
+  const formMap = reactive<Record<string, any>>({})
+  const refMap = reactive<Record<string, any>>({})
 
   const hasOwnProperty = Object.prototype.hasOwnProperty
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
-      ref: `${key}Validate`,
+      ref: (el: RefItem) => {
+        if (el) {
+          refMap[key] = el
+        }
+      },
       key,
       validateKey: key,
       prop: key,
@@ -149,7 +156,7 @@ export const getColumns = (columns: Record<string, any>, type: string, resType: 
         const temp = getColumnData(column, type, key)
         resColumns.push(temp)
 
-        resForms[key] = ''
+        formMap[key] = ''
       }
     })
 
@@ -161,34 +168,38 @@ export const getColumns = (columns: Record<string, any>, type: string, resType: 
         const temp = getColumnData(column, type, key)
         resColumns[key] = temp
 
-        resForms[key] = ''
+        formMap[key] = ''
       }
     })
   }
   return {
     columns: resColumns,
-    forms: resForms
+    forms: formMap,
+    refs: refMap,
+    validate: () => {
+      const successList = []
+      const errorList = []
+
+      refMap.$forEach((input: any | RefItem) => {
+        const { currentValue, validateValue, getValidateRes } = input
+        validateValue(currentValue)
+        const { key, value, errorMessage } = getValidateRes(currentValue)
+        if ([null, undefined, ''].includes(errorMessage)) {
+          successList.push({ key, value, errorMessage })
+        } else {
+          errorList.push({ key, value, errorMessage })
+        }
+      })
+
+      return new Promise((resolve, reject) => {
+        if (errorList.length > 0) {
+          reject(errorList)
+        } else {
+          resolve(successList)
+        }
+      })
+    }
   }
-}
-
-/**
- * @author Caleb
- * @description 依照 columnSetting 取得驗證的 input 並強制驗證
- *              可用於提交資料前
- */
-export const validateForm = (columns: Record<string, any>) => {
-  const res = []
-  const inputList = columns.$reduce((prev: Array<string>, curr: any, currKey: string) => {
-    // const refName = `input-${currKey}`
-    // const input = ref(null)
-    return [...prev, `input-${currKey}`]
-  }, [])
-
-  inputList.forEach(input => {
-    console.log(input)
-    // res.push(input.value.validateValue())
-  })
-  return res
 }
 
 /**

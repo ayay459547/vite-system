@@ -126,8 +126,11 @@ defineExpose({
   currentValue: tempValue.value,
   validateValue: (v: string = '') => {
     handleChange(v, true)
+  },
+  getValidateRes: () => {
     return {
       key: props.validateKey,
+      value: tempValue.value,
       errorMessage: errorMessage.value
     }
   }

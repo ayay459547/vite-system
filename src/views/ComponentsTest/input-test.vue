@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-import { ref, inject, computed, reactive } from 'vue'
-import { getColumns, validateForm } from '@/lib/util'
+import { inject } from 'vue'
+import { getColumns } from '@/lib/util'
 
 const locale = inject('locale')
 
-const valueSelect = ref<string>('')
 const list = [
   {
     label: 'test1',
@@ -35,27 +33,29 @@ const columnSetting = {
       validate: ['phone'],
       required: false
     }
+  },
+  select: {
+    label: '選擇框',
+    fitler: {
+      required: true,
+      options: list
+    }
   }
 }
-// const filterForm = reactive({
-//   passowrd: '',
-//   phone: ''
-// })
 
 const {
   columns: filterColumn,
-  forms: filterForm
+  forms: filterForm,
+  // refs: refMap,
+  validate: validateForm
 } = getColumns(columnSetting, 'fitler', 'Object')
 
-console.log(filterColumn)
-console.log(filterForm)
-
-// https://blog.csdn.net/qq_26834399/article/details/119992536
-
-const passowrdValidate = ref(null)
 const validateAll = () => {
-  console.log(passowrdValidate.value.validateValue(filterForm.passowrd))
-  // validateForm(columnSetting)
+  validateForm().then(successList => {
+    console.log(successList)
+  }).catch(errorList => {
+    console.log(errorList)
+  })
 }
 
 </script>
@@ -74,10 +74,8 @@ const validateAll = () => {
     />
 
     <FormSelect
-      v-model="valueSelect"
-      label="測試select"
-      required
-      :options="list"
+      v-model="filterForm.select"
+      v-bind="filterColumn.select"
     />
 
     <AdvantButton

@@ -9,6 +9,11 @@ const props = defineProps({
     type: String as PropType<string>,
     required: true
   },
+  validateKey: {
+    type: String as PropType<string>,
+    required: false,
+    default: ''
+  },
   label: {
     type: String as PropType<string>,
     required: false,
@@ -101,6 +106,20 @@ const validationListeners = computed(() => {
     return event
   }
 
+})
+
+defineExpose({
+  currentValue: tempValue.value,
+  validateValue: (v: string = '') => {
+    handleChange(v, true)
+  },
+  getValidateRes: () => {
+    return {
+      key: props.validateKey,
+      value: tempValue.value,
+      errorMessage: errorMessage.value
+    }
+  }
 })
 
 // slot
