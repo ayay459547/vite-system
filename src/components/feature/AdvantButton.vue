@@ -94,9 +94,8 @@ const onClick = ($event: Event) => {
       :color="props.color"
       @click="onClick"
     >
-      <template #icon>
+      <template v-if="props.iconName.length > 0" #icon>
         <AdvantIcon
-          v-if="props.iconName.length > 0"
           :type="iconType[props.iconType]"
           :name="props.iconName"
         />

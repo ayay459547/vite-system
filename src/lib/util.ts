@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
+import { reactive } from 'vue'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
 
@@ -120,16 +121,21 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
  * @param {String} resType 返回類型 Array | Object
  * @returns {Array | Ojbect}
  */
-export const getColumns = (columns: Record<string, any>, type: string, resType: 'Array' | 'Object'): Array<any> | Record<string, any> => {
+export const getColumns = (columns: Record<string, any>, type: string, resType: 'Array' | 'Object'): Record<string, any> => {
   let resColumns = null
+  const resForms = reactive<Record<string, any>>({})
+
   const hasOwnProperty = Object.prototype.hasOwnProperty
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
+      ref: `${key}Validate`,
       key,
+      validateKey: key,
       prop: key,
       slot: key,
       sortable: false,
+      clearable: true,
       label: column?.label ?? '',
       ...column[type]
     }
@@ -142,6 +148,8 @@ export const getColumns = (columns: Record<string, any>, type: string, resType: 
       if(hasOwnProperty.call(column, type)) {
         const temp = getColumnData(column, type, key)
         resColumns.push(temp)
+
+        resForms[key] = ''
       }
     })
 
@@ -152,10 +160,35 @@ export const getColumns = (columns: Record<string, any>, type: string, resType: 
       if(hasOwnProperty.call(column, type)) {
         const temp = getColumnData(column, type, key)
         resColumns[key] = temp
+
+        resForms[key] = ''
       }
     })
   }
-  return resColumns
+  return {
+    columns: resColumns,
+    forms: resForms
+  }
+}
+
+/**
+ * @author Caleb
+ * @description 依照 columnSetting 取得驗證的 input 並強制驗證
+ *              可用於提交資料前
+ */
+export const validateForm = (columns: Record<string, any>) => {
+  const res = []
+  const inputList = columns.$reduce((prev: Array<string>, curr: any, currKey: string) => {
+    // const refName = `input-${currKey}`
+    // const input = ref(null)
+    return [...prev, `input-${currKey}`]
+  }, [])
+
+  inputList.forEach(input => {
+    console.log(input)
+    // res.push(input.value.validateValue())
+  })
+  return res
 }
 
 /**

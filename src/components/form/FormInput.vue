@@ -13,6 +13,11 @@ const props = defineProps({
     type: String as PropType<string>,
     required: true
   },
+  validateKey: {
+    type: String as PropType<string>,
+    required: false,
+    default: ''
+  },
   label: {
     type: String as PropType<string>,
     required: false,
@@ -119,8 +124,12 @@ const validationListeners = computed(() => {
 
 defineExpose({
   currentValue: tempValue.value,
-  validateValue: (v: string) => {
+  validateValue: (v: string = '') => {
     handleChange(v, true)
+    return {
+      key: props.validateKey,
+      errorMessage: errorMessage.value
+    }
   }
 })
 

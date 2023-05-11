@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue'
-import { ElOption } from 'element-plus'
-// import { useI18n } from 'vue-i18n'
+import type { ComputedRef } from 'vue'
+import { ref, inject, computed, reactive } from 'vue'
+import { getColumns, validateForm } from '@/lib/util'
 
-// const { t } = useI18n({ useScope: 'global' })
-// console.log(t)
-
-const value = ref<string>('')
-const valuePhone = ref<string>('')
 const locale = inject('locale')
 
 const valueSelect = ref<string>('')
@@ -26,54 +21,69 @@ const list = [
   }
 ]
 
+const columnSetting = {
+  passowrd: {
+    label: '密碼',
+    fitler: {
+      validate: ['password'],
+      required: true
+    }
+  },
+  phone: {
+    label: '手機',
+    fitler: {
+      validate: ['phone'],
+      required: false
+    }
+  }
+}
+// const filterForm = reactive({
+//   passowrd: '',
+//   phone: ''
+// })
+
+const {
+  columns: filterColumn,
+  forms: filterForm
+} = getColumns(columnSetting, 'fitler', 'Object')
+
+console.log(filterColumn)
+console.log(filterForm)
+
+// https://blog.csdn.net/qq_26834399/article/details/119992536
+
+const passowrdValidate = ref(null)
+const validateAll = () => {
+  console.log(passowrdValidate.value.validateValue(filterForm.passowrd))
+  // validateForm(columnSetting)
+}
+
 </script>
 
 <template>
   <div class="input-test">
-    <h1 class="i-mb-md">{{ $t('test') }}</h1>
     <h2 class="i-mb-md">{{ locale }}</h2>
+
     <FormInput
-      v-model="value"
-      label="測試密碼"
-      required
-      :validate="['password']"
+      v-model="filterForm.passowrd"
+      v-bind="filterColumn.passowrd"
     />
     <FormInput
-      v-model="valuePhone"
-      label="測試phone"
-      :validate="['phone']"
+      v-model="filterForm.phone"
+      v-bind="filterColumn.phone"
     />
 
     <FormSelect
       v-model="valueSelect"
       label="測試select"
+      required
       :options="list"
     />
 
-    <FormSelect
-      v-model="$i18n.locale"
-      label="測試select"
-      :options="list"
-    >
-      <ElOption
-        v-for="locale in $i18n.availableLocales"
-        :key="`locale-${locale}`"
-        :label="locale"
-        :value="locale"
-      />
-    </FormSelect>
-
-    <div class="locale-changer">
-      <select v-model="$i18n.locale">
-        <option
-          v-for="locale in $i18n.availableLocales"
-          :key="`locale-${locale}`"
-          :value="locale"
-        >
-          {{ locale }}
-        </option>
-      </select>
-    </div>
+    <AdvantButton
+      label="驗證輸入框"
+      @click="validateAll"
+    />
   </div>
 </template>
 
