@@ -30,6 +30,18 @@ const props = defineProps({
     default () {
       return []
     }
+  },
+  // element ui plus
+  clearable: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  }
+})
+
+const bindAttributes = computed(() => {
+  return {
+    clearable: props.clearable
   }
 })
 
@@ -50,7 +62,6 @@ const validateRes = computed<string>(() => {
 
 // 驗證
 const validateField = (veeValue: string) => {
-  console.log(veeValue)
   // 必填
   if (props.required && [null, undefined, ''].includes(veeValue)) {
     return '此輸入框為必填'
@@ -61,17 +72,13 @@ const validateField = (veeValue: string) => {
   return true
 }
 
-/**
- * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
- * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
- * 每當useField值發生變化時，它都會發出update:modelValue事件，
- * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
- */
-// const tempValue: WritableComputedRef<string> = computed({
-//   get: () => props.modelValue,
-//   set: (value: string) => emit('update:modelValue', value)
-// })
-const { errorMessage, value: tempValue, handleChange } = useField('field', validateField, { validateOnValueUpdate: false })
+const {
+  errorMessage,     // 錯誤訊息
+  value: tempValue, // 值
+  handleChange,     // 換值
+  handleReset,      // 重置
+  validate          // 驗證
+} = useField('field', validateField, { validateOnValueUpdate: false })
 
 // event
 const validationListeners = computed(() => {
@@ -109,17 +116,10 @@ const validationListeners = computed(() => {
 })
 
 defineExpose({
-  currentValue: tempValue.value,
-  validateValue: (v: string = '') => {
-    handleChange(v, true)
-  },
-  getValidateRes: () => {
-    return {
-      key: props.validateKey,
-      value: tempValue.value,
-      errorMessage: errorMessage.value
-    }
-  }
+  key: props.validateKey,
+  value: tempValue,
+  handleReset,
+  validate
 })
 
 // slot
@@ -142,6 +142,7 @@ const hasSlot = (prop: string): boolean => {
       placeholder="Please input"
       class="input-main"
       :class="[`validate-${validateRes}`]"
+      v-bind="bindAttributes"
       v-on="validationListeners"
     >
       <slot>

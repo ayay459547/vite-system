@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject } from 'vue'
-import { getColumns } from '@/lib/util'
+import { getFormColumns } from '@/lib/util'
 
 const locale = inject('locale')
 
@@ -23,6 +23,7 @@ const columnSetting = {
   passowrd: {
     label: '密碼',
     fitler: {
+      default: '',
       validate: ['password'],
       required: true
     }
@@ -30,6 +31,7 @@ const columnSetting = {
   phone: {
     label: '手機',
     fitler: {
+      default: '',
       validate: ['phone'],
       required: false
     }
@@ -37,6 +39,7 @@ const columnSetting = {
   select: {
     label: '選擇框',
     fitler: {
+      default: '',
       required: true,
       options: list
     }
@@ -46,15 +49,15 @@ const columnSetting = {
 const {
   columns: filterColumn,
   forms: filterForm,
-  // refs: refMap,
+  reset: resetForm,
   validate: validateForm
-} = getColumns(columnSetting, 'fitler', 'Object')
+} = getFormColumns(columnSetting, 'fitler')
 
-const validateAll = () => {
+const submit = () => {
   validateForm().then(successList => {
-    console.log(successList)
+    console.log('vee success => ', successList)
   }).catch(errorList => {
-    console.log(errorList)
+    console.log('vee error => ', errorList)
   })
 }
 
@@ -79,8 +82,14 @@ const validateAll = () => {
     />
 
     <AdvantButton
-      label="驗證輸入框"
-      @click="validateAll"
+      label="重置"
+      class="i-mb-md"
+      @click="resetForm"
+    />
+
+    <AdvantButton
+      label="提交"
+      @click="submit"
     />
   </div>
 </template>

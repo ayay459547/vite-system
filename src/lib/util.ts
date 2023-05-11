@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
 import type { ComponentPublicInstance } from 'vue'
-import { reactive, onMounted } from 'vue'
+import { reactive } from 'vue'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
 
@@ -116,15 +116,14 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
 type RefItem = Element | ComponentPublicInstance | null
 /**
  * @author Caleb
- * @description 取的 Columns 設定
- *              slot prop 預設是 key
+ * @description 使用 Columns 設定
+ *              輸入框資料 預設是 key
  * @param {Ojbect} columns
  * @param {String} type 取得 columnSetting 中的類型
- * @param {String} resType 返回類型 Array | Object
- * @returns {Array | Ojbect}
+ * @returns {Ojbect}
  */
-export const getColumns = (columns: Record<string, any>, type: string, resType: 'Array' | 'Object'): Record<string, any> => {
-  let resColumns = null
+export const getFormColumns = (columns: Record<string, any>, type: string): Record<string, any> => {
+  const resColumns = {}
   const formMap = reactive<Record<string, any>>({})
   const refMap = reactive<Record<string, any>>({})
 
@@ -139,56 +138,63 @@ export const getColumns = (columns: Record<string, any>, type: string, resType: 
       },
       key,
       validateKey: key,
-      prop: key,
-      slot: key,
-      sortable: false,
       clearable: true,
+      default: '',
+      validate: [],
+      required: false,
       label: column?.label ?? '',
       ...column[type]
     }
   }
 
-  if (resType === 'Array') {
-    resColumns = []
+  columns.$forEach((column: Record<string, any>, key: string) => {
+    if(hasOwnProperty.call(column, type)) {
+      const temp = getColumnData(column, type, key)
+      resColumns[key] = temp
 
-    columns.$forEach((column: Record<string, any>, key: string) => {
-      if(hasOwnProperty.call(column, type)) {
-        const temp = getColumnData(column, type, key)
-        resColumns.push(temp)
+      formMap[key] = temp.default
+    }
+  })
 
-        formMap[key] = ''
-      }
-    })
-
-  } else if (resType === 'Object') {
-    resColumns = {}
-
-    columns.$forEach((column: Record<string, any>, key: string) => {
-      if(hasOwnProperty.call(column, type)) {
-        const temp = getColumnData(column, type, key)
-        resColumns[key] = temp
-
-        formMap[key] = ''
-      }
-    })
-  }
   return {
     columns: resColumns,
     forms: formMap,
-    refs: refMap,
-    validate: () => {
+    reset: () => {
+      formMap.$forEach((value: any, key: string) => {
+        formMap[key] = resColumns[key].default
+        refMap[key].handleReset()
+      })
+    },
+    validate: async () => {
+      const validateList = []
+      const validateInput = []
+
       const successList = []
       const errorList = []
 
-      refMap.$forEach((input: any | RefItem) => {
-        const { currentValue, validateValue, getValidateRes } = input
-        validateValue(currentValue)
-        const { key, value, errorMessage } = getValidateRes(currentValue)
-        if ([null, undefined, ''].includes(errorMessage)) {
-          successList.push({ key, value, errorMessage })
-        } else {
-          errorList.push({ key, value, errorMessage })
-        }
+      refMap.$forEach((input: RefItem) => {
+        const { key, value, validate } = input
+        validateList.push(validate())
+        validateInput.push({ key, value })
+      })
+
+      await Promise.all(validateList).then(resList => {
+        resList.forEach((resItme, resIndex) => {
+          const { errors, valid } = resItme
+          const validateRes = {
+            ...validateInput[resIndex],
+              errors,
+              valid
+          }
+
+          if (valid) {
+            successList.push(validateRes)
+          } else {
+            errorList.push(validateRes)
+          }
+        })
+      }).catch(errors => {
+        throw new Error(errors)
       })
 
       return new Promise((resolve, reject) => {
@@ -200,6 +206,41 @@ export const getColumns = (columns: Record<string, any>, type: string, resType: 
       })
     }
   }
+
+}
+
+/**
+ * @author Caleb
+ * @description 取的 Columns 設定 Table用的資料
+ *              slot prop 預設是 key
+ * @param {Ojbect} columns
+ * @param {String} type 取得 columnSetting 中的類型
+ * @returns {Array}
+ */
+export const getTableColumns = (columns: Record<string, any>, type: string): Record<string, any> => {
+  const hasOwnProperty = Object.prototype.hasOwnProperty
+
+  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+    return {
+      key,
+      prop: key,
+      slot: key,
+      sortable: false,
+      label: column?.label ?? '',
+      ...column[type]
+    }
+  }
+
+  const resColumns = []
+
+  columns.$forEach((column: Record<string, any>, key: string) => {
+    if(hasOwnProperty.call(column, type)) {
+      const temp = getColumnData(column, type, key)
+      resColumns.push(temp)
+    }
+  })
+
+  return resColumns
 }
 
 /**

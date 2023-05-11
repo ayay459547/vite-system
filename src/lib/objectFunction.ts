@@ -1,5 +1,4 @@
 /* eslint-disable no-prototype-builtins */
-
 /* 讓 object 有類似 array 的方法 */
 
 const objectFunction = {
@@ -17,7 +16,7 @@ const objectFunction = {
   $map (callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
-    const resObj = new (this as any).constructor()
+    const resObj = new this.constructor()
     for (const key in this) {
       if (this.hasOwnProperty(key)) {
         resObj[key] = callback.call(thisArg, this[key], key, this)
@@ -28,7 +27,7 @@ const objectFunction = {
   $filter (callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
-    const resObj = new (this as any).constructor()
+    const resObj = new this.constructor()
     for (const key in this) {
       if (this.hasOwnProperty(key) && callback.call(thisArg, this[key], key, this)) {
         resObj[key] = this[key]
