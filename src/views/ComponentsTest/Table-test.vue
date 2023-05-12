@@ -87,11 +87,12 @@ const tableData = [
   <div class="table-test">
     <h2 class="i-mb-md">{{ locale }}</h2>
 
-    <CustomTable
-      class="table-main"
-      :table-column="tableColumns"
-      :table-data="tableData"
-    />
+    <div class="table-main">
+      <CustomTable
+        :table-column="tableColumns"
+        :table-data="tableData"
+      />
+    </div>
 
     <CustomButton label="提交"/>
   </div>
@@ -108,6 +109,7 @@ const tableData = [
   }
   &-main {
     flex: 1;
+    width: 100%;
   }
 }
 </style>

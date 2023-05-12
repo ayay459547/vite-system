@@ -159,24 +159,31 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 $pagination-height: 40px;
+:deep(.table-container) {
+  .el-table {
+    // 修 table 寬度自適應
+    position: absolute;
+  }
+}
 .table {
   &-wrapper {
     width: 100%;
     height: 100%;
     border: 1px solid #ebeef5;
     border-radius: 6px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   &-container {
-    width: inherit;
-    height: calc(100% - $pagination-height);
-    overflow-y: auto;
+    flex: 1;
+    width: 100%;
+    position: relative;
   }
   &-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: $pagination-height;
+    height: 40px;
   }
 }
 </style>

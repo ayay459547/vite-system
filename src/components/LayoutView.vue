@@ -52,6 +52,10 @@ provide('locale', locale.value.lang)
 </template>
 
 <style lang="scss" scoped>
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
 .layout {
   &-wrapper {
     width: 100vw;
@@ -77,6 +81,7 @@ provide('locale', locale.value.lang)
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: auto;
   }
   &-header {
     width: 100%;
