@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LayoutViewVue from '@/components/LayoutView.vue'
+import GlobalView from '@/components/GlobalView.vue'
 
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 const version = (import.meta as any).env.VITE_API_VERSION
@@ -8,7 +8,7 @@ const version = (import.meta as any).env.VITE_API_VERSION
 
 <template>
   <div class="app-container">
-    <LayoutViewVue>
+    <GlobalView>
       <template #logo>
         <div>LOGO-TEST</div>
       </template>
@@ -16,7 +16,7 @@ const version = (import.meta as any).env.VITE_API_VERSION
       <template #footer>
         {{ `${system} version ${version}` }}
       </template>
-    </LayoutViewVue>
+    </GlobalView>
   </div>
 </template>
 

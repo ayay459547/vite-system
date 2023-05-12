@@ -4,6 +4,8 @@ import './lib/objectFunction'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import vClickOutside from 'click-outside-vue3'
+
 import App from './App.vue'
 import './assets/main.css'
 
@@ -17,5 +19,6 @@ app.use(createPinia())
 app.use(router)
 app.use(pluginComponents)
 app.use(i18n)
+app.use(vClickOutside)
 
 app.mount('#app')

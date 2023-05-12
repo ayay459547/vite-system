@@ -88,13 +88,12 @@ export const refactorRoutes = <T>(callback: (leafNode: RouterTree, parentsNode: 
           ...currentNode,
           leaves: route.leaves
         }
+
+        _refactorRoutes(route.leaves, currentNode, (res[routeIndex] as any).leaves)
       } else {
         res[routeIndex] = { ...currentNode }
       }
 
-      if (Object.hasOwnProperty.call(route, 'leaves')) {
-        _refactorRoutes(route.leaves, currentNode, (res[routeIndex] as any).leaves)
-      }
     })
   }
   _refactorRoutes(routes, null, res)

@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import { getFormColumns } from '@/lib/columns'
-
-const locale = inject('locale')
 
 const list = [
   {
@@ -65,8 +62,6 @@ const submit = () => {
 
 <template>
   <div class="input-test">
-    <h2 class="i-mb-md">{{ locale }}</h2>
-
     <FormInput
       v-model="filterForm.passowrd"
       v-bind="filterColumn.passowrd"

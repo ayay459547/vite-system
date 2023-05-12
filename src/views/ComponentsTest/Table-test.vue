@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import { getTableColumns } from '@/lib/columns'
-
-const locale = inject('locale')
 
 const list = [
   {
@@ -85,8 +82,6 @@ const tableData = [
 
 <template>
   <div class="table-test">
-    <h2 class="i-mb-md">{{ locale }}</h2>
-
     <div class="table-main">
       <CustomTable
         :table-column="tableColumns"

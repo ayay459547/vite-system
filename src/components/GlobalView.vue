@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue'
+// layout
 import SideSection from '@/components/layout/SideSection.vue'
 import HeaderSection from '@/components/layout/HeaderSection.vue'
 import ViewSection from '@/components/layout/ViewSection.vue'
 
+// element ui plus config
 import { ElConfigProvider } from 'element-plus'
 
+// locale
 import { useLocaleStore } from '@/stores/locale'
+
+// hook
+import type { Hook } from '@/declare/hook'
+import CustomPopover from '@/components/hook/CustomPopover.vue'
 
 const navIsOpen = ref(true)
 
@@ -15,7 +22,16 @@ const locale = computed(() => {
   return localeStore.locale
 })
 
-provide('locale', locale.value.lang)
+const customPopover = ref(null)
+provide<() => Hook>('hook', () => {
+  return {
+    openEventList: (click, eventList) => {
+      if (customPopover.value) {
+        customPopover.value.openPopover(click, eventList)
+      }
+    }
+  }
+})
 
 </script>
 
@@ -47,6 +63,9 @@ provide('locale', locale.value.lang)
           </ViewSection>
         </div>
       </div>
+
+      <!-- hook -->
+      <CustomPopover ref="customPopover"/>
     </div>
   </ElConfigProvider>
 </template>
