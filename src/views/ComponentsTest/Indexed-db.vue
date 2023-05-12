@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-const { availableLocales } = useI18n()
-console.log(availableLocales)
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')

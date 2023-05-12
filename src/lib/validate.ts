@@ -3,7 +3,23 @@ export type VeeRes = {
   msg: string
 }
 
-export default {
+export type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
+
+export const validateValue = (validate: string[] | string, veeValue: string): boolean => {
+  // 多個驗證格式
+  if (Array.isArray(validate)) {
+    return validate.every(type => {
+      const { test } = validateFun[type](veeValue)
+      return test
+    })
+  // 單一驗證格式
+  } else {
+    const { test } = validateFun[validate](veeValue)
+    return test
+  }
+}
+
+const validateFun = {
   number: (value: string): VeeRes => {
     const regexp = /^[\d|\s]*$/
 
@@ -37,3 +53,5 @@ export default {
     }
   }
 }
+
+export default validateFun

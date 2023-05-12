@@ -16,7 +16,7 @@ const objectFunction = {
   $map (callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
-    const resObj = new this.constructor()
+    const resObj = new (this as any).constructor()
     for (const key in this) {
       if (this.hasOwnProperty(key)) {
         resObj[key] = callback.call(thisArg, this[key], key, this)
@@ -27,7 +27,7 @@ const objectFunction = {
   $filter (callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
-    const resObj = new this.constructor()
+    const resObj = new (this as any).constructor()
     for (const key in this) {
       if (this.hasOwnProperty(key) && callback.call(thisArg, this[key], key, this)) {
         resObj[key] = this[key]
@@ -64,14 +64,18 @@ const objectFunction = {
   }
 }
 
-for (const key in objectFunction) {
-  if (!Object.prototype[key]) {
-    Object.defineProperty(Object.prototype, key, {
-      get () {
-        return objectFunction[key]
-      }
-    })
+const injectObjectFunction = () => {
+  for (const key in objectFunction) {
+    if (!Object.prototype[key]) {
+      Object.defineProperty(Object.prototype, key, {
+        get () {
+          return objectFunction[key]
+        }
+      })
+    }
   }
 }
+
+injectObjectFunction()
 
 export default objectFunction

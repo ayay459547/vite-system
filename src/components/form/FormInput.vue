@@ -3,10 +3,8 @@ import { ElInput } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
-import type { VeeRes } from '@/lib/validate'
+import type { VeeRes, ValidateType } from '@/lib/validate'
 import validateFun from '@/lib/validate'
-
-type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
 
 const props = defineProps({
   modelValue: {

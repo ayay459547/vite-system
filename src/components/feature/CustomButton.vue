@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import { ElButton } from 'element-plus'
 
 enum ElType {
   default = '',
@@ -84,7 +85,7 @@ const onClick = ($event: Event) => {
 
 <template>
   <div class="button-container">
-    <el-button
+    <ElButton
       :size="ElSize[props.size]"
       :type="ElType[props.type]"
       :plain="props.plain"
@@ -95,7 +96,7 @@ const onClick = ($event: Event) => {
       @click="onClick"
     >
       <template v-if="props.iconName.length > 0" #icon>
-        <AdvantIcon
+        <CustomIcon
           :type="iconType[props.iconType]"
           :name="props.iconName"
         />
@@ -103,7 +104,7 @@ const onClick = ($event: Event) => {
       <slot>
         <span class="button-label">{{ props.label }}</span>
       </slot>
-    </el-button>
+    </ElButton>
   </div>
 </template>
 

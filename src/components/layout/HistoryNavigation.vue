@@ -51,7 +51,7 @@ const setRoutesConfig = (route: Navigation) => {
 
 <template>
   <div class="history-wrapper">
-    <AdvantTabs
+    <CustomTabs
       v-model="currentTab"
       :list="tabs"
       class="history-tabs"
@@ -67,9 +67,9 @@ const setRoutesConfig = (route: Navigation) => {
           {{ slotProps.data.title }}
         </RouterLink>
       </template>
-    </AdvantTabs>
+    </CustomTabs>
     <div class="history-clear">
-      <AdvantButton
+      <CustomButton
         icon-name="trash-can"
         label="清除"
         @click="clearHistory"

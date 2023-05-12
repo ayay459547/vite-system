@@ -1,3 +1,7 @@
+export interface ResizeObserverCallback {
+  (entries: ResizeObserverEntry[], observer: ResizeObserver): void
+}
+
 /**
  * @author Caleb
  * @description 防抖函數

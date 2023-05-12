@@ -1,4 +1,4 @@
-# AdvantButton API
+# CustomButton API
 
 ## Element UI Plus
 https://element-plus.org/zh-CN/component/button.html

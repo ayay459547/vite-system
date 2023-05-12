@@ -1,6 +1,7 @@
-import { ref, computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { defineStore } from 'pinia'
 import { setCookie, getCookie } from '@/lib/cookie'
+import { useI18n } from 'vue-i18n'
 
 import ElzhTw from 'element-plus/dist/locale/zh-tw.min.js'
 import ElzhCn from 'element-plus/dist/locale/zh-cn.min.js'
@@ -17,7 +18,17 @@ export const useLocaleStore = defineStore('locale', () => {
   onBeforeMount(() => {
     init()
   })
-  // 初始化語言
+
+  const {
+    t,
+    locale: i18nLocale
+    // availableLocales
+  } = useI18n({ useScope: 'global' })
+
+  /**
+   * 初始化語言
+   * 以 cookie 上的為主
+   */
   const init = () => {
     const cookieLocale = getCookie('locale')
 
@@ -28,16 +39,15 @@ export const useLocaleStore = defineStore('locale', () => {
     currentLang.value = getCookie('locale')
   }
 
-  const setLang = (type: LangType) => {
-    setCookie('locale', type)
-    currentLang.value = type
-  }
-  const getLang = (): string => {
-    // return getCookie('locale')
-    return currentLang.value
-  }
-
-  const currentLang = ref('zhTw')
+  const currentLang = computed({
+    set: (type: LangType) => {
+      i18nLocale.value = type
+      setCookie('locale', type)
+    },
+    get: () => {
+      return t('langType')
+    }
+  })
 
   const locale = computed(() => {
     return {
@@ -47,8 +57,7 @@ export const useLocaleStore = defineStore('locale', () => {
   })
 
   return {
-    setLang,
-    getLang,
+    currentLang,
     locale
   }
 })

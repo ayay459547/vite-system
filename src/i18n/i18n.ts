@@ -1,7 +1,14 @@
 import { createI18n } from 'vue-i18n'
 import test from './test'
 
-const langMap = {...test}
+const langMap = {
+  langType: {
+    zhTw: 'zhTw',
+    zhCn: 'zhCn',
+    en: 'en'
+  },
+  ...test
+}
 
 export type Messages = {
   zhTw: { [key: string]: string },
@@ -35,7 +42,6 @@ export const options = [
     value: 'en'
   }
 ]
-
 
 const i18n = createI18n({
   legacy: false,

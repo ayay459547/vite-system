@@ -9,13 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // element plus
 // import ElementPlus from 'element-plus'
-import { ElButton } from 'element-plus'
 import 'element-plus/dist/index.css'
 
 // feature
-import AdvantIcon from './feature/AdvantIcon.vue'
-import AdvantTabs from './feature/AdvantTabs.vue'
-import AdvantButton from './feature/AdvantButton.vue'
+import CustomIcon from './feature/CustomIcon.vue'
+import CustomTabs from './feature/CustomTabs.vue'
+import CustomButton from './feature/CustomButton.vue'
+import CustomTable from './feature/CustomTable.vue'
 
 // form
 import FormInput from './form/FormInput.vue'
@@ -26,11 +26,12 @@ const pluginComponents = {
     library.add(fas, fab, far)
     app.component('font-awesome-icon', FontAwesomeIcon)
 
-    app.component('el-button', ElButton)
+    // app.use(ElementPlus)
 
-    app.component('AdvantIcon', AdvantIcon)
-    app.component('AdvantTabs', AdvantTabs)
-    app.component('AdvantButton', AdvantButton)
+    app.component('CustomIcon', CustomIcon)
+    app.component('CustomTabs', CustomTabs)
+    app.component('CustomButton', CustomButton)
+    app.component('CustomTable', CustomTable)
 
     app.component('FormInput', FormInput)
     app.component('FormSelect', FormSelect)

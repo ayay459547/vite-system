@@ -2,9 +2,12 @@
 import { ref } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 import { options as langOptions } from '@/i18n/i18n'
+import { useLocaleStore } from '@/stores/locale'
 import HistoryNavigation from './HistoryNavigation.vue'
 
 const isFullScreen = ref(false)
+
+const localeStore = useLocaleStore()
 
 const toggleFullScreen = () => {
   if (isFullScreen.value) {
@@ -24,13 +27,13 @@ const toggleFullScreen = () => {
   <div class="view-wrapper">
     <div class="view-history">
       <HistoryNavigation></HistoryNavigation>
-      <AdvantButton :icon-name="isFullScreen ? 'down-left-and-up-right-to-center' : 'expand'" @click="toggleFullScreen">
+      <CustomButton :icon-name="isFullScreen ? 'down-left-and-up-right-to-center' : 'expand'" @click="toggleFullScreen">
         <div class="i-pt-xxs">{{ isFullScreen ? '取消全螢幕' : '切換全螢幕' }}</div>
-      </AdvantButton>
+      </CustomButton>
 
-      <div style="width: 160px;">
+      <div style="width: 170px;">
         <ElSelect
-          v-model="$i18n.locale"
+          v-model="localeStore.currentLang"
           placeholder="Please input"
           class="input-main"
         >
@@ -40,10 +43,10 @@ const toggleFullScreen = () => {
             :label="item.label"
             :value="item.value"
           />
-          <template #prefix>
-            <AdvantIcon name="earth-americas"/>
-          </template>
-          <template #empty>empty</template>
+            <template #prefix>
+              <CustomIcon name="earth-americas"/>
+            </template>
+            <template #empty>empty</template>
         </ElSelect>
       </div>
     </div>

@@ -1,7 +1,5 @@
 import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
-import type { ComponentPublicInstance } from 'vue'
-import { reactive } from 'vue'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
 
@@ -27,7 +25,7 @@ type AjaxOptions<T> = {
  *              status: 資料返回狀態
  * @returns {Promise}
  */
-export const ajax = <T, D>(config: AxiosRequestConfig<D>, options: AjaxOptions<T> = {}): Promise<AjaxResponse<T>> => {
+export const ajax = <ResData, Config>(config: AxiosRequestConfig<Config>, options: AjaxOptions<ResData> = {}): Promise<AjaxResponse<ResData>> => {
   const tempOptions = {
     getFakeData: false,
     fakeData: null,
@@ -96,7 +94,7 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
           switch (toStr.call(origin[prop])) {
             case '[object Array]':
             case '[object Object]':
-              target[prop] = origin[prop].constructor()
+              target[prop] = new (origin[prop] as any).constructor()
               deepClone(target[prop], origin[prop])
               break
             default:
@@ -111,148 +109,6 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
     }
   }
   return (target as T)
-}
-
-type RefItem = Element | ComponentPublicInstance | null
-/**
- * @author Caleb
- * @description 使用 Columns 設定
- *              輸入框資料 預設是 key
- * @param {Ojbect} columns
- * @param {String} type 取得 columnSetting 中的類型
- * @returns {Ojbect}
- */
-export const getFormColumns = (columns: Record<string, any>, type: string): Record<string, any> => {
-  const resColumns = {}
-  const formMap = reactive<Record<string, any>>({})
-  const refMap = reactive<Record<string, any>>({})
-
-  const hasOwnProperty = Object.prototype.hasOwnProperty
-
-  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
-    return {
-      ref: (el: RefItem) => {
-        if (el) {
-          refMap[key] = el
-        }
-      },
-      key,
-      validateKey: key,
-      clearable: true,
-      default: '',
-      validate: [],
-      required: false,
-      label: column?.label ?? '',
-      ...column[type]
-    }
-  }
-
-  columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty.call(column, type)) {
-      const temp = getColumnData(column, type, key)
-      resColumns[key] = temp
-
-      formMap[key] = temp.default
-    }
-  })
-
-  return {
-    columns: resColumns,
-    forms: formMap,
-    reset: () => {
-      formMap.$forEach((value: any, key: string) => {
-        formMap[key] = resColumns[key].default
-        refMap[key].handleReset()
-      })
-    },
-    validate: async () => {
-      const validateList = []
-      const validateInput = []
-
-      const successList = []
-      const errorList = []
-
-      refMap.$forEach((input: RefItem) => {
-        const { key, value, validate } = input
-        validateList.push(validate())
-        validateInput.push({ key, value })
-      })
-
-      await Promise.all(validateList).then(resList => {
-        resList.forEach((resItme, resIndex) => {
-          const { errors, valid } = resItme
-          const validateRes = {
-            ...validateInput[resIndex],
-              errors,
-              valid
-          }
-
-          if (valid) {
-            successList.push(validateRes)
-          } else {
-            errorList.push(validateRes)
-          }
-        })
-      }).catch(errors => {
-        throw new Error(errors)
-      })
-
-      return new Promise((resolve, reject) => {
-        if (errorList.length > 0) {
-          reject(errorList)
-        } else {
-          resolve(successList)
-        }
-      })
-    }
-  }
-
-}
-
-/**
- * @author Caleb
- * @description 取的 Columns 設定 Table用的資料
- *              slot prop 預設是 key
- * @param {Ojbect} columns
- * @param {String} type 取得 columnSetting 中的類型
- * @returns {Array}
- */
-export const getTableColumns = (columns: Record<string, any>, type: string): Record<string, any> => {
-  const hasOwnProperty = Object.prototype.hasOwnProperty
-
-  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
-    return {
-      key,
-      prop: key,
-      slot: key,
-      sortable: false,
-      label: column?.label ?? '',
-      ...column[type]
-    }
-  }
-
-  const resColumns = []
-
-  columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty.call(column, type)) {
-      const temp = getColumnData(column, type, key)
-      resColumns.push(temp)
-    }
-  })
-
-  return resColumns
-}
-
-/**
- * @author Caleb
- * @description 取的 Columns 所有key
- * @param {Ojbect} columns
- * @returns {Array}
- */
-export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
-  return columns.$reduce((prev: Array<string>, curr: any, currKey: string) => {
-      return [...prev, currKey]
-  }, [])
 }
 
 /**

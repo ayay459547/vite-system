@@ -1,0 +1,113 @@
+<script setup lang="ts">
+import { inject } from 'vue'
+import { getTableColumns } from '@/lib/columns'
+
+const locale = inject('locale')
+
+const list = [
+  {
+    label: 'test1',
+    value: '0'
+  },
+  {
+    label: 'test2',
+    value: '1'
+  },
+  {
+    label: 'test3',
+    value: '2'
+  }
+]
+
+const columnSetting = {
+  date: {
+    label: '生日',
+    table: {
+      width: 100,
+      fixed: 'left'
+    },
+    fitler: {
+      default: '',
+      required: true,
+      options: list
+    }
+  },
+  name: {
+    label: '姓名',
+    table: {
+      width: 100
+    },
+    fitler: {
+      default: '',
+      validate: ['password'],
+      required: true
+    }
+  },
+  address: {
+    label: '地址',
+    table: {
+      minWidth: 100
+    },
+    fitler: {
+      default: '',
+      validate: ['phone'],
+      required: false
+    }
+  }
+}
+
+const tableColumns = getTableColumns(columnSetting, 'table')
+
+const tableData = [
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles'
+  },
+  {
+    date: '2016-05-02',
+    name: 'Caleb',
+    address: 'No. 189, Grove St, Los Angeles'
+  },
+  {
+    date: '2016-05-04',
+    name: 'Peter',
+    address: 'No. 189, Grove St, Los Angeles'
+  },
+  {
+    date: '2016-05-01',
+    name: 'Amy',
+    address: 'No. 189, Grove St, Los Angeles'
+  }
+]
+
+</script>
+
+<template>
+  <div class="table-test">
+    <h2 class="i-mb-md">{{ locale }}</h2>
+
+    <CustomTable
+      class="table-main"
+      :table-column="tableColumns"
+      :table-data="tableData"
+    />
+
+    <CustomButton label="提交"/>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.table {
+  &-test {
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  &-main {
+    flex: 1;
+  }
+}
+</style>

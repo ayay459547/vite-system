@@ -11,10 +11,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   icon: () => [],
   type: () => 'fas',
-  name: () => 'user'
+  name: () => 'circle-question'
 })
-
-
 </script>
 
 <template>

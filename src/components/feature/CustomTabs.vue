@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { Ref, PropType, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
 
-interface ResizeObserverCallback {
-    (entries: ResizeObserverEntry[], observer: ResizeObserver): void;
-}
 type ListType = Array<{
   key: string
   value: any
@@ -109,7 +107,7 @@ onUnmounted(() => {
 <template>
   <div ref="wrapRef" class="tabs-wrapper">
     <div class="tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
-      <AdvantIcon name="chevron-left"/>
+      <CustomIcon name="chevron-left"/>
     </div>
     <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }">
       <div ref="listRef" class="tabs-list">
@@ -123,7 +121,7 @@ onUnmounted(() => {
           <slot :data="element.value">
             <span>{{ element.value }}</span>
           </slot>
-          <AdvantIcon
+          <CustomIcon
             name="xmark"
             class="tabs-item-remove"
             :class="{ 'is-active': props.modelValue === element.key }"
@@ -133,7 +131,7 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="tabs-right-arrow" :class="{'is-show': arrowIsShow}" @click="decreaseScroll">
-      <AdvantIcon name="chevron-right"/>
+      <CustomIcon name="chevron-right"/>
     </div>
   </div>
 </template>

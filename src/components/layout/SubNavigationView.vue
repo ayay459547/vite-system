@@ -65,7 +65,7 @@ export default defineComponent({
 <template>
   <div class="nav-container">
     <div class="nav-title" @click="onTitleClick">
-      <AdvantIcon :icon="['fas', 'angle-left']"></AdvantIcon>
+      <CustomIcon :icon="['fas', 'angle-left']"></CustomIcon>
       <h3>{{ $props.title }}</h3>
     </div>
 
@@ -76,15 +76,15 @@ export default defineComponent({
             <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div class="nav-item-left">
                 <div v-if="routerItem.complete" class="item-icon"></div>
-                <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
+                <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
                 <span class="item-title">{{ routerItem.title }}</span>
               </div>
 
-              <AdvantIcon
+              <CustomIcon
                 :icon="['fas', 'angle-left']"
                 class="nav-item-right nav-arrow"
                 :class="openMap[routerItem.name] ? 'is-open' : 'is-close'"
-              ></AdvantIcon>
+              ></CustomIcon>
             </div>
 
             <div
@@ -104,7 +104,7 @@ export default defineComponent({
               >
                 <div class="nav-item-left">
                   <div v-if="leaf.complete" class="item-icon"></div>
-                  <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
+                  <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
                   <span class="item-title">{{ leaf.title }}</span>
                 </div>
 
@@ -122,7 +122,7 @@ export default defineComponent({
           >
             <div class="nav-item-left">
               <div v-if="routerItem.complete" class="item-icon"></div>
-              <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
+              <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
               <span class="item-title">{{ routerItem.title }}</span>
             </div>
 

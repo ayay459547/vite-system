@@ -1,3 +1,4 @@
+import './lib/Polyfill/inject'
 import './lib/objectFunction'
 
 import { createApp } from 'vue'

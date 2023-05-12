@@ -14,7 +14,7 @@ const testRoutes: RouterTree[] = [
           inject: true,
           complete: true,
           path: '/input-test',
-          component: () => import('@/views/ComponentsTest/Input-test.vue')
+          component: () => import('@/views/ComponentsTest/Test-input.vue')
       },
       {
         name: 'indexed-db',
@@ -23,6 +23,14 @@ const testRoutes: RouterTree[] = [
         complete: true,
         path: '/indexed-db',
         component: () => import('@/views/ComponentsTest/Indexed-db.vue')
+      },
+      {
+        name: 'table-test',
+        title: '表單測試',
+        inject: true,
+        complete: true,
+        path: '/table-test',
+        component: () => import('@/views/ComponentsTest/Table-test.vue')
       }
     ]
   }

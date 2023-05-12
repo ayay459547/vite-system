@@ -1,4 +1,8 @@
-type ThrottleOptions = {
+export interface ResizeObserverCallback {
+  (entries: ResizeObserverEntry[], observer: ResizeObserver): void
+}
+
+export type ThrottleOptions = {
   noLeading?: boolean
   noTrailing?: boolean
 }

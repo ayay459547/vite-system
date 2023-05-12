@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject } from 'vue'
-import { getFormColumns } from '@/lib/util'
+import { getFormColumns } from '@/lib/columns'
 
 const locale = inject('locale')
 
@@ -81,13 +81,13 @@ const submit = () => {
       v-bind="filterColumn.select"
     />
 
-    <AdvantButton
+    <CustomButton
       label="重置"
       class="i-mb-md"
       @click="resetForm"
     />
 
-    <AdvantButton
+    <CustomButton
       label="提交"
       @click="submit"
     />

@@ -58,7 +58,7 @@ const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
       </template>
     </div>
     <div class="header-right">
-      <AdvantIcon></AdvantIcon>
+      <CustomIcon></CustomIcon>
     </div>
   </div>
 </template>

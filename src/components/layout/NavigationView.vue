@@ -49,18 +49,18 @@ const setRoutesConfig = (route: Navigation) => {
       <template v-for="level1Item in level1List" :key="level1Item.name">
         <div v-if="Object.hasOwnProperty.call(level1Item, 'leaves')" class="nav-item" @click="setLevel2Router(level1Item)">
           <div class="nav-item-left">
-            <AdvantIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></AdvantIcon>
-            <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
+            <CustomIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></CustomIcon>
+            <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
             <span class="item-title">{{ level1Item.title }}</span>
           </div>
 
-          <AdvantIcon :icon="['fas', 'angle-right']" class="nav-item-right"></AdvantIcon>
+          <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
         </div>
 
         <RouterLink v-else :to="level1Item.path" class="nav-item" @click="setRoutesConfig(level1Item)">
           <div class="nav-item-left">
-            <AdvantIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></AdvantIcon>
-            <AdvantIcon v-else name="wrench" class="item-icon"></AdvantIcon>
+            <CustomIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></CustomIcon>
+            <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
             <span class="item-title">{{ level1Item.title }}</span>
           </div>
 
