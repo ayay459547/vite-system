@@ -9,7 +9,22 @@ const hook: () => Hook = inject('hook')
 const { openEventList } = hook()
 
 const openPopover = (e: MouseEvent) => {
-  openEventList(e)
+  openEventList(e, [
+    {
+      icon: ['fas', 'user'],
+      label: 'callback-1',
+      event: () => {
+        console.log('callback-1: 密碼 => ', value.value)
+      }
+    },
+    {
+      icon: ['fas', 'phone'],
+      label: 'callback-2',
+      event: () => {
+        console.log('callback-2: phone => ', valuePhone.value)
+      }
+    }
+  ])
 }
 
 </script>

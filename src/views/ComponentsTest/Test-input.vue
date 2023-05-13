@@ -1,21 +1,6 @@
 <script setup lang="ts">
 import { getFormColumns } from '@/lib/columns'
 
-const list = [
-  {
-    label: 'test1',
-    value: '0'
-  },
-  {
-    label: 'test2',
-    value: '1'
-  },
-  {
-    label: 'test3',
-    value: '2'
-  }
-]
-
 const columnSetting = {
   passowrd: {
     label: '密碼',
@@ -38,7 +23,11 @@ const columnSetting = {
     fitler: {
       default: '',
       required: true,
-      options: list
+      options: [
+        { label: 'test1', value: '0' },
+        { label: 'test2', value: '1' },
+        { label: 'test3', value: '2' }
+      ]
     }
   }
 }
