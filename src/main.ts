@@ -1,17 +1,22 @@
+// polyfill
 import './lib/Polyfill/inject'
+// object 有類似 array 方法
 import './lib/objectFunction'
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-
-import vClickOutside from 'click-outside-vue3'
-
 import App from './App.vue'
 import './assets/main.css'
+// 全局狀態管理
+import { createPinia } from 'pinia'
 
+// 路由設定
 import router from './router'
+// 全局組件
 import pluginComponents from '@/components/pluginComponents'
+// 翻譯
 import i18n from '@/i18n/i18n'
+// 點擊組件外觸發事件
+import vClickOutside from 'click-outside-vue3'
 
 const app = createApp(App)
 

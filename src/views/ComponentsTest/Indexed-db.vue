@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import type { Hook } from '@/declare/hook'
+import { swal } from '@/lib/utils'
+import Swal from 'sweetalert2'
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')
@@ -26,12 +28,26 @@ const openPopover = (e: MouseEvent) => {
     }
   ])
 }
+type Icon = 'info' | 'warning' | 'success' | 'error' | 'question'
+const showAlert = (icon: Icon) => {
+  swal({
+    icon,
+    title: '測試彈框'
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      Swal.fire('Saved!', '', 'success')
+    } else if (result.isDenied) {
+      Swal.fire('Changes are not saved', '', 'info')
+    }
+  })
+}
 
 </script>
 
 <template>
   <div class="input-test">
-    <h1 class="i-mb-md">{{ $t('test') }}</h1>
+    <h1 class="i-mb-md text-primary">{{ $t('test') }}</h1>
     <FormInput
       v-model="value"
       label="測試密碼"
@@ -46,6 +62,27 @@ const openPopover = (e: MouseEvent) => {
     <CustomButton
       label="測試Popover"
       @click="openPopover"
+    />
+
+    <CustomButton
+      label="測試Sweetalert2 info"
+      @click="showAlert('info')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 warning"
+      @click="showAlert('warning')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 success"
+      @click="showAlert('success')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 error"
+      @click="showAlert('error')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 question"
+      @click="showAlert('question')"
     />
   </div>
 </template>

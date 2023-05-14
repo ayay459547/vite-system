@@ -68,7 +68,7 @@ defineExpose({
       :placement="placement"
       :before-enter="calcPlacement"
       :after-leave="resetPlacement"
-      :width="200"
+      :width="180"
     >
       <ul v-if="callbackList.length > 0" class="popover-list">
         <li

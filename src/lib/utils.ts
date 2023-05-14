@@ -1,5 +1,7 @@
-import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
+import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
+import Swal from 'sweetalert2'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
 
@@ -111,17 +113,21 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
   return (target as T)
 }
 
-/**
- * @author Caleb
- * @description 取的準確的資料類型
- * @param {*} any
- * @returns {String} 類型
- */
-export const getType = (any: any): string => {
-  const stringType = Object.prototype.toString.call(any)
-  const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
-  const res = stringType.match(regexp)
-  return res[1]
+export const swal = (options: SweetAlertOptions<any, any>): Promise<SweetAlertResult<any>> => {
+  const defaultOPtions = {
+    // info, warning, success, error, question
+    // icon: 'info',
+    reverseButtons: true,
+    confirmButtonText: '確認',
+    confirmButtonColor: '#409eff',
+    showCancelButton: true,
+    cancelButtonText: '取消',
+    ...options
+  }
+
+  return Swal.fire({
+    ...defaultOPtions
+  })
 }
 
 /**
@@ -145,6 +151,19 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   if ( re.test(Object.prototype.toString.call(el)) ) {
     el.scrollIntoView(setting)
   }
+}
+
+/**
+ * @author Caleb
+ * @description 取的準確的資料類型
+ * @param {*} any
+ * @returns {String} 類型
+ */
+export const getType = (any: any): string => {
+  const stringType = Object.prototype.toString.call(any)
+  const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
+  const res = stringType.match(regexp)
+  return res[1]
 }
 
 /**
