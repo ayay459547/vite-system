@@ -14,6 +14,11 @@ const props = defineProps({
     required: false,
     default: ''
   },
+  direction: {
+    type: String as PropType<'column' | 'row'>,
+    required: false,
+    default: 'column'
+  },
   label: {
     type: String as PropType<string>,
     required: false,
@@ -131,7 +136,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div class="input-container">
+  <div class="input-container" :class="props.direction">
     <label v-if="props.label.length > 0" class="input-label">
       <span v-if="props.required" class="input-required">*</span>
       <span>{{ props.label }}</span>
@@ -181,14 +186,27 @@ const hasSlot = (prop: string): boolean => {
     width: 100%;
     height: 88px;
     display: flex;
-    flex-direction: column;
     gap: 4px;
+
+    &.row {
+      flex-direction: row;
+      align-items: center;
+      height: 48px;
+    }
+    &.column {
+      flex-direction: column;
+    }
   }
 
   &-required {
     color: $danger;
     display: inline-block;
     padding-right: 2px;
+  }
+
+  &-label {
+    width: fit-content;
+    white-space: nowrap;
   }
 
   &-main {

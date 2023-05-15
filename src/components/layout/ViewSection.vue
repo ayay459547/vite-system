@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElSelect, ElOption } from 'element-plus'
-import { options as langOptions } from '@/i18n/i18n'
-import { useLocaleStore } from '@/stores/locale'
 import HistoryNavigation from './HistoryNavigation.vue'
 
 const isFullScreen = ref(false)
-
-const localeStore = useLocaleStore()
 
 const toggleFullScreen = () => {
   if (isFullScreen.value) {
@@ -27,28 +22,11 @@ const toggleFullScreen = () => {
   <div class="view-wrapper">
     <div class="view-history">
       <HistoryNavigation></HistoryNavigation>
-      <CustomButton :icon-name="isFullScreen ? 'down-left-and-up-right-to-center' : 'expand'" @click="toggleFullScreen">
-        <div class="i-pt-xxs">{{ isFullScreen ? '取消全螢幕' : '切換全螢幕' }}</div>
-      </CustomButton>
-
-      <div style="width: 170px;">
-        <ElSelect
-          v-model="localeStore.currentLang"
-          placeholder="Please input"
-          class="input-main"
-        >
-          <ElOption
-            v-for="item in langOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-            <template #prefix>
-              <CustomIcon name="earth-americas"/>
-            </template>
-            <template #empty>empty</template>
-        </ElSelect>
-      </div>
+      <CustomButton
+        :label="isFullScreen ? '取消全螢幕' : '切換全螢幕'"
+        :icon-name="isFullScreen ? 'down-left-and-up-right-to-center' : 'expand'"
+        @click="toggleFullScreen"
+      />
     </div>
     <main class="view-container">
       <slot></slot>

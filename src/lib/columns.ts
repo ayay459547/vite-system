@@ -1,8 +1,19 @@
 import type { ComponentPublicInstance } from 'vue'
 import type { Expose } from '@/declare/formInput'
+import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
-interface RefItem extends Element, ComponentPublicInstance, Expose {}
+export interface RefItem extends Element, ComponentPublicInstance, Expose {}
+export interface FormColumns {
+  ref: (el: RefItem) => void
+  key: string
+  validateKey: string
+  clearable: boolean
+  default: any
+  validate: ValidateType[] | ValidateType
+  required: boolean
+  label: string
+}
 /**
  * @author Caleb
  * @description 使用 Columns 設定
@@ -98,6 +109,13 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Reco
 
 }
 
+export interface TableColumns {
+  key: string
+  prop: string
+  slot: boolean
+  sortable: boolean
+  label: string
+}
 /**
  * @author Caleb
  * @description 取的 Columns 設定 Table用的資料

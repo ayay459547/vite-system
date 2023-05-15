@@ -20,7 +20,7 @@ const columnSetting = {
   date: {
     label: '生日',
     table: {
-      width: 100,
+      width: 150,
       fixed: 'left'
     },
     fitler: {
@@ -32,7 +32,7 @@ const columnSetting = {
   name: {
     label: '姓名',
     table: {
-      width: 100
+      width: 150
     },
     fitler: {
       default: '',
@@ -43,7 +43,7 @@ const columnSetting = {
   address: {
     label: '地址',
     table: {
-      minWidth: 100
+      minWidth: 300
     },
     fitler: {
       default: '',
@@ -84,12 +84,11 @@ const tableData = [
   <div class="table-test">
     <div class="table-main">
       <CustomTable
+        label="測試表單"
         :table-column="tableColumns"
         :table-data="tableData"
       />
     </div>
-
-    <CustomButton label="提交"/>
   </div>
 </template>
 

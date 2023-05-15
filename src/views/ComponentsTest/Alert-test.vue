@@ -1,0 +1,99 @@
+<script setup lang="ts">
+import { ref, inject } from 'vue'
+import type { Hook } from '@/declare/hook'
+import { swal } from '@/lib/utils'
+import Swal from 'sweetalert2'
+
+const value = ref<string>('')
+const valuePhone = ref<string>('')
+
+const hook: () => Hook = inject('hook')
+const { openEventList } = hook()
+
+const openPopover = (e: MouseEvent) => {
+  openEventList(e, [
+    {
+      icon: ['fas', 'user'],
+      label: 'callback-1',
+      event: () => {
+        console.log('callback-1: 密碼 => ', value.value)
+      }
+    },
+    {
+      icon: ['fas', 'phone'],
+      label: 'callback-2',
+      event: () => {
+        console.log('callback-2: phone => ', valuePhone.value)
+      }
+    }
+  ])
+}
+type Icon = 'info' | 'warning' | 'success' | 'error' | 'question'
+const showAlert = (icon: Icon) => {
+  swal({
+    icon,
+    title: '測試彈框'
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      Swal.fire('Saved!', '', 'success')
+    } else if (result.isDenied) {
+      Swal.fire('Changes are not saved', '', 'info')
+    }
+  })
+}
+
+</script>
+
+<template>
+  <div class="input-test">
+    <h1 class="i-mb-md text-primary">{{ $t('test') }}</h1>
+    <FormInput
+      v-model="value"
+      label="測試密碼"
+      required
+      :validate="['password']"
+    />
+    <FormInput
+      v-model="valuePhone"
+      label="測試phone"
+      :validate="['phone']"
+    />
+    <CustomButton
+      label="測試Popover"
+      @click="openPopover"
+    />
+
+    <CustomButton
+      label="測試Sweetalert2 info"
+      @click="showAlert('info')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 warning"
+      @click="showAlert('warning')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 success"
+      @click="showAlert('success')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 error"
+      @click="showAlert('error')"
+    />
+    <CustomButton
+      label="測試Sweetalert2 question"
+      @click="showAlert('question')"
+    />
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.input-test {
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+</style>

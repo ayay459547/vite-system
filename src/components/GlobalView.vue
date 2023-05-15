@@ -25,9 +25,9 @@ const locale = computed(() => {
 const customPopover = ref(null)
 provide<() => Hook>('hook', () => {
   return {
-    openEventList: (click, eventList) => {
+    openEventList: (click, eventList, options) => {
       if (customPopover.value) {
-        customPopover.value.openPopover(click, eventList)
+        customPopover.value.openPopover(click, eventList, options)
       }
     }
   }

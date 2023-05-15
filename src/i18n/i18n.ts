@@ -3,9 +3,9 @@ import test from './test'
 
 const langMap = {
   langType: {
-    zhTw: 'zhTw',
-    zhCn: 'zhCn',
-    en: 'en'
+    zhTw: '繁體中文',
+    zhCn: '简体中文',
+    en: 'English'
   },
   ...test
 }

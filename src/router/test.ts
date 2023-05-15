@@ -17,6 +17,14 @@ const testRoutes: RouterTree[] = [
           component: () => import('@/views/ComponentsTest/Test-input.vue')
       },
       {
+        name: 'alert-test',
+        title: '彈窗測試',
+        inject: true,
+        complete: true,
+        path: '/alert-test',
+        component: () => import('@/views/ComponentsTest/Alert-test.vue')
+      },
+      {
         name: 'indexed-db',
         title: 'indexedDB測試',
         inject: true,

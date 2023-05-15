@@ -6,11 +6,29 @@ const columnSetting = {
     label: '密碼',
     fitler: {
       default: '',
+      direction: 'row',
       validate: ['password'],
       required: true
     }
   },
   phone: {
+    label: '手機',
+    fitler: {
+      default: '',
+      direction: 'row',
+      validate: ['phone'],
+      required: false
+    }
+  },
+  passowrd2: {
+    label: '密碼',
+    fitler: {
+      default: '',
+      validate: ['password'],
+      required: true
+    }
+  },
+  phone2: {
     label: '手機',
     fitler: {
       default: '',
@@ -58,6 +76,15 @@ const submit = () => {
     <FormInput
       v-model="filterForm.phone"
       v-bind="filterColumn.phone"
+    />
+
+    <FormInput
+      v-model="filterForm.passowrd2"
+      v-bind="filterColumn.passowrd2"
+    />
+    <FormInput
+      v-model="filterForm.phone2"
+      v-bind="filterColumn.phone2"
     />
 
     <FormSelect

@@ -39,6 +39,11 @@ const props = defineProps({
     required: false,
     default: 'default'
   },
+  text: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  },
   plain: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -84,32 +89,44 @@ const onClick = ($event: Event) => {
 </script>
 
 <template>
-  <div class="button-container">
-    <ElButton
-      :size="ElSize[props.size]"
-      :type="ElType[props.type]"
-      :plain="props.plain"
-      :round="props.round"
-      :circle="props.circle"
-      :disabled="props.disabled"
-      :color="props.color"
-      @click="onClick"
-    >
-      <template v-if="props.iconName.length > 0" #icon>
-        <CustomIcon
-          :type="iconType[props.iconType]"
-          :name="props.iconName"
-        />
-      </template>
-      <slot>
-        <span class="button-label">{{ props.label }}</span>
-      </slot>
-    </ElButton>
+  <div class="button-wrapper">
+    <div class="button-container">
+      <ElButton
+        :type="ElType[props.type]"
+        :text="props.text"
+        :plain="props.plain"
+        :round="props.round"
+        :circle="props.circle"
+        :disabled="props.disabled"
+        :color="props.color"
+        @click="onClick"
+      >
+        <template v-if="props.iconName.length > 0" #icon>
+          <CustomIcon
+            :size="ElSize[props.size]"
+            :type="iconType[props.iconType]"
+            :name="props.iconName"
+          />
+        </template>
+
+        <template v-if="props.label.length > 0" #default>
+          <span :class="`size-${ElSize[props.size]}`">
+            {{ props.label }}
+          </span>
+        </template>
+      </ElButton>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+:deep(.button-container) {
+  .el-button {
+    padding: 8px;
+  }
+}
 .button {
+  &-wrapper,
   &-container {
     width: fit-content;
     height: fit-content;
@@ -117,6 +134,16 @@ const onClick = ($event: Event) => {
   &-label {
     display: inline-block;
     padding-top: 2px;
+
+    &.size-large {
+      font-size: 1.3em;
+    }
+    &.size-default {
+      font-size: 1.1em;
+    }
+    &.size-small {
+      font-size: 1em;
+    }
   }
 }
 </style>

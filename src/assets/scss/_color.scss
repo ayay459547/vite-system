@@ -1,10 +1,10 @@
 $color-list: (
-  info: #909399, 
-  primary: #409eff,
-  success: #67C23A,
-  warning: #E6A23C,
-  danger: #F56C6C,
-  white: #ffffff
+  'info': #909399, 
+  'primary': #409eff,
+  'success': #67C23A,
+  'warning': #E6A23C,
+  'danger': #F56C6C,
+  'white': #ffffff
 );
 
 @each $type, $color in $color-list {

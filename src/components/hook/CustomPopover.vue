@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElPopover } from 'element-plus'
-import type { EventItem } from '@/declare/hook'
+import type { Hook, EventItem } from '@/declare/hook'
 import debounce from '@/lib/debounce'
 
 type Placemetn = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
@@ -10,7 +10,9 @@ const visible = ref<boolean>(false)
 const placement = ref<Placemetn>('bottom')
 const left = ref<number>(0)
 const top = ref<number>(0)
+
 const callbackList = ref<EventItem[]>([])
+const popoverWidth = ref(150)
 
 const calcPlacement = () => {
   console.log('calcPlacement')
@@ -19,6 +21,7 @@ const resetPlacement = () => {
   console.log('resetPlacement')
   placement.value = 'bottom'
   callbackList.value = []
+  popoverWidth.value = 150
 }
 
 const callEvent = (callback: Function) => {
@@ -26,16 +29,26 @@ const callEvent = (callback: Function) => {
 }
 const debounceCallEvent = debounce(callEvent, 200)
 
-const openPopover = (click: MouseEvent, eventList?: Array<EventItem>) => {
+const openPopover = (
+  click: MouseEvent,
+  eventList?: Array<EventItem>,
+  options?: {
+    width: number
+  }
+) => {
   if (visible.value) return
 
   const { clientX, clientY } = click
+  left.value = clientX
+  top.value = clientY
+
   if (eventList) {
     callbackList.value = eventList
   }
 
-  left.value = clientX
-  top.value = clientY
+  if (options?.width > 0) {
+    popoverWidth.value = options.width
+  }
 
   setTimeout(() => {
     visible.value = true
@@ -68,7 +81,7 @@ defineExpose({
       :placement="placement"
       :before-enter="calcPlacement"
       :after-leave="resetPlacement"
-      :width="180"
+      :width="popoverWidth"
     >
       <ul v-if="callbackList.length > 0" class="popover-list">
         <li
@@ -111,11 +124,11 @@ defineExpose({
   }
   &-item {
     padding: 4px 16px;
-    height: 32px;
-    line-height: 32px;
+    height: 24px;
+    line-height: 24px;
     display: flex;
     gap: 16px;
-    font-size: 1.2em;
+    font-size: 1em;
     align-items: center;
     cursor: pointer;
 

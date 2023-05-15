@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import type { WritableComputedRef, ComputedRef } from 'vue'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 import { useRoutesStore } from '@/stores/routes'
+
+import { options as langOptions } from '@/i18n/i18n'
+import { useLocaleStore } from '@/stores/locale'
+import type { Hook, EventItem } from '@/declare/hook'
 
 const props = defineProps<{
   isOpen: boolean
@@ -45,6 +49,28 @@ const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
   }, [])
 })
 
+const userName = 'AAT'
+
+const localeStore = useLocaleStore()
+
+const hook: () => Hook = inject('hook')
+const { openEventList } = hook()
+
+const eventList = computed<EventItem[]>(() => {
+  return langOptions.map(option => {
+    return {
+      icon: [],
+      label: option.label,
+      event: () => {
+        localeStore.currentLang = option.value
+      }
+    }
+  })
+})
+
+const openLangType = (e: MouseEvent) => {
+  openEventList(e, eventList.value)
+}
 
 </script>
 
@@ -52,13 +78,22 @@ const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
   <div class="header-container">
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen"></HamburgerIcon>
+
       <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
         <span v-if="path.type === 'text'">{{ path.name }}</span>
         <span v-else>{{ ' / ' }}</span>
       </template>
     </div>
     <div class="header-right">
-      <CustomIcon></CustomIcon>
+      <div class="header-right-effect lang" @click="openLangType">
+        <CustomIcon name="earth-americas"/>
+        <span>{{ $t('langType') }}</span>
+      </div>
+
+      <div class="header-right-effect">
+        <CustomIcon name="user" />
+        <span>{{ 'hi! ' + userName }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -84,10 +119,28 @@ const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
   }
 
   &-right {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #e6e6e6;
-    border-radius: 6px;
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+
+    &-effect {
+      display: flex;
+      justify-content: flex-start;
+      width: fit-content;
+      align-items: center;
+      padding: 8px;
+      gap: 8px;
+      cursor: pointer;
+      transition-duration: 0.2s;
+
+      &:hover {
+        color: $primary;
+      }
+      &.lang {
+        width: 130px;
+      }
+    }
   }
 }
 </style>
