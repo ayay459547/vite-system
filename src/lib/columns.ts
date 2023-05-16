@@ -3,8 +3,15 @@ import type { Expose } from '@/declare/formInput'
 import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
-export interface RefItem extends Element, ComponentPublicInstance, Expose {}
 export interface FormColumns {
+  columns: Record<string, any>
+  forms: Record<string, any>
+  reset: () => void
+  validate: () => Promise<Array<any>>
+}
+
+export interface RefItem extends Element, ComponentPublicInstance, Expose {}
+export interface FormColumnsItem {
   ref: (el: RefItem) => void
   key: string
   validateKey: string
@@ -12,6 +19,8 @@ export interface FormColumns {
   default: any
   validate: ValidateType[] | ValidateType
   required: boolean
+  resizable: boolean
+  showOverflowTooltip: boolean
   label: string
 }
 /**
@@ -22,7 +31,7 @@ export interface FormColumns {
  * @param {String} type 取得 columnSetting 中的類型
  * @returns {Ojbect}
  */
-export const getFormColumns = (columns: Record<string, any>, type: string): Record<string, any> => {
+export const getFormColumns = (columns: Record<string, any>, type: string): FormColumns => {
   const resColumns = {}
   const formMap = reactive<Record<string, any>>({})
   const refMap = reactive<Record<string, any>>({})
@@ -42,6 +51,8 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Reco
       default: '',
       validate: [],
       required: false,
+      resizable: true,
+      showOverflowTooltip: false,
       label: column?.label ?? '',
       ...column[type]
     }

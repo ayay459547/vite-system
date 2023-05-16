@@ -92,7 +92,14 @@ provide<() => Hook>('hook', () => {
       margin-left: 0;
     }
     &.is-close {
-      margin-left: -$nav-width;
+      margin-left: -$nav-lg-width;
+
+      @media (max-width: 992px) {
+        margin-left: -$nav-md-width;
+      }
+      @media (max-width: 576px) {
+        margin-left: -$nav-xs-width;
+      }
     }
   }
 

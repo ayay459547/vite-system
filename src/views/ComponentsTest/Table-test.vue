@@ -21,7 +21,8 @@ const columnSetting = {
     label: '生日',
     table: {
       width: 150,
-      fixed: 'left'
+      fixed: 'left',
+      align: 'center'
     },
     fitler: {
       default: '',

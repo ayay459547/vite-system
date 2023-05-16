@@ -49,6 +49,12 @@ const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
   }, [])
 })
 
+const breadcrumbSpan = computed<string>(() => {
+  return currentPath.value.reduce((res, crumb) => {
+    return res + crumb.name
+  }, '')
+})
+
 const userName = 'AAT'
 
 const localeStore = useLocaleStore()
@@ -79,19 +85,30 @@ const openLangType = (e: MouseEvent) => {
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen"></HamburgerIcon>
 
-      <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
-        <span v-if="path.type === 'text'">{{ path.name }}</span>
-        <span v-else>{{ ' / ' }}</span>
-      </template>
+      <div class="header-breadcrumb-list">
+        <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
+            <span v-if="path.type === 'text'">{{ path.name }}</span>
+            <span v-else style="font-weight: 600;">{{ ' / ' }}</span>
+          </template>
+      </div>
+      <div class="header-breadcrumb-icon">
+        <CustomIcon
+          name="location-dot"
+          icon-class="text-danger"
+          tooltip
+        >
+          <span>{{ breadcrumbSpan }}</span>
+        </CustomIcon>
+      </div>
     </div>
     <div class="header-right">
       <div class="header-right-effect lang" @click="openLangType">
-        <CustomIcon name="earth-americas"/>
+        <CustomIcon name="earth-americas" class="icon"/>
         <span>{{ $t('langType') }}</span>
       </div>
 
-      <div class="header-right-effect">
-        <CustomIcon name="user" />
+      <div class="header-right-effect user">
+        <CustomIcon name="user" class="icon"/>
         <span>{{ 'hi! ' + userName }}</span>
       </div>
     </div>
@@ -110,6 +127,24 @@ const openLangType = (e: MouseEvent) => {
     align-items: center;
     padding: 0 16px;
     font-size: 1.2em;
+  }
+
+  &-breadcrumb-list {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  &-breadcrumb-icon {
+    display: none;
+  }
+
+  @media (max-width: 992px) {
+    &-breadcrumb-list {
+      display: none;
+    }
+    &-breadcrumb-icon {
+      display: block;
+    }
   }
 
   &-left {
@@ -132,13 +167,21 @@ const openLangType = (e: MouseEvent) => {
       padding: 8px;
       gap: 8px;
       cursor: pointer;
-      transition-duration: 0.2s;
+      overflow: hidden;
+      white-space: nowrap;
+      transition-duration: 0.3s;
 
+      @media (max-width: 768px) {
+        transition-duration: 0.4s;
+        max-width: 32px;
+        border-bottom: 2px solid #ffffff00;
+      }
       &:hover {
         color: $primary;
-      }
-      &.lang {
-        width: 130px;
+        @media (max-width: 768px) {
+          max-width: 200px;
+          border-bottom: 2px solid $primary;
+        }
       }
     }
   }

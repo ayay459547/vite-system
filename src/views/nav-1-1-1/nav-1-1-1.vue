@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { inject } from 'vue'
-
-const locale = inject('locale')
 
 </script>
 
 <template>
   <div class="nav-1-1-1">
     <h1>nav-1-1-1</h1>
-    <h1>{{ locale }}</h1>
   </div>
 </template>
 

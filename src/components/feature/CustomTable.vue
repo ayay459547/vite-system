@@ -148,8 +148,8 @@ onUnmounted(() => {
 
 <template>
   <div class="table-wrapper">
-    <div class="table-setting">
-      <div class="setting-left">
+    <div class="table-setting grid-row">
+      <div class="setting-left grid-col-xs-24 grid-col-md-10 grid-col-lg-8">
         <CustomButton
           icon-name="file-excel"
           size="large"
@@ -159,21 +159,24 @@ onUnmounted(() => {
         <slot name="setting-left"></slot>
       </div>
 
-      <div class="setting-center">
+      <div class="setting-center grid-col-xs-24 grid-col-md-4 grid-col-lg-8">
         <slot name="setting-center">
           <span>{{ props.label }}</span>
         </slot>
       </div>
-      <div class="setting-right">
+
+      <div class="setting-right grid-col-xs-24 grid-col-md-10 grid-col-lg-8">
         <slot name="setting-right"></slot>
-        <FormSelect
-          label="顯示筆數 : "
-          :model-value="pageSizeValue"
-          :options="sizeOptions"
-          direction="row"
-          @update:modelValue="pageSize"
-          @change="onSizeChange"
-        />
+        <div style="width: 160px; overflow: hidden;">
+          <FormSelect
+            label="顯示筆數 : "
+            :model-value="pageSizeValue"
+            :options="sizeOptions"
+            direction="row"
+            @update:modelValue="pageSize"
+            @change="onSizeChange"
+          />
+        </div>
       </div>
     </div>
 
@@ -286,28 +289,49 @@ onUnmounted(() => {
   }
 
   &-setting {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
     height: fit-content;
-    padding: 0 8px;
     background-color: #f5f7fa;
-    flex-wrap: wrap;
+    overflow: hidden;
+    overflow-x: scroll;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px #ebeef500;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ebeef500;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        background-color: #a2a2a272;
+      }
+    }
 
     .setting {
+      &-left,
+      &-center,
+      &-right {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
       &-left {
-        width: 180px;
+        justify-content: flex-start;
       }
       &-center {
-        flex: 1;
-        display: flex;
         justify-content: center;
-        align-items: center;
-        min-width: 180px;
       }
       &-right {
-        width: 180px;
+        justify-content: flex-end;
+        @media (max-width: 768px) {
+          justify-content: center;
+        }
       }
     }
   }

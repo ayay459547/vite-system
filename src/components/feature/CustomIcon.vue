@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { ElPopover, ElTooltip } from 'element-plus'
+
 type IconType = 'fas' | 'far' | 'fab'
 
 type IconSize = 'large' | 'default' | 'small'
+
+type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
 
 /**
  * icon 和 type, name 選一種給
@@ -11,19 +16,64 @@ interface Props {
   type?: IconType
   name?: String
   size?: IconSize
+
+  tooltip?: boolean
+  placement?: Placement
+  popover?: boolean
+  width?: number
+  iconClass?: string
 }
 const props = withDefaults(defineProps<Props>(), {
   icon: () => [],
   type: () => 'fas',
   name: () => 'circle-question',
-  size: () => 'default'
+  size: () => 'default',
+  iconClass: () => '',
+
+  tooltip: () => false,
+  popover: () => false,
+  width: () => 150,
+  placement: () => 'bottom'
+})
+
+const getIcon = computed(() => {
+  if (props.icon.length > 0) return props.icon
+  return [props.type, props.name]
 })
 </script>
 
 <template>
-  <div class="icon-container" :class="`size-${props.size}`">
-    <font-awesome-icon v-if="props.icon.length > 0" :icon="props.icon" />
-    <font-awesome-icon v-else :icon="[props.type, props.name]" />
+  <ElTooltip
+    v-if="props.tooltip"
+    :placement="props.placement"
+  >
+    <template #default>
+      <div class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
+        <font-awesome-icon :icon="getIcon" />
+      </div>
+    </template>
+    <template #content>
+      <slot>Empty</slot>
+    </template>
+  </ElTooltip>
+
+  <ElPopover
+    v-else-if="props.popover"
+    :width="props.width"
+    :placement="props.placement"
+  >
+    <template #reference>
+      <div class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
+        <font-awesome-icon :icon="getIcon" />
+      </div>
+    </template>
+    <template #default>
+      <slot>Empty</slot>
+    </template>
+  </ElPopover>
+
+  <div v-else class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
+    <font-awesome-icon :icon="getIcon" />
   </div>
 </template>
 

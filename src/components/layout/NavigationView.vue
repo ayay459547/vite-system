@@ -93,7 +93,11 @@ const setRoutesConfig = (route: Navigation) => {
     transition-duration: 0.3s;
     will-change: margin-left;
     &.is-open {
-      margin-left: -$nav-width;
+      margin-left: -$nav-lg-width;
+
+      @media (max-width: 992px) {
+        margin-left: -$nav-md-width;
+      }
     }
     &.is-close {
       margin-left: 0;
@@ -101,14 +105,19 @@ const setRoutesConfig = (route: Navigation) => {
   }
 
   &-list {
-    min-width: $nav-width;
+    min-width: $nav-lg-width;
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition-duration: 0.3s;
 
     &.level1 {
       overflow-y: auto;
+    }
+
+    @media (max-width: 992px) {
+      min-width: $nav-md-width;
     }
   }
 
@@ -144,12 +153,20 @@ const setRoutesConfig = (route: Navigation) => {
         font-size: 1.3em;
         transform: translateX(0);
         transition-duration: 0.3s;
+
+        @media (max-width: 992px) {
+          font-size: 1.1em;
+        }
       }
       .item-icon {
         font-size: 1.2em;
         width: 30px;
         height: 30px;
         @extend %flex-center;
+
+        @media (max-width: 992px) {
+          font-size: 1em;
+        }
       }
     }
 

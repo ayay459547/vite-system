@@ -64,14 +64,38 @@ onMounted(() => {
 <style lang="scss" scoped>
 .side {
   &-container {
-    width: $nav-width;
+    width: $nav-lg-width;
     height: 100%;
     background-color: $side-bg-color;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    transition-duration: 0.3;
+    transition-duration: 0.3s;
+    will-change: width margin-left;
+
+    @media (max-width: 992px) {
+      width: $nav-md-width;
+    }
+    @media (max-width: 576px) {
+      width: $nav-xs-width;
+      margin-left: -8px;
+
+      .side-logo,
+      .side-footer {
+        visibility: hidden;
+      }
+
+      &:hover {
+        width: $nav-md-width;
+        margin-left: 0;
+
+        .side-logo,
+        .side-footer {
+          visibility: visible;
+        }
+      }
+    }
   }
 
   &-logo {
@@ -79,6 +103,8 @@ onMounted(() => {
     cursor: pointer;
     color: #fff;
     font-size: 2em;
+    will-change: width;
+    white-space: nowrap;
   }
 
   &-nav {
@@ -92,6 +118,7 @@ onMounted(() => {
     padding: 6px 12px;
     margin: 6px;
     background-color: #e6e6e6;
+    white-space: nowrap;
   }
 }
 

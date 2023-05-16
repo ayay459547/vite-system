@@ -165,7 +165,8 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <div class="input-container" :class="props.direction">
     <label v-if="props.label.length > 0" class="input-label">
-      <span v-if="props.required" class="input-required">*</span>
+      <span v-if="props.required" class="input-required input-prefix">*</span>
+      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
@@ -225,10 +226,12 @@ const hasSlot = (prop: string): boolean => {
     }
   }
 
+  &-prefix {
+    display: inline-block;
+    width: 10px;
+  }
   &-required {
     color: $danger;
-    display: inline-block;
-    padding-right: 2px;
   }
 
   &-label {

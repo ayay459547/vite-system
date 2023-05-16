@@ -156,6 +156,10 @@ export default defineComponent({
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;
+
+      @media (max-width: 992px) {
+        font-size: 1em;
+      }
     }
 
     &:hover {
@@ -207,6 +211,10 @@ export default defineComponent({
         font-size: 1.1em;
         transform: translateX(0);
         transition-duration: 0.3s;
+
+        @media (max-width: 992px) {
+          font-size: 1em;
+        }
       }
       .item-icon {
         width: 30px;

@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
 
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
-const locale = inject('locale')
 
 </script>
 
 <template>
   <div class="nav-2">
     <h1 class="i-mb-md">This is Nav-2 page</h1>
-    <h2 class="i-mb-md">{{ locale }}</h2>
     <FormInput
       v-model="value"
       label="測試密碼"
