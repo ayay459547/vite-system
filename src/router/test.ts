@@ -39,6 +39,14 @@ const testRoutes: RouterTree[] = [
         complete: true,
         path: '/table-test',
         component: () => import('@/views/ComponentsTest/Table-test.vue')
+      },
+      {
+        name: 'excel-test',
+        title: 'Excel測試',
+        inject: true,
+        complete: true,
+        path: '/excel-test',
+        component: () => import('@/views/ComponentsTest/Excel-test.vue')
       }
     ]
   }
