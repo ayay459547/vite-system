@@ -2,6 +2,7 @@
 import {
   useSlots,
   ref,
+  reactive,
   computed,
   onUpdated,
   onMounted,
@@ -15,13 +16,14 @@ import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 
 import type { TableColumns } from '@/lib/columns'
+import type { ColumnItem } from './ColumnSetting.vue'
 
 import ColumnSetting from './ColumnSetting.vue'
 
-interface PropsTableColumn extends Record<string, any>, TableColumns {}
+export interface PropsTableColumn extends Record<string, any>, TableColumns {}
 
 const props = defineProps({
-  tableColumn: {
+  tableColumns: {
     type: Object as PropType<PropsTableColumn[]>,
     default () {
       return {}
@@ -41,17 +43,12 @@ const props = defineProps({
   },
   settingKey: {
     type: String as PropType<string>,
-    // required: true,
-    default: 'test',
+    required: true,
     description: '欄位設定 在 indexedDB 上的 key'
   },
   label: {
     type: String as PropType<string>,
     default: ''
-  },
-  loading: {
-    type: Boolean as PropType<boolean>,
-    default: true
   },
   total: {
     type: Number as PropType<number>,
@@ -73,10 +70,14 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+const loading = ref(true)
+const renderKey = ref(1)
+const isRender = ref(false)
+
 // 點擊 excel
 const excel = () => {
   emit('excel', {
-    tableColumn: props.tableColumn,
+    tableColumns: props.tableColumns,
     tableData: props.tableData
    })
 }
@@ -139,6 +140,43 @@ const showData = computed(() => {
   return (props.tableData as Array<any>).slice(start, end)
 })
 
+const columnSetting = ref(null)
+const showColumns = reactive([...props.tableColumns])
+
+const initShowColumns = async () => {
+  loading.value = true
+
+  if (columnSetting.value) {
+    const tempColumnList = await columnSetting.value.getcolumnList() as ColumnItem[]
+
+    const resColumns = tempColumnList.reduce((resColumn, tempColumn) => {
+      if (tempColumn.isShow) {
+        const showColumn = props.tableColumns.find(column => {
+          return tempColumn.key === column.key
+        })
+        resColumn.push(showColumn)
+      }
+
+      return resColumn
+    }, [])
+
+    showColumns.splice(0)
+    showColumns.push(...resColumns)
+    renderKey.value++
+  }
+
+  setTimeout(() => {
+    loading.value = false
+  }, 400) // 設 0.3s 才不會閃一下
+}
+
+onMounted(async () => {
+  isRender.value = false
+  await initShowColumns()
+
+  isRender.value = true
+})
+
 // 表單高度
 let tableHeight = ref(500)
 const ROcallback = throttle((entries) => {
@@ -161,7 +199,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="table-wrapper">
+  <div v-loading="loading" class="table-wrapper">
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-8">
         <CustomButton
@@ -171,9 +209,11 @@ onUnmounted(() => {
           @click="excel"
         />
         <ColumnSetting
-          :columns="props.tableColumn"
+          ref="columnSetting"
+          :columns="props.tableColumns"
           :version="props.version"
           :setting-key="props.settingKey"
+          @change="initShowColumns"
         />
         <slot name="setting-left"></slot>
       </div>
@@ -186,7 +226,7 @@ onUnmounted(() => {
 
       <div class="setting-right grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-right"></slot>
-        <div style="width: 160px; overflow: hidden;">
+        <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <FormSelect
             label="顯示筆數 : "
             :model-value="pageSizeValue"
@@ -201,7 +241,9 @@ onUnmounted(() => {
 
     <div ref="tableMain" class="table-container">
       <ElTable
+        v-if="isRender"
         ref="elTableRef"
+        :key="renderKey"
         :data="showData"
         :height="tableHeight"
         style="width: 100%"
@@ -210,36 +252,22 @@ onUnmounted(() => {
         @row-click="onRowClick"
       >
         <ElTableColumn
-          v-for="column in props.tableColumn"
+          v-for="column in showColumns"
           :key="column.prop"
           v-bind="column"
         >
           <template v-if="hasSlot(`header-${column.prop}`)" #header="scope">
             <slot
               :name="`header-${column.prop}`"
-              :attributes="{
-                index: scope.$index,
-                row: scope.row,
-                column: scope.column,
-                data: scope.row[column.key],
-                key: column.key,
-                prop: column.prop,
-                label: column.label
-              }"
+              :row-index="scope.$index"
+              :column="column"
             ></slot>
           </template>
           <template v-else-if="hasSlot('header')" #header="scope">
             <slot
               name="header"
-              :attributes="{
-                index: scope.$index,
-                row: scope.row,
-                column: scope.column,
-                data: scope.row[column.key],
-                key: column.key,
-                prop: column.prop,
-                label: column.label
-              }"
+              :row-index="scope.$index"
+              :column="column"
             ></slot>
           </template>
 
@@ -247,30 +275,18 @@ onUnmounted(() => {
             <slot
               :name="`column-${column.prop}`"
               :data="scope.row[column.key]"
-              :attributes="{
-                  index: scope.$index,
-                  row: scope.row,
-                  column: scope.column,
-                  data: scope.row[column.key],
-                  key: column.key,
-                  prop: column.prop,
-                  label: column.label
-              }"
+              :row="scope.row"
+              :row-index="scope.$index"
+              :column="column"
             ></slot>
           </template>
           <template v-else-if="hasSlot('column')" #default="scope">
             <slot
               name="column"
               :data="scope.row[column.key]"
-              :attributes="{
-                  index: scope.$index,
-                  row: scope.row,
-                  column: scope.column,
-                  data: scope.row[column.key],
-                  key: column.key,
-                  prop: column.prop,
-                  label: column.label
-              }"
+              :row="scope.row"
+              :row-index="scope.$index"
+              :column="column"
             ></slot>
           </template>
         </ElTableColumn>

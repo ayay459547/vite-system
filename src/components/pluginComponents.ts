@@ -8,7 +8,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // element plus
-// import ElementPlus from 'element-plus'
+import { vLoading } from 'element-plus'
 import 'element-plus/dist/index.css'
 
 // feature
@@ -27,6 +27,7 @@ const pluginComponents = {
     app.component('font-awesome-icon', FontAwesomeIcon)
 
     // app.use(ElementPlus)
+    app.directive('loading', vLoading)
 
     app.component('CustomIcon', CustomIcon)
     app.component('CustomTabs', CustomTabs)

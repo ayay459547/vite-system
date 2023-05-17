@@ -6,7 +6,7 @@ import { ElPopover, ElCheckbox } from 'element-plus'
 
 import Draggable from 'vuedraggable'
 
-import type { TableColumns } from '@/lib/columns'
+import type { PropsTableColumn } from './CustomTable.vue'
 
 import {
   getColumnSetting,
@@ -14,8 +14,7 @@ import {
   delColumnSetting
 } from '@/lib/idb'
 
-interface PropsTableColumn extends Record<string, any>, TableColumns {}
-interface ColumnList {
+export interface ColumnItem {
   isShow: boolean
   key: string
   label: string
@@ -23,7 +22,7 @@ interface ColumnList {
 interface SettingData {
   version: string
   settingKey: string
-  columns: ColumnList[]
+  columns: ColumnItem[]
 }
 
 const props = defineProps({
@@ -46,9 +45,18 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['change'])
+
+defineExpose({
+  getcolumnList: async () => {
+    const getRes: SettingData = await getColumnSetting(props.settingKey)
+    return getRes.columns
+  }
+})
+
 const drag = ref(false)
 
-const columnList = ref<ColumnList[]>([])
+const columnList = ref<ColumnItem[]>([])
 
 /**
  * 確認是否有設定過
@@ -74,14 +82,17 @@ const init = async () => {
   }
 }
 
-const updateSetting = () => {
+const updateSetting = async () => {
+  const temp = columnList.value.map(column => column)
+
   const settingData: SettingData = {
     version: props.version,
     settingKey: props.settingKey,
-    columns: columnList.value.map(column => column)
+    columns: JSON.parse(JSON.stringify(temp))
   }
+  await setColumnSetting(props.settingKey, settingData)
 
-  setColumnSetting(props.settingKey, settingData)
+  emit('change')
 }
 
 const onDragend = () => {

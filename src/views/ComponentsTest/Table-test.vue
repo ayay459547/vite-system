@@ -21,7 +21,7 @@ const columnSetting = {
     label: '生日',
     table: {
       width: 150,
-      fixed: 'left',
+      // fixed: 'left',
       align: 'center'
     },
     fitler: {
@@ -86,9 +86,13 @@ const tableData = [
     <div class="table-main">
       <CustomTable
         label="測試表單"
-        :table-column="tableColumns"
+        version="1.0.0"
+        setting-key="test"
+        :table-columns="tableColumns"
         :table-data="tableData"
-      />
+      >
+        <template #header="{ column }">{{ column.label }}</template>
+      </CustomTable>
     </div>
   </div>
 </template>
