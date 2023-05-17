@@ -85,7 +85,7 @@ const getIcon = computed(() => {
     font-size: 1.5em;
   }
   &.size-default {
-    font-size: 1.2em;
+    font-size: 1.3em;
   }
   &.size-small {
     font-size: 1em;

@@ -4,6 +4,12 @@ import { ref } from 'vue'
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 
+import { useEnvStore } from '@/stores/env'
+
+const envStore = useEnvStore()
+
+console.log(envStore)
+
 </script>
 
 <template>

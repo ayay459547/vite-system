@@ -3,15 +3,6 @@ import testRoutes from './test'
 
 const routes: Array<RouterTree> = [
   {
-    name: 'about',
-    title: '關於',
-    inject: true,
-    complete: false,
-    icon: 'gear',
-    path: '/about',
-    component: () => import('@/views/AboutView.vue')
-  },
-  {
     name: 'nav-1',
     title: '選單1',
     inject: true,

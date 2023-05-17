@@ -90,7 +90,7 @@ const onClick = ($event: Event) => {
 
 <template>
   <div class="button-wrapper">
-    <div class="button-container">
+    <div class="button-container" :class="`size-${ElSize[props.size]}`">
       <ElButton
         :type="ElType[props.type]"
         :text="props.text"
@@ -110,7 +110,10 @@ const onClick = ($event: Event) => {
         </template>
 
         <template v-if="props.label.length > 0" #default>
-          <span :class="`size-${ElSize[props.size]}`">
+          <span
+            class="button-label"
+            :class="`size-${ElSize[props.size]}`"
+          >
             {{ props.label }}
           </span>
         </template>
@@ -121,8 +124,25 @@ const onClick = ($event: Event) => {
 
 <style lang="scss" scoped>
 :deep(.button-container) {
-  .el-button {
-    padding: 8px;
+  &.size {
+    &-large {
+      .el-button {
+        height: 36px;
+        gap: 4px;
+      }
+    }
+    &-default {
+      .el-button {
+        height: 32px;
+        gap: 2px;
+      }
+    }
+    &-small {
+      .el-button {
+        height: 28px;
+        gap: 0px;
+      }
+    }
   }
 }
 .button {
@@ -131,6 +151,7 @@ const onClick = ($event: Event) => {
     width: fit-content;
     height: fit-content;
   }
+
   &-label {
     display: inline-block;
     padding-top: 2px;

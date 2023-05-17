@@ -1,4 +1,4 @@
-import { computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { setCookie, getCookie } from '@/lib/cookie'
 import { useI18n } from 'vue-i18n'
@@ -38,10 +38,12 @@ export const useLocaleStore = defineStore('locale', () => {
 
     currentLang.value = getCookie('locale')
   }
+  const elLocale = ref('zhTw')
 
   const currentLang = computed({
     set: (type: LangType) => {
       i18nLocale.value = type
+      elLocale.value = type
       setCookie('locale', type)
     },
     get: () => {
@@ -51,8 +53,9 @@ export const useLocaleStore = defineStore('locale', () => {
 
   const locale = computed(() => {
     return {
-      lang: currentLang.value, // 全局用
-      el: localeType[currentLang.value] // element UI 使用
+      lang: currentLang.value, // 當前語言
+      i18n: i18nLocale.value,  // i18n
+      el: localeType[elLocale.value] // element UI 使用
     }
   })
 

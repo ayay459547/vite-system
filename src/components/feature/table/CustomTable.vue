@@ -16,11 +16,13 @@ import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 
 import type { TableColumns } from '@/lib/columns'
 
+import ColumnSetting from './ColumnSetting.vue'
+
 interface PropsTableColumn extends Record<string, any>, TableColumns {}
 
 const props = defineProps({
   tableColumn: {
-    type: Object as PropType<PropsTableColumn>,
+    type: Object as PropType<PropsTableColumn[]>,
     default () {
       return {}
     }
@@ -30,6 +32,18 @@ const props = defineProps({
     default () {
       return []
     }
+  },
+  version: {
+    type: String as PropType<string>,
+    default: '1.0.0',
+    description: `欄位設定 版本
+      如果版本更換 會重置欄位設定`
+  },
+  settingKey: {
+    type: String as PropType<string>,
+    // required: true,
+    default: 'test',
+    description: '欄位設定 在 indexedDB 上的 key'
   },
   label: {
     type: String as PropType<string>,
@@ -149,23 +163,28 @@ onUnmounted(() => {
 <template>
   <div class="table-wrapper">
     <div class="table-setting grid-row">
-      <div class="setting-left grid-col-xs-24 grid-col-md-10 grid-col-lg-8">
+      <div class="setting-left grid-col-xs-24 grid-col-lg-8">
         <CustomButton
           icon-name="file-excel"
-          size="large"
-          text
+          label="Excel"
+          class="i-mr-xs"
           @click="excel"
+        />
+        <ColumnSetting
+          :columns="props.tableColumn"
+          :version="props.version"
+          :setting-key="props.settingKey"
         />
         <slot name="setting-left"></slot>
       </div>
 
-      <div class="setting-center grid-col-xs-24 grid-col-md-4 grid-col-lg-8">
+      <div class="setting-center grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-center">
           <span>{{ props.label }}</span>
         </slot>
       </div>
 
-      <div class="setting-right grid-col-xs-24 grid-col-md-10 grid-col-lg-8">
+      <div class="setting-right grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-right"></slot>
         <div style="width: 160px; overflow: hidden;">
           <FormSelect
@@ -191,7 +210,7 @@ onUnmounted(() => {
         @row-click="onRowClick"
       >
         <ElTableColumn
-          v-for="column in tableColumn"
+          v-for="column in props.tableColumn"
           :key="column.prop"
           v-bind="column"
         >
@@ -294,6 +313,7 @@ onUnmounted(() => {
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;
+    padding: 4px 8px;
 
     &::-webkit-scrollbar {
       width: 4px;
@@ -329,7 +349,7 @@ onUnmounted(() => {
       }
       &-right {
         justify-content: flex-end;
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
           justify-content: center;
         }
       }

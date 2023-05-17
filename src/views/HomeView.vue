@@ -9,7 +9,7 @@
 </template>
 
 <style lang="scss" scoped>
-.about {
+.home {
   width: 100%;
   height: 100%;
 }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue'
 // layout
-import SideSection from '@/components/layout/SideSection.vue'
-import HeaderSection from '@/components/layout/HeaderSection.vue'
-import ViewSection from '@/components/layout/ViewSection.vue'
+import SideSection from '@/components/layout/sideSection/SideSection.vue'
+import HeaderSection from '@/components/layout/topSection/HeaderSection.vue'
+import ViewSection from '@/components/layout/viewSection/ViewSection.vue'
 
 // element ui plus config
 import { ElConfigProvider } from 'element-plus'

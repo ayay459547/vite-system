@@ -12,10 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'element-plus/dist/index.css'
 
 // feature
-import CustomIcon from './feature/CustomIcon.vue'
+import CustomIcon from './feature/icon/CustomIcon.vue'
 import CustomTabs from './feature/CustomTabs.vue'
-import CustomButton from './feature/CustomButton.vue'
-import CustomTable from './feature/CustomTable.vue'
+import CustomButton from './feature/button/CustomButton.vue'
+import CustomTable from './feature/table/CustomTable.vue'
 
 // form
 import FormInput from './form/FormInput.vue'

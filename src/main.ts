@@ -1,7 +1,9 @@
 // polyfill
 import './lib/Polyfill/inject'
 // object 有類似 array 方法
-import './lib/objectFunction'
+import './lib/init/objectFunction'
+// idb
+import './lib/init/init_idb'
 
 import { createApp } from 'vue'
 import App from './App.vue'

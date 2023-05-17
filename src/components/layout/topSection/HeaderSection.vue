@@ -85,13 +85,13 @@ const openLangType = (e: MouseEvent) => {
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen"></HamburgerIcon>
 
-      <div class="header-breadcrumb-list">
+      <div class="header-breadcrumb-lg">
         <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
             <span v-if="path.type === 'text'">{{ path.name }}</span>
             <span v-else style="font-weight: 600;">{{ ' / ' }}</span>
           </template>
       </div>
-      <div class="header-breadcrumb-icon">
+      <div class="header-breadcrumb-xs">
         <CustomIcon
           name="location-dot"
           icon-class="text-danger"
@@ -101,15 +101,31 @@ const openLangType = (e: MouseEvent) => {
         </CustomIcon>
       </div>
     </div>
+
     <div class="header-right">
-      <div class="header-right-effect lang" @click="openLangType">
-        <CustomIcon name="earth-americas" class="icon"/>
-        <span>{{ $t('langType') }}</span>
+      <div class="header-right-effect" @click="openLangType">
+        <div class="lang-md">
+          <CustomIcon name="earth-americas" class="icon"/>
+          <span>{{ $t('langType') }}</span>
+        </div>
+
+        <div class="lang-xs">
+          <CustomIcon name="earth-americas" tooltip>
+            <span>{{ $t('langType') }}</span>
+          </CustomIcon>
+        </div>
       </div>
 
-      <div class="header-right-effect user">
-        <CustomIcon name="user" class="icon"/>
-        <span>{{ 'hi! ' + userName }}</span>
+      <div class="header-right-effect">
+        <div class="user-md">
+          <CustomIcon name="user" class="icon"/>
+          <span>{{ 'hi! ' + userName }}</span>
+        </div>
+        <div class="user-xs">
+          <CustomIcon name="user" tooltip>
+            <span>{{ 'hi! ' + userName }}</span>
+          </CustomIcon>
+        </div>
       </div>
     </div>
   </div>
@@ -129,20 +145,20 @@ const openLangType = (e: MouseEvent) => {
     font-size: 1.2em;
   }
 
-  &-breadcrumb-list {
+  &-breadcrumb-lg {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
   }
-  &-breadcrumb-icon {
+  &-breadcrumb-xs {
     display: none;
   }
 
   @media (max-width: 992px) {
-    &-breadcrumb-list {
+    &-breadcrumb-lg {
       display: none;
     }
-    &-breadcrumb-icon {
+    &-breadcrumb-xs {
       display: block;
     }
   }
@@ -171,17 +187,31 @@ const openLangType = (e: MouseEvent) => {
       white-space: nowrap;
       transition-duration: 0.3s;
 
+      .lang,
+      .user {
+        &-md {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        &-xs {
+          display: none;
+        }
+      }
+
       @media (max-width: 768px) {
-        transition-duration: 0.4s;
-        max-width: 32px;
-        border-bottom: 2px solid #ffffff00;
+        .lang,
+        .user {
+          &-md {
+            display: none;
+          }
+          &-xs {
+            display: block;
+          }
+        }
       }
       &:hover {
         color: $primary;
-        @media (max-width: 768px) {
-          max-width: 200px;
-          border-bottom: 2px solid $primary;
-        }
       }
     }
   }

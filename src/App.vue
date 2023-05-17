@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import GlobalView from '@/components/GlobalView.vue'
+import { useEnvStore } from '@/stores/env'
 
-const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
-const version = (import.meta as any).env.VITE_API_VERSION
+const envStore = useEnvStore()
+const { system, version } = envStore
 
 </script>
 
