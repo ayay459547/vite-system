@@ -70,10 +70,17 @@ const {
 
 <template>
   <div class="login-wrapper">
-    <div class="login-container card">
-      <h1>登入</h1>
+    <img
+      class="login-img-lg"
+      src="@/assets/images/login-lg.svg"
+      alt="login"
+    />
 
-      <div>
+    <div class="login-container card">
+
+      <div class="login-form">
+        <h1>登入</h1>
+
         <FormInput
           v-model="filterForm.account"
           v-bind="filterColumn.account"
@@ -82,12 +89,16 @@ const {
           v-model="filterForm.passowrd"
           v-bind="filterColumn.passowrd"
         />
+
+        <button class="login-button" @click="login">登入</button>
+
+        <img
+          class="login-img-xs"
+          src="@/assets/images/login-xs.svg"
+          alt="login"
+        />
       </div>
 
-      <CustomButton
-        label="登入"
-        @click="login"
-      />
     </div>
   </div>
 </template>
@@ -101,17 +112,126 @@ const {
     top: 0;
     left: 0;
     z-index: $login-index;
-    background-color: #d8dfe2;
+    background-color: #ecf5ff;
     @extend %flex-center;
   }
+
   &-container {
-    width: 80%;
+    width: 40%;
     height: 80%;
-    background-color: #d8dfe2;
+    border-radius: 6px;
+    transition-duration: 0.3s;
+    position: relative;
+    transform: translateX(50%);
+    overflow: hidden;
+
+    @media (max-width: 1200px) {
+      transform: translateX(40%);
+      width: 50%;
+    }
+    @media (max-width: 992px) {
+      transform: translateX(0);
+      width: 70%;
+    }
+    @media (max-width: 576px) {
+      width: 99%;
+      height: 99%;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      animation: animate 6s linear infinite;
+    }
+    &::before {
+      top: -50%;
+      left: -50%;
+      background: linear-gradient(0deg, transparent, #79bbff, #79bbff);
+      transform-origin: bottom right;
+    }
+    &::after {
+      top: 50%;
+      left: 50%;
+      background: linear-gradient(180deg, transparent, #79bbff, #79bbff);
+      transform-origin: top left;
+    }
+  }
+  @keyframes animate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  &-img-lg {
+    position: absolute;
+    left: 32px;
+    bottom: 10%;
+    width: 40%;
+    transition-duration: 0.3s;
+    visibility: visible;
+
+    @media (max-width: 992px) {
+      visibility: hidden;
+    }
+  }
+
+  &-img-xs {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 40%;
+    transition-duration: 0.3s;
+    visibility: hidden;
+
+    @media (max-width: 992px) {
+      visibility: visible;
+    }
+
+    @media (max-width: 576px) {
+      width: 50%;
+      visibility: visible;
+    }
+  }
+
+  &-form {
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #d9ecff;
+    padding: 64px;
+    gap: 16px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+
+    @media (max-width: 992px) {
+      padding: 56px;
+    }
+    @media (max-width: 576px) {
+      padding: 48px;
+    }
+  }
+  &-button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    background-color: #a0cfff;
     border-radius: 6px;
+    transition-duration: 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #409EFF;
+    }
   }
 }
 </style>
