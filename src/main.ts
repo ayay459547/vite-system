@@ -15,17 +15,17 @@ import { createPinia } from 'pinia'
 import router from './router'
 // 全局組件
 import pluginComponents from '@/components/pluginComponents'
+// vue v-指令
+import pluginDirective from '@/directive/pluginDirective'
 // 翻譯
 import i18n from '@/i18n/i18n'
-// 點擊組件外觸發事件
-import vClickOutside from 'click-outside-vue3'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(pluginComponents)
+app.use(pluginDirective)
 app.use(i18n)
-app.use(vClickOutside)
 
 app.mount('#app')

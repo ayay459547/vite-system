@@ -19,7 +19,7 @@ export interface ColumnItem {
   key: string
   label: string
 }
-interface SettingData {
+export interface SettingData {
   version: string
   settingKey: string
   columns: ColumnItem[]

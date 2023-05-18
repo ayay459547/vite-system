@@ -54,7 +54,25 @@ const columnSetting = {
   }
 }
 
-const tableColumns = getTableColumns(columnSetting, 'table')
+const {
+  columns: tableColumns,
+  downloadExcel
+} = getTableColumns(columnSetting, 'table')
+
+const download = () => {
+  downloadExcel(
+    (column) => { return column.label ?? '' },
+    (rowData, settingColumns) => {
+      return settingColumns.map(column => {
+        return rowData[column.key]
+      })
+    }, {
+      label: '測試',
+      settingKey: 'test',
+      tableData: tableData
+    }
+  )
+}
 
 const tableData = [
   {
@@ -88,8 +106,9 @@ const tableData = [
         label="測試表單"
         version="1.0.0"
         setting-key="test"
-        :table-columns="tableColumns"
         :table-data="tableData"
+        :table-columns="tableColumns"
+        @excel="download"
       >
         <template #header="{ column }">{{ column.label }}</template>
       </CustomTable>

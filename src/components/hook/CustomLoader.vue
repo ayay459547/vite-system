@@ -40,7 +40,7 @@ defineExpose<Expose>({
 <style lang="scss" scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
 }
 
 .fade-enter-from,
@@ -55,7 +55,8 @@ defineExpose<Expose>({
     position: fixed;
     z-index: $loading-index;
     cursor: default;
-    background-color: #bbbbbb70;
+    background-color: #efefefa8;
+    // background-image: linear-gradient();
   }
   &-container {
     width: 200px;

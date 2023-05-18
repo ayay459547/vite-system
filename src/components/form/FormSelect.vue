@@ -175,6 +175,13 @@ const hasSlot = (prop: string): boolean => {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
+
+    position: relative;
+  }
+  .el-input__suffix {
+    position: absolute;
+    right: 8px;
+    top: 0px;
   }
   &.validate-error .el-input__wrapper {
     box-shadow: 0 0 0 1px $danger inset;

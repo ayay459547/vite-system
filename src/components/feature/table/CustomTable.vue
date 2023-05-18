@@ -15,12 +15,12 @@ import throttle from '@/lib/throttle'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 
-import type { TableColumns } from '@/lib/columns'
+import type { TableColumnsItem } from '@/lib/columns'
 import type { ColumnItem } from './ColumnSetting.vue'
 
 import ColumnSetting from './ColumnSetting.vue'
 
-export interface PropsTableColumn extends Record<string, any>, TableColumns {}
+export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 
 const props = defineProps({
   tableColumns: {
@@ -167,7 +167,7 @@ const initShowColumns = async () => {
 
   setTimeout(() => {
     loading.value = false
-  }, 400) // 設 0.3s 才不會閃一下
+  }, 400) // 設 0.4s 才不會閃一下
 }
 
 onMounted(async () => {
@@ -181,7 +181,7 @@ onMounted(async () => {
 let tableHeight = ref(500)
 const ROcallback = throttle((entries) => {
   entries.forEach((entry) => {
-    tableHeight.value = entry.contentRect.height - 10
+    tableHeight.value = entry.contentRect.height
   })
 }, 100) as ResizeObserverCallback
 const RO = new ResizeObserver(ROcallback)

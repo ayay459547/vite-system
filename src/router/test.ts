@@ -14,7 +14,7 @@ const testRoutes: RouterTree[] = [
           inject: true,
           complete: true,
           path: '/input-test',
-          component: () => import('@/views/ComponentsTest/Test-input.vue')
+          component: () => import('@/views/ComponentsTest/Input-test.vue')
       },
       {
         name: 'alert-test',

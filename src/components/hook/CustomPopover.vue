@@ -35,7 +35,7 @@ const openPopover: HookList.eventList = (click, eventList, options) => {
 
   const { clientX, clientY } = click
   left.value = clientX
-  top.value = clientY
+  top.value = clientY + 10
 
   if (eventList) {
     callbackList.value = eventList
@@ -43,6 +43,8 @@ const openPopover: HookList.eventList = (click, eventList, options) => {
 
   if (options?.width > 0) {
     popoverWidth.value = options.width
+  } else {
+    popoverWidth.value = 150
   }
 
   setTimeout(() => {
@@ -82,6 +84,7 @@ defineExpose<Expose>({
       :before-enter="calcPlacement"
       :after-leave="resetPlacement"
       :width="popoverWidth"
+      popper-style="padding: 0;"
     >
       <ul v-if="callbackList.length > 0" class="popover-list">
         <li
@@ -108,11 +111,6 @@ defineExpose<Expose>({
 </template>
 
 <style lang="scss" scoped>
-:deep(.popover-container) {
-  .el-popover {
-    padding: 0;
-  }
-}
 .popover {
   &-container {
     width: fit-content;
@@ -124,12 +122,12 @@ defineExpose<Expose>({
     height: fit-content;
   }
   &-item {
-    padding: 4px 16px;
+    padding: 8px 16px;
     height: 24px;
     line-height: 24px;
     display: flex;
-    gap: 16px;
-    font-size: 1em;
+    gap: 12px;
+    font-size: 1.1em;
     align-items: center;
     cursor: pointer;
 

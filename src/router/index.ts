@@ -6,6 +6,7 @@ import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 
 import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 /**
  * @author Caleb
@@ -58,6 +59,14 @@ const baseRoutes: Array<RouteRecordRaw> = [
     },
     path: '/home',
     component: HomeView
+  },
+  {
+    name: 'login',
+    meta: {
+      title: '登入'
+    },
+    path: '/login',
+    component: LoginView
   }
 ]
 

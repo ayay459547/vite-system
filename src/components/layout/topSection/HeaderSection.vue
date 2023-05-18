@@ -9,6 +9,8 @@ import { options as langOptions } from '@/i18n/i18n'
 import { useLocaleStore } from '@/stores/locale'
 import type { Hook, EventItem } from '@/declare/hook'
 
+import { useRouter } from 'vue-router'
+
 const props = defineProps<{
   isOpen: boolean
 }>()
@@ -60,9 +62,9 @@ const userName = 'AAT'
 const localeStore = useLocaleStore()
 
 const hook: Hook = inject('hook')
-const { eventList } = hook()
+const { eventList, loading } = hook()
 
-const callbackList = computed<EventItem[]>(() => {
+const langCallbackList = computed<EventItem[]>(() => {
   return langOptions.map(option => {
     return {
       icon: [],
@@ -75,7 +77,49 @@ const callbackList = computed<EventItem[]>(() => {
 })
 
 const openLangType = (e: MouseEvent) => {
-  eventList(e, callbackList.value)
+  eventList(e, langCallbackList.value, { width: 150 })
+}
+
+const router = useRouter()
+
+const openUserEffect = (e: MouseEvent) => {
+  eventList(e, [
+    {
+      icon: ['fas', 'right-from-bracket'],
+      label: '登出',
+      event: () => {
+        loading(true, '登出中')
+        router.push({ name: 'login' })
+
+        setTimeout(() => {
+          loading(false)
+        }, 500)
+      }
+    },
+    {
+      icon: ['fas', 'window-restore'],
+      label: '視窗模式切換',
+      event: () => {
+        console.log('window screen change')
+      }
+    },
+    {
+      icon: ['fas', 'history'],
+      label: '歷史資訊',
+      event: () => {
+        console.log('show history')
+      }
+    },
+    {
+      icon: ['fas', 'broom'],
+      label: '清除歷史資訊',
+      event: () => {
+        console.log('clear history')
+      }
+    }
+  ], {
+    width: 200
+  })
 }
 
 </script>
@@ -116,7 +160,7 @@ const openLangType = (e: MouseEvent) => {
         </div>
       </div>
 
-      <div class="header-right-effect">
+      <div class="header-right-effect"  @click="openUserEffect">
         <div class="user-md">
           <CustomIcon name="user" class="icon"/>
           <span>{{ 'hi! ' + userName }}</span>
@@ -186,6 +230,7 @@ const openLangType = (e: MouseEvent) => {
       overflow: hidden;
       white-space: nowrap;
       transition-duration: 0.3s;
+      color: #535353;
 
       .lang,
       .user {
