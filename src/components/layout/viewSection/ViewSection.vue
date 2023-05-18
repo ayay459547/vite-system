@@ -64,7 +64,6 @@ const toggleFullScreen = () => {
     width: 100%;
     height: 100%;
     padding: 0 12px 12px;
-    background-color: #e6e6e6;
     flex-direction: column;
     @extend %flex-center;
   }

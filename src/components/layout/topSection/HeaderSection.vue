@@ -180,7 +180,6 @@ const openUserEffect = (e: MouseEvent) => {
   &-container {
     width: 100%;
     height: 64px;
-    background-color: #e6e6e6;
 
     display: flex;
     justify-content: space-between;

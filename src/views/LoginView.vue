@@ -79,6 +79,12 @@ const {
     <div class="login-container card">
 
       <div class="login-form">
+        <img
+          class="login-img-xs"
+          src="@/assets/images/login-xs.svg"
+          alt="login"
+        />
+
         <h1>登入</h1>
 
         <FormInput
@@ -91,12 +97,6 @@ const {
         />
 
         <button class="login-button" @click="login">登入</button>
-
-        <img
-          class="login-img-xs"
-          src="@/assets/images/login-xs.svg"
-          alt="login"
-        />
       </div>
 
     </div>
@@ -104,6 +104,14 @@ const {
 </template>
 
 <style lang="scss" scoped>
+:deep(.login-form) {
+  .el-input__wrapper {
+    height: 48px !important;
+  }
+  .el-input__inner {
+    font-size: 1.2em;
+  }
+}
 .login {
   &-wrapper {
     width: 100vw;
@@ -185,7 +193,7 @@ const {
     position: absolute;
     bottom: 16px;
     right: 16px;
-    width: 40%;
+    width: 30%;
     transition-duration: 0.3s;
     visibility: hidden;
 
@@ -207,7 +215,7 @@ const {
     align-items: center;
     background-color: #d9ecff;
     padding: 64px;
-    gap: 16px;
+    gap: 28px;
     position: absolute;
     top: 3px;
     left: 3px;
@@ -225,12 +233,14 @@ const {
     padding: 16px;
     border: none;
     background-color: #a0cfff;
+    color: inherit;
     border-radius: 6px;
     transition-duration: 0.3s;
     cursor: pointer;
 
     &:hover {
       background-color: #409EFF;
+      color: #fff;
     }
   }
 }

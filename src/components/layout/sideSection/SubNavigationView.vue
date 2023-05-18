@@ -163,7 +163,7 @@ export default defineComponent({
     }
 
     &:hover {
-      background-color: #606060;
+      background-color: lighten($side-bg-color, 5%);
 
       & > h3 {
         transform: translateX(4px);
@@ -196,7 +196,7 @@ export default defineComponent({
     cursor: pointer;
 
     &:hover {
-      background-color: #606060;
+      background-color: lighten($side-bg-color, 5%);
       .item-title {
         transform: translateX(4px);
       }

@@ -130,6 +130,7 @@ provide<Hook>('hook', () => {
     display: flex;
     flex-direction: column;
     overflow: auto;
+    background-color: #e6ecf2;
   }
   &-header {
     width: 100%;
