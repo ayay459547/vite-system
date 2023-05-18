@@ -25,12 +25,12 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Alert-test.vue')
       },
       {
-        name: 'indexed-db',
-        title: 'indexedDB測試',
+        name: 'i18n-test',
+        title: 'i18n翻譯測試',
         inject: true,
         complete: true,
-        path: '/indexed-db',
-        component: () => import('@/views/ComponentsTest/Indexed-db.vue')
+        path: '/i18n-test',
+        component: () => import('@/views/ComponentsTest/I18n-test.vue')
       },
       {
         name: 'table-test',

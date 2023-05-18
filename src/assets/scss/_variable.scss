@@ -21,8 +21,9 @@ $nav-md-width: 250px;
 $nav-lg-width: 300px;
 
 /* z-index */
-$side-index: 9999;
-$loading: 999;
+$loading-index: 999;
+$popover-index: 1;
+// $side-index: 9999;
 
 %flex-center {
   display: flex;

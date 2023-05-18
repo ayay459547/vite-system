@@ -7,11 +7,11 @@ import Swal from 'sweetalert2'
 const value = ref<string>('')
 const valuePhone = ref<string>('')
 
-const hook: () => Hook = inject('hook')
-const { openEventList } = hook()
+const hook: Hook = inject('hook')
+const { eventList } = hook()
 
 const openPopover = (e: MouseEvent) => {
-  openEventList(e, [
+  eventList(e, [
     {
       icon: ['fas', 'user'],
       label: 'callback-1',

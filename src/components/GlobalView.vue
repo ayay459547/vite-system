@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import { ref, computed, provide } from 'vue'
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
@@ -13,7 +14,11 @@ import { useLocaleStore } from '@/stores/locale'
 
 // hook
 import type { Hook } from '@/declare/hook'
+import CustomLoader from './hook/CustomLoader.vue'
 import CustomPopover from '@/components/hook/CustomPopover.vue'
+
+import { useI18n } from 'vue-i18n'
+const { t, te } = useI18n()
 
 const navIsOpen = ref(true)
 
@@ -22,13 +27,29 @@ const locale = computed(() => {
   return localeStore.locale
 })
 
-const customPopover = ref(null)
-provide<() => Hook>('hook', () => {
+// hook
+const customLoader: Ref<InstanceType<typeof CustomLoader> | null> = ref(null)
+const customPopover: Ref<InstanceType<typeof CustomPopover> | null> = ref(null)
+provide<Hook>('hook', () => {
   return {
-    openEventList: (click, eventList, options) => {
+    loading: (isOpen, message) => {
+      if (customLoader.value && isOpen) {
+        const _message = message ?? 'loading'
+
+        customLoader.value.openLoader(_message)
+      } else {
+        customLoader.value.closeLoader()
+      }
+    },
+    eventList: (click, eventList, options) => {
       if (customPopover.value) {
         customPopover.value.openPopover(click, eventList, options)
       }
+    },
+    i18nTranslate: (key) => {
+      if (te(key)) return t(key)
+
+      return `N/A[${t(key)}]`
     }
   }
 })
@@ -65,6 +86,7 @@ provide<() => Hook>('hook', () => {
       </div>
 
       <!-- hook -->
+      <CustomLoader ref="customLoader"/>
       <CustomPopover ref="customPopover"/>
     </div>
   </ElConfigProvider>

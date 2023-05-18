@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import type { Hook } from '@/declare/hook'
 import ExcelJs from 'exceljs'
 
+const hook: Hook = inject('hook')
+const { loading } = hook()
 
 function onClick () {
   const workbook = new ExcelJs.Workbook() // 創建試算表檔案
@@ -31,11 +35,21 @@ function onClick () {
   })
 }
 
+function changeLoading () {
+  loading(true, 'loader-test')
+
+  setTimeout(() => {
+    loading(false)
+  }, 3000)
+}
+
 </script>
 
 <template>
   <div class="excel">
     <CustomButton label="excel" @click="onClick"/>
+
+    <CustomButton label="loading-test" @click="changeLoading"/>
   </div>
 </template>
 

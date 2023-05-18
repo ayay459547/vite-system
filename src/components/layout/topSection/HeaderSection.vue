@@ -59,10 +59,10 @@ const userName = 'AAT'
 
 const localeStore = useLocaleStore()
 
-const hook: () => Hook = inject('hook')
-const { openEventList } = hook()
+const hook: Hook = inject('hook')
+const { eventList } = hook()
 
-const eventList = computed<EventItem[]>(() => {
+const callbackList = computed<EventItem[]>(() => {
   return langOptions.map(option => {
     return {
       icon: [],
@@ -75,7 +75,7 @@ const eventList = computed<EventItem[]>(() => {
 })
 
 const openLangType = (e: MouseEvent) => {
-  openEventList(e, eventList.value)
+  eventList(e, callbackList.value)
 }
 
 </script>

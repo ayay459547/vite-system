@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElPopover } from 'element-plus'
-import type { Hook, EventItem } from '@/declare/hook'
+import type { EventItem } from '@/declare/hook'
+import { HookList } from '@/declare/hook'
 import debounce from '@/lib/debounce'
 
 type Placemetn = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
@@ -29,13 +30,7 @@ const callEvent = (callback: Function) => {
 }
 const debounceCallEvent = debounce(callEvent, 200)
 
-const openPopover = (
-  click: MouseEvent,
-  eventList?: Array<EventItem>,
-  options?: {
-    width: number
-  }
-) => {
+const openPopover: HookList.eventList = (click, eventList, options) => {
   if (visible.value) return
 
   const { clientX, clientY } = click
@@ -61,7 +56,12 @@ const closePopover = () => {
   }
 }
 
-defineExpose({
+interface Expose {
+  openPopover:  HookList.eventList
+  closePopover: () => void
+}
+
+defineExpose<Expose>({
   openPopover,
   closePopover
 })
@@ -118,6 +118,7 @@ defineExpose({
     width: fit-content;
     height: fit-content;
     position: fixed;
+    z-index: $popover-index;
   }
   &-list {
     height: fit-content;
