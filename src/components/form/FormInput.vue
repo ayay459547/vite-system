@@ -6,9 +6,11 @@ import { useField } from 'vee-validate'
 import type { VeeRes, ValidateType } from '@/lib/validate'
 import validateFun from '@/lib/validate'
 
+type ModelValue = string | null
+
 const props = defineProps({
   modelValue: {
-    type: String as PropType<string>,
+    type: [String, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {
@@ -65,13 +67,13 @@ const validateRes = computed<string>(() => {
 })
 
 // 驗證
-const validateField = (veeValue: string) => {
+const validateField = (veeValue: ModelValue) => {
   // 必填
-  if (props.required && [null, undefined, ''].includes(veeValue.trim())) {
+  if (props.required && (veeValue?.trim() ?? '') === '') {
     return '此輸入框為必填'
   }
   // 非必填
-  if ([null, undefined, ''].includes(veeValue.trim())) return true
+  if ((veeValue?.trim() ?? '') === '') return true
 
   // 多個驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {

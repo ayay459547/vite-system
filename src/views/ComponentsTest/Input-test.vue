@@ -4,42 +4,39 @@ import { getFormColumns } from '@/lib/columns'
 const columnSetting = {
   passowrd: {
     label: '密碼',
-    fitler: {
-      default: '',
-      direction: 'row',
+    filter: {
+      default: null,
       validate: ['password'],
       required: true
     }
   },
   phone: {
     label: '手機',
-    fitler: {
-      default: '',
-      direction: 'row',
+    filter: {
+      default: null,
       validate: ['phone'],
       required: false
     }
   },
-  passowrd2: {
-    label: '密碼',
-    fitler: {
-      default: '',
-      validate: ['password'],
+  date: {
+    label: '選擇日期',
+    filter: {
+      default: null,
       required: true
     }
   },
-  phone2: {
-    label: '手機',
-    fitler: {
-      default: '',
-      validate: ['phone'],
-      required: false
+  daterange: {
+    label: '選擇日期區間',
+    filter: {
+      type: 'daterange',
+      default: [],
+      required: true
     }
   },
   select: {
     label: '選擇框',
-    fitler: {
-      default: '',
+    filter: {
+      default: null,
       required: true,
       options: [
         { label: 'test1', value: '0' },
@@ -55,7 +52,7 @@ const {
   forms: filterForm,
   reset: resetForm,
   validate: validateForm
-} = getFormColumns(columnSetting, 'fitler')
+} = getFormColumns(columnSetting, 'filter')
 
 const submit = () => {
   validateForm().then(successList => {
@@ -78,13 +75,14 @@ const submit = () => {
       v-bind="filterColumn.phone"
     />
 
-    <FormInput
-      v-model="filterForm.passowrd2"
-      v-bind="filterColumn.passowrd2"
+    <FormDatePicker
+      v-model="filterForm.date"
+      v-bind="filterColumn.date"
     />
-    <FormInput
-      v-model="filterForm.phone2"
-      v-bind="filterColumn.phone2"
+
+    <FormDatePicker
+      v-model="filterForm.daterange"
+      v-bind="filterColumn.daterange"
     />
 
     <FormSelect

@@ -18,6 +18,7 @@ import CustomButton from './feature/button/CustomButton.vue'
 import CustomTable from './feature/table/CustomTable.vue'
 
 // form
+import FormDatePicker from './form/FormDatePicker.vue'
 import FormInput from './form/FormInput.vue'
 import FormSelect from './form/FormSelect.vue'
 
@@ -31,6 +32,7 @@ const pluginComponents = {
     app.component('CustomButton', CustomButton)
     app.component('CustomTable', CustomTable)
 
+    app.component('FormDatePicker', FormDatePicker)
     app.component('FormInput', FormInput)
     app.component('FormSelect', FormSelect)
   }

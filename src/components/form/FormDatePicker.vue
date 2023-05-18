@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ElInput } from 'element-plus'
+import { ElDatePicker } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
-import type { VeeRes, ValidateType } from '@/lib/validate'
-import validateFun from '@/lib/validate'
+import type { ValidateType } from '@/lib/validate'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
+type BaseValue = string | null
+type ModelValue = BaseValue | [BaseValue, BaseValue]
+
+type PickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
 
 const props = defineProps({
   modelValue: {
-    type: String as PropType<string>,
+    type: [Array, String, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {
@@ -41,12 +47,17 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: false,
     default: false
+  },
+  type: {
+    type: String as PropType<PickerType>,
+    default: 'date'
   }
 })
 
 const bindAttributes = computed(() => {
   return {
-    clearable: props.clearable
+    clearable: props.clearable,
+    type: props.type
   }
 })
 
@@ -54,9 +65,7 @@ const emit = defineEmits([
   'update:modelValue',
   'blur',
   'focus',
-  'change',
-  'input',
-  'clear'
+  'change'
 ])
 
 const validateRes = computed<string>(() => {
@@ -65,45 +74,23 @@ const validateRes = computed<string>(() => {
 })
 
 // 驗證
-const validateField = (veeValue: string) => {
-  // 必填
-  if (props.required && [null, undefined, ''].includes(veeValue.trim())) {
-    return '此輸入框為必填'
-  }
+const validateField = (veeValue: ModelValue) => {
   // 非必填
-  if ([null, undefined, ''].includes(veeValue.trim())) return true
+  if (!props.required) return true
 
-  // 多個驗證格式
-  if (Object.prototype.toString.call(props.validate) === '[object Array]') {
-    for (let type of (props.validate as ValidateType[])) {
-      const { test, msg } = (validateFun[type](veeValue) as VeeRes)
-      if (!test) return msg
-    }
-  }
+  // 必填
+  if (Array.isArray(veeValue)) {
+    const [ value1, value2 ] = veeValue
 
-  // 單一驗證格式
-  if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { test, msg } = (validateFun[(props.validate as ValidateType)](veeValue) as VeeRes)
-    if (!test) return msg
+    if([null, undefined, ''].includes(value1)) return '此輸入框為必填'
+    if([null, undefined, ''].includes(value2)) return '此輸入框為必填'
+  } else {
+    if([null, undefined, ''].includes(veeValue)) return '此輸入框為必填'
   }
 
   return true
 }
 
-/**
- * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
- * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
- * 每當useField值發生變化時，它都會發出update:modelValue事件，
- * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
- */
-
-/* 一般寫法
-const tempValue: WritableComputedRef<string> = computed({
-  get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
-})
-
-*/
 const {
   errorMessage,     // 錯誤訊息
   value: tempValue, // 值
@@ -118,33 +105,16 @@ const validationListeners = computed(() => {
     focus: (e: FocusEvent): void => {
       emit('focus', e)
     },
-    clear: (): void => {
-      emit('clear')
-    },
     blur: (e: FocusEvent): void => {
       emit('blur', e)
-      handleChange(e, true)
     },
     change: (value: string | number): void => {
       emit('change', value)
       handleChange(value, true)
-    },
-    input: (value: string | number): void => {
-      emit('input', value)
-      handleChange(value, true)
     }
   }
-  if ([null, undefined, ''].includes(errorMessage.value)) {
-    return {
-      ...event,
-      input: (value: string | number): void => {
-        emit('input', value)
-        handleChange(value, false)
-      }
-    }
-  } else {
-    return event
-  }
+
+  return event
 })
 
 defineExpose({
@@ -170,29 +140,25 @@ const hasSlot = (prop: string): boolean => {
       <span>{{ props.label }}</span>
     </label>
 
-    <ElInput
+    <ElDatePicker
       v-model="tempValue"
       placeholder="Please input"
       class="input-main"
+      format="YYYY-MM-DD"
+      value-format="YYYY-MM-DD"
+      :start-placeholder="t('startTime')"
+      :end-placeholder="t('endTime')"
       :class="[`validate-${validateRes}`]"
       v-bind="bindAttributes"
       v-on="validationListeners"
     >
-      <!-- 輸入框用 -->
-      <template v-if="hasSlot('prepend')" #prepend>
-        <slot name="prepend"></slot>
+      <template v-if="hasSlot('default')" #default>
+        <slot name="default"></slot>
       </template>
-      <template v-if="hasSlot('append')" #append>
-        <slot name="append"></slot>
+      <template v-if="hasSlot('range-separator')" #range-separator>
+        <slot name="range-separator"></slot>
       </template>
-      <!-- 圖示用 -->
-      <template v-if="hasSlot('prefix')" #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="hasSlot('suffix')" #suffix>
-        <slot name="suffix"></slot>
-      </template>
-    </ElInput>
+    </ElDatePicker>
 
     <span class="input-error">{{ errorMessage }}</span>
   </div>
@@ -200,6 +166,15 @@ const hasSlot = (prop: string): boolean => {
 
 <style lang="scss" scoped>
 :deep(.input-main) {
+  &.el-date-editor {
+    width: 100% !important;
+    max-height: 32px !important;
+  }
+  &.validate-error.el-date-editor {
+    box-shadow: 0 0 0 1px $danger inset;
+    background-color: lighten($danger, 20%);
+  }
+
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;

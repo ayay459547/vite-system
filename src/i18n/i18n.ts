@@ -1,13 +1,15 @@
 import { createI18n } from 'vue-i18n'
 import test from './test'
+import components from './components'
 
 const langMap = {
+  ...test,
+  ...components,
   langType: {
     zhTw: '繁體中文',
     zhCn: '简体中文',
     en: 'English'
-  },
-  ...test
+  }
 }
 
 export type Messages = {

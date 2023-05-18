@@ -4,9 +4,11 @@ import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
 
+type ModelValue = string | null
+
 const props = defineProps({
   modelValue: {
-    type: String as PropType<string>,
+    type: [String, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {
@@ -66,13 +68,14 @@ const validateRes = computed<string>(() => {
 })
 
 // 驗證
-const validateField = (veeValue: string) => {
+const validateField = (veeValue: ModelValue) => {
+  // 非必填
+  if (!props.required) return true
+
   // 必填
   if (props.required && [null, undefined, ''].includes(veeValue)) {
     return '此輸入框為必填'
   }
-  // 非必填
-  if ([null, undefined, ''].includes(veeValue)) return true
 
   return true
 }
@@ -110,14 +113,8 @@ const validationListeners = computed(() => {
       emit('visible-change', value)
     }
   }
-  if ([null, undefined, ''].includes(errorMessage.value)) {
-    return {
-      ...event
-    }
-  } else {
-    return event
-  }
 
+  return event
 })
 
 defineExpose({

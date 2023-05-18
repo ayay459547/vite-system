@@ -4,7 +4,7 @@ import type { Hook } from '@/declare/hook'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
-const hook: () => Hook = inject('hook')
+const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
 
 </script>

@@ -52,7 +52,7 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Form
       key,
       validateKey: key,
       clearable: true,
-      default: '',
+      default: null,
       validate: [],
       required: false,
       resizable: true,
