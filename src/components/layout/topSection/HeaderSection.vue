@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WritableComputedRef, ComputedRef } from 'vue'
-import { computed, inject } from 'vue'
+import { ref, computed, inject } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 import { useRoutesStore } from '@/stores/routes'
@@ -12,11 +12,13 @@ import type { Hook, EventItem } from '@/declare/hook'
 import { useRouter } from 'vue-router'
 
 const props = defineProps<{
-  isOpen: boolean
+  isOpen: boolean,
+  historyIsOpen: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void
+  (e: 'changeHistory', value: boolean): void
 }>()
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
@@ -81,6 +83,18 @@ const openLangType = (e: MouseEvent) => {
 }
 
 const router = useRouter()
+const isFullScreen = ref(false)
+const toggleFullScreen = () => {
+  if (isFullScreen.value) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+      isFullScreen.value = false
+    }
+  } else {
+    document.documentElement.requestFullscreen()
+    isFullScreen.value = true
+  }
+}
 
 const openUserEffect = (e: MouseEvent) => {
   eventList(e, [
@@ -97,24 +111,17 @@ const openUserEffect = (e: MouseEvent) => {
       }
     },
     {
-      icon: ['fas', 'window-restore'],
-      label: '視窗模式切換',
+      icon: ['fas',  isFullScreen.value ? 'window-restore' : 'expand'],
+      label: isFullScreen.value ? '視窗模式' : '全螢幕模式',
       event: () => {
-        console.log('window screen change')
+        toggleFullScreen()
       }
     },
     {
-      icon: ['fas', 'history'],
-      label: '歷史資訊',
+      icon: ['fas', props.historyIsOpen ? 'eye-slash' : 'history'],
+      label: `${props.historyIsOpen ? '隱藏' : '顯示' }歷史選項`,
       event: () => {
-        console.log('show history')
-      }
-    },
-    {
-      icon: ['fas', 'broom'],
-      label: '清除歷史資訊',
-      event: () => {
-        console.log('clear history')
+        emit('changeHistory', !props.historyIsOpen)
       }
     }
   ], {

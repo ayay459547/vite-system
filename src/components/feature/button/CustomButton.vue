@@ -78,6 +78,11 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: ''
+  },
+  iconMove: {
+    type: String as PropType<'none' | 'translate'| 'rotate' | 'scale'>,
+    required: false,
+    default: 'none'
   }
 })
 
@@ -103,6 +108,8 @@ const onClick = ($event: Event) => {
       >
         <template v-if="props.iconName.length > 0" #icon>
           <CustomIcon
+            class="icon"
+            :class="`icon-${iconMove}`"
             :size="ElSize[props.size]"
             :type="iconType[props.iconType]"
             :name="props.iconName"
@@ -150,6 +157,33 @@ const onClick = ($event: Event) => {
   &-container {
     width: fit-content;
     height: fit-content;
+
+    .icon {
+      transition-duration: 0.3s;
+      &-scale {
+        transform: scale(1.01);
+      }
+      &-rotate {
+        transform: rotateZ(0);
+      }
+      &-translate {
+        transform: translateX(0);
+      }
+    }
+
+    &:hover {
+      .icon {
+        &-scale {
+          transform: scale(1.25);
+        }
+        &-rotate {
+          transform: rotateZ(-90deg);
+        }
+        &-translate {
+          transform: translateX(-4px);
+        }
+      }
+    }
   }
 
   &-label {

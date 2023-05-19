@@ -87,7 +87,6 @@ const setRoutesConfig = (route: Navigation) => {
   &-container {
     width: 100%;
     height: 100%;
-    // overflow-y: auto;
     display: flex;
     flex-wrap: nowrap;
     transition-duration: 0.3s;
@@ -126,7 +125,7 @@ const setRoutesConfig = (route: Navigation) => {
     color: #fff;
     font-weight: 600;
     letter-spacing: 1px;
-    background-color: $side-bg-color;
+    background-color: $system-bg-color;
     transition-duration: 0.3s;
 
     border-radius: 6px;
@@ -137,7 +136,7 @@ const setRoutesConfig = (route: Navigation) => {
     cursor: pointer;
 
     &:hover {
-      background-color: lighten($side-bg-color, 5%);
+      background-color: lighten($system-bg-color, 5%);
 
       .item-title {
         transform: translateX(4px);

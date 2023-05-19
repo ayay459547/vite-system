@@ -66,7 +66,7 @@ onMounted(() => {
   &-container {
     width: $nav-lg-width;
     height: 100%;
-    background-color: $side-bg-color;
+    background-color: $system-bg-color;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

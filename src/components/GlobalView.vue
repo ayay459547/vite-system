@@ -21,6 +21,10 @@ import { useI18n } from 'vue-i18n'
 const { t, te } = useI18n()
 
 const navIsOpen = ref(true)
+const historyIsOpen = ref(true)
+const changeHistory = (v: boolean) => {
+  historyIsOpen.value = v
+}
 
 const localeStore = useLocaleStore()
 const locale = computed(() => {
@@ -76,10 +80,14 @@ provide<Hook>('hook', () => {
 
       <div class="layout-right">
         <div class="layout-header">
-          <HeaderSection v-model:isOpen="navIsOpen"/>
+          <HeaderSection
+            v-model:isOpen="navIsOpen"
+            :history-is-open="historyIsOpen"
+            @change-history="changeHistory"
+          />
         </div>
         <div class="layout-view">
-          <ViewSection>
+          <ViewSection :history-is-open="historyIsOpen">
             <RouterView />
           </ViewSection>
         </div>
@@ -130,7 +138,7 @@ provide<Hook>('hook', () => {
     display: flex;
     flex-direction: column;
     overflow: auto;
-    background-color: #e6ecf2;
+    background-color: lighten($system-bg-color, 60%);
   }
   &-header {
     width: 100%;

@@ -39,7 +39,17 @@ const props = defineProps({
     default: ''
   },
   // element ui plus
+  type: {
+    type: String as PropType<string>,
+    required: false,
+    default: 'text'
+  },
   clearable: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  },
+  showPassword: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false
@@ -48,7 +58,9 @@ const props = defineProps({
 
 const bindAttributes = computed(() => {
   return {
-    clearable: props.clearable
+    type: props.type,
+    clearable: props.clearable,
+    showPassword: props.showPassword
   }
 })
 

@@ -20,12 +20,12 @@ const login = () => {
     setTimeout(() => {
       loading(false)
 
-      swal({
-        icon: 'success',
-        title: '登入成功',
-        text: '歡迎使用',
-        showCancelButton: false
-      })
+      // swal({
+      //   icon: 'success',
+      //   title: '登入成功',
+      //   text: '歡迎使用',
+      //   showCancelButton: false
+      // })
     }, 500)
   }).catch(() => {
     setTimeout(() => {
@@ -54,6 +54,7 @@ const columnSetting = {
   passowrd: {
     label: '密碼',
     fitler: {
+      type: 'password',
       default: '',
       required: true
     }
@@ -90,11 +91,20 @@ const {
         <FormInput
           v-model="filterForm.account"
           v-bind="filterColumn.account"
-        />
+        >
+          <template #prefix>
+            <CustomIcon name="user"/>
+          </template>
+        </FormInput>
         <FormInput
           v-model="filterForm.passowrd"
           v-bind="filterColumn.passowrd"
-        />
+          show-password
+        >
+          <template #prefix>
+            <CustomIcon name="unlock-keyhole"/>
+          </template>
+        </FormInput>
 
         <button class="login-button" @click="login">登入</button>
       </div>

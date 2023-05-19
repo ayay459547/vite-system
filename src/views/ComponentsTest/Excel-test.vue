@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import ExcelJs from 'exceljs'
 
@@ -43,6 +43,11 @@ function changeLoading () {
   }, 3000)
 }
 
+const modalShow = ref(false)
+const openModal = () => {
+  modalShow.value = true
+}
+
 </script>
 
 <template>
@@ -50,6 +55,10 @@ function changeLoading () {
     <CustomButton label="excel" @click="onClick"/>
 
     <CustomButton label="loading-test" @click="changeLoading"/>
+
+    <CustomButton label="modal-test" @click="openModal"/>
+
+    <CustomModal v-model="modalShow"/>
   </div>
 </template>
 
@@ -58,5 +67,8 @@ function changeLoading () {
   width: 100%;
   height: 100%;
   padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 </style>

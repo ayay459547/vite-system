@@ -169,6 +169,7 @@ const hasSlot = (prop: string): boolean => {
   &.el-date-editor {
     width: 100% !important;
     max-height: 32px !important;
+    border-radius: 4px;
   }
   &.validate-error.el-date-editor {
     box-shadow: 0 0 0 1px $danger inset;

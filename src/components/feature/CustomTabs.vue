@@ -10,7 +10,7 @@ type ListType = Array<{
 }>
 const props = defineProps({
   modelValue: {
-    type: String as PropType<string>,
+    type: [String, null] as PropType<string | null>,
     required: true
   },
   list: {

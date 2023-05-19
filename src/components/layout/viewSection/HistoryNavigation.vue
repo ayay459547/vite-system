@@ -11,7 +11,11 @@ const { historyNavigation } = storeToRefs(routesStore)
 
 const { currentNavigation } = storeToRefs(routesStore)
 watch(currentNavigation, (newValue) => {
-  currentTab.value = newValue.name
+  if (newValue) {
+    currentTab.value = newValue.name
+  } else {
+    currentTab.value = null
+  }
 })
 
 type ListType = Array<{
@@ -70,8 +74,9 @@ const setRoutesConfig = (route: Navigation) => {
     </CustomTabs>
     <div class="history-clear">
       <CustomButton
-        icon-name="trash-can"
-        label="清除"
+        label="清除歷史資訊"
+        icon-name="broom"
+        icon-move="rotate"
         @click="clearHistory"
       />
     </div>
