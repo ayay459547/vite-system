@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import type { Hook } from '@/declare/hook'
-import { swal } from '@/lib/utils'
 import Swal from 'sweetalert2'
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')
 
 const hook: Hook = inject('hook')
-const { eventList } = hook()
+const { eventList, swal } = hook()
 
 const openPopover = (e: MouseEvent) => {
   eventList(e, [

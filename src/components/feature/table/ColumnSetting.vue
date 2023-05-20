@@ -114,6 +114,7 @@ onBeforeMount(async () => {
       placement="bottom"
       :width="200"
       trigger="click"
+      popper-style="padding: 4px;"
     >
       <template #reference>
         <CustomButton

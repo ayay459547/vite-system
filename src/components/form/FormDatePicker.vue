@@ -133,7 +133,13 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div class="input-container" :class="props.direction">
+  <div
+    class="input-container"
+    :class="[
+      `input-${validateKey}-${validateRes}`,
+      `${props.direction}`
+    ]"
+  >
     <label v-if="props.label.length > 0" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>
       <span v-else class="input-prefix"></span>

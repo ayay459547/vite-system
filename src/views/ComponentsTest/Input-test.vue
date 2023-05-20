@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { getFormColumns } from '@/lib/columns'
+import { getFormSetting } from '@/lib/columns'
+import { scrollToEl } from '@/lib/utils'
+import {
+  FormInput,
+  FormDatePicker,
+  FormSelect
+} from '@/components'
 
 const columnSetting = {
   passowrd: {
@@ -52,13 +58,15 @@ const {
   forms: filterForm,
   reset: resetForm,
   validate: validateForm
-} = getFormColumns(columnSetting, 'filter')
+} = getFormSetting(columnSetting, 'filter')
 
 const submit = () => {
   validateForm().then(successList => {
     console.log('vee success => ', successList)
   }).catch(errorList => {
     console.log('vee error => ', errorList)
+    const el = errorList[0].getDom()
+    scrollToEl(el)
   })
 }
 

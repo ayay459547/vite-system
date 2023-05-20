@@ -1,3 +1,5 @@
+import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
+
 export declare type IconType = 'fas' | 'far' | 'fab'
 
 export declare interface EventItem {
@@ -17,9 +19,12 @@ export declare namespace HookList {
   ) => void
 
   type i18nTranslate = (key: string) => string
+
+  type swal = (options: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 }
 export declare type Hook = () => {
   loading: HookList.loading
   eventList: HookList.eventList
   i18nTranslate: HookList.i18nTranslate
+  swal: HookList.swal
 }

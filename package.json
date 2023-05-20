@@ -2,6 +2,7 @@
   "name": "vite-system",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite --open --force",
     "build": "run-p type-check build-only",
@@ -25,6 +26,7 @@
     "axios": "^1.3.4",
     "click-outside-vue3": "^4.0.1",
     "dayjs": "^1.11.7",
+    "default-passive-events": "^2.0.0",
     "echarts": "^5.4.2",
     "element-plus": "^2.3.0",
     "exceljs": "^4.3.0",

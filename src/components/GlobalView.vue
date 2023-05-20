@@ -20,6 +20,9 @@ import CustomPopover from '@/components/hook/CustomPopover.vue'
 import { useI18n } from 'vue-i18n'
 const { t, te } = useI18n()
 
+import type { SweetAlertOptions } from 'sweetalert2'
+import Swal from 'sweetalert2'
+
 const navIsOpen = ref(true)
 const historyIsOpen = ref(true)
 const changeHistory = (v: boolean) => {
@@ -54,6 +57,22 @@ provide<Hook>('hook', () => {
       if (te(key)) return t(key)
 
       return `N/A[${t(key)}]`
+    },
+    swal: (options: SweetAlertOptions<any, any>) => {
+      const defaultOPtions = {
+        // info, warning, success, error, question
+        // icon: 'info',
+        reverseButtons: true,
+        confirmButtonText: '確認',
+        confirmButtonColor: '#409eff',
+        showCancelButton: true,
+        cancelButtonText: '取消',
+        ...options
+      }
+
+      return Swal.fire({
+        ...defaultOPtions
+      })
     }
   }
 })

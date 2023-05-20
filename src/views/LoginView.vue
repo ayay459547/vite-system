@@ -2,13 +2,12 @@
 import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
-import { swal } from '@/lib/utils'
-import { getFormColumns } from '@/lib/columns'
+import { getFormSetting } from '@/lib/columns'
 
 const router = useRouter()
 
 const hook: Hook = inject('hook')
-const { loading } = hook()
+const { loading, swal } = hook()
 
 const login = () => {
   loading(true, '驗證登入中')
@@ -65,7 +64,7 @@ const {
   columns: filterColumn,
   forms: filterForm,
   validate: validateForm
-} = getFormColumns(columnSetting, 'fitler')
+} = getFormSetting(columnSetting, 'fitler')
 
 </script>
 

@@ -8,7 +8,7 @@ import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/idb'
 import type { ColumnItem, SettingData } from '@/components/feature/table/ColumnSetting.vue'
 
-export interface FormColumns {
+export interface FormSetting {
   columns: Record<string, any>
   forms: Record<string, any>
   reset: () => void
@@ -36,7 +36,7 @@ export interface FormColumnsItem {
  * @param {String} type 取得 columnSetting 中的類型
  * @returns {Ojbect}
  */
-export const getFormColumns = (columns: Record<string, any>, type: string): FormColumns => {
+export const getFormSetting = (columns: Record<string, any>, type: string): FormSetting => {
   const resColumns = {}
   const formMap = reactive<Record<string, any>>({})
   const refMap = reactive<Record<string, any>>({})
@@ -91,7 +91,14 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Form
       refMap.$forEach((input: RefItem) => {
         const { key, value, validate } = input
         validateList.push(validate())
-        validateInput.push({ key, value, el: input })
+        validateInput.push({
+          key,
+          value,
+          el: input,
+          getDom: () => {
+            return document.getElementsByClassName(`input-${key}-error`)[0]
+          }
+        })
       })
 
       await Promise.all(validateList).then(resList => {
@@ -125,9 +132,9 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Form
 
 }
 
-export interface TableColumns {
+export interface TableSetting {
   tableSetting: {
-    label: string
+    title: string
     version: string
     settingKey: string
     tableColumns: Record<string, any>,
@@ -150,16 +157,16 @@ export interface TableColumnsItem {
  * @param {Object} options 設定用的參數
  * @returns {Ojbect}
  */
-export const getTableColumns = (
+export const getTableSetting = (
   columns: Record<string, any>,
   type: string,
   options: {
-    label: string,
+    title: string,
     version: string,
     settingKey: string
   }
-): TableColumns => {
-  const { label, version, settingKey } = options
+): TableSetting => {
+  const { title, version, settingKey } = options
 
   // 設定 table 用的 column
   const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -185,7 +192,7 @@ export const getTableColumns = (
   const downloadExcel = async (tableData: Record<string, any>[]) => {
     const workbook = new ExcelJs.Workbook() // 創建試算表檔案
     const worksheet = workbook.addWorksheet(
-      label,
+      title,
       {
         properties: {
           tabColor: { argb: '3D8BFF' },
@@ -248,7 +255,7 @@ export const getTableColumns = (
   }
   return {
     tableSetting: {
-      label,
+      title,
       version,
       settingKey,
       tableColumns: resColumns

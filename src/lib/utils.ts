@@ -1,7 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
-import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
-import Swal from 'sweetalert2'
 
 const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
 
@@ -113,23 +111,6 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
   return (target as T)
 }
 
-export const swal = (options: SweetAlertOptions<any, any>): Promise<SweetAlertResult<any>> => {
-  const defaultOPtions = {
-    // info, warning, success, error, question
-    // icon: 'info',
-    reverseButtons: true,
-    confirmButtonText: '確認',
-    confirmButtonColor: '#409eff',
-    showCancelButton: true,
-    cancelButtonText: '取消',
-    ...options
-  }
-
-  return Swal.fire({
-    ...defaultOPtions
-  })
-}
-
 /**
  * @author Caleb
  * @description 移動到指定的Dom元素 預設跑到專案最上面
@@ -142,7 +123,7 @@ export const swal = (options: SweetAlertOptions<any, any>): Promise<SweetAlertRe
 export const scrollToEl = (el: Element = document.querySelector('#app'), options: ScrollIntoViewOptions = {}): void => {
   const setting: ScrollIntoViewOptions = {
     behavior: 'smooth',
-    block: 'end',
+    block: 'start',
     inline: 'nearest',
     ...options
   }

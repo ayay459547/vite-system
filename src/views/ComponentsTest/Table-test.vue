@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { getTableColumns } from '@/lib/columns'
+import { CustomTable } from '@/components'
+import { getTableSetting } from '@/lib/columns'
 
 const columnSetting = {
   date: {
@@ -25,11 +26,11 @@ const columnSetting = {
 }
 
 const tableOptions = {
-  label: '測試表單',
+  title: '測試表單',
   version: '1.0.0',
   settingKey: 'test'
 }
-const { tableSetting, downloadExcel } = getTableColumns(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData)

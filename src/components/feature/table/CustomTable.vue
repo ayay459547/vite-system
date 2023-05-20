@@ -8,7 +8,7 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import type { PropType, WritableComputedRef } from 'vue'
+import type { WritableComputedRef } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
 
@@ -22,40 +22,34 @@ import ColumnSetting from './ColumnSetting.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 
-const props = defineProps({
-  tableColumns: {
-    type: Object as PropType<PropsTableColumn[]>,
-    default () {
-      return {}
-    }
-  },
-  tableData: {
-    type: Array as PropType<any[]>,
-    default () {
-      return []
-    }
-  },
-  version: {
-    type: String as PropType<string>,
-    default: '1.0.0',
-    description: `欄位設定 版本
-      如果版本更換 會重置欄位設定`
-  },
-  settingKey: {
-    type: String as PropType<string>,
-    required: true,
-    description: '欄位設定 在 indexedDB 上的 key'
-  },
-  label: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  total: {
-    type: Number as PropType<number>,
-    default: 100,
-    description: `table 資料總筆數
-      如果是 null 換頁不顯示`
-  }
+interface Props extends Record<string, any> {
+  tableColumns: PropsTableColumn[]
+  tableData: any[]
+  /**
+   * 欄位設定 版本
+   * 如果版本更換 會重置欄位設定
+   */
+  version: string
+  /**
+   * 欄位設定 在 indexedDB 上的 key
+   */
+  settingKey:string
+  /**
+   * table 標題
+   */
+   title?: string
+  /**
+   * table 資料總筆數
+   * 計算頁數用
+   */
+  total?: number
+}
+// eslint-disable-next-line vue/valid-define-props
+
+const props = withDefaults(defineProps<Props>(), {
+  tableData: () => [],
+  title: '',
+  total: 0
 })
 
 const emit = defineEmits([
@@ -125,7 +119,6 @@ const changePage = (page: number, pageSize: number): void => {
 
   emit('change', { page, pageSize })
   resetScroll()
-  // console.log(elTableRef.value)
 }
 
 const onRowClick = (row: any, column: any, event: Event) => {
@@ -220,7 +213,7 @@ onUnmounted(() => {
 
       <div class="setting-center grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-center">
-          <span>{{ props.label }}</span>
+          <span>{{ props.title }}</span>
         </slot>
       </div>
 
@@ -362,6 +355,7 @@ onUnmounted(() => {
       }
       &-center {
         justify-content: center;
+        min-height: 40px;
       }
       &-right {
         justify-content: flex-end;
