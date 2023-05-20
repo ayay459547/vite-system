@@ -3,9 +3,13 @@ import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import { defineComponent, computed } from 'vue'
 import { useRoutesStore } from '@/stores/routes'
+import { CustomIcon } from '@/components'
 
 export default defineComponent({
   name: 'SubNavigationView',
+  components: {
+    CustomIcon
+  },
   props: {
     isOpen: {
       type: Boolean as PropType<boolean>,
@@ -65,7 +69,7 @@ export default defineComponent({
 <template>
   <div class="nav-container">
     <div class="nav-title" @click="onTitleClick">
-      <CustomIcon :icon="['fas', 'angle-left']"></CustomIcon>
+      <CustomIcon :icon="['fas', 'angle-left']" />
       <h3>{{ $props.title }}</h3>
     </div>
 
@@ -76,7 +80,7 @@ export default defineComponent({
             <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div class="nav-item-left">
                 <div v-if="routerItem.complete" class="item-icon"></div>
-                <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
+                <CustomIcon v-else name="wrench" class="item-icon" />
                 <span class="item-title">{{ routerItem.title }}</span>
               </div>
 
@@ -84,7 +88,7 @@ export default defineComponent({
                 :icon="['fas', 'angle-left']"
                 class="nav-item-right nav-arrow"
                 :class="openMap[routerItem.name] ? 'is-open' : 'is-close'"
-              ></CustomIcon>
+              />
             </div>
 
             <div
@@ -104,7 +108,7 @@ export default defineComponent({
               >
                 <div class="nav-item-left">
                   <div v-if="leaf.complete" class="item-icon"></div>
-                  <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
+                  <CustomIcon v-else name="wrench" class="item-icon" />
                   <span class="item-title">{{ leaf.title }}</span>
                 </div>
 
@@ -122,7 +126,7 @@ export default defineComponent({
           >
             <div class="nav-item-left">
               <div v-if="routerItem.complete" class="item-icon"></div>
-              <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
+              <CustomIcon v-else name="wrench" class="item-icon" />
               <span class="item-title">{{ routerItem.title }}</span>
             </div>
 

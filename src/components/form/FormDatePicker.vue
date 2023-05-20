@@ -108,7 +108,7 @@ const validationListeners = computed(() => {
     blur: (e: FocusEvent): void => {
       emit('blur', e)
     },
-    change: (value: string | number): void => {
+    change: (value: ModelValue): void => {
       emit('change', value)
       handleChange(value, true)
     }

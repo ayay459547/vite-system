@@ -4,6 +4,7 @@ import type { Navigation } from '@/declare/routes'
 import { computed, ref } from 'vue'
 import SubNavigationView from './SubNavigationView.vue'
 import { useRoutesStore } from '@/stores/routes'
+import { CustomIcon } from '@/components'
 
 const props = defineProps<{
   router: Navigation[]

@@ -11,6 +11,8 @@ import type { Hook, EventItem } from '@/declare/hook'
 
 import { useRouter } from 'vue-router'
 
+import { CustomIcon } from '@/components'
+
 const props = defineProps<{
   isOpen: boolean,
   historyIsOpen: boolean

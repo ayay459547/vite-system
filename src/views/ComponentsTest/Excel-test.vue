@@ -2,6 +2,7 @@
 import { inject, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import ExcelJs from 'exceljs'
+import { CustomButton, CustomModal } from '@/components'
 
 const hook: Hook = inject('hook')
 const { loading } = hook()

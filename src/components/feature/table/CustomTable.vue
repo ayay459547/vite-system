@@ -8,7 +8,6 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import type { WritableComputedRef } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
 
@@ -17,6 +16,8 @@ import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 
 import type { TableColumnsItem } from '@/lib/columns'
 import type { ColumnItem } from './ColumnSetting.vue'
+
+import { CustomButton, FormSelect } from '@/components'
 
 import ColumnSetting from './ColumnSetting.vue'
 
@@ -83,15 +84,7 @@ onUpdated(() => {
 })
 
 // 每頁顯示筆數
-const pageSizeValue = ref('100')
-const pageSize: WritableComputedRef<number> = computed({
-  get: () => {
-    return parseInt(pageSizeValue.value)
-  },
-  set: (v: number) => {
-    pageSizeValue.value = `${v}`
-  }
-})
+const pageSize = ref(100)
 const sizeOptions = [
   { value: 30, label: '30' },
   { value: 50, label: '50' },
@@ -222,10 +215,9 @@ onUnmounted(() => {
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <FormSelect
             label="顯示筆數 : "
-            :model-value="pageSizeValue"
+            v-model="pageSize"
             :options="sizeOptions"
             direction="row"
-            @update:modelValue="pageSize"
             @change="onSizeChange"
           />
         </div>

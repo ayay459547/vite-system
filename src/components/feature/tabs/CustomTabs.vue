@@ -3,6 +3,7 @@ import type { Ref, PropType, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
+import { CustomIcon } from '@/components'
 
 type ListType = Array<{
   key: string

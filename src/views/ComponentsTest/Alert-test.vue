@@ -2,6 +2,7 @@
 import { ref, inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import Swal from 'sweetalert2'
+import { CustomButton } from '@/components'
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')
@@ -46,18 +47,6 @@ const showAlert = (icon: Icon) => {
 
 <template>
   <div class="input-test">
-    <h1 class="i-mb-md text-primary">{{ $t('test') }}</h1>
-    <FormInput
-      v-model="value"
-      label="測試密碼"
-      required
-      :validate="['password']"
-    />
-    <FormInput
-      v-model="valuePhone"
-      label="測試phone"
-      :validate="['phone']"
-    />
     <CustomButton
       label="測試Popover"
       @click="openPopover"

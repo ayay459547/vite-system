@@ -4,11 +4,11 @@ import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { useField } from 'vee-validate'
 
-type ModelValue = string | null
+type ModelValue = string | number | null
 
 const props = defineProps({
   modelValue: {
-    type: [String, null] as PropType<ModelValue>,
+    type: [String, Number, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {
@@ -32,7 +32,7 @@ const props = defineProps({
     default: false
   },
   options: {
-    type: Array as PropType<{ label: string, value: string }[]>,
+    type: Array as PropType<{ label: string, value: string | number }[]>,
     required: false,
     default () {
       return []
@@ -73,7 +73,7 @@ const validateField = (veeValue: ModelValue) => {
   if (!props.required) return true
 
   // 必填
-  if (props.required && [null, undefined, ''].includes(veeValue)) {
+  if (props.required && [null, undefined].includes(veeValue)) {
     return '此輸入框為必填'
   }
 
@@ -99,13 +99,13 @@ const validationListeners = computed(() => {
     },
     blur: (e: FocusEvent): void => {
       emit('blur', e)
-      handleChange(e, true)
+      handleChange(tempValue.value, true)
     },
-    change: (value: string): void => {
+    change: (value: ModelValue): void => {
       emit('change', value)
       handleChange(value, true)
     },
-    'remove-tag': (value: string): void => {
+    'remove-tag': (value: ModelValue): void => {
       emit('remove-tag', value)
       handleChange(value, true)
     },

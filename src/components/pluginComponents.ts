@@ -13,7 +13,7 @@ import 'element-plus/dist/index.css'
 
 // feature
 import CustomIcon from './feature/icon/CustomIcon.vue'
-import CustomTabs from './feature/CustomTabs.vue'
+import CustomTabs from './feature/tabs/CustomTabs.vue'
 import CustomButton from './feature/button/CustomButton.vue'
 import CustomTable from './feature/table/CustomTable.vue'
 import CustomModal from './feature/modal/CustomModal.vue'
@@ -28,6 +28,10 @@ const pluginComponents = {
     library.add(fas, fab, far)
     app.component('font-awesome-icon', FontAwesomeIcon)
 
+    /**
+     * 建議從 import { Custom... } from '@/components' 引入
+     * 不引入直接可以用
+     */
     app.component('CustomIcon', CustomIcon)
     app.component('CustomTabs', CustomTabs)
     app.component('CustomButton', CustomButton)

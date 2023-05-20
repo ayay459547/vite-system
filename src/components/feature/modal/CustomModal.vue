@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { WritableComputedRef, PropType } from 'vue'
 import { ref, computed, watch } from 'vue'
+import { CustomButton } from '@/components'
 
 const props = defineProps({
   modelValue: {
@@ -82,7 +83,6 @@ const submit = () => {
           <slot name="footer">
             <div class="modal-footer-btn">
               <CustomButton
-                type="info"
                 label="取消"
                 icon-name="angle-left"
                 icon-move="translate"

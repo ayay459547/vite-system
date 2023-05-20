@@ -8,6 +8,8 @@ import Draggable from 'vuedraggable'
 
 import type { PropsTableColumn } from './CustomTable.vue'
 
+import { CustomButton } from '@/components'
+
 import {
   getColumnSetting,
   setColumnSetting,

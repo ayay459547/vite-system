@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ElButton } from 'element-plus'
+import { CustomIcon } from '@/components'
 
 enum ElType {
   default = '',
