@@ -3,6 +3,7 @@ import type { Expose } from '@/declare/formInput'
 import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
+import type { Column as ExcelColumn} from 'exceljs'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/idb'
 import type { ColumnItem, SettingData } from '@/components/feature/table/ColumnSetting.vue'
@@ -90,7 +91,7 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Form
       refMap.$forEach((input: RefItem) => {
         const { key, value, validate } = input
         validateList.push(validate())
-        validateInput.push({ key, value })
+        validateInput.push({ key, value, el: input })
       })
 
       await Promise.all(validateList).then(resList => {
@@ -125,16 +126,13 @@ export const getFormColumns = (columns: Record<string, any>, type: string): Form
 }
 
 export interface TableColumns {
-  columns: Record<string, any>,
-  downloadExcel: (
-    columnCallback: (column: ColumnItem) => string,
-    rowCallback: (rowData: any, settingColumns: ColumnItem[]) => string[],
-    options: {
-      label: string,
-      settingKey: string,
-      tableData: Array<any>
-    }
-  ) => void
+  tableSetting: {
+    label: string
+    version: string
+    settingKey: string
+    tableColumns: Record<string, any>,
+  },
+  downloadExcel: (tableData: Record<string, any>[]) => void
 }
 export interface TableColumnsItem {
   key: string
@@ -149,11 +147,22 @@ export interface TableColumnsItem {
  *              slot prop 預設是 key
  * @param {Ojbect} columns
  * @param {String} type 取得 columnSetting 中的類型
+ * @param {Object} options 設定用的參數
  * @returns {Ojbect}
  */
-export const getTableColumns = (columns: Record<string, any>, type: string): TableColumns => {
-  const hasOwnProperty = Object.prototype.hasOwnProperty
+export const getTableColumns = (
+  columns: Record<string, any>,
+  type: string,
+  options: {
+    label: string,
+    version: string,
+    settingKey: string
+  }
+): TableColumns => {
+  const { label, version, settingKey } = options
 
+  // 設定 table 用的 column
+  const hasOwnProperty = Object.prototype.hasOwnProperty
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
       key,
@@ -164,9 +173,7 @@ export const getTableColumns = (columns: Record<string, any>, type: string): Tab
       ...column[type]
     }
   }
-
   const resColumns = []
-
   columns.$forEach((column: Record<string, any>, key: string) => {
     if(hasOwnProperty.call(column, type)) {
       const temp = getColumnData(column, type, key)
@@ -174,52 +181,79 @@ export const getTableColumns = (columns: Record<string, any>, type: string): Tab
     }
   })
 
+  // 依據表單 及傳入資料 下載 excel
+  const downloadExcel = async (tableData: Record<string, any>[]) => {
+    const workbook = new ExcelJs.Workbook() // 創建試算表檔案
+    const worksheet = workbook.addWorksheet(
+      label,
+      {
+        properties: {
+          tabColor: { argb: '3D8BFF' },
+          defaultRowHeight: 20
+        }
+      }
+    ) //在檔案中新增工作表 參數放自訂名稱
+
+    const getRes: SettingData = await getColumnSetting(settingKey)
+    const settingColumns = getRes.columns
+
+    const excelColumns: Partial<ExcelColumn>[] = []
+
+    settingColumns.forEach((tempColumn: ColumnItem) => {
+      let _columnWidth = 100
+      // 設定欄位
+      if (hasOwnProperty.call(columns, tempColumn.key)) {
+        const _currentColumn = columns[tempColumn.key][type] ?? null
+
+        if (_currentColumn) {
+          const width = _currentColumn?.width ?? 0
+          const minWidth = _currentColumn?.minWidth ?? 0
+          _columnWidth = Math.max(_columnWidth, width, minWidth)
+
+          const align = _currentColumn?.align ?? 'left'
+          excelColumns.push({
+            header: tempColumn.label,
+            key: tempColumn.key,
+            hidden: !tempColumn.isShow,
+            style: {
+              alignment: {
+                horizontal: align,
+                vertical: 'middle'
+              }
+            },
+            width: Math.round(_columnWidth / 10)
+          })
+        }
+      }
+    })
+    worksheet.columns = excelColumns
+    console.log(worksheet.columns)
+
+    tableData.forEach((rowData: any) => {
+      worksheet.addRow(rowData)
+    })
+
+    // 表格裡面的資料都填寫完成之後，訂出下載的callback function
+    // 異步的等待他處理完之後，創建url與連結，觸發下載
+    workbook.xlsx.writeBuffer().then((content) => {
+      const link = document.createElement('a')
+      const blobData = new Blob([content], {
+        type: 'application/vnd.ms-excel;charset=utf-8;'
+      })
+      link.download = '測試的試算表.xlsx'
+      link.href = URL.createObjectURL(blobData)
+      link.click()
+    })
+
+  }
   return {
-    columns: resColumns,
-    downloadExcel: async (columnCallback, rowCallback, options = {
-      label: 'excel',
-      settingKey: '',
-      tableData: []
-    }) => {
-      const { tableData, label, settingKey } = options
-      const workbook = new ExcelJs.Workbook() // 創建試算表檔案
-      const sheet = workbook.addWorksheet(label) //在檔案中新增工作表 參數放自訂名稱
-
-      const getRes: SettingData = await getColumnSetting(settingKey)
-      const settingColumns = getRes.columns
-
-      const excelColumns: { name: string }[] = []
-      settingColumns.forEach((tempColumn: ColumnItem) => {
-        const _excelColumn = columnCallback(tempColumn)
-        excelColumns.push({ name: _excelColumn })
-      })
-
-      const excelRows: Array<string[]> = []
-      tableData.forEach((data: any) => {
-        const _excelRow = rowCallback(data, settingColumns)
-        excelRows.push(_excelRow)
-      })
-
-      sheet.addTable({
-        // 表格內看不到的，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
-        name: settingKey,
-        ref: 'A1',
-        columns: excelColumns,
-        rows: excelRows
-      })
-
-      // 表格裡面的資料都填寫完成之後，訂出下載的callback function
-      // 異步的等待他處理完之後，創建url與連結，觸發下載
-      workbook.xlsx.writeBuffer().then((content) => {
-        const link = document.createElement('a')
-        const blobData = new Blob([content], {
-          type: 'application/vnd.ms-excel;charset=utf-8;'
-        })
-        link.download = '測試的試算表.xlsx'
-        link.href = URL.createObjectURL(blobData)
-        link.click()
-      })
-    }
+    tableSetting: {
+      label,
+      version,
+      settingKey,
+      tableColumns: resColumns
+    },
+    downloadExcel
   }
 }
 

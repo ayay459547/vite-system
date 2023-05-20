@@ -1,4 +1,4 @@
-// bootstrap containers
+// 依照 bootstrap 標準
 $extra-small: 576px;
 $small: 576px;
 $medium: 768px;
@@ -14,9 +14,12 @@ $warning: #E6A23C;
 $danger: #F56C6C;
 $white: #ffffff;
 
-// 系統選單
-// $system-bg-color: #5b5b5b;
+// 系統選單顏色
+// $system-bg-color: #454545;
 $system-bg-color: #324157;
+// $system-bg-color: #3b723e;
+
+// 選單寬度
 $nav-xs-width: 54px;
 $nav-md-width: 250px;
 $nav-lg-width: 300px;
@@ -27,6 +30,7 @@ $login-index: 10;
 $popover-index: 1;
 // $side-index: 9999;
 
+// 置中
 %flex-center {
   display: flex;
   justify-content: center;

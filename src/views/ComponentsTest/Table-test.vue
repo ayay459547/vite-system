@@ -1,21 +1,6 @@
 <script setup lang="ts">
 import { getTableColumns } from '@/lib/columns'
 
-const list = [
-  {
-    label: 'test1',
-    value: '0'
-  },
-  {
-    label: 'test2',
-    value: '1'
-  },
-  {
-    label: 'test3',
-    value: '2'
-  }
-]
-
 const columnSetting = {
   date: {
     label: '生日',
@@ -23,55 +8,31 @@ const columnSetting = {
       width: 150,
       // fixed: 'left',
       align: 'center'
-    },
-    fitler: {
-      default: '',
-      required: true,
-      options: list
     }
   },
   name: {
     label: '姓名',
     table: {
       width: 150
-    },
-    fitler: {
-      default: '',
-      validate: ['password'],
-      required: true
     }
   },
   address: {
     label: '地址',
     table: {
       minWidth: 300
-    },
-    fitler: {
-      default: '',
-      validate: ['phone'],
-      required: false
     }
   }
 }
 
-const {
-  columns: tableColumns,
-  downloadExcel
-} = getTableColumns(columnSetting, 'table')
+const tableOptions = {
+  label: '測試表單',
+  version: '1.0.0',
+  settingKey: 'test'
+}
+const { tableSetting, downloadExcel } = getTableColumns(columnSetting, 'table', tableOptions)
 
 const download = () => {
-  downloadExcel(
-    (column) => { return column.label ?? '' },
-    (rowData, settingColumns) => {
-      return settingColumns.map(column => {
-        return rowData[column.key]
-      })
-    }, {
-      label: '測試',
-      settingKey: 'test',
-      tableData: tableData
-    }
-  )
+  downloadExcel(tableData)
 }
 
 const tableData = [
@@ -103,11 +64,8 @@ const tableData = [
   <div class="table-test">
     <div class="table-main">
       <CustomTable
-        label="測試表單"
-        version="1.0.0"
-        setting-key="test"
         :table-data="tableData"
-        :table-columns="tableColumns"
+        v-bind="tableSetting"
         @excel="download"
       >
         <template #header="{ column }">{{ column.label }}</template>

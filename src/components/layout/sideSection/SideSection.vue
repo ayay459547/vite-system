@@ -72,7 +72,7 @@ onMounted(() => {
     justify-content: flex-start;
     align-items: center;
     transition-duration: 0.3s;
-    will-change: width margin-left;
+    will-change: width, margin-left;
 
     @media (max-width: 992px) {
       width: $nav-md-width;

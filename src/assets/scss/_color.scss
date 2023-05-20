@@ -15,3 +15,14 @@ $color-list: (
     background-color: $color !important;
   }
 }
+
+// 目前還未使用
+@mixin systemColor ($type, $color) {
+  .system-color-#{$type} {
+    background-color: $color;
+  }
+} 
+
+@include systemColor ('base', '#454545');
+@include systemColor ('blue', '#324157');
+@include systemColor ('green', '#3b723e');

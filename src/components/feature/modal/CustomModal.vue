@@ -146,7 +146,7 @@ const submit = () => {
 
   &-footer {
     width: 100%;
-    height: 40px;
+    height: 48px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
