@@ -4,6 +4,7 @@ import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
 import type { Navigation } from '@/declare/routes'
+import { CustomButton, CustomTabs } from '@/components'
 
 const currentTab = ref('')
 const routesStore = useRoutesStore()
