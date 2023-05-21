@@ -1,10 +1,18 @@
 import type { ComputedRef, Ref } from 'vue'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onBeforeMount } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
 import { getRouterLeaf } from '@/lib/routes'
 import routes from '@/router/routes'
+
+import {
+  getHistoryNavigation as getHistory,
+  setHistoryNavigation as setHistory,
+  delHistoryNavigation as deleteHistory,
+  clearHistoryNavigation as clearHistory,
+  keysHistoryNavigation as keysHistory
+} from '@/lib/idb'
 
 export const useRoutesStore = defineStore('routes', () => {
   // 導覽
@@ -25,16 +33,41 @@ export const useRoutesStore = defineStore('routes', () => {
   const addHistoryNavigation = (key: string, value: Navigation) => {
     if (!historyNavigation.has(key)) {
       historyNavigation.set(key, value)
+      const _value = JSON.parse(JSON.stringify(value))
+      setHistory(key, _value)
     }
   }
   const removeHistoryNavigation = (key: string) => {
     if (historyNavigation.has(key)) {
       historyNavigation.delete(key)
+      deleteHistory(key)
     }
   }
   const clearHistoryNavigation = () => {
     historyNavigation.clear()
+    clearHistory()
   }
+
+  // 從 indexedDB 初始化 先前的路由資料
+  const initHistoryNavigation = async () => {
+    const keyList = await keysHistory()
+    const historyList: Promise<Navigation>[] = []
+
+    if (keyList.length > 0) {
+      keyList.forEach((key: string) => {
+        historyList.push(getHistory(key))
+      })
+
+      const resList = await Promise.all(historyList)
+
+      resList.forEach(resItem => {
+        addHistoryNavigation(resItem.name, resItem)
+      })
+    }
+  }
+  onBeforeMount(() => {
+    initHistoryNavigation()
+  })
 
   // 各階層的路由
   const level1Routes: ComputedRef<Navigation[]> = computed(() => {

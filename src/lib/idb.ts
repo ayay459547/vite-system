@@ -38,3 +38,20 @@ export async function clearColumnSetting () {
 export async function keysColumnSetting () {
   return await keys('columnSetting')
 }
+
+// 歷史路由
+export async function getHistoryNavigation (key: string) {
+  return await get('historyNavigation', key)
+}
+export async function setHistoryNavigation (key: string, val: any) {
+  return await set('historyNavigation', key, val)
+}
+export async function delHistoryNavigation (key: string) {
+  return await del('historyNavigation', key)
+}
+export async function clearHistoryNavigation () {
+  return await clear('historyNavigation')
+}
+export async function keysHistoryNavigation () {
+  return await keys('historyNavigation')
+}

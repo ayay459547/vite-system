@@ -133,6 +133,8 @@ const initShowColumns = async () => {
   loading.value = true
 
   if (columnSetting.value) {
+    await columnSetting.value.checkColumnSetting()
+
     const tempColumnList = await columnSetting.value.getcolumnList() as ColumnItem[]
 
     const resColumns = tempColumnList.reduce((resColumn, tempColumn) => {

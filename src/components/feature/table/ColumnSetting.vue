@@ -49,40 +49,50 @@ const props = defineProps({
 
 const emit = defineEmits(['change'])
 
-defineExpose({
-  getcolumnList: async () => {
-    const getRes: SettingData = await getColumnSetting(props.settingKey)
-    return getRes.columns
-  }
-})
-
-const drag = ref(false)
-
 const columnList = ref<ColumnItem[]>([])
+
+const getcolumnList = async () => {
+  const getRes: SettingData = await getColumnSetting(props.settingKey)
+  return getRes.columns
+}
 
 /**
  * 確認是否有設定過
  * 如果沒有給預設設定
  */
-const init = async () => {
+ const checkColumnSetting = async () => {
   const getRes = await getColumnSetting(props.settingKey)
 
   if ([null, undefined].includes(getRes)) {
-    const settingData: SettingData = {
-      version: props.version,
-      settingKey: props.settingKey,
-      columns: props.columns.map(column => {
-        return {
-          isShow: true,
-          key: column.key,
-          label: column.label
-        }
-      })
-    }
-
-    await setColumnSetting(props.settingKey, settingData)
+    await setDefaultColumnSetting()
   }
+  return props.settingKey
 }
+const setDefaultColumnSetting = async () => {
+  const settingData: SettingData = {
+    version: props.version,
+    settingKey: props.settingKey,
+    columns: props.columns.map(column => {
+      return {
+        isShow: true,
+        key: column.key,
+        label: column.label
+      }
+    })
+  }
+
+  await setColumnSetting(props.settingKey, settingData)
+
+  return props.settingKey
+}
+
+defineExpose({
+  checkColumnSetting,
+  getcolumnList
+})
+
+
+const drag = ref(false)
 
 const updateSetting = async () => {
   const temp = columnList.value.map(column => column)
@@ -103,9 +113,10 @@ const onDragend = () => {
 }
 
 onBeforeMount(async () => {
-  await init()
-  const getRes: SettingData = await getColumnSetting(props.settingKey)
-  columnList.value = getRes.columns
+  await checkColumnSetting()
+
+  const tempColumnList = await getcolumnList()
+  columnList.value = tempColumnList
 })
 
 </script>

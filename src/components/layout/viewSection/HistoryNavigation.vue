@@ -26,7 +26,7 @@ type ListType = Array<{
 
 const tabs: ComputedRef<ListType> = computed(() => {
   const res = []
-
+  // historyNavigation: Map
   historyNavigation.value.forEach((value, key) => {
     res.push({ key, value })
   })
