@@ -4,8 +4,8 @@ import './lib/Polyfill/inject'
 import './lib/init/objectFunction'
 // idb
 import './lib/init/init_idb'
-// 將監聽事件 標示為被動 暫時不用
-// import 'default-passive-events'
+
+import './lib/init/passiveEvents'
 
 import { createApp } from 'vue'
 import App from './App.vue'

@@ -42,7 +42,10 @@ const clearHistory = () => {
   const temp = currentNavigation.value
   if (historyNavigation.value.size > 0) {
     routesStore.clearHistoryNavigation()
-    routesStore.addHistoryNavigation(temp.name, temp)
+
+    if (temp) {
+      routesStore.addHistoryNavigation(temp.name, temp)
+    }
   }
 }
 
@@ -73,6 +76,7 @@ const setRoutesConfig = (route: Navigation) => {
         </RouterLink>
       </template>
     </CustomTabs>
+
     <div class="history-clear">
       <CustomButton
         label="清除歷史資訊"

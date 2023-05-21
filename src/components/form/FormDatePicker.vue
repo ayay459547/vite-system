@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElDatePicker } from 'element-plus'
 import type { PropType } from 'vue'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, onMounted, onBeforeUnmount } from 'vue'
 import { useField } from 'vee-validate'
 import type { ValidateType } from '@/lib/validate'
 import { useI18n } from 'vue-i18n'
@@ -129,6 +129,14 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
 }
+
+onMounted(() => {
+  window.addEventListener('touchstart', e => e.preventDefault())
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('touchstart', e => e.preventDefault())
+})
 
 </script>
 

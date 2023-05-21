@@ -37,14 +37,14 @@ const removeTab = (value: any) => {
 const increaseScroll = () => {
   conRef.value.scrollBy({
     top: 0,
-    left: -100,
+    left: -200,
     behavior: 'smooth'
   })
 }
 const decreaseScroll = () => {
   conRef.value.scrollBy({
     top: 0,
-    left: 100,
+    left: 200,
     behavior: 'smooth'
   })
 }
@@ -58,7 +58,7 @@ const arrowIsShow = ref(false)
 
 const wrapROcallback = throttle((entries) => {
   entries.forEach((entry) => {
-    conWidth.value = entry.contentRect.width - 204
+    conWidth.value = entry.contentRect.width - 84
 
     if (listRef.value !== null) {
       const listRect = listRef.value.getBoundingClientRect()
@@ -83,7 +83,7 @@ const listROcallback = throttle((entries) => {
     if (listWidth.value > oddListWidth) {
       conRef.value.scrollTo({
         top: 0,
-        left: conWidth.value,
+        left: conWidth.value * 2,
         behavior: 'smooth'
       })
     }
