@@ -11,7 +11,7 @@ import type { Hook, EventItem } from '@/declare/hook'
 
 import { useRouter } from 'vue-router'
 
-import { CustomIcon } from '@/components'
+import { CustomIcon, CustomTooltip } from '@/components'
 
 const props = defineProps<{
   isOpen: boolean,
@@ -145,13 +145,13 @@ const openUserEffect = (e: MouseEvent) => {
           </template>
       </div>
       <div class="header-breadcrumb-xs">
-        <CustomIcon
-          name="location-dot"
-          icon-class="text-danger"
-          tooltip
-        >
-          <span>{{ breadcrumbSpan }}</span>
-        </CustomIcon>
+        <CustomTooltip>
+          <CustomIcon name="location-dot" icon-class="text-danger"/>
+
+          <template #content>
+            <span>{{ breadcrumbSpan }}</span>
+          </template>
+        </CustomTooltip>
       </div>
     </div>
 
@@ -163,9 +163,13 @@ const openUserEffect = (e: MouseEvent) => {
         </div>
 
         <div class="lang-xs">
-          <CustomIcon name="earth-americas" tooltip>
-            <span>{{ $t('langType') }}</span>
-          </CustomIcon>
+          <CustomTooltip>
+            <CustomIcon name="earth-americas"/>
+
+            <template #content>
+              <span>{{ $t('langType') }}</span>
+            </template>
+          </CustomTooltip>
         </div>
       </div>
 
@@ -175,9 +179,13 @@ const openUserEffect = (e: MouseEvent) => {
           <span>{{ 'hi! ' + userName }}</span>
         </div>
         <div class="user-xs">
-          <CustomIcon name="user" tooltip>
-            <span>{{ 'hi! ' + userName }}</span>
-          </CustomIcon>
+          <CustomTooltip>
+            <CustomIcon name="user"/>
+
+            <template #content>
+              <span>{{ 'hi! ' + userName }}</span>
+            </template>
+          </CustomTooltip>
         </div>
       </div>
     </div>

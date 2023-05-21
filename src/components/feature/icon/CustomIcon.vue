@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ElPopover, ElTooltip } from 'element-plus'
+import { ElTooltip } from 'element-plus'
 
 type IconType = 'fas' | 'far' | 'fab'
 
@@ -31,7 +31,6 @@ const props = withDefaults(defineProps<Props>(), {
   iconClass: () => '',
 
   tooltip: () => false,
-  popover: () => false,
   width: () => 150,
   placement: () => 'bottom'
 })
@@ -56,21 +55,6 @@ const getIcon = computed(() => {
       <slot>Empty</slot>
     </template>
   </ElTooltip>
-
-  <ElPopover
-    v-else-if="props.popover"
-    :width="props.width"
-    :placement="props.placement"
-  >
-    <template #reference>
-      <div class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
-        <font-awesome-icon :icon="getIcon" />
-      </div>
-    </template>
-    <template #default>
-      <slot>Empty</slot>
-    </template>
-  </ElPopover>
 
   <div v-else class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
     <font-awesome-icon :icon="getIcon" />

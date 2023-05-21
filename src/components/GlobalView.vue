@@ -14,8 +14,8 @@ import { useLocaleStore } from '@/stores/locale'
 
 // hook
 import type { Hook } from '@/declare/hook'
-import CustomLoader from './hook/CustomLoader.vue'
-import CustomPopover from '@/components/hook/CustomPopover.vue'
+import HookLoader from './hook/HookLoader.vue'
+import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useI18n } from 'vue-i18n'
 const { t, te } = useI18n()
@@ -35,8 +35,8 @@ const locale = computed(() => {
 })
 
 // hook
-const customLoader: Ref<InstanceType<typeof CustomLoader> | null> = ref(null)
-const customPopover: Ref<InstanceType<typeof CustomPopover> | null> = ref(null)
+const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
+const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
 provide<Hook>('hook', () => {
   return {
     loading: (isOpen, message) => {
@@ -113,8 +113,8 @@ provide<Hook>('hook', () => {
       </div>
 
       <!-- hook -->
-      <CustomLoader ref="customLoader"/>
-      <CustomPopover ref="customPopover"/>
+      <HookLoader ref="customLoader"/>
+      <HookPopover ref="customPopover"/>
     </div>
   </ElConfigProvider>
 </template>

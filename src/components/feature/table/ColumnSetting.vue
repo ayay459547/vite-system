@@ -2,13 +2,13 @@
 import type { PropType } from 'vue'
 import { ref, onBeforeMount } from 'vue'
 
-import { ElPopover, ElCheckbox } from 'element-plus'
+import { ElCheckbox } from 'element-plus'
 
 import Draggable from 'vuedraggable'
 
 import type { PropsTableColumn } from './CustomTable.vue'
 
-import { CustomButton } from '@/components'
+import { CustomButton, CustomPopover } from '@/components'
 
 import {
   getColumnSetting,
@@ -59,11 +59,18 @@ const getcolumnList = async () => {
 /**
  * 確認是否有設定過
  * 如果沒有給預設設定
+ *
+ * 如果版本更換
+ * 重新給預設值
  */
  const checkColumnSetting = async () => {
   const getRes = await getColumnSetting(props.settingKey)
 
   if ([null, undefined].includes(getRes)) {
+    await setDefaultColumnSetting()
+  }
+  if (getRes.version !== props.version) {
+    await delColumnSetting(props.settingKey)
     await setDefaultColumnSetting()
   }
   return props.settingKey
@@ -123,7 +130,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="column-setting">
-    <ElPopover
+    <CustomPopover
       placement="bottom"
       :width="200"
       trigger="click"
@@ -157,7 +164,7 @@ onBeforeMount(async () => {
         </template>
       </Draggable>
 
-    </ElPopover>
+    </CustomPopover>
   </div>
 </template>
 

@@ -1,29 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElPopover } from 'element-plus'
 import type { EventItem } from '@/declare/hook'
 import { HookList } from '@/declare/hook'
 import debounce from '@/lib/debounce'
+import { CustomPopover } from '@/components'
 
-type Placemetn = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
+type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
 
 const visible = ref<boolean>(false)
-const placement = ref<Placemetn>('bottom')
+const placement = ref<Placement>('bottom')
 const left = ref<number>(0)
 const top = ref<number>(0)
 
 const callbackList = ref<EventItem[]>([])
 const popoverWidth = ref(150)
-
-const calcPlacement = () => {
-  console.log('calcPlacement')
-}
-const resetPlacement = () => {
-  console.log('resetPlacement')
-  placement.value = 'bottom'
-  callbackList.value = []
-  popoverWidth.value = 150
-}
 
 const callEvent = (callback: Function) => {
   callback()
@@ -78,11 +68,9 @@ defineExpose<Expose>({
       top: top + 'px'
     }"
   >
-    <ElPopover
+    <CustomPopover
       :visible="visible"
       :placement="placement"
-      :before-enter="calcPlacement"
-      :after-leave="resetPlacement"
       :width="popoverWidth"
       popper-style="padding: 0;"
     >
@@ -106,7 +94,7 @@ defineExpose<Expose>({
           @click="visible = !visible"
         ></div>
       </template>
-    </ElPopover>
+    </CustomPopover>
   </div>
 </template>
 
