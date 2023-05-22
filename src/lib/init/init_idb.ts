@@ -15,6 +15,7 @@ const checkSystemVersion = () => {
   if (cookieVersion !== systemVersion) {
     console.log('init DB')
     deleteDB(system)
+    setCookie('version', systemVersion)
   }
 }
 checkSystemVersion()

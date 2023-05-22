@@ -68,8 +68,7 @@ const getcolumnList = async () => {
 
   if ([null, undefined].includes(getRes)) {
     await setDefaultColumnSetting()
-  }
-  if (getRes.version !== props.version) {
+  } else if (getRes.version !== props.version) {
     await delColumnSetting(props.settingKey)
     await setDefaultColumnSetting()
   }
