@@ -6,7 +6,13 @@ import { CustomButton } from '@/components'
 const props = defineProps({
   modelValue: {
     type: Boolean as PropType<boolean>,
-    required: true
+    required: false,
+    default: false
+  },
+  title: {
+    type: String as PropType<string>,
+    required: false,
+    default: ''
   }
 })
 
@@ -66,7 +72,7 @@ const submit = () => {
       >
         <div class="modal-header">
           <slot name="header">
-            <h3>title</h3>
+            <h3>{{ props.title }}</h3>
           </slot>
           <CustomButton
             icon-name="close"

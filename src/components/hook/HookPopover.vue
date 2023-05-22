@@ -81,7 +81,13 @@ defineExpose<Expose>({
           :key="callbackIndex"
           @click="debounceCallEvent(callbackItem.event)"
         >
-          <font-awesome-icon v-if="callbackItem.icon.length > 0" :icon="callbackItem.icon" />
+          <div style="width: fit-content">
+            <font-awesome-icon
+              v-if="callbackItem.icon.length > 0"
+              :icon="callbackItem.icon"
+              style="width: 24px;"
+            />
+          </div>
           <span>{{ callbackItem.label }}</span>
         </li>
       </ul>

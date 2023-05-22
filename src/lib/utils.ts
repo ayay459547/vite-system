@@ -9,8 +9,10 @@ type AjaxResponse<T> = {
 }
 type AjaxOptions<T> = {
   getFakeData?: boolean
+  delay?: number,
   fakeData?: T | null
-  status?: 'success' | 'error'
+  status?: 'success' | 'error',
+  callback?: Function | null
 }
 /**
  * @author Caleb
@@ -25,18 +27,37 @@ type AjaxOptions<T> = {
  *              status: 資料返回狀態
  * @returns {Promise}
  */
-export const ajax = <ResData, Config>(config: AxiosRequestConfig<Config>, options: AjaxOptions<ResData> = {}): Promise<AjaxResponse<ResData>> => {
+export const ajax = <ResData>(
+  config: AxiosRequestConfig,
+  options: AjaxOptions<ResData> = {}
+): AjaxResponse<ResData> | PromiseLike<AjaxResponse<ResData>> => {
   const tempOptions = {
     getFakeData: false,
     fakeData: null,
     status: 'success',
+    delay: 0,
+    callback: null,
     ...options
   }
-  const { getFakeData, fakeData, status } = tempOptions
+  const { getFakeData, fakeData, delay, status, callback } = tempOptions
   if (getFakeData) {
-    return Promise.resolve({
-      data: fakeData,
-      status
+    return new Promise((resolve) => {
+      if (typeof callback === 'function') {
+        const resFakeData = callback(config.data, fakeData)
+        setTimeout(() => {
+          resolve({
+            data: resFakeData,
+            status
+          })
+        }, delay)
+      } else {
+        setTimeout(() => {
+          resolve({
+            data: fakeData,
+            status
+          })
+        }, delay)
+      }
     })
   }
 

@@ -18,3 +18,12 @@
 .card-shadow {
   box-shadow: 0px 0px 12px #0000001f;;
 }
+
+.cursor {
+  &-pointer {
+    cursor: pointer;
+  }
+  &-move {
+    cursor: move;
+  }
+}

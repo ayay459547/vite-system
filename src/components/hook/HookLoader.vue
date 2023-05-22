@@ -4,6 +4,9 @@ import { ref } from 'vue'
 const isOpen = ref(false)
 const massage = ref('Loading')
 
+const minTime = 400
+const openTime = ref<number | null>(null)
+
 interface Expose {
   openLoader: (message: string) => void
   closeLoader: () => void
@@ -13,9 +16,19 @@ defineExpose<Expose>({
   openLoader: (message: string) => {
     isOpen.value = true
     massage.value = message
+
+    openTime.value = Date.now()
   },
+  // 至少大於一段時間才能關閉 不然會閃一下
   closeLoader: () => {
-    isOpen.value = false
+    if (Date.now() >= openTime.value + minTime) {
+      isOpen.value = false
+
+    } else {
+      setTimeout(() => {
+        isOpen.value = false
+      }, minTime)
+    }
   }
 })
 

@@ -9,6 +9,14 @@ const testRoutes: RouterTree[] = [
     icon: 'flask-vial',
     leaves: [
       {
+        name: 'page1-test',
+        title: '範例頁面-1',
+        inject: true,
+        complete: true,
+        path: '/page1-test',
+        component: () => import('@/views/ComponentsTest/Page1-test/Page1-test.vue')
+      },
+      {
           name: 'input-test',
           title: '輸入框測試',
           inject: true,

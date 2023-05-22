@@ -234,7 +234,6 @@ export const getTableSetting = (
       }
     })
     worksheet.columns = excelColumns
-    console.log(worksheet.columns)
 
     tableData.forEach((rowData: any) => {
       worksheet.addRow(rowData)

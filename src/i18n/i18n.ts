@@ -1,9 +1,11 @@
 import { createI18n } from 'vue-i18n'
 import test from './test'
+import base from './base'
 import components from './components'
 
 const langMap = {
   ...test,
+  ...base,
   ...components,
   langType: {
     zhTw: '繁體中文',
