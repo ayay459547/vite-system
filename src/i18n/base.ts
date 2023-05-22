@@ -4,9 +4,14 @@ export default {
     zhCn: '新增',
     en: 'create'
   },
-  update: {
-    zhTw: '更新',
-    zhCn: '更新',
-    en: 'update'
+  edit: {
+    zhTw: '編輯',
+    zhCn: '编辑',
+    en: 'edit'
+  },
+  delete: {
+    zhTw: '刪除',
+    zhCn: '删除',
+    en: 'delete'
   }
 }

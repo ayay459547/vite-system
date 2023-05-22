@@ -116,7 +116,7 @@ defineExpose<Expose>({
     height: fit-content;
   }
   &-item {
-    padding: 8px 16px;
+    padding: 8px;
     height: 24px;
     line-height: 24px;
     display: flex;

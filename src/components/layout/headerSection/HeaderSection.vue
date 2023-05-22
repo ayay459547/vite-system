@@ -127,7 +127,7 @@ const openUserEffect = (e: MouseEvent) => {
       }
     }
   ], {
-    width: 200
+    width: 180
   })
 }
 

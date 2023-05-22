@@ -7,6 +7,7 @@ import {
   FormSelect
 } from '@/components'
 import { columnSetting } from '../column'
+import { onBeforeMount } from 'vue'
 
 const {
   columns: filterColumn,
@@ -15,6 +16,24 @@ const {
   validate: validateForm
 } = getFormSetting(columnSetting, 'filter')
 
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+})
+
+onBeforeMount(() => {
+  const {
+    name = null,
+    date = null,
+    address = null
+  } = props.data
+
+  filterForm.name = name
+  filterForm.date = date
+  filterForm.address = address
+})
 
 const submit = async () => {
   const res = await validateForm().then(successList => {
@@ -37,13 +56,12 @@ defineExpose({
 </script>
 
 <template>
-  <div class="create grid-row">
+  <div class="update grid-row">
     <FormInput
       class="grid-col-xs-24 grid-col-md-12"
       v-model="filterForm.name"
       v-bind="filterColumn.name"
     />
-
     <FormDatePicker
       class="grid-col-xs-24 grid-col-md-12"
       v-model="filterForm.date"
@@ -59,7 +77,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.create {
+.update {
   width: 100%;
   height: fit-content;
 }

@@ -23,6 +23,6 @@ export const fakeTableData: TableData[] = [
   {
     date: '2016-05-01',
     name: 'Amy',
-    address: 'No. 189, Grove St, Los Angeles'
+    address: 'address-1'
   }
 ]

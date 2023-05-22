@@ -7,6 +7,8 @@ export { default as CustomTable } from './feature/table/CustomTable.vue'
 export { default as CustomTabs } from './feature/tabs/CustomTabs.vue'
 export { default as CustomTooltip } from './feature/tooltip/CustomTooltip.vue'
 
+export { default as DataTable } from './feature/dataTable/DataTable'
+
 // form
 export { default as FormDatePicker } from './form/FormDatePicker.vue'
 export { default as FormInput } from './form/FormInput.vue'

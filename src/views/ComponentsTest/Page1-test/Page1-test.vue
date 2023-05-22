@@ -16,6 +16,7 @@ import { fakeTableData } from './api'
 import { columnSetting } from './column'
 
 import CreateModal from './Components/CreateModal.vue'
+import UpdateModel from './Components/UpdateModel.vue'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()
@@ -35,27 +36,81 @@ const download = () => {
 }
 
 // modal
+const createRef = ref(null)
+const updateRef = ref(null)
 const model = reactive({
-  create: false
+  create: false,
+  update: false
 })
+const editData = ref({})
 
-const openPopover = (e: MouseEvent) => {
+const onCreateSubmit = async () => {
+  if (createRef.value) {
+    const res = await createRef.value.submit()
+
+    if (res === 'success') {
+      swal({
+        icon: 'success',
+        title: '新增成功'
+      })
+      model.create = false
+      init()
+    }
+  }
+}
+
+const onUpdateSubmit = async () => {
+  if (updateRef.value) {
+    const res = await updateRef.value.submit()
+
+    if (res === 'success') {
+      swal({
+        icon: 'success',
+        title: '更新成功'
+      })
+      model.update = false
+      init()
+    }
+  }
+}
+
+const openPopover = (e: MouseEvent, rowData) => {
   eventList(e, [
     {
       icon: ['fas', 'edit'],
-      label: '編輯',
+      label: i18nTranslate('edit'),
       event: () => {
-        console.log('update')
+        model.update = true
+        editData.value = rowData
       }
     },
     {
       icon: ['fas', 'trash'],
-      label: '刪除',
+      label: i18nTranslate('delete'),
       event: () => {
-        console.log('delete')
+        remove(rowData)
       }
     }
   ])
+}
+
+const remove = (rowData) => {
+  swal({
+    icon: 'warning',
+    title: `確定刪除 ${rowData.name}`
+  }).then(async (result) => {
+    loading(true, '刪除資料中')
+
+    if (result.isConfirmed) {
+      await deleteData()
+      swal({
+        icon: 'success',
+        title: '刪除成功'
+      })
+      init()
+      loading(false)
+    }
+  })
 }
 
 // api
@@ -68,7 +123,7 @@ const getData = async () => {
     getFakeData: true,
     fakeData: fakeTableData,
     status: 'success',
-    delay: 0
+    delay: 300
   })
 
   if (resData.status === 'success') {
@@ -82,6 +137,13 @@ const getData = async () => {
   }
 }
 
+const deleteData = async () => {
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('delete success')
+    }, 1000)
+  })
+}
 const init = async () => {
   loading(true)
   await getData()
@@ -103,8 +165,12 @@ onBeforeMount(() => {
       icon-name="plus"
       @click="model.create = true"
     />
-    <CustomModal v-model="model.create">
-      <CreateModal />
+    <CustomModal
+      v-model="model.create"
+      :title="i18nTranslate('create')"
+      @submit="onCreateSubmit"
+    >
+      <CreateModal ref="createRef"/>
     </CustomModal>
 
     <CustomTable
@@ -112,13 +178,20 @@ onBeforeMount(() => {
       v-bind="tableSetting"
       @excel="download"
     >
-      <template #header="{ column }">{{ column.label }}</template>
-      <template #column-operations>
-        <div class="flex-row content-center cursor-pointer" @click="openPopover">
+      <template #column-operations="scope">
+        <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
           <CustomIcon name="ellipsis-vertical"/>
         </div>
       </template>
     </CustomTable>
+
+    <CustomModal
+      v-model="model.update"
+      :title="i18nTranslate('edit')"
+      @submit="onUpdateSubmit"
+    >
+      <UpdateModel ref="updateRef" :data="editData"/>
+    </CustomModal>
   </div>
 </template>
 

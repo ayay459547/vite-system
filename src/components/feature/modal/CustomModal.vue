@@ -67,7 +67,6 @@ const submit = () => {
     <Transition name="bounce">
       <div
         v-show="containerIsShow"
-        v-click-outside="closeModal"
         class="modal-container"
       >
         <div class="modal-header">
@@ -146,7 +145,7 @@ const submit = () => {
 
   &-body {
     width: 100%;
-    padding: 8px;
+    padding: 16px;
     flex: 1;
   }
 
