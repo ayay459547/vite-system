@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
+import { Ref, reactive } from 'vue'
 import { ref, computed, provide } from 'vue'
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
@@ -13,7 +13,7 @@ import { ElConfigProvider } from 'element-plus'
 import { useLocaleStore } from '@/stores/locale'
 
 // hook
-import type { Hook } from '@/declare/hook'
+import type { Hook, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
@@ -37,6 +37,13 @@ const locale = computed(() => {
 // hook
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
 const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
+
+const queueId = ref(0)
+const customPopoverQueue: CustomPopoverQueue[] = reactive([])
+const deleteCustomPopoverQueue = () => {
+  customPopoverQueue.pop()
+}
+
 provide<Hook>('hook', () => {
   return {
     loading: (isOpen, message) => {
@@ -49,9 +56,13 @@ provide<Hook>('hook', () => {
       }
     },
     eventList: (click, eventList, options) => {
-      if (customPopover.value) {
-        customPopover.value.openPopover(click, eventList, options)
-      }
+      const { clientX, clientY } = click
+
+      customPopoverQueue.unshift({
+        queueId: queueId.value,
+        clientX, clientY, eventList, options
+      })
+      queueId.value++
     },
     i18nTranslate: (key) => {
       if (te(key)) return t(key)
@@ -114,7 +125,16 @@ provide<Hook>('hook', () => {
 
       <!-- hook -->
       <HookLoader ref="customLoader"/>
-      <HookPopover ref="customPopover"/>
+
+      <template v-if="customPopoverQueue.length > 0">
+        <HookPopover
+          v-for="popover in customPopoverQueue"
+          :key="popover.queueId"
+          ref="customPopover"
+          v-bind="popover"
+          @close="deleteCustomPopoverQueue"
+        />
+      </template>
     </div>
   </ElConfigProvider>
 </template>

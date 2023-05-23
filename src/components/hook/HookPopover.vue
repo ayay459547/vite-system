@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { EventItem } from '@/declare/hook'
-import { HookList } from '@/declare/hook'
-import debounce from '@/lib/debounce'
+import type { PropType } from 'vue'
+import { ref, onMounted } from 'vue'
+import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
 
 type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
@@ -15,15 +14,42 @@ const top = ref<number>(0)
 const callbackList = ref<EventItem[]>([])
 const popoverWidth = ref(150)
 
+const props = defineProps({
+  clientX: {
+    type: Number as PropType<number>,
+    default: 0
+  },
+  clientY: {
+    type: Number as PropType<number>,
+    default: 0
+  },
+  eventList: {
+    type: Array as PropType<EventItem[]>,
+    default: () => []
+  },
+  options: {
+    type: Object as PropType<Record<string, any>>,
+    default: () => {
+      return { width: 150 }
+    }
+  }
+})
+
+const emit = defineEmits(['close'])
+
 const callEvent = (callback: Function) => {
   callback()
 }
-const debounceCallEvent = debounce(callEvent, 200)
 
-const openPopover: HookList.eventList = (click, eventList, options) => {
+type OpenPopover = (
+  clientX: number,
+  clientY: number,
+  eventList: EventItem[],
+  options?: EventOptions
+) => void
+
+const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
   if (visible.value) return
-
-  const { clientX, clientY } = click
   left.value = clientX
   top.value = clientY + 10
 
@@ -48,9 +74,22 @@ const closePopover = () => {
   }
 }
 
+onMounted(() => {
+  openPopover(
+    props.clientX,
+    props.clientY,
+    props.eventList,
+    props.options
+  )
+})
+
 interface Expose {
-  openPopover:  HookList.eventList
+  openPopover: OpenPopover
   closePopover: () => void
+}
+
+const deletePopover = () => {
+  emit('close')
 }
 
 defineExpose<Expose>({
@@ -79,7 +118,7 @@ defineExpose<Expose>({
           v-for="(callbackItem, callbackIndex) in callbackList"
           class="popover-item"
           :key="callbackIndex"
-          @click="debounceCallEvent(callbackItem.event)"
+          @click="callEvent(callbackItem.event)"
         >
           <div style="width: fit-content">
             <font-awesome-icon
@@ -95,7 +134,7 @@ defineExpose<Expose>({
 
       <template #reference>
         <div
-          v-click-outside="closePopover"
+          v-click-outside="deletePopover"
           class="popover-test"
           @click="visible = !visible"
         ></div>

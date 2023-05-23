@@ -6,33 +6,31 @@ import {
   FormDatePicker,
   FormSelect
 } from '@/components'
+
+import type { TableData } from '../api'
+import { createData } from '../api'
 import { columnSetting } from '../column'
 
 const {
-  columns: filterColumn,
-  forms: filterForm,
+  columns: formColumn,
+  forms: form,
   // reset: resetForm,
   validate: validateForm
-} = getFormSetting(columnSetting, 'filter')
-
-
-const submit = async () => {
-  const res = await validateForm().then(successList => {
-    console.log('vee success => ', successList)
-
-    return 'success'
-  }).catch(errorList => {
-    console.log('vee error => ', errorList)
-
-    const el = errorList[0].getDom()
-    scrollToEl(el)
-    return 'error'
-  })
-  return res
-}
+} = getFormSetting<TableData>(columnSetting, 'form')
 
 defineExpose({
-  submit
+  submit: async () => {
+    return await validateForm().then(async () => {
+      const { data, status } = await createData(form)
+
+      return { data, status }
+    }).catch(errorList => {
+      const el = errorList[0].getDom()
+      scrollToEl(el)
+
+      return { data: null, status: 'error' }
+    })
+  }
 })
 </script>
 
@@ -40,20 +38,20 @@ defineExpose({
   <div class="create grid-row">
     <FormInput
       class="grid-col-xs-24 grid-col-md-12"
-      v-model="filterForm.name"
-      v-bind="filterColumn.name"
+      v-model="form.name"
+      v-bind="formColumn.name"
     />
 
     <FormDatePicker
       class="grid-col-xs-24 grid-col-md-12"
-      v-model="filterForm.date"
-      v-bind="filterColumn.date"
+      v-model="form.date"
+      v-bind="formColumn.date"
     />
 
     <FormSelect
       class="grid-col-md-24"
-      v-model="filterForm.address"
-      v-bind="filterColumn.address"
+      v-model="form.address"
+      v-bind="formColumn.address"
     />
   </div>
 </template>

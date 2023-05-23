@@ -6,7 +6,7 @@ export const columnSetting = {
       // fixed: 'left',
       align: 'center'
     },
-    filter: {
+    form: {
       default: null,
       validate: [],
       required: true
@@ -17,7 +17,7 @@ export const columnSetting = {
     table: {
       width: 150
     },
-    filter: {
+    form: {
       default: null,
       validate: [],
       required: true
@@ -28,7 +28,7 @@ export const columnSetting = {
     table: {
       minWidth: 300
     },
-    filter: {
+    form: {
       default: null,
       required: false,
       options: [

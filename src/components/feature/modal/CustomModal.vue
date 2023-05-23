@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type { WritableComputedRef, PropType } from 'vue'
-import { ref, computed, watch } from 'vue'
+import type { PropType } from 'vue'
+import { ref, onMounted } from 'vue'
 import { CustomButton } from '@/components'
 
 const props = defineProps({
-  modelValue: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
   title: {
     type: String as PropType<string>,
     required: false,
@@ -22,37 +17,7 @@ const emit = defineEmits([
   'submit'
 ])
 
-const containerIsShow = ref(false)
-
-const tempValue: WritableComputedRef<boolean> = computed({
-  get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
-})
-
-watch(tempValue, (newValue) => {
-  if (newValue) {
-    openModal()
-  }
-})
-
-const openModal = () => {
-  tempValue.value = true
-
-  setTimeout(() => {
-    containerIsShow.value = true
-  }, 100)
-}
-
-const closeModal = () => {
-  containerIsShow.value = false
-
-  setTimeout(() => {
-    tempValue.value = false
-  }, 200)
-}
-
 const cancel = () => {
-  closeModal()
   emit('cancel')
 }
 
@@ -60,15 +25,18 @@ const submit = () => {
   emit('submit')
 }
 
+const isShow = ref(false)
+
+onMounted(() => {
+  isShow.value = true
+})
+
 </script>
 
 <template>
-  <div v-if="tempValue" class="modal-wrapper">
-    <Transition name="bounce">
-      <div
-        v-show="containerIsShow"
-        class="modal-container"
-      >
+  <div class="modal-wrapper">
+    <Transition v-show="isShow" name="bounce">
+      <div class="modal-container">
         <div class="modal-header">
           <slot name="header">
             <h3>{{ props.title }}</h3>
@@ -76,7 +44,7 @@ const submit = () => {
           <CustomButton
             icon-name="close"
             text
-            @click="closeModal"
+            @click="cancel"
           />
         </div>
 

@@ -8,9 +8,9 @@ import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/idb'
 import type { ColumnItem, SettingData } from '@/components/feature/table/ColumnSetting.vue'
 
-export interface FormSetting {
+export interface FormSetting<T> {
   columns: Record<string, any>
-  forms: Record<string, any>
+  forms: T
   reset: () => void
   validate: () => Promise<Array<any>>
 }
@@ -36,7 +36,7 @@ export interface FormColumnsItem {
  * @param {String} type 取得 columnSetting 中的類型
  * @returns {Ojbect}
  */
-export const getFormSetting = (columns: Record<string, any>, type: string): FormSetting => {
+export const getFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
   const formMap = reactive<Record<string, any>>({})
   const refMap = reactive<Record<string, any>>({})
@@ -74,7 +74,7 @@ export const getFormSetting = (columns: Record<string, any>, type: string): Form
 
   return {
     columns: resColumns,
-    forms: formMap,
+    forms: formMap as T,
     reset: () => {
       formMap.$forEach((value: any, key: string) => {
         formMap[key] = resColumns[key].default

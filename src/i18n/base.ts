@@ -13,5 +13,10 @@ export default {
     zhTw: '刪除',
     zhCn: '删除',
     en: 'delete'
+  },
+  refrush: {
+    zhTw: '刷新',
+    zhCn: '刷新',
+    en: 'refrush'
   }
 }

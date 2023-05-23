@@ -8,11 +8,11 @@ import {
   CustomIcon
 } from '@/components'
 
-import { ajax, deepClone } from '@/lib/utils'
+import { deepClone } from '@/lib/utils'
 import { getTableSetting } from '@/lib/columns'
 
 import type { TableData } from './api'
-import { fakeTableData } from './api'
+import { getData, deleteData } from './api'
 import { columnSetting } from './column'
 
 import CreateModal from './Components/CreateModal.vue'
@@ -48,7 +48,7 @@ const onCreateSubmit = async () => {
   if (createRef.value) {
     const res = await createRef.value.submit()
 
-    if (res === 'success') {
+    if (res.status === 'success') {
       swal({
         icon: 'success',
         title: '新增成功'
@@ -63,7 +63,7 @@ const onUpdateSubmit = async () => {
   if (updateRef.value) {
     const res = await updateRef.value.submit()
 
-    if (res === 'success') {
+    if (res.status === 'success') {
       swal({
         icon: 'success',
         title: '更新成功'
@@ -74,7 +74,7 @@ const onUpdateSubmit = async () => {
   }
 }
 
-const openPopover = (e: MouseEvent, rowData) => {
+const openPopover = (e: MouseEvent, rowData: TableData) => {
   eventList(e, [
     {
       icon: ['fas', 'edit'],
@@ -94,15 +94,15 @@ const openPopover = (e: MouseEvent, rowData) => {
   ])
 }
 
-const remove = (rowData) => {
+const remove = (rowData: TableData) => {
   swal({
     icon: 'warning',
     title: `確定刪除 ${rowData.name}`
   }).then(async (result) => {
-    loading(true, '刪除資料中')
 
     if (result.isConfirmed) {
-      await deleteData()
+      loading(true, '刪除資料中')
+      await deleteData(rowData)
       swal({
         icon: 'success',
         title: '刪除成功'
@@ -113,18 +113,9 @@ const remove = (rowData) => {
   })
 }
 
-// api
-const getData = async () => {
-  const resData = await ajax<TableData[]>({
-    url: './test',
-    method: 'get',
-    data: {}
-  }, {
-    getFakeData: true,
-    fakeData: fakeTableData,
-    status: 'success',
-    delay: 300
-  })
+const init = async () => {
+  loading(true)
+  const resData = await getData()
 
   if (resData.status === 'success') {
     tableData.value = deepClone([], resData.data)
@@ -135,18 +126,6 @@ const getData = async () => {
       text: '請聯絡資訊人員'
     })
   }
-}
-
-const deleteData = async () => {
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('delete success')
-    }, 1000)
-  })
-}
-const init = async () => {
-  loading(true)
-  await getData()
 
   loading(false)
 }
@@ -159,15 +138,27 @@ onBeforeMount(() => {
 
 <template>
   <div class="page">
-    <CustomButton
-      type="primary"
-      :label="i18nTranslate('create')"
-      icon-name="plus"
-      @click="model.create = true"
-    />
+    <div class="flex-row content-between">
+      <CustomButton
+        type="primary"
+        :label="i18nTranslate('create')"
+        icon-name="plus"
+        icon-move="scale"
+        @click="model.create = true"
+      />
+
+      <CustomButton
+        :label="i18nTranslate('refrush')"
+        icon-name="rotate"
+        icon-move="rotate"
+        @click="init"
+      />
+    </div>
+
     <CustomModal
-      v-model="model.create"
+      v-if="model.create"
       :title="i18nTranslate('create')"
+      @cancel="model.create = false"
       @submit="onCreateSubmit"
     >
       <CreateModal ref="createRef"/>
@@ -186,8 +177,9 @@ onBeforeMount(() => {
     </CustomTable>
 
     <CustomModal
-      v-model="model.update"
+      v-if="model.update"
       :title="i18nTranslate('edit')"
+      @cancel="model.update = false"
       @submit="onUpdateSubmit"
     >
       <UpdateModel ref="updateRef" :data="editData"/>

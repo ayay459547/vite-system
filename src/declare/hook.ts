@@ -7,15 +7,23 @@ export declare interface EventItem {
   label: string
   event: Function
 }
+export declare interface EventOptions {
+  width: number
+}
+export declare interface CustomPopoverQueue {
+  queueId: number
+  clientX: number
+  clientY: number
+  eventList: EventItem[]
+  options?: EventOptions
+}
 export declare namespace HookList {
   type loading = (isOpen: boolean, message?: string) => void
 
   type eventList = (
     click: MouseEvent,
     eventList?: Array<EventItem>,
-    options?: {
-      width: number
-    }
+    options?: EventOptions
   ) => void
 
   type i18nTranslate = (key: string) => string

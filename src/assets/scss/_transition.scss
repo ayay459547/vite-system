@@ -1,10 +1,10 @@
 .bounce-enter-active {
-  transition: opacity 0.3s ease;
-  animation: bounce-in 0.3s;
+  transition: opacity 0.2s ease;
+  animation: bounce-in 0.2s;
 }
 .bounce-leave-active {
-  transition: opacity 0.2s ease;
-  animation: bounce-in 0.2s reverse;
+  transition: opacity 0.1s ease;
+  animation: bounce-in 0.1s reverse;
 }
 @keyframes bounce-in {
   0% {
