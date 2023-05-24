@@ -15,11 +15,12 @@ https://element-plus.org/zh-CN/component/button.html
 | color     | 自訂按鈕顏色   | string  | ''       |
 
 ### Attributes ( props ): 專案
-| 屬姓名     | 說明         | 类型    | 默認值     |
-| --------- | ------------ | ------- | --------- |
-| label     | 顯示文字      | string  | ''        |
-| iconType  | 圖示類型      | enum    | 'fas'     |
-| iconName  | 圖示名稱      | string  | ''        |
+| 屬姓名     | 說明             | 类型    | 默認值     |
+| --------- | ---------------- | ------- | --------- |
+| label     | 顯示文字          | string  | ''        |
+| iconType  | 圖示類型          | enum    | 'fas'     |
+| iconName  | 圖示名稱          | string  | ''        |
+| iconMove  | 圖示hover移動方式 | enum    | 'none'    |
 
 ### 找圖示(要下過濾是 Free)
 https://fontawesome.com/search

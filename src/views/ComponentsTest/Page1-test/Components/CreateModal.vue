@@ -49,7 +49,7 @@ defineExpose({
     />
 
     <FormSelect
-      class="grid-col-md-24"
+      class="grid-col-xs-24"
       v-model="form.address"
       v-bind="formColumn.address"
     />
@@ -60,5 +60,6 @@ defineExpose({
 .create {
   width: 100%;
   height: fit-content;
+  padding: 16px;
 }
 </style>

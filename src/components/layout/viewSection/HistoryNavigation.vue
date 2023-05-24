@@ -52,7 +52,6 @@ const clearHistory = () => {
 const setRoutesConfig = (route: Navigation) => {
   routesStore.setBreadcrumb(route.breadcrumb)
   routesStore.setCurrentNavigation(route)
-  routesStore.addHistoryNavigation(route.name, route)
 }
 
 </script>

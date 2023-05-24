@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { Ref, reactive } from 'vue'
-import { ref, computed, provide } from 'vue'
+import type { Ref } from 'vue'
+import { watch, ref, reactive, computed, provide } from 'vue'
+
+import { useRoute } from 'vue-router'
+
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
 import HeaderSection from '@/components/layout/headerSection/HeaderSection.vue'
@@ -13,12 +16,11 @@ import { ElConfigProvider } from 'element-plus'
 import { useLocaleStore } from '@/stores/locale'
 
 // hook
-import type { Hook, CustomPopoverQueue } from '@/declare/hook'
+import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useI18n } from 'vue-i18n'
-const { t, te } = useI18n()
 
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
@@ -35,6 +37,8 @@ const locale = computed(() => {
 })
 
 // hook
+const { t, te } = useI18n()
+
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
 const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
 
@@ -44,17 +48,19 @@ const deleteCustomPopoverQueue = () => {
   customPopoverQueue.pop()
 }
 
+const loading: HookList.loading = (isOpen, message) => {
+  if (customLoader.value && isOpen) {
+    const _message = message ?? 'loading'
+
+    customLoader.value.openLoader(_message)
+  } else {
+    customLoader.value.closeLoader()
+  }
+}
+
 provide<Hook>('hook', () => {
   return {
-    loading: (isOpen, message) => {
-      if (customLoader.value && isOpen) {
-        const _message = message ?? 'loading'
-
-        customLoader.value.openLoader(_message)
-      } else {
-        customLoader.value.closeLoader()
-      }
-    },
+    loading,
     eventList: (click, eventList, options) => {
       const { clientX, clientY } = click
 
@@ -86,6 +92,18 @@ provide<Hook>('hook', () => {
       })
     }
   }
+})
+
+
+const route = useRoute()
+const routePath = computed(() => {
+  return route.path
+})
+
+watch(routePath, () => {
+  loading(true, 'loading...')
+
+  loading(false)
 })
 
 </script>

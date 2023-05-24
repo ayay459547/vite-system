@@ -83,5 +83,6 @@ defineExpose({
 .update {
   width: 100%;
   height: fit-content;
+  padding: 16px;
 }
 </style>

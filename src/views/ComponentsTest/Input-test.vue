@@ -53,12 +53,20 @@ const columnSetting = {
   }
 }
 
+interface Form {
+  passowrd?: string
+  phone?: string
+  date?: string
+  daterange?: [string, string]
+  select?: string
+}
+
 const {
-  columns: filterColumn,
-  forms: filterForm,
+  columns: formColumn,
+  forms: form,
   reset: resetForm,
   validate: validateForm
-} = getFormSetting(columnSetting, 'filter')
+} = getFormSetting<Form>(columnSetting, 'filter')
 
 const submit = () => {
   validateForm().then(successList => {
@@ -75,28 +83,28 @@ const submit = () => {
 <template>
   <div class="input-test">
     <FormInput
-      v-model="filterForm.passowrd"
-      v-bind="filterColumn.passowrd"
+      v-model="form.passowrd"
+      v-bind="formColumn.passowrd"
     />
 
     <FormInput
-      v-model="filterForm.phone"
-      v-bind="filterColumn.phone"
+      v-model="form.phone"
+      v-bind="formColumn.phone"
     />
 
     <FormDatePicker
-      v-model="filterForm.date"
-      v-bind="filterColumn.date"
+      v-model="form.date"
+      v-bind="formColumn.date"
     />
 
     <FormDatePicker
-      v-model="filterForm.daterange"
-      v-bind="filterColumn.daterange"
+      v-model="form.daterange"
+      v-bind="formColumn.daterange"
     />
 
     <FormSelect
-      v-model="filterForm.select"
-      v-bind="filterColumn.select"
+      v-model="form.select"
+      v-bind="formColumn.select"
     />
 
     <CustomButton

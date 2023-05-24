@@ -3,7 +3,6 @@ import type { ComputedRef, Ref } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import { computed, ref } from 'vue'
 import SubNavigationView from './SubNavigationView.vue'
-import { useRoutesStore } from '@/stores/routes'
 import { CustomIcon } from '@/components'
 
 const props = defineProps<{
@@ -35,13 +34,6 @@ const setLevel2Router = (level2Router: Navigation): void => {
   })
 }
 
-const routesStore = useRoutesStore()
-const setRoutesConfig = (route: Navigation) => {
-  routesStore.setBreadcrumb(route.breadcrumb)
-  routesStore.setCurrentNavigation(route)
-  routesStore.addHistoryNavigation(route.name, route)
-}
-
 </script>
 
 <template>
@@ -58,7 +50,7 @@ const setRoutesConfig = (route: Navigation) => {
           <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
         </div>
 
-        <RouterLink v-else :to="level1Item.path" class="nav-item" @click="setRoutesConfig(level1Item)">
+        <RouterLink v-else :to="level1Item.path" class="nav-item">
           <div class="nav-item-left">
             <CustomIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></CustomIcon>
             <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>

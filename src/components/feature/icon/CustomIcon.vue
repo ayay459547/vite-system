@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ElTooltip } from 'element-plus'
 
 type IconType = 'fas' | 'far' | 'fab'
 
@@ -42,21 +41,7 @@ const getIcon = computed(() => {
 </script>
 
 <template>
-  <ElTooltip
-    v-if="props.tooltip"
-    :placement="props.placement"
-  >
-    <template #default>
-      <div class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
-        <font-awesome-icon :icon="getIcon" />
-      </div>
-    </template>
-    <template #content>
-      <slot>Empty</slot>
-    </template>
-  </ElTooltip>
-
-  <div v-else class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
+  <div class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
     <font-awesome-icon :icon="getIcon" />
   </div>
 </template>

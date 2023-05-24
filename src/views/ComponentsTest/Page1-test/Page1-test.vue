@@ -156,9 +156,9 @@ onBeforeMount(() => {
     </div>
 
     <CustomModal
-      v-if="model.create"
+      v-model="model.create"
+      height-size="small"
       :title="i18nTranslate('create')"
-      @cancel="model.create = false"
       @submit="onCreateSubmit"
     >
       <CreateModal ref="createRef"/>
@@ -177,7 +177,7 @@ onBeforeMount(() => {
     </CustomTable>
 
     <CustomModal
-      v-if="model.update"
+      v-model="model.update"
       :title="i18nTranslate('edit')"
       @cancel="model.update = false"
       @submit="onUpdateSubmit"

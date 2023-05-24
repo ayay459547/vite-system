@@ -2,7 +2,6 @@
 import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import { defineComponent, computed } from 'vue'
-import { useRoutesStore } from '@/stores/routes'
 import { CustomIcon } from '@/components'
 
 export default defineComponent({
@@ -46,20 +45,12 @@ export default defineComponent({
       emit('changeMap', name)
     }
 
-    const routesStore = useRoutesStore()
-    const setRoutesConfig = (route: Navigation) => {
-      routesStore.setBreadcrumb(route.breadcrumb)
-      routesStore.setCurrentNavigation(route)
-      routesStore.addHistoryNavigation(route.name, route)
-    }
-
     return {
       navHeight: 54,
       changeOpen,
       routerList,
       tempIsOpen,
-      onTitleClick,
-      setRoutesConfig
+      onTitleClick
     }
   }
 })
@@ -104,7 +95,6 @@ export default defineComponent({
                 :key="leaf.name"
                 :to="leaf.path"
                 class="nav-sub-item"
-                @click="setRoutesConfig(leaf)"
               >
                 <div class="nav-item-left">
                   <div v-if="leaf.complete" class="item-icon"></div>
@@ -122,7 +112,6 @@ export default defineComponent({
             v-else
             :to="routerItem.path"
             class="nav-item"
-            @click="setRoutesConfig(routerItem)"
           >
             <div class="nav-item-left">
               <div v-if="routerItem.complete" class="item-icon"></div>

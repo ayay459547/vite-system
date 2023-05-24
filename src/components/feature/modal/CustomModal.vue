@@ -1,13 +1,28 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { ref, onMounted } from 'vue'
+import type { WritableComputedRef, PropType } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { CustomButton } from '@/components'
 
 const props = defineProps({
+  modelValue: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   title: {
     type: String as PropType<string>,
-    required: false,
     default: ''
+  },
+  clickOutside: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  widthSize: {
+    type: String as PropType<'large'| 'default'| 'small'>,
+    default: 'default'
+  },
+  heightSize: {
+    type: String as PropType<'large'| 'default'| 'small'>,
+    default: 'default'
   }
 })
 
@@ -17,7 +32,31 @@ const emit = defineEmits([
   'submit'
 ])
 
+const containerIsShow = ref(false)
+
+const tempValue: WritableComputedRef<boolean> = computed({
+  get: () => props.modelValue,
+  set: (value: boolean) => emit('update:modelValue', value)
+})
+
+watch(tempValue, (newValue) => {
+  if (!newValue) return
+
+  setTimeout(() => {
+    containerIsShow.value = true
+  }, 100)
+})
+
+const closeModal = () => {
+  containerIsShow.value = false
+
+  setTimeout(() => {
+    tempValue.value = false
+  }, 200)
+}
+
 const cancel = () => {
+  closeModal()
   emit('cancel')
 }
 
@@ -25,18 +64,23 @@ const submit = () => {
   emit('submit')
 }
 
-const isShow = ref(false)
+const clickOutside = () => {
+  if (!props.clickOutside) return
 
-onMounted(() => {
-  isShow.value = true
-})
+  closeModal()
+}
 
 </script>
 
 <template>
-  <div class="modal-wrapper">
-    <Transition v-show="isShow" name="bounce">
-      <div class="modal-container">
+  <div v-if="tempValue" class="modal-wrapper">
+    <Transition name="bounce">
+      <div
+        v-click-outside="clickOutside"
+        v-show="containerIsShow"
+        class="modal-container"
+        :class="[`width-${props.widthSize}`, `height-${props.heightSize}`]"
+      >
         <div class="modal-header">
           <slot name="header">
             <h3>{{ props.title }}</h3>
@@ -44,7 +88,7 @@ onMounted(() => {
           <CustomButton
             icon-name="close"
             text
-            @click="cancel"
+            @click="closeModal"
           />
         </div>
 
@@ -91,14 +135,61 @@ onMounted(() => {
     @extend %flex-center;
   }
   &-container {
-    width: 80%;
-    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #fff;
     border: 1px solid #fff;
+    transition-duration: 0.3s;
+    min-width: 400px;
+    min-height: 300px;
+    &.width {
+      &-large {
+        width: 80%;
+        @media (max-width: 992px) {
+          width: 90%;
+        }
+        @media (max-width: 576px) {
+          width: 95%;
+        }
+      }
+      &-default {
+        width: 50%;
+        @media (max-width: 992px) {
+          width: 70%;
+        }
+        @media (max-width: 576px) {
+          width: 90%;
+        }
+      }
+      &-small {
+        width: 500px;
+
+        @media (max-width: 576px) {
+          width: 85%;
+        }
+      }
+    }
+    &.height {
+      &-large {
+        height: 80%;
+      }
+      &-default {
+        height: 50%;
+      }
+      &-small {
+        height: 400px;
+      }
+
+      &-large,
+      &-default,
+      &-small {
+        @media (max-height: 576px) {
+          height: 85%;
+        }
+      }
+    }
   }
 
   &-header {
@@ -113,8 +204,8 @@ onMounted(() => {
 
   &-body {
     width: 100%;
-    padding: 16px;
     flex: 1;
+    overflow: auto;
   }
 
   &-footer {

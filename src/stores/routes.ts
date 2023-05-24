@@ -1,9 +1,9 @@
 import type { ComputedRef, Ref } from 'vue'
-import { ref, computed, reactive, onBeforeMount } from 'vue'
+import { ref, computed, reactive, onBeforeMount, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
-import { getRouterLeaf } from '@/lib/routes'
+import { getRouterLeafLayer, refactorRoutes } from '@/lib/routes'
 import routes from '@/router/routes'
 
 import {
@@ -14,7 +14,14 @@ import {
   keysHistoryNavigation as keysHistory
 } from '@/lib/idb'
 
+import { useRoute } from 'vue-router'
+
 export const useRoutesStore = defineStore('routes', () => {
+  // 全部的路由
+  const allRoutes: ComputedRef<Navigation[]> = computed(() => {
+    return getRouterLeafLayer(routes, [1, 2, 3], false)
+  })
+
   // 導覽
   const breadcrumb: Ref<string[]> = ref([])
   const setBreadcrumb = (newBreadcrumb: string[]) => {
@@ -69,28 +76,72 @@ export const useRoutesStore = defineStore('routes', () => {
     initHistoryNavigation()
   })
 
-  // 各階層的路由
-  const level1Routes: ComputedRef<Navigation[]> = computed(() => {
-    return getRouterLeaf(routes, 1, false)
+  // Navigation 三層選單 + 歷史選單 用
+  const navigationRoutes: ComputedRef<Navigation[]> = computed(() => {
+    return refactorRoutes<Navigation>((leafNode, parentsNode) => {
+      const nextNode: Navigation = {
+        ...leafNode
+      }
+      if (parentsNode === null) {
+        nextNode.breadcrumb = [leafNode.title]
+      } else{
+        nextNode.breadcrumb = [...parentsNode.breadcrumb, leafNode.title]
+      }
+      return nextNode
+    }, routes)
   })
-  const level2Routes: ComputedRef<Navigation[]> = computed(() => {
-    return getRouterLeaf(routes, 2, false)
+
+  // 讀取當前路由變化 設置 麵包屑 + 當前路由 + 歷史紀錄
+  const route = useRoute()
+
+  const currentRouteName = computed(() => {
+    return route.matched[0]?.name ?? ''
   })
-  const level3Routes: ComputedRef<Navigation[]> = computed(() => {
-    return getRouterLeaf(routes, 3, false)
+
+  watch(currentRouteName, (routeName: string) => {
+    if (routeName === 'home') {
+      setBreadcrumb(['首頁'])
+      setCurrentNavigation(null)
+    } else if (navigationMap.value.has(routeName)) {
+      const currentRoute = navigationMap.value.get(routeName)
+      setBreadcrumb(currentRoute?.breadcrumb ?? [])
+      setCurrentNavigation(currentRoute)
+      addHistoryNavigation(routeName, currentRoute)
+    }
+  })
+
+  const navigationMap: ComputedRef<Map<string, Navigation>> = computed(() => {
+    const map = new Map()
+
+    const _setNavigationMap = (routes: Navigation[]) => {
+      routes.forEach(route => {
+        map.set(route.name, route)
+
+        if (Object.hasOwnProperty.call(route, 'leaves')) {
+          _setNavigationMap(route.leaves)
+        }
+      })
+    }
+    _setNavigationMap(navigationRoutes.value)
+
+    return map
   })
 
   return {
+    allRoutes,
+
     breadcrumb,
     setBreadcrumb,
+
+    currentNavigation,
+    setCurrentNavigation,
+
     historyNavigation,
     addHistoryNavigation,
     removeHistoryNavigation,
     clearHistoryNavigation,
-    currentNavigation,
-    setCurrentNavigation,
-    level1Routes,
-    level2Routes,
-    level3Routes
+
+    navigationRoutes,
+    navigationMap
   }
 })

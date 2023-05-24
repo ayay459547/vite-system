@@ -3,23 +3,13 @@ import type { ComputedRef } from 'vue'
 import { computed, onMounted } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import { refactorRoutes } from '@/lib/routes'
-import routes from '@/router/routes'
 import NavigationView from './NavigationView.vue'
 import { useRoutesStore } from '@/stores/routes'
 
+const routesStore = useRoutesStore()
+
 const level1Routes: ComputedRef<Navigation[]> = computed(() => {
-  return refactorRoutes<Navigation>((leafNode, parentsNode) => {
-    const nextNode: Navigation = {
-      ...leafNode
-    }
-    if (parentsNode === null) {
-      nextNode.breadcrumb = [leafNode.title]
-    } else{
-      nextNode.breadcrumb = [...parentsNode.breadcrumb, leafNode.title]
-    }
-    return nextNode
-  }, routes)
+  return routesStore.navigationRoutes
 })
 
 const showRoutes: typeof level1Routes = computed(() => {
@@ -30,7 +20,7 @@ const showRoutes: typeof level1Routes = computed(() => {
   })
 })
 
-const routesStore = useRoutesStore()
+
 const setRoutesConfig = () => {
   routesStore.setBreadcrumb(['首頁'])
   routesStore.setCurrentNavigation(null)

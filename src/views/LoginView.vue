@@ -60,11 +60,16 @@ const columnSetting = {
   }
 }
 
+interface Form {
+  account: string
+  passowrd: string
+}
+
 const {
-  columns: filterColumn,
-  forms: filterForm,
+  columns: FormColumn,
+  forms: form,
   validate: validateForm
-} = getFormSetting(columnSetting, 'fitler')
+} = getFormSetting<Form>(columnSetting, 'fitler')
 
 </script>
 
@@ -88,17 +93,18 @@ const {
         <h1>登入</h1>
 
         <FormInput
-          v-model="filterForm.account"
-          v-bind="filterColumn.account"
+          v-model="form.account"
+          v-bind="FormColumn.account"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
         </FormInput>
         <FormInput
-          v-model="filterForm.passowrd"
-          v-bind="filterColumn.passowrd"
+          v-model="form.passowrd"
+          v-bind="FormColumn.passowrd"
           show-password
+          @keyup.enter="login"
         >
           <template #prefix>
             <CustomIcon name="unlock-keyhole"/>

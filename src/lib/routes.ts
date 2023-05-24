@@ -8,32 +8,27 @@ import type { RouterTree } from '@/declare/routes'
  * @param hasLeaves 是否包含子路由
  * @returns {Array} 返回路由
  */
-export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = true): Array<RouterTree> => {
+export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], hasLeaves = true): Array<RouterTree> => {
   const res = []
 
   const _getRouterLeaf = (
     routerList: RouterTree[] = [],
     res: RouterTree[] = [],
     options = {
-      currLevel: 1,    // 目前階層
-      getLevel: 1,     // 想取得的階層
-      hasLeaves: true, // 是否包含子路由
-      parent: 'root'   // 父節點的 name
+      currLevel: 1,         // 目前階層
+      getLevel: [1, 2, 3],  // 想取得的階層
+      hasLeaves: true       // 是否包含子路由
     }
   ): void => {
-    const { currLevel, getLevel, hasLeaves, parent } = options
+    const { currLevel, getLevel, hasLeaves } = options
 
-    if (currLevel > getLevel) return  // 超過指定層數就結束
+    if (currLevel > Math.max(...getLevel)) return  // 超過指定層數就結束
 
     const nextLeaves = []
-    let parentName = ''
 
     routerList.forEach(routerItem => {
-      if (currLevel === getLevel) {
-        const pushItem = {
-          parent,
-          ...routerItem
-        }
+      if (getLevel.includes(currLevel)) {
+        const pushItem = { ...routerItem }
         // 去掉子路由
         if (!hasLeaves && Object.hasOwnProperty.call(pushItem, 'leaves')) {
           delete pushItem.leaves
@@ -41,7 +36,6 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
         res.push(pushItem)
       }
       if (Object.hasOwnProperty.call(routerItem, 'leaves')) {
-        parentName = routerItem.name
         nextLeaves.push(...routerItem.leaves)
       }
     })
@@ -50,8 +44,7 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
       _getRouterLeaf(nextLeaves, res, {
         currLevel: currLevel + 1,
         getLevel,
-        hasLeaves,
-        parent: parentName
+        hasLeaves
       })
     }
   }
@@ -59,8 +52,7 @@ export const getRouterLeaf = (routerList: RouterTree[], level = 1, hasLeaves = t
   _getRouterLeaf(routerList, res, {
     currLevel: 1,
     getLevel: level,
-    hasLeaves,
-    parent: 'root'
+    hasLeaves
   })
 
   return res
