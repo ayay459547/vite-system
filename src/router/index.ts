@@ -7,6 +7,7 @@ import routes from '@/router/routes'
 
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import Page_404 from '@/views/Page_404.vue'
 
 /**
  * @author Caleb
@@ -67,6 +68,14 @@ const baseRoutes: Array<RouteRecordRaw> = [
     },
     path: '/login',
     component: LoginView
+  },
+  {
+    name: 'page404',
+    meta: {
+      title: '404'
+    },
+    path: '/page404',
+    component: Page_404
   }
 ]
 

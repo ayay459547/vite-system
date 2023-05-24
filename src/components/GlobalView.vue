@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { watch, ref, reactive, computed, provide } from 'vue'
-
-import { useRoute } from 'vue-router'
+import { ref, reactive, computed, provide } from 'vue'
 
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
@@ -94,18 +92,6 @@ provide<Hook>('hook', () => {
   }
 })
 
-
-const route = useRoute()
-const routePath = computed(() => {
-  return route.path
-})
-
-watch(routePath, () => {
-  loading(true, 'loading...')
-
-  loading(false)
-})
-
 </script>
 
 <template>
@@ -136,7 +122,11 @@ watch(routePath, () => {
         </div>
         <div class="layout-view">
           <ViewSection :history-is-open="historyIsOpen">
-            <RouterView />
+            <RouterView v-slot="{ Component }">
+              <Transition name="page" mode="out-in">
+                <component :is="Component" />
+              </Transition>
+            </RouterView>
           </ViewSection>
         </div>
       </div>

@@ -6,10 +6,17 @@ import vClickOutside from 'click-outside-vue3'
 // element plus
 import { vLoading } from 'element-plus'
 
+// 文字懸浮
+import { handler } from './fixed'
+
 const pluginDirective = {
   install (app: App): void {
     app.use(vClickOutside)
     app.directive('loading', vLoading)
+
+    app.directive('fixed', (el, { value: options }) => {
+      el.addEventListener('mouseenter', handler(el, options))
+    })
   }
 }
 
