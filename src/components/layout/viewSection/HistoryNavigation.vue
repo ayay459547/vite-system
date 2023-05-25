@@ -11,11 +11,8 @@ const { historyNavigation } = storeToRefs(routesStore)
 
 const { currentNavigation } = storeToRefs(routesStore)
 
-const currentTab = computed({
-  get () {
-    return currentNavigation.value?.name ?? ''
-  },
-  set () {}
+const currentTab = computed(() => {
+  return currentNavigation.value?.name ?? ''
 })
 
 type ListType = Array<{
@@ -58,7 +55,7 @@ const setRoutesConfig = (route: Navigation) => {
 <template>
   <div class="history-wrapper">
     <CustomTabs
-      v-model="currentTab"
+      :model-value="currentTab"
       :list="tabs"
       class="history-tabs"
       @remove="removeHistory"

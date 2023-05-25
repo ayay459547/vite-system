@@ -73,7 +73,7 @@ const clickOutside = () => {
 </script>
 
 <template>
-  <div v-if="tempValue" class="modal-wrapper">
+  <div v-show="tempValue" class="modal-wrapper">
     <Transition name="bounce">
       <div
         v-click-outside="clickOutside"

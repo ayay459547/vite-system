@@ -122,6 +122,7 @@ provide<Hook>('hook', () => {
         </div>
         <div class="layout-view">
           <ViewSection :history-is-open="historyIsOpen">
+            <!-- <RouterView></RouterView> -->
             <RouterView v-slot="{ Component }">
               <Transition name="page" mode="out-in">
                 <component :is="Component" />
