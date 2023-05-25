@@ -127,7 +127,7 @@ const clickOutside = () => {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: 10;
+    z-index: $modal-index;
     left: 0;
     top: 0;
     background-color: #00000066;

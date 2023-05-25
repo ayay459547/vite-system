@@ -18,6 +18,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  padding: 16px;
 
   flex-direction: column;
   @extend %flex-center;
@@ -30,9 +31,8 @@
 
   &-img {
     width: 80%;
+    height: 80%;
     position: absolute;
-    bottom: 0;
-    right: 0;
     opacity: 0.8;
   }
 }

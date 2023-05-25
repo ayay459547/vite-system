@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
 import type { Navigation } from '@/declare/routes'
 import { CustomButton, CustomTabs } from '@/components'
 
-const currentTab = ref('')
 const routesStore = useRoutesStore()
 const { historyNavigation } = storeToRefs(routesStore)
 
 const { currentNavigation } = storeToRefs(routesStore)
-watch(currentNavigation, (newValue) => {
-  if (newValue) {
-    currentTab.value = newValue.name
-  } else {
-    currentTab.value = null
-  }
+
+const currentTab = computed({
+  get () {
+    return currentNavigation.value?.name ?? ''
+  },
+  set () {}
 })
 
 type ListType = Array<{

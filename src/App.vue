@@ -1,9 +1,21 @@
-<script setup lang="ts">
+<script lang="ts">
 import GlobalView from '@/components/GlobalView.vue'
 import { useEnvStore } from '@/stores/env'
+import { defineComponent } from 'vue'
 
-const envStore = useEnvStore()
-const { system, version } = envStore
+export default defineComponent({
+  name: 'AppView',
+  components: { GlobalView },
+  setup () {
+    const envStore = useEnvStore()
+    const { system, version } = envStore
+
+    return {
+      system,
+      version
+    }
+  }
+})
 
 </script>
 

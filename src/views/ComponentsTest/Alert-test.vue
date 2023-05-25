@@ -47,6 +47,10 @@ const showAlert = (icon: Icon) => {
 
 <template>
   <div class="input-test">
+    <div v-fixed="{ text: 'v-fixed test', textClass: 'text-danger' }" class="input-fixed">
+      v-fixed test
+    </div>
+
     <CustomButton
       label="測試Popover"
       @click="openPopover"
@@ -76,12 +80,23 @@ const showAlert = (icon: Icon) => {
 </template>
 
 <style lang="scss" scoped>
-.input-test {
-  width: 100%;
-  height: 100%;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.input {
+  &-test {
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &-fixed {
+    border: 1px solid skyblue;
+    border-radius: 6px;
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+    cursor: default;
+  }
 }
 </style>
