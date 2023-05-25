@@ -179,7 +179,6 @@ onBeforeMount(() => {
     <CustomModal
       v-model="model.update"
       :title="i18nTranslate('edit')"
-      @cancel="model.update = false"
       @submit="onUpdateSubmit"
     >
       <UpdateModel ref="updateRef" :data="editData"/>

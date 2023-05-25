@@ -76,6 +76,10 @@ const baseRoutes: Array<RouteRecordRaw> = [
     },
     path: '/page404',
     component: Page_404
+  },
+  {
+    path: '/:pathMatch(.*)',
+    redirect: { name: 'page404' }
   }
 ]
 

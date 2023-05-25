@@ -67,7 +67,7 @@ const wrapROcallback = throttle((entries) => {
       arrowIsShow.value = listWidth.value > conWidth.value
     }
   })
-}, 10) as ResizeObserverCallback
+}, 100) as ResizeObserverCallback
 const wrapRO = new ResizeObserver(wrapROcallback)
 
 const conWidth = ref(0)
