@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { ref, reactive, computed, provide } from 'vue'
+import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
 
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
@@ -47,7 +48,9 @@ const deleteCustomPopoverQueue = () => {
 }
 
 const loading: HookList.loading = (isOpen, message) => {
-  if (customLoader.value && isOpen) {
+  if (!customLoader.value) return
+
+  if (isOpen) {
     const _message = message ?? 'loading'
 
     customLoader.value.openLoader(_message)
@@ -92,6 +95,25 @@ provide<Hook>('hook', () => {
   }
 })
 
+
+// 路由更換時 loading
+const isLoading = ref(false)
+const prevRoute = ref<RouteRecordName>('')
+
+const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
+  if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
+
+  if (prevRoute.value !== currentRoute.name) {
+    isLoading.value = true
+
+    setTimeout(() => {
+      prevRoute.value = currentRoute.name
+
+      isLoading.value = false
+    }, 1000)
+  }
+}
+
 </script>
 
 <template>
@@ -122,12 +144,16 @@ provide<Hook>('hook', () => {
         </div>
         <div class="layout-view">
           <ViewSection :history-is-open="historyIsOpen">
-            <!-- <RouterView></RouterView> -->
-            <RouterView v-slot="{ Component }">
-              <Transition name="page" mode="out-in">
-                <component :is="Component" />
-              </Transition>
-            </RouterView>
+            <div v-loading="isLoading" style="width: 100%; height: 100%;">
+              <RouterView v-slot="{ Component, route }">
+                <KeepAlive>
+                  <component v-if="route.meta.keepAlive" :key="route.name" :is="Component"/>
+                </KeepAlive>
+                <component v-if="!route.meta.keepAlive" :key="route.name" :is="Component"/>
+
+                <div style="display: none;">{{ setPrevRoute(route) }}</div>
+              </RouterView>
+            </div>
           </ViewSection>
         </div>
       </div>

@@ -1,5 +1,5 @@
-// import VFixed from '@/components/VFixed.vue'
 import { createApp } from 'vue'
+import debounce from '@/lib/debounce'
 import vClickOutside from 'click-outside-vue3'
 import VFixed from '@/components/feature/VFixed.vue'
 
@@ -11,7 +11,7 @@ const fixedMap = new Map()
  *                 textClass: class 類型(string, object, array)
  *                 textStyle: style 類型(string, object)
  */
-export function createhandler (this: Element, options: {
+export function createHandler (this: Element, options: {
   text: string
   textClass?: string | Record<string, any> | any[]
   textStyle?: string | Record<string, any>
@@ -33,16 +33,25 @@ export function createhandler (this: Element, options: {
 
   app.use(vClickOutside).mount(newEl)
 
-  fixedMap.set(this, {
-    app,
-    el: newEl
-  })
+  if (!fixedMap.has(this)) {
+    fixedMap.set(this, {
+      app,
+      el: newEl
+    })
+  }
 }
 
-export function removehandler (this: Element) {
-  const { app, el } = fixedMap.get(this)
-  app.unmount()
-  el.remove()
+export const debounceCreateHandler = debounce(createHandler, 100)
 
-  fixedMap.delete(this)
+export function removeHandler (this: Element) {
+  const temp = fixedMap.get(this)
+
+  if (temp) {
+    const { app, el } = temp
+    app.unmount()
+    el.remove()
+
+    fixedMap.delete(this)
+  }
+
 }

@@ -6,7 +6,7 @@ import {
   FormDatePicker,
   FormSelect
 } from '@/components'
-import { onBeforeMount } from 'vue'
+import { onMounted } from 'vue'
 
 import type { TableData } from '../api'
 import { updateData } from '../api'
@@ -27,7 +27,7 @@ const props = defineProps({
   }
 })
 
-onBeforeMount(() => {
+onMounted(() => {
   const {
     name = null,
     date = null,

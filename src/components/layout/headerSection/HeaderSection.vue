@@ -13,6 +13,8 @@ import { useRouter } from 'vue-router'
 
 import { CustomIcon, CustomTooltip } from '@/components'
 
+import { useAuthStore } from '@/stores/auth'
+
 const props = defineProps<{
   isOpen: boolean,
   historyIsOpen: boolean
@@ -61,7 +63,9 @@ const breadcrumbSpan = computed<string>(() => {
   }, '')
 })
 
-const userName = 'AAT'
+// auth
+const authStore = useAuthStore()
+const { userName, clearToken } = authStore
 
 const localeStore = useLocaleStore()
 
@@ -105,11 +109,12 @@ const openUserEffect = (e: MouseEvent) => {
       label: '登出',
       event: () => {
         loading(true, '登出中')
+        clearToken()
         router.push({ name: 'login' })
 
         setTimeout(() => {
           loading(false)
-        }, 500)
+        }, 480)
       }
     },
     {
@@ -176,14 +181,14 @@ const openUserEffect = (e: MouseEvent) => {
       <div class="header-right-effect"  @click="openUserEffect">
         <div class="user-md">
           <CustomIcon name="user" class="icon"/>
-          <span>{{ 'hi! ' + userName }}</span>
+          <span>{{ userName }}</span>
         </div>
         <div class="user-xs">
           <CustomTooltip>
             <CustomIcon name="user"/>
 
             <template #content>
-              <span>{{ 'hi! ' + userName }}</span>
+              <span>{{ userName }}</span>
             </template>
           </CustomTooltip>
         </div>

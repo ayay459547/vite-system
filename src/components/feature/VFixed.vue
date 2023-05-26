@@ -46,9 +46,27 @@ export default defineComponent({
     return {
       isShow: false,
       isHovering: false,
+      mousePos: {
+        left: 0,
+        top: 0
+      },
       // 防報錯誤訊息
       // Type 'Function' provides no match for the signature '(payload: WheelEvent): void'
-      throttleOnWheelChange: throttle(this.close, 150, { noLeading: true }) as (payload: WheelEvent) => void
+      throttleOnWheelChange: throttle(this.close, 150, { noLeading: true }) as (payload: WheelEvent) => void,
+      debounceSetMousePos: debounce(this.setMousePos, 100)
+    }
+  },
+  watch: {
+    isShow (newValue) {
+      if (newValue) {
+        window.addEventListener('mousemove', this.debounceSetMousePos)
+        this.openTimer()
+      } else {
+        window.removeEventListener('mousemove', this.debounceSetMousePos)
+        this.mousePos.left = 0
+        this.mousePos.top = 0
+        this.closeTimer()
+      }
     }
   },
   computed: {
@@ -109,17 +127,40 @@ export default defineComponent({
       this.isHovering = false
       this.isShow = false
     },
+    // 滑鼠超出範圍 關閉fixed
+    setMousePos (e: MouseEvent) {
+      this.mousePos.left = e.clientX
+      this.mousePos.top = e.clientY
+    },
+    openTimer (tolerance = 50) {
+      this.timer = setInterval(() => {
+        const { left, top, width, height } = this.elAttr
+        const { left: mouseLeft, top: mouseTop} = this.mousePos
+
+        if (
+          mouseLeft + tolerance < left ||
+          mouseLeft > left + width + tolerance ||
+          mouseTop + tolerance < top ||
+          mouseTop > top + height + tolerance
+        ) {
+          this.close()
+        }
+      }, 480)
+    },
+    closeTimer () {
+      clearInterval(this.timer)
+    },
     async wait (delay: number) {
       await new Promise(resolve => {
         setTimeout(() => {
-          resolve('')
+          resolve(delay)
         }, delay)
       })
     }
   },
   created () {
     (async function (that) {
-      await that.wait(50)
+      await that.wait(80)
       that.open()
     })(this)
     this.isShow = true

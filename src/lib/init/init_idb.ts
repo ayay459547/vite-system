@@ -1,24 +1,15 @@
 import { openDB, deleteDB } from 'idb'
-import { setCookie, getCookie } from '@/lib/cookie'
+import checkSystemVersionDiff from './checkSystemVersion'
 
-const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
-const systemVersion = (import.meta as any).env.VITE_API_VERSION
 /**
  * 如果系統版本更換 indexedDB 刪除換新
  */
-const checkSystemVersion = () => {
-  const cookieVersion = getCookie('version')
+const { isChange, system } = checkSystemVersionDiff()
 
-  if ([null, undefined, ''].includes(cookieVersion)) {
-    setCookie('version', systemVersion)
-  }
-  if (cookieVersion !== systemVersion) {
-    console.log('init DB')
-    deleteDB(system)
-    setCookie('version', systemVersion)
-  }
+if (isChange) {
+  console.log('init DB')
+  deleteDB(system)
 }
-checkSystemVersion()
 
 const idbVersion = 1
 /**

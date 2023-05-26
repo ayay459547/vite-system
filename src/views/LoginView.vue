@@ -3,8 +3,11 @@ import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/columns'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
+
+const authStore = useAuthStore()
 
 const hook: Hook = inject('hook')
 const { loading, swal } = hook()
@@ -14,18 +17,20 @@ const login = () => {
 
   validateForm().then(() => {
     loading(true, '登入中')
+
+    authStore.setToken('TEST123456789')
     router.push({ name: 'home' })
 
     setTimeout(() => {
       loading(false)
 
-      // swal({
-      //   icon: 'success',
-      //   title: '登入成功',
-      //   text: '歡迎使用',
-      //   showCancelButton: false
-      // })
-    }, 500)
+      swal({
+        icon: 'success',
+        title: '登入成功',
+        text: '歡迎使用',
+        showCancelButton: false
+      })
+    }, 480)
   }).catch(() => {
     setTimeout(() => {
       loading(false)
@@ -36,7 +41,7 @@ const login = () => {
         text: '請確認帳號密碼是否正確',
         showCancelButton: false
       })
-    }, 500)
+    }, 480)
 
   })
 

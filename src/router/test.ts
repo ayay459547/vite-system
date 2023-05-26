@@ -11,6 +11,9 @@ const testRoutes: RouterTree[] = [
       {
         name: 'page1-test',
         title: '範例頁面-1',
+        meta: {
+          keepAlive: true
+        },
         inject: true,
         complete: true,
         path: '/page1-test',

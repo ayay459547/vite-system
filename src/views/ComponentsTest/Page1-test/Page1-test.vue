@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, inject, onBeforeMount, reactive } from 'vue'
+import { ref, inject, reactive, onActivated } from 'vue'
 import {
   CustomButton,
   CustomTable,
@@ -130,7 +130,7 @@ const init = async () => {
   loading(false)
 }
 
-onBeforeMount(() => {
+onActivated(() => {
   init()
 })
 

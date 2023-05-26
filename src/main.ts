@@ -4,6 +4,8 @@ import './lib/Polyfill/inject'
 import './lib/init/objectFunction'
 // idb
 import './lib/init/init_idb'
+// localStorage
+import './lib/init/init_localStorage'
 
 import './lib/init/passiveEvents'
 
@@ -14,7 +16,7 @@ import './assets/main.css'
 import { createPinia } from 'pinia'
 
 // 路由設定
-import router from './router'
+import routerFunc from './router'
 // 全局組件
 import pluginComponents from '@/components/pluginComponents'
 // vue v-指令
@@ -25,7 +27,8 @@ import i18n from '@/i18n/i18n'
 const app = createApp(App)
 
 app.use(createPinia())
-app.use(router)
+
+app.use(routerFunc())
 app.use(pluginComponents)
 app.use(pluginDirective)
 app.use(i18n)

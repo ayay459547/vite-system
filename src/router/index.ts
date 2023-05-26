@@ -1,7 +1,14 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {
+  RouteRecordRaw,
+  RouteLocationNormalized,
+  NavigationGuardNext
+} from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
+
+import { useAuthStore } from '@/stores/auth'
+
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 
@@ -28,8 +35,9 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
           name,
           component,
           meta: {
-            ...meta,
-            title
+            keepAlive: false,
+            title,
+            ...meta
           }
         }
         res.push(pushItem)
@@ -83,9 +91,42 @@ const baseRoutes: Array<RouteRecordRaw> = [
   }
 ]
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...baseRoutes, ...resRoutes.value]
-})
+export default (() => {
+  const authStore = useAuthStore()
+  const { getToken, setToken } = authStore
 
-export default router
+  const tempToken = getToken()
+  setToken(tempToken)
+
+  const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [...baseRoutes, ...resRoutes.value]
+  })
+
+  router.beforeEach(
+    async (
+      to: RouteLocationNormalized,
+      from: RouteLocationNormalized,
+      next: NavigationGuardNext
+    ) => {
+      const { isLogin } = authStore
+
+      if (isLogin) {
+        if (to.name === 'login') {
+          next({ name: 'home' })
+        } else {
+          next()
+        }
+      } else {
+        if (to.name === 'login') {
+          next()
+        } else {
+          next({ name: 'login' })
+        }
+      }
+    }
+  )
+
+
+  return router
+})

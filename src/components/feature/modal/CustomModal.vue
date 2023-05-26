@@ -32,6 +32,7 @@ const emit = defineEmits([
   'submit'
 ])
 
+const wrapperIsShow = ref(false)
 const containerIsShow = ref(false)
 
 const tempValue: WritableComputedRef<boolean> = computed({
@@ -40,23 +41,35 @@ const tempValue: WritableComputedRef<boolean> = computed({
 })
 
 watch(tempValue, (newValue) => {
-  if (!newValue) return
+  if (newValue) {
+    openModal()
+  } else {
+    closeModal()
+  }
+})
+
+const openModal = () => {
+  wrapperIsShow.value = true
 
   setTimeout(() => {
     containerIsShow.value = true
   }, 100)
-})
+}
 
 const closeModal = () => {
   containerIsShow.value = false
 
   setTimeout(() => {
-    tempValue.value = false
+    wrapperIsShow.value = false
   }, 200)
 }
 
+const close = () => {
+  tempValue.value = false
+}
+
 const cancel = () => {
-  closeModal()
+  tempValue.value = false
   emit('cancel')
 }
 
@@ -67,13 +80,13 @@ const submit = () => {
 const clickOutside = () => {
   if (!props.clickOutside) return
 
-  closeModal()
+  tempValue.value = false
 }
 
 </script>
 
 <template>
-  <div v-show="tempValue" class="modal-wrapper">
+  <div v-show="wrapperIsShow" class="modal-wrapper">
     <Transition name="bounce">
       <div
         v-click-outside="clickOutside"
@@ -88,12 +101,14 @@ const clickOutside = () => {
           <CustomButton
             icon-name="close"
             text
-            @click="closeModal"
+            @click="close"
           />
         </div>
 
         <div class="modal-body">
-          <slot>Body</slot>
+          <div v-if="tempValue" style="width: 100%; height: 100%">
+            <slot>Body</slot>
+          </div>
         </div>
 
         <div class="modal-footer">
