@@ -3,6 +3,8 @@ import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import { defineComponent, computed } from 'vue'
 import { CustomIcon } from '@/components'
+import type { RouterType } from '@/router/setting'
+import { routerTypeIcon } from '@/router/setting'
 
 export default defineComponent({
   name: 'SubNavigationView',
@@ -45,12 +47,18 @@ export default defineComponent({
       emit('changeMap', name)
     }
 
+    const getLastTypeIcon = (systemType: RouterType[]) => {
+      const lastType = systemType[systemType.length - 1]
+      return routerTypeIcon[lastType]
+    }
+
     return {
       navHeight: 54,
       changeOpen,
       routerList,
       tempIsOpen,
-      onTitleClick
+      onTitleClick,
+      getLastTypeIcon
     }
   }
 })
@@ -70,8 +78,8 @@ export default defineComponent({
           <template v-if="Object.hasOwnProperty.call(routerItem, 'leaves')">
             <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div class="nav-item-left">
-                <div v-if="routerItem.complete" class="item-icon"></div>
-                <CustomIcon v-else name="wrench" class="item-icon" />
+                <div v-if="routerItem.icon" class="item-icon"></div>
+                <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
                 <span class="item-title">{{ routerItem.title }}</span>
               </div>
 
@@ -97,8 +105,8 @@ export default defineComponent({
                 class="nav-sub-item"
               >
                 <div class="nav-item-left">
-                  <div v-if="leaf.complete" class="item-icon"></div>
-                  <CustomIcon v-else name="wrench" class="item-icon" />
+                  <div v-if="leaf.icon" class="item-icon"></div>
+                  <CustomIcon v-else :icon="getLastTypeIcon(leaf.systemType)" class="item-icon" />
                   <span class="item-title">{{ leaf.title }}</span>
                 </div>
 
@@ -114,8 +122,8 @@ export default defineComponent({
             class="nav-item"
           >
             <div class="nav-item-left">
-              <div v-if="routerItem.complete" class="item-icon"></div>
-              <CustomIcon v-else name="wrench" class="item-icon" />
+              <div v-if="routerItem.icon" class="item-icon"></div>
+              <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
               <span class="item-title">{{ routerItem.title }}</span>
             </div>
 

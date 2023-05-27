@@ -92,6 +92,11 @@ const submit = () => {
       v-bind="formColumn.phone"
     />
 
+    <FormSelect
+      v-model="form.select"
+      v-bind="formColumn.select"
+    />
+
     <FormDatePicker
       v-model="form.date"
       v-bind="formColumn.date"
@@ -100,11 +105,6 @@ const submit = () => {
     <FormDatePicker
       v-model="form.daterange"
       v-bind="formColumn.daterange"
-    />
-
-    <FormSelect
-      v-model="form.select"
-      v-bind="formColumn.select"
     />
 
     <CustomButton

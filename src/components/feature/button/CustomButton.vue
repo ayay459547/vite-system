@@ -2,6 +2,7 @@
 import type { PropType } from 'vue'
 import { ElButton } from 'element-plus'
 import { CustomIcon } from '@/components'
+import type { IconType } from '@/components/feature/icon/CustomIcon.vue'
 
 enum ElType {
   default = '',
@@ -71,7 +72,7 @@ const props = defineProps({
     default: null
   },
   iconType: {
-    type: String as PropType<'fas' | 'far' | 'fab'>,
+    type: String as PropType<IconType>,
     required: false,
     default: 'fas'
   },

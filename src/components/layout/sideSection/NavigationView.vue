@@ -4,6 +4,8 @@ import type { Navigation } from '@/declare/routes'
 import { computed, ref } from 'vue'
 import SubNavigationView from './SubNavigationView.vue'
 import { CustomIcon } from '@/components'
+import type { RouterType } from '@/router/setting'
+import { routerTypeIcon } from '@/router/setting'
 
 const props = defineProps<{
   router: Navigation[]
@@ -34,16 +36,25 @@ const setLevel2Router = (level2Router: Navigation): void => {
   })
 }
 
+const getLastTypeIcon = (systemType: RouterType[]) => {
+  const lastType = systemType[systemType.length - 1]
+  return routerTypeIcon[lastType]
+}
+
 </script>
 
 <template>
   <div class="nav-container" :class="level2IsOpen ? 'is-open': 'is-clse'">
     <nav class="nav-list level1">
       <template v-for="level1Item in level1List" :key="level1Item.name">
-        <div v-if="Object.hasOwnProperty.call(level1Item, 'leaves')" class="nav-item" @click="setLevel2Router(level1Item)">
+        <div
+          v-if="Object.hasOwnProperty.call(level1Item, 'leaves')"
+          class="nav-item"
+          @click="setLevel2Router(level1Item)"
+        >
           <div class="nav-item-left">
-            <CustomIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></CustomIcon>
-            <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
+            <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
+            <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
             <span class="item-title">{{ level1Item.title }}</span>
           </div>
 
@@ -52,8 +63,8 @@ const setLevel2Router = (level2Router: Navigation): void => {
 
         <RouterLink v-else :to="level1Item.path" class="nav-item">
           <div class="nav-item-left">
-            <CustomIcon v-if="level1Item.complete" :name="level1Item.icon" class="item-icon"></CustomIcon>
-            <CustomIcon v-else name="wrench" class="item-icon"></CustomIcon>
+            <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
+            <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
             <span class="item-title">{{ level1Item.title }}</span>
           </div>
 

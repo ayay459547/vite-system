@@ -1,11 +1,12 @@
-interface BaseTree {
-  name: string        // 唯一值，不能重複
-  title: string       // 顯示文字
-  inject: boolean     // 是否加入路由，也就是是否顯示在頁面上
-  complete: boolean   // 是否完成，未完成會有維修圖示，打包時過濾
+import type { RouterType } from '@/router/setting'
 
-  icon?: string           // 第一層路由的圖示
-  meta?: {}               // 額外其他參數
+interface BaseTree {
+  name: string              // 唯一值，不能重複
+  title: string             // 顯示文字
+  systemType: RouterType[]  // 路由類型
+
+  icon?: string             // 第一層路由的圖示
+  meta?: {}                 // 額外其他參數
 }
 interface RootTree extends BaseTree {
   leaves?: RouterTree[]   // 子路由設定

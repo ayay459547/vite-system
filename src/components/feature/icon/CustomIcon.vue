@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-type IconType = 'fas' | 'far' | 'fab'
+export type IconType = 'fas' | 'far' | 'fab'
 
 type IconSize = 'large' | 'default' | 'small'
 

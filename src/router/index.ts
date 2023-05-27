@@ -3,9 +3,10 @@ import type {
   RouteLocationNormalized,
   NavigationGuardNext
 } from 'vue-router'
+import type { RouteRecordName } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
 import { useAuthStore } from '@/stores/auth'
 
@@ -95,13 +96,18 @@ export default (() => {
   const authStore = useAuthStore()
   const { getToken, setToken } = authStore
 
-  const tempToken = getToken()
-  setToken(tempToken)
+  const storageToken = getToken()
+  if (storageToken) {
+    setToken(storageToken)
+  }
 
   const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [...baseRoutes, ...resRoutes.value]
   })
+
+  // 暫存使用者想去的路由名稱
+  const toName = ref<RouteRecordName | null>(null)
 
   router.beforeEach(
     async (
@@ -114,6 +120,8 @@ export default (() => {
       if (isLogin) {
         if (to.name === 'login') {
           next({ name: 'home' })
+        } else if (toName.value && to.name !== toName.value) {
+          next({ name: toName.value })
         } else {
           next()
         }
@@ -121,12 +129,13 @@ export default (() => {
         if (to.name === 'login') {
           next()
         } else {
+          toName.value = to.name
+
           next({ name: 'login' })
         }
       }
     }
   )
-
 
   return router
 })
