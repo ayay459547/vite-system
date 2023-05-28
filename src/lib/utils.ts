@@ -25,6 +25,7 @@ type AjaxOptions<T> = {
  *              getFakeData: 是否取的假資料
  *              fakeData: 如果是取假資料 返回的資料
  *              status: 資料返回狀態
+ *              callback: 自訂回傳假資料
  * @returns {Promise}
  */
 export const ajax = <ResData>(

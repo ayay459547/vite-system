@@ -25,7 +25,7 @@ export const routerTypeIcon: Record<RouterType, [IconType, string]> = {
 export const developmentInjectType: Array<RouterType> = [
   'system',
   'new',
-  // 'development',
+  'development',
   'test',
   'complete'
 ]

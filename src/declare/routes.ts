@@ -9,11 +9,11 @@ interface BaseTree {
   meta?: {}                 // 額外其他參數
 }
 interface RootTree extends BaseTree {
-  leaves?: RouterTree[]   // 子路由設定
+  leaves?: RouterTree[]     // 子路由設定
 }
 interface LeafTree extends BaseTree {
-  path?: string           // 網址
-  component?: () => void  // 頁面組件
+  path?: string             // 網址
+  component?: () => void    // 頁面組件
 }
 /**
  * 路由樹設定 類型
