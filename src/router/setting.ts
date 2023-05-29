@@ -10,7 +10,7 @@ export type RouterType = 'system' | 'new' | 'development' | 'test' | 'complete'
  * value: icon
  */
 export const routerTypeIcon: Record<RouterType, [IconType, string]> = {
-  system: ['fas', ''],
+  system: ['fas', 'i'],
 
   new: ['fas', 'plus'],
   development: ['fas', 'wrench'],

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Ref, PropType, WritableComputedRef } from 'vue'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
 import { CustomIcon } from '@/components'
+import { scrollToEl } from '@/lib/utils'
+import debounce from '@/lib/debounce'
 
 type ListType = Array<{
   key: string
@@ -27,6 +29,21 @@ const tempValue: WritableComputedRef<string> = computed({
   set: (value: string) => emit('update:modelValue', value)
 })
 
+const scrollToCurrentTab = (currentTab: string) => {
+  const el = document.querySelector(`.__tab_${currentTab}`)
+
+  setTimeout(() => {
+    scrollToEl(el, {
+      inline: 'start'
+    })
+  }, 200)
+}
+const debounceScrollToCurrentTab = debounce(scrollToCurrentTab, 200)
+
+watch(tempValue, (newValue) => {
+  debounceScrollToCurrentTab(newValue)
+})
+
 const onTabClick = (key: string) => {
   tempValue.value = key
 }
@@ -37,14 +54,14 @@ const removeTab = (value: any) => {
 const increaseScroll = () => {
   conRef.value.scrollBy({
     top: 0,
-    left: -200,
+    left: -500,
     behavior: 'smooth'
   })
 }
 const decreaseScroll = () => {
   conRef.value.scrollBy({
     top: 0,
-    left: 200,
+    left: 500,
     behavior: 'smooth'
   })
 }
@@ -81,11 +98,7 @@ const listROcallback = throttle((entries) => {
     arrowIsShow.value = listWidth.value > conWidth.value
 
     if (listWidth.value > oddListWidth) {
-      conRef.value.scrollTo({
-        top: 0,
-        left: conWidth.value * 2,
-        behavior: 'smooth'
-      })
+      debounceScrollToCurrentTab(tempValue.value)
     }
   })
 }, 100) as ResizeObserverCallback
@@ -97,6 +110,7 @@ onMounted(() => {
   if (listRef.value !== null) {
     listRO.observe(listRef.value)
   }
+  debounceScrollToCurrentTab(tempValue.value)
 })
 onUnmounted(() => {
   wrapRO.disconnect()
@@ -115,7 +129,7 @@ onUnmounted(() => {
         <div
           v-for="element in props.list"
           class="tabs-item"
-          :class="{ 'is-active': props.modelValue === element.key }"
+          :class="[{ 'is-active': props.modelValue === element.key }, `__tab_${element.key}`]"
           :key="element.key"
           @click="onTabClick(element.key)"
         >
@@ -192,6 +206,7 @@ onUnmounted(() => {
     background-color: #fff;
     transition-duration: 0.3s;
     color: #303133;
+    border-bottom: 2px solid #40a0ff00;
 
     &:hover {
       background-color: #f7f7f7;
@@ -199,6 +214,7 @@ onUnmounted(() => {
 
     &.is-active {
       color: #409EFF;
+      border-bottom: 2px solid #409EFF;
     }
 
     &-remove {

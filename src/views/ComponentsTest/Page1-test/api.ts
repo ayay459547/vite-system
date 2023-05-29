@@ -5,6 +5,7 @@ export type TableData = {
   date: string
   name: string
   address: string
+  children?: Array<TableData>
 }
 
 export const fakeTableData: TableData[] = [
@@ -18,7 +19,21 @@ export const fakeTableData: TableData[] = [
     id: 2,
     date: '2016-05-02',
     name: 'Caleb',
-    address: 'No. 189, Grove St, Los Angeles'
+    address: 'No. 189, Grove St, Los Angeles',
+    children: [
+      {
+        id: 21,
+        date: '2016-05-02',
+        name: 'Caleb2',
+        address: 'No. 189, Grove St, Los Angeles'
+      },
+      {
+        id: 22,
+        date: '2016-05-02',
+        name: 'Caleb3',
+        address: 'No. 189, Grove St, Los Angeles'
+      }
+    ]
   },
   {
     id: 3,

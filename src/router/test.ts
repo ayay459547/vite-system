@@ -18,6 +18,13 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Page1-test/Page1-test.vue')
       },
       {
+        name: 'data-table-test',
+        title: '純資料表單測試',
+        systemType: ['new', 'development'],
+        path: '/data-table-test',
+        component: () => import('@/views/ComponentsTest/Data-table-test.vue')
+      },
+      {
         name: 'input-test',
         title: '輸入框測試',
         systemType: ['new', 'development'],

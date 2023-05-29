@@ -24,21 +24,32 @@ import ColumnSetting from './ColumnSetting.vue'
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 
 interface Props extends Record<string, any> {
-  tableColumns: PropsTableColumn[]
-  tableData: any[]
-  /**
-   * 欄位設定 版本
-   * 如果版本更換 會重置欄位設定
-   */
-  version: string
-  /**
-   * 欄位設定 在 indexedDB 上的 key
-   */
-  settingKey:string
   /**
    * table 標題
    */
-   title?: string
+  title?: string
+
+  /**
+   * 欄位設定相關
+   * version: 欄位設定 版本
+   *     如果版本更換 會重置欄位設定
+   * settingKey: 欄位設定 在 indexedDB 上的 key
+   */
+  version: string
+  settingKey: string
+
+  /**
+   * 表單相關
+   * tableColumns: 表單欄位顯示用設定
+   * tableData: 表單資料
+   * rowKey: 每行資料的key 預設是id
+   * defaultExpandAll: 資料存在 children 時 預設是否展開
+   */
+  tableColumns: PropsTableColumn[]
+  tableData: any[]
+  rowKey?: string
+  defaultExpandAll?: boolean
+
   /**
    * table 資料總筆數
    * 計算頁數用
@@ -49,6 +60,8 @@ interface Props extends Record<string, any> {
 
 const props = withDefaults(defineProps<Props>(), {
   tableData: () => [],
+  rowKey: 'id',
+  defaultExpandAll: false,
   title: '',
   total: 0
 })
@@ -230,12 +243,14 @@ onUnmounted(() => {
       <ElTable
         v-if="isRender"
         ref="elTableRef"
+        stripe
+        style="width: 100%"
         :key="renderKey"
         :data="showData"
         :height="tableHeight"
-        style="width: 100%"
         :border="true"
-        stripe
+        :row-key="props.rowKey"
+        :default-expand-all="props.defaultExpandAll"
         @row-click="onRowClick"
       >
         <ElTableColumn
