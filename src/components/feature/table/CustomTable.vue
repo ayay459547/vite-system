@@ -258,7 +258,7 @@ onUnmounted(() => {
           :key="column.prop"
           v-bind="column"
         >
-          <template v-if="hasSlot(`header-${column.prop}`)" #header="scope">
+          <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
             <slot
               :name="`header-${column.prop}`"
               :row-index="scope.$index"
@@ -273,7 +273,7 @@ onUnmounted(() => {
             ></slot>
           </template>
 
-          <template v-if="hasSlot(`column-${column.prop}`)" #default="scope">
+          <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
             <slot
               :name="`column-${column.prop}`"
               :data="scope.row[column.key]"

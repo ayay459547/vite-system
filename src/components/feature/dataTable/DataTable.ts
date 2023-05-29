@@ -1,4 +1,6 @@
-import { h } from 'vue'
+// import '@/assets/scss/_dataTable.scss'
+
+import { h, withScopeId, getCurrentInstance, onMounted } from 'vue'
 
 function getColumnSlotNode (slots, columnKey, isHeader) {
   let temp = null
@@ -21,12 +23,14 @@ function getColumnSlotNode (slots, columnKey, isHeader) {
 const columnNode = (slots, column, rowItem, isHeader) => {
   return column.map(columnItem => {
     const {
-      title = '',
+      label = '',
       width = 0,
       minWidth = 0,
       class: columnClass = '',
       style: columnStyle = '',
       key: columnKey = '',
+      prop = '',
+      slotKey = '',
       index: columnIndex = 0
     } = columnItem
 
@@ -34,12 +38,12 @@ const columnNode = (slots, column, rowItem, isHeader) => {
       index: rowIndex = 0
     } = rowItem
 
-    const columnNode = getColumnSlotNode(slots, columnKey, isHeader)
+    const columnNode = getColumnSlotNode(slots, slotKey, isHeader)
 
     let showClass = null
     if (typeof columnClass === 'string') {
       showClass = {
-        columnClass: true
+        'column-class': true
       }
     } else if(Object.prototype.toString.call(columnClass) === '[object Object]') {
       showClass = {...columnClass}
@@ -70,14 +74,13 @@ const columnNode = (slots, column, rowItem, isHeader) => {
       showStyle = {}
     }
 
-    const defaultRender = isHeader ? title : rowItem[columnKey]
+    const defaultRender = isHeader ? label : rowItem[prop]
 
     return h(
       'div',
       {
         class: {
-            ...showClass,
-          'table-column': true
+          '__data-table-column': true
         },
         style: showStyle
         // key: columnKey
@@ -97,7 +100,7 @@ const rowNode = (slots, column, tableData, isHeader) => {
     return h(
       'div',
       {
-        class: 'table-header'
+        class: '__data-table-header'
       },
       columnNode(slots, column, {}, true)
     )
@@ -106,7 +109,7 @@ const rowNode = (slots, column, tableData, isHeader) => {
       return h(
         'div',
         {
-          class: 'table-row'
+          class: '__data-table-row'
         },
         columnNode(slots, column, {
           ...rowData,
@@ -124,41 +127,61 @@ const headerNode = (slots, column) => {
 const bodyNode = (slots, column, tableData) => {
   if (tableData.length === 0) {
     return h('div', {
-      class: 'flex-row content-center table-body',
+      class: '__data-table-body',
       style: 'padding: 16px; font-size: 1.2em'
     }, '無資料')
   } else {
     return h(
       'div',
       {
-        class: 'table-body'
+        class: '__data-table-body'
       },
       rowNode(slots, column, tableData, false)
     )
   }
 }
 
+setTimeout(() => {
+  const instance = getCurrentInstance()
+  const scopeId = instance?.vnode?.scopeId ?? ''
+  const withId = withScopeId(scopeId)
+  console.log(vnode)
+}, 1000)
+
 const vnode = (props, context) => {
   const { slots = {} } = context
-  const { column = [], tableData = [], tableStyle = {}, tableClass = {} } = props
+
+  const tableColumns = props['table-columns']
+  const tableData = props['table-data']
+  const tableStyle = props['table-style']
+  const tableClass = props['table-class']
 
   return h(
     'div',
     {
       class: [
         { ...tableClass },
-        'table-wrapper'
+        '__data-table-wrapper'
       ],
       style: { ...tableStyle }
     },
     h(
-      'div', { class: 'table-container'},
+      'div',
+      {
+        class: ['container', '__data-table-container']
+        // style: {
+        //   width: '90%',
+        //   height: '90%',
+        //   backgroundColor: 'skyblue'
+        // }
+      },
       [
-        headerNode(slots, column),
-        bodyNode(slots, column, tableData)
+        headerNode(slots, tableColumns),
+        bodyNode(slots, tableColumns, tableData)
       ]
     )
   )
+
 }
 
 export default vnode

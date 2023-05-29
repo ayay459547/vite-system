@@ -5,6 +5,7 @@ import { computed } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import NavigationView from './NavigationView.vue'
 import { useRoutesStore } from '@/stores/routes'
+import { CustomIcon } from '@/components'
 
 const routesStore = useRoutesStore()
 
@@ -25,6 +26,7 @@ const showRoutes: typeof level1Routes = computed(() => {
 <template>
   <div class="side-container">
     <RouterLink to="/home" class="side-logo">
+      <CustomIcon name="home" class="side-logo-icon"/>
       <slot name="logo">
         <div>LOGO</div>
       </slot>
@@ -86,6 +88,19 @@ const showRoutes: typeof level1Routes = computed(() => {
     font-size: 2em;
     will-change: width;
     white-space: nowrap;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-evenly;
+    transition-duration: 0.3s;
+
+    &-icon {
+      font-size: 1em !important;
+    }
+
+    &:hover {
+      color: $warning;
+    }
   }
 
   &-nav {
