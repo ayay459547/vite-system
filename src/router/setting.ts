@@ -74,9 +74,9 @@ export const getInjectRoutes = (routes: RouterTree[]): RouterTree[] => {
     leafNode.forEach(route => {
       // 確認類型符合 才使用此路由
       if (checkTypeInInjectType(route.systemType, injectType)) {
+        // 有子路由
         if (Object.hasOwnProperty.call(route, 'leaves')) {
-          let len = tempRes.length
-          len = tempRes.push({
+          const len = tempRes.push({
             ...route,
             leaves: []
           })

@@ -2,11 +2,19 @@
 import './lib/Polyfill/inject'
 // object 有類似 array 方法
 import './lib/init/objectFunction'
-// idb
-import './lib/init/init_idb'
-// localStorage
-import './lib/init/init_localStorage'
 
+/**
+ * 初始化客戶瀏覽器端的資料
+ *
+ * idb
+ * localStorage
+ * cookie
+ */
+import './lib/init/init_idb'
+import './lib/init/init_localStorage'
+import './lib/init/init_cookie'
+
+// chrome 性能優化 所產生的警告
 import './lib/init/passiveEvents'
 
 import { createApp } from 'vue'

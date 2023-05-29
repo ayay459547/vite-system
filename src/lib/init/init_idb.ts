@@ -2,12 +2,17 @@ import { openDB, deleteDB } from 'idb'
 import checkSystemVersionDiff from './checkSystemVersion'
 
 /**
- * 如果系統版本更換 indexedDB 刪除換新
+ * indexedDB 刪除換新
+ *
+ * 處發時機:
+ * 如果第一次使用系統
+ * 如果系統版本更換
  */
 const { isChange, system } = checkSystemVersionDiff()
 
 if (isChange) {
   console.log('init DB')
+
   deleteDB(system)
 }
 

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { ComputedRef, Ref } from 'vue'
-import type { Navigation } from '@/declare/routes'
 import { computed, ref } from 'vue'
+import type { Navigation } from '@/declare/routes'
+import { storeToRefs } from 'pinia'
+import { useRoutesStore } from '@/stores/routes'
 import SubNavigationView from './SubNavigationView.vue'
 import { CustomIcon } from '@/components'
 import type { RouterType } from '@/router/setting'
@@ -15,6 +17,7 @@ const level1List: ComputedRef<Navigation[]> = computed(() => {
   return props.router
 })
 
+// 第二層路由
 const level2IsOpen: Ref<boolean> = ref(false)
 const level2Title: Ref<string> = ref('')
 const level2List: Ref<Navigation[]> = ref([])
@@ -36,10 +39,15 @@ const setLevel2Router = (level2Router: Navigation): void => {
   })
 }
 
+// 路由圖示
 const getLastTypeIcon = (systemType: RouterType[]) => {
   const lastType = systemType[systemType.length - 1]
   return routerTypeIcon[lastType]
 }
+
+// active
+const routesStore = useRoutesStore()
+const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
 
 </script>
 
@@ -47,25 +55,41 @@ const getLastTypeIcon = (systemType: RouterType[]) => {
   <div class="nav-container" :class="level2IsOpen ? 'is-open': 'is-clse'">
     <nav class="nav-list level1">
       <template v-for="level1Item in level1List" :key="level1Item.name">
+        <!-- 有子路由 -->
         <div
           v-if="Object.hasOwnProperty.call(level1Item, 'leaves')"
           class="nav-item"
           @click="setLevel2Router(level1Item)"
         >
-          <div class="nav-item-left">
+          <div
+            class="nav-item-left"
+            :class="{ active: breadcrumbName[0] === level1Item.name }"
+          >
             <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ level1Item.title }}</span>
+            <span class="item-title">
+              {{ level1Item.title }}
+            </span>
           </div>
 
           <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
         </div>
 
-        <RouterLink v-else :to="level1Item.path" class="nav-item">
-          <div class="nav-item-left">
+        <!-- 無子路由 -->
+        <RouterLink
+          v-else
+          :to="level1Item.path"
+          class="nav-item"
+        >
+          <div
+            class="nav-item-left"
+            :class="{ active: currentRouteName === level1Item.name }"
+          >
             <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ level1Item.title }}</span>
+            <span class="item-title">
+              {{ level1Item.title }}
+            </span>
           </div>
 
           <div class="nav-item-right"></div>
@@ -152,6 +176,9 @@ const getLastTypeIcon = (systemType: RouterType[]) => {
       align-items: center;
       gap: 8px;
       flex: 1;
+      &.active {
+        color: $warning;
+      }
       .item-title {
         font-size: 1.3em;
         transform: translateX(0);

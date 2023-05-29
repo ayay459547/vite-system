@@ -1,4 +1,4 @@
-import { setCookie, getCookie } from '@/lib/cookie'
+import { getCookie } from '@/lib/cookie'
 
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 const systemVersion = (import.meta as any).env.VITE_API_VERSION
@@ -18,9 +18,6 @@ const checkSystemVersionDiff = () => {
     [null, undefined, ''].includes(cookieSystem) ||
     [null, undefined, ''].includes(cookieVersion)
   ) {
-    setCookie('stystem', system)
-    setCookie('version', systemVersion)
-
     return {
       isChange: true,
       system,
@@ -32,9 +29,6 @@ const checkSystemVersionDiff = () => {
     (cookieSystem !== system) ||
     (cookieVersion !== systemVersion)
   ) {
-    setCookie('stystem', system)
-    setCookie('version', systemVersion)
-
     return {
       isChange: true,
       system,

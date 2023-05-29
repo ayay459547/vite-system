@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import NavigationView from './NavigationView.vue'
@@ -20,20 +20,11 @@ const showRoutes: typeof level1Routes = computed(() => {
   })
 })
 
-
-const setRoutesConfig = () => {
-  routesStore.setBreadcrumb(['首頁'])
-  routesStore.setCurrentNavigation(null)
-}
-onMounted(() => {
-  setRoutesConfig()
-})
-
 </script>
 
 <template>
   <div class="side-container">
-    <RouterLink to="/home" class="side-logo" @click="setRoutesConfig()">
+    <RouterLink to="/home" class="side-logo">
       <slot name="logo">
         <div>LOGO</div>
       </slot>

@@ -1,7 +1,9 @@
 <script lang="ts">
 import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
-import type { Navigation } from '@/declare/routes'
 import { defineComponent, computed } from 'vue'
+import type { Navigation } from '@/declare/routes'
+import { storeToRefs } from 'pinia'
+import { useRoutesStore } from '@/stores/routes'
 import { CustomIcon } from '@/components'
 import type { RouterType } from '@/router/setting'
 import { routerTypeIcon } from '@/router/setting'
@@ -47,10 +49,15 @@ export default defineComponent({
       emit('changeMap', name)
     }
 
+    // 路由圖示
     const getLastTypeIcon = (systemType: RouterType[]) => {
       const lastType = systemType[systemType.length - 1]
       return routerTypeIcon[lastType]
     }
+
+    // active
+    const routesStore = useRoutesStore()
+    const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
 
     return {
       navHeight: 54,
@@ -58,7 +65,10 @@ export default defineComponent({
       routerList,
       tempIsOpen,
       onTitleClick,
-      getLastTypeIcon
+      getLastTypeIcon,
+
+      breadcrumbName,
+      currentRouteName
     }
   }
 })
@@ -77,7 +87,10 @@ export default defineComponent({
           <!-- 有子路由 -->
           <template v-if="Object.hasOwnProperty.call(routerItem, 'leaves')">
             <div class="nav-item" @click="changeOpen(routerItem.name)">
-              <div class="nav-item-left">
+              <div
+                class="nav-item-left"
+                :class="{ active: breadcrumbName[1] === routerItem.name }"
+              >
                 <div v-if="routerItem.icon" class="item-icon"></div>
                 <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
                 <span class="item-title">{{ routerItem.title }}</span>
@@ -104,7 +117,10 @@ export default defineComponent({
                 :to="leaf.path"
                 class="nav-sub-item"
               >
-                <div class="nav-item-left">
+                <div
+                  class="nav-item-left"
+                  :class="{ active: currentRouteName === leaf.name }"
+                >
                   <div v-if="leaf.icon" class="item-icon"></div>
                   <CustomIcon v-else :icon="getLastTypeIcon(leaf.systemType)" class="item-icon" />
                   <span class="item-title">{{ leaf.title }}</span>
@@ -121,7 +137,10 @@ export default defineComponent({
             :to="routerItem.path"
             class="nav-item"
           >
-            <div class="nav-item-left">
+            <div
+              class="nav-item-left"
+              :class="{ active: currentRouteName === routerItem.name }"
+            >
               <div v-if="routerItem.icon" class="item-icon"></div>
               <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
               <span class="item-title">{{ routerItem.title }}</span>
@@ -208,6 +227,9 @@ export default defineComponent({
       align-items: center;
       gap: 8px;
       flex: 1;
+      &.active {
+        color: $warning;
+      }
       .item-title {
         font-size: 1.1em;
         transform: translateX(0);

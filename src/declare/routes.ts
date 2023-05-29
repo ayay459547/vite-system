@@ -22,5 +22,6 @@ export declare interface RouterTree extends RootTree, LeafTree {}
 
 export declare interface Navigation extends RootTree, LeafTree {
   leaves?: Navigation[]
-  breadcrumb?: Array<string>
+  breadcrumbName?: Array<string>
+  breadcrumbTitle?: Array<string>
 }

@@ -22,10 +22,16 @@ export const useRoutesStore = defineStore('routes', () => {
     return getRouterLeafLayer(routes, [1, 2, 3], false)
   })
 
+  // 左側選單欄
+  const breadcrumbName: Ref<string[]> = ref([])
+  const setBreadcrumbName = (newBreadcrumb: string[]) => {
+    breadcrumbName.value = newBreadcrumb
+  }
+
   // 導覽
-  const breadcrumb: Ref<string[]> = ref([])
-  const setBreadcrumb = (newBreadcrumb: string[]) => {
-    breadcrumb.value = newBreadcrumb
+  const breadcrumbTitle: Ref<string[]> = ref([])
+  const setBreadcrumbTitle = (newBreadcrumb: string[]) => {
+    breadcrumbTitle.value = newBreadcrumb
   }
 
   // 當前路由
@@ -83,9 +89,11 @@ export const useRoutesStore = defineStore('routes', () => {
         ...leafNode
       }
       if (parentsNode === null) {
-        nextNode.breadcrumb = [leafNode.title]
+        nextNode.breadcrumbName = [leafNode.name]
+        nextNode.breadcrumbTitle = [leafNode.title]
       } else{
-        nextNode.breadcrumb = [...parentsNode.breadcrumb, leafNode.title]
+        nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
+        nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
       }
       return nextNode
     }, routes)
@@ -100,11 +108,15 @@ export const useRoutesStore = defineStore('routes', () => {
 
   watch(currentRouteName, (routeName: string) => {
     if (routeName === 'home') {
-      setBreadcrumb(['首頁'])
+      setBreadcrumbName(['home'])
+      setBreadcrumbTitle(['首頁'])
+
       setCurrentNavigation(null)
     } else if (navigationMap.value.has(routeName)) {
       const currentRoute = navigationMap.value.get(routeName)
-      setBreadcrumb(currentRoute?.breadcrumb ?? [])
+      setBreadcrumbName(currentRoute?.breadcrumbName ?? [])
+      setBreadcrumbTitle(currentRoute?.breadcrumbTitle ?? [])
+
       setCurrentNavigation(currentRoute)
       addHistoryNavigation(routeName, currentRoute)
     }
@@ -130,9 +142,12 @@ export const useRoutesStore = defineStore('routes', () => {
   return {
     allRoutes,
 
-    breadcrumb,
-    setBreadcrumb,
+    breadcrumbName,
+    setBreadcrumbName,
+    breadcrumbTitle,
+    setBreadcrumbTitle,
 
+    currentRouteName,
     currentNavigation,
     setCurrentNavigation,
 

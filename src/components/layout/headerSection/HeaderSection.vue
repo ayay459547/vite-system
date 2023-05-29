@@ -37,7 +37,7 @@ type Breadcrumb = {
   name: string
 }
 const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
-  return routesStore.breadcrumb.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
+  return routesStore.breadcrumbTitle.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
     if (crumbIndex === 0){
       res.push({
         type: 'text',

@@ -7,9 +7,7 @@ import type { Navigation } from '@/declare/routes'
 import { CustomButton, CustomTabs } from '@/components'
 
 const routesStore = useRoutesStore()
-const { historyNavigation } = storeToRefs(routesStore)
-
-const { currentNavigation } = storeToRefs(routesStore)
+const { historyNavigation, currentNavigation } = storeToRefs(routesStore)
 
 const currentTab = computed(() => {
   return currentNavigation.value?.name ?? ''
@@ -45,11 +43,6 @@ const clearHistory = () => {
   }
 }
 
-const setRoutesConfig = (route: Navigation) => {
-  routesStore.setBreadcrumb(route.breadcrumb)
-  routesStore.setCurrentNavigation(route)
-}
-
 </script>
 
 <template>
@@ -65,7 +58,6 @@ const setRoutesConfig = (route: Navigation) => {
           :to="slotProps.data.path"
           class="history-tab"
           :class="{ 'is-active': currentTab === slotProps.data.name }"
-          @click="setRoutesConfig(slotProps.data)"
         >
           {{ slotProps.data.title }}
         </RouterLink>
