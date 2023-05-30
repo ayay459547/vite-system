@@ -13,7 +13,7 @@ import { useAuthStore } from '@/stores/auth'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 
-import HomeView from '@/views/HomeView.vue'
+import HomeView from '@/views/HomeView/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import Page_404 from '@/views/Page_404.vue'
 
