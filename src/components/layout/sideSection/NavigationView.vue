@@ -80,10 +80,12 @@ const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
           v-else
           :to="level1Item.path"
           class="nav-item"
+          v-slot="{ navigate }"
         >
           <div
             class="nav-item-left"
             :class="{ active: currentRouteName === level1Item.name }"
+            @click="navigate"
           >
             <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>

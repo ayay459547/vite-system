@@ -113,13 +113,15 @@ export default defineComponent({
             >
               <RouterLink
                 v-for="leaf in routerItem.leaves"
+                class="nav-sub-item"
                 :key="leaf.name"
                 :to="leaf.path"
-                class="nav-sub-item"
+                v-slot="{ navigate }"
               >
                 <div
                   class="nav-item-left"
                   :class="{ active: currentRouteName === leaf.name }"
+                  @click="navigate"
                 >
                   <div v-if="leaf.icon" class="item-icon"></div>
                   <CustomIcon v-else :icon="getLastTypeIcon(leaf.systemType)" class="item-icon" />
@@ -136,10 +138,12 @@ export default defineComponent({
             v-else
             :to="routerItem.path"
             class="nav-item"
+            v-slot="{ navigate }"
           >
             <div
               class="nav-item-left"
               :class="{ active: currentRouteName === routerItem.name }"
+              @click="navigate"
             >
               <div v-if="routerItem.icon" class="item-icon"></div>
               <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />

@@ -25,11 +25,17 @@ const showRoutes: typeof level1Routes = computed(() => {
 
 <template>
   <div class="side-container">
-    <RouterLink to="/home" class="side-logo">
-      <CustomIcon name="home" class="side-logo-icon"/>
-      <slot name="logo">
-        <div>LOGO</div>
-      </slot>
+    <RouterLink
+      to="/home"
+      class="side-logo"
+      v-slot="{ navigate }"
+    >
+      <div class="side-logo-navigate" @click="navigate">
+        <CustomIcon name="home" class="side-logo-icon"/>
+        <slot name="logo">
+          <div>LOGO</div>
+        </slot>
+      </div>
     </RouterLink>
 
     <div class="side-nav">
@@ -82,18 +88,19 @@ const showRoutes: typeof level1Routes = computed(() => {
   }
 
   &-logo {
-    padding: 16px 0;
-    cursor: pointer;
     color: #fff;
-    font-size: 2em;
-    will-change: width;
-    white-space: nowrap;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: space-evenly;
     transition-duration: 0.3s;
 
+    &-navigate {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-evenly;
+      white-space: nowrap;
+      font-size: 2em;
+      padding: 16px 0;
+      cursor: pointer;
+    }
     &-icon {
       font-size: 1em !important;
     }

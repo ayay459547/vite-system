@@ -58,8 +58,9 @@ const clearHistory = () => {
           :to="slotProps.data.path"
           class="history-tab"
           :class="{ 'is-active': currentTab === slotProps.data.name }"
+          v-slot="{ navigate }"
         >
-          {{ slotProps.data.title }}
+          <span @click="navigate">{{ slotProps.data.title }}</span>
         </RouterLink>
       </template>
     </CustomTabs>
