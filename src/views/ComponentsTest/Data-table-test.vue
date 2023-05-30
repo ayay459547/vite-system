@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { DataTable } from '@/components'
-import { ElDatePicker } from 'element-plus'
 import { getDataTableSetting } from '@/lib/columns'
-
-const value1 = ref('')
 
 const columnsSetting = {
   date: {
     label: '生日',
     table: {
       width: 150,
-      // fixed: 'left',
       align: 'center'
     },
     form: {
@@ -45,20 +40,20 @@ const columnsSetting = {
         { label: 'address-3-No. 123, Grove St, Los Angeles', value: 'address-3' }
       ]
     }
-  },
-  operations: {
-    label: '操作',
-    table: {
-      width: 60,
-      align: 'center',
-      fixed: 'right'
-    }
   }
+  // operations: {
+  //   label: '操作',
+  //   table: {
+  //     width: 60,
+  //     align: 'center',
+  //     fixed: 'right'
+  //   }
+  // }
 }
 
 const {
   tableColumns
-} = getDataTableSetting(columnsSetting, 'table', '')
+} = getDataTableSetting(columnsSetting, 'table')
 
 const tableData = [
 {
@@ -103,18 +98,17 @@ const tableData = [
 <template>
   <div class="data-table">
     <h1>Data-table-test</h1>
-    <ElDatePicker
-      v-model="value1"
-      type="daterange"
-      range-separator="To"
-      start-placeholder="Start date"
-      end-placeholder="End date"
-    />
 
-    <DataTable
-      :table-columns="tableColumns"
-      :table-data="tableData"
-    ></DataTable>
+    <div class="i-mt-xl">
+      <DataTable
+        :table-data="tableData"
+        :table-columns="tableColumns"
+      >
+        <template #header="{ data }">
+          {{ data }}
+        </template>
+      </DataTable>
+    </div>
   </div>
 </template>
 

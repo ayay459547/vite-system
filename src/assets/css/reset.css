@@ -1,0 +1,28 @@
+#app,
+h1, h2, h3, h4, h5, h6,
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+/* 將監聽事件 標示為被動 會報錯 */
+* {
+  touch-action: none;
+  /* touch-action: pan-y; */
+}
+
+body {
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+a, div, nav, main {
+  box-sizing: border-box;
+}
+
+ul, li {
+  list-style: none;
+}

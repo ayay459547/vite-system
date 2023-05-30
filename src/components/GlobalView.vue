@@ -110,7 +110,7 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
       prevRoute.value = currentRoute.name
 
       isLoading.value = false
-    }, 640)
+    }, 560)
   }
 }
 

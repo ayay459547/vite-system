@@ -126,7 +126,7 @@ const openUserEffect = (e: MouseEvent) => {
     },
     {
       icon: ['fas', props.historyIsOpen ? 'eye-slash' : 'history'],
-      label: `${props.historyIsOpen ? '隱藏' : '顯示' }歷史選項`,
+      label: `${props.historyIsOpen ? '隱藏' : '顯示' }路由選項`,
       event: () => {
         emit('changeHistory', !props.historyIsOpen)
       }

@@ -287,7 +287,7 @@ export interface TableColumnsItem {
 export const getDataTableSetting = (
   columns: Record<string, any>,
   type: string,
-  title: string
+  title?: ''
 ): DataTableSetting => {
 
   // 設定 table 用的 column

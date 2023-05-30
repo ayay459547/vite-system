@@ -1,6 +1,4 @@
-// import '@/assets/scss/_dataTable.scss'
-
-import { h, withScopeId, getCurrentInstance, onMounted } from 'vue'
+import { h } from 'vue'
 
 function getColumnSlotNode (slots, columnKey, isHeader) {
   let temp = null
@@ -26,7 +24,7 @@ const columnNode = (slots, column, rowItem, isHeader) => {
       label = '',
       width = 0,
       minWidth = 0,
-      class: columnClass = '',
+      // class: columnClass = '',
       style: columnStyle = '',
       key: columnKey = '',
       prop = '',
@@ -40,16 +38,16 @@ const columnNode = (slots, column, rowItem, isHeader) => {
 
     const columnNode = getColumnSlotNode(slots, slotKey, isHeader)
 
-    let showClass = null
-    if (typeof columnClass === 'string') {
-      showClass = {
-        'column-class': true
-      }
-    } else if(Object.prototype.toString.call(columnClass) === '[object Object]') {
-      showClass = {...columnClass}
-    } else {
-      showClass = {}
-    }
+    // let showClass = null
+    // if (typeof columnClass === 'string') {
+    //   showClass = {
+    //     'column-class': true
+    //   }
+    // } else if(Object.prototype.toString.call(columnClass) === '[object Object]') {
+    //   showClass = {...columnClass}
+    // } else {
+    //   showClass = {}
+    // }
 
     let showStyle = null
     if (typeof columnStyle === 'string') {
@@ -129,7 +127,13 @@ const bodyNode = (slots, column, tableData) => {
     return h('div', {
       class: '__data-table-body',
       style: 'padding: 16px; font-size: 1.2em'
-    }, '無資料')
+    }, h(
+      'div',
+      {
+        class: '__data-emtpy'
+      },
+      'No Data'
+    ))
   } else {
     return h(
       'div',
@@ -141,47 +145,50 @@ const bodyNode = (slots, column, tableData) => {
   }
 }
 
-setTimeout(() => {
-  const instance = getCurrentInstance()
-  const scopeId = instance?.vnode?.scopeId ?? ''
-  const withId = withScopeId(scopeId)
-  console.log(vnode)
-}, 1000)
-
-const vnode = (props, context) => {
-  const { slots = {} } = context
-
-  const tableColumns = props['table-columns']
-  const tableData = props['table-data']
-  const tableStyle = props['table-style']
-  const tableClass = props['table-class']
-
-  return h(
-    'div',
-    {
-      class: [
-        { ...tableClass },
-        '__data-table-wrapper'
-      ],
-      style: { ...tableStyle }
-    },
-    h(
-      'div',
-      {
-        class: ['container', '__data-table-container']
-        // style: {
-        //   width: '90%',
-        //   height: '90%',
-        //   backgroundColor: 'skyblue'
-        // }
-      },
-      [
-        headerNode(slots, tableColumns),
-        bodyNode(slots, tableColumns, tableData)
-      ]
-    )
-  )
-
+interface Props {
+  tableColumns: Record<string, any>
+  tableData?: Array<any>
 }
 
-export default vnode
+const DataTable = (props: Props, context: any) => {
+  const { slots = {} } = context
+  const _tableColumns = props['table-columns']
+  const _tableData = props['table-data'] ?? []
+
+  return h<{
+    tableColumns: Record<string, any>
+    tableData: Array<any>
+  }>((props, context) => {
+    const { slots = {} } = context
+    const { tableColumns, tableData } = props
+    // console.log('props => ', props)
+    // console.log('context => ', context)
+
+    // const tableStyle = props['table-style']
+    // const tableClass = props['table-class']
+    return h(
+      'div',
+      {
+        class: [
+          '__data-table-wrapper'
+        ]
+        // style: { ...tableStyle }
+      },
+      h(
+        'div',
+        {
+          class: ['container', '__data-table-container']
+        },
+        [
+          headerNode(slots, tableColumns),
+          bodyNode(slots, tableColumns, tableData)
+        ]
+      )
+    )
+  }, {
+    tableColumns: _tableColumns,
+    tableData: _tableData
+  }, slots)
+}
+
+export default DataTable

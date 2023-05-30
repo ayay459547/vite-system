@@ -1,4 +1,6 @@
-@import './normalize.css';
+@import './css/normalize.css';
+@import './css/reset.css';
+@import './css/dataTable.css';
 
 #app {
   height: 100%;
@@ -9,33 +11,4 @@
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
   'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-}
-
-#app,
-h1, h2, h3, h4, h5, h6,
-ul, li {
-  margin: 0;
-  padding: 0;
-}
-
-/* 將監聽事件 標示為被動 會報錯 */
-* {
-  touch-action: none;
-  /* touch-action: pan-y; */
-}
-
-body {
-  height: 100vh;
-}
-
-a {
-  text-decoration: none;
-}
-
-a, div, nav, main {
-  box-sizing: border-box;
-}
-
-ul, li {
-  list-style: none;
 }
