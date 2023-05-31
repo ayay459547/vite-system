@@ -144,7 +144,10 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
         </div>
         <div class="layout-view">
           <ViewSection :history-is-open="historyIsOpen">
-            <div v-loading="isLoading" style="width: 100%; height: 100%;">
+            <div
+              v-loading="isLoading"
+              style="width: 100%; height: 100%; position: absolute; overflow: auto;"
+            >
               <RouterView v-slot="{ Component, route }">
                 <KeepAlive>
                   <component v-if="route.meta.keepAlive" :key="route.name" :is="Component"/>
@@ -175,10 +178,6 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
 </template>
 
 <style lang="scss" scoped>
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
 .layout {
   &-wrapper {
     width: 100vw;

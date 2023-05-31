@@ -51,10 +51,10 @@ defineProps({
   &-container {
     width: 100%;
     flex: 1;
-    overflow: auto;
     border-radius: 6px;
     background-color: #fff;
     box-sizing: border-box;
+    position: relative;
   }
 }
 </style>
