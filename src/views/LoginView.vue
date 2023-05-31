@@ -4,6 +4,7 @@ import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/columns'
 import { useAuthStore } from '@/stores/auth'
+import { FormInput, CustomIcon } from '@/components'
 
 const router = useRouter()
 
@@ -71,7 +72,7 @@ interface Form {
 }
 
 const {
-  columns: FormColumn,
+  columns: formColumn,
   forms: form,
   validate: validateForm
 } = getFormSetting<Form>(columnSetting, 'fitler')
@@ -99,7 +100,7 @@ const {
 
         <FormInput
           v-model="form.account"
-          v-bind="FormColumn.account"
+          v-bind="formColumn.account"
         >
           <template #prefix>
             <CustomIcon name="user"/>
@@ -107,7 +108,7 @@ const {
         </FormInput>
         <FormInput
           v-model="form.passowrd"
-          v-bind="FormColumn.passowrd"
+          v-bind="formColumn.passowrd"
           show-password
           @keyup.enter="login"
         >

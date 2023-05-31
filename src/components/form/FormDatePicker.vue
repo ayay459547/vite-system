@@ -32,6 +32,10 @@ const props = defineProps({
     required: false,
     default: ''
   },
+  hiddenLabel: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   required: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -148,7 +152,7 @@ onBeforeUnmount(() => {
       `${props.direction}`
     ]"
   >
-    <label v-if="props.label.length > 0" class="input-label">
+    <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>
       <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
@@ -212,7 +216,9 @@ onBeforeUnmount(() => {
     height: 88px;
     display: flex;
     gap: 4px;
-
+    &.hidden-label {
+      height: 48px;
+    }
     &.row {
       flex-direction: row;
       align-items: center;

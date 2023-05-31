@@ -2,12 +2,15 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon } from '@/components'
+import { CustomIcon, CustomButton } from '@/components'
+import { mapStores } from 'pinia'
+import { useRoutesStore } from '@/stores/routes'
 
 export default defineComponent({
   name: 'FeatureTree',
   components: {
-    'CustomIcon': CustomIcon
+    CustomButton,
+    CustomIcon
   },
   props: {
     tree: {
@@ -21,6 +24,7 @@ export default defineComponent({
       default: 1
     }
   },
+  inject: ['search'],
   data () {
     return {
       // 當前節點
@@ -28,7 +32,7 @@ export default defineComponent({
       // 子節點使用
       isOpen: false,
       bindStyle: {},
-      baseHeight: 56
+      baseHeight: 62
     }
   },
   computed: {
@@ -37,14 +41,20 @@ export default defineComponent({
     },
     routesLength () {
       return this.getLength(this.routes)
-    }
+    },
+    searchText () {
+      return this.search.text
+    },
+    ...mapStores(useRoutesStore)
   },
   methods: {
+    // 判斷是否有子路由
     hasLeaves (route: Navigation) {
       const temp = route?.leaves ?? []
 
       return temp.length > 0
     },
+    // 取的總數計算高度
     getLength (routes: Navigation[]) {
       return routes.reduce((res: number, curr: Navigation) => {
         if (curr.leaves && curr.leaves.length > 0) {
@@ -54,6 +64,7 @@ export default defineComponent({
         return res + 1
       }, 0)
     },
+    // 選單縮放
     changeOpen (routeName: string) {
       const el = this.$refs[`feature-tree-${routeName}`]
 
@@ -89,6 +100,26 @@ export default defineComponent({
           'max-height': '0px'
         }
       }
+    },
+    // 新增路由選項
+    addHistory (route: Navigation): void {
+      this.routesStore.addHistoryNavigation(route.name, route)
+    },
+    newPage (route: Navigation): void {
+      const routeData = this.$router.resolve({
+        name: route.name
+        // query: { data: 'someData' }
+      })
+      window.open(routeData.href, '_blank')
+    },
+    // 搜尋
+    isMatch (title: string): boolean {
+      if (this.searchText.length > 0) {
+        const regexp = new RegExp(this.searchText)
+
+        return regexp.test(title)
+      }
+      return false
     }
   },
   created () {},
@@ -107,11 +138,33 @@ export default defineComponent({
     :style="bindStyle"
   >
     <li v-for="route in routes" :key="route.name" class="tree-item">
-      <div :class="['tree-item-title', `level-${level}`,]" @click="changeOpen(route.name)">
-        <div :class="['tree-item-icon', isListOpen[route.name] ? 'is-open' : 'is-close']">
-          <CustomIcon v-if="hasLeaves(route)" name="caret-right"/>
+      <div
+        :class="[
+          'tree-item-block',
+          `level-${level}`,
+          isMatch(route.title) ? '__match' : ''
+        ]"
+        @click="changeOpen(route.name)"
+      >
+        <div class="tree-item-title">
+          <div :class="['tree-item-icon', isListOpen[route.name] ? 'is-open' : 'is-close']">
+            <CustomIcon v-if="hasLeaves(route)" name="caret-right"/>
+          </div>
+          <span>{{ route.title }}</span>
         </div>
-        <span>{{ route.title }}</span>
+
+        <div v-if="!hasLeaves(route)" class="tree-item-operations">
+          <CustomButton
+            label="新增選項"
+            icon-name="plus"
+            @click="addHistory(route)"
+          />
+          <CustomButton
+            label="新開分頁"
+            icon-name="up-right-from-square"
+            @click="newPage(route)"
+          />
+        </div>
       </div>
 
       <template v-if="hasLeaves(route)">
@@ -133,30 +186,16 @@ $base-left: 24px;
     height: fit-content;
     transition-duration: 0.3s;
     overflow: hidden;
+    cursor: default;
   }
 
   &-item {
-    &-icon {
-      width: 24px;
-      height: 24px;
-      color: #324157;
-      transition-duration: 0.3s;
-      @extend %flex-center;
-
-      &.is-open {
-        transform: rotateZ(90deg);
-      }
-      &.is-close {
-        transform: rotateZ(0deg);
-      }
-    }
-    &-title {
-      padding: 16px;
+    &-block {
+      padding: 12px;
       background-color: #fff;
-      transition-duration: 0.2s;
       display: flex;
-      align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      transition-duration: 0.2s;
       &.level-1 {
         padding-left: $base-left;
       }
@@ -170,6 +209,37 @@ $base-left: 24px;
       &:hover {
         background-color: #ebeef5;
       }
+      &.__match {
+        background-color: lighten($warning, 25%);
+
+        &:hover {
+          background-color: lighten($warning, 15%);
+        }
+      }
+    }
+
+    &-icon {
+      width: 24px;
+      height: 24px;
+      color: #324157;
+      transition-duration: 0.3s;
+      @extend %flex-center;
+      &.is-open {
+        transform: rotateZ(90deg);
+      }
+      &.is-close {
+        transform: rotateZ(0deg);
+      }
+    }
+
+    &-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    &-operations {
+      display: flex;
+      gap: 12px;
     }
     width: 100%;
   }

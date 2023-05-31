@@ -13,27 +13,26 @@ const props = defineProps({
   },
   validateKey: {
     type: String as PropType<string>,
-    required: false,
     default: ''
   },
   direction: {
     type: String as PropType<'column' | 'row'>,
-    required: false,
     default: 'column'
   },
   label: {
     type: String as PropType<string>,
-    required: false,
     default: ''
+  },
+  hiddenLabel: {
+    type: Boolean as PropType<boolean>,
+    default: false
   },
   required: {
     type: Boolean as PropType<boolean>,
-    required: false,
     default: false
   },
   options: {
     type: Array as PropType<{ label: string, value: string | number }[]>,
-    required: false,
     default () {
       return []
     }
@@ -41,7 +40,6 @@ const props = defineProps({
   // element ui plus
   clearable: {
     type: Boolean as PropType<boolean>,
-    required: false,
     default: false
   }
 })
@@ -137,10 +135,11 @@ const hasSlot = (prop: string): boolean => {
     class="input-container"
     :class="[
       `input-${validateKey}-${validateRes}`,
-      `${props.direction}`
+      `${props.direction}`,
+      props.hiddenLabel ? 'hidden-label' : ''
     ]"
   >
-    <label v-if="props.label.length > 0" class="input-label">
+    <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
       <span v-if="props.required" class="input-required">*</span>
       <span>{{ props.label }}</span>
     </label>
@@ -197,7 +196,9 @@ const hasSlot = (prop: string): boolean => {
     height: 88px;
     display: flex;
     gap: 4px;
-
+    &.hidden-label {
+      height: 48px;
+    }
     &.row {
       flex-direction: row;
       align-items: center;
