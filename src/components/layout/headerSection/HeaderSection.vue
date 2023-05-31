@@ -91,18 +91,22 @@ const openLangType = (e: MouseEvent) => {
 const router = useRouter()
 const isFullScreen = ref(false)
 const toggleFullScreen = () => {
-  if (isFullScreen.value) {
+  if (document.fullscreenElement) {
     if (document.exitFullscreen) {
       document.exitFullscreen()
-      isFullScreen.value = false
     }
   } else {
     document.documentElement.requestFullscreen()
-    isFullScreen.value = true
   }
 }
 
 const openUserEffect = (e: MouseEvent) => {
+  if (document.fullscreenElement) {
+    isFullScreen.value = true
+  } else {
+    isFullScreen.value = false
+  }
+
   eventList(e, [
     {
       icon: ['fas', 'right-from-bracket'],
