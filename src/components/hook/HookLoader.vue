@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const isOpen = ref(false)
 const massage = ref('Loading')
 
-const minTime = 400
+const minTime = 500
 const openTime = ref<number | null>(null)
 
 interface Expose {
@@ -14,13 +14,16 @@ interface Expose {
 
 defineExpose<Expose>({
   openLoader: (message: string) => {
-    isOpen.value = true
     massage.value = message
 
+    if (isOpen.value) return
+    isOpen.value = true
     openTime.value = Date.now()
   },
   // 至少大於一段時間才能關閉 不然會閃一下
   closeLoader: () => {
+    if (!isOpen.value) return
+
     if (Date.now() >= openTime.value + minTime) {
       isOpen.value = false
 
@@ -35,19 +38,17 @@ defineExpose<Expose>({
 </script>
 
 <template>
-  <Transition name="fade">
-    <div v-show="isOpen" class="loader-wrapper">
-      <div class="loader-container">
-          <div class="loader-circle"></div>
-          <div class="loader-circle"></div>
-          <div class="loader-circle"></div>
-          <div class="loader-shadow"></div>
-          <div class="loader-shadow"></div>
-          <div class="loader-shadow"></div>
-          <div class="loader-loading">{{ massage }}</div>
-      </div>
+  <div v-show="isOpen" class="loader-wrapper">
+    <div class="loader-container">
+        <div class="loader-circle"></div>
+        <div class="loader-circle"></div>
+        <div class="loader-circle"></div>
+        <div class="loader-shadow"></div>
+        <div class="loader-shadow"></div>
+        <div class="loader-shadow"></div>
+        <div class="loader-loading">{{ massage }}</div>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -59,7 +60,6 @@ defineExpose<Expose>({
     z-index: $loading-index;
     cursor: default;
     background-color: #efefefa8;
-    // background-image: linear-gradient();
   }
   &-container {
     width: 200px;

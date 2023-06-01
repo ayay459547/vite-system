@@ -1,54 +1,112 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { ref, computed, onBeforeMount } from 'vue'
-import { getRoutesPermission } from './api'
+import { ref, computed, onBeforeMount, reactive } from 'vue'
+import type { AuthData } from './api'
+import { getUserData, getRoutesPermission } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
-	const userId = 1
-	const userName = 'USER'
+	// 確認使用者狀態
+	// const checkAuthStatus = async () => {
+	// 	return await new Promise((resolve) => {
+	// 		setTimeout(() => {
+	// 			resolve(true)
+	// 		}, 1000)
+	// 	})
+	// }
 
-	const toKen = ref<string>('')
-
-	const setToken = (token: string) => {
-		toKen.value = token
-		localStorage.setItem('token', token)
-	}
+	/**
+	 * token 相關
+	 * token會帶動使用者資料
+	 */
+	const token = ref('')
 	const getToken = () => {
 		return localStorage.getItem('token')
 	}
+	const setToken = (newToken: string) => {
+		token.value = newToken
+		localStorage.setItem('token', newToken)
+	}
 	const clearToken = () => {
-		toKen.value = ''
+		token.value = ''
 		localStorage.removeItem('token')
 	}
-
+	// 登入狀態 看token
 	const isLogin = computed(() => {
-		return toKen.value.length > 0
+		return token.value.length > 0
 	})
 
-	const checkStatus = () => {
-		return new Promise<boolean>(resolve => {
-			setTimeout(() => {
-				resolve(false)
-			}, 1000)
+	/**
+	 * 使用者資料相關
+	 * 使用者資料會帶動權限
+	 */
+	const authData = ref<AuthData>({
+		id: null,
+		name: null
+	})
+	const setAuthData = (auth: AuthData) => {
+		authData.value = auth
+	}
+	const clearAuthData = () => {
+		authData.value = {
+			id: null,
+			name: null
+		}
+	}
+
+	/**
+	 * 使用 token 初始化使用者資料
+	 */
+	const initUserData = async () => {
+		const _token = getToken()
+
+		if (_token) {
+			setToken(_token)
+			const { data: userData } = await getUserData(_token)
+			setAuthData(userData)
+		} else {
+			clearToken()
+			clearAuthData()
+		}
+	}
+
+	/**
+	 * 使用者 id 取的資料
+	 * 路由權限
+	 * key(string): permissions(number)
+	 */
+	const routesPermission = reactive(new Map())
+
+	const initRoutesPermission = async () => {
+		routesPermission.clear()
+
+		const { data: permissionList } = await getRoutesPermission(authData.value.id)
+
+		permissionList.forEach(permissionItem => {
+			routesPermission.set(permissionItem.routerName, permissionItem)
 		})
 	}
 
-	onBeforeMount(async () => {
-		const routesPermission = await getRoutesPermission(1)
+	/**
+	 * 初始化系統使用者
+	 * 初始化系統路由
+	 */
+	const initSystem = async () => {
+		await initUserData()
+		await initRoutesPermission()
+	}
 
-		console.log('routesPermission => ', routesPermission)
+	onBeforeMount(() => {
+		initSystem()
 	})
 
   return {
-		userId,
-		userName,
-		// Token
-		toKen,
-		setToken,
 		getToken,
+		setToken,
 		clearToken,
-
 		isLogin,
-		checkStatus
+
+		authData,
+		routesPermission,
+		initSystem
 	}
 })

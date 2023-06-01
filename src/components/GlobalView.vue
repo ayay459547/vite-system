@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
+import { Ref } from 'vue'
 import { ref, reactive, computed, provide } from 'vue'
 import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
 
@@ -161,9 +161,10 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
         </div>
       </div>
 
-      <!-- hook -->
+      <!-- hook loading -->
       <HookLoader ref="customLoader"/>
 
+      <!-- hook popover -->
       <template v-if="customPopoverQueue.length > 0">
         <HookPopover
           v-for="popover in customPopoverQueue"

@@ -13,6 +13,7 @@ import { useRouter } from 'vue-router'
 
 import { CustomIcon, CustomTooltip } from '@/components'
 
+import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 
 const props = defineProps<{
@@ -65,7 +66,8 @@ const breadcrumbSpan = computed<string>(() => {
 
 // auth
 const authStore = useAuthStore()
-const { userName, clearToken } = authStore
+const { authData } = storeToRefs(authStore)
+const { clearToken, initSystem } = authStore
 
 const localeStore = useLocaleStore()
 
@@ -114,6 +116,7 @@ const openUserEffect = (e: MouseEvent) => {
       event: () => {
         loading(true, '登出中')
         clearToken()
+        initSystem()
         router.push({ name: 'login' })
 
         setTimeout(() => {
@@ -185,14 +188,14 @@ const openUserEffect = (e: MouseEvent) => {
       <div class="header-right-effect"  @click="openUserEffect">
         <div class="user-md">
           <CustomIcon name="user" class="icon"/>
-          <span>{{ userName }}</span>
+          <span>{{ authData.name }}</span>
         </div>
         <div class="user-xs">
           <CustomTooltip>
             <CustomIcon name="user"/>
 
             <template #content>
-              <span>{{ userName }}</span>
+              <span>{{ authData.name }}</span>
             </template>
           </CustomTooltip>
         </div>

@@ -5,33 +5,37 @@ import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/columns'
 import { useAuthStore } from '@/stores/auth'
 import { FormInput, CustomIcon } from '@/components'
+import { getTokenData } from './api'
 
 const router = useRouter()
 
-const authStore = useAuthStore()
+const { setToken, initSystem } = useAuthStore()
 
 const hook: Hook = inject('hook')
 const { loading, swal } = hook()
 
 const login = () => {
-  loading(true, '驗證登入中')
+  loading(true, '登入中')
 
-  validateForm().then(() => {
-    loading(true, '登入中')
+  validateForm().then(async () => {
+    const { account, passowrd } = form
+    const { data: token } = await getTokenData(account, passowrd)
 
-    authStore.setToken('TEST123456789')
+    setToken(token)
+    initSystem()
+
     router.push({ name: 'home' })
 
     setTimeout(() => {
       loading(false)
 
-      swal({
-        icon: 'success',
-        title: '登入成功',
-        text: '歡迎使用',
-        showCancelButton: false
-      })
-    }, 480)
+      // swal({
+      //   icon: 'success',
+      //   title: '登入成功',
+      //   text: '歡迎使用',
+      //   showCancelButton: false
+      // })
+    }, 600)
   }).catch(() => {
     setTimeout(() => {
       loading(false)

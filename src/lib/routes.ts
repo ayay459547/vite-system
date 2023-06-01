@@ -2,7 +2,7 @@ import type { RouterTree } from '@/declare/routes'
 
 /**
  * @author Caleb
- * @description 用BFS的方式 取的指定的階層的子路由
+ * @description 用BFS的方式 取的指定的階層的路由
  * @param routerList 路由
  * @param level 想取的的階層
  * @param hasLeaves 是否包含子路由
@@ -67,8 +67,8 @@ export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], 
  */
 export const refactorRoutes = <T>(
   callback: (leafNode: RouterTree, parentsNode: T) => {
-    refactorNode: T
-    isShow: boolean
+    refactorNode: T // 重構後的格式
+    isShow: boolean // 是否顯示
   },
   routes: RouterTree[]
 ): Array<T> => {

@@ -1,14 +1,31 @@
 import { ajax } from '@/lib/utils'
-import { fakePermissionData } from './_fakeData'
+import { fakeUserData, allPermissionData } from './_fakeData'
+
+export type AuthData = {
+  id: number
+  name: string
+}
+
+export const getUserData = async (token: string) => {
+  const resData = await ajax<AuthData>({
+    url: '/page1/get',
+    method: 'get',
+    data: { token }
+  }, {
+    getFakeData: true,
+    fakeData: fakeUserData,
+    status: 'success',
+    delay: 300
+  })
+  return resData
+}
 
 export type PermissionData = {
   autoGeneratingId: boolean
   createDate: string
   lastUpdateTimestamp: string
-  pk: {
-    roleID: number
-    functionID: string
-  }
+  routerName: string
+
   readPermissions: boolean
   createPermissions: boolean
   updatePermissions: boolean
@@ -25,12 +42,15 @@ export const getRoutesPermission = async (userId: number) => {
     }
   }, {
     getFakeData: true,
-    fakeData: fakePermissionData,
+    fakeData: allPermissionData,
     status: 'success',
     delay: 300,
     callback: (config, fakeData) => {
-      console.log(config)
-      return fakeData
+      if (config.data.id) {
+        return fakeData
+      } else {
+        return []
+      }
     }
   })
   return resData

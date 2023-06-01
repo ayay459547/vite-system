@@ -14,7 +14,8 @@ import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 
 import HomeView from '@/views/HomeView/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
+import LoginView from '@/views/LoginView/LoginView.vue'
+import NoPermissions from '@/views/NoPermissions.vue'
 import Page_404 from '@/views/Page_404.vue'
 
 /**
@@ -79,6 +80,14 @@ const baseRoutes: Array<RouteRecordRaw> = [
     component: LoginView
   },
   {
+    name: 'noPermissions',
+    meta: {
+      title: '無此權限'
+    },
+    path: '/noPermissions',
+    component: NoPermissions
+  },
+  {
     name: 'page404',
     meta: {
       title: '404'
@@ -107,12 +116,7 @@ router.beforeEach(
     next: NavigationGuardNext
   ) => {
     const authStore = useAuthStore()
-    const { isLogin, getToken, setToken } = authStore
-
-    const storageToken = getToken()
-    if (storageToken) {
-      setToken(storageToken)
-    }
+    const { isLogin} = authStore
 
     if (isLogin) {
       // 已經登入 如果要進登入頁 自動跳回首頁

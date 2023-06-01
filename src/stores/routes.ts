@@ -1,10 +1,12 @@
 import type { ComputedRef, Ref } from 'vue'
 import { ref, computed, reactive, onBeforeMount, watch } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
 import { getRouterLeafLayer, refactorRoutes } from '@/lib/routes'
 import routes from '@/router/routes'
+
+import { useAuthStore } from './auth'
 
 import {
   getHistoryNavigation as getHistory,
@@ -17,6 +19,9 @@ import {
 import { useRoute } from 'vue-router'
 
 export const useRoutesStore = defineStore('routes', () => {
+  const authStore = useAuthStore()
+  const { routesPermission } = storeToRefs(authStore)
+
   // 全部的路由
   const allRoutes: ComputedRef<Navigation[]> = computed(() => {
     return getRouterLeafLayer(routes, [1, 2, 3], false)
@@ -96,14 +101,12 @@ export const useRoutesStore = defineStore('routes', () => {
         nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
       }
 
-      const isShow = true
+      let isShow = false
 
-      // if ((nextNode?.name ?? '') === 'nav-3') {
-      //   console.log(nextNode)
-      //   isShow = false
-      // } else {
-      //   isShow = true
-      // }
+      const permission = routesPermission.value.get(leafNode.name)
+      if (permission) {
+        isShow = permission.readPermissions
+      }
 
       return {
         refactorNode: nextNode,
