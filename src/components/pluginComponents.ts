@@ -12,11 +12,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'element-plus/dist/index.css'
 
 // feature
-import CustomIcon from './feature/icon/CustomIcon.vue'
-import CustomTabs from './feature/tabs/CustomTabs.vue'
-import CustomButton from './feature/button/CustomButton.vue'
-import CustomTable from './feature/table/CustomTable.vue'
-import CustomModal from './feature/modal/CustomModal.vue'
+import CustomIcon from './feature/CustomIcon/CustomIcon.vue'
+import CustomTabs from './feature/CustomTabs/CustomTabs.vue'
+import CustomButton from './feature/CustomButton/CustomButton.vue'
+import CustomTable from './feature/CustomTable/CustomTable.vue'
+import CustomModal from './feature/CustomModal/CustomModal.vue'
 
 // form
 import FormDatePicker from './form/FormDatePicker.vue'

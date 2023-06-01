@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ElButton } from 'element-plus'
+import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 import { CustomIcon } from '@/components'
-import type { IconType } from '@/components/feature/icon/CustomIcon.vue'
 
 enum ElType {
   default = '',
@@ -67,9 +67,9 @@ const props = defineProps({
     default: false
   },
   color: {
-    type: String as PropType<string | null>,
+    type: String as PropType<string |  undefined>,
     required: false,
-    default: null
+    default: undefined
   },
   iconType: {
     type: String as PropType<IconType>,

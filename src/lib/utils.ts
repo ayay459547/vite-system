@@ -12,7 +12,7 @@ type AjaxOptions<T> = {
   delay?: number,
   fakeData?: T | null
   status?: 'success' | 'error',
-  callback?: Function | null
+  callback?: (config: AxiosRequestConfig, fakeData: T) => any | null
 }
 /**
  * @author Caleb
@@ -44,7 +44,7 @@ export const ajax = <ResData>(
   if (getFakeData) {
     return new Promise((resolve) => {
       if (typeof callback === 'function') {
-        const resFakeData = callback(config.data, fakeData)
+        const resFakeData = callback(config, fakeData)
         setTimeout(() => {
           resolve({
             data: resFakeData,
@@ -64,7 +64,7 @@ export const ajax = <ResData>(
 
   const instance = axios.create({
     baseURL: baseUrl,
-    timeout: 5000,
+    timeout: 10000,
     //   withCredentials: true
     headers: {
       'Content-Type': 'application/json'

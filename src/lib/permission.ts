@@ -1,5 +1,14 @@
 export type ChangePermission<Res> = (currentPermission: number, diffPermission: number) => Res
 
+// 權限
+export const permission = {
+  read: 1 << 0,
+  create: 1 << 1,
+  update: 1 << 2,
+  delete: 1 << 3,
+  execute: 1 << 4
+}
+
 /**
  * @author Caleb
  * @description 判斷是否有權限
@@ -18,7 +27,7 @@ export const hasPermission: ChangePermission<boolean> = (currentPermission, diff
  * @param diffPermission 想要新增的權限號碼總和
  * @returns {Number} 經過 或閘 合併
  */
-export const addPermission: ChangePermission<number> = (currentPermission, diffPermission): number  => {
+export const createPermission: ChangePermission<number> = (currentPermission, diffPermission): number  => {
   return currentPermission | diffPermission
 }
 

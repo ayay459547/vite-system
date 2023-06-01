@@ -1,5 +1,5 @@
 import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
-import type { IconType } from '@/components/feature/icon/CustomIcon.vue'
+import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 
 export declare interface EventItem {
   icon: [IconType, string] | []

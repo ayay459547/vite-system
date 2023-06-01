@@ -65,25 +65,37 @@ export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], 
  * @param routes 路由
  * @returns {Array} T 指定格式
  */
-export const refactorRoutes = <T>(callback: (leafNode: RouterTree, parentsNode: T) => T, routes: RouterTree[]): Array<T> => {
+export const refactorRoutes = <T>(
+  callback: (leafNode: RouterTree, parentsNode: T) => {
+    refactorNode: T
+    isShow: boolean
+  },
+  routes: RouterTree[]
+): Array<T> => {
   const res: Array<T> = []
 
   const _refactorRoutes = (leafNode: RouterTree[], parentsNode: T | null, res: Array<T>) => {
-    leafNode.forEach((route, routeIndex) => {
-      const currentNode = callback(route, parentsNode)
-      // 不可自訂 leaves
-      if (Object.hasOwnProperty.call(currentNode, 'leaves')) {
-        delete (currentNode as any).leaves
-      }
-      if (Object.hasOwnProperty.call(route, 'leaves')) {
-        res[routeIndex] = {
-          ...currentNode,
-          leaves: route.leaves
-        }
+    leafNode.forEach(route => {
+      const {
+        refactorNode: currentNode,
+        isShow
+      } = callback(route, parentsNode)
 
-        _refactorRoutes(route.leaves, currentNode, (res[routeIndex] as any).leaves)
-      } else {
-        res[routeIndex] = { ...currentNode }
+      if (isShow) {
+        // 不可自訂 leaves
+        if (Object.hasOwnProperty.call(currentNode, 'leaves')) {
+          delete (currentNode as any).leaves
+        }
+        if (Object.hasOwnProperty.call(route, 'leaves')) {
+          const len = res.push({
+            ...currentNode,
+            leaves: []
+          })
+
+          _refactorRoutes(route.leaves, currentNode, (res[len - 1] as any).leaves)
+        } else {
+          res.push({ ...currentNode })
+        }
       }
 
     })

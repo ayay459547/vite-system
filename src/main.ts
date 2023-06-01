@@ -24,7 +24,7 @@ import './assets/main.css'
 import { createPinia } from 'pinia'
 
 // 路由設定
-import routerFunc from './router'
+import router from './router'
 // 全局組件
 import pluginComponents from '@/components/pluginComponents'
 // vue v-指令
@@ -36,7 +36,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 
-app.use(routerFunc())
+app.use(router)
 app.use(pluginComponents)
 app.use(pluginDirective)
 app.use(i18n)

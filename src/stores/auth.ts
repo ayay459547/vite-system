@@ -1,8 +1,10 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
+import { getRoutesPermission } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
+	const userId = 1
 	const userName = 'USER'
 
 	const toKen = ref<string>('')
@@ -20,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	const isLogin = computed(() => {
-		return toKen.value
+		return toKen.value.length > 0
 	})
 
 	const checkStatus = () => {
@@ -31,15 +33,14 @@ export const useAuthStore = defineStore('auth', () => {
 		})
 	}
 
-	// 權限
-  const permission = {
-		execute: 1 << 0,
-		add: 1 << 1,
-		update: 1 << 2,
-		delete: 1 << 3
-	}
+	onBeforeMount(async () => {
+		const routesPermission = await getRoutesPermission(1)
+
+		console.log('routesPermission => ', routesPermission)
+	})
 
   return {
+		userId,
 		userName,
 		// Token
 		toKen,
@@ -48,9 +49,6 @@ export const useAuthStore = defineStore('auth', () => {
 		clearToken,
 
 		isLogin,
-		checkStatus,
-
-		// 權限相關
-		permission
+		checkStatus
 	}
 })

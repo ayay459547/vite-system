@@ -92,50 +92,54 @@ const baseRoutes: Array<RouteRecordRaw> = [
   }
 ]
 
-export default (() => {
-  const authStore = useAuthStore()
-  const { getToken, setToken } = authStore
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [...baseRoutes, ...resRoutes.value]
+})
 
-  const storageToken = getToken()
-  if (storageToken) {
-    setToken(storageToken)
-  }
+// 暫存使用者想去的路由名稱
+const toName = ref<RouteRecordName | null>(null)
 
-  const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [...baseRoutes, ...resRoutes.value]
-  })
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ) => {
+    const authStore = useAuthStore()
+    const { isLogin, getToken, setToken } = authStore
 
-  // 暫存使用者想去的路由名稱
-  const toName = ref<RouteRecordName | null>(null)
+    const storageToken = getToken()
+    if (storageToken) {
+      setToken(storageToken)
+    }
 
-  router.beforeEach(
-    async (
-      to: RouteLocationNormalized,
-      from: RouteLocationNormalized,
-      next: NavigationGuardNext
-    ) => {
-      const { isLogin } = authStore
-
-      if (isLogin) {
-        if (to.name === 'login') {
-          next({ name: 'home' })
-        } else if (toName.value && to.name !== toName.value) {
-          next({ name: toName.value })
-        } else {
-          next()
-        }
+    if (isLogin) {
+      // 已經登入 如果要進登入頁 自動跳回首頁
+      if (to.name === 'login') {
+        next({ name: 'home' })
+      // 如果再未登入時有 想進的頁面 會優先進入
+      } else if (toName.value) {
+        const temp = toName.value
+        toName.value = null
+        next({ name: temp })
+      // 已登入
       } else {
-        if (to.name === 'login') {
-          next()
-        } else {
-          toName.value = to.name
+        next()
+      }
+    } else {
+      // 未登入
+      if (to.name === 'login') {
+        next()
+      } else {
+        // 未登入先將想去的頁面暫存
+        toName.value = to.name
 
-          next({ name: 'login' })
-        }
+        next({ name: 'login' })
       }
     }
-  )
+  }
+)
 
-  return router
-})
+
+export default router

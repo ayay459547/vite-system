@@ -1,5 +1,6 @@
 import type { RouterTree } from '@/declare/routes'
-import type { IconType } from '@/components/feature/icon/CustomIcon.vue'
+import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
+import { refactorRoutes } from '@/lib/routes'
 
 const mode = (import.meta as any).env.MODE
 
@@ -46,7 +47,6 @@ export const productionInjectType: Array<RouterType> = [
  * @returns {Array}
  */
 export const getInjectRoutes = (routes: RouterTree[]): RouterTree[] => {
-  const res = []
   let injectType: RouterType[] = []
 
   switch (mode) {
@@ -70,27 +70,12 @@ export const getInjectRoutes = (routes: RouterTree[]): RouterTree[] => {
     })
   }
 
-  const _getInjectRoutes = (leafNode: RouterTree[], tempRes: RouterTree[]): RouterTree[] => {
-    leafNode.forEach(route => {
-      // 確認類型符合 才使用此路由
-      if (checkTypeInInjectType(route.systemType, injectType)) {
-        // 有子路由
-        if (Object.hasOwnProperty.call(route, 'leaves')) {
-          const len = tempRes.push({
-            ...route,
-            leaves: []
-          })
+  return refactorRoutes<RouterTree>(leafNode => {
+    const isShow = checkTypeInInjectType(leafNode.systemType, injectType)
 
-          _getInjectRoutes(route.leaves, tempRes[len - 1].leaves)
-        } else {
-          tempRes.push(route)
-        }
-      }
-
-    })
-    return res
-  }
-  _getInjectRoutes(routes, res)
-
-  return res
+    return {
+      refactorNode: {...leafNode},
+      isShow
+    }
+  }, routes)
 }

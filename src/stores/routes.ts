@@ -22,7 +22,7 @@ export const useRoutesStore = defineStore('routes', () => {
     return getRouterLeafLayer(routes, [1, 2, 3], false)
   })
 
-  // 左側選單欄
+  // 左側選單欄 確認是否 active
   const breadcrumbName: Ref<string[]> = ref([])
   const setBreadcrumbName = (newBreadcrumb: string[]) => {
     breadcrumbName.value = newBreadcrumb
@@ -95,7 +95,20 @@ export const useRoutesStore = defineStore('routes', () => {
         nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
         nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
       }
-      return nextNode
+
+      const isShow = true
+
+      // if ((nextNode?.name ?? '') === 'nav-3') {
+      //   console.log(nextNode)
+      //   isShow = false
+      // } else {
+      //   isShow = true
+      // }
+
+      return {
+        refactorNode: nextNode,
+        isShow
+      }
     }, routes)
   })
 
