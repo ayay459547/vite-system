@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, onBeforeMount, reactive } from 'vue'
 import type { AuthData } from './api'
 import { getUserData, getRoutesPermission } from './api'
+import { permission } from '@/lib/permission'
 
 export const useAuthStore = defineStore('auth', () => {
 	// 確認使用者狀態
@@ -82,7 +83,27 @@ export const useAuthStore = defineStore('auth', () => {
 		const { data: permissionList } = await getRoutesPermission(authData.value.id)
 
 		permissionList.forEach(permissionItem => {
-			routesPermission.set(permissionItem.routerName, permissionItem)
+			/**
+       * 依據 api 取得的路由權限
+       * 設定 權限的總和
+       */
+			let _permission = 0
+			if (permissionItem.readPermissions) {
+				_permission += permission.read
+			}
+			if (permissionItem.createPermissions) {
+				_permission += permission.create
+			}
+			if (permissionItem.updatePermissions) {
+				_permission += permission.update
+			}
+			if (permissionItem.deletePermissions) {
+				_permission += permission.delete
+			}
+			if (permissionItem.executePermissions) {
+				_permission += permission.execute
+			}
+			routesPermission.set(permissionItem.routerName, _permission)
 		})
 	}
 

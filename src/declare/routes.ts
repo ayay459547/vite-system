@@ -21,7 +21,8 @@ interface LeafTree extends BaseTree {
 export declare interface RouterTree extends RootTree, LeafTree {}
 
 export declare interface Navigation extends RootTree, LeafTree {
-  leaves?: Navigation[]
-  breadcrumbName?: Array<string>
-  breadcrumbTitle?: Array<string>
+  leaves?: Navigation[]             // 子路由
+  permission?: number               // 權限(2進制)
+  breadcrumbName?: Array<string>    // 左側選單確認 是否 active 用
+  breadcrumbTitle?: Array<string>   // header 麵包屑
 }

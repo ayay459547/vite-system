@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, inject, reactive, onActivated } from 'vue'
+import { ref, inject, reactive, onActivated, computed } from 'vue'
 import {
   CustomButton,
   CustomTable,
@@ -18,8 +18,19 @@ import { columnSetting } from './column'
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModel from './Components/UpdateModel.vue'
 
+import { storeToRefs } from 'pinia'
+import { useRoutesStore } from '@/stores/routes'
+import { getPermission } from '@/lib/permission'
+
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()
+
+// 權限
+const routesStore = useRoutesStore()
+const { currentNavigation } = storeToRefs(routesStore)
+const userPermission = computed(() => {
+  return getPermission(currentNavigation.value?.permission ?? 0)
+})
 
 // table
 const tableData = ref([])
@@ -144,6 +155,7 @@ onActivated(() => {
         :label="i18nTranslate('create')"
         icon-name="plus"
         icon-move="scale"
+        :disabled="!userPermission.create"
         @click="model.create = true"
       />
 

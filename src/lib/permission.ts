@@ -1,12 +1,22 @@
 export type ChangePermission<Res> = (currentPermission: number, diffPermission: number) => Res
 
-// 權限
+// 系統所有權限種類 (2進制)
 export const permission = {
   read: 1 << 0,
   create: 1 << 1,
   update: 1 << 2,
   delete: 1 << 3,
   execute: 1 << 4
+}
+
+export const getPermission = (permissionTotal: number) => {
+  return {
+    read: hasPermission(permissionTotal, permission.read),
+    create: hasPermission(permissionTotal, permission.create),
+    update: hasPermission(permissionTotal, permission.update),
+    delete: hasPermission(permissionTotal, permission.delete),
+    execute: hasPermission(permissionTotal, permission.execute)
+  }
 }
 
 /**

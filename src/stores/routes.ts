@@ -16,6 +16,8 @@ import {
   keysHistoryNavigation as keysHistory
 } from '@/lib/idb'
 
+import { permission, hasPermission } from '@/lib/permission'
+
 import { useRoute } from 'vue-router'
 
 export const useRoutesStore = defineStore('routes', () => {
@@ -101,16 +103,17 @@ export const useRoutesStore = defineStore('routes', () => {
         nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
       }
 
-      let isShow = false
-
-      const permission = routesPermission.value.get(leafNode.name)
-      if (permission) {
-        isShow = permission.readPermissions
-      }
+      /**
+       * 依據 路由權限
+       * 設定 是否顯示
+       * 設定 權限的總和
+       */
+      const routerPermission = routesPermission.value.get(leafNode.name)
+      nextNode.permission = routerPermission
 
       return {
         refactorNode: nextNode,
-        isShow
+        isShow: hasPermission(nextNode.permission, permission.read)
       }
     }, routes)
   })
@@ -119,10 +122,11 @@ export const useRoutesStore = defineStore('routes', () => {
   const route = useRoute()
 
   const currentRouteName = computed(() => {
-    return route.matched[0]?.name ?? ''
+    return route?.name ?? ''
   })
 
   watch(currentRouteName, (routeName: string) => {
+    console.log(navigationMap.value)
     if (routeName === 'home') {
       setBreadcrumbName(['home'])
       setBreadcrumbTitle(['首頁'])
