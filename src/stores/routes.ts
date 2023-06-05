@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 
 export const useRoutesStore = defineStore('routes', () => {
   const authStore = useAuthStore()
-  const { routesPermission } = storeToRefs(authStore)
+  const { isFinishInit, routesPermission } = storeToRefs(authStore)
 
   // 全部的路由
   const allRoutes: ComputedRef<Navigation[]> = computed(() => {
@@ -90,8 +90,12 @@ export const useRoutesStore = defineStore('routes', () => {
   })
 
   // Navigation 三層選單 + 歷史選單 用
-  const navigationRoutes: ComputedRef<Navigation[]> = computed(() => {
-    return refactorRoutes<Navigation>((leafNode, parentsNode) => {
+  const navigationRoutes: Ref<Navigation[]> = ref([])
+  const navigationMap: Ref<Map<string, Navigation>> = ref(new Map())
+
+  // 設置 選單用資料 + 搜尋用 map
+  const setNavigationRoutes = (routesPermission: Map<string, any>) => {
+    navigationRoutes.value = refactorRoutes<Navigation>((leafNode, parentsNode) => {
       const nextNode: Navigation = {
         ...leafNode
       }
@@ -108,14 +112,26 @@ export const useRoutesStore = defineStore('routes', () => {
        * 設定 是否顯示
        * 設定 權限的總和
        */
-      const routerPermission = routesPermission.value.get(leafNode.name)
+      const routerPermission = routesPermission.get(leafNode.name)
       nextNode.permission = routerPermission
+
+      /**
+       * 設置搜尋用 map
+       */
+      navigationMap.value.set(leafNode.name, nextNode)
 
       return {
         refactorNode: nextNode,
         isShow: hasPermission(nextNode.permission, permission.read)
       }
     }, routes)
+  }
+
+  // 當系統初始化
+  watch(isFinishInit, (isFinish: boolean) => {
+    if (isFinish) {
+      setNavigationRoutes(routesPermission.value)
+    }
   })
 
   // 讀取當前路由變化 設置 麵包屑 + 當前路由 + 歷史紀錄
@@ -126,7 +142,6 @@ export const useRoutesStore = defineStore('routes', () => {
   })
 
   watch(currentRouteName, (routeName: string) => {
-    console.log(navigationMap.value)
     if (routeName === 'home') {
       setBreadcrumbName(['home'])
       setBreadcrumbTitle(['首頁'])
@@ -140,23 +155,6 @@ export const useRoutesStore = defineStore('routes', () => {
       setCurrentNavigation(currentRoute)
       addHistoryNavigation(routeName, currentRoute)
     }
-  })
-
-  const navigationMap: ComputedRef<Map<string, Navigation>> = computed(() => {
-    const map = new Map()
-
-    const _setNavigationMap = (routes: Navigation[]) => {
-      routes.forEach(route => {
-        map.set(route.name, route)
-
-        if (Object.hasOwnProperty.call(route, 'leaves')) {
-          _setNavigationMap(route.leaves)
-        }
-      })
-    }
-    _setNavigationMap(navigationRoutes.value)
-
-    return map
   })
 
   return {

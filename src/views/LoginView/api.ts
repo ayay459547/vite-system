@@ -1,10 +1,10 @@
 import { ajax } from '@/lib/utils'
 
-export type TokenData = string
+export type TokenData = number
 
-const fakeTokenData = 'TEST123456789'
+const fakeTokenData = 1
 
-export const getTokenData = async (account: string, password: string) => {
+export const loginSystem = async (account: string, password: string) => {
   const resData = await ajax<TokenData>({
     url: '/page1/get',
     method: 'get',

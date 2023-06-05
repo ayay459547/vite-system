@@ -5,7 +5,7 @@ import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/columns'
 import { useAuthStore } from '@/stores/auth'
 import { FormInput, CustomIcon } from '@/components'
-import { getTokenData } from './api'
+import { loginSystem } from './api'
 
 const router = useRouter()
 
@@ -19,10 +19,10 @@ const login = () => {
 
   validateForm().then(async () => {
     const { account, passowrd } = form
-    const { data: token } = await getTokenData(account, passowrd)
+    const { data: userId } = await loginSystem(account, passowrd)
 
-    setToken(token)
-    initSystem()
+    setToken(userId)
+    await initSystem()
 
     router.push({ name: 'home' })
 
@@ -35,7 +35,7 @@ const login = () => {
       //   text: '歡迎使用',
       //   showCancelButton: false
       // })
-    }, 600)
+    }, 480)
   }).catch(() => {
     setTimeout(() => {
       loading(false)

@@ -5,35 +5,39 @@ import type { AuthData } from './api'
 import { getUserData, getRoutesPermission } from './api'
 import { permission } from '@/lib/permission'
 
-export const useAuthStore = defineStore('auth', () => {
-	// 確認使用者狀態
-	// const checkAuthStatus = async () => {
-	// 	return await new Promise((resolve) => {
-	// 		setTimeout(() => {
-	// 			resolve(true)
-	// 		}, 1000)
-	// 	})
-	// }
+// token
+import { v4 as uuidv4 } from 'uuid'
 
+
+export const useAuthStore = defineStore('auth', () => {
 	/**
 	 * token 相關
-	 * token會帶動使用者資料
+	 * token 會帶動使用者資料
 	 */
-	const token = ref('')
 	const getToken = () => {
-		return localStorage.getItem('token')
+		const token = localStorage.getItem('token')
+		if (token) {
+			return JSON.parse(token)
+		} else {
+			return null
+		}
 	}
-	const setToken = (newToken: string) => {
-		token.value = newToken
-		localStorage.setItem('token', newToken)
+	const setToken = (userId: number) => {
+		const _token = {
+			uid: uuidv4(),
+			today: new Date(),
+			userId
+		}
+		const token = JSON.stringify(_token)
+		localStorage.setItem('token', token)
 	}
 	const clearToken = () => {
-		token.value = ''
 		localStorage.removeItem('token')
 	}
-	// 登入狀態 看token
+
+	// 登入狀態 看使用者資料
 	const isLogin = computed(() => {
-		return token.value.length > 0
+		return authData.value.id > 0
 	})
 
 	/**
@@ -55,19 +59,36 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	/**
+	 * 確認狀態 目前是前端做
+	 * 有可能串後端 api
+	 */
+	const checkAuthStatus = async (): Promise<number> => {
+		return await new Promise((resolve) => {
+			const token = getToken()
+			if (token) {
+				const { userId } = token
+				setToken(userId)
+
+				setTimeout(() => {
+					resolve(userId)
+				}, 1000)
+			} else {
+				clearToken()
+				clearAuthData()
+
+				setTimeout(() => {
+					resolve(0)
+				}, 1000)
+			}
+		})
+	}
+
+	/**
 	 * 使用 token 初始化使用者資料
 	 */
-	const initUserData = async () => {
-		const _token = getToken()
-
-		if (_token) {
-			setToken(_token)
-			const { data: userData } = await getUserData(_token)
-			setAuthData(userData)
-		} else {
-			clearToken()
-			clearAuthData()
-		}
+	const initUserData = async (userId: number) => {
+		const { data: userData } = await getUserData(userId)
+		setAuthData(userData)
 	}
 
 	/**
@@ -77,10 +98,10 @@ export const useAuthStore = defineStore('auth', () => {
 	 */
 	const routesPermission = reactive(new Map())
 
-	const initRoutesPermission = async () => {
+	const initRoutesPermission = async (userId: number) => {
 		routesPermission.clear()
 
-		const { data: permissionList } = await getRoutesPermission(authData.value.id)
+		const { data: permissionList } = await getRoutesPermission(userId)
 
 		permissionList.forEach(permissionItem => {
 			/**
@@ -107,13 +128,21 @@ export const useAuthStore = defineStore('auth', () => {
 		})
 	}
 
+	const isFinishInit = ref(false)
 	/**
 	 * 初始化系統使用者
 	 * 初始化系統路由
 	 */
 	const initSystem = async () => {
-		await initUserData()
-		await initRoutesPermission()
+		isFinishInit.value = false
+
+		const userId = await checkAuthStatus()
+		if (userId > 0) {
+			await initUserData(userId)
+			await initRoutesPermission(userId)
+		}
+
+		isFinishInit.value = true
 	}
 
 	onBeforeMount(() => {
@@ -128,6 +157,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 		authData,
 		routesPermission,
-		initSystem
+		initSystem,
+		isFinishInit
 	}
 })
