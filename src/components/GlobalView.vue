@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
-import { ref, reactive, computed, provide } from 'vue'
+import { ref, reactive, computed, provide, watch, onMounted } from 'vue'
 import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
 
 // layout
@@ -13,6 +13,12 @@ import { ElConfigProvider } from 'element-plus'
 
 // locale
 import { useLocaleStore } from '@/stores/locale'
+
+// system init
+import { useAuthStore } from '@/stores/auth'
+import { useRoutesStore } from '@/stores/routes'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
 // hook
 import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
@@ -114,12 +120,35 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
   }
 }
 
+// 系統初始化
+onMounted(() => {
+  loading(true, '系統初始化')
+})
+
+const authStore = useAuthStore()
+const { setNavigationRoutes } = useRoutesStore()
+const { isFinishInit, routesPermission } = storeToRefs(authStore)
+const router = useRouter()
+
+watch(isFinishInit, (isFinish: boolean) => {
+  if (isFinish) {
+    setNavigationRoutes(routesPermission.value)
+
+    router.push({ name: 'home' })
+    loading(false, 'loading')
+  }
+})
+
 </script>
 
 <template>
   <ElConfigProvider :locale="locale.el">
     <div class="layout-wrapper">
-      <div class="layout-left layout-side" :class="navIsOpen ? 'is-open': 'is-close'">
+      <div
+        v-show="isFinishInit"
+        class="layout-left layout-side"
+        :class="navIsOpen ? 'is-open': 'is-close'"
+      >
         <SideSection>
           <template #logo>
             <slot name="logo">
@@ -134,7 +163,7 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
         </SideSection>
       </div>
 
-      <div class="layout-right">
+      <div v-show="isFinishInit" class="layout-right">
         <div class="layout-header">
           <HeaderSection
             v-model:isOpen="navIsOpen"

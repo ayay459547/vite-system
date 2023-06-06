@@ -65,6 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
 	const checkAuthStatus = async (): Promise<number> => {
 		return await new Promise((resolve) => {
 			const token = getToken()
+
 			if (token) {
 				const { userId } = token
 				setToken(userId)

@@ -124,7 +124,7 @@ router.beforeEach(
     const baseRoutesName = ['home', 'login', 'noPermissions', 'page404']
     const toNavigation = routesPermission.value.get(to.name as string)
 
-    if (isLogin) {
+    if (isLogin.value) {
       // 已經登入 如果要進登入頁 自動跳回首頁
       if (to.name === 'login') {
         next({ name: 'home' })
@@ -151,7 +151,9 @@ router.beforeEach(
         next()
       } else {
         // 未登入先將想去的頁面暫存
-        toName.value = to.name
+        if (to.name !== 'home') {
+          toName.value = to.name
+        }
 
         next({ name: 'login' })
       }

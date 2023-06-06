@@ -14,16 +14,8 @@ import debounce from '@/lib/debounce'
 
 const routesStore = useRoutesStore()
 
-const level1Routes: ComputedRef<Navigation[]> = computed(() => {
+const showRoutes: ComputedRef<Navigation[]> = computed(() => {
   return routesStore.navigationRoutes
-})
-
-const showRoutes: typeof level1Routes = computed(() => {
-  return level1Routes.value.map(route => {
-    return {
-      ...route
-    }
-  })
 })
 
 const columnSetting = {

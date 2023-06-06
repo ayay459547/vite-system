@@ -1,12 +1,10 @@
 import type { ComputedRef, Ref } from 'vue'
 import { ref, computed, reactive, onBeforeMount, watch } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
 import { getRouterLeafLayer, refactorRoutes } from '@/lib/routes'
 import routes from '@/router/routes'
-
-import { useAuthStore } from './auth'
 
 import {
   getHistoryNavigation as getHistory,
@@ -21,9 +19,6 @@ import { permission, hasPermission } from '@/lib/permission'
 import { useRoute } from 'vue-router'
 
 export const useRoutesStore = defineStore('routes', () => {
-  const authStore = useAuthStore()
-  const { isFinishInit, routesPermission } = storeToRefs(authStore)
-
   // 全部的路由
   const allRoutes: ComputedRef<Navigation[]> = computed(() => {
     return getRouterLeafLayer(routes, [1, 2, 3], false)
@@ -127,13 +122,6 @@ export const useRoutesStore = defineStore('routes', () => {
     }, routes)
   }
 
-  // 當系統初始化
-  watch(isFinishInit, (isFinish: boolean) => {
-    if (isFinish) {
-      setNavigationRoutes(routesPermission.value)
-    }
-  })
-
   // 讀取當前路由變化 設置 麵包屑 + 當前路由 + 歷史紀錄
   const route = useRoute()
 
@@ -175,6 +163,7 @@ export const useRoutesStore = defineStore('routes', () => {
     clearHistoryNavigation,
 
     navigationRoutes,
-    navigationMap
+    navigationMap,
+    setNavigationRoutes
   }
 })
