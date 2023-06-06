@@ -5,33 +5,22 @@ export type IconType = 'fas' | 'far' | 'fab'
 
 type IconSize = 'large' | 'default' | 'small'
 
-type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
-
 /**
  * icon 和 type, name 選一種給
  */
 interface Props {
-  icon?: [IconType, String] | []
+  icon?: [IconType, string] | []
   type?: IconType
-  name?: String
+  name?: string
   size?: IconSize
-
-  tooltip?: boolean
-  placement?: Placement
-  popover?: boolean
-  width?: number
   iconClass?: string
 }
 const props = withDefaults(defineProps<Props>(), {
   icon: () => [],
-  type: () => 'fas',
-  name: () => 'circle-question',
-  size: () => 'default',
-  iconClass: () => '',
-
-  tooltip: () => false,
-  width: () => 150,
-  placement: () => 'bottom'
+  type: 'fas',
+  name: 'circle-question',
+  size: 'default',
+  iconClass: ''
 })
 
 const getIcon = computed(() => {
