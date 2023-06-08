@@ -18,6 +18,16 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Page1-test/Page1-test.vue')
       },
       {
+        name: 'ajax-test',
+        title: 'AJAX',
+        meta: {
+          keepAlive: true
+        },
+        systemType: ['new', 'development'],
+        path: '/ajax-test',
+        component: () => import('@/views/ComponentsTest/Ajax-test.vue')
+      },
+      {
         name: 'data-table-test',
         title: '純資料表單測試',
         systemType: ['new', 'development'],

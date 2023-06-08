@@ -9,6 +9,14 @@ export const permission = {
   execute: 1 << 4
 }
 
+export const totlaPermission = (
+  permission.read +
+  permission.create +
+  permission.update +
+  permission.delete +
+  permission.execute
+)
+
 export const getPermission = (permissionTotal: number) => {
   return {
     read: hasPermission(permissionTotal, permission.read),

@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [vue(), vueJsx()],
   server: {
     port: 4040,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    proxy: {}
   },
   resolve: {
     alias: {

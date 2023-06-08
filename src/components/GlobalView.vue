@@ -42,7 +42,10 @@ const locale = computed(() => {
 })
 
 // hook
-const { t, te } = useI18n()
+const {
+  t
+  // te // 測試 key 是否存在
+} = useI18n()
 
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
 const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
@@ -78,9 +81,9 @@ provide<Hook>('hook', () => {
       queueId.value++
     },
     i18nTranslate: (key) => {
-      if (te(key)) return t(key)
-
-      return `N/A[${t(key)}]`
+      return `${t(key)}`
+      // if (te(key)) return t(key)
+      // return `N/A[${t(key)}]`
     },
     swal: (options: SweetAlertOptions<any, any>) => {
       const defaultOPtions = {
