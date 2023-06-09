@@ -14,7 +14,7 @@ import {
   keysHistoryNavigation as keysHistory
 } from '@/lib/idb'
 
-import { permission, totlaPermission, hasPermission } from '@/lib/permission'
+import { permission, defaultPermission, hasPermission } from '@/lib/permission'
 
 import { useRoute } from 'vue-router'
 
@@ -106,12 +106,14 @@ export const useRoutesStore = defineStore('routes', () => {
        * 依據 路由權限
        * 設定 是否顯示
        * 設定 權限的總和
+       *
+       * api 沒有 給預設權限
        */
       const routerPermission = routesPermission.get(leafNode.name)
       if (routerPermission) {
         nextNode.permission = routerPermission
       } else {
-        nextNode.permission = 0
+        nextNode.permission = defaultPermission
       }
 
       /**

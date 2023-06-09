@@ -1,26 +1,91 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { ajax } from '@/lib/utils'
+import { ref, onMounted } from 'vue'
+import { ajax } from '@/lib/ajax'
 
+interface Todos {
+  completed: boolean
+  id: number
+  title: string
+  userId: number
+}
 
-onMounted(() => {
-  ajax({
-    url: '/test',
-    method: 'post',
+const todos = ref<Todos[]>([])
+const todos2 = ref<Todos[]>([])
+
+/**
+ * 測試真實 api
+ * post + get
+ */
+
+const getTodosData = async () => {
+  const res = await ajax<Todos[]>({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    url: '/todos',
+    method: 'get',
     data: {}
   }, {
-    getFakeData: true,
-    fakeData: 'hello',
-    status: 'success',
+    getFakeData: false,
+    fakeData: [
+      {
+        'userId': 1,
+        'id': 1,
+        'title': 'delectus aut autem',
+        'completed': false
+      },
+      {
+        'userId': 2,
+        'id': 2,
+        'title': 'quis ut nam facilis et officia qui',
+        'completed': false
+      }
+    ],
     delay: 300
   })
+
+  todos.value = res
+  console.log('get todos => ', todos.value)
+}
+
+const getTodosData2 = (todos) => {
+  ajax<Todos[]>({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    url: '/posts',
+    method: 'post',
+    data: { todos }
+  }, {
+    getFakeData: false,
+    fakeData: [
+      {
+        'userId': 1,
+        'id': 1,
+        'title': 'delectus aut autem',
+        'completed': false
+      },
+      {
+        'userId': 2,
+        'id': 2,
+        'title': 'quis ut nam facilis et officia qui',
+        'completed': false
+      }
+    ],
+    delay: 300
+  }).then(res => {
+    todos2.value = res
+    console.log('post todos2 => ', todos2.value)
+  })
+
+}
+
+onMounted(async () => {
+  await getTodosData()
+  getTodosData2(todos.value)
 })
 
 </script>
 
 <template>
   <div class="page">
-    api
+    api test
   </div>
 </template>
 

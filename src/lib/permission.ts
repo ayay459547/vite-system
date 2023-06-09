@@ -1,3 +1,5 @@
+const mode = (import.meta as any).env.MODE
+
 export type ChangePermission<Res> = (currentPermission: number, diffPermission: number) => Res
 
 // 系統所有權限種類 (2進制)
@@ -8,6 +10,19 @@ export const permission = {
   delete: 1 << 3,
   execute: 1 << 4
 }
+
+/**
+ * 預設權限
+ * 開發: 給全部
+ * 打包: 0
+ */
+export const defaultPermission = (mode === 'development') ? (
+  permission.read +
+  permission.create +
+  permission.update +
+  permission.delete +
+  permission.execute
+) : 0
 
 export const totlaPermission = (
   permission.read +

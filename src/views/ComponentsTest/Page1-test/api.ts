@@ -1,4 +1,5 @@
-import { ajax } from '@/lib/utils'
+import type { Api } from '@/declare/ajax'
+import { ajax } from '@/lib/ajax'
 
 export type TableData = {
   id?: number
@@ -51,42 +52,48 @@ export const fakeTableData: TableData[] = [
 
 // api
 export const getData = async () => {
-  const resData = await ajax<TableData[]>({
+  const resData = await ajax<Api<TableData[]>>({
     url: '/page1/get',
     method: 'get',
     data: {}
   }, {
     getFakeData: true,
-    fakeData: fakeTableData,
-    status: 'success',
+    fakeData: {
+      data: fakeTableData,
+      status: 'success'
+    },
     delay: 300
   })
   return resData
 }
 
 export const createData = async (postData: TableData) => {
-  const resData = await ajax<number>({
+  const resData = await ajax<Api<number>>({
     url: '/page1/create',
     method: 'post',
     data: postData
   }, {
     getFakeData: true,
-    fakeData: 5,
-    status: 'success',
+    fakeData: {
+      data: 5,
+      status: 'success'
+    },
     delay: 300
   })
   return resData
 }
 
 export const updateData = async (postData: TableData) => {
-  const resData = await ajax<number>({
+  const resData = await ajax<Api<number>>({
     url: '/page1/update',
     method: 'post',
     data: postData
   }, {
     getFakeData: true,
-    fakeData: 2,
-    status: 'success',
+    fakeData: {
+      data: 2,
+      status: 'success'
+    },
     delay: 300
   })
   return resData

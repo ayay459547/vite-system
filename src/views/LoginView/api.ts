@@ -1,11 +1,12 @@
-import { ajax } from '@/lib/utils'
+import type { Api } from '@/declare/ajax'
+import { ajax } from '@/lib/ajax'
 
 export type TokenData = number
 
 const fakeTokenData = 1
 
 export const loginSystem = async (account: string, password: string) => {
-  const resData = await ajax<TokenData>({
+  const resData = await ajax<Api<TokenData>>({
     url: '/page1/get',
     method: 'get',
     data: {
@@ -14,8 +15,10 @@ export const loginSystem = async (account: string, password: string) => {
     }
   }, {
     getFakeData: true,
-    fakeData: fakeTokenData,
-    status: 'success',
+    fakeData: {
+      data: fakeTokenData,
+      status: 'success'
+    },
     delay: 300
   })
   return resData

@@ -1,4 +1,5 @@
-import { ajax } from '@/lib/utils'
+import type { Api } from '@/declare/ajax'
+import { ajax } from '@/lib/ajax'
 import { fakeUserData, allPermissionData } from './_fakeData'
 
 export type AuthData = {
@@ -7,14 +8,16 @@ export type AuthData = {
 }
 
 export const getUserData = async (token: number) => {
-  const resData = await ajax<AuthData>({
+  const resData = await ajax<Api<AuthData>>({
     url: '/page1/get',
     method: 'get',
     data: { token }
   }, {
     getFakeData: true,
-    fakeData: fakeUserData,
-    status: 'success',
+    fakeData: {
+      data: fakeUserData,
+      status: 'success'
+    },
     delay: 300
   })
   return resData
@@ -34,7 +37,7 @@ export type PermissionData = {
 }
 
 export const getRoutesPermission = async (userId: number) => {
-  const resData = await ajax<PermissionData[]>({
+  const resData = await ajax<Api<PermissionData[]>>({
     url: '/page1/get',
     method: 'get',
     data: {
@@ -42,8 +45,10 @@ export const getRoutesPermission = async (userId: number) => {
     }
   }, {
     getFakeData: true,
-    fakeData: allPermissionData,
-    status: 'success',
+    fakeData: {
+      data: allPermissionData,
+      status: 'success'
+    },
     delay: 300,
     callback: (config, fakeData) => {
       if (config.data.id) {

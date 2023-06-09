@@ -19,7 +19,7 @@ const testRoutes: RouterTree[] = [
       },
       {
         name: 'ajax-test',
-        title: 'AJAX',
+        title: 'AJAX測試',
         meta: {
           keepAlive: true
         },
