@@ -10,7 +10,14 @@ export default defineConfig({
   server: {
     port: 4040,
     host: '0.0.0.0',
-    proxy: {}
+    // https://cn.vitejs.dev/config/server-options.html#server-proxy
+    proxy: {
+      '/api': {
+        target: 'https://jsonplaceholder.typicode.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   },
   resolve: {
     alias: {

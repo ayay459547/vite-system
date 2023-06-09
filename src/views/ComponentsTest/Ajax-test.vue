@@ -19,7 +19,6 @@ const todos2 = ref<Todos[]>([])
 
 const getTodosData = async () => {
   const res = await ajax<Todos[]>({
-    baseURL: 'https://jsonplaceholder.typicode.com',
     url: '/todos',
     method: 'get',
     data: {}
@@ -48,7 +47,6 @@ const getTodosData = async () => {
 
 const getTodosData2 = (todos) => {
   ajax<Todos[]>({
-    baseURL: 'https://jsonplaceholder.typicode.com',
     url: '/posts',
     method: 'post',
     data: { todos }

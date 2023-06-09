@@ -39,8 +39,8 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     (config) => {
       return config
     },
-    (err) => {
-      console.log(err)
+    (error) => {
+      console.log('request error', error)
     }
   )
 
@@ -48,14 +48,15 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     (res) => {
       return res.data
     },
-    (err) => {
-      console.log(err)
+    (error) => {
+      console.log('response error', error)
+
       Swal.fire({
         icon: 'error',
         reverseButtons: true,
         confirmButtonText: '確認',
         title: 'Api Error',
-        text: err.message
+        text: error.message
       })
     }
   )
