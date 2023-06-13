@@ -6,6 +6,7 @@ export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
+export { default as CustomCheckbox } from './feature/CustomCheckbox/CustomCheckbox.vue'
 
 export { default as DataTable } from './feature/dataTable/DataTable'
 
@@ -13,3 +14,4 @@ export { default as DataTable } from './feature/dataTable/DataTable'
 export { default as FormDatePicker } from './form/FormDatePicker.vue'
 export { default as FormInput } from './form/FormInput.vue'
 export { default as FormSelect } from './form/FormSelect.vue'
+export { default as FormCheckbox } from './form/FormCheckbox.vue'

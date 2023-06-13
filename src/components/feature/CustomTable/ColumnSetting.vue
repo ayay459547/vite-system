@@ -8,7 +8,7 @@ import Draggable from 'vuedraggable'
 
 import type { PropsTableColumn } from './CustomTable.vue'
 
-import { CustomButton, CustomPopover } from '@/components'
+import { CustomButton, CustomPopover, CustomCheckbox } from '@/components'
 
 import {
   getColumnSetting,
@@ -153,9 +153,8 @@ onBeforeMount(async () => {
       >
         <template #item="{ element }">
           <div class="column-item">
-            <ElCheckbox
+            <CustomCheckbox
               v-model="element.isShow"
-              size="large"
               @change="updateSetting"
             />
             <div class="text">{{ element.label }}</div>

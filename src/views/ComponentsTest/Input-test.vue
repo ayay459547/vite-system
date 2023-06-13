@@ -4,7 +4,8 @@ import { scrollToEl } from '@/lib/utils'
 import {
   FormInput,
   FormDatePicker,
-  FormSelect
+  FormSelect,
+  FormCheckbox
 } from '@/components'
 
 const columnSetting = {
@@ -50,6 +51,18 @@ const columnSetting = {
         { label: 'test3', value: '2' }
       ]
     }
+  },
+  checkbox: {
+    label: '類型',
+    filter: {
+      default: [],
+      required: true,
+      options: [
+        { label: 'test1', value: 0 },
+        { label: 'test2', value: 1 },
+        { label: 'test3', value: 2 }
+      ]
+    }
   }
 }
 
@@ -58,7 +71,8 @@ interface Form {
   phone?: string
   date?: string
   daterange?: [string, string]
-  select?: string
+  select?: string,
+  checkbox?: []
 }
 
 const {
@@ -107,23 +121,37 @@ const submit = () => {
       v-bind="formColumn.daterange"
     />
 
-    <CustomButton
-      label="重置"
-      class="i-mb-md"
-      @click="resetForm"
+    <FormCheckbox
+      v-model="form.checkbox"
+      v-bind="formColumn.checkbox"
     />
 
-    <CustomButton
-      label="提交"
-      @click="submit"
-    />
+    <div class="input-btn">
+      <CustomButton
+        label="重置"
+        class="i-mb-md"
+        @click="resetForm"
+      />
+
+      <CustomButton
+        label="提交"
+        @click="submit"
+      />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.input-test {
-  width: 100%;
-  height: 100%;
-  padding: 32px;
+.input {
+  &-test {
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+  }
+
+  &-btn {
+    display: flex;
+    gap: 8px;
+  }
 }
 </style>
