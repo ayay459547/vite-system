@@ -13,8 +13,8 @@ export interface ElAttr {
 
 export interface Options {
   text?: string
-  textClass?: string | Record<string, any> | any[]
-  textStyle?: string | Record<string, any>
+  class?: string | Record<string, any> | any[]
+  style?: string | Record<string, any>
 }
 
 export default defineComponent({
@@ -36,8 +36,8 @@ export default defineComponent({
       default () {
         return {
           text: '',
-          textClass: '',
-          textStyle: ''
+          class: '',
+          style: ''
         }
       }
     }

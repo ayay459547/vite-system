@@ -47,7 +47,14 @@ const showAlert = (icon: Icon) => {
 
 <template>
   <div class="input-test">
-    <div v-fixed="{ text: 'v-fixed test', textClass: 'text-danger' }" class="input-fixed">
+    <div
+      v-fixed="{
+        text: 'v-fixed test',
+        class: 'text-danger',
+        style: 'color: #fff'
+      }"
+      class="input-fixed"
+    >
       v-fixed test
     </div>
 

@@ -13,8 +13,8 @@ const fixedMap = new Map()
  */
 export function createHandler (this: Element, options: {
   text: string
-  textClass?: string | Record<string, any> | any[]
-  textStyle?: string | Record<string, any>
+  class?: string | Record<string, any> | any[]
+  style?: string | Record<string, any>
 }) {
   const clientRect = this.getBoundingClientRect()
 
@@ -32,6 +32,7 @@ export function createHandler (this: Element, options: {
   })
 
   app.use(vClickOutside).mount(newEl)
+  console.log(fixedMap)
 
   if (!fixedMap.has(this)) {
     fixedMap.set(this, {
