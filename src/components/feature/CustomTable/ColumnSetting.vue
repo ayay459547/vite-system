@@ -2,8 +2,6 @@
 import type { PropType } from 'vue'
 import { ref, onBeforeMount } from 'vue'
 
-import { ElCheckbox } from 'element-plus'
-
 import Draggable from 'vuedraggable'
 
 import type { PropsTableColumn } from './CustomTable.vue'
@@ -20,6 +18,7 @@ export interface ColumnItem {
   isShow: boolean
   key: string
   label: string
+  isOperations: boolean
 }
 export interface SettingData {
   version: string
@@ -79,10 +78,12 @@ const setDefaultColumnSetting = async () => {
     version: props.version,
     settingKey: props.settingKey,
     columns: props.columns.map(column => {
+      // 只要顯示資料
       return {
         isShow: true,
         key: column.key,
-        label: column.label
+        label: column.label,
+        isOperations: column.isOperations
       }
     })
   }
@@ -101,7 +102,7 @@ defineExpose({
 const drag = ref(false)
 
 const updateSetting = async () => {
-  const temp = columnList.value.map(column => column)
+  const temp = columnList.value
 
   const settingData: SettingData = {
     version: props.version,
@@ -152,7 +153,7 @@ onBeforeMount(async () => {
         class="column-list"
       >
         <template #item="{ element }">
-          <div class="column-item">
+          <div v-if="!element.isOperations" class="column-item">
             <CustomCheckbox
               v-model="element.isShow"
               @change="updateSetting"

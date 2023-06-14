@@ -20,7 +20,8 @@ export const columnSetting = {
     form: {
       default: null,
       validate: [],
-      required: true
+      required: true,
+      isOperations: false
     }
   },
   address: {
@@ -35,7 +36,8 @@ export const columnSetting = {
         { label: 'address-1-No. 189, Grove St, Los Angeles', value: 'address-1' },
         { label: 'address-2-No. 177, Grove St, Los Angeles', value: 'address-2' },
         { label: 'address-3-No. 123, Grove St, Los Angeles', value: 'address-3' }
-      ]
+      ],
+      isOperations: false
     }
   },
   operations: {
@@ -43,7 +45,8 @@ export const columnSetting = {
     table: {
       width: 60,
       align: 'center',
-      fixed: 'right'
+      fixed: 'right',
+      isOperations: true
     }
   }
 }

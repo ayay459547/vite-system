@@ -4,9 +4,9 @@ import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
 import type { Column as ExcelColumn} from 'exceljs'
+import type { ColumnItem, SettingData } from '@/components/feature/table/ColumnSetting.vue'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/idb'
-import type { ColumnItem, SettingData } from '@/components/feature/table/ColumnSetting.vue'
 
 export interface FormSetting<T> {
   columns: Record<string, any>
@@ -146,6 +146,7 @@ export interface TableColumnsItem {
   prop: string
   slotKey: string
   sortable: boolean
+  isOperations: boolean
   label: string
 }
 /**
@@ -176,6 +177,7 @@ export const getTableSetting = (
       prop: key,
       slotKey: key,
       sortable: false,
+      isOperations: false,
       label: column?.label ?? '',
       ...column[type]
     }
@@ -221,7 +223,7 @@ export const getTableSetting = (
           excelColumns.push({
             header: tempColumn.label,
             key: tempColumn.key,
-            hidden: !tempColumn.isShow,
+            hidden: !tempColumn.isShow || tempColumn.isOperations,
             style: {
               alignment: {
                 horizontal: align,
@@ -277,7 +279,7 @@ export interface TableColumnsItem {
 }
 /**
  * @author Caleb
- * @description 取的 Columns 設定 Table用的資料
+ * @description 取的 Columns 設定 DataTable用的資料
  *              slot prop 預設是 key
  * @param {Ojbect} columns
  * @param {String} type 取得 columnSetting 中的類型
