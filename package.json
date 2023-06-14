@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open --force",
+    "staging": "npx vite --mode staging",
+    "production": "npx vite --mode production",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest",
