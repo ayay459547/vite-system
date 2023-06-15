@@ -4,7 +4,7 @@ import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
 import type { Column as ExcelColumn} from 'exceljs'
-import type { ColumnItem, SettingData } from '@/components/feature/table/ColumnSetting.vue'
+import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/idb'
 

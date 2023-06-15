@@ -93,6 +93,7 @@ const tableData = [
     address: 'address-1'
   }
 ]
+
 </script>
 
 <template>
@@ -104,8 +105,8 @@ const tableData = [
         :table-data="tableData"
         :table-columns="tableColumns"
       >
-        <template #header="{ data }">
-          {{ data }}
+        <template #header-all="{ data }">
+          {{ data + '777' }}
         </template>
       </DataTable>
     </div>

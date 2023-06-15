@@ -3,12 +3,12 @@ import { computed } from 'vue'
 
 export type IconType = 'fas' | 'far' | 'fab'
 
-type IconSize = 'large' | 'default' | 'small'
+export type IconSize = 'large' | 'default' | 'small'
 
 /**
  * icon 和 type, name 選一種給
  */
-interface Props {
+export interface Props {
   icon?: [IconType, string] | []
   type?: IconType
   name?: string

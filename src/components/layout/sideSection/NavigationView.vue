@@ -119,17 +119,16 @@ const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
     height: 100%;
     display: flex;
     flex-wrap: nowrap;
-    transition-duration: 0.3s;
-    will-change: margin-left;
+    transition-duration: 0.35s;
     &.is-open {
-      margin-left: -$nav-lg-width;
+      transform: translateX(-$nav-lg-width);
 
       @media (max-width: 992px) {
-        margin-left: -$nav-md-width;
+        transform: translateX(-$nav-md-width);
       }
     }
     &.is-close {
-      margin-left: 0;
+      transform: translateX(0px);
     }
   }
 

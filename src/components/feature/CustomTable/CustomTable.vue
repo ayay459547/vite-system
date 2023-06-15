@@ -15,7 +15,7 @@ import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 
 import type { TableColumnsItem } from '@/lib/columns'
-import type { ColumnItem } from './ColumnSetting.vue'
+import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton, FormSelect } from '@/components'
 
@@ -23,7 +23,7 @@ import ColumnSetting from './ColumnSetting.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 
-interface Props extends Record<string, any> {
+export interface Props extends Record<string, any> {
   /**
    * table 標題
    */
@@ -265,9 +265,9 @@ onUnmounted(() => {
               :column="column"
             ></slot>
           </template>
-          <template v-else-if="hasSlot('header')" #header="scope">
+          <template v-else-if="hasSlot('header-all')" #header="scope">
             <slot
-              name="header"
+              name="header-all"
               :row-index="scope.$index"
               :column="column"
             ></slot>
@@ -282,9 +282,9 @@ onUnmounted(() => {
               :column="column"
             ></slot>
           </template>
-          <template v-else-if="hasSlot('column')" #default="scope">
+          <template v-else-if="hasSlot('column-all')" #default="scope">
             <slot
-              name="column"
+              name="column-all"
               :data="scope.row[column.key]"
               :row="scope.row"
               :row-index="scope.$index"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElCheckbox } from 'element-plus'
+import { CheckboxValueType, ElCheckbox } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed } from 'vue'
 
@@ -25,20 +25,13 @@ const tempValue = computed<boolean>({
   set: (value: boolean) => emit('update:modelValue', value)
 })
 
-const bindAttributes = computed(() => {
-  return {
-    size: 'large',
-    validateEvent: false
-  }
-})
-
 const emit = defineEmits([
   'update:modelValue',
   'change'
 ])
 
-const onCheckboxChange = ($event: Event) => {
-  emit('change', $event)
+const onCheckboxChange = (val: CheckboxValueType) => {
+  emit('change', val)
 }
 
 </script>
@@ -46,8 +39,9 @@ const onCheckboxChange = ($event: Event) => {
 <template>
   <ElCheckbox
     v-model="tempValue"
+    size="large"
+    :validate-event="false"
     @change="onCheckboxChange"
-    v-bind="bindAttributes"
   >
     {{ props.label }}
   </ElCheckbox>

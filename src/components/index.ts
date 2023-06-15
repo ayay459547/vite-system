@@ -8,7 +8,7 @@ export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
 export { default as CustomCheckbox } from './feature/CustomCheckbox/CustomCheckbox.vue'
 
-export { default as DataTable } from './feature/dataTable/DataTable'
+export { default as DataTable } from './feature/DataTable/DataTable'
 
 // form
 export { default as FormDatePicker } from './form/FormDatePicker.vue'

@@ -21,12 +21,13 @@ $system-bg-color: #324157;
 
 // 選單寬度
 $nav-xs-width: 54px;
-$nav-md-width: 250px;
-$nav-lg-width: 300px;
+$nav-md-width: 300px;
+$nav-lg-width: 350px;
 
 /* z-index */
 $loading-index: 999;
 $login-index: 100;
+$v-fixed-index: 99;
 $modal-index: 10;
 $popover-index: 1;
 // $side-index: 9999;

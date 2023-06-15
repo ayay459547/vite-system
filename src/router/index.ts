@@ -104,7 +104,7 @@ const baseRoutes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory((import.meta as any).env.BASE_URL),
   routes: [...baseRoutes, ...resRoutes.value]
 })
 
@@ -160,6 +160,5 @@ router.beforeEach(
     }
   }
 )
-
 
 export default router

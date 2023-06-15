@@ -6,13 +6,13 @@ function getColumnSlotNode (slots, columnKey, isHeader) {
     temp = slots[`header-${columnKey}`]
     if (![null, undefined, ''].includes(temp)) return temp
 
-    temp = slots['header']
+    temp = slots['header-all']
     if (![null, undefined, ''].includes(temp)) return temp
   } else {
     temp = slots[`column-${columnKey}`]
     if (![null, undefined, ''].includes(temp)) return temp
 
-    temp = slots['column']
+    temp = slots['column-all']
     if (![null, undefined, ''].includes(temp)) return temp
   }
   return null
@@ -150,7 +150,8 @@ interface Props {
   tableData?: Array<any>
 }
 
-const DataTable = (props: Props, context: any) => {
+
+const DataTable = (props: Props, context) => {
   const { slots = {} } = context
   const _tableColumns = props['table-columns']
   const _tableData = props['table-data'] ?? []

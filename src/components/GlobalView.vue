@@ -224,6 +224,7 @@ watch(isFinishInit, (isFinish: boolean) => {
     width: fit-content;
     height: 100%;
     transition-duration: 0.3s;
+    will-change: margin-left;
     &.is-open {
       margin-left: 0;
     }

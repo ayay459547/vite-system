@@ -272,5 +272,12 @@ export default defineComponent({
       max-height: 0 !important;
     }
   }
+
+  &-sub-item {
+    padding: 12px 48px;
+    .item-icon {
+      font-size: 1em;
+    }
+  }
 }
 </style>

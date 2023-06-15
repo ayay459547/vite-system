@@ -87,7 +87,7 @@ const clickOutside = () => {
 
 <template>
   <div v-show="wrapperIsShow" class="modal-wrapper">
-    <Transition name="bounce">
+    <Transition name="modal">
       <div
         v-click-outside="clickOutside"
         v-show="containerIsShow"

@@ -5,6 +5,7 @@ import { ref, onBeforeMount } from 'vue'
 import Draggable from 'vuedraggable'
 
 import type { PropsTableColumn } from './CustomTable.vue'
+import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 
 import { CustomButton, CustomPopover, CustomCheckbox } from '@/components'
 
@@ -13,18 +14,6 @@ import {
   setColumnSetting,
   delColumnSetting
 } from '@/lib/idb'
-
-export interface ColumnItem {
-  isShow: boolean
-  key: string
-  label: string
-  isOperations: boolean
-}
-export interface SettingData {
-  version: string
-  settingKey: string
-  columns: ColumnItem[]
-}
 
 const props = defineProps({
   columns: {
