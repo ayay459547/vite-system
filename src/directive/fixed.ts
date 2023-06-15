@@ -1,4 +1,5 @@
-import { createApp, App } from 'vue'
+import type { App } from 'vue'
+import { createApp } from 'vue'
 // import debounce from '@/lib/debounce'
 import vClickOutside from 'click-outside-vue3'
 import VFixed from '@/components/feature/VFixed.vue'

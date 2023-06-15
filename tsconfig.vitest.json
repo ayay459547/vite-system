@@ -3,6 +3,7 @@
   "exclude": [],
   "compilerOptions": {
     "strict": false,
+    "allowJs": true,
     // "noImplicitAny": false,
     "composite": true,
     "lib": [],

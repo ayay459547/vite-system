@@ -43,7 +43,7 @@ export default defineComponent({
       return this.getLength(this.routes)
     },
     searchText () {
-      return this.search.text
+      return (this.search as any).text ?? ''
     },
     ...mapStores(useRoutesStore)
   },

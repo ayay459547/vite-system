@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { ref, reactive, computed, provide, watch, onMounted } from 'vue'
 import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
 
