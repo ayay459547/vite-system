@@ -7,7 +7,6 @@ const columnSetting = {
     label: '生日',
     table: {
       width: 150,
-      // fixed: 'left',
       align: 'center'
     }
   },
@@ -69,7 +68,7 @@ const tableData = [
         v-bind="tableSetting"
         @excel="download"
       >
-        <template #header="{ column }">{{ column.label }}</template>
+        <template #header-all="{ column }">{{ column.label }}</template>
       </CustomTable>
     </div>
   </div>

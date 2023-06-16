@@ -44,11 +44,12 @@ export default defineComponent({
   },
   data () {
     return {
+      timer: null,
       isShow: false,
       elRect: { left: 0, top: 0, width: 0, height: 0 },
       mousePos: { left: 0, top: 0 },
       throttleOnWheelChange: throttle(this.close, 150, { noLeading: true }) as (payload: WheelEvent) => void,
-      debounceSetMousePos: debounce(this.setMousePos, 100)
+      debounceSetMousePos: debounce(this.setMousePos, 100) as EventListenerOrEventListenerObject
     }
   },
   computed: {
@@ -114,7 +115,7 @@ export default defineComponent({
     window.addEventListener('mousemove', this.debounceSetMousePos)
 
     setTimeout(() => {
-      const tempEl = this.$refs.fixed
+      const tempEl = this.$refs.fixed as Element | null
       if (tempEl) {
         const clientRect = tempEl.getBoundingClientRect()
         this.elRect.left = clientRect.left

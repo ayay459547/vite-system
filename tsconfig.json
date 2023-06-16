@@ -4,12 +4,12 @@
     {
       "path": "./tsconfig.node.json"
     },
-    // {
-    //   "path": "./tsconfig.app.json"
-    // },
-    // {
-    //   "path": "./tsconfig.vitest.json"
-    // }
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */

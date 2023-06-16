@@ -22,6 +22,9 @@ import { CustomButton, FormSelect } from '@/components'
 import ColumnSetting from './ColumnSetting.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
+export interface ChangePage {
+  (page: number, pageSize: number): void
+}
 
 export interface Props extends Record<string, any> {
   /**
@@ -33,7 +36,9 @@ export interface Props extends Record<string, any> {
    * 欄位設定相關
    * version: 欄位設定 版本
    *     如果版本更換 會重置欄位設定
-   * settingKey: 欄位設定 在 indexedDB 上的 key
+   * settingKey:
+   *     欄位設定 在 indexedDB 上的 key
+   *     建議參考路由 避免重複使用 key
    */
   version: string
   settingKey: string
@@ -59,17 +64,21 @@ export interface Props extends Record<string, any> {
 // eslint-disable-next-line vue/valid-define-props
 
 const props = withDefaults(defineProps<Props>(), {
+  title: '',
+  version: '',
+  settingKey: '',
+  tableColumns: () => [],
   tableData: () => [],
   rowKey: 'id',
   defaultExpandAll: false,
-  title: '',
   total: 0
 })
 
 const emit = defineEmits([
-  'change',
   'row-click',
-  'excel'
+  'excel',
+  'change-page',
+  'change-size'
 ])
 
 // slot
@@ -107,6 +116,8 @@ const sizeOptions = [
 ]
 const onSizeChange = (v: number) => {
   changePage(1, v)
+
+  emit('change-size', { page: currentPage.value, pageSize: v })
 }
 
 const currentPage = ref(1)
@@ -120,10 +131,10 @@ const resetScroll = (): void => {
   elTableRef.value?.setScrollTop(0)
 }
 
-const changePage = (page: number, pageSize: number): void => {
+const changePage: ChangePage = (page, pageSize) => {
   currentPage.value = page
 
-  emit('change', { page, pageSize })
+  emit('change-page', { page, pageSize })
   resetScroll()
 }
 
@@ -178,9 +189,8 @@ onMounted(async () => {
   isRender.value = true
 })
 
-// 表單高度
 let tableHeight = ref(500)
-const ROcallback = throttle((entries) => {
+const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
     tableHeight.value = entry.contentRect.height
   })
@@ -195,6 +205,12 @@ onMounted(() => {
 })
 onUnmounted(() => {
   RO.disconnect()
+})
+
+defineExpose({
+  page: currentPage,
+  pageSize: pageSize,
+  changePage
 })
 
 </script>

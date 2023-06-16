@@ -21,7 +21,7 @@ const centerPoint = reactive({
   x: 0, y: 0
 })
 
-const ROcallback = throttle((entries) => {
+const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
     const { x, y, width, height } = entry.contentRect
     centerPoint.x = x + width / 2

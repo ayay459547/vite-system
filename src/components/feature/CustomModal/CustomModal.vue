@@ -1,4 +1,7 @@
 <script setup lang="ts">
+export type WidthSize = 'large'| 'default'| 'small'
+export type HeightSize = 'large'| 'default'| 'small'
+
 import type { WritableComputedRef, PropType } from 'vue'
 import { ref, computed, watch } from 'vue'
 import { CustomButton } from '@/components'
@@ -17,11 +20,11 @@ const props = defineProps({
     default: false
   },
   widthSize: {
-    type: String as PropType<'large'| 'default'| 'small'>,
+    type: String as PropType<WidthSize>,
     default: 'default'
   },
   heightSize: {
-    type: String as PropType<'large'| 'default'| 'small'>,
+    type: String as PropType<HeightSize>,
     default: 'default'
   }
 })
@@ -80,7 +83,9 @@ const submit = () => {
 const clickOutside = () => {
   if (!props.clickOutside) return
 
-  tempValue.value = false
+  if (wrapperIsShow.value && containerIsShow.value) {
+    tempValue.value = false
+  }
 }
 
 </script>
@@ -89,10 +94,13 @@ const clickOutside = () => {
   <div v-show="wrapperIsShow" class="modal-wrapper">
     <Transition name="modal">
       <div
-        v-click-outside="clickOutside"
         v-show="containerIsShow"
+        v-click-outside="clickOutside"
         class="modal-container"
-        :class="[`width-${props.widthSize}`, `height-${props.heightSize}`]"
+        :class="[
+          `width-${props.widthSize}`,
+          `height-${props.heightSize}`
+        ]"
       >
         <div class="modal-header">
           <slot name="header">

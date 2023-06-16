@@ -1,20 +1,28 @@
 # CustomButton API
 ### 使用範例
-```vue=
+```vue
 <script setup lang="ts">
-  import { CustomButton } from '@/components'
+import type { ButtonSize } from '@/components'
+import { CustomButton } from '@/components'
 
-  const test = () => {
-    console.log('test click')
-  }
+const test = () => {
+  console.log('test click')
+}
+const size: ButtonSize = 'large'
 </script>
 
 <template>
-  <CustomButton label="test-click" @click="test"/>
+  <CustomButton
+    label="ButtonLabel"
+    :size="size"
+    @click="onClick"
+  />
 </template>
 ```
 ## Element UI Plus
-https://element-plus.org/zh-CN/component/button.html
+https://element-plus.org/en-US/component/button.html
+### 找圖示
+https://fontawesome.com/search?o=r&m=free
 
 ### Attributes ( props )
 | 屬姓名     | 說明             | 类型    | 默認值     |
@@ -32,21 +40,13 @@ https://element-plus.org/zh-CN/component/button.html
 | iconName  | 圖示名稱          | string  | ''        |
 | iconMove  | 圖示hover移動方式 | enum    | 'none'    |
 
-### 找圖示(要下過濾是 Free)
-https://fontawesome.com/search
-
 ### Slots
 | 插槽名     | 說明          |
 | --------- | ------------- |
-| default   | 文字顯示內容   |
 | icon      | 前面圖示的位置 |
+| default   | 文字顯示內容   |
 
-### Events ( emit )
-| 事件名     | 說明         | 傳值類型  |
-| --------- | ------------ | -------- |
-| click     | 按鈕點擊      |          |
-
-### Exposes
-| 屬姓名     | 說明         | 類型   |
-| --------- | ------------ | ------ |
-|           |              |        |
+### Events ( emits )
+| 事件名     | 說明         |
+| --------- | ------------ |
+| click     | 按鈕點擊      |

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ajax } from '@/lib/ajax'
+import { CustomTable } from '@/components'
 
 interface Todos {
   completed: boolean
@@ -79,11 +80,49 @@ onMounted(async () => {
   getTodosData2(todos.value)
 })
 
+const tableData = [
+  { name: '小名', age: 13, address: '台北市大安區' },
+  { name: '小華', age: 22, address: '桃園市中壢區' },
+  { name: '小安', age: 34, address: '桃園市楊梅區' }
+]
+
+const tableColumns = [
+  { key: 'name', label: '名稱', prop: 'name', width: 150 },
+  { key: 'age', label: '年齡', prop: 'age', width: 120 },
+  { key: 'address', label: '地址', prop: 'address', minWidth: 200 }
+]
+
 </script>
 
 <template>
   <div class="page">
     api test
+    <div style="width: 800px; height: 500px;">
+      <CustomTable
+        title="表單組件測試"
+        version="1.0.0"
+        setting-key="test-table-1"
+        :table-data="tableData"
+        :table-columns="tableColumns"
+      />
+    </div>
+
+    <div style="width: 800px; height: 500px;">
+      <CustomTable
+        title="表單組件測試"
+        version="1.0.0"
+        setting-key="test-table-2"
+        :table-data="tableData"
+        :table-columns="tableColumns"
+      >
+        <template #header-all="{ column }">
+          {{ column.label + '-header' }}
+        </template>
+        <template #column-all="{ data }">
+          {{ data + '-column' }}
+        </template>
+      </CustomTable>
+    </div>
   </div>
 </template>
 

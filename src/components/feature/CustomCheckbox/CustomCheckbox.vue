@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { CheckboxValueType, ElCheckbox } from 'element-plus'
+import type { CheckboxValueType } from 'element-plus'
+import { ElCheckbox } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed } from 'vue'
 
@@ -9,10 +10,6 @@ const props = defineProps({
   modelValue: {
     type: Boolean as PropType<ModelValue>,
     required: true
-  },
-  direction: {
-    type: String as PropType<'column' | 'row'>,
-    default: 'column'
   },
   label: {
     type: String as PropType<string>,

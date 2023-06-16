@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance } from 'vue'
-import type { Expose } from '@/declare/formInput'
+import type { Expose } from '@/components'
 import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
@@ -270,7 +270,7 @@ export interface DataTableSetting {
   tableColumns: Record<string, any>,
   downloadExcel: (tableData: Record<string, any>[]) => void
 }
-export interface TableColumnsItem {
+export interface DataTableColumnsItem {
   key: string
   prop: string
   slotKey: string

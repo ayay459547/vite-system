@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ElButton } from 'element-plus'
-import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
+import type { IconType } from '@/components'
 import { CustomIcon } from '@/components'
+
+export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
+export type ButtonSize = 'large'| 'default'| 'small'
 
 enum ElType {
   default = '',
@@ -19,7 +22,7 @@ enum ElSize {
   small = 'small'
 }
 
-enum iconType {
+enum FontIconType {
   fas = 'fas',
   far = 'far',
   fab = 'fab'
@@ -32,12 +35,12 @@ const props = defineProps({
     default: ''
   },
   size: {
-    type: String as PropType<'large'| 'default'| 'small'>,
+    type: String as PropType<ButtonSize>,
     required: false,
     default: 'default'
   },
   type: {
-    type: String as PropType<'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'>,
+    type: String as PropType<ButtonType>,
     required: false,
     default: 'default'
   },
@@ -113,7 +116,7 @@ const onClick = ($event: Event) => {
             class="icon"
             :class="`icon-${iconMove}`"
             :size="ElSize[props.size]"
-            :type="iconType[props.iconType]"
+            :type="FontIconType[props.iconType]"
             :name="props.iconName"
           />
         </template>

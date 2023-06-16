@@ -1,30 +1,27 @@
-# 系統前台開發測試
+# 系統前端開發
 
-## Project Setup
-
+### 安裝套件
 ```sh
+# Project Setup
 npm install
 ```
-
-### Compile and Hot-Reload for Development
-
+### 運行環境 
 ```sh
+# Compile and Hot-Reload for Development
 npm run dev
 ```
-
-### Type-Check, Compile and Minify for Production
-
+### 打包
 ```sh
+# Type-Check, Compile and Minify for Production
 npm run build
 ```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### 單元測試
+#### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
 npm run test:unit
 ```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+#### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
 
 ```sh
 npm run test:e2e:dev
@@ -39,8 +36,8 @@ But it's still recommended to test the production build with `test:e2e` before d
 npm run build
 npm run test:e2e
 ```
-
-### Lint with [ESLint](https://eslint.org/)
+### 依據 ESLint 配置修正文件
+#### Lint with [ESLint](https://eslint.org/)
 
 ```sh
 npm run lint

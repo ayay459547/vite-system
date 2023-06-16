@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 export type IconType = 'fas' | 'far' | 'fab'
-
 export type IconSize = 'large' | 'default' | 'small'
 
 /**
@@ -30,7 +29,10 @@ const getIcon = computed(() => {
 </script>
 
 <template>
-  <div class="icon-container" :class="`size-${props.size} ${props.iconClass}`">
+  <div
+    class="icon-container"
+    :class="`size-${props.size} ${props.iconClass}`"
+  >
     <font-awesome-icon :icon="getIcon" />
   </div>
 </template>

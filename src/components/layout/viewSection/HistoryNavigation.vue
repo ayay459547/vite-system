@@ -3,7 +3,7 @@ import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
-import type { Navigation } from '@/declare/routes'
+import type { ListType, ListItem } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
 
 const routesStore = useRoutesStore()
@@ -13,23 +13,22 @@ const currentTab = computed(() => {
   return currentNavigation.value?.name ?? ''
 })
 
-type ListType = Array<{
-  key: string
-  value: any
-}>
-
 const tabs: ComputedRef<ListType> = computed(() => {
   const res = []
-  // historyNavigation: Map
+  // historyNavigation is Map
   historyNavigation.value.forEach((value, key) => {
-    res.push({ key, value })
+    res.push({
+      key,
+      label: value.title,
+      value
+    })
   })
 
   return res
 })
 
-const removeHistory = (value: Navigation) => {
-  routesStore.removeHistoryNavigation(value.name)
+const removeHistory = (value: ListItem) => {
+  routesStore.removeHistoryNavigation(value.key)
 }
 
 const clearHistory = () => {
@@ -51,16 +50,17 @@ const clearHistory = () => {
       :model-value="currentTab"
       :list="tabs"
       class="history-tabs"
+      remove
       @remove="removeHistory"
     >
       <template #default="slotProps">
         <RouterLink
-          :to="slotProps.data.path"
+          :to="slotProps.value.path"
           class="history-tab"
-          :class="{ 'is-active': currentTab === slotProps.data.name }"
+          :class="{ 'is-active': currentTab === slotProps.key }"
           v-slot="{ navigate }"
         >
-          <span @click="navigate">{{ slotProps.data.title }}</span>
+          <span @click="navigate">{{ slotProps.label }}</span>
         </RouterLink>
       </template>
     </CustomTabs>

@@ -7,10 +7,13 @@ import { CustomIcon } from '@/components'
 import { scrollToEl } from '@/lib/utils'
 import debounce from '@/lib/debounce'
 
-type ListType = Array<{
+export type ListItem = {
   key: string
-  value: any
-}>
+  label: string
+  value?: any
+}
+export type ListType = Array<ListItem>
+
 const props = defineProps({
   modelValue: {
     type: [String, null] as PropType<string | null>,
@@ -19,10 +22,22 @@ const props = defineProps({
   list: {
     type: Array as PropType<ListType>,
     required: true
-  }
+  },
+  remove: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  background: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
 })
 
-const emit = defineEmits(['update:modelValue', 'remove'])
+const emit = defineEmits([
+  'update:modelValue',
+  'change',
+  'remove'
+])
 
 const tempValue: WritableComputedRef<string> = computed({
   get: () => props.modelValue,
@@ -44,11 +59,15 @@ watch(tempValue, (newValue) => {
   debounceScrollToCurrentTab(newValue)
 })
 
-const onTabClick = (key: string) => {
+const onTabClick = (key: string, label: string, value: any) => {
   tempValue.value = key
+
+  const changeProps: ListItem = { key, label, value }
+  emit('change', changeProps)
 }
-const removeTab = (value: any) => {
-  emit('remove', value)
+const removeTab = (key: string, label: string, value: any) => {
+  const removeProps: ListItem = { key, label, value }
+  emit('remove', removeProps)
 }
 
 const increaseScroll = () => {
@@ -73,7 +92,7 @@ const listRef: Ref<HTMLElement | null> = ref(null)
 
 const arrowIsShow = ref(false)
 
-const wrapROcallback = throttle((entries) => {
+const wrapROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
     conWidth.value = entry.contentRect.width - 84
 
@@ -90,7 +109,7 @@ const wrapRO = new ResizeObserver(wrapROcallback)
 const conWidth = ref(0)
 
 const listWidth = ref(0)
-const listROcallback = throttle((entries) => {
+const listROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
     const oddListWidth = listWidth.value
     listWidth.value = entry.contentRect.width
@@ -120,27 +139,34 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="wrapRef" class="tabs-wrapper">
+  <div ref="wrapRef" class="tabs-wrapper" :class="{ 'is-background': props.background }">
     <div class="tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>
     </div>
     <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }">
-      <div ref="listRef" class="tabs-list">
+      <div ref="listRef" class="tabs-list" :class="{ 'is-background': props.background }">
         <div
           v-for="element in props.list"
           class="tabs-item"
-          :class="[{ 'is-active': props.modelValue === element.key }, `__tab_${element.key}`]"
+          :class="[
+            {
+              'is-active': props.modelValue === element.key,
+              'is-background': props.background
+            },
+            `__tab_${element.key}`
+          ]"
           :key="element.key"
-          @click="onTabClick(element.key)"
+          @click="onTabClick(element.key, element.label, element.value)"
         >
-          <slot :data="element.value">
-            <span>{{ element.value }}</span>
+          <slot :key="element.key" :label="element.label" :value="element.value">
+            <span>{{ element.label }}</span>
           </slot>
           <CustomIcon
+            v-if="props.remove"
             name="xmark"
             class="tabs-item-remove"
             :class="{ 'is-active': props.modelValue === element.key }"
-            @click="removeTab(element.value)"
+            @click="removeTab(element.key, element.label, element.value)"
           />
         </div>
       </div>
@@ -156,6 +182,7 @@ onUnmounted(() => {
   width: 0;
   height: 0;
 }
+$is-background: #f5f7fa;
 .tabs {
   &-wrapper {
     width: 100%;
@@ -164,6 +191,13 @@ onUnmounted(() => {
     gap: 2px;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #ddd;
+
+    &.is-background {
+      border: 1px solid #ddd;
+      border-radius: 4px 4px 0 0;
+      background-color: $is-background;
+    }
   }
   &-left-arrow,
   &-right-arrow {
@@ -183,7 +217,7 @@ onUnmounted(() => {
   }
   &-container {
     width: 100%;
-    height: inherit;
+    height: fit-content;
     flex: 1;
     overflow-x: scroll;
     display: flex;
@@ -194,6 +228,10 @@ onUnmounted(() => {
     display: flex;
     gap: 1px;
     height: 100%;
+
+    &.is-background {
+      gap: 0;
+    }
   }
   &-item {
     white-space:nowrap;
@@ -201,12 +239,22 @@ onUnmounted(() => {
     gap: 8px;
     cursor: pointer;
     border-radius: 4px 4px 0 0;
-    padding: 6px 6px 6px 12px;
-    border: 1px solid #ececec;
+    padding: 8px 12px;
     background-color: #fff;
     transition-duration: 0.3s;
     color: #303133;
+    border: 1px solid #ececec;
     border-bottom: 2px solid #40a0ff00;
+
+    &.is-background {
+      border-radius: 0;
+      background-color: $is-background;
+
+      &.is-active,
+      &:hover {
+        background-color: #fff;
+      }
+    }
 
     &:hover {
       background-color: #f7f7f7;
@@ -219,8 +267,9 @@ onUnmounted(() => {
 
     &-remove {
       @extend %flex-center;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
+      font-size: 1em !important;
       border-radius: 50%;
       background-color: #fff;
       color: #e9e9e9;
@@ -229,7 +278,6 @@ onUnmounted(() => {
         background-color: #e9e9e9;
         color: #fff;
       }
-
       &.is-active {
         color: #409EFF;
       }

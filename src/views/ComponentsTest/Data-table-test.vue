@@ -41,14 +41,6 @@ const columnsSetting = {
       ]
     }
   }
-  // operations: {
-  //   label: '操作',
-  //   table: {
-  //     width: 60,
-  //     align: 'center',
-  //     fixed: 'right'
-  //   }
-  // }
 }
 
 const {
@@ -66,7 +58,7 @@ const tableData = [
     id: 2,
     date: '2016-05-02',
     name: 'Caleb',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     id: 21,
@@ -106,7 +98,7 @@ const tableData = [
         :table-columns="tableColumns"
       >
         <template #header-all="{ data }">
-          {{ data + '777' }}
+          {{ data + ' ==> header' }}
         </template>
       </DataTable>
     </div>
