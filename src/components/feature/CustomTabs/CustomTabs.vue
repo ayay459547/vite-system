@@ -30,7 +30,7 @@ const props = defineProps({
   background: {
     type: Boolean as PropType<boolean>,
     default: false
-  },
+  }
 })
 
 const emit = defineEmits([
@@ -171,7 +171,7 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <div class="tabs-right-arrow" :class="{'is-show': arrowIsShow}" @click="decreaseScroll">
+    <div class="tabs-right-arrow" :class="{ 'is-show': arrowIsShow }" @click="decreaseScroll">
       <CustomIcon name="chevron-right"/>
     </div>
   </div>
@@ -201,9 +201,9 @@ $is-background: #f5f7fa;
   }
   &-left-arrow,
   &-right-arrow {
+    @extend %flex-center;
     width: 0;
     height: 100%;
-    @extend %flex-center;
     cursor: pointer;
     overflow: hidden;
     transition-duration: 0.3s;
@@ -234,8 +234,8 @@ $is-background: #f5f7fa;
     }
   }
   &-item {
-    white-space:nowrap;
     @extend %flex-center;
+    white-space: nowrap;
     gap: 8px;
     cursor: pointer;
     border-radius: 4px 4px 0 0;
@@ -245,7 +245,6 @@ $is-background: #f5f7fa;
     color: #303133;
     border: 1px solid #ececec;
     border-bottom: 2px solid #40a0ff00;
-
     &.is-background {
       border-radius: 0;
       background-color: $is-background;
