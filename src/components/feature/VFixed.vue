@@ -49,6 +49,7 @@ export default defineComponent({
       elRect: { left: 0, top: 0, width: 0, height: 0 },
       mousePos: { left: 0, top: 0 },
       throttleOnWheelChange: throttle(this.close, 150, { noLeading: true }) as (payload: WheelEvent) => void,
+      // eslint-disable-next-line no-undef
       debounceSetMousePos: debounce(this.setMousePos, 100) as EventListenerOrEventListenerObject
     }
   },

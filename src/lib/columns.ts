@@ -137,7 +137,13 @@ export interface TableSetting {
     title: string
     version: string
     settingKey: string
-    tableColumns: Record<string, any>,
+    page: number
+    pageSize: number
+    sort: {
+      key: null | string,
+      order: null | 'ascending' | 'descending'
+    }
+    tableColumns: Record<string, any>
   },
   downloadExcel: (tableData: Record<string, any>[]) => void
 }
@@ -145,7 +151,7 @@ export interface TableColumnsItem {
   key: string
   prop: string
   slotKey: string
-  sortable: boolean
+  sortable: boolean | 'custom'
   isOperations: boolean
   label: string
 }
@@ -162,12 +168,28 @@ export const getTableSetting = (
   columns: Record<string, any>,
   type: string,
   options: {
-    title: string,
-    version: string,
+    title: string
+    version: string
     settingKey: string
+    page?: number
+    pageSize?: number
+    sort?: {
+      key: null | string,
+      order: null | 'ascending' | 'descending'
+    }
   }
 ): TableSetting => {
-  const { title, version, settingKey } = options
+  const {
+    title,
+    version,
+    settingKey,
+    page = 1,
+    pageSize = 100,
+    sort = {
+      key: null,
+      order: null
+    }
+  } = options
 
   // 設定 table 用的 column
   const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -176,7 +198,7 @@ export const getTableSetting = (
       key,
       prop: key,
       slotKey: key,
-      sortable: false,
+      sortable: column[type]?.isOperations ? false : 'custom',
       isOperations: false,
       label: column?.label ?? '',
       ...column[type]
@@ -259,6 +281,9 @@ export const getTableSetting = (
       title,
       version,
       settingKey,
+      page,
+      pageSize,
+      sort,
       tableColumns: resColumns
     },
     downloadExcel
@@ -274,7 +299,7 @@ export interface DataTableColumnsItem {
   key: string
   prop: string
   slotKey: string
-  sortable: boolean
+  sortable: boolean | 'custom'
   label: string
 }
 /**
@@ -299,7 +324,7 @@ export const getDataTableSetting = (
       key,
       prop: key,
       slotKey: key,
-      sortable: false,
+      sortable: 'custom',
       label: column?.label ?? '',
       ...column[type]
     }

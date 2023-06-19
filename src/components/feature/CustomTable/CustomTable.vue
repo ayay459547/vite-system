@@ -22,7 +22,7 @@ import { CustomButton, FormSelect } from '@/components'
 import ColumnSetting from './ColumnSetting.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
-export interface ChangePage {
+export interface PageChange {
   (page: number, pageSize: number): void
 }
 
@@ -44,7 +44,7 @@ export interface Props extends Record<string, any> {
   settingKey: string
 
   /**
-   * 表單相關
+   * 表單資料相關
    * tableColumns: 表單欄位顯示用設定
    * tableData: 表單資料
    * rowKey: 每行資料的key 預設是id
@@ -52,33 +52,51 @@ export interface Props extends Record<string, any> {
    */
   tableColumns: PropsTableColumn[]
   tableData: any[]
+  tableDataCount?: number
   rowKey?: string
   defaultExpandAll?: boolean
 
   /**
-   * table 資料總筆數
-   * 計算頁數用
+   * 表單顯示相關
+   * page 表單創建時
+   * pageSize
+   * tableDataCount 資料總筆數 計算頁數用
    */
-  total?: number
+  page?: number
+  pageSize?: number
+  sort?: Sort
 }
-// eslint-disable-next-line vue/valid-define-props
 
-const props = withDefaults(defineProps<Props>(), {
+type Sort = {
+  key: null | string
+  order: null | 'ascending' | 'descending'
+}
+
+const props: Props = withDefaults(defineProps<Props>(), {
   title: '',
   version: '',
   settingKey: '',
   tableColumns: () => [],
   tableData: () => [],
+  tableDataCount: 0,
   rowKey: 'id',
   defaultExpandAll: false,
-  total: 0
+  page: 1,
+  pageSize: 100,
+  sort: () => {
+    return { key: null, order: null }
+  }
 })
 
 const emit = defineEmits([
+  'header-click',
   'row-click',
   'excel',
-  'change-page',
-  'change-size'
+  'columns-change',
+  'sort-change',
+  'page-change',
+  'size-change',
+  'show-change'
 ])
 
 // slot
@@ -99,14 +117,9 @@ const excel = () => {
    })
 }
 
-// 切換頁
-const total = ref(1)
-onUpdated(() => {
-  total.value = props.total
-})
-
 // 每頁顯示筆數
-const pageSize = ref(100)
+const pageSize = ref(props.pageSize)
+
 const sizeOptions = [
   { value: 30, label: '30' },
   { value: 50, label: '50' },
@@ -115,15 +128,16 @@ const sizeOptions = [
   { value: 300, label: '300' }
 ]
 const onSizeChange = (v: number) => {
-  changePage(1, v)
+  pageChange(1, v)
 
-  emit('change-size', { page: currentPage.value, pageSize: v })
+  emit('size-change', { page: currentPage.value, pageSize: v })
 }
 
-const currentPage = ref(1)
+// 分頁
+const currentPage = ref(props.page)
 const onPageChange = (v: number) => {
   const tempPageSize = pageSize.value
-  changePage(v, tempPageSize)
+  pageChange(v, tempPageSize)
 }
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
@@ -131,10 +145,16 @@ const resetScroll = (): void => {
   elTableRef.value?.setScrollTop(0)
 }
 
-const changePage: ChangePage = (page, pageSize) => {
+const pageChange: PageChange = (page, pageSize) => {
   currentPage.value = page
 
-  emit('change-page', { page, pageSize })
+  emit('page-change', { page, pageSize })
+  onShowChange({
+    page,
+    pageSize,
+    sort: currentSort.value
+  })
+
   resetScroll()
 }
 
@@ -142,12 +162,56 @@ const onRowClick = (row: any, column: any, event: Event) => {
   emit('row-click', row, column, event)
 }
 
+const currentSort = ref<Sort>({
+  key: null,
+  order: null
+})
+const onSortChange = (props: {
+  column: any,
+  prop: string,
+  order: null | 'ascending' | 'descending'
+}) => {
+  const { prop: key = '', order } = props
+
+  if (order) {
+    currentSort.value = { key, order }
+  } else {
+    currentSort.value = { key: null, order: null}
+  }
+  emit('sort-change', { key, order })
+
+  onShowChange({
+    page: currentPage.value,
+    pageSize: pageSize.value,
+    sort: currentSort.value
+  })
+}
+const onHeaderClick = (column: any, event: Event) => {
+  emit('header-click', column, event)
+}
+
+/**
+ * 更換設定
+ * 顯示筆數
+ * 頁碼
+ * 排序
+ */
+const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
+  const { page, pageSize, sort } = props
+
+  emit('show-change', {
+    page,
+    pageSize,
+    sort: JSON.parse(JSON.stringify(sort))
+  })
+}
 // 顯示資料
 const showData = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
+  // const start = (currentPage.value - 1) * pageSize.value
+  // const end = start + pageSize.value
 
-  return (props.tableData as Array<any>).slice(start, end)
+  // return (props.tableData as Array<any>).slice(start, end)
+  return props.tableData
 })
 
 const columnSetting = ref(null)
@@ -175,6 +239,7 @@ const initShowColumns = async () => {
     showColumns.splice(0)
     showColumns.push(...resColumns)
     renderKey.value++
+    emit('columns-change', showColumns)
   }
 
   setTimeout(() => {
@@ -208,9 +273,7 @@ onUnmounted(() => {
 })
 
 defineExpose({
-  page: currentPage,
-  pageSize: pageSize,
-  changePage
+  pageChange
 })
 
 </script>
@@ -267,7 +330,13 @@ defineExpose({
         :border="true"
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
+        :default-sort="{
+          prop: props.sort.key,
+          order: props.sort.order,
+        }"
         @row-click="onRowClick"
+        @sort-change="onSortChange"
+        @header-click="onHeaderClick"
       >
         <ElTableColumn
           v-for="column in showColumns"
@@ -275,18 +344,24 @@ defineExpose({
           v-bind="column"
         >
           <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
-            <slot
-              :name="`header-${column.prop}`"
-              :row-index="scope.$index"
-              :column="column"
-            ></slot>
+            <div :class="column.sortable ? 'header-slot' : ''">
+              <slot
+                :name="`header-${column.prop}`"
+                :label="column.label"
+                :row-index="scope.$index"
+                :column="column"
+              ></slot>
+            </div>
           </template>
           <template v-else-if="hasSlot('header-all')" #header="scope">
-            <slot
-              name="header-all"
-              :row-index="scope.$index"
-              :column="column"
-            ></slot>
+            <div :class="column.sortable ? 'header-slot' : ''">
+              <slot
+                name="header-all"
+                :label="column.label"
+                :row-index="scope.$index"
+                :column="column"
+              ></slot>
+            </div>
           </template>
 
           <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
@@ -315,7 +390,7 @@ defineExpose({
       <ElPagination
         background
         layout="prev, pager, next"
-        :total="total"
+        :total="props.tableDataCount"
         :page-size="pageSize"
         :current-page="currentPage"
         @update:current-page="onPageChange"
@@ -339,6 +414,12 @@ defineExpose({
     border-radius: 6px;
     display: flex;
     flex-direction: column;
+
+    .header-slot {
+      width: fit-content;
+      max-width: calc(100% - 24px);
+      display: inline-block;
+    }
   }
 
   &-setting {

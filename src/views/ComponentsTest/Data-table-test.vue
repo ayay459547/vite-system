@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { DataTable } from '@/components'
+import { DataTable, CustomInput, CustomIcon } from '@/components'
 import { getDataTableSetting } from '@/lib/columns'
+import { ref } from 'vue'
 
 const columnsSetting = {
   date: {
@@ -86,6 +87,23 @@ const tableData = [
   }
 ]
 
+const text = ref('')
+
+const onFocus = ($event: FocusEvent) => {
+  console.log('onFocus', $event)
+}
+const onClear = () => {
+  console.log('onClear')
+}
+const onBlur = ($event: FocusEvent) => {
+  console.log('onBlur', $event)
+}
+const onChange = (value: string) => {
+  console.log('onChange', value)
+}
+const onInput = (value: string) => {
+  console.log('onInput', value)
+}
 </script>
 
 <template>
@@ -102,6 +120,28 @@ const tableData = [
         </template>
       </DataTable>
     </div>
+
+    <CustomInput
+      v-model="text"
+      label="測試一般輸入框"
+      class="i-mt-xl"
+      clearable
+      @focus="onFocus"
+      @clear="onClear"
+      @blur="onBlur"
+      @change="onChange"
+      @input="onInput"
+    >
+      <template #prepend>
+        <span>prepend</span>
+      </template>
+      <template #append>
+        <span>append</span>
+      </template>
+      <template #prefix>
+        <CustomIcon name="check"/>
+      </template>
+    </CustomInput>
   </div>
 </template>
 

@@ -6,7 +6,7 @@ import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/routes'
 import { getFormSetting } from '@/lib/columns'
 
-import { FormInput, CustomIcon } from '@/components'
+import { CustomInput, CustomIcon } from '@/components'
 import FeatureTree from './FeatureTree.vue'
 
 import { scrollToEl } from '@/lib/utils'
@@ -52,7 +52,7 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
 <template>
   <div class="home">
     <div class="home-search">
-      <FormInput
+      <CustomInput
         v-model="form.text"
         v-bind="formColumn.text"
         hidden-label
@@ -62,7 +62,7 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
         <template #prefix>
           <CustomIcon name="search"/>
         </template>
-      </FormInput>
+      </CustomInput>
     </div>
 
     <div class="home-tree">

@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { CustomTable } from '@/components'
+import { CustomTable, CustomInput } from '@/components'
 import { getTableSetting } from '@/lib/columns'
+import { ref } from 'vue'
 
 const columnSetting = {
   date: {
     label: '生日',
     table: {
       width: 150,
-      align: 'center'
+      align: 'left',
+      sortable: false
     }
   },
   name: {
     label: '姓名',
     table: {
-      width: 150
+      width: 200
     }
   },
   address: {
@@ -58,6 +60,12 @@ const tableData = [
   }
 ]
 
+const initData = (props: any) => {
+  console.log('init data', props)
+}
+
+const filterName = ref('')
+
 </script>
 
 <template>
@@ -67,8 +75,18 @@ const tableData = [
         :table-data="tableData"
         v-bind="tableSetting"
         @excel="download"
+        @change-setting="initData"
       >
-        <template #header-all="{ column }">{{ column.label }}</template>
+        <template #header-name="{ column }">
+          <CustomInput
+            v-model="filterName"
+            direction="row"
+            :label="column.label"
+          />
+        </template>
+        <template #header-date="{ column }">
+          {{  column.label }}
+        </template>
       </CustomTable>
     </div>
   </div>

@@ -1,10 +1,8 @@
 export const columnSetting = {
-  date: {
-    label: '生日',
+  name: {
+    label: '姓名',
     table: {
-      width: 150,
-      // fixed: 'left',
-      align: 'center'
+      width: 150
     },
     form: {
       default: null,
@@ -12,10 +10,12 @@ export const columnSetting = {
       required: true
     }
   },
-  name: {
-    label: '姓名',
+  date: {
+    label: '生日',
     table: {
-      width: 150
+      width: 150,
+      // fixed: 'left',
+      align: 'center'
     },
     form: {
       default: null,

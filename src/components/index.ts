@@ -8,6 +8,8 @@ export { default as CustomButton } from './feature/CustomButton/CustomButton.vue
 export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
+export { default as CustomInput } from './feature/CustomInput/CustomInput.vue'
+
 export type { WidthSize, HeightSize } from './feature/CustomModal/CustomModal.vue'
 export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 

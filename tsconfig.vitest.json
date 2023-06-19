@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.app.json",
-  "include": [],
+  // "include": [],
   "compilerOptions": {
     "strict": false,
     "allowJs": true,

@@ -12,7 +12,7 @@ import { deepClone } from '@/lib/utils'
 import { getTableSetting } from '@/lib/columns'
 
 import type { TableData } from './api'
-import { getData, deleteData } from './api'
+import { getData, getDataCount, deleteData } from './api'
 import { columnSetting } from './column'
 
 import CreateModal from './Components/CreateModal.vue'
@@ -33,11 +33,12 @@ const userPermission = computed(() => {
 })
 
 // table
-const tableData = ref([])
+const tableData = ref<TableData[]>([])
+const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '測試表單',
-  version: '1.0.2',
+  version: '1.0.3',
   settingKey: 'test'
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -124,12 +125,30 @@ const remove = (rowData: TableData) => {
   })
 }
 
-const init = async () => {
+const table = ref(null)
+
+const init = async (props = tableSetting) => {
+  tableData.value = []
   loading(true)
-  const resData = await getData()
+  const { page, pageSize, sort } = props
+
+  const apiParam  = { page, pageSize, sort }
+  console.log(apiParam)
+
+  const [resData, resDataCount ] = await Promise.all([ getData(), getDataCount() ])
 
   if (resData.status === 'success') {
     tableData.value = deepClone([], resData.data)
+  } else {
+    swal({
+      icon: 'error',
+      title: '取得資料失敗',
+      text: '請聯絡資訊人員'
+    })
+  }
+
+  if (resDataCount.status === 'success') {
+    tableDataCount.value = resDataCount.data
   } else {
     swal({
       icon: 'error',
@@ -163,7 +182,7 @@ onActivated(() => {
         :label="i18nTranslate('refrush')"
         icon-name="rotate"
         icon-move="rotate"
-        @click="init"
+        @click="init()"
       />
     </div>
 
@@ -177,9 +196,12 @@ onActivated(() => {
     </CustomModal>
 
     <CustomTable
+      ref="table"
       :table-data="tableData"
+      :table-data-count="tableDataCount"
       v-bind="tableSetting"
       @excel="download"
+      @show-change="init"
     >
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">

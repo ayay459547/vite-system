@@ -47,6 +47,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   showPassword: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -57,6 +61,7 @@ const bindAttributes = computed(() => {
   return {
     type: props.type,
     clearable: props.clearable,
+    disabled: props.disabled,
     showPassword: props.showPassword
   }
 })
@@ -108,13 +113,6 @@ const validateField = (veeValue: ModelValue) => {
  * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
  */
 
-/* 一般寫法
-const tempValue: WritableComputedRef<string> = computed({
-  get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
-})
-
-*/
 const {
   errorMessage,     // 錯誤訊息
   value: tempValue, // 值
@@ -195,6 +193,7 @@ const hasSlot = (prop: string): boolean => {
       :class="[`validate-${validateRes}`]"
       v-bind="bindAttributes"
       v-on="validationListeners"
+      @click.stop
     >
       <!-- 輸入框用 -->
       <template v-if="hasSlot('prepend')" #prepend>

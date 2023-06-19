@@ -67,6 +67,22 @@ export const getData = async () => {
   return resData
 }
 
+export const getDataCount = async () => {
+  const resData = await ajax<Api<number>>({
+    url: '/page1/get',
+    method: 'get',
+    data: {}
+  }, {
+    getFakeData: true,
+    fakeData: {
+      data: 1000,
+      status: 'success'
+    },
+    delay: 300
+  })
+  return resData
+}
+
 export const createData = async (postData: TableData) => {
   const resData = await ajax<Api<number>>({
     url: '/page1/create',
