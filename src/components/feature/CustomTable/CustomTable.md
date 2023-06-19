@@ -117,16 +117,20 @@ const tableData2 = [
 https://element-plus.org/en-US/component/table.html
 
 ### Attributes ( props )
-| 屬姓名           | 說明             | 类型    | 默認值    | 是否必填 |
-| ---------------- | --------------- | ------- | --------- | ------- |
-| title            | 標題            | string  | ''        |         |
-| version          | 欄位的版本       | string  | ''        | V      |
-| settingKey       | 欄位設定的key    | string  | ''        | V      |
-| tableColumns     | 欄位參數         | Array   | []        | V      |  
-| tableData        | 顯示資料         | Array   | []        | V      |
-| rowKey           | 如果有第二層需填  | string  | 'id'      |        |
-| defaultExpandAll | 是否圓形         | boolean | false     |        |
-| total            | 資料總數         | number  | 0         |        |
+| 屬姓名           | 說明             | 类型    | 默認值                    | 是否必填 |
+| ---------------- | --------------- | ------- | ------------------------ | ------- |
+| title            | 標題            | string  | ''                        |         |
+| version          | 欄位的版本       | string  | ''                        | V      |
+| settingKey       | 欄位設定的key    | string  | ''                        | V      |
+| tableColumns     | 欄位參數         | Array   | []                        | V      |  
+| tableData        | 顯示資料         | Array   | []                        | V      |
+| tableDataCount   | 資料總數         | number  | 0                         |        |
+| rowKey           | 如果有第二層需填  | string  | 'id'                      |        |
+| defaultExpandAll | 是否圓形         | boolean | false                     |        |
+| page             | 當前分頁         | number  | 1                         |        |
+| pageSize         | 顯示筆數         | number  | 100                       |        |
+| sort             | 預設排序設定     | object  | { key: null, order: null } |        |
+| showType         | 資料顯示類型     | enum    | 'custom'                   |        |
 
 ### Slots
 | 插槽名              | 說明                        |
@@ -137,16 +141,18 @@ https://element-plus.org/en-US/component/table.html
 | column-all          | 資料的顯示內容              |
 
 ### Events ( emits )
-| 事件名      | 說明           | 傳值類型                     |
-| ----------- | -------------- | ---------------------------- |
-| row-click   | 行被點擊        | row, column, event           |
-| excel       | excel按鈕被點擊 | { tableColumns, tableData }  |
-| change-page | 換分頁          | { page, pageSize }           |
-| change-size | 換顯示筆數      | { page, pageSize }           |
+| 事件名         | 說明                       | 傳值類型                     |
+| -------------- | ------------------------- | ---------------------------- |
+| header-click   | 行被點擊                   | column, event                |
+| row-click      | 行被點擊                   | row, column, event           |
+| excel          | excel按鈕被點擊            | { tableColumns, tableData }  |
+| columns-change | 欄位設定更動               | Array                        |
+| sort-change    | 排序切換                   | { key, order }               |
+| page-change    | 換分頁                     | { page, pageSize }           |
+| size-change    | 換顯示筆數                 | { page, pageSize }           |
+| show-change    | 排序切換、換分頁、換顯示筆數 | { page, pageSize }           |
 
 ### Exposes
 | 屬姓名     | 說明         | 類型     | 傳參           |
 | ---------- | ----------- | -------- | -------------- |
-| page       | 當前頁碼     | number   |                |
-| pageSize   | 顯示筆數     | number   |                |
-| ChangePage | 換頁         | function | page, pageSize |
+| PageChange | 換頁         | function | page, pageSize |

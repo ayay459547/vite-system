@@ -18,6 +18,16 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Page1-test/Page1-test.vue')
       },
       {
+        name: 'week-schedule-test',
+        title: '一周時間分配組件測試',
+        meta: {
+          keepAlive: false
+        },
+        systemType: ['development', 'test', 'complete'],
+        path: '/week-schedule-test',
+        component: () => import('@/views/ComponentsTest/Week-schedule-test.vue')
+      },
+      {
         name: 'ajax-test',
         title: 'AJAX測試',
         meta: {

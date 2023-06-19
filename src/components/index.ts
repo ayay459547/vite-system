@@ -1,6 +1,10 @@
 import type { Ref } from 'vue'
 import type { ValidationOptions, ValidationResult } from 'vee-validate'
 
+// chart
+export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
+export { default as GanttChart } from './chart/GanttChart.vue'
+
 // feature
 export type { ButtonType, ButtonSize } from './feature/CustomButton/CustomButton.vue'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
@@ -19,7 +23,7 @@ export type {
 } from './feature/CustomPopover/CustomPopover.vue'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
 
-export type { ChangePage } from './feature/CustomTable/CustomTable.vue'
+export type { PageChange } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 export type { ListItem, ListType } from './feature/CustomTabs/CustomTabs.vue'

@@ -4,7 +4,6 @@ import {
   ref,
   reactive,
   computed,
-  onUpdated,
   onMounted,
   onUnmounted
 } from 'vue'
@@ -58,13 +57,16 @@ export interface Props extends Record<string, any> {
 
   /**
    * 表單顯示相關
-   * page 表單創建時
-   * pageSize
+   * page 當前分頁
+   * pageSize 顯示筆數
    * tableDataCount 資料總筆數 計算頁數用
+   * showType: custom 依據api切資料
+   *           auto 依據 page 和 pageSize 切資料
    */
   page?: number
   pageSize?: number
   sort?: Sort
+  showType?: 'custom' | 'auto'
 }
 
 type Sort = {
@@ -85,7 +87,8 @@ const props: Props = withDefaults(defineProps<Props>(), {
   pageSize: 100,
   sort: () => {
     return { key: null, order: null }
-  }
+  },
+  showType: 'custom'
 })
 
 const emit = defineEmits([
@@ -207,11 +210,14 @@ const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
 }
 // 顯示資料
 const showData = computed(() => {
-  // const start = (currentPage.value - 1) * pageSize.value
-  // const end = start + pageSize.value
+  if (props.showType === 'custom') {
+    return props.tableData
+  } else {
+    const start = (currentPage.value - 1) * pageSize.value
+    const end = start + pageSize.value
 
-  // return (props.tableData as Array<any>).slice(start, end)
-  return props.tableData
+    return (props.tableData as Array<any>).slice(start, end)
+  }
 })
 
 const columnSetting = ref(null)

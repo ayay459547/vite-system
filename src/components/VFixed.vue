@@ -92,7 +92,7 @@ export default defineComponent({
       this.mousePos.left = e.clientX
       this.mousePos.top = e.clientY
     },
-    openTimer (tolerance = 30) {
+    openTimer (tolerance = 10) {
       this.timer = setInterval(() => {
         const { left, top, width, height } = this.elRect
         const { left: mouseLeft, top: mouseTop} = this.mousePos
