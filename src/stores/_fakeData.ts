@@ -46,6 +46,24 @@ export const fakePermissionData = [
 ]
 
 export const allPermissionData = refactorRoutes(leafNode => {
+  const hiddenRoutes = ['nav-1-2-1', 'nav-1-1-3']
+  if (hiddenRoutes.includes(leafNode.name)) {
+    return {
+      refactorNode: {
+        autoGeneratingId: false,
+        createDate: '2023-04-21 18:18:48.814',
+        lastUpdateTimestamp: '2023-04-21 18:18:48.814',
+        routerName: leafNode.name,
+
+        readPermissions: false,
+        createPermissions: false,
+        updatePermissions: true,
+        deletePermissions: true,
+        executePermissions: true
+      },
+      isShow: true
+    }
+  }
   return {
     refactorNode: {
       autoGeneratingId: false,

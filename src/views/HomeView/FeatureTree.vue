@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomButton } from '@/components'
+import { CustomIcon, CustomButton, CustomTooltip } from '@/components'
 import { mapStores } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
 
@@ -10,7 +10,8 @@ export default defineComponent({
   name: 'FeatureTree',
   components: {
     CustomButton,
-    CustomIcon
+    CustomIcon,
+    CustomTooltip
   },
   props: {
     tree: {
@@ -151,7 +152,7 @@ export default defineComponent({
           <span>{{ route.title }}</span>
         </div>
 
-        <div v-if="!hasLeaves(route)" class="tree-item-operations">
+        <div v-if="!hasLeaves(route)" class="tree-item-operations-lg">
           <CustomButton
             label="新增選項"
             icon-name="plus"
@@ -162,6 +163,28 @@ export default defineComponent({
             icon-name="up-right-from-square"
             @click="newPage(route)"
           />
+        </div>
+
+        <div v-if="!hasLeaves(route)" class="tree-item-operations-xs">
+          <CustomTooltip>
+            <CustomButton
+              icon-name="plus"
+              @click="addHistory(route)"
+            />
+            <template #content>
+              <span>{{ '新增選項' }}</span>
+            </template>
+          </CustomTooltip>
+
+          <CustomTooltip>
+            <CustomButton
+              icon-name="up-right-from-square"
+              @click="newPage(route)"
+            />
+            <template #content>
+              <span>{{ '新開分頁' }}</span>
+            </template>
+          </CustomTooltip>
         </div>
       </div>
 
@@ -236,8 +259,22 @@ $base-left: 24px;
       gap: 12px;
     }
     &-operations {
-      display: flex;
-      gap: 12px;
+      &-lg {
+        display: flex;
+        gap: 12px;
+      }
+      &-xs {
+        display: none;
+        gap: 12px;
+      }
+      @media (max-width: 992px) {
+        &-lg {
+          display: none;
+        }
+        &-xs {
+          display: flex;
+        }
+      }
     }
     width: 100%;
   }
