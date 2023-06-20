@@ -11,7 +11,7 @@ export const fakePermissionData = [
     autoGeneratingId: false,
     createDate: '2023-04-21 18:18:48.814',
     lastUpdateTimestamp: '2023-04-21 18:18:48.814',
-    routerName: 'nav-1',
+    routerName: 'nav-1-1-1',
 
     readPermissions: true,
     createPermissions: true,
@@ -23,7 +23,7 @@ export const fakePermissionData = [
     autoGeneratingId: false,
     createDate: '2023-04-21 18:18:48.814',
     lastUpdateTimestamp: '2023-04-21 18:18:48.814',
-    routerName: 'nav-1-1',
+    routerName: 'nav-1-1-2',
 
     readPermissions: true,
     createPermissions: true,
@@ -35,7 +35,7 @@ export const fakePermissionData = [
     autoGeneratingId: false,
     createDate: '2023-04-21 18:18:48.814',
     lastUpdateTimestamp: '2023-04-21 18:18:48.814',
-    routerName: 'nav-1-2',
+    routerName: 'nav-1-1-3',
 
     readPermissions: true,
     createPermissions: true,

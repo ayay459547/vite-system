@@ -25,6 +25,11 @@ export interface PageChange {
   (page: number, pageSize: number): void
 }
 
+export type Sort = {
+  key: null | string
+  order: null | 'ascending' | 'descending'
+}
+
 export interface Props extends Record<string, any> {
   /**
    * table 標題
@@ -67,11 +72,6 @@ export interface Props extends Record<string, any> {
   pageSize?: number
   sort?: Sort
   showType?: 'custom' | 'auto'
-}
-
-type Sort = {
-  key: null | string
-  order: null | 'ascending' | 'descending'
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {

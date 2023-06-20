@@ -176,10 +176,7 @@ watch(isFinishInit, (isFinish: boolean) => {
         </div>
         <div class="layout-view">
           <ViewSection :history-is-open="historyIsOpen">
-            <div
-              v-loading="isLoading"
-              style="width: 100%; height: 100%; position: absolute; overflow: auto;"
-            >
+            <div v-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
                 <KeepAlive>
                   <component v-if="route.meta.keepAlive" :key="route.name" :is="Component"/>
@@ -255,6 +252,12 @@ watch(isFinishInit, (isFinish: boolean) => {
     width: 100%;
     height: 100%;
     flex: 1;
+  }
+  &-mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: auto;
   }
 }
 </style>

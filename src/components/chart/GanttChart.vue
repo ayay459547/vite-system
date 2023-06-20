@@ -1,7 +1,9 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script lang="ts">
 import * as echarts from 'echarts'
-import { defineComponent, PropType, ref, onMounted, onUnmounted } from 'vue'
+import type { PropType } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
 import debounce from '@/lib/debounce'
 

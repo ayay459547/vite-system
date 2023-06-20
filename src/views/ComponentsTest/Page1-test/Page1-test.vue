@@ -58,6 +58,8 @@ const editData = ref({})
 
 const onCreateSubmit = async () => {
   if (createRef.value) {
+    loading(true, '新增資料中')
+
     const res = await createRef.value.submit()
 
     if (res.status === 'success') {
@@ -67,12 +69,16 @@ const onCreateSubmit = async () => {
       })
       model.create = false
       init()
+
+      loading(false)
     }
   }
 }
 
 const onUpdateSubmit = async () => {
   if (updateRef.value) {
+    loading(true, '更新資料中')
+
     const res = await updateRef.value.submit()
 
     if (res.status === 'success') {
@@ -82,6 +88,8 @@ const onUpdateSubmit = async () => {
       })
       model.update = false
       init()
+
+      loading(false)
     }
   }
 }
