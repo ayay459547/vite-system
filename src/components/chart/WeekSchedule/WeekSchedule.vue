@@ -2,6 +2,7 @@
 import { PropType, reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { inject } from 'vue'
+import throttle from '@/lib/throttle'
 // import PlanItem from './PlanItem.vue'
 
 export type TypeItem = {
@@ -37,49 +38,65 @@ const dayList = [
 ]
 
 const oneHourHeight = 40
+const oneHourSecond = 1 * 60 * 60
 
 const scheduleContainer = ref(null)
 
 const refMap = new Map()
 
-const getTime = (top: number, hour: number, clientY: number) => {
-  // 用距離的比例算時間
-  const oneHourSecond = 1 * 60 * 60
-  // 比例 = 滑鼠上邊界 - 區塊上邊界
-  const _percentage = (clientY - top) / oneHourHeight
-  const percentage = ((_percentage) => {
-    if (_percentage < 0) return 0
-    if (_percentage > 100) return 100
-    return _percentage
-  })(_percentage)
-  // 總秒數 = 區塊前面的總小時(秒數) + 當前區塊的秒數
-  const second = (hour * oneHourSecond) + oneHourSecond * percentage
+// 暫時的工時分配
+const tempPlanTime = reactive({
+  start: '00:00',
+  startSecond: 0,
+  end: '00:00',
+  endSecond: 0
+})
+const tempPlanStyle = reactive({
+  left: '0px',
+  top: '0px',
+  height: '0px',
+  display: 'none'
+})
 
-  // 換算成 hh:mm
+// 總秒數 換算成 hh:mm
+const secondToTime = (second: number) => {
   const resHour = Math.floor(second / oneHourSecond)
   const resMinutes = Math.floor((second - (resHour * oneHourSecond)) / 60)
   return `${resHour}`.padStart(2, '0') + ':' + `${resMinutes}`.padStart(2, '0')
 }
 
-// 暫時的工時分配
-const tempPlanTime = reactive({
-  start: '00:00'
-})
-const tempPlanStyle = reactive({
-  left: '0px',
-  top: '0px',
-  display: 'none'
-})
+// 用距離的比例算時間
+const getStartSecond = (top: number, clientY: number, hour: number) => {
+  // 比例 = 滑鼠上邊界 - 區塊上邊界
+  const percentage = ((_percentage) => {
+    if (_percentage < 0) return 0
+    if (_percentage > 100) return 100
+    return _percentage
+  })((clientY - top) / oneHourHeight)
 
-const setTempPlanStyle = ($event: MouseEvent, tempPlanTop: number) => {
-  console.log('$event => ', $event)
-  console.log('tempPlanTop => ', tempPlanTop)
+  // 總秒數 = 區塊前面的總小時(秒數) + 當前區塊的秒數
+  return (hour * oneHourSecond) + oneHourSecond * percentage
+}
+
+const getTempPlanHeight = ($event: MouseEvent, top: number) => {
+  const { clientY } = $event
+  const tempPlanTopHeight = (clientY - top) < 0 ? 0 : clientY - top
+
+  return tempPlanTopHeight
+}
+
+const setDefaultTempPlanEnd = (startSecond: number) => {
+  tempPlanStyle.height = '40px'
+  tempPlanTime.endSecond = startSecond + oneHourSecond
+  tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
 }
 
 const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
   const { clientY } = $event
 
+  // 表格
   const containerEl = scheduleContainer.value
+  // 日期 + 小時 對應的格子
   const blockEl = refMap.get(`${dayId}-${hour}`)
 
   if (containerEl && blockEl) {
@@ -92,34 +109,47 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
     const { top: blockTop, left: blockLeft } = blockEl.getBoundingClientRect()
     tempPlanStyle.left = `${blockLeft - containerLeft + 1}px`
 
-    const currentTime = getTime(blockTop, hour, clientY)
-    tempPlanTime.start = currentTime
+    // 用距離占比算 開始時間
+    const currentSecond = getStartSecond(blockTop, clientY, hour)
+    tempPlanTime.startSecond = currentSecond
+    tempPlanTime.start = secondToTime(currentSecond)
 
+    // 初始化 高度 + 結束時間
+    setDefaultTempPlanEnd(tempPlanTime.startSecond)
+
+    scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      // 改變 高度
+      const tempPlanTopHeight = getTempPlanHeight($event, tempPlanTop + containerTop)
+      tempPlanStyle.height = `${tempPlanTopHeight}px`
+
+      // 改變 結束時間
+      // 變化的高度比
+      const percentage = tempPlanTopHeight / oneHourHeight
+      // 結束時間 = 開始時間 + 變化的秒數
+      tempPlanTime.endSecond = tempPlanTime.startSecond + oneHourSecond * percentage
+      tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
+    }, 30))
+
+    // 顯示暫時的工時分配
     tempPlanStyle.display = 'block'
-
-    // 改變高度
-    scheduleContainer.value.addEventListener('mousemove', function ($event: MouseEvent) {
-      setTempPlanStyle($event, tempPlanTop)
-    })
   }
 }
 
+const renderKey = ref(1)
 const removeEvent = () => {
-  console.log('mouseup')
-  const containerEl = scheduleContainer.value
-  containerEl.replaceWith(containerEl.cloneNode(true))
-  // scheduleContainer.value.removeEventListener('mousemove', setTempPlanStyle)
-  tempPlanStyle.display = 'none'
+  // 從新渲染 代替 removeEventListener
+  renderKey.value++
+  // 隱藏暫時的工時分配
+  // tempPlanStyle.display = 'none'
 }
-
 
 </script>
 
 <template>
   <div class="schedule-wrapper">
+    <!-- 左邊: 時間 -->
     <div class="schedule-time">
       <div class="schedule-time-zero">{{ '00:00' }}</div>
-
       <ul class="schedule-time-list">
         <li
           v-for="hour in 24"
@@ -131,7 +161,9 @@ const removeEvent = () => {
       </ul>
     </div>
 
+    <!-- 右邊: 一周 + 表格 -->
     <div class="schedule-week">
+      <!-- 星期 -->
       <ul class="schedule-day-list">
         <li
           v-for="dayItem in dayList"
@@ -142,9 +174,16 @@ const removeEvent = () => {
           {{ i18nTranslate(dayItem.label) }}
         </li>
       </ul>
-      <div ref="scheduleContainer" class="schedule-container" @mouseup="removeEvent">
+      <!-- 表格 -->
+      <div
+        ref="scheduleContainer"
+        class="schedule-container"
+        :key="renderKey"
+        @mouseup="removeEvent"
+        @mouseleave="removeEvent"
+      >
         <div class="schedule-temp-plan" :style="tempPlanStyle">
-          {{ tempPlanTime.start }}
+          {{ `${tempPlanTime.start} - ${tempPlanTime.end}` }}
         </div>
 
         <template v-for="(row, hour) in 24" :key="hour">
