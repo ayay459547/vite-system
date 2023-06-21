@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ElSelect, ElOption } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
+import { ElSelect, ElOption } from 'element-plus'
 import { useField } from 'vee-validate'
 
 type ModelValue = string | number | null

@@ -7,11 +7,12 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import type { ResizeObserverCallback } from '@/lib/throttle'
-import throttle from '@/lib/throttle'
 
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
+
+import type { ResizeObserverCallback } from '@/lib/throttle'
+import throttle from '@/lib/throttle'
 
 import type { TableColumnsItem } from '@/lib/columns'
 import type { ColumnItem } from '@/declare/columnSetting'

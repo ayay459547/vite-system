@@ -1,10 +1,10 @@
 <script setup lang="ts">
-export type WidthSize = 'large'| 'default'| 'small'
-export type HeightSize = 'large'| 'default'| 'small'
-
 import type { WritableComputedRef, PropType } from 'vue'
 import { ref, computed, watch } from 'vue'
 import { CustomButton } from '@/components'
+
+export type WidthSize = 'large'| 'default'| 'small'
+export type HeightSize = 'large'| 'default'| 'small'
 
 const props = defineProps({
   modelValue: {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed } from 'vue'
+import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import { useField } from 'vee-validate'
 
 type ModelValue = Array<string | number | null>

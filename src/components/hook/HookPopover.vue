@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ref, onMounted } from 'vue'
+
 import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
 

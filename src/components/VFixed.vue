@@ -1,8 +1,9 @@
 <script lang="ts">
-import throttle from '@/lib/throttle'
-import debounce from '@/lib/debounce'
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
+
+import throttle from '@/lib/throttle'
+import debounce from '@/lib/debounce'
 
 export interface ElAttr {
   left?: number

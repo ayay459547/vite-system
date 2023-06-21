@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { ComputedRef, Ref } from 'vue'
 import { computed, ref } from 'vue'
-import type { Navigation } from '@/declare/routes'
+
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
-import SubNavigationView from './SubNavigationView.vue'
-import { CustomIcon } from '@/components'
+import type { Navigation } from '@/declare/routes'
 import type { RouterType } from '@/router/setting'
 import { routerTypeIcon } from '@/router/setting'
+import SubNavigationView from './SubNavigationView.vue'
+
+import { CustomIcon } from '@/components'
 
 const props = defineProps<{
   router: Navigation[]

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { CheckboxValueType } from 'element-plus'
-import { ElCheckbox } from 'element-plus'
 import type { PropType } from 'vue'
 import { computed } from 'vue'
+
+import type { CheckboxValueType } from 'element-plus'
+import { ElCheckbox } from 'element-plus'
 
 type ModelValue = boolean
 

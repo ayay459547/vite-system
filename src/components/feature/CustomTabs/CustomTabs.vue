@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Ref, PropType, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+
 import type { ResizeObserverCallback } from '@/lib/throttle'
 import throttle from '@/lib/throttle'
+import debounce from '@/lib/debounce'
+
 import { CustomIcon } from '@/components'
 import { scrollToEl } from '@/lib/utils'
-import debounce from '@/lib/debounce'
 
 export type ListItem = {
   key: string

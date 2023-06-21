@@ -44,23 +44,37 @@ const refMap = new Map()
 
 const getTime = (top: number, hour: number, clientY: number) => {
   // 用距離的比例算時間
-  const _second = 1 * 60 * 60
+  const oneHourSecond = 1 * 60 * 60
   // 比例 = 滑鼠上邊界 - 區塊上邊界
-  const percentage = (clientY - top) / oneHourHeight
+  const _percentage = (clientY - top) / oneHourHeight
+  const percentage = ((_percentage) => {
+    if (_percentage < 0) return 0
+    if (_percentage > 100) return 100
+    return _percentage
+  })(_percentage)
   // 總秒數 = 區塊前面的總小時(秒數) + 當前區塊的秒數
-  const second = (hour * 60 * 60) + _second * percentage
+  const second = (hour * oneHourSecond) + oneHourSecond * percentage
 
   // 換算成 hh:mm
-  const resHour = Math.floor(second / 3600)
-  const resMinutes = Math.floor((second - (resHour * 3600)) / 60)
+  const resHour = Math.floor(second / oneHourSecond)
+  const resMinutes = Math.floor((second - (resHour * oneHourSecond)) / 60)
   return `${resHour}`.padStart(2, '0') + ':' + `${resMinutes}`.padStart(2, '0')
 }
 
-const tempPlanStyle = reactive({
-  time: '00:00',
-  left: '0px',
-  top: '0px'
+// 暫時的工時分配
+const tempPlanTime = reactive({
+  start: '00:00'
 })
+const tempPlanStyle = reactive({
+  left: '0px',
+  top: '0px',
+  display: 'none'
+})
+
+const setTempPlanStyle = ($event: MouseEvent, tempPlanTop: number) => {
+  console.log('$event => ', $event)
+  console.log('tempPlanTop => ', tempPlanTop)
+}
 
 const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
   const { clientY } = $event
@@ -71,16 +85,31 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
   if (containerEl && blockEl) {
     const { top: containerTop, left: containerLeft } = containerEl.getBoundingClientRect()
     // 滑鼠上邊界 - 表格上邊界
-    tempPlanStyle.top = `${clientY - containerTop - 2}px`
+    const tempPlanTop = clientY - containerTop - 2
+    tempPlanStyle.top = `${tempPlanTop}px`
 
+    // 區塊左邊界 - 表格左邊界
     const { top: blockTop, left: blockLeft } = blockEl.getBoundingClientRect()
     tempPlanStyle.left = `${blockLeft - containerLeft + 1}px`
 
     const currentTime = getTime(blockTop, hour, clientY)
-    tempPlanStyle.time = currentTime
-  }
+    tempPlanTime.start = currentTime
 
-  // scheduleContainer.value.addEventListener('mousemove')
+    tempPlanStyle.display = 'block'
+
+    // 改變高度
+    scheduleContainer.value.addEventListener('mousemove', function ($event: MouseEvent) {
+      setTempPlanStyle($event, tempPlanTop)
+    })
+  }
+}
+
+const removeEvent = () => {
+  console.log('mouseup')
+  const containerEl = scheduleContainer.value
+  containerEl.replaceWith(containerEl.cloneNode(true))
+  // scheduleContainer.value.removeEventListener('mousemove', setTempPlanStyle)
+  tempPlanStyle.display = 'none'
 }
 
 
@@ -113,15 +142,9 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
           {{ i18nTranslate(dayItem.label) }}
         </li>
       </ul>
-      <div ref="scheduleContainer" class="schedule-container">
-        <div
-          class="schedule-temp-plan"
-          :style="{
-            left: tempPlanStyle.left,
-            top: tempPlanStyle.top
-          }"
-        >
-          {{ tempPlanStyle.time }}
+      <div ref="scheduleContainer" class="schedule-container" @mouseup="removeEvent">
+        <div class="schedule-temp-plan" :style="tempPlanStyle">
+          {{ tempPlanTime.start }}
         </div>
 
         <template v-for="(row, hour) in 24" :key="hour">
@@ -194,14 +217,16 @@ $body-height: 960px;
   }
 
   &-temp-plan {
-    width: calc(100% / 7 - 4px);
+    width: calc(100% / 7 - 5px);
     position: absolute;
     top: 0;
     left: 2px;
     border-radius: 4px;
-    min-height: 10px;
-    background-color: #cccccc;
+    min-height: 6px;
+    background-color: #eeeeee;
+    border: 1px solid #dddddd;
     text-align: center;
+    user-select: none;
   }
   &-container {
     width: 100%;
@@ -222,7 +247,7 @@ $body-height: 960px;
     transition-delay: 1s;
 
     &:hover {
-      background-color: #eeeeee;
+      background-color: #eaf6ff97;
       transition-delay: 0s;
     }
     .first-block {

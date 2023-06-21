@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ElInput } from 'element-plus'
 import type { PropType, WritableComputedRef } from 'vue'
 import { computed, useSlots } from 'vue'
+import { ElInput } from 'element-plus'
 
 type ModelValue = string | null
 

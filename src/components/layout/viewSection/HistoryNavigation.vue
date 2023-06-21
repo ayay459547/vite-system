@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
+
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
+
 import type { ListType, ListItem } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
 

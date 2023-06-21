@@ -1,12 +1,14 @@
 <script lang="ts">
 import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
 import { defineComponent, computed } from 'vue'
+
 import type { Navigation } from '@/declare/routes'
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
-import { CustomIcon } from '@/components'
 import type { RouterType } from '@/router/setting'
 import { routerTypeIcon } from '@/router/setting'
+
+import { CustomIcon } from '@/components'
 
 export default defineComponent({
   name: 'SubNavigationView',
