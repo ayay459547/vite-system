@@ -5,6 +5,8 @@ import { inject } from 'vue'
 import throttle from '@/lib/throttle'
 // import PlanItem from './PlanItem.vue'
 
+import { v4 as uuidv4 } from 'uuid'
+
 export type TypeItem = {
   key: string
   label: string
@@ -39,13 +41,27 @@ const dayList = [
 
 const oneHourHeight = 40
 const oneHourSecond = 1 * 60 * 60
+const twentyFourHourSecond = 24 * 60 * 60
 
 const scheduleContainer = ref(null)
 
 const refMap = new Map()
 
+type DataTime = {
+  id?: string
+  status?: 'new' | 'update' | 'old'
+  start: string
+  startSecond: number
+  end: string
+  endSecond: number
+}
+type DataStyle = {
+  top: string
+  height: string
+}
+
 // 暫時的工時分配
-const tempPlanTime = reactive({
+const tempPlanTime = reactive<DataTime>({
   start: '00:00',
   startSecond: 0,
   end: '00:00',
@@ -57,60 +73,144 @@ const tempPlanStyle = reactive({
   height: '0px',
   display: 'none'
 })
+const currentDayId = ref(0)
+
+// 工時分配資料
+const planRenderKey = reactive({
+  0: '0',
+  1: '1',
+  2: '2',
+  3: '3',
+  4: '4',
+  5: '5',
+  6: '6'
+})
+const planData: Record<string, (DataTime & DataStyle)[]> = {
+  0: [],
+  1: [],
+  2: [],
+  3: [],
+  4: [],
+  5: [],
+  6: []
+}
 
 // 總秒數 換算成 hh:mm
 const secondToTime = (second: number) => {
-  const resHour = Math.floor(second / oneHourSecond)
-  const resMinutes = Math.floor((second - (resHour * oneHourSecond)) / 60)
+  const tempSecond = second > twentyFourHourSecond ? twentyFourHourSecond : second
+
+  const resHour = Math.floor(tempSecond / oneHourSecond)
+  const resMinutes = Math.floor((tempSecond - (resHour * oneHourSecond)) / 60)
   return `${resHour}`.padStart(2, '0') + ':' + `${resMinutes}`.padStart(2, '0')
 }
 
 // 用距離的比例算時間
-const getStartSecond = (top: number, clientY: number, hour: number) => {
+const getStartSecond = (height: number, hour: number) => {
   // 比例 = 滑鼠上邊界 - 區塊上邊界
   const percentage = ((_percentage) => {
     if (_percentage < 0) return 0
     if (_percentage > 100) return 100
     return _percentage
-  })((clientY - top) / oneHourHeight)
+  })(height / oneHourHeight)
 
   // 總秒數 = 區塊前面的總小時(秒數) + 當前區塊的秒數
   return (hour * oneHourSecond) + oneHourSecond * percentage
 }
 
-const getTempPlanHeight = ($event: MouseEvent, top: number) => {
-  const { clientY } = $event
-  const tempPlanTopHeight = (clientY - top) < 0 ? 0 : clientY - top
-
-  return tempPlanTopHeight
-}
-
 const setDefaultTempPlanEnd = (startSecond: number) => {
-  tempPlanStyle.height = '40px'
-  tempPlanTime.endSecond = startSecond + oneHourSecond
-  tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
+  // 如果小時 > 23
+  if (startSecond > twentyFourHourSecond - oneHourSecond) {
+    // 時間變化比
+    const percentage = (startSecond - (twentyFourHourSecond - oneHourSecond)) / oneHourSecond
+
+    // 剩下的時間高度 = (100% - 時間變化比) * 一小時的高度
+    tempPlanStyle.height = `${(1 - percentage) * oneHourHeight}px`
+    tempPlanTime.endSecond = twentyFourHourSecond
+    tempPlanTime.end = secondToTime(twentyFourHourSecond)
+  } else {
+    tempPlanStyle.height = '40px'
+    tempPlanTime.endSecond = startSecond + oneHourSecond
+    tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
+  }
 }
 
+// 確認工時使否存在
+const checkTimeIsExist = (dayId: number, startSecond: number, endSecond: number): boolean => {
+  const planList = planData[dayId]
+  // 全部都不包含
+  return !planList.every(plan => {
+    // 開始和結束都 < 開始
+    // 開始和結束都 > 結束
+    return (
+      startSecond < plan.startSecond &&
+      endSecond < plan.startSecond
+    ) || (
+      startSecond > plan.endSecond &&
+      endSecond > plan.endSecond
+    )
+  })
+}
+
+// 建立工時分配
+const createDataPlan = (dayId: number, dataTime: DataTime) => {
+  const { startSecond, endSecond } = dataTime
+  const isExist = checkTimeIsExist(dayId, startSecond, endSecond)
+
+  if (!isExist) {
+    planData[dayId].push({
+      ...dataTime,
+      top: `${(startSecond / oneHourSecond) * oneHourHeight - 2}px`,
+      height: `${(endSecond - startSecond) / oneHourSecond * oneHourHeight}px`
+    })
+  }
+}
+// 修改工時分配
+const updateDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
+  const { clientY: mouseDownY } = $event
+  const plan = planData[dayId].find(plan => plan.id === uuid)
+  const originTop = parseInt(plan.top.split('px')[0])
+  const originStartSecond = plan.startSecond
+  const originEndSecond = plan.endSecond
+
+  scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+    const { clientY: mouseMoveY } = $event
+    // 新的top = 原來top + 滑鼠變化量
+    const _height = mouseMoveY - mouseDownY
+    plan.top = `${originTop + _height}px`
+
+    // 滑鼠變化比例 算 時間變化
+    const percentage = _height / oneHourHeight
+    plan.startSecond = originStartSecond + oneHourSecond * percentage
+    plan.start = secondToTime(plan.startSecond)
+    plan.endSecond = originEndSecond + oneHourSecond * percentage
+    plan.end = secondToTime(plan.endSecond)
+
+    planRenderKey[dayId] += `${dayId}`
+  }, 10))
+}
+
+// 建立暫時的工時分配
 const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
-  const { clientY } = $event
+  const { clientY: mouseDownY } = $event
 
   // 表格
   const containerEl = scheduleContainer.value
   // 日期 + 小時 對應的格子
   const blockEl = refMap.get(`${dayId}-${hour}`)
+  currentDayId.value = dayId
 
   if (containerEl && blockEl) {
     const { top: containerTop, left: containerLeft } = containerEl.getBoundingClientRect()
     // 滑鼠上邊界 - 表格上邊界
-    const tempPlanTop = clientY - containerTop - 2
+    const tempPlanTop = mouseDownY - containerTop - 2
     tempPlanStyle.top = `${tempPlanTop}px`
 
     // 區塊左邊界 - 表格左邊界
     const { top: blockTop, left: blockLeft } = blockEl.getBoundingClientRect()
     tempPlanStyle.left = `${blockLeft - containerLeft + 1}px`
 
-    // 用距離占比算 開始時間
-    const currentSecond = getStartSecond(blockTop, clientY, hour)
+    // 用距離占比 算 開始時間
+    const currentSecond = getStartSecond(mouseDownY - blockTop, hour)
     tempPlanTime.startSecond = currentSecond
     tempPlanTime.start = secondToTime(currentSecond)
 
@@ -118,8 +218,11 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
     setDefaultTempPlanEnd(tempPlanTime.startSecond)
 
     scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      const { clientY: mouseMoveY } = $event
+
       // 改變 高度
-      const tempPlanTopHeight = getTempPlanHeight($event, tempPlanTop + containerTop)
+      const _top = tempPlanTop + containerTop
+      const tempPlanTopHeight = (mouseMoveY - _top) < 0 ? 0 : mouseMoveY - _top
       tempPlanStyle.height = `${tempPlanTopHeight}px`
 
       // 改變 結束時間
@@ -128,25 +231,37 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
       // 結束時間 = 開始時間 + 變化的秒數
       tempPlanTime.endSecond = tempPlanTime.startSecond + oneHourSecond * percentage
       tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
-    }, 30))
+    }, 10))
 
     // 顯示暫時的工時分配
     tempPlanStyle.display = 'block'
   }
 }
 
-const renderKey = ref(1)
+const containerRenderKey = ref(1)
 const removeEvent = () => {
+  // 有暫時的工時分配
+  if (tempPlanStyle.display === 'block') {
+    const { start, startSecond, end, endSecond } = tempPlanTime
+    createDataPlan(currentDayId.value, {
+      id: uuidv4(),
+      status: 'new',
+      start,
+      startSecond,
+      end,
+      endSecond
+    })
+    // 隱藏暫時的工時分配
+    tempPlanStyle.display = 'none'
+  }
   // 從新渲染 代替 removeEventListener
-  renderKey.value++
-  // 隱藏暫時的工時分配
-  // tempPlanStyle.display = 'none'
+  containerRenderKey.value++
 }
 
 </script>
 
 <template>
-  <div class="schedule-wrapper">
+  <div class="schedule-wrapper" @mouseup="removeEvent" @mouseleave="removeEvent">
     <!-- 左邊: 時間 -->
     <div class="schedule-time">
       <div class="schedule-time-zero">{{ '00:00' }}</div>
@@ -178,12 +293,34 @@ const removeEvent = () => {
       <div
         ref="scheduleContainer"
         class="schedule-container"
-        :key="renderKey"
-        @mouseup="removeEvent"
-        @mouseleave="removeEvent"
+        :key="containerRenderKey"
       >
+        <!-- 暫時分配 -->
         <div class="schedule-temp-plan" :style="tempPlanStyle">
-          {{ `${tempPlanTime.start} - ${tempPlanTime.end}` }}
+          <span>{{ `${tempPlanTime.start}` }}</span>
+          <span> - </span>
+          <span>{{ `${tempPlanTime.end}` }}</span>
+        </div>
+
+        <!-- 實際分配結果 -->
+        <div class="schedule-list">
+          <div v-for="(column, dayId) in 7" :key="planRenderKey[dayId]" class="schedule-item">
+            <div
+              v-for="plan in planData[dayId]"
+              class="schedule-data-plan"
+              :key="plan.id"
+              :style="{
+                top: plan.top,
+                height: plan.height
+              }"
+              @mousedown="updateDataPlan($event, dayId, plan.id)"
+              @mouseup="removeEvent"
+            >
+            <span>{{ `${plan.start}` }}</span>
+            <span> - </span>
+            <span>{{ `${plan.end}` }}</span>
+            </div>
+          </div>
         </div>
 
         <template v-for="(row, hour) in 24" :key="hour">
@@ -216,6 +353,7 @@ $body-height: 960px;
     height: fit-content;
     display: flex;
     padding: 4px;
+    user-select: none;
   }
   &-time {
     width: 48px;
@@ -262,10 +400,9 @@ $body-height: 960px;
     left: 2px;
     border-radius: 4px;
     min-height: 6px;
-    background-color: #eeeeee;
+    background-color: #eeeeee80;
     border: 1px solid #dddddd;
     text-align: center;
-    user-select: none;
   }
   &-container {
     width: 100%;
@@ -277,6 +414,33 @@ $body-height: 960px;
     grid-template-rows: repeat(24, 1fr);
     grid-template-columns: repeat(7, 1fr);
   }
+  &-list {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    display: flex;
+  }
+  &-item {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #dddddd00;
+  }
+  &-data-plan {
+    position: absolute;
+    width: calc(100% - 5px);
+    min-height: 6px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid #337ecc;
+    background-color: #a0cfff80;
+    cursor: pointer;
+  }
+
   &-block {
     border-right: 1px solid #dddddd;
     display: flex;

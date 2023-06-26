@@ -8,7 +8,6 @@ import { permission } from '@/lib/permission'
 // token
 import { v4 as uuidv4 } from 'uuid'
 
-
 export const useAuthStore = defineStore('auth', () => {
 	/**
 	 * token 相關
