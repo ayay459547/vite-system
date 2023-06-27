@@ -3,6 +3,15 @@ import { PropType, reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { inject } from 'vue'
 import throttle from '@/lib/throttle'
+
+import type {
+  DataPlanTime,
+  // DataPlanStyle,
+  TempPlanTime,
+  TempPlanStyle,
+  PlanData,
+  Origin
+} from './planType'
 // import PlanItem from './PlanItem.vue'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -47,27 +56,14 @@ const scheduleContainer = ref(null)
 
 const refMap = new Map()
 
-type DataTime = {
-  id?: string
-  status?: 'new' | 'update' | 'old'
-  start: string
-  startSecond: number
-  end: string
-  endSecond: number
-}
-type DataStyle = {
-  top: string
-  height: string
-}
-
 // 暫時的工時分配
-const tempPlanTime = reactive<DataTime>({
+const tempPlanTime = reactive<TempPlanTime>({
   start: '00:00',
   startSecond: 0,
   end: '00:00',
   endSecond: 0
 })
-const tempPlanStyle = reactive({
+const tempPlanStyle = reactive<TempPlanStyle>({
   left: '0px',
   top: '0px',
   height: '0px',
@@ -77,27 +73,20 @@ const currentDayId = ref(0)
 
 // 工時分配資料
 const planRenderKey = reactive({
-  0: '0',
-  1: '1',
-  2: '2',
-  3: '3',
-  4: '4',
-  5: '5',
-  6: '6'
+  0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6'
 })
-const planData: Record<string, (DataTime & DataStyle)[]> = {
-  0: [],
-  1: [],
-  2: [],
-  3: [],
-  4: [],
-  5: [],
-  6: []
+// const planData: Record<string, (DataPlanTime & DataPlanStyle)[]> = {
+const planData: Record<number, PlanData[]> = {
+  0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []
 }
 
 // 總秒數 換算成 hh:mm
 const secondToTime = (second: number) => {
-  const tempSecond = second > twentyFourHourSecond ? twentyFourHourSecond : second
+  const tempSecond = ((_second) => {
+    if (_second < 0) return 0
+    if (_second > twentyFourHourSecond) return twentyFourHourSecond
+    return _second
+  })(second)
 
   const resHour = Math.floor(tempSecond / oneHourSecond)
   const resMinutes = Math.floor((tempSecond - (resHour * oneHourSecond)) / 60)
@@ -134,59 +123,192 @@ const setDefaultTempPlanEnd = (startSecond: number) => {
   }
 }
 
-// 確認工時使否存在
-const checkTimeIsExist = (dayId: number, startSecond: number, endSecond: number): boolean => {
-  const planList = planData[dayId]
+// 確認工時 是否存在
+const checkTimeIsExist = (
+  dayId: number,
+  startSecond: number,
+  endSecond: number,
+  filterId: string | null = null
+): boolean => {
+  let planList = []
+
+  if (filterId === null) {
+    planList = planData[dayId]
+  } else {
+    planList = planData[dayId].filter(plan => plan.time.id !== filterId)
+  }
   // 全部都不包含
   return !planList.every(plan => {
     // 開始和結束都 < 開始
     // 開始和結束都 > 結束
+    const { startSecond: _startSecond, endSecond: _endSecond } = plan.time
     return (
-      startSecond < plan.startSecond &&
-      endSecond < plan.startSecond
+      startSecond < _startSecond &&
+      endSecond < _startSecond
     ) || (
-      startSecond > plan.endSecond &&
-      endSecond > plan.endSecond
+      startSecond > _endSecond &&
+      endSecond > _endSecond
     )
   })
 }
 
+// 修改工時分配
+const originPlanMap = new Map<string, Origin>()
+const isUpdateOrigin = ref(false)
+
 // 建立工時分配
-const createDataPlan = (dayId: number, dataTime: DataTime) => {
-  const { startSecond, endSecond } = dataTime
+const createDataPlan = (dayId: number, dataTime: DataPlanTime) => {
+  const { id: uuid, startSecond, endSecond } = dataTime
   const isExist = checkTimeIsExist(dayId, startSecond, endSecond)
+
+  const _top = (startSecond / oneHourSecond) * oneHourHeight - 2
+  const _height = (endSecond - startSecond) / oneHourSecond * oneHourHeight
 
   if (!isExist) {
     planData[dayId].push({
-      ...dataTime,
-      top: `${(startSecond / oneHourSecond) * oneHourHeight - 2}px`,
-      height: `${(endSecond - startSecond) / oneHourSecond * oneHourHeight}px`
+      time: dataTime,
+      style: {
+        top: `${_top}px`,
+        height: `${_height}px`
+      }
+    })
+
+    originPlanMap.set(uuid, {
+      // 原始樣式
+      originTop: _top,
+      originHeight: _height,
+      // 原始開始與結束時間
+      originStartSecond: startSecond,
+      originEndSecond: endSecond
     })
   }
 }
-// 修改工時分配
-const updateDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
-  const { clientY: mouseDownY } = $event
-  const plan = planData[dayId].find(plan => plan.id === uuid)
-  const originTop = parseInt(plan.top.split('px')[0])
-  const originStartSecond = plan.startSecond
-  const originEndSecond = plan.endSecond
 
-  scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
-    const { clientY: mouseMoveY } = $event
-    // 新的top = 原來top + 滑鼠變化量
-    const _height = mouseMoveY - mouseDownY
-    plan.top = `${originTop + _height}px`
+/**
+ * 當工時有重疊時 移到原本的位置
+ * @param dayId
+ * @param uuid
+ */
+const moveOriginDataPlan = (plan: PlanData, dayId: number, uuid: string) => {
+  const planStyle = plan.style
 
-    // 滑鼠變化比例 算 時間變化
-    const percentage = _height / oneHourHeight
-    plan.startSecond = originStartSecond + oneHourSecond * percentage
-    plan.start = secondToTime(plan.startSecond)
-    plan.endSecond = originEndSecond + oneHourSecond * percentage
-    plan.end = secondToTime(plan.endSecond)
+  if (originPlanMap.has(uuid)) {
+    const originPlan = originPlanMap.get(uuid)
+    const { originTop, originHeight, originStartSecond, originEndSecond } = originPlan
+
+    planStyle.top = `${originTop}px`
+    planStyle.height = `${originHeight}px`
+
+    const planTime = plan.time
+    planTime.startSecond = originStartSecond
+    planTime.start = secondToTime(originStartSecond)
+    planTime.endSecond = originEndSecond
+    planTime.end = secondToTime(originEndSecond)
 
     planRenderKey[dayId] += `${dayId}`
-  }, 10))
+  }
+}
+
+// 當滑鼠按下時執行
+const moveDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
+  const plan = planData[dayId].find(plan => plan.time.id === uuid)
+  const planTime = plan.time
+  const planStyle = plan.style
+
+  // 如果滑鼠到外面 就會沒有設置 最後一次的 origin
+  if (!isUpdateOrigin.value) {
+    const { top, height } = planStyle
+    const { startSecond, endSecond } = planTime
+    originPlanMap.set(uuid, {
+      // 原始樣式
+      originTop: parseInt(top.split('px')[0]),
+      originHeight: parseInt(height.split('px')[0]),
+      // 原始開始與結束時間
+      originStartSecond: startSecond,
+      originEndSecond: endSecond
+    })
+
+    isUpdateOrigin.value = true
+  }
+
+  if (originPlanMap.has(uuid)) {
+    const { clientY: mouseDownY } = $event
+
+    const originPlan = originPlanMap.get(uuid)
+    const { originTop, originHeight, originStartSecond, originEndSecond } = originPlan
+
+    // 滑鼠移動時執行
+    scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      const { clientY: mouseMoveY } = $event
+      planStyle.cursor = 'move'
+      planStyle.zIndex = 9
+      isUpdateOrigin.value = false
+
+      // 新的top = 原來top + 滑鼠變化量
+      const _height = mouseMoveY - mouseDownY
+      const _top = originTop + _height
+      if ((originHeight + _top) < (960 - 2)) {
+        planStyle.top = `${_top < -2 ? -2 : _top}px`
+      } else {
+        planStyle.top = `${960 - 2 - originHeight}px`
+      }
+
+      // 滑鼠變化比例 算 時間變化
+      const percentage = _height / oneHourHeight
+      const _second = oneHourSecond * percentage
+
+      // 如果結束 === 24
+      // 開始 = 24 - (原始的結束 - 原始的開始)
+      if (planTime.endSecond === twentyFourHourSecond) {
+        planTime.startSecond = twentyFourHourSecond - (originEndSecond - originStartSecond)
+      } else {
+        // 最小是0
+        planTime.startSecond = originStartSecond + (
+          _second < -originStartSecond ? -originStartSecond : _second
+        )
+      }
+      planTime.start = secondToTime(planTime.startSecond)
+
+      // 如果開始 === 0
+      // 結束 = 原始的結束 - 原始的開始
+      if (planTime.startSecond === 0) {
+        planTime.endSecond = originEndSecond - originStartSecond
+      } else {
+        const afterEndSecond = originEndSecond + _second
+        planTime.endSecond = afterEndSecond > twentyFourHourSecond ? twentyFourHourSecond : afterEndSecond
+      }
+      planTime.end = secondToTime(planTime.endSecond)
+
+      planRenderKey[dayId] += `${dayId}`
+    }, 10))
+  }
+}
+
+// 滑鼠放開後執行
+const afterMoveDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
+  containerRenderKey.value++
+
+  const plan = planData[dayId].find(plan => plan.time.id === uuid)
+  const { startSecond, endSecond } = plan.time
+  delete plan.style.cursor
+  delete plan.style.zIndex
+
+  const isExist = checkTimeIsExist(dayId, startSecond, endSecond, uuid)
+  if (isExist) {
+    moveOriginDataPlan(plan, dayId, uuid)
+  }
+  const { top, height } = plan.style
+
+  originPlanMap.set(uuid, {
+    // 原始樣式
+    originTop: parseInt(top.split('px')[0]),
+    originHeight: parseInt(height.split('px')[0]),
+    // 原始開始與結束時間
+    originStartSecond: startSecond,
+    originEndSecond: endSecond
+  })
+
+  isUpdateOrigin.value = true
 }
 
 // 建立暫時的工時分配
@@ -308,21 +430,19 @@ const removeEvent = () => {
             <div
               v-for="plan in planData[dayId]"
               class="schedule-data-plan"
-              :key="plan.id"
-              :style="{
-                top: plan.top,
-                height: plan.height
-              }"
-              @mousedown="updateDataPlan($event, dayId, plan.id)"
-              @mouseup="removeEvent"
+              :key="plan.time.id"
+              :style="plan.style"
+              @mousedown="moveDataPlan($event, dayId, plan.time.id)"
+              @mouseup="afterMoveDataPlan($event, dayId, plan.time.id)"
             >
-            <span>{{ `${plan.start}` }}</span>
-            <span> - </span>
-            <span>{{ `${plan.end}` }}</span>
+              <span>{{ `${plan.time.start}` }}</span>
+              <span> - </span>
+              <span>{{ `${plan.time.end}` }}</span>
             </div>
           </div>
         </div>
 
+        <!-- 背景表格 -->
         <template v-for="(row, hour) in 24" :key="hour">
           <div
             v-for="(column, dayId) in 7"
@@ -352,7 +472,7 @@ $body-height: 960px;
     min-width: 560px;
     height: fit-content;
     display: flex;
-    padding: 4px;
+    padding: 24px 12px 56px;
     user-select: none;
   }
   &-time {
@@ -428,7 +548,7 @@ $body-height: 960px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #dddddd00;
+    border-right: 1px solid #dddddd00;
   }
   &-data-plan {
     position: absolute;
@@ -445,14 +565,14 @@ $body-height: 960px;
     border-right: 1px solid #dddddd;
     display: flex;
     flex-direction: column;
-    transition-duration: 0.2s;
-    transition-property: background-color;
-    transition-delay: 1s;
+    // transition-duration: 0.2s;
+    // transition-property: background-color;
+    // transition-delay: 0.2s;
 
-    &:hover {
-      background-color: #eaf6ff97;
-      transition-delay: 0s;
-    }
+    // &:hover {
+    //   background-color: #d6e6f397;
+    //   transition-delay: 0s;
+    // }
     .first-block {
       flex: 1;
       border-bottom: 1px solid #eeeeee;
