@@ -10,7 +10,11 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
   const hasOwnProperty = Object.prototype.hasOwnProperty
   const target = targetElement
 
-  function setFun (obj: Array<any> | Record<any, any>, key: string | number, value: any): void {
+  function setFun (
+    obj: Array<any> | Record<any, any>,
+    key: string | number,
+    value: any
+  ): void {
     obj[key] = value
   }
 
@@ -57,7 +61,7 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   }
   const re = new RegExp('Element')
 
-  if ( re.test(Object.prototype.toString.call(el)) ) {
+  if (re.test(Object.prototype.toString.call(el))) {
     el.scrollIntoView(setting)
   }
 }

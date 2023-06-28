@@ -3,6 +3,7 @@ import { PropType, reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { inject } from 'vue'
 import throttle from '@/lib/throttle'
+import { getType } from '@/lib/utils'
 
 import type {
   DataPlanTime,
@@ -12,6 +13,15 @@ import type {
   PlanData,
   Origin
 } from './planType'
+
+import {
+  oneHourHeight,
+  oneHourSecond,
+  twentyFourHourSecond,
+  secondToTop,
+  topToSecond,
+  secondToTime
+} from './planUtils'
 // import PlanItem from './PlanItem.vue'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -48,10 +58,6 @@ const dayList = [
   { id: 6, label: 'saturday' }
 ]
 
-const oneHourHeight = 40
-const oneHourSecond = 1 * 60 * 60
-const twentyFourHourSecond = 24 * 60 * 60
-
 const scheduleContainer = ref(null)
 
 const refMap = new Map()
@@ -80,63 +86,28 @@ const planData: Record<number, PlanData[]> = {
   0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []
 }
 
-// 總秒數 換算成 hh:mm
-const secondToTime = (second: number) => {
-  const tempSecond = ((_second) => {
-    if (_second < 0) return 0
-    if (_second > twentyFourHourSecond) return twentyFourHourSecond
-    return _second
-  })(second)
-
-  const resHour = Math.floor(tempSecond / oneHourSecond)
-  const resMinutes = Math.floor((tempSecond - (resHour * oneHourSecond)) / 60)
-  return `${resHour}`.padStart(2, '0') + ':' + `${resMinutes}`.padStart(2, '0')
-}
-
-// 用距離的比例算時間
-const getStartSecond = (height: number, hour: number) => {
-  // 比例 = 滑鼠上邊界 - 區塊上邊界
-  const percentage = ((_percentage) => {
-    if (_percentage < 0) return 0
-    if (_percentage > 100) return 100
-    return _percentage
-  })(height / oneHourHeight)
-
-  // 總秒數 = 區塊前面的總小時(秒數) + 當前區塊的秒數
-  return (hour * oneHourSecond) + oneHourSecond * percentage
-}
-
-const setDefaultTempPlanEnd = (startSecond: number) => {
-  // 如果小時 > 23
-  if (startSecond > twentyFourHourSecond - oneHourSecond) {
-    // 時間變化比
-    const percentage = (startSecond - (twentyFourHourSecond - oneHourSecond)) / oneHourSecond
-
-    // 剩下的時間高度 = (100% - 時間變化比) * 一小時的高度
-    tempPlanStyle.height = `${(1 - percentage) * oneHourHeight}px`
-    tempPlanTime.endSecond = twentyFourHourSecond
-    tempPlanTime.end = secondToTime(twentyFourHourSecond)
-  } else {
-    tempPlanStyle.height = '40px'
-    tempPlanTime.endSecond = startSecond + oneHourSecond
-    tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
-  }
-}
-
 // 確認工時 是否存在
 const checkTimeIsExist = (
   dayId: number,
   startSecond: number,
   endSecond: number,
-  filterId: string | null = null
+  filterId: Array<string> | string | null = null
 ): boolean => {
   let planList = []
+  const filterIdType = getType(filterId)
 
-  if (filterId === null) {
-    planList = planData[dayId]
-  } else {
-    planList = planData[dayId].filter(plan => plan.time.id !== filterId)
+  switch (filterIdType) {
+    case 'Array':
+      planList = planData[dayId].filter(plan => !filterId.includes(plan.time.id))
+      break
+    case 'String':
+      planList = planData[dayId].filter(plan => plan.time.id !== filterId)
+      break
+    case 'Null':
+      planList = planData[dayId]
+      break
   }
+
   // 全部都不包含
   return !planList.every(plan => {
     // 開始和結束都 < 開始
@@ -154,7 +125,6 @@ const checkTimeIsExist = (
 
 // 修改工時分配
 const originPlanMap = new Map<string, Origin>()
-const isUpdateOrigin = ref(false)
 
 // 建立工時分配
 const createDataPlan = (dayId: number, dataTime: DataPlanTime) => {
@@ -184,52 +154,29 @@ const createDataPlan = (dayId: number, dataTime: DataPlanTime) => {
   }
 }
 
-/**
- * 當工時有重疊時 移到原本的位置
- * @param dayId
- * @param uuid
- */
-const moveOriginDataPlan = (plan: PlanData, dayId: number, uuid: string) => {
-  const planStyle = plan.style
+// 設置上一次分配結果
+const setOriginPlan = (plan: PlanData) => {
+  const uuid = plan.time.id
 
-  if (originPlanMap.has(uuid)) {
-    const originPlan = originPlanMap.get(uuid)
-    const { originTop, originHeight, originStartSecond, originEndSecond } = originPlan
+  const { top, height } = plan.style
+  const { startSecond, endSecond } = plan.time
 
-    planStyle.top = `${originTop}px`
-    planStyle.height = `${originHeight}px`
-
-    const planTime = plan.time
-    planTime.startSecond = originStartSecond
-    planTime.start = secondToTime(originStartSecond)
-    planTime.endSecond = originEndSecond
-    planTime.end = secondToTime(originEndSecond)
-
-    planRenderKey[dayId] += `${dayId}`
-  }
+  originPlanMap.set(uuid, {
+    // 原始樣式
+    originTop: parseInt(top.split('px')[0]),
+    originHeight: parseInt(height.split('px')[0]),
+    // 原始開始與結束時間
+    originStartSecond: startSecond,
+    originEndSecond: endSecond
+  })
 }
 
-// 當滑鼠按下時執行
-const moveDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
-  const plan = planData[dayId].find(plan => plan.time.id === uuid)
+const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  const uuid = plan.time.id
   const planTime = plan.time
   const planStyle = plan.style
 
-  // 如果滑鼠到外面 就會沒有設置 最後一次的 origin
-  if (!isUpdateOrigin.value) {
-    const { top, height } = planStyle
-    const { startSecond, endSecond } = planTime
-    originPlanMap.set(uuid, {
-      // 原始樣式
-      originTop: parseInt(top.split('px')[0]),
-      originHeight: parseInt(height.split('px')[0]),
-      // 原始開始與結束時間
-      originStartSecond: startSecond,
-      originEndSecond: endSecond
-    })
-
-    isUpdateOrigin.value = true
-  }
+  setOriginPlan(plan)
 
   if (originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -242,13 +189,101 @@ const moveDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
       const { clientY: mouseMoveY } = $event
       planStyle.cursor = 'move'
       planStyle.zIndex = 9
-      isUpdateOrigin.value = false
+
+      // 新的top = 原來top + 滑鼠變化量
+      const _height = mouseMoveY - mouseDownY
+      const _top = originTop + _height
+
+      planStyle.top = `${ _top}px`
+      planStyle.height = `${originHeight - _height}px`
+
+      // 滑鼠變化比例 算 時間變化
+      const percentage = _height / oneHourHeight
+      const _second = oneHourSecond * percentage
+
+      // 如果結束 === 24
+      // 開始 = 24 - (原始的結束 - 原始的開始)
+      if (planTime.endSecond === twentyFourHourSecond) {
+        planTime.startSecond = twentyFourHourSecond - (originEndSecond - originStartSecond)
+      } else {
+        // 最小是0
+        planTime.startSecond = originStartSecond + (
+          _second < -originStartSecond ? -originStartSecond : _second
+        )
+      }
+      planTime.start = secondToTime(planTime.startSecond)
+
+      planRenderKey[dayId] += `${dayId}`
+    }, 10))
+  }
+}
+const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  const uuid = plan.time.id
+  const planTime = plan.time
+  const planStyle = plan.style
+
+  setOriginPlan(plan)
+
+  if (originPlanMap.has(uuid)) {
+    const { clientY: mouseDownY } = $event
+
+    const originPlan = originPlanMap.get(uuid)
+    const { originHeight, originStartSecond, originEndSecond } = originPlan
+
+    // 滑鼠移動時執行
+    scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      const { clientY: mouseMoveY } = $event
+      planStyle.cursor = 'move'
+      planStyle.zIndex = 9
+
+      // 新的top = 原來top + 滑鼠變化量
+      const _height = mouseMoveY - mouseDownY
+
+      planStyle.height = `${originHeight + _height}px`
+
+      // 滑鼠變化比例 算 時間變化
+      const percentage = _height / oneHourHeight
+      const _second = oneHourSecond * percentage
+
+      // 如果開始 === 0
+      // 結束 = 原始的結束 - 原始的開始
+      if (planTime.startSecond === 0) {
+        planTime.endSecond = originEndSecond - originStartSecond
+      } else {
+        const afterEndSecond = originEndSecond + _second
+        planTime.endSecond = afterEndSecond > twentyFourHourSecond ? twentyFourHourSecond : afterEndSecond
+      }
+      planTime.end = secondToTime(planTime.endSecond)
+
+      planRenderKey[dayId] += `${dayId}`
+    }, 10))
+  }
+}
+// 當滑鼠按下時執行
+const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  const uuid = plan.time.id
+  const planTime = plan.time
+  const planStyle = plan.style
+
+  setOriginPlan(plan)
+
+  if (originPlanMap.has(uuid)) {
+    const { clientY: mouseDownY } = $event
+
+    const originPlan = originPlanMap.get(uuid)
+    const { originTop, originHeight, originStartSecond, originEndSecond } = originPlan
+
+    // 滑鼠移動時執行
+    scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      const { clientY: mouseMoveY } = $event
+      planStyle.cursor = 'move'
+      planStyle.zIndex = 9
 
       // 新的top = 原來top + 滑鼠變化量
       const _height = mouseMoveY - mouseDownY
       const _top = originTop + _height
       if ((originHeight + _top) < (960 - 2)) {
-        planStyle.top = `${_top < -2 ? -2 : _top}px`
+        planStyle.top = `${_top < 0 ? 0 : _top}px`
       } else {
         planStyle.top = `${960 - 2 - originHeight}px`
       }
@@ -286,29 +321,11 @@ const moveDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
 
 // 滑鼠放開後執行
 const afterMoveDataPlan = ($event: MouseEvent, dayId: number, uuid: string) => {
-  containerRenderKey.value++
-
   const plan = planData[dayId].find(plan => plan.time.id === uuid)
-  const { startSecond, endSecond } = plan.time
   delete plan.style.cursor
   delete plan.style.zIndex
 
-  const isExist = checkTimeIsExist(dayId, startSecond, endSecond, uuid)
-  if (isExist) {
-    moveOriginDataPlan(plan, dayId, uuid)
-  }
-  const { top, height } = plan.style
-
-  originPlanMap.set(uuid, {
-    // 原始樣式
-    originTop: parseInt(top.split('px')[0]),
-    originHeight: parseInt(height.split('px')[0]),
-    // 原始開始與結束時間
-    originStartSecond: startSecond,
-    originEndSecond: endSecond
-  })
-
-  isUpdateOrigin.value = true
+  containerRenderKey.value++
 }
 
 // 建立暫時的工時分配
@@ -323,36 +340,43 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
 
   if (containerEl && blockEl) {
     const { top: containerTop, left: containerLeft } = containerEl.getBoundingClientRect()
+    // 暫時工時分配: 開始
+    const _startSecond = topToSecond(mouseDownY - containerTop)
+    tempPlanTime.startSecond = _startSecond
+    tempPlanTime.start = secondToTime(_startSecond)
+    // 暫時工時分配: 結束
+    const _twentyThreeHourSecond = twentyFourHourSecond - oneHourSecond
+    const _endSecond = (
+      _startSecond > _twentyThreeHourSecond ? // 如果開始小時 > 23
+      twentyFourHourSecond : // 結束 = 24: 給一小時會超過 24
+      _startSecond + oneHourSecond // 開始 + 1: 預設先給一小時
+    )
+    tempPlanTime.endSecond = _endSecond
+    tempPlanTime.end = secondToTime(_endSecond)
+
+    // 高度 = 結束秒數對應的top - 開始秒數對應的top
+    tempPlanStyle.height = `${secondToTop(_endSecond - _startSecond)}px`
+
     // 滑鼠上邊界 - 表格上邊界
-    const tempPlanTop = mouseDownY - containerTop - 2
-    tempPlanStyle.top = `${tempPlanTop}px`
+    // top的距離 - 2(表格的 border + 自己本身的 border)
+    const tempPlanTop = mouseDownY - containerTop
+    tempPlanStyle.top = `${tempPlanTop - 2}px`
 
-    // 區塊左邊界 - 表格左邊界
-    const { top: blockTop, left: blockLeft } = blockEl.getBoundingClientRect()
+    // 區塊左邊界 - 表格左邊界 + (空出一點距離)
+    const { left: blockLeft } = blockEl.getBoundingClientRect()
     tempPlanStyle.left = `${blockLeft - containerLeft + 1}px`
-
-    // 用距離占比 算 開始時間
-    const currentSecond = getStartSecond(mouseDownY - blockTop, hour)
-    tempPlanTime.startSecond = currentSecond
-    tempPlanTime.start = secondToTime(currentSecond)
-
-    // 初始化 高度 + 結束時間
-    setDefaultTempPlanEnd(tempPlanTime.startSecond)
 
     scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
       const { clientY: mouseMoveY } = $event
 
-      // 改變 高度
-      const _top = tempPlanTop + containerTop
-      const tempPlanTopHeight = (mouseMoveY - _top) < 0 ? 0 : mouseMoveY - _top
-      tempPlanStyle.height = `${tempPlanTopHeight}px`
+      // 變化高度 + (將向上移動的距離加回來)
+      const _moveY = mouseMoveY - mouseDownY + 2
+      const _change = _moveY < 0 ? 0 : _moveY
+      const _changeEndSecond = topToSecond(tempPlanTop + _change)
+      tempPlanTime.endSecond = _changeEndSecond
+      tempPlanTime.end = secondToTime(_changeEndSecond)
 
-      // 改變 結束時間
-      // 變化的高度比
-      const percentage = tempPlanTopHeight / oneHourHeight
-      // 結束時間 = 開始時間 + 變化的秒數
-      tempPlanTime.endSecond = tempPlanTime.startSecond + oneHourSecond * percentage
-      tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
+      tempPlanStyle.height = `${_change}px`
     }, 10))
 
     // 顯示暫時的工時分配
@@ -427,18 +451,23 @@ const removeEvent = () => {
         <!-- 實際分配結果 -->
         <div class="schedule-list">
           <div v-for="(column, dayId) in 7" :key="planRenderKey[dayId]" class="schedule-item">
-            <div
-              v-for="plan in planData[dayId]"
-              class="schedule-data-plan"
-              :key="plan.time.id"
-              :style="plan.style"
-              @mousedown="moveDataPlan($event, dayId, plan.time.id)"
-              @mouseup="afterMoveDataPlan($event, dayId, plan.time.id)"
-            >
-              <span>{{ `${plan.time.start}` }}</span>
-              <span> - </span>
-              <span>{{ `${plan.time.end}` }}</span>
-            </div>
+            <!-- 單一分配結果 -->
+            <template v-for="plan in planData[dayId]" :key="plan.time.id">
+              <div
+                class="schedule-data-plan"
+                :style="plan.style"
+                @mouseup="afterMoveDataPlan($event, dayId, plan.time.id)"
+              >
+                <div class="schedule-data-plan-before" @mousedown="setStartPlan($event, dayId, plan)"></div>
+                <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event, dayId, plan)">
+                  <span>{{ `${plan.time.start}` }}</span>
+                  <span> - </span>
+                  <span>{{ `${plan.time.end}` }}</span>
+                </div>
+                <div class="schedule-data-plan-after" @mousedown="setEndPlan($event, dayId, plan)"></div>
+              </div>
+            </template>
+
           </div>
         </div>
 
@@ -519,10 +548,11 @@ $body-height: 960px;
     top: 0;
     left: 2px;
     border-radius: 4px;
-    min-height: 6px;
+    min-height: 12px;
     background-color: #eeeeee80;
     border: 1px solid #dddddd;
     text-align: center;
+    padding-top: 2px;
   }
   &-container {
     width: 100%;
@@ -553,12 +583,35 @@ $body-height: 960px;
   &-data-plan {
     position: absolute;
     width: calc(100% - 5px);
-    min-height: 6px;
+    min-height: 12px;
     border-radius: 4px;
-    text-align: center;
     border: 1px solid #337ecc;
-    background-color: #a0cfff80;
+    background-color: #a0cfffc0;
     cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &-before,
+    &-after {
+      width: 100%;
+      cursor: s-resize;
+      min-height: 4px;
+      position: relative;
+    }
+    &-before {
+      transform: translateY(-2px);
+    }
+    &-after {
+      transform: translateY(2px);
+    }
+    &-text {
+      height: calc(100% - 8px);
+      transform: translateY(-2px);
+      width: 100%;
+      text-align: center;
+      overflow: visible;
+    }
   }
 
   &-block {
