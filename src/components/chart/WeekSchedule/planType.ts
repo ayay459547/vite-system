@@ -6,8 +6,8 @@ type BasePlanTime = {
 }
 
 type BasePlanStyle = {
-  top: string
-  height: string
+  top: number
+  height: number
 }
 
 // 實際資料分配
@@ -23,7 +23,7 @@ export type DataPlanStyle = BasePlanStyle & {
 // 滑鼠點擊 建立暫時的分配
 export type TempPlanTime = BasePlanTime & {}
 export type TempPlanStyle = BasePlanStyle & {
-  left: string
+  left: number
   display: 'none' | 'block'
 }
 
