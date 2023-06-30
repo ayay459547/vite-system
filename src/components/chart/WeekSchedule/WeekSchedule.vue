@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { PropType, reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
-import { inject } from 'vue'
+import { inject, nextTick } from 'vue'
 import throttle from '@/lib/throttle'
-import debounce from '@/lib/debounce'
 import { getType } from '@/lib/utils'
 
 import type {
@@ -109,6 +108,7 @@ const checkTimeIsExist = (
       planList = planData[dayId].filter(plan => plan.time.id !== filterId)
       break
     case 'Null':
+    default:
       planList = planData[dayId]
       break
   }
@@ -173,6 +173,7 @@ const setOriginPlan = (plan: PlanData): void => {
 
 // 改開始 時間 + 位置
 const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  if (isCheck) return
   setOriginPlan(plan)
 
   const { time: planTime, style: planStyle } = plan
@@ -210,6 +211,7 @@ const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 }
 // 改結束 時間 + 位置
 const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  if (isCheck) return
   setOriginPlan(plan)
 
   const { time: planTime, style: planStyle } = plan
@@ -247,6 +249,7 @@ const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 }
 // 改分配 時間 + 位置
 const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  if (isCheck) return
   setOriginPlan(plan)
 
   const { time: planTime, style: planStyle } = plan
@@ -301,6 +304,8 @@ const setLastUpdatePlan = (dayId: number, uuid: string) => {
   lastUpdatePlan.value = { dayId, uuid }
 }
 // 如果最後更新的分配有重複 移到原位
+// 如果確認中 無法對 分配進行修改
+let isCheck = false
 const checkLastUpdatePlan = () => {
   const { dayId, uuid } = lastUpdatePlan.value
 
@@ -322,11 +327,11 @@ const checkLastUpdatePlan = () => {
 
       planStyle.top = originTop
       planStyle.height = originHeight
-
-      planRenderKey[dayId] += `${dayId}`
     }
 
     lastUpdatePlan.value = { dayId: null, uuid: null }
+
+    planRenderKey[dayId] += `${dayId}`
   }
 }
 // 滑鼠放開後執行
@@ -399,9 +404,8 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
 }
 
 const containerRenderKey = ref(1)
-const containerStyle = ref('')
-const updateSchedule = () => {
-  containerStyle.value = 'pointer-events: none;'
+const updateSchedule = async () => {
+  isCheck = true
   // 有暫時的工時分配
   if (tempPlanStyle.display === 'block') {
     const { start, startSecond, end, endSecond } = tempPlanTime
@@ -419,9 +423,8 @@ const updateSchedule = () => {
   afterUpdateDataPlan()
   removeEvent()
 
-  setTimeout(() => {
-    containerStyle.value = ''
-  }, _FPS)
+  await nextTick()
+  isCheck = false
 }
 
 const removeEvent = () => {
@@ -465,7 +468,6 @@ const removeEvent = () => {
         ref="scheduleContainer"
         class="schedule-container"
         :key="containerRenderKey"
-        :style="containerStyle"
       >
         <!-- 暫時分配 -->
         <div class="schedule-temp-plan" :style="{
