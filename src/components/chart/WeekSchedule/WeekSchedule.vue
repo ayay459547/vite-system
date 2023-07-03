@@ -115,8 +115,8 @@ const checkTimeIsExist = (
 
   // 全部都不包含
   return !planList.every(plan => {
-    // 開始和結束都 < 開始
-    // 開始和結束都 > 結束
+    // 開始和結束都 <= 開始
+    // 開始和結束都 >= 結束
     const { startSecond: _startSecond, endSecond: _endSecond } = plan.time
     return (
       startSecond <= _startSecond &&
@@ -130,6 +130,24 @@ const checkTimeIsExist = (
 
 // 修改工時分配
 const originPlanMap = new Map<string, Origin>()
+// 移動到原來的位置
+const moveOrigin = (dayId: number, plan: PlanData) => {
+  const planStyle = plan.style
+  const planTime = plan.time
+
+  const originPlan = originPlanMap.get(planTime.id)
+  const { originStartSecond, originEndSecond, originTop, originHeight } = originPlan
+
+  planTime.startSecond = originStartSecond
+  planTime.start = secondToTime(originStartSecond)
+  planTime.endSecond = originEndSecond
+  planTime.end = secondToTime(originEndSecond)
+
+  planStyle.top = originTop
+  planStyle.height = originHeight
+
+  planRenderKey[dayId] += `${dayId}`
+}
 
 // 建立工時分配
 const createDataPlan = (dayId: number, dataTime: DataPlanTime) => {
@@ -156,28 +174,49 @@ const createDataPlan = (dayId: number, dataTime: DataPlanTime) => {
   }
 }
 
-// 設置上一次分配結果
-const setOriginPlan = (plan: PlanData): void => {
-  const { top, height } = plan.style
-  const { id: uuid, startSecond, endSecond } = plan.time
+// 最後一次更新的分配
+const lastUpdatePlan = ref<{ dayId: number | null, uuid: string | null }>({
+  dayId: null,
+  uuid: null
+})
+// 設置 最後一次更新的分配
+const setLastUpdatePlan = (dayId: number, uuid: string) => {
+  lastUpdatePlan.value = { dayId, uuid }
+}
 
-  originPlanMap.set(uuid, {
-    // 原始樣式
-    originTop: top,
-    originHeight: height,
-    // 原始開始與結束時間
-    originStartSecond: startSecond,
-    originEndSecond: endSecond
-  })
+// 設置上一次分配結果
+// 如果已存在 分配回到原位
+const setOriginPlan = (dayId: number, plan: PlanData): void => {
+  const planStyle = plan.style
+  const { top, height } = planStyle
+
+  const planTime = plan.time
+  const { id: uuid, startSecond, endSecond } = planTime
+
+  const isExist = checkTimeIsExist(dayId, startSecond, endSecond, uuid)
+  // 如果已經存在 移到原位
+  if (isExist) {
+    moveOrigin(dayId, plan)
+  } else {
+  // 將原來的位置 更新成現在的位置
+    originPlanMap.set(uuid, {
+      // 原始樣式
+      originTop: top,
+      originHeight: height,
+      // 原始開始與結束時間
+      originStartSecond: startSecond,
+      originEndSecond: endSecond
+    })
+  }
 }
 
 // 改開始 時間 + 位置
 const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
-  if (isCheck) return
-  setOriginPlan(plan)
-
   const { time: planTime, style: planStyle } = plan
   const { id: uuid } = planTime
+
+  setLastUpdatePlan(dayId, uuid)
+  setOriginPlan(dayId, plan)
 
   if (originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -187,6 +226,8 @@ const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 
     // 滑鼠移動時執行
     scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      if (isCheck) return
+
       const { clientY: mouseMoveY } = $event
       planStyle.zIndex = 9
 
@@ -211,11 +252,11 @@ const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 }
 // 改結束 時間 + 位置
 const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
-  if (isCheck) return
-  setOriginPlan(plan)
-
   const { time: planTime, style: planStyle } = plan
   const { id: uuid } = planTime
+
+  setLastUpdatePlan(dayId, uuid)
+  setOriginPlan(dayId, plan)
 
   if (originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -225,6 +266,8 @@ const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 
     // 滑鼠移動時執行
     scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      if (isCheck) return
+
       const { clientY: mouseMoveY } = $event
       planStyle.cursor = 'move'
       planStyle.zIndex = 9
@@ -249,11 +292,11 @@ const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 }
 // 改分配 時間 + 位置
 const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
-  if (isCheck) return
-  setOriginPlan(plan)
-
   const { time: planTime, style: planStyle } = plan
   const { id: uuid } = planTime
+
+  setLastUpdatePlan(dayId, uuid)
+  setOriginPlan(dayId, plan)
 
   if (originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -263,6 +306,8 @@ const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
 
     // 滑鼠移動時執行
     scheduleContainer.value.addEventListener('mousemove', throttle(function ($event: MouseEvent) {
+      if (isCheck) return
+
       const { clientY: mouseMoveY } = $event
       planStyle.cursor = 'move'
       planStyle.zIndex = 9
@@ -294,56 +339,34 @@ const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
   }
 }
 
-// 最後一次更新的分配
-const lastUpdatePlan = ref<{ dayId: number | null, uuid: string | null }>({
-  dayId: null,
-  uuid: null
-})
-// 設置 最後一次更新的分配
-const setLastUpdatePlan = (dayId: number, uuid: string) => {
-  lastUpdatePlan.value = { dayId, uuid }
-}
+let isCheck = false
 // 如果最後更新的分配有重複 移到原位
 // 如果確認中 無法對 分配進行修改
-let isCheck = false
-const checkLastUpdatePlan = () => {
+const checkLastUpdatePlan = async () => {
+  console.log('checkLastUpdatePlan')
   const { dayId, uuid } = lastUpdatePlan.value
 
   if (![dayId, uuid].includes(null)) {
-    const plan = planData[dayId].find(plan => plan.time.id === uuid)
+    isCheck = true
 
-    const { time: planTime, style: planStyle } = plan
-    const { startSecond, endSecond } = planTime
-
-    const isExist = checkTimeIsExist(dayId, startSecond, endSecond, uuid)
-    if (isExist) {
-      const originPlan = originPlanMap.get(uuid)
-      const { originStartSecond, originEndSecond, originTop, originHeight } = originPlan
-
-      planTime.startSecond = originStartSecond
-      planTime.start = secondToTime(originStartSecond)
-      planTime.endSecond = originEndSecond
-      planTime.end = secondToTime(originEndSecond)
-
-      planStyle.top = originTop
-      planStyle.height = originHeight
-    }
-
-    lastUpdatePlan.value = { dayId: null, uuid: null }
-
-    planRenderKey[dayId] += `${dayId}`
-  }
-}
-// 滑鼠放開後執行
-const afterUpdateDataPlan = () => {
-  const { dayId, uuid } = lastUpdatePlan.value
-
-  if (![dayId, uuid].includes(null)) {
     const plan = planData[dayId].find(plan => plan.time.id === uuid)
     delete plan.style.cursor
     delete plan.style.zIndex
 
-    checkLastUpdatePlan()
+    const { startSecond, endSecond } = plan.time
+
+    const isExist = checkTimeIsExist(dayId, startSecond, endSecond, uuid)
+    if (isExist) {
+      moveOrigin(dayId, plan)
+    }
+
+    planRenderKey[dayId] += `${dayId}`
+    await nextTick()
+
+    lastUpdatePlan.value = { dayId: null, uuid: null }
+    setTimeout(() => {
+      isCheck = false
+    }, _FPS * 10)
   }
 }
 
@@ -405,7 +428,6 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
 
 const containerRenderKey = ref(1)
 const updateSchedule = async () => {
-  isCheck = true
   // 有暫時的工時分配
   if (tempPlanStyle.display === 'block') {
     const { start, startSecond, end, endSecond } = tempPlanTime
@@ -420,11 +442,8 @@ const updateSchedule = async () => {
     // 隱藏暫時的工時分配
     tempPlanStyle.display = 'none'
   }
-  afterUpdateDataPlan()
+  checkLastUpdatePlan()
   removeEvent()
-
-  await nextTick()
-  isCheck = false
 }
 
 const removeEvent = () => {
@@ -493,7 +512,6 @@ const removeEvent = () => {
                   top: `${plan.style.top - 1}px`,
                   height: `${plan.style.height}px`
                 }"
-                @mousedown="setLastUpdatePlan(dayId, plan.time.id)"
               >
                 <div class="schedule-data-plan-before" @mousedown="setStartPlan($event, dayId, plan)"></div>
                 <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event, dayId, plan)">

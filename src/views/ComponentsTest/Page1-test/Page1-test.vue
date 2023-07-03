@@ -69,9 +69,8 @@ const onCreateSubmit = async () => {
       })
       model.create = false
       init()
-
-      loading(false)
     }
+    loading(false)
   }
 }
 
@@ -88,9 +87,8 @@ const onUpdateSubmit = async () => {
       })
       model.update = false
       init()
-
-      loading(false)
     }
+    loading(false)
   }
 }
 
