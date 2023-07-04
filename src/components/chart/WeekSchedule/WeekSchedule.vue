@@ -28,7 +28,7 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 
 export type TypeItem = {
-  key: string
+  key: any
   label: string
   color: string
 }
@@ -343,7 +343,6 @@ let isCheck = false
 // 如果最後更新的分配有重複 移到原位
 // 如果確認中 無法對 分配進行修改
 const checkLastUpdatePlan = async () => {
-  console.log('checkLastUpdatePlan')
   const { dayId, uuid } = lastUpdatePlan.value
 
   if (![dayId, uuid].includes(null)) {
