@@ -12,6 +12,7 @@ export interface Props {
   placement?: Placement
   trigger?: Trigger
   popperStyle?: string
+  showArrow?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
@@ -19,7 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   title: '',
   placement: 'bottom',
   trigger: 'click',
-  popperStyle: ''
+  popperStyle: '',
+  showArrow: true
 })
 
 const emit = defineEmits<{
@@ -52,6 +54,7 @@ watch(elVisible, (newValue) => {
       :width="props.width"
       :trigger="props.trigger"
       :popper-style="props.popperStyle"
+      :show-arrow="props.showArrow"
     >
       <template #reference>
         <slot name="reference"></slot>

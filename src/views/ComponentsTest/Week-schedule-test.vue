@@ -9,22 +9,22 @@ const { i18nTranslate } = hook()
 const typeList = [
   {
     key: 'normalWorkingTime',
-    label: i18nTranslate('normalWorkingTime'),
+    label: 'normalWorkingTime',
     color: '#cfccf6'
   },
   {
     key: 'firstOverTime',
-    label: i18nTranslate('firstOverTime'),
+    label: 'firstOverTime',
     color: '#f3ffc6'
   },
   {
     key: 'secondOverTime',
-    label: i18nTranslate('secondOverTime'),
+    label: 'secondOverTime',
     color: '#a7e8c4'
   },
   {
     key: 'extendedWorkingTime',
-    label: i18nTranslate('extendedWorkingTime'),
+    label: 'extendedWorkingTime',
     color: '#f2b5c9'
   }
 ]
@@ -36,7 +36,11 @@ const typeList = [
     <h3 class="i-mb-md">WeekSchedule-test</h3>
     <WeekSchedule
       :type-list="typeList"
-    />
+    >
+      <template #label="{ label }">
+        {{ i18nTranslate(label) }}
+      </template>
+    </WeekSchedule>
   </div>
 </template>
 

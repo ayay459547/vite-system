@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { ref, reactive, computed, provide, watch, onMounted } from 'vue'
+import {
+  ref,
+  reactive,
+  computed,
+  provide,
+  watch,
+  onMounted,
+  nextTick
+} from 'vue'
 import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
 
 // layout
@@ -18,7 +26,7 @@ import { useLocaleStore } from '@/stores/locale'
 import { useAuthStore } from '@/stores/auth'
 import { useRoutesStore } from '@/stores/routes'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 // hook
 import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
@@ -123,9 +131,14 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
   }
 }
 
+const route = useRoute()
 // 系統初始化
 onMounted(() => {
   loading(true, '系統初始化')
+  nextTick(() => {
+    console.log('window => ', window)
+    console.log('route => ', route)
+  })
 })
 
 const authStore = useAuthStore()

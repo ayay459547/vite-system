@@ -5,6 +5,8 @@ import { inject, nextTick } from 'vue'
 import throttle from '@/lib/throttle'
 import { getType } from '@/lib/utils'
 
+import { CustomPopover, CustomButton } from '@/components'
+
 import type {
   DataPlanTime,
   // DataPlanStyle,
@@ -46,8 +48,6 @@ const props = defineProps({
     required: false
   }
 })
-
-console.log(props)
 
 const _FPS = 1000 / FPS
 
@@ -371,6 +371,7 @@ const checkLastUpdatePlan = async () => {
 
 // 建立暫時的工時分配
 const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
+  closeUpdate()
   const { clientY: mouseDownY } = $event
 
   // 表格
@@ -450,98 +451,206 @@ const removeEvent = () => {
   containerRenderKey.value++
 }
 
+// 編輯單個工時安排
+const updateInfo = reactive<{
+  isShow: boolean
+  left: number
+  top: number
+  plan: PlanData
+}>({
+  isShow: false,
+  left: 0,
+  top: 0,
+  plan: null
+})
+const updateDataPlan = async ($event: MouseEvent, dayId: number, plan: PlanData) => {
+  if (updateInfo.isShow) {
+    updateInfo.isShow = false
+    await nextTick()
+  }
+  const { clientX, clientY } = $event
+  updateInfo.left = clientX
+  updateInfo.top = clientY
+  updateInfo.plan = plan
+  updateInfo.isShow = true
+
+  console.log('plan => ', plan)
+}
+const closeUpdate = () => {
+  updateInfo.plan = null
+  updateInfo.isShow = false
+}
+
 </script>
 
 <template>
-  <div class="schedule-wrapper" @mouseup="updateSchedule" @mouseleave="updateSchedule">
-    <!-- 左邊: 時間 -->
-    <div class="schedule-time">
-      <div class="schedule-time-zero">{{ '00:00' }}</div>
-      <ul class="schedule-time-list">
-        <li
-          v-for="hour in 24"
-          :key="hour"
-          class="schedule-time-item"
+  <div class="schedule">
+    <!-- 類型 -->
+    <div class="schedule-type">
+      <div class="schedule-type-list">
+        <div
+          v-for="typeItem in props.typeList"
+          :key="typeItem.key"
+          class="schedule-type-itme"
         >
-          <div class="text">{{ `${hour}:00`.padStart(5, '0') }}</div>
-        </li>
-      </ul>
+          <div
+            class="schedule-type-color"
+            :style="{ backgroundColor: typeItem.color }">
+          </div>
+          <div class="schedule-type-label">
+            <slot
+              name="label"
+              :key="typeItem.key"
+              :label="typeItem.label"
+              :color="typeItem.color"
+            >
+              {{ typeItem.label }}
+            </slot>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- 右邊: 一周 + 表格 -->
-    <div class="schedule-week">
-      <!-- 星期 -->
-      <ul class="schedule-day-list">
-        <li
-          v-for="dayItem in dayList"
-          :ref="`day-${dayItem.id}`"
-          :key="dayItem.id"
-          class="schedule-day-item"
-        >
-          {{ i18nTranslate(dayItem.label) }}
-        </li>
-      </ul>
-      <!-- 表格 -->
-      <div
-        ref="scheduleContainer"
-        class="schedule-container"
-        :key="containerRenderKey"
-      >
-        <!-- 暫時分配 -->
-        <div class="schedule-temp-plan" :style="{
-          display: tempPlanStyle.display,
-          left: `${tempPlanStyle.left}px`,
-          top: `${tempPlanStyle.top - 1}px`,
-          height: `${tempPlanStyle.height}px`
-        }">
-          <span>{{ `${tempPlanTime.start}` }}</span>
-          <span> - </span>
-          <span>{{ `${tempPlanTime.end}` }}</span>
-        </div>
-
-        <!-- 實際分配結果 -->
-        <div class="schedule-list">
-          <div v-for="(column, dayId) in 7" :key="planRenderKey[dayId]" class="schedule-item">
-            <!-- 單一分配結果 -->
-            <template v-for="plan in planData[dayId]" :key="plan.time.id">
-              <div
-                class="schedule-data-plan"
-                :style="{
-                  ...plan.style,
-                  top: `${plan.style.top - 1}px`,
-                  height: `${plan.style.height}px`
-                }"
-              >
-                <div class="schedule-data-plan-before" @mousedown="setStartPlan($event, dayId, plan)"></div>
-                <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event, dayId, plan)">
-                  <span>{{ `${plan.time.start}` }}</span>
-                  <span> - </span>
-                  <span>{{ `${plan.time.end}` }}</span>
-                </div>
-                <div class="schedule-data-plan-after" @mousedown="setEndPlan($event, dayId, plan)"></div>
-              </div>
-            </template>
-
-          </div>
-        </div>
-
-        <!-- 背景表格 -->
-        <template v-for="(row, hour) in 24" :key="hour">
-          <div
-            v-for="(column, dayId) in 7"
-            :key="column"
-            :ref="(el) => {
-              refMap.set(`${dayId}-${hour}`, el)
-              return `${dayId}-${hour}`
-            }"
-            class="schedule-block"
-            @mousedown="createTempPlan($event, dayId, hour)"
+    <!-- 工時安排 -->
+    <div class="schedule-wrapper" @mouseup="updateSchedule" @mouseleave="updateSchedule">
+      <!-- 左邊: 時間 -->
+      <div class="schedule-time">
+        <div class="schedule-time-zero">{{ '00:00' }}</div>
+        <ul class="schedule-time-list">
+          <li
+            v-for="hour in 24"
+            :key="hour"
+            class="schedule-time-item"
           >
-            <div class="first-block"></div>
-            <div class="second-block"></div>
-          </div>
-        </template>
+            <div class="text">{{ `${hour}:00`.padStart(5, '0') }}</div>
+          </li>
+        </ul>
       </div>
+
+      <!-- 右邊: 一周 + 表格 -->
+      <div class="schedule-week">
+        <!-- 星期 -->
+        <ul class="schedule-day-list">
+          <li
+            v-for="dayItem in dayList"
+            :ref="`day-${dayItem.id}`"
+            :key="dayItem.id"
+            class="schedule-day-item"
+          >
+            {{ i18nTranslate(dayItem.label) }}
+          </li>
+        </ul>
+        <!-- 表格 -->
+        <div
+          ref="scheduleContainer"
+          class="schedule-container"
+          :key="containerRenderKey"
+        >
+          <!-- 暫時分配 -->
+          <div class="schedule-temp-plan" :style="{
+            display: tempPlanStyle.display,
+            left: `${tempPlanStyle.left}px`,
+            top: `${tempPlanStyle.top - 1}px`,
+            height: `${tempPlanStyle.height}px`
+          }">
+            <span>{{ `${tempPlanTime.start}` }}</span>
+            <span> - </span>
+            <span>{{ `${tempPlanTime.end}` }}</span>
+          </div>
+
+          <!-- 實際分配結果 -->
+          <div class="schedule-list">
+            <div v-for="(column, dayId) in 7" :key="planRenderKey[dayId]" class="schedule-item">
+              <!-- 單一分配結果 -->
+              <template v-for="plan in planData[dayId]" :key="plan.time.id">
+                <div
+                  class="schedule-data-plan"
+                  :style="{
+                    ...plan.style,
+                    top: `${plan.style.top - 1}px`,
+                    height: `${plan.style.height}px`
+                  }"
+                  @mouseup="updateDataPlan($event, dayId, plan)"
+                  @mousedown="closeUpdate"
+                >
+                  <div class="schedule-data-plan-before" @mousedown="setStartPlan($event, dayId, plan)"></div>
+                  <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event, dayId, plan)">
+                    <span>{{ `${plan.time.start}` }}</span>
+                    <span> - </span>
+                    <span>{{ `${plan.time.end}` }}</span>
+                  </div>
+                  <div class="schedule-data-plan-after" @mousedown="setEndPlan($event, dayId, plan)"></div>
+                </div>
+              </template>
+
+            </div>
+          </div>
+
+          <!-- 背景表格 -->
+          <template v-for="(row, hour) in 24" :key="hour">
+            <div
+              v-for="(column, dayId) in 7"
+              :key="column"
+              :ref="(el) => {
+                refMap.set(`${dayId}-${hour}`, el)
+                return `${dayId}-${hour}`
+              }"
+              class="schedule-block"
+              @mousedown="createTempPlan($event, dayId, hour)"
+            >
+              <div class="first-block"></div>
+              <div class="second-block"></div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- 編輯 -->
+    <div
+      class="schedule-update"
+      :style="{
+        top: `${updateInfo.top}px`,
+        left: `${updateInfo.left}px`
+      }"
+    >
+    <CustomPopover
+      v-model:visible="updateInfo.isShow"
+      :width="320"
+      placement="right"
+      :show-arrow="false"
+    >
+      <template #reference>
+        <div></div>
+      </template>
+      <div class="schedule-update-container">
+        <div class="schedule-update-header">
+          <span class="update-label">編輯時間區段</span>
+          <CustomButton
+            icon-name="close"
+            text
+            @click="closeUpdate"
+          />
+        </div>
+        <div class="schedule-update-body">
+
+        </div>
+        <div class="schedule-update-footer">
+          <CustomButton
+            label="刪除此區間"
+            type="danger"
+            icon-name="close"
+            icon-move="scale"
+          />
+          <CustomButton
+            label="同步至整周"
+            type="primary"
+            icon-name="copy"
+            icon-move="scale"
+          />
+        </div>
+      </div>
+    </CustomPopover>
     </div>
   </div>
 </template>
@@ -550,6 +659,28 @@ const removeEvent = () => {
 $header-height: 30px;
 $body-height: 960px;
 .schedule {
+  // 類型
+  &-type {
+    &-list {
+      display: flex;
+    }
+    &-itme {
+      padding: 6px;
+      gap: 6px;
+      @extend %flex-center;
+    }
+    &-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+    }
+    &-label {
+      font-weight: 600;
+      line-height: 30px;
+    }
+  }
+
+  // 工時安排
   &-wrapper {
     width: 100%;
     min-width: 560px;
@@ -557,7 +688,9 @@ $body-height: 960px;
     display: flex;
     padding: 24px 12px 56px;
     user-select: none;
+    position: relative;
   }
+
   &-time {
     width: 48px;
     &-zero {
@@ -687,6 +820,35 @@ $body-height: 960px;
     .second-block {
       flex: 1;
       border-bottom: 1px solid #dddddd;
+    }
+  }
+
+  // 編輯
+  &-update {
+    position: fixed;
+
+    &-container {
+      width: 100%;
+    }
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .update-label {
+        font-size: 2em;
+        font-weight: 600;
+      }
+    }
+    &-body {
+      // border: 2px solid skyblue;
+      height: 300px;
+    }
+    &-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
     }
   }
 }

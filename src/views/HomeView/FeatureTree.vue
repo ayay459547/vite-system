@@ -104,6 +104,25 @@ export default defineComponent({
     addHistory (route: Navigation): void {
       this.routesStore.addHistoryNavigation(route.name, route)
     },
+    newWindow (route: Navigation): void {
+      const routeData = this.$router.resolve({
+        name: route.name,
+        query: { data: 'someData' }
+      })
+      console.log(routeData.href)
+      window.open(
+        routeData.href,
+        route.title,
+        `
+          toolbar=no,
+          menubar=no,
+          width=500,
+          height=500,
+          left: 300,
+          top: 300
+        `
+      )
+    },
     newPage (route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name
@@ -159,6 +178,11 @@ export default defineComponent({
             @click="addHistory(route)"
           />
           <CustomButton
+            label="另開視窗"
+            icon-name="window-restore"
+            @click="newWindow(route)"
+          />
+          <CustomButton
             label="新開分頁"
             icon-name="up-right-from-square"
             @click="newPage(route)"
@@ -173,6 +197,16 @@ export default defineComponent({
             />
             <template #content>
               <span>{{ '新增選項' }}</span>
+            </template>
+          </CustomTooltip>
+
+          <CustomTooltip>
+            <CustomButton
+              icon-name="window-restore"
+              @click="newWindow(route)"
+            />
+            <template #content>
+              <span>{{ '另開視窗' }}</span>
             </template>
           </CustomTooltip>
 

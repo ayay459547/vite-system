@@ -77,8 +77,11 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     forms: formMap as T,
     reset: () => {
       formMap.$forEach((value: any, key: string) => {
-        formMap[key] = resColumns[key].default
-        refMap[key].handleReset()
+        formMap[key] = resColumns[key]?.default ?? null
+
+        if (typeof refMap[key]?.handleReset === 'function') {
+          refMap[key].handleReset()
+        }
       })
     },
     validate: async () => {
