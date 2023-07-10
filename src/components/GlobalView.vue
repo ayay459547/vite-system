@@ -14,7 +14,7 @@ import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
 import HeaderSection from '@/components/layout/headerSection/HeaderSection.vue'
-import ViewSection from '@/components/layout/viewSection/ViewSection.vue'
+import PageSection from '@/components/layout/pageSection/PageSection.vue'
 
 // element ui plus config
 import { ElConfigProvider } from 'element-plus'
@@ -26,7 +26,7 @@ import { useLocaleStore } from '@/stores/locale'
 import { useAuthStore } from '@/stores/auth'
 import { useRoutesStore } from '@/stores/routes'
 import { storeToRefs } from 'pinia'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 // hook
 import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
@@ -131,14 +131,9 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
   }
 }
 
-const route = useRoute()
 // 系統初始化
 onMounted(() => {
   loading(true, '系統初始化')
-  nextTick(() => {
-    console.log('window => ', window)
-    console.log('route => ', route)
-  })
 })
 
 const authStore = useAuthStore()
@@ -146,12 +141,18 @@ const { setNavigationRoutes } = useRoutesStore()
 const { isFinishInit, routesPermission } = storeToRefs(authStore)
 const router = useRouter()
 
-watch(isFinishInit, (isFinish: boolean) => {
+const isShow = ref(false)
+watch(isFinishInit, async (isFinish: boolean) => {
   if (isFinish) {
     setNavigationRoutes(routesPermission.value)
-
     router.push({ name: 'home' })
+    await nextTick()
+
     loading(false, 'loading')
+
+    setTimeout(() => {
+      isShow.value = true
+    }, 10)
   }
 })
 
@@ -161,7 +162,7 @@ watch(isFinishInit, (isFinish: boolean) => {
   <ElConfigProvider :locale="locale.el">
     <div class="layout-wrapper">
       <div
-        v-show="isFinishInit"
+        v-show="isShow"
         class="layout-left layout-side"
         :class="navIsOpen ? 'is-open': 'is-close'"
       >
@@ -179,7 +180,7 @@ watch(isFinishInit, (isFinish: boolean) => {
         </SideSection>
       </div>
 
-      <div v-show="isFinishInit" class="layout-right">
+      <div v-show="isShow" class="layout-right">
         <div class="layout-header">
           <HeaderSection
             v-model:isOpen="navIsOpen"
@@ -188,7 +189,7 @@ watch(isFinishInit, (isFinish: boolean) => {
           />
         </div>
         <div class="layout-view">
-          <ViewSection :history-is-open="historyIsOpen">
+          <PageSection :history-is-open="historyIsOpen">
             <div v-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
                 <KeepAlive>
@@ -199,7 +200,7 @@ watch(isFinishInit, (isFinish: boolean) => {
                 <div style="display: none;">{{ setPrevRoute(route) }}</div>
               </RouterView>
             </div>
-          </ViewSection>
+          </PageSection>
         </div>
       </div>
 

@@ -110,7 +110,8 @@ export const useRoutesStore = defineStore('routes', () => {
        * api 沒有 給預設權限
        */
       const routerPermission = routesPermission.get(leafNode.name)
-      if (routerPermission) {
+
+      if (typeof routerPermission === 'number') {
         nextNode.permission = routerPermission
       } else {
         nextNode.permission = defaultPermission

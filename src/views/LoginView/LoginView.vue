@@ -42,8 +42,8 @@ const login = () => {
 
       swal({
         icon: 'warning',
-        title: '登入失敗',
-        text: '請確認帳號密碼是否正確',
+        title: '登入錯誤',
+        text: '登入資料狀態有誤，請連絡相關人員',
         showCancelButton: false
       })
     }, 480)

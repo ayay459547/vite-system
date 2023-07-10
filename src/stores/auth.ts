@@ -5,30 +5,44 @@ import type { AuthData } from './api'
 import { getUserData, getRoutesPermission } from './api'
 import { permission } from '@/lib/permission'
 
+import { getRouterLeafLayer } from '@/lib/routes'
+import routes from '@/router/routes'
+
 // token
 import { v4 as uuidv4 } from 'uuid'
+import AES from 'crypto-js/aes'
+import Utf8 from 'crypto-js/enc-utf8'
+
+interface Token {
+	uid: string
+	date: Date
+	userId: number
+}
+const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
 export const useAuthStore = defineStore('auth', () => {
 	/**
 	 * token 相關
 	 * token 會帶動使用者資料
 	 */
-	const getToken = () => {
+	const getToken = (): Token | null => {
 		const token = localStorage.getItem('token')
-		if (token) {
-			return JSON.parse(token)
-		} else {
-			return null
-		}
+		if (['', null, undefined].includes(token)) return null
+
+		const _token = AES.decrypt(token, privateKey).toString(Utf8)
+		return JSON.parse(_token) as Token
 	}
 	const setToken = (userId: number) => {
-		const _token = {
+		const _token = JSON.stringify({
 			uid: uuidv4(),
-			today: new Date(),
+			date: new Date(),
 			userId
-		}
-		const token = JSON.stringify(_token)
-		localStorage.setItem('token', token)
+		})
+
+		localStorage.setItem(
+			'token',
+			AES.encrypt(_token, privateKey).toString()
+		)
 	}
 	const clearToken = () => {
 		localStorage.removeItem('token')
@@ -65,7 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
 		return await new Promise((resolve) => {
 			const token = getToken()
 
-			if (token) {
+			if (token !== null) {
 				const { userId } = token
 				setToken(userId)
 
@@ -75,6 +89,7 @@ export const useAuthStore = defineStore('auth', () => {
 			} else {
 				clearToken()
 				clearAuthData()
+				clearRoutesPermission()
 
 				setTimeout(() => {
 					resolve(0)
@@ -127,11 +142,19 @@ export const useAuthStore = defineStore('auth', () => {
 			routesPermission.set(permissionItem.routerName, _permission)
 		})
 	}
+	// 將所有路由權限變為 0
+	const clearRoutesPermission = () => {
+		const permissionList = getRouterLeafLayer(routes, [1, 2, 3], false)
+
+		permissionList.forEach(permissionItem => {
+			routesPermission.set(permissionItem.name, 0)
+		})
+	}
 
 	const isFinishInit = ref(false)
 	/**
 	 * 初始化系統使用者
-	 * 初始化系統路由
+	 * 初始化系統路由權限
 	 */
 	const initSystem = async () => {
 		isFinishInit.value = false
