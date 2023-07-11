@@ -1,6 +1,5 @@
 import { computed, onBeforeMount, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { setCookie, getCookie } from '@/lib/cookie'
 import { useI18n } from 'vue-i18n'
 
 import ElzhTw from 'element-plus/dist/locale/zh-tw.min.js'
@@ -30,13 +29,13 @@ export const useLocaleStore = defineStore('locale', () => {
    * 以 cookie 上的為主
    */
   const init = () => {
-    const cookieLocale = getCookie('locale')
+    const cookieLocale = localStorage.getItem('locale')
 
     if ([null, undefined, ''].includes(cookieLocale)) {
-      setCookie('locale', 'zhTw')
+      localStorage.setItem('locale', 'zhTw')
     }
 
-    currentLang.value = getCookie('locale')
+    currentLang.value = localStorage.getItem('locale')
   }
   const elLocale = ref('zhTw')
 
@@ -44,7 +43,7 @@ export const useLocaleStore = defineStore('locale', () => {
     set: (type: LangType) => {
       i18nLocale.value = type
       elLocale.value = type
-      setCookie('locale', type)
+      localStorage.setItem('locale', type)
     },
     get: () => {
       return t('langType')

@@ -15,6 +15,10 @@ const props = defineProps({
   label: {
     type: String as PropType<string>,
     default: ''
+  },
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -35,15 +39,24 @@ const onCheckboxChange = (val: CheckboxValueType) => {
 </script>
 
 <template>
-  <ElCheckbox
-    v-model="tempValue"
-    size="large"
-    :validate-event="false"
-    @change="onCheckboxChange"
-  >
-    {{ props.label }}
-  </ElCheckbox>
+  <div class="checkbox-container">
+    <ElCheckbox
+      v-model="tempValue"
+      size="large"
+      :disabled="props.disabled"
+      :validate-event="false"
+      @change="onCheckboxChange"
+    >
+      {{ props.label }}
+    </ElCheckbox>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.checkbox {
+  &-container {
+    width: fit-content;
+    height: fit-content;
+  }
+}
 </style>

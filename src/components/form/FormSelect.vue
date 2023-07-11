@@ -149,6 +149,7 @@ const hasSlot = (prop: string): boolean => {
       placeholder="Please input"
       class="input-main"
       :class="[`validate-${validateRes}`]"
+      :validate-event="false"
       v-bind="bindAttributes"
       v-on="validationListeners"
     >

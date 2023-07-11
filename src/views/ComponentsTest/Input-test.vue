@@ -6,6 +6,7 @@ import {
   FormDatePicker,
   FormSelect,
   FormCheckbox,
+  FormRadio,
   CustomButton
 } from '@/components'
 
@@ -54,14 +55,27 @@ const columnSetting = {
     }
   },
   checkbox: {
-    label: '類型',
+    label: '多選',
     filter: {
       default: [],
       required: true,
       options: [
-        { label: 'test1', value: 0 },
-        { label: 'test2', value: 1 },
-        { label: 'test3', value: 2 }
+        { label: 'checkbox1', value: 0 },
+        { label: 'checkbox2', value: 1 },
+        { label: 'checkbox3', value: 2 },
+        { label: 'checkbox4', value: 3 }
+      ]
+    }
+  },
+  radio: {
+    label: '單選',
+    filter: {
+      default: null,
+      required: true,
+      options: [
+        { label: 'radio1', value: 0 },
+        { label: 'radio2', value: 1 },
+        { label: 'radio3', value: 2 }
       ]
     }
   }
@@ -72,8 +86,9 @@ interface Form {
   phone?: string
   date?: string
   daterange?: [string, string]
-  select?: string,
+  select?: string
   checkbox?: []
+  radio?: number
 }
 
 const {
@@ -125,6 +140,11 @@ const submit = () => {
     <FormCheckbox
       v-model="form.checkbox"
       v-bind="formColumn.checkbox"
+    />
+
+    <FormRadio
+      v-model="form.radio"
+      v-bind="formColumn.radio"
     />
 
     <div class="input-btn">

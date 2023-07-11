@@ -23,6 +23,12 @@ export type {
 } from './feature/CustomPopover/CustomPopover.vue'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
 
+
+export type {
+  Options as RadioOptions
+} from './feature/CustomRadio/CustomRadio.vue'
+export { default as CustomRadio } from './feature/CustomRadio/CustomRadio.vue'
+
 export type { PageChange } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
@@ -40,6 +46,8 @@ export { default as CustomCheckbox } from './feature/CustomCheckbox/CustomCheckb
 export { default as DataTable } from './feature/DataTable/DataTable'
 
 // form
+export { default as FormCheckbox } from './form/FormCheckbox.vue'
+
 export { default as FormDatePicker } from './form/FormDatePicker.vue'
 
 export declare interface Expose {
@@ -50,6 +58,7 @@ export declare interface Expose {
 }
 export { default as FormInput } from './form/FormInput.vue'
 
+export { default as FormRadio } from './form/FormRadio.vue'
+
 export { default as FormSelect } from './form/FormSelect.vue'
 
-export { default as FormCheckbox } from './form/FormCheckbox.vue'

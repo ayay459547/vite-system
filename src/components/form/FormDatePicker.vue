@@ -167,6 +167,7 @@ onBeforeUnmount(() => {
       :start-placeholder="t('startTime')"
       :end-placeholder="t('endTime')"
       :class="[`validate-${validateRes}`]"
+      :validate-event="false"
       v-bind="bindAttributes"
       v-on="validationListeners"
     >

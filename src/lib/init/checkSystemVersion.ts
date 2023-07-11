@@ -1,5 +1,3 @@
-import { getCookie } from '@/lib/cookie'
-
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 const systemVersion = (import.meta as any).env.VITE_API_VERSION
 
@@ -11,12 +9,12 @@ const systemVersion = (import.meta as any).env.VITE_API_VERSION
  * 如果系統版本更換
  */
 const checkSystemVersionDiff = () => {
-  const cookieSystem = getCookie('stystem')
-  const cookieVersion = getCookie('version')
+  const localSystem = localStorage.getItem('system')
+  const localVersion = localStorage.getItem('version')
 
   if (
-    [null, undefined, ''].includes(cookieSystem) ||
-    [null, undefined, ''].includes(cookieVersion)
+    [null, undefined, ''].includes(localSystem) ||
+    [null, undefined, ''].includes(localVersion)
   ) {
     return {
       isChange: true,
@@ -26,8 +24,8 @@ const checkSystemVersionDiff = () => {
   }
 
   if (
-    (cookieSystem !== system) ||
-    (cookieVersion !== systemVersion)
+    (localSystem !== system) ||
+    (localVersion !== systemVersion)
   ) {
     return {
       isChange: true,

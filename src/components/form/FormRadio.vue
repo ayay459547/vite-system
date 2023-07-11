@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed } from 'vue'
-import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
+import { ElRadioGroup, ElRadio } from 'element-plus'
 import { useField } from 'vee-validate'
 
-type ModelValue = Array<string | number | null>
+export type Options = Array<{
+  label: string
+  value: string | number | boolean
+  disabled?: boolean
+}>
+
+type ModelValue = number | string | boolean | null
 
 const props = defineProps({
   modelValue: {
-    type: Array as PropType<ModelValue>,
+    type: [Boolean, String, Number, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {
@@ -32,7 +38,7 @@ const props = defineProps({
     default: false
   },
   options: {
-    type: Array as PropType<{ label: string, value: string | number }[]>,
+    type: Array as PropType<Options>,
     default () {
       return []
     }
@@ -65,7 +71,7 @@ const validateField = (veeValue: ModelValue) => {
   if (!props.required) return true
 
   // 必填
-  if (props.required && veeValue.length === 0) {
+  if (props.required && veeValue === null) {
     return '此輸入框為必填'
   }
 
@@ -115,20 +121,22 @@ defineExpose({
       <span>{{ props.label }}</span>
     </label>
 
-    <ElCheckboxGroup
+    <ElRadioGroup
       v-model="tempValue"
+      size="large"
       :validate-event="false"
       v-bind:class="bindAttributes"
       v-on="validationListeners"
     >
-      <ElCheckbox
-        v-for="item in options"
-        :key="item.value"
-        :label="item.value"
+      <ElRadio
+        v-for="option in props.options"
+        :key="`key-${option.value}`"
+        :label="option.value"
+        :disabled="option.disabled ?? false"
       >
-        {{ item.label }}
-      </ElCheckbox>
-    </ElCheckboxGroup>
+        <slot :label="option.label" :value="option.value">{{ option.label }}</slot>
+      </ElRadio>
+    </ElRadioGroup>
 
     <span class="input-error">{{ errorMessage }}</span>
   </div>

@@ -8,6 +8,8 @@ import { permission } from '@/lib/permission'
 import { getRouterLeafLayer } from '@/lib/routes'
 import routes from '@/router/routes'
 
+import { setCookie, getCookie, removeCookie } from '@/lib/cookie'
+
 // token
 import { v4 as uuidv4 } from 'uuid'
 import AES from 'crypto-js/aes'
@@ -26,7 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
 	 * token 會帶動使用者資料
 	 */
 	const getToken = (): Token | null => {
-		const token = localStorage.getItem('token')
+		const token = getCookie('token')
 		if (['', null, undefined].includes(token)) return null
 
 		const _token = AES.decrypt(token, privateKey).toString(Utf8)
@@ -39,13 +41,13 @@ export const useAuthStore = defineStore('auth', () => {
 			userId
 		})
 
-		localStorage.setItem(
+		setCookie(
 			'token',
 			AES.encrypt(_token, privateKey).toString()
 		)
 	}
 	const clearToken = () => {
-		localStorage.removeItem('token')
+		removeCookie('token')
 	}
 
 	// 登入狀態 看使用者資料

@@ -111,6 +111,7 @@ const hasSlot = (prop: string): boolean => {
       v-model="tempValue"
       placeholder="Please input"
       class="input-main"
+      :validate-event="false"
       v-bind="bindAttributes"
       v-on="validationListeners"
       @click.stop

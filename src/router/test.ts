@@ -80,6 +80,14 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Excel-test.vue')
       }
     ]
+  },
+  {
+    name: 'educate-test',
+    title: '教育訓練',
+    systemType: ['system', 'development'],
+    icon: 'feather',
+    path: '/educate-test',
+    component: () => import('@/views/Educate-test.vue')
   }
 ]
 
