@@ -117,7 +117,8 @@ defineExpose({
     ]"
   >
     <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
-      <span v-if="props.required" class="input-required">*</span>
+      <span v-if="props.required" class="input-required input-prefix">*</span>
+      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
@@ -162,6 +163,10 @@ defineExpose({
     }
   }
 
+  &-prefix {
+    display: inline-block;
+    width: 10px;
+  }
   &-required {
     color: $danger;
     display: inline-block;

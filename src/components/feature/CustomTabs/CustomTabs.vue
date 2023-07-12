@@ -15,10 +15,11 @@ export type ListItem = {
   value?: any
 }
 export type ListType = Array<ListItem>
+export type ModelValue = string | null
 
 const props = defineProps({
   modelValue: {
-    type: [String, null] as PropType<string | null>,
+    type: [String, null] as PropType<ModelValue>,
     required: true
   },
   list: {
@@ -41,9 +42,9 @@ const emit = defineEmits([
   'remove'
 ])
 
-const tempValue: WritableComputedRef<string> = computed({
+const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
+  set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
 const scrollToCurrentTab = (currentTab: string) => {

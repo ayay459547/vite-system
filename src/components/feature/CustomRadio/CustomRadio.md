@@ -1,22 +1,23 @@
-# CustomButton API
+# CustomRadio API
 ### 使用範例
 ```vue
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import { CustomCheckbox } from '@/components'
+import { ref } from 'vue'
+import { CustomRadio } from '@/components'
 
-  const ischeck = ref(false)
+const valueTest = ref('')
+const options = [
+  { label: '選項一', value: 0 },
+  { label: '選項二', value: 1 },
+  { label: '選項三', value: 2 }
+]
 
-  const testCheck = (v: boolean) => {
-    console.log('test checkbox', v)
-  }
 </script>
 
 <template>
-  <CustomCheckbox
-    label="是否確認"
-    v-model="ischeck"
-    @change="testCheck"
+  <CustomRadio
+    v-model="valueTest"
+    :options="options"
   />
 </template>
 ```
@@ -24,10 +25,10 @@
 https://element-plus.org/en-US/component/radio.html
 
 ### Attributes ( props )
-| 屬姓名      | 說明             | 类型    | 默認值     |
-| ----------- | ---------------- | ------- | --------- |
-| modelValue  | v-modal 綁定的值  | boolean | false     |
-| label       | 顯示文字          | string  | ''        |
+| 屬姓名           | 說明                | 类型    | 默認值    | 是否必填 |
+| ---------------- | ------------------ | ------- | --------- | ------- |
+| modelValue       | v-model 綁定的值    | string  | ''        | V      |
+| options          | 選項                | Array   | []        |        |
 
 ### Events ( emit )
 | 事件名            | 說明         | 傳值類型  |

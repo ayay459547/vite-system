@@ -2,20 +2,14 @@ import injectFill from './Array/injectFill'
 import injectIncludes from './Array/injectIncludes'
 
 const injectFunction = {
-  fill: () => {
-    if (!Array.prototype.fill) {
-      injectFill()
-    }
-  },
-  includes: () => {
-    if (!Array.prototype.includes) {
-      injectIncludes()
-    }
-  }
+  fill: injectFill,
+  includes: injectIncludes
 }
 
 for (const key in injectFunction) {
-  injectFunction[key]()
+  if (!Array.prototype[key]) {
+    injectFunction[key]()
+  }
 }
 
 export default injectFunction

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import { ElRadioGroup, ElRadio } from 'element-plus'
 
@@ -10,7 +10,7 @@ export type Options = Array<{
   disabled?: boolean
 }>
 
-type ModelValue = number | string | boolean | null
+export type ModelValue = number | string | boolean | null
 
 const props = defineProps({
   modelValue: {

@@ -4,6 +4,11 @@ import { computed, useSlots } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 import { useField } from 'vee-validate'
 
+export type Options = Array<{
+  label: string
+  value: string | number | boolean
+}>
+
 type ModelValue = string | number | null
 
 const props = defineProps({
@@ -32,7 +37,7 @@ const props = defineProps({
     default: false
   },
   options: {
-    type: Array as PropType<{ label: string, value: string | number }[]>,
+    type: Array as PropType<Options>,
     default () {
       return []
     }
@@ -140,7 +145,8 @@ const hasSlot = (prop: string): boolean => {
     ]"
   >
     <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
-      <span v-if="props.required" class="input-required">*</span>
+      <span v-if="props.required" class="input-required input-prefix">*</span>
+      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
@@ -156,7 +162,7 @@ const hasSlot = (prop: string): boolean => {
       <slot>
         <ElOption
           v-for="item in props.options"
-          :key="item.value"
+          :key="`${item.value}`"
           :label="item.label"
           :value="item.value"
         />
@@ -210,6 +216,10 @@ const hasSlot = (prop: string): boolean => {
     }
   }
 
+  &-prefix {
+    display: inline-block;
+    width: 10px;
+  }
   &-required {
     color: $danger;
     display: inline-block;

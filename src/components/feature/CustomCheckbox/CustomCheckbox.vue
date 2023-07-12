@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import type { CheckboxValueType } from 'element-plus'
 import { ElCheckbox } from 'element-plus'
 
-type ModelValue = boolean
+export type ModelValue = CheckboxValueType
 
 const props = defineProps({
   modelValue: {
@@ -22,9 +22,9 @@ const props = defineProps({
   }
 })
 
-const tempValue = computed<boolean>({
+const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
 const emit = defineEmits([
@@ -32,7 +32,7 @@ const emit = defineEmits([
   'change'
 ])
 
-const onCheckboxChange = (val: CheckboxValueType) => {
+const onCheckboxChange = (val: ModelValue) => {
   emit('change', val)
 }
 

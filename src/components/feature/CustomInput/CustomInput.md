@@ -72,10 +72,11 @@ https://element-plus.org/en-US/component/input.html
 | suffix     | 輸入框內 後面加上一個區塊  |
 
 ### Events ( emits )
-| 事件名  | 說明                  | 傳值類型        |
-| ------- | -------------------- | --------------- |
-| focus   | 當輸入框聚焦時         | FocusEvent      |
-| clear   | 點擊 clearable的按鈕時 |                 |
-| blur    | 輸入框沒有聚焦時       | FocusEvent      |
-| change  | modelValue 發生改變時  | string | null   |
-| input   | 輸入框的值 發生改變時   | string | null   |
+| 事件名             | 說明                  | 傳值類型        |
+| ----------------- | -------------------- | --------------- |
+| update:modelValue |  v-modal 用           | boolean        |
+| focus             | 當輸入框聚焦時         | FocusEvent      |
+| clear             | 點擊 clearable的按鈕時 |                 |
+| blur              | 輸入框沒有聚焦時       | FocusEvent      |
+| change            | modelValue 發生改變時  | string | null   |
+| input             | 輸入框的值 發生改變時   | string | null   |

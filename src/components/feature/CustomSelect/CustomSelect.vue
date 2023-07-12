@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
 import { computed, useSlots } from 'vue'
-import { ElInput } from 'element-plus'
+import { ElSelect, ElOption } from 'element-plus'
 
-export type ModelValue = string | null
+export type Options = Array<{
+  label: string
+  value: string | number | boolean
+}>
+
+export type ModelValue = string | number | Record<string, any> | Array<any>
 
 const props = defineProps({
   modelValue: {
-    type: [String, null] as PropType<ModelValue>,
-    required: true
+    type: [String, Number, Array, Object] as PropType<ModelValue>,
+    required: false,
+    default: ''
   },
   direction: {
     type: String as PropType<'column' | 'row'>,
@@ -22,11 +28,13 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
-  // element ui plus
-  type: {
-    type: String as PropType<string>,
-    default: 'text'
+  options: {
+    type: Array as PropType<Options>,
+    default () {
+      return []
+    }
   },
+  // element ui plus
   clearable: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -34,19 +42,13 @@ const props = defineProps({
   disabled: {
     type: Boolean as PropType<boolean>,
     default: false
-  },
-  showPassword: {
-    type: Boolean as PropType<boolean>,
-    default: false
   }
 })
 
 const bindAttributes = computed(() => {
   return {
-    type: props.type,
     clearable: props.clearable,
-    disabled: props.disabled,
-    showPassword: props.showPassword
+    disabled: props.disabled
   }
 })
 
@@ -55,7 +57,8 @@ const emit = defineEmits([
   'blur',
   'focus',
   'change',
-  'input',
+  'remove-tag',
+  'visible-change',
   'clear'
 ])
 
@@ -76,11 +79,14 @@ const validationListeners = computed(() => {
     blur: (e: FocusEvent): void => {
       emit('blur', e)
     },
-    change: (value: string | number): void => {
+    change: (value: ModelValue): void => {
       emit('change', value)
     },
-    input: (value: string | number): void => {
-      emit('input', value)
+    'remove-tag': (value: ModelValue): void => {
+      emit('remove-tag', value)
+    },
+    'visible-change': (value: boolean): void => {
+      emit('visible-change', value)
     }
   }
 
@@ -104,10 +110,11 @@ const hasSlot = (prop: string): boolean => {
     ]"
   >
     <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
+      <span class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
-    <ElInput
+    <ElSelect
       v-model="tempValue"
       placeholder="Please input"
       class="input-main"
@@ -116,21 +123,27 @@ const hasSlot = (prop: string): boolean => {
       v-on="validationListeners"
       @click.stop
     >
-      <!-- 輸入框用 -->
-      <template v-if="hasSlot('prepend')" #prepend>
-        <slot name="prepend"></slot>
-      </template>
-      <template v-if="hasSlot('append')" #append>
-        <slot name="append"></slot>
-      </template>
-      <!-- 圖示用 -->
+      <ElOption
+        v-for="item in props.options"
+        :key="`${item.value}`"
+        :label="item.label"
+        :value="item.value"
+      >
+        <template v-if="hasSlot('defalut')" #defalut>
+          <slot
+            name="defalut"
+            :label="item.label"
+            :value="item.value"
+          ></slot>
+        </template>
+      </ElOption>
       <template v-if="hasSlot('prefix')" #prefix>
         <slot name="prefix"></slot>
       </template>
-      <template v-if="hasSlot('suffix')" #suffix>
-        <slot name="suffix"></slot>
+      <template v-if="hasSlot('empty')" #empty>
+        <slot name="empty"></slot>
       </template>
-    </ElInput>
+    </ElSelect>
   </div>
 </template>
 
@@ -165,6 +178,12 @@ const hasSlot = (prop: string): boolean => {
     &.column {
       flex-direction: column;
     }
+  }
+
+  &-required {
+    color: $danger;
+    display: inline-block;
+    padding-right: 2px;
   }
 
   &-label {

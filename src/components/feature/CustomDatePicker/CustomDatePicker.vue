@@ -1,21 +1,28 @@
 <script setup lang="ts">
-import type { PropType, WritableComputedRef } from 'vue'
-import { computed, useSlots } from 'vue'
-import { ElInput } from 'element-plus'
+import type { PropType } from 'vue'
+import { computed, useSlots, onMounted, onBeforeUnmount } from 'vue'
+import { ElDatePicker } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
-export type ModelValue = string | null
+type BaseValue = string | null
+export type ModelValue = BaseValue | [BaseValue, BaseValue]
+
+type PickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
 
 const props = defineProps({
   modelValue: {
-    type: [String, null] as PropType<ModelValue>,
+    type: [Array, String, null] as PropType<ModelValue>,
     required: true
   },
   direction: {
     type: String as PropType<'column' | 'row'>,
+    required: false,
     default: 'column'
   },
   label: {
     type: String as PropType<string>,
+    required: false,
     default: ''
   },
   hiddenLabel: {
@@ -23,21 +30,18 @@ const props = defineProps({
     default: false
   },
   // element ui plus
-  type: {
-    type: String as PropType<string>,
-    default: 'text'
-  },
   clearable: {
     type: Boolean as PropType<boolean>,
+    required: false,
     default: false
   },
   disabled: {
     type: Boolean as PropType<boolean>,
     default: false
   },
-  showPassword: {
-    type: Boolean as PropType<boolean>,
-    default: false
+  type: {
+    type: String as PropType<PickerType>,
+    default: 'date'
   }
 })
 
@@ -45,8 +49,7 @@ const bindAttributes = computed(() => {
   return {
     type: props.type,
     clearable: props.clearable,
-    disabled: props.disabled,
-    showPassword: props.showPassword
+    disabled: props.disabled
   }
 })
 
@@ -54,9 +57,7 @@ const emit = defineEmits([
   'update:modelValue',
   'blur',
   'focus',
-  'change',
-  'input',
-  'clear'
+  'change'
 ])
 
 const tempValue: WritableComputedRef<ModelValue> = computed({
@@ -70,17 +71,11 @@ const validationListeners = computed(() => {
     focus: (e: FocusEvent): void => {
       emit('focus', e)
     },
-    clear: (): void => {
-      emit('clear')
-    },
     blur: (e: FocusEvent): void => {
       emit('blur', e)
     },
-    change: (value: string | number): void => {
+    change: (value: ModelValue): void => {
       emit('change', value)
-    },
-    input: (value: string | number): void => {
-      emit('input', value)
     }
   }
 
@@ -93,49 +88,83 @@ const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
 }
 
+onMounted(() => {
+  window.addEventListener('touchstart', e => e.preventDefault())
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('touchstart', e => e.preventDefault())
+})
+
 </script>
 
 <template>
   <div
     class="input-container"
-    :class="[
-      `${props.direction}`,
-      props.hiddenLabel ? 'hidden-label' : ''
-    ]"
+    :class="[`${props.direction}`]"
   >
     <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
       <span>{{ props.label }}</span>
     </label>
 
-    <ElInput
+    <ElDatePicker
       v-model="tempValue"
       placeholder="Please input"
       class="input-main"
+      format="YYYY-MM-DD"
+      value-format="YYYY-MM-DD"
+      :start-placeholder="t('startTime')"
+      :end-placeholder="t('endTime')"
       :validate-event="false"
       v-bind="bindAttributes"
       v-on="validationListeners"
       @click.stop
     >
-      <!-- 輸入框用 -->
-      <template v-if="hasSlot('prepend')" #prepend>
-        <slot name="prepend"></slot>
+      <template
+        v-if="hasSlot('default')"
+        #default="{
+          row, column,
+          date, dayjs,
+          end, start, inRange,
+          disabled, text, timestamp, type,
+          isSelected, selected, isCurrent,
+          customClass
+        }"
+      >
+        <slot
+          name="default"
+          :row="row"
+          :column="column"
+          :date="date"
+          :dayjs="dayjs"
+          :disabled="disabled"
+          :text="text"
+          :timestamp="timestamp"
+          :type="type"
+          :start="start"
+          :end="end"
+          :in-range="inRange"
+          :is-selected="isSelected"
+          :selected="selected"
+          :is-current="isCurrent"
+          :custom-class="customClass"
+        ></slot>
       </template>
-      <template v-if="hasSlot('append')" #append>
-        <slot name="append"></slot>
+      <template v-if="hasSlot('range-separator')" #range-separator>
+        <slot name="range-separator"></slot>
       </template>
-      <!-- 圖示用 -->
-      <template v-if="hasSlot('prefix')" #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="hasSlot('suffix')" #suffix>
-        <slot name="suffix"></slot>
-      </template>
-    </ElInput>
+    </ElDatePicker>
   </div>
 </template>
 
 <style lang="scss" scoped>
 :deep(.input-main) {
+  &.el-date-editor {
+    width: 100% !important;
+    max-height: 32px !important;
+    border-radius: 4px;
+  }
+
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;

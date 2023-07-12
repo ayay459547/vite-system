@@ -5,10 +5,11 @@ import { CustomButton } from '@/components'
 
 export type WidthSize = 'large'| 'default'| 'small'
 export type HeightSize = 'large'| 'default'| 'small'
+export type ModelValue = boolean
 
 const props = defineProps({
   modelValue: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<ModelValue>,
     default: false
   },
   title: {
@@ -38,9 +39,9 @@ const emit = defineEmits([
 const wrapperIsShow = ref(false)
 const containerIsShow = ref(false)
 
-const tempValue: WritableComputedRef<boolean> = computed({
+const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
 watch(tempValue, (newValue) => {

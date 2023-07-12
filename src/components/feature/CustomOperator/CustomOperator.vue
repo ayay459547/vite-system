@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
-import { computed, useSlots } from 'vue'
-import { ElInput } from 'element-plus'
+import { computed } from 'vue'
+import { ElInput, ElSelect, ElOption } from 'element-plus'
 
-export type ModelValue = string | null
+export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | null
+export type OperatorValue = number | null
+export type ModelValue = [OperatorOptions, OperatorValue]
 
 const props = defineProps({
   modelValue: {
-    type: [String, null] as PropType<ModelValue>,
-    required: true
+    type: Array as PropType<ModelValue>,
+    required: true,
+    default () {
+      return ['equal', null]
+    }
   },
   direction: {
     type: String as PropType<'column' | 'row'>,
@@ -23,10 +28,6 @@ const props = defineProps({
     default: false
   },
   // element ui plus
-  type: {
-    type: String as PropType<string>,
-    default: 'text'
-  },
   clearable: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -34,19 +35,6 @@ const props = defineProps({
   disabled: {
     type: Boolean as PropType<boolean>,
     default: false
-  },
-  showPassword: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  }
-})
-
-const bindAttributes = computed(() => {
-  return {
-    type: props.type,
-    clearable: props.clearable,
-    disabled: props.disabled,
-    showPassword: props.showPassword
   }
 })
 
@@ -64,6 +52,28 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
+const operatorType = computed<OperatorOptions>({
+  get: () => props.modelValue[0],
+  set: (value: OperatorOptions) => {
+    tempValue.value = [
+      value,
+      props.modelValue[1]
+    ]
+  }
+})
+// 只接受數字
+const operatorNumber = computed<OperatorValue>({
+  get: () => props.modelValue[1],
+  set: (value: OperatorValue) => {
+    const regexp = /[\D]/g
+
+    tempValue.value = [
+      props.modelValue[0],
+      value.replace(regexp, '')
+    ]
+  }
+})
+
 // event
 const validationListeners = computed(() => {
   const event = {
@@ -76,8 +86,8 @@ const validationListeners = computed(() => {
     blur: (e: FocusEvent): void => {
       emit('blur', e)
     },
-    change: (value: string | number): void => {
-      emit('change', value)
+    change: (): void => {
+      onChange()
     },
     input: (value: string | number): void => {
       emit('input', value)
@@ -87,11 +97,11 @@ const validationListeners = computed(() => {
   return event
 })
 
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+const onChange = () => {
+  const [operatorType, operatorNumber] = props.modelValue
+  emit('change', [operatorType, operatorNumber])
 }
+
 
 </script>
 
@@ -107,30 +117,30 @@ const hasSlot = (prop: string): boolean => {
       <span>{{ props.label }}</span>
     </label>
 
-    <ElInput
-      v-model="tempValue"
-      placeholder="Please input"
-      class="input-main"
-      :validate-event="false"
-      v-bind="bindAttributes"
-      v-on="validationListeners"
-      @click.stop
-    >
-      <!-- 輸入框用 -->
-      <template v-if="hasSlot('prepend')" #prepend>
-        <slot name="prepend"></slot>
-      </template>
-      <template v-if="hasSlot('append')" #append>
-        <slot name="append"></slot>
-      </template>
-      <!-- 圖示用 -->
-      <template v-if="hasSlot('prefix')" #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="hasSlot('suffix')" #suffix>
-        <slot name="suffix"></slot>
-      </template>
-    </ElInput>
+    <div class="input-group" @click.stop>
+      <ElSelect
+        v-model="operatorType"
+        placeholder="Please input"
+        :validate-event="false"
+        :clearable="props.clearable"
+        :disabled="props.disabled"
+        v-on="validationListeners"
+      >
+        <ElOption label="=" value="equal"/>
+        <ElOption label=">=" value="greatthan"/>
+        <ElOption label="<=" value="lessthan"/>
+      </ElSelect>
+
+      <ElInput
+        v-model="operatorNumber"
+        placeholder="Please input"
+        class="input-main"
+        :clearable="props.clearable"
+        :disabled="props.disabled"
+        :validate-event="false"
+        v-on="validationListeners"
+      />
+    </div>
   </div>
 </template>
 
@@ -147,6 +157,9 @@ const hasSlot = (prop: string): boolean => {
     right: 8px;
     top: 0px;
   }
+  // .el-input__inner {
+  //   text-align: right;
+  // }
 }
 .input {
   &-container {
@@ -172,7 +185,13 @@ const hasSlot = (prop: string): boolean => {
     white-space: nowrap;
   }
 
+  &-group {
+    display: flex;
+    gap: 16px;
+  }
+
   &-main {
+    width: 100%;
     height: fit-content;
   }
 }

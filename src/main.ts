@@ -11,8 +11,8 @@ import './lib/init/objectFunction'
  * cookie
  */
 import './lib/init/init_idb'
-import './lib/init/init_localStorage'
 import './lib/init/init_cookie'
+import './lib/init/init_localStorage'
 
 // chrome 性能優化 所產生的警告
 import './lib/init/passiveEvents'

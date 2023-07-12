@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 export const setCookie = (key: string, value: string) => {
   const options = {
-    expires: (new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
+    expires: (new Date(Date.now() + 8 * 60 * 60 * 1000))
   }
   Cookies.set(key, value, options)
 }

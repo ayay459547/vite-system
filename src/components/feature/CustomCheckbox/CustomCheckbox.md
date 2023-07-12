@@ -1,4 +1,4 @@
-# CustomButton API
+# CustomCheckbox API
 ### 使用範例
 ```vue
 <script setup lang="ts">
