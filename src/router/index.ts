@@ -3,7 +3,6 @@ import type {
   RouteLocationNormalized,
   NavigationGuardNext
 } from 'vue-router'
-import type { RouteRecordName } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { ComputedRef } from 'vue'
 import { ref, computed } from 'vue'
@@ -42,6 +41,9 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
             keepAlive: false,
             title,
             ...meta
+          },
+          props: (route: RouteLocationNormalized) => {
+            return { query: route.query }
           }
         }
         res.push(pushItem)
@@ -103,13 +105,22 @@ const baseRoutes: Array<RouteRecordRaw> = [
   }
 ]
 
+// 基本路由不受權限引響
+const baseRoutesName = baseRoutes.reduce((res, curr) => {
+  const routeName = curr.name
+  if (routeName) {
+    res.push(routeName)
+  }
+  return res
+}, [])
+
 const router = createRouter({
   history: createWebHistory((import.meta as any).env.BASE_URL),
   routes: [...baseRoutes, ...resRoutes.value]
 })
 
 // 暫存使用者想去的路由名稱
-const toName = ref<RouteRecordName | null>(null)
+const tempTo = ref<RouteLocationNormalized | null>(null)
 
 router.beforeEach(
   (
@@ -120,8 +131,6 @@ router.beforeEach(
     const authStore = useAuthStore()
     const { isLogin, routesPermission } = storeToRefs(authStore)
 
-    // 基本路由不受權限引響
-    const baseRoutesName = ['home', 'login', 'noPermissions', 'page404']
     const toNavigation = routesPermission.value.get(to.name as string)
 
     if (isLogin.value) {
@@ -136,11 +145,11 @@ router.beforeEach(
       ) {
         next({ name: 'noPermissions' })
       // 如果再未登入時有 想進的頁面 會優先進入
-      } else if (toName.value) {
-        const temp = toName.value
-        toName.value = null
+      } else if (tempTo.value) {
+        const temp = tempTo.value
+        tempTo.value = null
 
-        next({ name: temp })
+        next({ ...temp })
       // 已登入
       } else {
         next()
@@ -152,7 +161,7 @@ router.beforeEach(
       } else {
         // 未登入先將想去的頁面暫存
         if (to.name !== 'home') {
-          toName.value = to.name
+          tempTo.value = to
         }
 
         next({ name: 'login' })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import type { OperatorModelValue } from '@/components'
 import {
   CustomRadio,
   CustomCheckbox,
@@ -26,7 +27,7 @@ const dateValue = ref(null)
 
 const selectValue = ref(null)
 
-const operatorValue = ref([null, null])
+const operatorValue = ref<OperatorModelValue>([null, null])
 
 const onOperatorChange = (v) => {
   console.log(v)

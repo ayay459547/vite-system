@@ -49,7 +49,7 @@ export const getRoutesPermission = async (userId: number) => {
       data: allPermissionData,
       status: 'success'
     },
-    delay: 300,
+    delay: 500,
     callback: (config, fakeData) => {
       if (config.data.id) {
         return fakeData

@@ -4,12 +4,12 @@ import { computed } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | null
-export type OperatorValue = number | null
+export type OperatorValue = string | number | null
 export type ModelValue = [OperatorOptions, OperatorValue]
 
 const props = defineProps({
   modelValue: {
-    type: Array as PropType<ModelValue>,
+    type: Array as unknown as PropType<ModelValue>,
     required: true,
     default () {
       return ['equal', null]
@@ -65,11 +65,15 @@ const operatorType = computed<OperatorOptions>({
 const operatorNumber = computed<OperatorValue>({
   get: () => props.modelValue[1],
   set: (value: OperatorValue) => {
-    const regexp = /[\D]/g
+    let newValue = value
+    if (typeof value === 'string') {
+      const regexp = /[\D]/g
+      newValue = value.replace(regexp, '')
+    }
 
     tempValue.value = [
       props.modelValue[0],
-      value.replace(regexp, '')
+      newValue
     ]
   }
 })

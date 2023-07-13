@@ -5,12 +5,10 @@ import {
   reactive,
   computed,
   provide,
-  watch,
   onMounted,
+  onBeforeMount,
   nextTick
 } from 'vue'
-import type { RouteRecordName, RouteLocationNormalizedLoaded } from 'vue-router'
-
 // layout
 import SideSection from '@/components/layout/sideSection/SideSection.vue'
 import HeaderSection from '@/components/layout/headerSection/HeaderSection.vue'
@@ -25,7 +23,10 @@ import { useLocaleStore } from '@/stores/locale'
 // system init
 import { useAuthStore } from '@/stores/auth'
 import { useRoutesStore } from '@/stores/routes'
+import { useEnvStore } from '@/stores/env'
 import { storeToRefs } from 'pinia'
+
+import type { RouteRecordName, RouteLocationNormalized } from 'vue-router'
 import { useRouter } from 'vue-router'
 
 // hook
@@ -113,13 +114,38 @@ provide<Hook>('hook', () => {
 })
 
 
-// 路由更換時 loading
-const isLoading = ref(false)
-const prevRoute = ref<RouteRecordName>('')
-
-const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
+// 路由更換時執行
+const envStore = useEnvStore()
+const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
 
+  nextTick(() => {
+    const currentTitle = currentRoute.meta?.title ?? envStore.system
+    document.title = currentTitle
+  })
+
+  setModalView(currentRoute)
+  setLoading(currentRoute)
+}
+
+// 如果是另開視窗 將選單縮起來
+const setModalView = async (currentRoute: RouteLocationNormalized) => {
+  const isModal = currentRoute?.query?.isModal ?? false
+
+  if (isModal === 'true') {
+    isShow.value = false
+    await nextTick()
+
+    navIsOpen.value = false
+    historyIsOpen.value = false
+    isShow.value = true
+  }
+}
+
+// 切換路由時 要有loading
+const isLoading = ref(false)
+const prevRoute = ref<RouteRecordName>('')
+const setLoading = (currentRoute: RouteLocationNormalized) => {
   if (prevRoute.value !== currentRoute.name) {
     isLoading.value = true
 
@@ -132,29 +158,56 @@ const setPrevRoute = (currentRoute: RouteLocationNormalizedLoaded) => {
 }
 
 // 系統初始化
+const isShow = ref(false)
+const router = useRouter()
+
+const authStore = useAuthStore()
+const { setToken, clearToken, initSystemData } = authStore
+const { authData, routesPermission } = storeToRefs(authStore)
+
+const { setNavigationRoutes } = useRoutesStore()
+
+/**
+ * 初始化系統使用者 + 權限
+ * 用權限 設置路由選項
+ */
+ const initNavigationRoutes = async () => {
+  isShow.value = false
+
+  await initSystemData()
+
+  setNavigationRoutes(routesPermission.value)
+  router.push({ name: 'home' })
+
+  await nextTick()
+  isShow.value = true
+  loading(false, 'loading')
+}
+
+onBeforeMount(() => {
+  initNavigationRoutes()
+})
+
 onMounted(() => {
   loading(true, '系統初始化')
 })
 
-const authStore = useAuthStore()
-const { setNavigationRoutes } = useRoutesStore()
-const { isFinishInit, routesPermission } = storeToRefs(authStore)
-const router = useRouter()
+// 登出
+const logout = async () => {
+  loading(true, '登出中')
+  clearToken()
 
-const isShow = ref(false)
-watch(isFinishInit, async (isFinish: boolean) => {
-  if (isFinish) {
-    setNavigationRoutes(routesPermission.value)
-    router.push({ name: 'home' })
-    await nextTick()
+  await initNavigationRoutes()
+  router.push({ name: 'login' })
+}
+// 登入
+const login = async (userId: number) => {
+  loading(true, '系統初始化')
+  setToken(userId)
 
-    loading(false, 'loading')
-
-    setTimeout(() => {
-      isShow.value = true
-    }, 10)
-  }
-})
+  await initNavigationRoutes()
+  router.push({ name: 'home' })
+}
 
 </script>
 
@@ -185,7 +238,9 @@ watch(isFinishInit, async (isFinish: boolean) => {
           <HeaderSection
             v-model:isOpen="navIsOpen"
             :history-is-open="historyIsOpen"
+            :auth-data="authData"
             @change-history="changeHistory"
+            @logout="logout"
           />
         </div>
         <div class="layout-view">
@@ -193,11 +248,20 @@ watch(isFinishInit, async (isFinish: boolean) => {
             <div v-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
                 <KeepAlive>
-                  <component v-if="route.meta.keepAlive" :key="route.name" :is="Component"/>
+                  <component
+                    v-if="route.meta.keepAlive"
+                    :key="route.name"
+                    :is="Component"
+                  />
                 </KeepAlive>
-                <component v-if="!route.meta.keepAlive" :key="route.name" :is="Component"/>
+                <component
+                  v-if="!route.meta.keepAlive"
+                  :key="route.name"
+                  :is="Component"
+                  @login="login"
+                />
 
-                <div style="display: none;">{{ setPrevRoute(route) }}</div>
+                <div style="display: none;">{{ onRouteChange(route) }}</div>
               </RouterView>
             </div>
           </PageSection>

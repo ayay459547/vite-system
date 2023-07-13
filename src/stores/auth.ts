@@ -1,7 +1,7 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { ref, computed, onBeforeMount, reactive } from 'vue'
-import type { AuthData } from './api'
+import { ref, computed, reactive } from 'vue'
+import type { AuthData, PermissionData } from './api'
 import { getUserData, getRoutesPermission } from './api'
 import { permission } from '@/lib/permission'
 
@@ -90,8 +90,6 @@ export const useAuthStore = defineStore('auth', () => {
 				}, 1000)
 			} else {
 				clearToken()
-				clearAuthData()
-				clearRoutesPermission()
 
 				setTimeout(() => {
 					resolve(0)
@@ -101,30 +99,18 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	/**
-	 * 使用 token 初始化使用者資料
-	 */
-	const initUserData = async (userId: number) => {
-		const { data: userData } = await getUserData(userId)
-		setAuthData(userData)
-	}
-
-	/**
 	 * 使用者 id 取的資料
 	 * 路由權限
 	 * key(string): permissions(number)
 	 */
 	const routesPermission = reactive(new Map())
 
-	const initRoutesPermission = async (userId: number) => {
-		routesPermission.clear()
-
-		const { data: permissionList } = await getRoutesPermission(userId)
-
+	const setRoutesPermission = async (permissionList: PermissionData[]) => {
 		permissionList.forEach(permissionItem => {
 			/**
-       * 依據 api 取得的路由權限
-       * 設定 權限的總和
-       */
+			 * 依據 api 取得的路由權限
+			 * 設定 權限的總和
+			 */
 			let _permission = 0
 			if (permissionItem.readPermissions) {
 				_permission += permission.read
@@ -143,6 +129,7 @@ export const useAuthStore = defineStore('auth', () => {
 			}
 			routesPermission.set(permissionItem.routerName, _permission)
 		})
+
 	}
 	// 將所有路由權限變為 0
 	const clearRoutesPermission = () => {
@@ -153,36 +140,40 @@ export const useAuthStore = defineStore('auth', () => {
 		})
 	}
 
-	const isFinishInit = ref(false)
 	/**
 	 * 初始化系統使用者
 	 * 初始化系統路由權限
 	 */
-	const initSystem = async () => {
-		isFinishInit.value = false
+	const initSystemData = async () => {
+		routesPermission.clear()
 
 		const userId = await checkAuthStatus()
-		if (userId > 0) {
-			await initUserData(userId)
-			await initRoutesPermission(userId)
-		}
 
-		isFinishInit.value = true
+		if (userId > 0) {
+			const [
+				{ data: authData },
+				{ data: permissionList }
+			] = await Promise.all([
+				// 使用 token 初始化使用者資料
+				getUserData(userId),
+				getRoutesPermission(userId)
+			])
+
+			setAuthData(authData)
+			setRoutesPermission(permissionList)
+		} else {
+			clearAuthData()
+			clearRoutesPermission()
+		}
 	}
 
-	onBeforeMount(() => {
-		initSystem()
-	})
-
   return {
-		getToken,
-		setToken,
-		clearToken,
-		isLogin,
+		setToken,   // 登入用
+		clearToken, // 登出用
+		isLogin,    // 路由確認用
 
 		authData,
 		routesPermission,
-		initSystem,
-		isFinishInit
+		initSystemData
 	}
 })

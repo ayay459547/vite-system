@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/columns'
-import { useAuthStore } from '@/stores/auth'
+
 import { FormInput, CustomIcon } from '@/components'
 import { loginSystem } from './api'
 
-const router = useRouter()
-
-const { setToken, initSystem } = useAuthStore()
-
 const hook: Hook = inject('hook')
 const { loading, swal } = hook()
+
+const emit = defineEmits(['login'])
 
 const login = () => {
   loading(true, '登入中')
@@ -21,33 +18,20 @@ const login = () => {
     const { account, passowrd } = form
     const { data: userId } = await loginSystem(account, passowrd)
 
-    setToken(userId)
-    await initSystem()
-
-    router.push({ name: 'home' })
-
-    setTimeout(() => {
+    if (userId > 0) {
+      emit('login', userId)
+    } else {
       loading(false)
-
-      // swal({
-      //   icon: 'success',
-      //   title: '登入成功',
-      //   text: '歡迎使用',
-      //   showCancelButton: false
-      // })
-    }, 480)
+    }
   }).catch(() => {
-    setTimeout(() => {
-      loading(false)
+    loading(false)
 
-      swal({
-        icon: 'warning',
-        title: '登入錯誤',
-        text: '登入資料狀態有誤，請連絡相關人員',
-        showCancelButton: false
-      })
-    }, 480)
-
+    swal({
+      icon: 'warning',
+      title: '登入錯誤',
+      text: '登入資料狀態有誤，請連絡相關人員',
+      showCancelButton: false
+    })
   })
 
 }
@@ -56,7 +40,7 @@ const columnSetting = {
   account: {
     label: '帳號',
     fitler: {
-      default: '',
+      default: 'admin',
       required: true
     }
   },
@@ -64,7 +48,7 @@ const columnSetting = {
     label: '密碼',
     fitler: {
       type: 'password',
-      default: '',
+      default: '123',
       required: true
     }
   }

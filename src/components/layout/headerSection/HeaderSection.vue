@@ -4,24 +4,23 @@ import { ref, computed, inject } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 
-import { storeToRefs } from 'pinia'
-import { useAuthStore } from '@/stores/auth'
 import { useRoutesStore } from '@/stores/routes'
 import { useLocaleStore } from '@/stores/locale'
 
 import { options as langOptions } from '@/i18n/i18n'
 import type { Hook, EventItem } from '@/declare/hook'
 
-import { useRouter } from 'vue-router'
-
 import { CustomIcon, CustomTooltip } from '@/components'
+import { AuthData } from '@/stores/api'
 
 const props = defineProps<{
-  isOpen: boolean,
+  isOpen: boolean
   historyIsOpen: boolean
+  authData: AuthData
 }>()
 
 const emit = defineEmits<{
+  (e: 'logout'): void
   (e: 'update:isOpen', value: boolean): void
   (e: 'changeHistory', value: boolean): void
 }>()
@@ -64,15 +63,10 @@ const breadcrumbSpan = computed<string>(() => {
   }, '')
 })
 
-// auth
-const authStore = useAuthStore()
-const { authData } = storeToRefs(authStore)
-const { clearToken, initSystem } = authStore
-
 const localeStore = useLocaleStore()
 
 const hook: Hook = inject('hook')
-const { eventList, loading } = hook()
+const { eventList } = hook()
 
 const langCallbackList = computed<EventItem[]>(() => {
   return langOptions.map(option => {
@@ -90,7 +84,6 @@ const openLangType = (e: MouseEvent) => {
   eventList(e, langCallbackList.value, { width: 150 })
 }
 
-const router = useRouter()
 const isFullScreen = ref(false)
 const toggleFullScreen = () => {
   if (document.fullscreenElement) {
@@ -113,30 +106,17 @@ const openUserEffect = (e: MouseEvent) => {
     {
       icon: ['fas', 'right-from-bracket'],
       label: '登出',
-      event: () => {
-        loading(true, '登出中')
-        clearToken()
-        initSystem()
-        router.push({ name: 'login' })
-
-        setTimeout(() => {
-          loading(false)
-        }, 480)
-      }
+      event: () => emit('logout')
     },
     {
       icon: ['fas',  isFullScreen.value ? 'window-restore' : 'expand'],
       label: isFullScreen.value ? '視窗模式' : '全螢幕模式',
-      event: () => {
-        toggleFullScreen()
-      }
+      event: () => toggleFullScreen()
     },
     {
       icon: ['fas', props.historyIsOpen ? 'eye-slash' : 'history'],
       label: `${props.historyIsOpen ? '隱藏' : '顯示' }路由選項`,
-      event: () => {
-        emit('changeHistory', !props.historyIsOpen)
-      }
+      event: () => emit('changeHistory', !props.historyIsOpen)
     }
   ], {
     width: 180
@@ -188,14 +168,14 @@ const openUserEffect = (e: MouseEvent) => {
       <div class="header-right-effect"  @click="openUserEffect">
         <div class="user-md">
           <CustomIcon name="user" class="icon"/>
-          <span>{{ authData.name }}</span>
+          <span>{{ props.authData.name }}</span>
         </div>
         <div class="user-xs">
           <CustomTooltip>
             <CustomIcon name="user"/>
 
             <template #content>
-              <span>{{ authData.name }}</span>
+              <span>{{ props.authData.name }}</span>
             </template>
           </CustomTooltip>
         </div>

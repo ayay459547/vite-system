@@ -107,26 +107,24 @@ export default defineComponent({
     newWindow (route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name,
-        query: { data: 'someData' }
+        query: { isModal: true }
       })
-      console.log(routeData.href)
       window.open(
         routeData.href,
         route.title,
         `
           toolbar=no,
           menubar=no,
-          width=500,
-          height=500,
-          left: 300,
-          top: 300
+          width=1200,
+          height=800,
+          left=100,
+          top=100
         `
       )
     },
     newPage (route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name
-        // query: { data: 'someData' }
       })
       window.open(routeData.href, '_blank')
     },

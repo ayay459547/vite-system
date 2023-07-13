@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { PropType, WritableComputedRef } from 'vue'
 import { computed, useSlots, onMounted, onBeforeUnmount } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useI18n } from 'vue-i18n'
