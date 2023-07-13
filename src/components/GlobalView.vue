@@ -52,8 +52,8 @@ const locale = computed(() => {
 
 // hook
 const {
-  t
-  // te // 測試 key 是否存在
+  t,
+  te // 測試 key 是否存在
 } = useI18n()
 
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
@@ -93,6 +93,9 @@ provide<Hook>('hook', () => {
       return `${t(key)}`
       // if (te(key)) return t(key)
       // return `N/A[${t(key)}]`
+    },
+    i18nTest: (key) => {
+      return te(key)
     },
     swal: (options: SweetAlertOptions<any, any>) => {
       const defaultOPtions = {

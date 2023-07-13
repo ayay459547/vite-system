@@ -117,8 +117,8 @@ export default defineComponent({
           menubar=no,
           width=1200,
           height=800,
-          left=100,
-          top=100
+          left=80,
+          top=80
         `
       )
     },

@@ -3,7 +3,16 @@ import { inject, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { useI18n } from 'vue-i18n'
 import { CustomTabs } from '@/components'
-const { t } = useI18n()
+import { usePageI18n } from '@/i18n'
+const { t: testT } = useI18n()
+
+const { i18nTranslate: pageTranslate } = usePageI18n({
+  search123: {
+    zhTw: '搜尋ZhTw',
+    zhCn: '搜尋ZhCn',
+    en: 'search777'
+  }
+})
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
@@ -20,8 +29,11 @@ const options = [
 <template>
   <div class="input-test">
     <h2 class="i-mb-md text-primary">{{ $t('test') }}</h2>
-    <h2 class="i-mb-md text-success">{{ t('test') }}</h2>
-    <h2 class="i-mb-md text-danger">{{ i18nTranslate('test') }}</h2>
+    <h2 class="i-mb-md text-success">{{ testT('test') }}</h2>
+    <h2 class="i-mb-md text-danger">{{ i18nTranslate('search') }}</h2>
+    <h2 class="i-mb-md text-success">{{ testT('search') }}</h2>
+    <h2 class="i-mb-md text-danger">{{ pageTranslate('search123') }}</h2>
+    <h2 class="i-mb-md text-primary">{{ pageTranslate('test') }}</h2>
 
     <CustomTabs v-model="tab" :list="options"></CustomTabs>
     <CustomTabs v-model="tab" :list="options" background></CustomTabs>

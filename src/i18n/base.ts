@@ -1,4 +1,9 @@
 export default {
+  search: {
+    zhTw: '搜尋',
+    zhCn: '搜寻',
+    en: 'search'
+  },
   create: {
     zhTw: '新增',
     zhCn: '新增',

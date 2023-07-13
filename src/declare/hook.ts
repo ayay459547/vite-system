@@ -27,11 +27,14 @@ export declare namespace HookList {
 
   type i18nTranslate = (key: string) => string
 
+  type i18nTest = (key: string) => boolean
+
   type swal = (options: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 }
 export declare type Hook = () => {
   loading: HookList.loading
   eventList: HookList.eventList
   i18nTranslate: HookList.i18nTranslate
+  i18nTest: HookList.i18nTest
   swal: HookList.swal
 }

@@ -30,7 +30,7 @@ import pluginComponents from '@/components/pluginComponents'
 // vue v-指令
 import pluginDirective from '@/directive/pluginDirective'
 // 翻譯
-import i18n from '@/i18n/i18n'
+import i18n from '@/i18n'
 
 const app = createApp(App)
 

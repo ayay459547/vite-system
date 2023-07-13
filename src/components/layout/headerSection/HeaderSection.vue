@@ -7,7 +7,7 @@ import HamburgerIcon from './HamburgerIcon.vue'
 import { useRoutesStore } from '@/stores/routes'
 import { useLocaleStore } from '@/stores/locale'
 
-import { options as langOptions } from '@/i18n/i18n'
+import { options as langOptions } from '@/i18n'
 import type { Hook, EventItem } from '@/declare/hook'
 
 import { CustomIcon, CustomTooltip } from '@/components'

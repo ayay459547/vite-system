@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
-import { computed, provide } from 'vue'
+import { computed, provide, inject } from 'vue'
+import type { Hook } from '@/declare/hook'
 
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/routes'
 import { getFormSetting } from '@/lib/columns'
 
-import { CustomInput, CustomIcon } from '@/components'
+import { CustomInput, CustomIcon, CustomButton } from '@/components'
 import FeatureTree from './FeatureTree.vue'
 
 import { scrollToEl } from '@/lib/utils'
@@ -38,6 +39,9 @@ const {
 
 provide('search', form)
 
+const hook: Hook = inject('hook')
+const { i18nTranslate } = hook()
+
 const scorllFrist = () => {
   const el = document.querySelector('.__match')
 
@@ -63,6 +67,12 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
           <CustomIcon name="search"/>
         </template>
       </CustomInput>
+
+      <CustomButton
+        :label="i18nTranslate('search')"
+        type="primary"
+        @click="debounceScorllFrist"
+      />
     </div>
 
     <div class="home-tree">
@@ -79,10 +89,13 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
 
   &-search {
     width: 100%;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
   }
 
   &-tree {
-    height: calc(100% - 48px);
+    height: calc(100% - 52px);
     overflow: auto;
   }
 }
