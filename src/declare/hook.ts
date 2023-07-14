@@ -19,22 +19,22 @@ export declare interface CustomPopoverQueue {
 export declare namespace HookList {
   type loading = (isOpen: boolean, message?: string) => void
 
+  type i18nTranslate = (key: string) => string
+
+  type i18nTest = (key: string) => boolean
+
   type eventList = (
     click: MouseEvent,
     eventList?: Array<EventItem>,
     options?: EventOptions
   ) => void
 
-  type i18nTranslate = (key: string) => string
-
-  type i18nTest = (key: string) => boolean
-
   type swal = (options: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 }
 export declare type Hook = () => {
   loading: HookList.loading
-  eventList: HookList.eventList
   i18nTranslate: HookList.i18nTranslate
   i18nTest: HookList.i18nTest
+  eventList: HookList.eventList
   swal: HookList.swal
 }

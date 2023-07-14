@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import HistoryNavigation from './HistoryNavigation.vue'
 
-defineProps({
+const props = defineProps({
   historyIsOpen: {
     type: Boolean as PropType<boolean>,
-    default: true
+    required: true
   }
 })
 
@@ -13,8 +12,8 @@ defineProps({
 
 <template>
   <div class="view-wrapper">
-    <div class="view-history" :class="historyIsOpen ? 'is-open' : 'is-close'">
-      <HistoryNavigation></HistoryNavigation>
+    <div class="view-history" :class="props.historyIsOpen ? 'is-open' : 'is-close'">
+      <slot name="tabs" :is-show="props.historyIsOpen"></slot>
     </div>
     <main class="view-container">
       <slot></slot>
@@ -37,13 +36,13 @@ defineProps({
     justify-content: space-between;
     align-items: center;
     gap: 8px;
-    height: fit-content;
     transition-duration: 0.3s;
-
     &.is-open {
+      height: fit-content;
       max-height: 100px;
     }
     &.is-close {
+      height: 40px;
       max-height: 0px;
       overflow: hidden;
     }

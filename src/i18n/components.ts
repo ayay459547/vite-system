@@ -1,4 +1,7 @@
+import type { LangMap } from './index'
+
 export default {
+  // CustomDatePicker
   startTime: {
     zhTw: '開始時間',
     zhCn: '开始时间',
@@ -8,6 +11,27 @@ export default {
     zhTw: '結束時間',
     zhCn: '結束时间',
     en: 'End Time'
+  },
+  // WeekSchedule
+  normalWorkingTime: {
+    zhTw: '正常工作時間',
+    zhCn: '正常工作时间',
+    en: 'Normal WorkingTime'
+  },
+  firstOverTime: {
+    zhTw: '第一段加班時間',
+    zhCn: '第一段加班时间',
+    en: 'First OverTime'
+  },
+  secondOverTime: {
+    zhTw: '第二段加班時間',
+    zhCn: '第二段加班时间',
+    en: 'Second OverTime'
+  },
+  extendedWorkingTime: {
+    zhTw: '延長工作時間',
+    zhCn: '延长工作时间',
+    en: 'Extended WorkingTime'
   },
   sunday: {
     zhTw: '星期日',
@@ -43,5 +67,16 @@ export default {
     zhTw: '星期六',
     zhCn: '星期六',
     en: 'Saturday'
+  },
+  // CustomTable
+  showCount: {
+    zhTw: '顯示筆數',
+    zhCn: '显示笔数',
+    en: 'ShowCount'
+  },
+  columnSetting: {
+    zhTw: '欄位設定',
+    zhCn: '栏位设定',
+    en: 'ColumnSetting'
   }
-}
+} as LangMap

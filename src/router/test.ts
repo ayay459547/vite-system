@@ -8,8 +8,8 @@ const testRoutes: RouterTree[] = [
     icon: 'flask-vial',
     leaves: [
       {
-        name: 'page1-test',
-        title: '範例頁面-1',
+        name: 'test-page-1',
+        title: '測試頁面-1',
         meta: {
           keepAlive: true
         },

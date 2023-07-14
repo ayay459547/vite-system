@@ -4,7 +4,6 @@ import { ref, computed, inject } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 
-import { useRoutesStore } from '@/stores/routes'
 import { useLocaleStore } from '@/stores/locale'
 
 import { options as langOptions } from '@/i18n'
@@ -17,6 +16,7 @@ const props = defineProps<{
   isOpen: boolean
   historyIsOpen: boolean
   authData: AuthData
+  breadcrumbTitle: string[]
 }>()
 
 const emit = defineEmits<{
@@ -30,14 +30,12 @@ const tempIsOpen: WritableComputedRef<boolean> = computed({
   set: value => emit('update:isOpen', value)
 })
 
-const routesStore = useRoutesStore()
-
 type Breadcrumb = {
   type: string
   name: string
 }
 const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
-  return routesStore.breadcrumbTitle.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
+  return props.breadcrumbTitle.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
     if (crumbIndex === 0){
       res.push({
         type: 'text',

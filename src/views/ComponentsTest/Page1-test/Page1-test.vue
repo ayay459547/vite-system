@@ -8,7 +8,7 @@ import {
   CustomIcon
 } from '@/components'
 
-import { deepClone } from '@/lib/utils'
+import { deepClone, usePageI18n } from '@/lib/utils'
 import { getTableSetting } from '@/lib/columns'
 
 import type { TableData } from './api'
@@ -22,8 +22,12 @@ import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/routes'
 import { getPermission } from '@/lib/permission'
 
+import message from './i18n'
+
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()
+
+const { i18nTranslate: pageTranslate } = usePageI18n(message)
 
 // 權限
 const routesStore = useRoutesStore()
@@ -37,7 +41,7 @@ const tableData = ref<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {
-  title: '測試表單',
+  title: pageTranslate('testTable'),
   version: '1.0.3',
   settingKey: 'test'
 }
@@ -206,6 +210,7 @@ onActivated(() => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
+      :title="pageTranslate('testTable')"
       @excel="download"
       @show-change="init"
     >

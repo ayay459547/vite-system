@@ -1,20 +1,16 @@
 <script lang="ts">
-import type { ComputedRef, PropType, WritableComputedRef } from 'vue'
+import type { PropType, WritableComputedRef } from 'vue'
 import { defineComponent, computed } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import { storeToRefs } from 'pinia'
-import { useRoutesStore } from '@/stores/routes'
 import type { RouterType } from '@/router/setting'
-import { routerTypeIcon } from '@/router/setting'
 
+import type { IconType } from '@/components'
 import { CustomIcon } from '@/components'
 
 export default defineComponent({
   name: 'SubNavigationView',
-  components: {
-    CustomIcon
-  },
+  components: { CustomIcon },
   props: {
     isOpen: {
       type: Boolean as PropType<boolean>,
@@ -24,12 +20,28 @@ export default defineComponent({
       type: String as PropType<string>,
       default: ''
     },
-    router: {
+    level2List: {
       type: Array as PropType<Navigation[]>,
       required: true
     },
     openMap: {
       type: Object as PropType<Record<string, boolean>>,
+      required: true
+    },
+    currentRouteName: {
+      type: String as PropType<string>,
+      required: true
+    },
+    breadcrumbName: {
+      type: Array as PropType<string[]>,
+      required: true
+    },
+    getLastTypeIcon: {
+      type: Function as PropType<(systemType: RouterType[]) => [IconType, string]>,
+      required: true
+    },
+    getNavTitle: {
+      type: Function as PropType<(nav: Navigation) => string>,
       required: true
     }
   },
@@ -39,38 +51,18 @@ export default defineComponent({
       get: () => props.isOpen,
       set: value => emit('update:isOpen', value)
     })
+
     const onTitleClick = (): void => {
       tempIsOpen.value = !tempIsOpen.value
     }
 
-    const routerList: ComputedRef<Navigation[]> = computed(() => {
-      return props.router
-    })
-
-    const changeOpen = (name: string): void => {
-      emit('changeMap', name)
-    }
-
-    // 路由圖示
-    const getLastTypeIcon = (systemType: RouterType[]) => {
-      const lastType = systemType[systemType.length - 1]
-      return routerTypeIcon[lastType]
-    }
-
-    // active
-    const routesStore = useRoutesStore()
-    const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
+    const changeOpen = (name: string): void => emit('changeMap', name)
 
     return {
       navHeight: 54,
       changeOpen,
-      routerList,
       tempIsOpen,
-      onTitleClick,
-      getLastTypeIcon,
-
-      breadcrumbName,
-      currentRouteName
+      onTitleClick
     }
   }
 })
@@ -85,29 +77,29 @@ export default defineComponent({
     </div>
 
     <nav class="nav-list">
-      <template v-for="routerItem in routerList" :key="routerItem.name">
+      <template v-for="routerItem in $props.level2List" :key="routerItem.name">
           <!-- 有子路由 -->
           <template v-if="Object.hasOwnProperty.call(routerItem, 'leaves')">
             <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div
                 class="nav-item-left"
-                :class="{ active: breadcrumbName[1] === routerItem.name }"
+                :class="{ active: $props.breadcrumbName[1] === routerItem.name }"
               >
                 <div v-if="routerItem.icon" class="item-icon"></div>
                 <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
-                <span class="item-title">{{ routerItem.title }}</span>
+                <span class="item-title">{{ getNavTitle(routerItem) }}</span>
               </div>
 
               <CustomIcon
                 :icon="['fas', 'angle-left']"
                 class="nav-item-right nav-arrow"
-                :class="openMap[routerItem.name] ? 'is-open' : 'is-close'"
+                :class="$props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               />
             </div>
 
             <div
               class="nav-sub-list"
-              :class="openMap[routerItem.name] ? 'is-open' : 'is-close'"
+              :class="$props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               :style="{
                 'min-height': `${navHeight * (routerItem.leaves.length)}px`,
                 'max-height': `${navHeight * (routerItem.leaves.length)}px`
@@ -122,12 +114,12 @@ export default defineComponent({
               >
                 <div
                   class="nav-item-left"
-                  :class="{ active: currentRouteName === leaf.name }"
+                  :class="{ active: $props.currentRouteName === leaf.name }"
                   @click="navigate"
                 >
                   <div v-if="leaf.icon" class="item-icon"></div>
                   <CustomIcon v-else :icon="getLastTypeIcon(leaf.systemType)" class="item-icon" />
-                  <span class="item-title">{{ leaf.title }}</span>
+                  <span class="item-title">{{ getNavTitle(leaf) }}</span>
                 </div>
 
                 <div class="nav-item-right"></div>
@@ -144,12 +136,12 @@ export default defineComponent({
           >
             <div
               class="nav-item-left"
-              :class="{ active: currentRouteName === routerItem.name }"
+              :class="{ active: $props.currentRouteName === routerItem.name }"
               @click="navigate"
             >
               <div v-if="routerItem.icon" class="item-icon"></div>
               <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
-              <span class="item-title">{{ routerItem.title }}</span>
+              <span class="item-title">{{ getNavTitle(routerItem) }}</span>
             </div>
 
             <div class="nav-item-right"></div>

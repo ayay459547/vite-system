@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import { ref, computed, reactive, onBeforeMount, watch } from 'vue'
+import { ref, computed, reactive, onBeforeMount } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
@@ -15,8 +15,6 @@ import {
 } from '@/lib/idb'
 
 import { permission, defaultPermission, hasPermission } from '@/lib/permission'
-
-import { useRoute } from 'vue-router'
 
 export const useRoutesStore = defineStore('routes', () => {
   // 全部的路由
@@ -129,29 +127,6 @@ export const useRoutesStore = defineStore('routes', () => {
     }, routes)
   }
 
-  // 讀取當前路由變化 設置 麵包屑 + 當前路由 + 歷史紀錄
-  const route = useRoute()
-
-  const currentRouteName = computed(() => {
-    return route?.name ?? ''
-  })
-
-  watch(currentRouteName, (routeName: string) => {
-    if (routeName === 'home') {
-      setBreadcrumbName(['home'])
-      setBreadcrumbTitle(['首頁'])
-
-      setCurrentNavigation(null)
-    } else if (navigationMap.value.has(routeName)) {
-      const currentRoute = navigationMap.value.get(routeName)
-      setBreadcrumbName(currentRoute?.breadcrumbName ?? [])
-      setBreadcrumbTitle(currentRoute?.breadcrumbTitle ?? [])
-
-      setCurrentNavigation(currentRoute)
-      addHistoryNavigation(routeName, currentRoute)
-    }
-  })
-
   return {
     allRoutes,
 
@@ -160,7 +135,6 @@ export const useRoutesStore = defineStore('routes', () => {
     breadcrumbTitle,
     setBreadcrumbTitle,
 
-    currentRouteName,
     currentNavigation,
     setCurrentNavigation,
 

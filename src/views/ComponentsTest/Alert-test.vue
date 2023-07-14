@@ -2,7 +2,11 @@
 import { ref, inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import Swal from 'sweetalert2'
-import { CustomButton } from '@/components'
+import {
+  CustomButton,
+  CustomTooltip,
+  CustomPopover
+} from '@/components'
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')
@@ -83,6 +87,39 @@ const showAlert = (icon: Icon) => {
       label="測試Sweetalert2 question"
       @click="showAlert('question')"
     />
+
+    <CustomTooltip>
+      <CustomButton label="滑鼠移入 Tooltip" type="primary"/>
+      <template #content>
+        <div>Tooltip 內容1</div>
+      </template>
+    </CustomTooltip>
+
+    <CustomTooltip trigger="click">
+      <CustomButton label="滑鼠點擊 Tooltip" type="success"/>
+      <template #content>
+        <div>Tooltip 內容2</div>
+      </template>
+    </CustomTooltip>
+
+    <CustomPopover>
+      <div>顯示內容1 Popover</div>
+      <template #reference>
+        <CustomButton label="滑鼠點擊 Popover"/>
+      </template>
+    </CustomPopover>
+
+    <CustomPopover
+      :width="300"
+      title="內容2標題"
+      trigger="hover"
+      placement="right"
+    >
+      <div>顯示內容2 Popover --------------</div>
+      <template #reference>
+        <CustomButton label="滑鼠移入 Popover"/>
+      </template>
+    </CustomPopover>
   </div>
 </template>
 

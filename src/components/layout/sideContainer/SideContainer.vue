@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
-
 import type { Navigation } from '@/declare/routes'
 import NavigationView from './NavigationView.vue'
-import { useRoutesStore } from '@/stores/routes'
-
 import { CustomIcon } from '@/components'
 
-const routesStore = useRoutesStore()
-
-const showRoutes: ComputedRef<Navigation[]> = computed(() => {
-  return routesStore.navigationRoutes
-})
+const props = defineProps<{
+  showRoutes: Navigation[]
+  currentRouteName: string
+  breadcrumbName: string[]
+}>()
 
 </script>
 
@@ -25,20 +20,20 @@ const showRoutes: ComputedRef<Navigation[]> = computed(() => {
     >
       <div class="side-logo-navigate" @click="navigate">
         <CustomIcon name="home" class="side-logo-icon"/>
-        <slot name="logo">
-          <div>LOGO</div>
-        </slot>
+        <slot name="logo"></slot>
       </div>
     </RouterLink>
 
     <div class="side-nav">
-      <NavigationView :router="showRoutes"></NavigationView>
+      <NavigationView
+        :level1-list="props.showRoutes"
+        :current-route-name="props.currentRouteName"
+        :breadcrumb-name="props.breadcrumbName"
+      />
     </div>
 
     <div class="side-footer">
-      <slot name="footer">
-        <div>FOOTER</div>
-      </slot>
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>
@@ -59,7 +54,7 @@ const showRoutes: ComputedRef<Navigation[]> = computed(() => {
     @media (max-width: 992px) {
       width: $nav-md-width;
     }
-    @media (max-width: 576px) {
+    @media (max-width: 768px) {
       width: $nav-xs-width;
       margin-left: -8px;
 

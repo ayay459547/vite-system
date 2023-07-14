@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { ElPopover } from 'element-plus'
 
 export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
 export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
 
 export interface Props {
-  visible?: boolean
+  visible?: boolean | null
   width?: number
   title?: string
   placement?: Placement
@@ -15,7 +15,7 @@ export interface Props {
   showArrow?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-  visible: false,
+  visible: null,
   width: 150,
   title: '',
   placement: 'bottom',
@@ -30,31 +30,37 @@ const emit = defineEmits<{
 
 const tempVisible = computed<boolean>({
   get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value)
-})
-
-watch(tempVisible, (newValue) => {
-  elVisible.value = newValue
+  set: (value) => emit('update:visible', value)
 })
 
 const elVisible = ref(false)
-
-watch(elVisible, (newValue) => {
-  tempVisible.value = newValue
+const tempElVisible = computed<boolean>({
+  get: () => elVisible.value,
+  set: (value: boolean) => elVisible.value = value
 })
+
+const isShow = computed<boolean>(() => {
+  return tempVisible.value || tempElVisible.value
+})
+
+const onUpdateVisible = (value: boolean) => {
+  tempVisible.value = value
+  tempElVisible.value = value
+}
 
 </script>
 
 <template>
   <div class="popover-container">
     <ElPopover
-      v-model:visible="elVisible"
+      :visible="isShow"
       :placement="props.placement"
       :title="props.title"
       :width="props.width"
       :trigger="props.trigger"
       :popper-style="props.popperStyle"
       :show-arrow="props.showArrow"
+      @update:visible="onUpdateVisible"
     >
       <template #reference>
         <slot name="reference"></slot>

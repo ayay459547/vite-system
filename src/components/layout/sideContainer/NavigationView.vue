@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import type { ComputedRef, Ref } from 'vue'
-import { computed, ref } from 'vue'
-
-import { storeToRefs } from 'pinia'
-import { useRoutesStore } from '@/stores/routes'
+import type { Hook } from '@/declare/hook'
+import { ref, inject } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { RouterType } from '@/router/setting'
 import { routerTypeIcon } from '@/router/setting'
@@ -12,29 +9,32 @@ import SubNavigationView from './SubNavigationView.vue'
 import { CustomIcon } from '@/components'
 
 const props = defineProps<{
-  router: Navigation[]
+  level1List: Navigation[]
+  currentRouteName: string
+  breadcrumbName: string[]
 }>()
 
-const level1List: ComputedRef<Navigation[]> = computed(() => {
-  return props.router
-})
+const hook: Hook = inject('hook')
+const { i18nTest, i18nTranslate } = hook()
 
 // 第二層路由
-const level2IsOpen: Ref<boolean> = ref(false)
-const level2Title: Ref<string> = ref('')
-const level2List: Ref<Navigation[]> = ref([])
+const level2IsOpen = ref<boolean>(false)
+const level2Nav = ref<Navigation>()
+const level2List = ref<Navigation[]>([])
 
-const level2OpenMap: Ref<Record<string, boolean>> = ref({})
+const level2OpenMap = ref<Record<string, boolean>>({})
 const changeMap = (name: string): void => {
   level2OpenMap.value[name] = !level2OpenMap.value[name]
 }
 
 const setLevel2Router = (level2Router: Navigation): void => {
-  level2IsOpen.value = true
-  level2Title.value = level2Router.title
-  level2List.value = level2Router.leaves
+  const { leaves } = level2Router
 
-  level2Router.leaves.forEach(leaf => {
+  level2IsOpen.value = true
+  level2Nav.value = level2Router
+  level2List.value = leaves
+
+  leaves.forEach(leaf => {
     if(!Object.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
       level2OpenMap.value[leaf.name] = true
     }
@@ -46,17 +46,19 @@ const getLastTypeIcon = (systemType: RouterType[]) => {
   const lastType = systemType[systemType.length - 1]
   return routerTypeIcon[lastType]
 }
+const getNavTitle = (nav: Navigation | null | undefined): string => {
+  if ([null, undefined].includes(nav)) return ''
 
-// active
-const routesStore = useRoutesStore()
-const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
+  if (i18nTest(nav.name)) return i18nTranslate(nav.name)
+  return nav.title
+}
 
 </script>
 
 <template>
   <div class="nav-container" :class="level2IsOpen ? 'is-open': 'is-clse'">
     <nav class="nav-list level1">
-      <template v-for="level1Item in level1List" :key="level1Item.name">
+      <template v-for="level1Item in props.level1List" :key="level1Item.name">
         <!-- 有子路由 -->
         <div
           v-if="Object.hasOwnProperty.call(level1Item, 'leaves')"
@@ -65,13 +67,11 @@ const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
         >
           <div
             class="nav-item-left"
-            :class="{ active: breadcrumbName[0] === level1Item.name }"
+            :class="{ active: props.breadcrumbName[0] === level1Item.name }"
           >
             <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
-            <span class="item-title">
-              {{ level1Item.title }}
-            </span>
+            <span class="item-title">{{ getNavTitle(level1Item) }}</span>
           </div>
 
           <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
@@ -86,14 +86,12 @@ const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
         >
           <div
             class="nav-item-left"
-            :class="{ active: currentRouteName === level1Item.name }"
+            :class="{ active: props.currentRouteName === level1Item.name }"
             @click="navigate"
           >
             <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
-            <span class="item-title">
-              {{ level1Item.title }}
-            </span>
+            <span class="item-title">{{ getNavTitle(level1Item) }}</span>
           </div>
 
           <div class="nav-item-right"></div>
@@ -105,11 +103,15 @@ const { breadcrumbName, currentRouteName } = storeToRefs(routesStore)
     <div class="nav-list level2">
       <SubNavigationView
         v-model:isOpen="level2IsOpen"
-        :title="level2Title"
-        :router="level2List"
+        :title="getNavTitle(level2Nav)"
+        :level2-list="level2List"
         :open-map="level2OpenMap"
+        :current-route-name="props.currentRouteName"
+        :breadcrumb-name="props.breadcrumbName"
+        :get-last-type-icon="getLastTypeIcon"
+        :get-nav-title="getNavTitle"
         @change-map="changeMap"
-      ></SubNavigationView>
+      />
     </div>
   </div>
 </template>

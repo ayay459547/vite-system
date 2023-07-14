@@ -1,45 +1,60 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, PropType } from 'vue'
 import { computed } from 'vue'
 
-import { storeToRefs } from 'pinia'
+import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/routes'
 
 import type { ListType, ListItem } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
 
-const routesStore = useRoutesStore()
-const { historyNavigation, currentNavigation } = storeToRefs(routesStore)
+const {
+  removeHistoryNavigation,
+  clearHistoryNavigation,
+  addHistoryNavigation
+} = useRoutesStore()
+
+const props = defineProps({
+  historyNavigation: {
+    type: Object as PropType<Map<string, Navigation>>,
+    required: true
+  },
+  currentNavigation: {
+    type: [Object, null] as PropType<Navigation | null>,
+    required: true
+  }
+})
 
 const currentTab = computed(() => {
-  return currentNavigation.value?.name ?? ''
+  return props.currentNavigation?.name ?? ''
 })
 
 const tabs: ComputedRef<ListType> = computed(() => {
   const res = []
-  // historyNavigation is Map
-  historyNavigation.value.forEach((value, key) => {
-    res.push({
-      key,
-      label: value.title,
-      value
+  if (props.historyNavigation !== null) {
+    props.historyNavigation.forEach((value, key) => {
+      res.push({
+        key,
+        label: value.title,
+        value
+      })
     })
-  })
+  }
 
   return res
 })
 
 const removeHistory = (value: ListItem) => {
-  routesStore.removeHistoryNavigation(value.key)
+  removeHistoryNavigation(value.key)
 }
 
 const clearHistory = () => {
-  const temp = currentNavigation.value
-  if (historyNavigation.value.size > 0) {
-    routesStore.clearHistoryNavigation()
+  const temp = props.currentNavigation
+  if (props.historyNavigation.size > 0) {
+    clearHistoryNavigation()
 
     if (temp) {
-      routesStore.addHistoryNavigation(temp.name, temp)
+      addHistoryNavigation(temp.name, temp)
     }
   }
 }

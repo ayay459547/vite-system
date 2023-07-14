@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { ElTooltip } from 'element-plus'
 
 export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
@@ -22,27 +22,33 @@ const emit = defineEmits<{
 
 const tempVisible = computed<boolean>({
   get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value)
-})
-
-watch(tempVisible, (newValue) => {
-  elVisible.value = newValue
+  set: (value) => emit('update:visible', value)
 })
 
 const elVisible = ref(false)
-
-watch(elVisible, (newValue) => {
-  tempVisible.value = newValue
+const tempElVisible = computed<boolean>({
+  get: () => elVisible.value,
+  set: (value: boolean) => elVisible.value = value
 })
+
+const isShow = computed<boolean>(() => {
+  return tempVisible.value || tempElVisible.value
+})
+
+const onUpdateVisible = (value: boolean) => {
+  tempVisible.value = value
+  tempElVisible.value = value
+}
 
 </script>
 
 <template>
   <div class="popover-container">
     <ElTooltip
-      v-model:visible="elVisible"
+      :visible="isShow"
       :placement="props.placement"
       :trigger="props.trigger"
+      @update:visible="onUpdateVisible"
     >
       <template #default>
         <slot></slot>

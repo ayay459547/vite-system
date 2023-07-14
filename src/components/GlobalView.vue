@@ -10,9 +10,11 @@ import {
   nextTick
 } from 'vue'
 // layout
-import SideSection from '@/components/layout/sideSection/SideSection.vue'
-import HeaderSection from '@/components/layout/headerSection/HeaderSection.vue'
-import PageSection from '@/components/layout/pageSection/PageSection.vue'
+import SideContainer from '@/components/layout/sideContainer/SideContainer.vue'
+import HeaderContainer from '@/components/layout/headerContainer/HeaderContainer.vue'
+
+import PageContainer from '@/components/layout/pageContainer/PageContainer.vue'
+import NavigationTabs from '@/components/layout/pageContainer/NavigationTabs.vue'
 
 // element ui plus config
 import { ElConfigProvider } from 'element-plus'
@@ -40,15 +42,8 @@ import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 
 const navIsOpen = ref(true)
-const historyIsOpen = ref(true)
-const changeHistory = (v: boolean) => {
-  historyIsOpen.value = v
-}
-
-const localeStore = useLocaleStore()
-const locale = computed(() => {
-  return localeStore.locale
-})
+const historyIsOpen = ref(false)
+const changeHistory = (v: boolean) => historyIsOpen.value = v
 
 // hook
 const {
@@ -61,9 +56,7 @@ const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
 
 const queueId = ref(0)
 const customPopoverQueue: CustomPopoverQueue[] = reactive([])
-const deleteCustomPopoverQueue = () => {
-  customPopoverQueue.pop()
-}
+const deleteCustomPopoverQueue = () => customPopoverQueue.pop()
 
 const loading: HookList.loading = (isOpen, message) => {
   if (!customLoader.value) return
@@ -80,22 +73,19 @@ const loading: HookList.loading = (isOpen, message) => {
 provide<Hook>('hook', () => {
   return {
     loading,
+    i18nTranslate: (key) => `${t(key)}`,
+    i18nTest: (key) => te(key),
     eventList: (click, eventList, options) => {
       const { clientX, clientY } = click
 
       customPopoverQueue.unshift({
         queueId: queueId.value,
-        clientX, clientY, eventList, options
+        clientX,
+        clientY,
+        eventList,
+        options
       })
       queueId.value++
-    },
-    i18nTranslate: (key) => {
-      return `${t(key)}`
-      // if (te(key)) return t(key)
-      // return `N/A[${t(key)}]`
-    },
-    i18nTest: (key) => {
-      return te(key)
     },
     swal: (options: SweetAlertOptions<any, any>) => {
       const defaultOPtions = {
@@ -109,13 +99,44 @@ provide<Hook>('hook', () => {
         ...options
       }
 
-      return Swal.fire({
-        ...defaultOPtions
-      })
+      return Swal.fire({ ...defaultOPtions })
     }
   }
 })
 
+const router = useRouter()
+
+// store
+const localeStore = useLocaleStore()
+const locale = computed(() => localeStore.locale)
+
+const authStore = useAuthStore()
+const { setToken, clearToken, initSystemData } = authStore
+const { authData, routesPermission } = storeToRefs(authStore)
+
+const routesStore = useRoutesStore()
+const {
+  setNavigationRoutes,
+
+  setBreadcrumbName,
+  setBreadcrumbTitle,
+  setCurrentNavigation,
+  addHistoryNavigation
+} = routesStore
+const {
+  navigationMap,
+  navigationRoutes,
+
+  breadcrumbName,
+  breadcrumbTitle,
+  currentNavigation,
+
+  historyNavigation
+} = storeToRefs(routesStore)
+
+const currentRouteName = computed<string>(() => {
+  return currentNavigation.value?.name ?? ''
+})
 
 // 路由更換時執行
 const envStore = useEnvStore()
@@ -128,6 +149,7 @@ const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   })
 
   setModalView(currentRoute)
+  setNavigationData(currentRoute)
   setLoading(currentRoute)
 }
 
@@ -160,21 +182,36 @@ const setLoading = (currentRoute: RouteLocationNormalized) => {
   }
 }
 
-// 系統初始化
-const isShow = ref(false)
-const router = useRouter()
+// 讀取當前路由變化 設置 麵包屑 + 當前路由 + 歷史紀錄
+const setNavigationData = (currentRoute: RouteLocationNormalized) => {
+  const routeName = currentRoute.name as string
 
-const authStore = useAuthStore()
-const { setToken, clearToken, initSystemData } = authStore
-const { authData, routesPermission } = storeToRefs(authStore)
+  if (routeName === 'home') {
+    setBreadcrumbName(['home'])
+    setBreadcrumbTitle(['首頁'])
 
-const { setNavigationRoutes } = useRoutesStore()
+    setCurrentNavigation(null)
+  } else if (navigationMap.value.has(routeName)) {
+    const currentRoute = navigationMap.value.get(routeName)
+    const {
+      breadcrumbName: _breadcrumbName,
+      breadcrumbTitle: _breadcrumbTitle
+    } = currentRoute
+
+    setBreadcrumbName(_breadcrumbName ?? [])
+    setBreadcrumbTitle(_breadcrumbTitle ?? [])
+
+    setCurrentNavigation(currentRoute)
+    addHistoryNavigation(routeName, currentRoute)
+  }
+}
 
 /**
  * 初始化系統使用者 + 權限
  * 用權限 設置路由選項
  */
- const initNavigationRoutes = async () => {
+ const isShow = ref(false)
+const initNavigationRoutes = async () => {
   isShow.value = false
 
   await initSystemData()
@@ -222,7 +259,11 @@ const login = async (userId: number) => {
         class="layout-left layout-side"
         :class="navIsOpen ? 'is-open': 'is-close'"
       >
-        <SideSection>
+        <SideContainer
+          :show-routes="navigationRoutes"
+          :current-route-name="currentRouteName"
+          :breadcrumb-name="breadcrumbName"
+        >
           <template #logo>
             <slot name="logo">
               <div>LOGO</div>
@@ -233,21 +274,34 @@ const login = async (userId: number) => {
               <div>FOOTER</div>
             </slot>
           </template>
-        </SideSection>
+        </SideContainer>
       </div>
 
       <div v-show="isShow" class="layout-right">
         <div class="layout-header">
-          <HeaderSection
+          <HeaderContainer
             v-model:isOpen="navIsOpen"
             :history-is-open="historyIsOpen"
             :auth-data="authData"
+            :breadcrumb-title="breadcrumbTitle"
             @change-history="changeHistory"
             @logout="logout"
           />
         </div>
         <div class="layout-view">
-          <PageSection :history-is-open="historyIsOpen">
+          <PageContainer
+            :history-is-open="historyIsOpen"
+            :history-navigation="historyNavigation"
+            :current-navigation="currentNavigation"
+          >
+            <template #tabs="{ isShow }">
+              <NavigationTabs
+                v-if="isShow"
+                :history-navigation="historyNavigation"
+                :current-navigation="currentNavigation"
+              />
+            </template>
+
             <div v-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
                 <KeepAlive>
@@ -263,11 +317,11 @@ const login = async (userId: number) => {
                   :is="Component"
                   @login="login"
                 />
-
+                <!-- 更換路由執行 -->
                 <div style="display: none;">{{ onRouteChange(route) }}</div>
               </RouterView>
             </div>
-          </PageSection>
+          </PageContainer>
         </div>
       </div>
 
@@ -312,7 +366,7 @@ const login = async (userId: number) => {
       @media (max-width: 992px) {
         margin-left: -$nav-md-width;
       }
-      @media (max-width: 576px) {
+      @media (max-width: 768px) {
         margin-left: -$nav-xs-width;
       }
     }

@@ -20,12 +20,12 @@ import './lib/init/passiveEvents'
 import { createApp } from 'vue'
 import App from './App.vue'
 import './assets/main.css'
-// 全局狀態管理
+// 全域狀態管理
 import { createPinia } from 'pinia'
 
 // 路由設定
 import router from './router'
-// 全局組件
+// 全域組件
 import pluginComponents from '@/components/pluginComponents'
 // vue v-指令
 import pluginDirective from '@/directive/pluginDirective'

@@ -5,7 +5,8 @@ import {
   reactive,
   computed,
   onMounted,
-  onUnmounted
+  onUnmounted,
+  inject
 } from 'vue'
 
 import type { ElTable as ElTableType } from 'element-plus'
@@ -18,6 +19,8 @@ import type { TableColumnsItem } from '@/lib/columns'
 import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton, FormSelect } from '@/components'
+
+import type { Hook } from '@/declare/hook'
 
 import ColumnSetting from './ColumnSetting.vue'
 
@@ -102,6 +105,9 @@ const emit = defineEmits([
   'size-change',
   'show-change'
 ])
+
+const hook: Hook = inject('hook')
+const { i18nTranslate } = hook()
 
 // slot
 const slots = useSlots()
@@ -297,6 +303,7 @@ defineExpose({
         />
         <ColumnSetting
           ref="columnSetting"
+          :label="i18nTranslate('columnSetting')"
           :columns="props.tableColumns"
           :version="props.version"
           :setting-key="props.settingKey"
@@ -315,7 +322,7 @@ defineExpose({
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <FormSelect
-            label="顯示筆數 : "
+            :label="`${i18nTranslate('showCount')} : `"
             v-model="pageSize"
             :options="sizeOptions"
             direction="row"

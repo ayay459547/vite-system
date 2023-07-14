@@ -171,7 +171,7 @@ export const getTableSetting = (
   columns: Record<string, any>,
   type: string,
   options: {
-    title: string
+    title?: string
     version: string
     settingKey: string
     page?: number

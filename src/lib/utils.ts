@@ -1,3 +1,8 @@
+import type { Composer, ComposerTranslation } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
+import type { LangMap } from '@/i18n'
+import { getI18nMessages } from '@/i18n'
+
 /**
  * @author Caleb
  * @description 拷貝 array 或 object
@@ -77,4 +82,22 @@ export const getType = (any: any): string => {
   const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
   const res = stringType.match(regexp)
   return res[1]
+}
+
+/**
+ * @author Caleb
+ * @description 針對各頁面 設定翻譯 不影響其他地方
+ * @param langMap 設定key 對應的語言顯示的資料
+ * @returns {Object} 翻譯工具
+ */
+export const usePageI18n = (langMap: LangMap): Partial<Composer & { i18nTranslate: ComposerTranslation, i18nTest: (key: string) => boolean }> => {
+  const pageI18n = useI18n({
+    messages: getI18nMessages(langMap)
+  }) as Partial<Composer>
+
+  return {
+    ...pageI18n,
+    i18nTranslate: pageI18n.t,
+    i18nTest: pageI18n.te
+  }
 }
