@@ -10,11 +10,11 @@ import {
   nextTick
 } from 'vue'
 // layout
-import SideContainer from '@/components/layout/sideContainer/SideContainer.vue'
-import HeaderContainer from '@/components/layout/headerContainer/HeaderContainer.vue'
+import SideContent from '@/components/layout/sideContent/SideContent.vue'
+import HeaderContent from '@/components/layout/headerContent/HeaderContent.vue'
 
-import PageContainer from '@/components/layout/pageContainer/PageContainer.vue'
-import NavigationTabs from '@/components/layout/pageContainer/NavigationTabs.vue'
+import PageContent from '@/components/layout/pageContent/PageContent.vue'
+import NavigationTabs from '@/components/layout/pageContent/NavigationTabs.vue'
 
 // element ui plus config
 import { ElConfigProvider } from 'element-plus'
@@ -270,7 +270,7 @@ const login = async (userId: number) => {
         class="layout-left layout-side"
         :class="navIsOpen ? 'is-open': 'is-close'"
       >
-        <SideContainer
+        <SideContent
           :is-open="navIsOpen"
           :show-routes="navigationRoutes"
           :current-route-name="currentRouteName"
@@ -286,7 +286,7 @@ const login = async (userId: number) => {
               <div>FOOTER</div>
             </slot>
           </template>
-        </SideContainer>
+        </SideContent>
       </div>
 
       <div
@@ -295,7 +295,7 @@ const login = async (userId: number) => {
         :class="navIsOpen ? 'is-open': 'is-close'"
       >
         <div class="layout-header">
-          <HeaderContainer
+          <HeaderContent
             v-model:is-open="navIsOpen"
             :history-is-open="historyIsOpen"
             :auth-data="authData"
@@ -306,7 +306,7 @@ const login = async (userId: number) => {
           />
         </div>
         <div class="layout-view">
-          <PageContainer
+          <PageContent
             :history-is-open="historyIsOpen"
             :history-navigation="historyNavigation"
             :current-navigation="currentNavigation"
@@ -338,7 +338,7 @@ const login = async (userId: number) => {
                 <div style="display: none;">{{ onRouteChange(route) }}</div>
               </RouterView>
             </div>
-          </PageContainer>
+          </PageContent>
         </div>
       </div>
 
