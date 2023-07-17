@@ -23,6 +23,7 @@ const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'update:isOpen', value: boolean): void
   (e: 'changeHistory', value: boolean): void
+  (e: 'changeLocale'): void
 }>()
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
@@ -73,6 +74,7 @@ const langCallbackList = computed<EventItem[]>(() => {
       label: option.label,
       event: () => {
         localeStore.currentLang = option.value
+        emit('changeLocale')
       }
     }
   })

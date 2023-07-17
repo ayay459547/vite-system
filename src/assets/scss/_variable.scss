@@ -20,17 +20,19 @@ $system-bg-color: #324157;
 // $system-bg-color: #3b723e;
 
 // 選單寬度
-$nav-xs-width: 54px;
+$side-width: 54px;
 $nav-md-width: 300px;
 $nav-lg-width: 350px;
 
 /* z-index */
-$loading-index: 999;
-$login-index: 100;
-$v-fixed-index: 99;
+$loading-index: 3000;
+$login-index: 2002;
+$global-disabled-index: 2002;
+$side-index: 2001; // 大於 element-ul loading
+$v-i-loading-index: 2000; // element-ul 設定的
+$v-i-fixed-index: 99;
 $modal-index: 10;
 $popover-index: 1;
-// $side-index: 9999;
 
 // 置中
 %flex-center {

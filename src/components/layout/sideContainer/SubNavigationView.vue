@@ -175,7 +175,7 @@ export default defineComponent({
       transform: translateX(0);
       transition-duration: 0.3s;
 
-      @media (max-width: 992px) {
+      @media (max-width: 768px) {
         font-size: 1em;
       }
     }
@@ -233,7 +233,7 @@ export default defineComponent({
         transform: translateX(0);
         transition-duration: 0.3s;
 
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
           font-size: 1em;
         }
       }

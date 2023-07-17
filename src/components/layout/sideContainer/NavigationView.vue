@@ -127,7 +127,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
     &.is-open {
       transform: translateX(-$nav-lg-width);
 
-      @media (max-width: 992px) {
+      @media (max-width: 768px) {
         transform: translateX(-$nav-md-width);
       }
     }
@@ -148,7 +148,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
       overflow-y: auto;
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 768px) {
       min-width: $nav-md-width;
     }
   }
@@ -189,7 +189,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
         transform: translateX(0);
         transition-duration: 0.3s;
 
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
           font-size: 1.1em;
         }
       }
@@ -199,7 +199,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
         height: 30px;
         @extend %flex-center;
 
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
           font-size: 1em;
         }
       }

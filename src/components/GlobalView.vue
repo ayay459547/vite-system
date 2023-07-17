@@ -41,14 +41,15 @@ import { useI18n } from 'vue-i18n'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 
-const navIsOpen = ref(true)
+const navIsOpen = ref(false)
 const historyIsOpen = ref(false)
 const changeHistory = (v: boolean) => historyIsOpen.value = v
 
 // hook
 const {
-  t,
-  te // 測試 key 是否存在
+  t: i18nT,
+  // locale: i18nLocale,
+  te: i18nTe // 測試 key 是否存在
 } = useI18n()
 
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
@@ -73,8 +74,8 @@ const loading: HookList.loading = (isOpen, message) => {
 provide<Hook>('hook', () => {
   return {
     loading,
-    i18nTranslate: (key) => `${t(key)}`,
-    i18nTest: (key) => te(key),
+    i18nTranslate: (key) => `${i18nT(key)}`,
+    i18nTest: (key) => i18nTe(key),
     eventList: (click, eventList, options) => {
       const { clientX, clientY } = click
 
@@ -143,14 +144,23 @@ const envStore = useEnvStore()
 const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
 
-  nextTick(() => {
-    const currentTitle = currentRoute.meta?.title ?? envStore.system
-    document.title = currentTitle
-  })
-
   setModalView(currentRoute)
   setNavigationData(currentRoute)
   setLoading(currentRoute)
+  setWebTitle()
+}
+// 設置 網頁 title
+const setWebTitle = () => {
+  const currentTitle = ((currentNavigation) => {
+    if (currentNavigation) {
+      const { name, title } = currentNavigation
+      if (i18nTe(name)) return i18nT(name)
+      if (title ?? false) return title
+    }
+    return envStore.system
+  })(currentNavigation.value)
+
+  document.title = currentTitle
 }
 
 // 如果是另開視窗 將選單縮起來
@@ -253,6 +263,7 @@ const login = async (userId: number) => {
 
 <template>
   <ElConfigProvider :locale="locale.el">
+    <!-- layout -->
     <div class="layout-wrapper">
       <div
         v-show="isShow"
@@ -260,6 +271,7 @@ const login = async (userId: number) => {
         :class="navIsOpen ? 'is-open': 'is-close'"
       >
         <SideContainer
+          :is-open="navIsOpen"
           :show-routes="navigationRoutes"
           :current-route-name="currentRouteName"
           :breadcrumb-name="breadcrumbName"
@@ -277,15 +289,20 @@ const login = async (userId: number) => {
         </SideContainer>
       </div>
 
-      <div v-show="isShow" class="layout-right">
+      <div
+        v-show="isShow"
+        class="layout-right"
+        :class="navIsOpen ? 'is-open': 'is-close'"
+      >
         <div class="layout-header">
           <HeaderContainer
-            v-model:isOpen="navIsOpen"
+            v-model:is-open="navIsOpen"
             :history-is-open="historyIsOpen"
             :auth-data="authData"
             :breadcrumb-title="breadcrumbTitle"
             @change-history="changeHistory"
             @logout="logout"
+            @change-locale="setWebTitle"
           />
         </div>
         <div class="layout-view">
@@ -302,7 +319,7 @@ const login = async (userId: number) => {
               />
             </template>
 
-            <div v-loading="isLoading" class="layout-mask">
+            <div v-i-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
                 <KeepAlive>
                   <component
@@ -325,20 +342,22 @@ const login = async (userId: number) => {
         </div>
       </div>
 
-      <!-- hook loading -->
-      <HookLoader ref="customLoader"/>
-
-      <!-- hook popover -->
-      <template v-if="customPopoverQueue.length > 0">
-        <HookPopover
-          v-for="popover in customPopoverQueue"
-          :key="popover.queueId"
-          ref="customPopover"
-          v-bind="popover"
-          @close="deleteCustomPopoverQueue"
-        />
-      </template>
+      <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
+      <div v-show="isLoading" class="is-disabled"></div>
     </div>
+    <!-- hook loading -->
+    <HookLoader ref="customLoader"/>
+
+    <!-- hook popover -->
+    <template v-if="customPopoverQueue.length > 0">
+      <HookPopover
+        v-for="popover in customPopoverQueue"
+        :key="popover.queueId"
+        ref="customPopover"
+        v-bind="popover"
+        @close="deleteCustomPopoverQueue"
+      />
+    </template>
   </ElConfigProvider>
 </template>
 
@@ -350,30 +369,57 @@ const login = async (userId: number) => {
     overflow: hidden;
 
     display: flex;
+    position: relative;
+
+    .is-disabled {
+      width: 100%;
+      height: 100%;
+      z-index: $global-disabled-index;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #00000000;
+    }
   }
 
   &-left {
-    width: fit-content;
+    z-index: $side-index;
     height: 100%;
     transition-duration: 0.3s;
-    will-change: margin-left;
-    &.is-open {
-      margin-left: 0;
-    }
-    &.is-close {
-      margin-left: -$nav-lg-width;
+    will-change: width;
+    position: absolute;
+    left: 0;
+    top: 0;
 
-      @media (max-width: 992px) {
-        margin-left: -$nav-md-width;
-      }
+    &.is-close {
+      width: $side-width;
+    }
+    &.is-open {
+      width: $nav-lg-width;
       @media (max-width: 768px) {
-        margin-left: -$nav-xs-width;
+        width: $nav-md-width;
       }
     }
   }
 
   &-right {
-    flex: 1;
+    position: relative;
+    top: 0;
+    transition-duration: 0.3s;
+    will-change: width, left;
+    &.is-close {
+      width: calc(100% - $side-width);
+      left: $side-width;
+    }
+    &.is-open {
+      width: calc(100% - $nav-lg-width);
+      left: $nav-lg-width;
+      @media (max-width: 768px) {
+        width: calc(100% - $nav-md-width);
+        left: $nav-md-width;
+      }
+    }
+
     display: flex;
     flex-direction: column;
     overflow: auto;

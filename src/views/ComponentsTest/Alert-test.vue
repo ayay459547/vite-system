@@ -52,7 +52,7 @@ const showAlert = (icon: Icon) => {
 <template>
   <div class="input-test">
     <div
-      v-fixed="{
+      v-i-fixed="{
         text: 'v-fixed test 789 456 123',
         class: '',
         style: 'color: #fff'

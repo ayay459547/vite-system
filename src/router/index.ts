@@ -15,6 +15,7 @@ import routes from '@/router/routes'
 import { permission, hasPermission } from '@/lib/permission'
 
 import HomeView from '@/views/HomeView/HomeView.vue'
+import SearchView from '@/views/SearchView/SearchView.vue'
 import LoginView from '@/views/LoginView/LoginView.vue'
 import NoPermissions from '@/views/NoPermissions.vue'
 import Page_404 from '@/views/Page_404.vue'
@@ -74,6 +75,14 @@ const baseRoutes: Array<RouteRecordRaw> = [
     },
     path: '/home',
     component: HomeView
+  },
+  {
+    name: 'search',
+    meta: {
+      title: '搜尋'
+    },
+    path: '/search',
+    component: SearchView
   },
   {
     name: 'login',

@@ -12,8 +12,8 @@ import { vFixed } from './fixed'
 const pluginDirective = {
   install (app: App): void {
     app.use(vClickOutside)
-    app.directive('loading', vLoading)
-    app.directive('fixed', vFixed)
+    app.directive('i-loading', vLoading)
+    app.directive('i-fixed', vFixed)
   }
 }
 

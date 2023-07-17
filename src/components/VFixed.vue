@@ -19,7 +19,7 @@ export interface Options {
 }
 
 export default defineComponent({
-  name: 'v-fixed',
+  name: 'vFixed',
   props: {
     elAttr: {
       typs: Object as PropType<ElAttr>,
@@ -159,7 +159,7 @@ export default defineComponent({
     padding: 2px 6px;
     cursor: default;
     position: fixed;
-    z-index: $v-fixed-index;
+    z-index: $v-i-fixed-index;
     white-space: nowrap;
     min-width: fit-content;
     // pointer-events: none;

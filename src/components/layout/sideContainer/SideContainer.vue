@@ -4,6 +4,7 @@ import NavigationView from './NavigationView.vue'
 import { CustomIcon } from '@/components'
 
 const props = defineProps<{
+  isOpen: boolean
   showRoutes: Navigation[]
   currentRouteName: string
   breadcrumbName: string[]
@@ -12,7 +13,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="side-container">
+  <div class="side-container" :class="props.isOpen ? 'is-open': 'is-close'">
     <RouterLink
       to="/home"
       class="side-logo"
@@ -41,7 +42,8 @@ const props = defineProps<{
 <style lang="scss" scoped>
 .side {
   &-container {
-    width: $nav-lg-width;
+    width: 100%;
+    min-width: $side-width;
     height: 100%;
     background-color: $system-bg-color;
     display: flex;
@@ -49,28 +51,29 @@ const props = defineProps<{
     justify-content: flex-start;
     align-items: center;
     transition-duration: 0.3s;
-    will-change: width, margin-left;
+    will-change: min-width;
+    overflow: hidden;
 
-    @media (max-width: 992px) {
-      width: $nav-md-width;
+    .side-logo,
+    .side-footer {
+      visibility: hidden;
     }
-    @media (max-width: 768px) {
-      width: $nav-xs-width;
-      margin-left: -8px;
+
+    &:hover.is-close {
+      box-shadow: 1px 0px 20px 0px #707070;
+    }
+
+    &:hover,
+    &.is-open {
+      min-width: $nav-lg-width;
+
+      @media (max-width: 768px) {
+        min-width: $nav-md-width;
+      }
 
       .side-logo,
       .side-footer {
-        visibility: hidden;
-      }
-
-      &:hover {
-        width: $nav-md-width;
-        margin-left: 0;
-
-        .side-logo,
-        .side-footer {
-          visibility: visible;
-        }
+        visibility: visible;
       }
     }
   }

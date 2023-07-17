@@ -1,12 +1,16 @@
 import type { RouterType } from '@/router/setting'
 
+interface Meta {
+  keepAlive: boolean        // 顯示時，決定是否放在 <KeepAlive></KeepAlive> 中
+}
+
 interface BaseTree {
   name: string              // 唯一值，不能重複
   title: string             // 顯示文字
   systemType: RouterType[]  // 路由類型
 
   icon?: string             // 第一層路由的圖示
-  meta?: {}                 // 額外其他參數
+  meta?: Meta               // 額外其他參數
 }
 interface RootTree extends BaseTree {
   leaves?: RouterTree[]     // 子路由設定
