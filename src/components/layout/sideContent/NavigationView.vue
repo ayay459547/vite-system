@@ -179,28 +179,28 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
     &-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 24px;
       flex: 1;
       &.active {
         color: $warning;
       }
       .item-title {
-        font-size: 1.3em;
+        font-size: 1.4em;
         transform: translateX(0);
         transition-duration: 0.3s;
 
         @media (max-width: 768px) {
-          font-size: 1.1em;
+          font-size: 1.3em;
         }
       }
       .item-icon {
-        font-size: 1.2em;
+        font-size: 1.3em;
         width: 30px;
         height: 30px;
         @extend %flex-center;
 
         @media (max-width: 768px) {
-          font-size: 1em;
+          font-size: 1.2em;
         }
       }
     }

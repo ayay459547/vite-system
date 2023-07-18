@@ -5,8 +5,7 @@ import {
   reactive,
   computed,
   onMounted,
-  onUnmounted,
-  inject
+  onUnmounted
 } from 'vue'
 
 import type { ElTable as ElTableType } from 'element-plus'
@@ -19,8 +18,6 @@ import type { TableColumnsItem } from '@/lib/columns'
 import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton, FormSelect } from '@/components'
-
-import type { Hook } from '@/declare/hook'
 
 import ColumnSetting from './ColumnSetting.vue'
 
@@ -63,7 +60,6 @@ export interface Props extends Record<string, any> {
   tableDataCount?: number
   rowKey?: string
   defaultExpandAll?: boolean
-
   /**
    * 表單顯示相關
    * page 當前分頁
@@ -103,11 +99,9 @@ const emit = defineEmits([
   'sort-change',
   'page-change',
   'size-change',
-  'show-change'
+  'show-change',
+  'expand-change'
 ])
-
-const hook: Hook = inject('hook')
-const { i18nTranslate } = hook()
 
 // slot
 const slots = useSlots()
@@ -198,6 +192,9 @@ const onSortChange = (props: {
 }
 const onHeaderClick = (column: any, event: Event) => {
   emit('header-click', column, event)
+}
+const onExpandChange = (row: any, expanded: boolean) => {
+  emit('expand-change', row, expanded)
 }
 
 /**
@@ -303,10 +300,10 @@ defineExpose({
         />
         <ColumnSetting
           ref="columnSetting"
-          :label="i18nTranslate('columnSetting')"
           :columns="props.tableColumns"
           :version="props.version"
           :setting-key="props.settingKey"
+          :label="$t('columnSetting')"
           @change="initShowColumns"
         />
         <slot name="setting-left"></slot>
@@ -322,7 +319,7 @@ defineExpose({
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <FormSelect
-            :label="`${i18nTranslate('showCount')} : `"
+            label="顯示筆數 : "
             v-model="pageSize"
             :options="sizeOptions"
             direction="row"
@@ -351,7 +348,22 @@ defineExpose({
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
+        @expand-change="onExpandChange"
       >
+        <template v-if="hasSlot('column-expand')">
+          <ElTableColumn type="expand">
+            <template #default="scope">
+              <slot
+                name="column-expand"
+                :row="scope.row"
+                :row-index="scope.$index"
+                :expanded="scope.expanded"
+                :store="scope.store"
+              ></slot>
+            </template>
+          </ElTableColumn>
+        </template>
+
         <ElTableColumn
           v-for="column in showColumns"
           :key="column.prop"
@@ -364,6 +376,7 @@ defineExpose({
                 :label="column.label"
                 :row-index="scope.$index"
                 :column="column"
+                :prop="column.prop"
               ></slot>
             </div>
           </template>
@@ -374,6 +387,7 @@ defineExpose({
                 :label="column.label"
                 :row-index="scope.$index"
                 :column="column"
+                :prop="column.prop"
               ></slot>
             </div>
           </template>
@@ -385,6 +399,7 @@ defineExpose({
               :row="scope.row"
               :row-index="scope.$index"
               :column="column"
+              :prop="column.prop"
             ></slot>
           </template>
           <template v-else-if="hasSlot('column-all')" #default="scope">
@@ -394,6 +409,7 @@ defineExpose({
               :row="scope.row"
               :row-index="scope.$index"
               :column="column"
+              :prop="column.prop"
             ></slot>
           </template>
         </ElTableColumn>

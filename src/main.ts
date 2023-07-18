@@ -34,6 +34,11 @@ import i18n from '@/i18n'
 
 const app = createApp(App)
 
+app.config.globalProperties.$log = (any: any) => {
+  console.log('$log => ', any)
+  return '$log'
+}
+
 app.use(createPinia())
 
 app.use(router)

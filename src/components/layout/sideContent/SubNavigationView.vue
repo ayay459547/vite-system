@@ -165,18 +165,18 @@ export default defineComponent({
     padding: 12px 26px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 28px;
     cursor: pointer;
     color: #fff;
 
     & > h3 {
-      font-size: 1.2em;
+      font-size: 1.4em;
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;
 
       @media (max-width: 768px) {
-        font-size: 1em;
+        font-size: 1.3em;
       }
     }
 
@@ -223,18 +223,18 @@ export default defineComponent({
     &-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 22px;
       flex: 1;
       &.active {
         color: $warning;
       }
       .item-title {
-        font-size: 1.1em;
+        font-size: 1.3em;
         transform: translateX(0);
         transition-duration: 0.3s;
 
         @media (max-width: 768px) {
-          font-size: 1em;
+          font-size: 1.2em;
         }
       }
       .item-icon {
@@ -268,9 +268,10 @@ export default defineComponent({
   }
 
   &-sub-item {
-    padding: 12px 48px;
+    padding: 12px 0;
+    padding-left: 62px;
     .item-icon {
-      font-size: 1em;
+      font-size: 1.2em;
     }
   }
 }
