@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance } from 'vue'
-import type { Expose } from '@/components'
+import type { FormInputExpose, CustomTableExpose } from '@/components'
 import type { ValidateType } from './validate'
 import { reactive } from 'vue'
 
@@ -15,9 +15,9 @@ export interface FormSetting<T> {
   validate: () => Promise<Array<any>>
 }
 
-export interface RefItem extends Element, ComponentPublicInstance, Expose {}
+export interface IinputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
 export interface FormColumnsItem {
-  ref: (el: RefItem) => void
+  ref: (el: IinputRefItem) => void
   key: string
   validateKey: string
   clearable: boolean
@@ -45,7 +45,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
-      ref: (el: RefItem) => {
+      ref: (el: IinputRefItem) => {
         if (el) {
           refMap[key] = el
         }
@@ -91,7 +91,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       const successList = []
       const errorList = []
 
-      refMap.$forEach((input: RefItem) => {
+      refMap.$forEach((input: IinputRefItem) => {
         const { key, value, validate } = input
         validateList.push(validate())
         validateInput.push({
@@ -135,20 +135,25 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
 
 }
 
+export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
+export interface TableParams {
+  page: number
+  size: number
+  sort: {
+    key: null | string,
+    order: null | 'ascending' | 'descending'
+  }
+}
 export interface TableSetting {
   tableSetting: {
     title: string
     version: string
     settingKey: string
-    page: number
-    pageSize: number
-    sort: {
-      key: null | string,
-      order: null | 'ascending' | 'descending'
-    }
+    params: TableParams
     tableColumns: Record<string, any>
   },
   downloadExcel: (tableData: Record<string, any>[]) => void
+  getParams: (tableRef: TableRef) => TableParams
 }
 export interface TableColumnsItem {
   key: string
@@ -171,11 +176,11 @@ export const getTableSetting = (
   columns: Record<string, any>,
   type: string,
   options: {
-    title?: string
+    title: string
     version: string
     settingKey: string
     page?: number
-    pageSize?: number
+    size?: number
     sort?: {
       key: null | string,
       order: null | 'ascending' | 'descending'
@@ -187,7 +192,7 @@ export const getTableSetting = (
     version,
     settingKey,
     page = 1,
-    pageSize = 100,
+    size = 100,
     sort = {
       key: null,
       order: null
@@ -279,17 +284,30 @@ export const getTableSetting = (
     })
 
   }
+
+  const tableParams = reactive<TableParams>({
+    page,
+    size,
+    sort
+  })
   return {
     tableSetting: {
       title,
       version,
       settingKey,
-      page,
-      pageSize,
-      sort,
+      params: tableParams,
       tableColumns: resColumns
     },
-    downloadExcel
+    downloadExcel,
+    getParams: (tableRef: TableRef) => {
+      if (tableRef) {
+        return tableRef.getTableParams()
+      } else {
+        return {
+          ...tableParams
+        }
+      }
+    }
   }
 }
 

@@ -26,9 +26,14 @@ export interface PageChange {
   (page: number, pageSize: number): void
 }
 
-export type Sort = {
+export interface Sort {
   key: null | string
   order: null | 'ascending' | 'descending'
+}
+export interface TableParams {
+  page: number
+  size: number
+  sort: Sort
 }
 
 export interface Props extends Record<string, any> {
@@ -208,7 +213,7 @@ const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
 
   emit('show-change', {
     page,
-    pageSize,
+    size: pageSize,
     sort: JSON.parse(JSON.stringify(sort))
   })
 }
@@ -283,7 +288,14 @@ onUnmounted(() => {
 })
 
 defineExpose({
-  pageChange
+  pageChange,
+  getTableParams: () => {
+    return {
+      page: currentPage.value,
+      size: pageSize.value,
+      sort: currentSort.value
+    }
+  }
 })
 
 </script>
@@ -303,7 +315,6 @@ defineExpose({
           :columns="props.tableColumns"
           :version="props.version"
           :setting-key="props.settingKey"
-          :label="$t('columnSetting')"
           @change="initShowColumns"
         />
         <slot name="setting-left"></slot>
@@ -434,7 +445,28 @@ defineExpose({
   .el-table {
     // 修 table 寬度自適應
     position: absolute;
+
   }
+  .caret-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    height: 14px;
+    width: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    overflow: initial;
+    position: relative;
+  }
+
+  .sort-caret {
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    position: absolute;
+    left: 7px;
+  }
+
 }
 .table {
   &-wrapper {
@@ -446,8 +478,8 @@ defineExpose({
     flex-direction: column;
 
     .header-slot {
-      width: fit-content;
-      max-width: calc(100% - 24px);
+      width: calc(100% - 24px);
+      padding-right: 8px;;
       display: inline-block;
     }
   }
@@ -458,7 +490,7 @@ defineExpose({
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;
-    padding: 4px 8px;
+    padding: 0 8px;
 
     &::-webkit-scrollbar {
       width: 4px;

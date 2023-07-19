@@ -109,7 +109,7 @@ const hasSlot = (prop: string): boolean => {
 
     <ElInput
       v-model="tempValue"
-      placeholder="Please input"
+      :placeholder="$t('pleaseInput')"
       class="input-main"
       :validate-event="false"
       v-bind="bindAttributes"

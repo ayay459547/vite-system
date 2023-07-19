@@ -59,7 +59,12 @@ export type {
 } from './feature/CustomRadio/CustomRadio.vue'
 export { default as CustomSelect } from './feature/CustomSelect/CustomSelect.vue'
 
-export type { PageChange } from './feature/CustomTable/CustomTable.vue'
+import { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
+export declare interface CustomTableExpose {
+  pageChange: PageChange
+  getTableParams: () => TableParams
+}
+export type { PageChange, TableParams, Sort } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 export type {
@@ -82,7 +87,7 @@ export { default as FormCheckbox } from './form/FormCheckbox.vue'
 
 export { default as FormDatePicker } from './form/FormDatePicker.vue'
 
-export declare interface Expose {
+export declare interface FormInputExpose {
   key: string
   value: Ref<string>
   handleReset: () => void

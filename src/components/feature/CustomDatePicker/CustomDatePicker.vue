@@ -42,6 +42,14 @@ const props = defineProps({
   type: {
     type: String as PropType<PickerType>,
     default: 'date'
+  },
+  format: {
+    type: String as PropType<string>,
+    default: 'YYYY-MM-DD'
+  },
+  valueFormat: {
+    type: String as PropType<string>,
+    default: 'YYYY-MM-DD'
   }
 })
 
@@ -49,7 +57,9 @@ const bindAttributes = computed(() => {
   return {
     type: props.type,
     clearable: props.clearable,
-    disabled: props.disabled
+    disabled: props.disabled,
+    format: props.format,
+    valueFormat: props.valueFormat
   }
 })
 
@@ -109,10 +119,8 @@ onBeforeUnmount(() => {
 
     <ElDatePicker
       v-model="tempValue"
-      placeholder="Please input"
+      :placeholder="$t('pleaseInput')"
       class="input-main"
-      format="YYYY-MM-DD"
-      value-format="YYYY-MM-DD"
       :start-placeholder="t('startTime')"
       :end-placeholder="t('endTime')"
       :validate-event="false"

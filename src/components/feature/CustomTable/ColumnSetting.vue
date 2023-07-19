@@ -14,10 +14,6 @@ import {
 } from '@/lib/idb'
 
 const props = defineProps({
-  label: {
-    type: String as PropType<string>,
-    default: ''
-  },
   columns: {
     type: Object as PropType<PropsTableColumn[]>,
     default () {
@@ -131,7 +127,7 @@ onBeforeMount(async () => {
         <CustomButton
           icon-name="list-check"
           class="i-mr-xs"
-          :label="props.label"
+          :label="$t('columnSetting')"
         />
       </template>
 

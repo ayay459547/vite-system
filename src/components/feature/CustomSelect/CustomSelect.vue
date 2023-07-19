@@ -42,13 +42,25 @@ const props = defineProps({
   disabled: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  multiple: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  filterable: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
 const bindAttributes = computed(() => {
   return {
     clearable: props.clearable,
-    disabled: props.disabled
+    disabled: props.disabled,
+    filterable: props.filterable,
+    multiple: props.multiple,
+    collapseTags: props.multiple,
+    collapseTagsTooltip: props.multiple
   }
 })
 
@@ -116,7 +128,7 @@ const hasSlot = (prop: string): boolean => {
 
     <ElSelect
       v-model="tempValue"
-      placeholder="Please input"
+      :placeholder="$t('pleaseSelect')"
       class="input-main"
       :validate-event="false"
       v-bind="bindAttributes"

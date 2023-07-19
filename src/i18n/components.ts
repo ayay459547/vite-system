@@ -78,5 +78,17 @@ export default {
     zhTw: '欄位設定',
     zhCn: '栏位设定',
     en: 'ColumnSetting'
+  },
+  // CustomInput
+  pleaseInput: {
+    zhTw: '請輸入',
+    zhCn: '请输入',
+    en: 'Please Input'
+  },
+  // CustomSelect
+  pleaseSelect: {
+    zhTw: '請選擇',
+    zhCn: '请选择',
+    en: 'Please Select'
   }
 } as LangMap
