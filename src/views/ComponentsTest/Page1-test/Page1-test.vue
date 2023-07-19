@@ -140,9 +140,9 @@ const table = ref(null)
 const init = async (props = tableSetting) => {
   tableData.value = []
   loading(true)
-  const { page, pageSize, sort } = props
+  const { page, size, sort } = props.params
 
-  const apiParam  = { page, pageSize, sort }
+  const apiParam  = { page, size, sort }
   console.log(apiParam)
 
   const [resData, resDataCount ] = await Promise.all([ getData(), getDataCount() ])

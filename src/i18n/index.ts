@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 import views from './views'
-import base from './base'
+import common from './common'
 import components from './components'
 
 export type LangMap = Record<string, {
@@ -31,7 +31,7 @@ export const getI18nMessages = (langMap: LangMap): Messages => {
 
 const langMap: LangMap = {
   ...views,
-  ...base,
+  ...common,
   ...components
 }
 
