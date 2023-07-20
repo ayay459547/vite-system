@@ -3,7 +3,7 @@ import { ref, computed, reactive, onBeforeMount } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
-import { getRouterLeafLayer, refactorRoutes } from '@/lib/routes'
+import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
 import {
@@ -12,9 +12,9 @@ import {
   delHistoryNavigation as deleteHistory,
   clearHistoryNavigation as clearHistory,
   keysHistoryNavigation as keysHistory
-} from '@/lib/idb'
+} from '@/lib/lib_idb'
 
-import { permission, defaultPermission, hasPermission } from '@/lib/permission'
+import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission'
 
 export const useRoutesStore = defineStore('routes', () => {
   // 全部的路由

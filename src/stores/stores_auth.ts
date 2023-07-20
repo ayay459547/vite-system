@@ -1,14 +1,14 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
-import type { AuthData, PermissionData } from './api'
-import { getUserData, getRoutesPermission } from './api'
-import { permission } from '@/lib/permission'
+import type { AuthData, PermissionData } from './stores_api'
+import { getUserData, getRoutesPermission } from './stores_api'
+import { permission } from '@/lib/lib_permission'
 
-import { getRouterLeafLayer } from '@/lib/routes'
+import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
-import { setCookie, getCookie, removeCookie } from '@/lib/cookie'
+import { setCookie, getCookie, removeCookie } from '@/lib/lib_cookie'
 
 // token
 import { v4 as uuidv4 } from 'uuid'

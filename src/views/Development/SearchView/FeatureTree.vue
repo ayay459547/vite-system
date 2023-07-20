@@ -4,7 +4,7 @@ import { defineComponent } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon, CustomButton, CustomTooltip } from '@/components'
 import { mapStores } from 'pinia'
-import { useRoutesStore } from '@/stores/routes'
+import { useRoutesStore } from '@/stores/stores_routes'
 
 export default defineComponent({
   name: 'FeatureTree',

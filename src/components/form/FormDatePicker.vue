@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed, useSlots, onMounted, onBeforeUnmount } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useField } from 'vee-validate'
-import type { ValidateType } from '@/lib/validate'
+import type { ValidateType } from '@/lib/lib_validate'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -264,4 +264,4 @@ onBeforeUnmount(() => {
     color: $danger;
   }
 }
-</style>
+</style>@/lib/lib_validate

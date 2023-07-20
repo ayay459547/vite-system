@@ -11,7 +11,7 @@ import {
   getColumnSetting,
   setColumnSetting,
   delColumnSetting
-} from '@/lib/idb'
+} from '@/lib/lib_idb'
 
 const props = defineProps({
   columns: {
@@ -183,4 +183,4 @@ onBeforeMount(async () => {
     }
   }
 }
-</style>
+</style>@/lib/lib_idb

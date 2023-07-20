@@ -3,7 +3,7 @@ import type { ComputedRef, PropType } from 'vue'
 import { computed } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import { useRoutesStore } from '@/stores/routes'
+import { useRoutesStore } from '@/stores/stores_routes'
 
 import type { ListType, ListItem } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'

@@ -1,4 +1,4 @@
-import { getRouterLeafLayer, refactorRoutes } from '@/lib/routes'
+import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
 export const fakeUserData = {

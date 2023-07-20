@@ -1,6 +1,6 @@
 <script lang="ts">
 import GlobalView from '@/components/GlobalView.vue'
-import { useEnvStore } from '@/stores/env'
+import { useEnvStore } from '@/stores/stores_env'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -40,3 +40,4 @@ export default defineComponent({
   overflow: hidden;
 }
 </style>
+@/stores/stores_env

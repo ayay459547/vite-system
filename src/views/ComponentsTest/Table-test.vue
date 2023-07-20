@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
-import { getTableSetting } from '@/lib/columns'
+import { getTableSetting } from '@/lib/lib_columns'
 import { ref } from 'vue'
 
 const columnSetting = {

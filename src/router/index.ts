@@ -8,11 +8,11 @@ import type { ComputedRef } from 'vue'
 import { ref, computed } from 'vue'
 
 import { storeToRefs } from 'pinia'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/stores_auth'
 
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
-import { permission, hasPermission } from '@/lib/permission'
+import { permission, hasPermission } from '@/lib/lib_permission'
 
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'

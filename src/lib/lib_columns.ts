@@ -1,12 +1,12 @@
 import type { ComponentPublicInstance } from 'vue'
 import type { FormInputExpose, CustomTableExpose } from '@/components'
-import type { ValidateType } from './validate'
+import type { ValidateType } from './lib_validate'
 import { reactive } from 'vue'
 
 import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
-import { getColumnSetting } from '@/lib/idb'
+import { getColumnSetting } from '@/lib/lib_idb'
 
 export interface FormSetting<T> {
   columns: Record<string, any>

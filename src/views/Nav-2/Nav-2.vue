@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 
-// import { useEnvStore } from '@/stores/env'
+// import { useEnvStore } from '@/stores/stores_env'
 
 // const envStore = useEnvStore()
 

@@ -11,13 +11,13 @@ import {
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/throttle'
-import throttle from '@/lib/throttle'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 
-import type { TableColumnsItem } from '@/lib/columns'
+import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
 
-import { CustomButton, FormSelect } from '@/components'
+import { CustomButton, CustomPopover, CustomSelect, CustomIcon } from '@/components'
 
 import ColumnSetting from './ColumnSetting.vue'
 
@@ -119,15 +119,16 @@ const renderKey = ref(1)
 const isRender = ref(false)
 
 // 點擊 excel
-const excel = () => {
+const excel = (type: 'all' | 'page') => {
   emit('excel', {
+    type,
     tableColumns: props.tableColumns,
     tableData: props.tableData
    })
 }
 
 // 每頁顯示筆數
-const pageSize = ref(props.pageSize)
+const pageSize = ref<number>(props.pageSize)
 
 const sizeOptions = [
   { value: 30, label: '30' },
@@ -304,12 +305,32 @@ defineExpose({
   <div v-i-loading="loading" class="table-wrapper">
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-8">
-        <CustomButton
-          icon-name="file-excel"
-          label="Excel"
-          class="i-mr-xs"
-          @click="excel"
-        />
+        <CustomPopover
+          placement="bottom"
+          :width="150"
+          trigger="click"
+          popper-style="padding: 4px;"
+        >
+          <template #reference>
+            <CustomButton
+              icon-name="file-excel"
+              label="Excel"
+              class="i-mr-xs"
+            />
+          </template>
+
+          <div class="excel-list">
+            <div class="excel-item" @click="excel('all')">
+              <CustomIcon name="table-list" class="icon"/>
+              <div class="text">全部資料</div>
+            </div>
+            <div class="excel-item" @click="excel('page')">
+              <CustomIcon type="far" name="file-lines" class="icon"/>
+              <div class="text">當前頁面資料</div>
+            </div>
+          </div>
+        </CustomPopover>
+
         <ColumnSetting
           ref="columnSetting"
           :columns="props.tableColumns"
@@ -329,9 +350,9 @@ defineExpose({
       <div class="setting-right grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
-          <FormSelect
-            label="顯示筆數 : "
+          <CustomSelect
             v-model="pageSize"
+            label="顯示筆數 : "
             :options="sizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -466,7 +487,6 @@ defineExpose({
     position: absolute;
     left: 7px;
   }
-
 }
 .table {
   &-wrapper {
@@ -539,11 +559,39 @@ defineExpose({
     width: 100%;
     position: relative;
   }
+
   &-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 40px;
+  }
+}
+
+.excel {
+  &-list {
+    display: flex;
+    flex-direction: column;
+  }
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px;
+    background-color: #fff;
+    transition-duration: 0.3s;
+    cursor: pointer;
+    .icon {
+      width: 22px;
+      text-align: center;
+    }
+    .text {
+      height: 40px;
+      line-height: 40px;
+    }
+    &:hover {
+      background-color: #f5f7fa;
+    }
   }
 }
 </style>

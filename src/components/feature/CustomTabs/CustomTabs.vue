@@ -2,12 +2,12 @@
 import type { Ref, PropType, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
-import type { ResizeObserverCallback } from '@/lib/throttle'
-import throttle from '@/lib/throttle'
-import debounce from '@/lib/debounce'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import debounce from '@/lib/lib_debounce'
 
 import { CustomIcon } from '@/components'
-import { scrollToEl } from '@/lib/utils'
+import { scrollToEl } from '@/lib/lib_utils'
 
 export type ListItem = {
   key: string

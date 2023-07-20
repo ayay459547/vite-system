@@ -1,5 +1,5 @@
 import checkSystemVersionDiff from './checkSystemVersion'
-import { removeCookie } from '@/lib/cookie'
+import { removeCookie } from '@/lib/lib_cookie'
 
 /**
  * cookie 刷新

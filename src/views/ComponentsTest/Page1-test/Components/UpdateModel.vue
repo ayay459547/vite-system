@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getFormSetting } from '@/lib/columns'
-import { scrollToEl } from '@/lib/utils'
+import { getFormSetting } from '@/lib/lib_columns'
+import { scrollToEl } from '@/lib/lib_utils'
 import {
   FormInput,
   FormDatePicker,
@@ -10,7 +10,7 @@ import { onMounted } from 'vue'
 
 import type { TableData } from '../api'
 import { updateData } from '../api'
-import { columnSetting } from '../column'
+import { columnSetting } from '../columns'
 
 
 const {
@@ -85,4 +85,4 @@ defineExpose({
   height: fit-content;
   padding: 16px;
 }
-</style>
+</style>../columns

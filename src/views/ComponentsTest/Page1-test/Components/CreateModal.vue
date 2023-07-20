@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getFormSetting } from '@/lib/columns'
-import { scrollToEl } from '@/lib/utils'
+import { getFormSetting } from '@/lib/lib_columns'
+import { scrollToEl } from '@/lib/lib_utils'
 import {
   FormInput,
   FormDatePicker,
@@ -9,7 +9,7 @@ import {
 
 import type { TableData } from '../api'
 import { createData } from '../api'
-import { columnSetting } from '../column'
+import { columnSetting } from '../columns'
 
 const {
   columns: formColumn,
@@ -62,4 +62,4 @@ defineExpose({
   height: fit-content;
   padding: 16px;
 }
-</style>
+</style>../columns

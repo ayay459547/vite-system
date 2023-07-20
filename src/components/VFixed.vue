@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 
-import throttle from '@/lib/throttle'
-import debounce from '@/lib/debounce'
+import throttle from '@/lib/lib_throttle'
+import debounce from '@/lib/lib_debounce'
 
 export interface ElAttr {
   left?: number

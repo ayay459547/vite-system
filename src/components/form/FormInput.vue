@@ -3,8 +3,8 @@ import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { ElInput } from 'element-plus'
 import { useField } from 'vee-validate'
-import type { VeeRes, ValidateType } from '@/lib/validate'
-import validateFun from '@/lib/validate'
+import type { VeeRes, ValidateType } from '@/lib/lib_validate'
+import validateFun from '@/lib/lib_validate'
 
 type ModelValue = string | null
 
@@ -274,4 +274,4 @@ const hasSlot = (prop: string): boolean => {
     color: $danger;
   }
 }
-</style>
+</style>@/lib/lib_validate@/lib/lib_validate

@@ -5,7 +5,7 @@ import { ElSelect, ElOption } from 'element-plus'
 
 export type Options = Array<{
   label: string
-  value: string | number | boolean
+  value: string | number | boolean | null
 }>
 
 export type ModelValue = string | number | Record<string, any> | Array<any>
@@ -13,8 +13,7 @@ export type ModelValue = string | number | Record<string, any> | Array<any>
 const props = defineProps({
   modelValue: {
     type: [String, Number, Array, Object] as PropType<ModelValue>,
-    required: false,
-    default: ''
+    required: true
   },
   direction: {
     type: String as PropType<'column' | 'row'>,

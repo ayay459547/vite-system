@@ -8,19 +8,19 @@ import {
   CustomIcon
 } from '@/components'
 
-import { deepClone, usePageI18n } from '@/lib/utils'
-import { getTableSetting } from '@/lib/columns'
+import { deepClone, usePageI18n } from '@/lib/lib_utils'
+import { getTableSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
-import { columnSetting } from './column'
+import { columnSetting } from './columns'
 
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModel from './Components/UpdateModel.vue'
 
 import { storeToRefs } from 'pinia'
-import { useRoutesStore } from '@/stores/routes'
-import { getPermission } from '@/lib/permission'
+import { useRoutesStore } from '@/stores/stores_routes'
+import { getPermission } from '@/lib/lib_permission'
 
 import message from './i18n'
 
@@ -140,7 +140,7 @@ const table = ref(null)
 const init = async (props = tableSetting) => {
   tableData.value = []
   loading(true)
-  const { page, size, sort } = props.params
+  const { page = 1, size = 100, sort = {} } = props?.params ?? {}
 
   const apiParam  = { page, size, sort }
   console.log(apiParam)
@@ -240,4 +240,4 @@ onActivated(() => {
   flex-direction: column;
   gap: 8px;
 }
-</style>
+</style>@/lib/lib_permission./columns

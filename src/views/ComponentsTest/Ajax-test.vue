@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ajax } from '@/lib/ajax'
+import { ajax } from '@/lib/lib_ajax'
 import { CustomTable } from '@/components'
 
 interface Todos {
@@ -135,4 +135,4 @@ const tableColumns = [
   flex-direction: column;
   gap: 16px;
 }
-</style>
+</style>@/lib/lib_ajax

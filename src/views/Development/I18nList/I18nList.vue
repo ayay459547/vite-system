@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
-import { getTableSetting } from '@/lib/columns'
+import { getTableSetting } from '@/lib/lib_columns'
 import { ref, reactive, onMounted } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import { refactorRoutes } from '@/lib/routes'
+import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
 const columnSetting = {

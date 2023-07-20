@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DataTable, CustomInput, CustomIcon } from '@/components'
-import { getDataTableSetting } from '@/lib/columns'
+import { getDataTableSetting } from '@/lib/lib_columns'
 import { ref } from 'vue'
 
 const columnsSetting = {

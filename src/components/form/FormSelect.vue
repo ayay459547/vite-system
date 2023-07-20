@@ -6,7 +6,7 @@ import { useField } from 'vee-validate'
 
 export type Options = Array<{
   label: string
-  value: string | number | boolean
+  value: string | number | boolean | null
 }>
 
 type ModelValue = string | number | null

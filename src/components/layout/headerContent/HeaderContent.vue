@@ -4,13 +4,13 @@ import { ref, computed, inject } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 
-import { useLocaleStore } from '@/stores/locale'
+import { useLocaleStore } from '@/stores/stores_locale'
 
 import { options as langOptions } from '@/i18n'
 import type { Hook, EventItem } from '@/declare/hook'
 
 import { CustomIcon, CustomTooltip } from '@/components'
-import { AuthData } from '@/stores/api'
+import { AuthData } from '@/stores/stores_api'
 
 const props = defineProps<{
   isOpen: boolean
@@ -269,4 +269,4 @@ const openUserEffect = (e: MouseEvent) => {
     }
   }
 }
-</style>
+</style>@/stores/stores_api@/stores/stores_locale

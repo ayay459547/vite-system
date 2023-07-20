@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
-import { getFormSetting } from '@/lib/columns'
+import { getFormSetting } from '@/lib/lib_columns'
 
 import { FormInput, CustomIcon } from '@/components'
 import { loginSystem } from './api'

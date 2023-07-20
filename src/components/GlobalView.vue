@@ -20,12 +20,12 @@ import NavigationTabs from '@/components/layout/pageContent/NavigationTabs.vue'
 import { ElConfigProvider } from 'element-plus'
 
 // locale
-import { useLocaleStore } from '@/stores/locale'
+import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
-import { useAuthStore } from '@/stores/auth'
-import { useRoutesStore } from '@/stores/routes'
-import { useEnvStore } from '@/stores/env'
+import { useAuthStore } from '@/stores/stores_auth'
+import { useRoutesStore } from '@/stores/stores_routes'
+import { useEnvStore } from '@/stores/stores_env'
 import { storeToRefs } from 'pinia'
 
 import type { RouteRecordName, RouteLocationNormalized } from 'vue-router'
@@ -442,3 +442,4 @@ const login = async (userId: number) => {
   }
 }
 </style>
+@/stores/stores_locale@/stores/stores_env@/stores/stores_auth

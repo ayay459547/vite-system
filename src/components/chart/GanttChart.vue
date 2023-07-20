@@ -3,9 +3,9 @@
 import * as echarts from 'echarts'
 import type { PropType } from 'vue'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
-import type { ResizeObserverCallback } from '@/lib/throttle'
-import throttle from '@/lib/throttle'
-import debounce from '@/lib/debounce'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import debounce from '@/lib/lib_debounce'
 
 const dateFormatter = (value: number, format: string) => {
   const date = new Date(value)

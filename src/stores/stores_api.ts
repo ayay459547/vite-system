@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
-import { ajax } from '@/lib/ajax'
-import { fakeUserData, allPermissionData } from './_fakeData'
+import { ajax } from '@/lib/lib_ajax'
+import { fakeUserData, allPermissionData } from './stores_fakeData'
 
 export type AuthData = {
   id: number

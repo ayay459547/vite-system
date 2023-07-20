@@ -3,7 +3,7 @@ import { inject, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import ExcelJs from 'exceljs'
 import type { IconType, ButtonSize, TooltipTrigger } from '@/components'
-import { getTableSetting } from '@/lib/columns'
+import { getTableSetting } from '@/lib/lib_columns'
 import {
   CustomButton,
   CustomModal,

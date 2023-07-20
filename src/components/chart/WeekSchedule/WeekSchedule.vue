@@ -2,8 +2,8 @@
 import { PropType, reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { inject, nextTick } from 'vue'
-import throttle from '@/lib/throttle'
-import { getType } from '@/lib/utils'
+import throttle from '@/lib/lib_throttle'
+import { getType } from '@/lib/lib_utils'
 
 import { CustomPopover, CustomButton } from '@/components'
 
