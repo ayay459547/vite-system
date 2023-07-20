@@ -119,12 +119,14 @@ const renderKey = ref(1)
 const isRender = ref(false)
 
 // 點擊 excel
+const excelIsShow = ref(false)
 const excel = (type: 'all' | 'page') => {
   emit('excel', {
     type,
     tableColumns: props.tableColumns,
     tableData: props.tableData
    })
+   excelIsShow.value = false
 }
 
 // 每頁顯示筆數
@@ -306,6 +308,7 @@ defineExpose({
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-8">
         <CustomPopover
+          v-model:visible="excelIsShow"
           placement="bottom"
           :width="150"
           trigger="click"
@@ -466,7 +469,21 @@ defineExpose({
   .el-table {
     // 修 table 寬度自適應
     position: absolute;
+    .el-table__header .cell {
+      box-sizing: border-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      word-break: break-all;
+      line-height: 23px;
+      padding: 0 12px;
 
+      display: flex;
+      align-items: center;
+      & > div {
+        width: 100%;
+      }
+    }
   }
   .caret-wrapper {
     display: inline-flex;

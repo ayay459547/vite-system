@@ -31,14 +31,15 @@ const tempElVisible = computed<boolean>({
   set: (value: boolean) => elVisible.value = value
 })
 
-const isShow = computed<boolean>(() => {
-  return tempVisible.value || tempElVisible.value
-})
-
-const onUpdateVisible = (value: boolean) => {
+const onUpdateVisible = (value: boolean): boolean => {
   tempVisible.value = value
   tempElVisible.value = value
+  return value
 }
+
+const isShow = computed<boolean>(() => {
+  return onUpdateVisible(tempVisible.value)
+})
 
 </script>
 

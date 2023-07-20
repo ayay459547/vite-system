@@ -3,6 +3,39 @@ import { useI18n } from 'vue-i18n'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
+
+/**
+ * @author Caleb
+ * @description 取的準確的資料類型
+ * @param {*} any
+ * @returns {String} 類型
+ */
+export const getType = (any: any): string => {
+  const stringType = Object.prototype.toString.call(any)
+  const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
+  const res = stringType.match(regexp)
+  return res[1]
+}
+
+/**
+ * @author Caleb
+ * @description 系統開發中提示用log
+ * @param {String} title 主要提示
+ * @param {Array} messages 訊息列表
+ */
+export const tipLog = (title: string = '', messages: string[] = []): void => {
+  if (mode !== 'development') return mode
+
+  const style = `
+    font-size: 1.2em;
+    color: #f89898;
+  `
+  console.groupCollapsed('%c%s', style, `開發中提示：${title}`)
+  messages.forEach(message => {
+    console.log('%c%s', style, message)
+  })
+}
+
 /**
  * @author Caleb
  * @description 拷貝 array 或 object
@@ -10,9 +43,20 @@ import { getI18nMessages } from '@/i18n'
  * @param {Object | Array} origin 拷貝來源
  * @returns {Object} 拷貝完的物件
  */
-export const deepClone = <T>(targetElement: any, origin: T): T => {
+export const deepClone = (targetElement: any, origin: any): any => {
   const toStr = Object.prototype.toString
   const hasOwnProperty = Object.prototype.hasOwnProperty
+
+  const targetElementType = toStr.call(targetElement)
+  const originType = toStr.call(origin)
+  if (targetElementType !== originType) {
+    tipLog('無法執行 deepClone', [
+      'targetElement 需要與 origin 為一樣的類型才能拷貝',
+      `targetElement 的類型 => ${targetElementType}`,
+      `origin 的類型 => ${originType}`
+    ])
+  }
+
   const target = targetElement
 
   function setFun (
@@ -45,7 +89,7 @@ export const deepClone = <T>(targetElement: any, origin: T): T => {
       }
     }
   }
-  return (target as T)
+  return target
 }
 
 /**
@@ -68,20 +112,11 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
 
   if (re.test(Object.prototype.toString.call(el))) {
     el.scrollIntoView(setting)
+  } else {
+    tipLog('無法執行 scrollToEl', [
+      '請給 html 的 dom 物件'
+    ])
   }
-}
-
-/**
- * @author Caleb
- * @description 取的準確的資料類型
- * @param {*} any
- * @returns {String} 類型
- */
-export const getType = (any: any): string => {
-  const stringType = Object.prototype.toString.call(any)
-  const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
-  const res = stringType.match(regexp)
-  return res[1]
 }
 
 /**
@@ -100,4 +135,42 @@ export const usePageI18n = (langMap: LangMap): Partial<Composer & { i18nTranslat
     i18nTranslate: pageI18n.t,
     i18nTest: pageI18n.te
   }
+}
+
+const mode = (import.meta as any).env.MODE
+
+export type LogType = 'info' | 'warn' | 'error' | 'table' | 'trace'
+/**
+ * @author Caleb
+ * @description 系統用顯示log 打包後不顯示
+ * @param {*} value 任意值
+ * @param {String} type log類型
+ * @param {String} style 樣式
+ * @returns {String} 系統mode
+ */
+export const systemLog = (value: any, type: LogType = 'info', style: string = ''): string => {
+  if (mode === 'production') return 'production'
+
+  switch (type) {
+    case 'info':
+      console.info('%c%s', style, value)
+      break
+    case 'warn':
+      console.warn('%c%s', style, value)
+      break
+    case 'error':
+      console.error('%c%s', style, value)
+      break
+    case 'table':
+      console.table(value)
+      break
+    case 'trace': // 知道誰呼叫此函數
+      console.trace('%c%s', style, value)
+      break
+    default:
+      console.log('%c%s', style, value)
+      break
+  }
+
+  return mode as string
 }

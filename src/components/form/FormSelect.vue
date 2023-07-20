@@ -9,11 +9,11 @@ export type Options = Array<{
   value: string | number | boolean | null
 }>
 
-type ModelValue = string | number | null
+export type ModelValue = string | number | null | Record<string, any> | Array<any>
 
 const props = defineProps({
   modelValue: {
-    type: [String, Number, null] as PropType<ModelValue>,
+    type: [String, Number, Array, Object, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {

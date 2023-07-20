@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance } from 'vue'
-import type { FormInputExpose, CustomTableExpose } from '@/components'
+import type { FormInputExpose, CustomTableExpose, TableParams } from '@/components'
 import type { ValidateType } from './lib_validate'
 import { reactive } from 'vue'
 
@@ -7,6 +7,7 @@ import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/lib_idb'
+import { tipLog } from '@/lib/lib_utils'
 
 export interface FormSetting<T> {
   columns: Record<string, any>
@@ -136,14 +137,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
 }
 
 export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
-export interface TableParams {
-  page: number
-  size: number
-  sort: {
-    key: null | string,
-    order: null | 'ascending' | 'descending'
-  }
-}
+
 export interface TableSetting {
   tableSetting: {
     title: string
@@ -154,6 +148,7 @@ export interface TableSetting {
   },
   downloadExcel: (tableData: Record<string, any>[]) => void
   getParams: (tableRef: TableRef) => TableParams
+  changePage: (tableRef: TableRef) => void
 }
 export interface TableColumnsItem {
   key: string
@@ -282,7 +277,6 @@ export const getTableSetting = (
       link.href = URL.createObjectURL(blobData)
       link.click()
     })
-
   }
 
   const tableParams = reactive<TableParams>({
@@ -299,13 +293,27 @@ export const getTableSetting = (
       tableColumns: resColumns
     },
     downloadExcel,
-    getParams: (tableRef: TableRef) => {
+    getParams: (tableRef: TableRef): TableParams => {
       if (tableRef) {
         return tableRef.getTableParams()
       } else {
         return {
           ...tableParams
         }
+      }
+    },
+    changePage: (tableRef: TableRef): void => {
+      const { page, size } = tableParams
+      if (tableRef) {
+        tableRef.pageChange(page, size)
+      } else {
+        tipLog('無法換頁', [
+          '給 table 的 ref',
+          '從 CustomTable 上找 ref 屬性',
+          '如果沒有 自己給 ref="table"',
+          'const talbe = ref(null)',
+          '<CustomTable ref="table"></CustomTable>'
+        ])
       }
     }
   }

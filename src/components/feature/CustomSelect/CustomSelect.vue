@@ -8,11 +8,11 @@ export type Options = Array<{
   value: string | number | boolean | null
 }>
 
-export type ModelValue = string | number | Record<string, any> | Array<any>
+export type ModelValue = string | number | null | Record<string, any> | Array<any>
 
 const props = defineProps({
   modelValue: {
-    type: [String, Number, Array, Object] as PropType<ModelValue>,
+    type: [String, Number, Array, Object, null] as PropType<ModelValue>,
     required: true
   },
   direction: {
