@@ -45,7 +45,7 @@ onUnmounted(() => {
 
 <template>
   <div ref="container" class="empty" @mousemove="throttleSetImgStyle">
-    <h1 class="empty-title" :style="titleStyle">功能開發中</h1>
+    <h1 class="empty-title" :style="titleStyle">功能維護中</h1>
     <img
       class="empty-img"
       src="@/assets/images/empty.svg"

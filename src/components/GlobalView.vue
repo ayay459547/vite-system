@@ -276,15 +276,11 @@ const login = async (userId: number) => {
           :current-route-name="currentRouteName"
           :breadcrumb-name="breadcrumbName"
         >
-          <template #logo>
-            <slot name="logo">
-              <div>LOGO</div>
-            </slot>
+          <template #header="{ isShow }">
+            <slot name="menu-header" :is-show="isShow"></slot>
           </template>
-          <template #footer>
-            <slot name="footer">
-              <div>FOOTER</div>
-            </slot>
+          <template #footer="{ isShow }">
+            <slot name="menu-footer" :is-show="isShow"></slot>
           </template>
         </SideContent>
       </div>
@@ -303,7 +299,11 @@ const login = async (userId: number) => {
             @change-history="changeHistory"
             @logout="logout"
             @change-locale="setWebTitle"
-          />
+          >
+            <template #logo>
+              <slot name="logo"></slot>
+            </template>
+          </HeaderContent>
         </div>
         <div class="layout-view">
           <PageContent
@@ -442,4 +442,3 @@ const login = async (userId: number) => {
   }
 }
 </style>
-@/stores/stores_locale@/stores/stores_env@/stores/stores_auth

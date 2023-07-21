@@ -1,46 +1,63 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
-import { getTableSetting } from '@/lib/lib_columns'
+import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { ref, reactive, onMounted } from 'vue'
+import { langMap } from '@/i18n'
 
-import type { Navigation } from '@/declare/routes'
-import { refactorRoutes } from '@/lib/lib_routes'
-import routes from '@/router/routes'
+type TableData = {
+  key: string
+  zhTw: string
+  zhCn: string
+  en: string
+}
 
 const columnSetting = {
-  title: {
-    label: '名稱',
+  key: {
+    label: '翻譯key值',
     table: {
-      width: 200
+      minWidth: 200
     },
     filter: {
       default: null
     }
   },
-  path: {
-    label: '路由',
+  zhTw: {
+    label: '繁體中文',
     table: {
-      width: 200
+      minWidth: 200
     },
     filter: {
       default: null
     }
   },
-  breadcrumbTitle: {
-    label: '路徑',
+  zhCn: {
+    label: '簡體中文',
     table: {
-      minWidth: 300
+      minWidth: 200
+    },
+    filter: {
+      default: null
+    }
+  },
+  en: {
+    label: '英文',
+    table: {
+      minWidth: 200
+    },
+    filter: {
+      default: null
     }
   }
 }
 
-const tempData = reactive([])
-const tableData = ref([])
+const tempData = reactive<TableData[]>([])
+
+const tableData = ref<TableData[]>([])
 
 const tableOptions = {
-  title: '功能列表',
+  title: '翻譯值列表',
   version: '1.0.0',
-  settingKey: 'feature-list'
+  settingKey: 'i18n-list'
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
 
@@ -48,35 +65,32 @@ const download = () => {
   downloadExcel(tableData.value)
 }
 
-const filterName = ref('')
+// filter
+const {
+  columns: filterColumn,
+  forms: filter
+} = getFormSetting<TableData>(columnSetting, 'filter')
 
-onMounted(() => {
-  refactorRoutes<Navigation>((leafNode, parentsNode) => {
-    const nextNode: Navigation = {
-      ...leafNode
-    }
-    if (parentsNode === null) {
-      nextNode.breadcrumbName = [leafNode.name]
-      nextNode.breadcrumbTitle = [leafNode.title]
-    } else{
-      nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
-      nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
-    }
+const init = () => {
+  if (tempData.length > 0) {
+    tempData.splice(0)
+  }
 
-    if (!['', null, undefined].includes(nextNode.path)) {
-      tempData.push({
-        ...nextNode,
-        breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')
-      })
-    }
+  (langMap as any).$forEach((lang: {
+    zhTw: string
+    zhCn: string
+    en: string
+  }, key: string) => {
+    const { zhTw, zhCn, en } = lang
 
-    return {
-      refactorNode: nextNode,
-      isShow: true
-    }
-  }, routes)
+    tempData.push({ key, zhTw, zhCn, en })
+  })
 
   tableData.value = tempData
+}
+
+onMounted(() => {
+  init()
 })
 
 </script>
@@ -89,7 +103,16 @@ onMounted(() => {
         :table-data-count="tableData.length"
         v-bind="tableSetting"
         @excel="download"
-      ></CustomTable>
+      >
+        <template #header-all="{ prop }">
+          <CustomInput
+            v-model="filter[prop]"
+            v-bind="filterColumn[prop]"
+            direction="row"
+            @change="init()"
+          />
+        </template>
+      </CustomTable>
     </div>
   </div>
 </template>

@@ -36,6 +36,10 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       required: true
     },
+    getIcon: {
+      type: Function as PropType<(icon: [IconType, string] | string) => [IconType, string]>,
+      required: true
+    },
     getLastTypeIcon: {
       type: Function as PropType<(systemType: RouterType[]) => [IconType, string]>,
       required: true
@@ -85,7 +89,7 @@ export default defineComponent({
                 class="nav-item-left"
                 :class="{ active: $props.breadcrumbName[1] === routerItem.name }"
               >
-                <div v-if="routerItem.icon" class="item-icon"></div>
+                <CustomIcon v-if="routerItem.icon" :icon="getIcon(routerItem.icon)" class="item-icon"></CustomIcon>
                 <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
                 <span class="item-title">{{ getNavTitle(routerItem) }}</span>
               </div>
@@ -117,7 +121,7 @@ export default defineComponent({
                   :class="{ active: $props.currentRouteName === leaf.name }"
                   @click="navigate"
                 >
-                  <div v-if="leaf.icon" class="item-icon"></div>
+                <CustomIcon v-if="leaf.icon" :icon="getIcon(leaf.icon)" class="item-icon"></CustomIcon>
                   <CustomIcon v-else :icon="getLastTypeIcon(leaf.systemType)" class="item-icon" />
                   <span class="item-title">{{ getNavTitle(leaf) }}</span>
                 </div>
@@ -139,7 +143,7 @@ export default defineComponent({
               :class="{ active: $props.currentRouteName === routerItem.name }"
               @click="navigate"
             >
-              <div v-if="routerItem.icon" class="item-icon"></div>
+            <CustomIcon v-if="routerItem.icon" :icon="getIcon(routerItem.icon)" class="item-icon"></CustomIcon>
               <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
               <span class="item-title">{{ getNavTitle(routerItem) }}</span>
             </div>

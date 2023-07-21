@@ -6,6 +6,7 @@ import type { RouterType } from '@/router/setting'
 import { routerTypeIcon } from '@/router/setting'
 import SubNavigationView from './SubNavigationView.vue'
 
+import type { IconType } from '@/components'
 import { CustomIcon } from '@/components'
 
 const props = defineProps<{
@@ -42,6 +43,10 @@ const setLevel2Router = (level2Router: Navigation): void => {
 }
 
 // 路由圖示
+const getIcon = (icon:  [IconType, string] | string): [IconType, string] => {
+  if (typeof icon === 'string') return ['fas', icon]
+  return icon
+}
 const getLastTypeIcon = (systemType: RouterType[]) => {
   const lastType = systemType[systemType.length - 1]
   return routerTypeIcon[lastType]
@@ -69,7 +74,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
             class="nav-item-left"
             :class="{ active: props.breadcrumbName[0] === level1Item.name }"
           >
-            <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
+            <CustomIcon v-if="level1Item.icon" :icon="getIcon(level1Item.icon)" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
             <span class="item-title">{{ getNavTitle(level1Item) }}</span>
           </div>
@@ -89,7 +94,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
             :class="{ active: props.currentRouteName === level1Item.name }"
             @click="navigate"
           >
-            <CustomIcon v-if="level1Item.icon" :name="level1Item.icon" class="item-icon"></CustomIcon>
+            <CustomIcon v-if="level1Item.icon" :icon="getIcon(level1Item.icon)" class="item-icon"></CustomIcon>
             <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
             <span class="item-title">{{ getNavTitle(level1Item) }}</span>
           </div>
@@ -108,6 +113,7 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
         :open-map="level2OpenMap"
         :current-route-name="props.currentRouteName"
         :breadcrumb-name="props.breadcrumbName"
+        :get-icon="getIcon"
         :get-last-type-icon="getLastTypeIcon"
         :get-nav-title="getNavTitle"
         @change-map="changeMap"

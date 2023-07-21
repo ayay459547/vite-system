@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PropType, reactive, ref } from 'vue'
+import type { PropType } from 'vue'
+import { reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { inject, nextTick } from 'vue'
 import throttle from '@/lib/lib_throttle'

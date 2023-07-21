@@ -2,7 +2,10 @@ import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
+import type { SweetAlertOptions } from 'sweetalert2'
+import Swal from 'sweetalert2'
 
+const mode = (import.meta as any).env.MODE
 
 /**
  * @author Caleb
@@ -34,6 +37,63 @@ export const tipLog = (title: string = '', messages: string[] = []): void => {
   messages.forEach(message => {
     console.log('%c%s', style, message)
   })
+}
+
+export type LogType = 'info' | 'warn' | 'error' | 'table' | 'trace'
+/**
+ * @author Caleb
+ * @description 系統用顯示log 打包後不顯示
+ * @param {*} value 任意值
+ * @param {String} type log類型
+ * @param {String} style 樣式
+ * @returns {String} 系統mode
+ */
+export const systemLog = (value: any, type: LogType = 'info', style: string = ''): string => {
+  if (mode === 'production') return 'production'
+
+  switch (type) {
+    case 'info':
+      console.info('%c%s', style, value)
+      break
+    case 'warn':
+      console.warn('%c%s', style, value)
+      break
+    case 'error':
+      console.error('%c%s', style, value)
+      break
+    case 'table':
+      console.table(value)
+      break
+    case 'trace': // 知道誰呼叫此函數
+      console.trace('%c%s', style, value)
+      break
+    default:
+      console.log('%c%s', style, value)
+      break
+  }
+
+  return mode as string
+}
+
+/**
+ * @author Caleb
+ * @description Swal 互動式彈窗
+ * @param options 自訂選項
+ * @returns {Promise}
+ */
+export const swal = (options: SweetAlertOptions<any, any>) => {
+  const defaultOPtions = {
+    // icon 類型
+    // info, warning, success, error, question
+    reverseButtons: true,
+    confirmButtonText: '確認',
+    confirmButtonColor: '#409eff',
+    showCancelButton: true,
+    cancelButtonText: '取消',
+    ...options
+  }
+
+  return Swal.fire({ ...defaultOPtions })
 }
 
 /**
@@ -135,42 +195,4 @@ export const usePageI18n = (langMap: LangMap): Partial<Composer & { i18nTranslat
     i18nTranslate: pageI18n.t,
     i18nTest: pageI18n.te
   }
-}
-
-const mode = (import.meta as any).env.MODE
-
-export type LogType = 'info' | 'warn' | 'error' | 'table' | 'trace'
-/**
- * @author Caleb
- * @description 系統用顯示log 打包後不顯示
- * @param {*} value 任意值
- * @param {String} type log類型
- * @param {String} style 樣式
- * @returns {String} 系統mode
- */
-export const systemLog = (value: any, type: LogType = 'info', style: string = ''): string => {
-  if (mode === 'production') return 'production'
-
-  switch (type) {
-    case 'info':
-      console.info('%c%s', style, value)
-      break
-    case 'warn':
-      console.warn('%c%s', style, value)
-      break
-    case 'error':
-      console.error('%c%s', style, value)
-      break
-    case 'table':
-      console.table(value)
-      break
-    case 'trace': // 知道誰呼叫此函數
-      console.trace('%c%s', style, value)
-      break
-    default:
-      console.log('%c%s', style, value)
-      break
-  }
-
-  return mode as string
 }

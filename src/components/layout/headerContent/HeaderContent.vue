@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WritableComputedRef, ComputedRef } from 'vue'
-import { ref, computed, inject } from 'vue'
+import { ref, computed, inject, useSlots } from 'vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
 
@@ -10,7 +10,13 @@ import { options as langOptions } from '@/i18n'
 import type { Hook, EventItem } from '@/declare/hook'
 
 import { CustomIcon, CustomTooltip } from '@/components'
-import { AuthData } from '@/stores/stores_api'
+import type { AuthData } from '@/stores/stores_api'
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
 
 const props = defineProps<{
   isOpen: boolean
@@ -148,6 +154,17 @@ const openUserEffect = (e: MouseEvent) => {
     </div>
 
     <div class="header-right">
+      <RouterLink
+        v-if="hasSlot('logo')"
+        to="/home"
+        class="header-right-effect"
+        v-slot="{ navigate }"
+      >
+        <div @click="navigate">
+          <slot name="logo"></slot>
+        </div>
+      </RouterLink>
+
       <div class="header-right-effect" @click="openLangType">
         <div class="lang-md">
           <CustomIcon name="earth-americas" class="icon"/>

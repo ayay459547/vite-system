@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
-import { getTableSetting } from '@/lib/lib_columns'
+import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { ref, reactive, onMounted } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
+type TableData = {
+  title: string
+  path: string
+  breadcrumbTitle: string
+}
+
 const columnSetting = {
   title: {
     label: '名稱',
     table: {
-      width: 200
+      width: 300
     },
     filter: {
       default: null
@@ -20,7 +26,7 @@ const columnSetting = {
   path: {
     label: '路由',
     table: {
-      width: 200
+      width: 300
     },
     filter: {
       default: null
@@ -30,12 +36,15 @@ const columnSetting = {
     label: '路徑',
     table: {
       minWidth: 300
+    },
+    filter: {
+      default: null
     }
   }
 }
 
-const tempData = reactive([])
-const tableData = ref([])
+const tempData = reactive<TableData[]>([])
+const tableData = ref<TableData[]>([])
 
 const tableOptions = {
   title: '功能列表',
@@ -48,9 +57,13 @@ const download = () => {
   downloadExcel(tableData.value)
 }
 
-const filterName = ref('')
+// filter
+const {
+  columns: filterColumn,
+  forms: filter
+} = getFormSetting<TableData>(columnSetting, 'filter')
 
-onMounted(() => {
+const init = () => {
   refactorRoutes<Navigation>((leafNode, parentsNode) => {
     const nextNode: Navigation = {
       ...leafNode
@@ -65,7 +78,8 @@ onMounted(() => {
 
     if (!['', null, undefined].includes(nextNode.path)) {
       tempData.push({
-        ...nextNode,
+        title: nextNode.title,
+        path: nextNode.path,
         breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')
       })
     }
@@ -77,6 +91,10 @@ onMounted(() => {
   }, routes)
 
   tableData.value = tempData
+}
+
+onMounted(() => {
+  init()
 })
 
 </script>
@@ -90,11 +108,12 @@ onMounted(() => {
         v-bind="tableSetting"
         @excel="download"
       >
-        <template #header-title="{ column }">
+        <template #header-all="{ prop }">
           <CustomInput
-            v-model="filterName"
+            v-model="filter[prop]"
+            v-bind="filterColumn[prop]"
             direction="row"
-            :label="column.label"
+            @change="init()"
           />
         </template>
       </CustomTable>

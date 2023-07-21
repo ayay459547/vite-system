@@ -59,7 +59,7 @@ export type {
 } from './feature/CustomRadio/CustomRadio.vue'
 export { default as CustomSelect } from './feature/CustomSelect/CustomSelect.vue'
 
-import { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
+import type { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
 export declare interface CustomTableExpose {
   pageChange: PageChange
   getTableParams: () => TableParams

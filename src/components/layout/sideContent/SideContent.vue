@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Navigation } from '@/declare/routes'
 import NavigationView from './NavigationView.vue'
-import { CustomIcon } from '@/components'
 
 const props = defineProps<{
   isOpen: boolean
@@ -19,9 +18,11 @@ const props = defineProps<{
       class="side-logo"
       v-slot="{ navigate }"
     >
-      <div class="side-logo-navigate" @click="navigate">
-        <CustomIcon name="home" class="side-logo-icon"/>
-        <slot name="logo"></slot>
+      <div class="side-logo-navigate open" @click="navigate">
+        <slot name="header" :is-show="true"></slot>
+      </div>
+      <div class="side-logo-navigate close" @click="navigate">
+        <slot name="header" :is-show="false"></slot>
       </div>
     </RouterLink>
 
@@ -33,9 +34,18 @@ const props = defineProps<{
       />
     </div>
 
-    <div class="side-footer">
-      <slot name="footer"></slot>
-    </div>
+    <RouterLink
+      to="/home"
+      class="side-footer"
+      v-slot="{ navigate }"
+    >
+      <div class="side-footer-navigate open" @click="navigate">
+        <slot name="footer" :is-show="true"></slot>
+      </div>
+      <div class="side-footer-navigate close" @click="navigate">
+        <slot name="footer" :is-show="false"></slot>
+      </div>
+    </RouterLink>
   </div>
 </template>
 
@@ -54,9 +64,14 @@ const props = defineProps<{
     will-change: min-width;
     overflow: hidden;
 
-    .side-logo,
-    .side-footer {
-      visibility: hidden;
+    .side-logo .open,
+    .side-footer .open {
+      display: none;
+    }
+
+    .side-logo .close,
+    .side-footer .close {
+      display: block;
     }
 
     &:hover.is-close {
@@ -71,29 +86,29 @@ const props = defineProps<{
         min-width: $nav-md-width;
       }
 
-      .side-logo,
-      .side-footer {
-        visibility: visible;
+      .side-logo .open,
+      .side-footer .open {
+        display: block;
+      }
+
+      .side-logo .close,
+      .side-footer .close {
+        display: none;
       }
     }
   }
 
-  &-logo {
+  &-logo,
+  &-footer {
     color: #fff;
     transition-duration: 0.3s;
+    width: 100%;
 
     &-navigate {
       display: flex;
-      gap: 8px;
       align-items: center;
-      justify-content: space-evenly;
       white-space: nowrap;
-      font-size: 2em;
-      padding: 16px 0;
       cursor: pointer;
-    }
-    &-icon {
-      font-size: 1em !important;
     }
 
     &:hover {
@@ -105,14 +120,6 @@ const props = defineProps<{
     width: 100%;
     height: 100%;
     overflow: hidden;
-  }
-
-  &-footer {
-    border-radius: 6px;
-    padding: 6px 12px;
-    margin: 6px;
-    background-color: #e6e6e6;
-    white-space: nowrap;
   }
 }
 

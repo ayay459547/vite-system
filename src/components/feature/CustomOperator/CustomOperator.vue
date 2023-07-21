@@ -124,9 +124,8 @@ const onChange = () => {
     <div class="input-group" @click.stop>
       <ElSelect
         v-model="operatorType"
-        :placeholder="$t('pleaseInput')"
+        :placeholder="$t('pleaseSelect')"
         :validate-event="false"
-        :clearable="props.clearable"
         :disabled="props.disabled"
         v-on="validationListeners"
       >

@@ -107,7 +107,7 @@ export default defineComponent({
     newWindow (route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name,
-        query: { isModal: true }
+        query: { isModal: 'true' }
       })
       window.open(
         routeData.href,
