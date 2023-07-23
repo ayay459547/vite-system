@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
-import { ref, reactive, onMounted } from 'vue'
-
-import type { Navigation } from '@/declare/routes'
-import { refactorRoutes } from '@/lib/lib_routes'
-import routes from '@/router/routes'
+import { ref, onMounted } from 'vue'
+import { getData, getDataCount } from './api'
 
 type TableData = {
   title: string
@@ -43,15 +40,15 @@ const columnSetting = {
   }
 }
 
-const tempData = reactive<TableData[]>([])
 const tableData = ref<TableData[]>([])
+const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '功能列表',
   version: '1.0.0',
   settingKey: 'feature-list'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData.value)
@@ -63,34 +60,23 @@ const {
   forms: filter
 } = getFormSetting<TableData>(columnSetting, 'filter')
 
+const isLoading = ref(false)
+
+const table = ref()
+
 const init = () => {
-  refactorRoutes<Navigation>((leafNode, parentsNode) => {
-    const nextNode: Navigation = {
-      ...leafNode
-    }
-    if (parentsNode === null) {
-      nextNode.breadcrumbName = [leafNode.name]
-      nextNode.breadcrumbTitle = [leafNode.title]
-    } else{
-      nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
-      nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
-    }
+  isLoading.value = true
 
-    if (!['', null, undefined].includes(nextNode.path)) {
-      tempData.push({
-        title: nextNode.title,
-        path: nextNode.path,
-        breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')
-      })
-    }
+  tableData.value = getData({
+    ...filter,
+    ...getParams(table.value)
+  })
 
-    return {
-      refactorNode: nextNode,
-      isShow: true
-    }
-  }, routes)
+  tableDataCount.value = getDataCount({ ...filter })
 
-  tableData.value = tempData
+  setTimeout(() => {
+    isLoading.value = false
+  }, 300)
 }
 
 onMounted(() => {
@@ -100,13 +86,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="table-test">
+  <div v-i-loading="isLoading" class="table-test">
     <div class="table-main">
       <CustomTable
+        ref="table"
         :table-data="tableData"
-        :table-data-count="tableData.length"
+        :table-data-count="tableDataCount"
         v-bind="tableSetting"
         @excel="download"
+        @show-change="init()"
       >
         <template #header-all="{ prop }">
           <CustomInput
