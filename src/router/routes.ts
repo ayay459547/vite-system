@@ -27,7 +27,7 @@ const routes: Array<RouterTree> = [
             title: '選單1-1-2',
             systemType: ['new'],
             path: '/nav-1-1-2',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Common/FixView.vue')
           },
           {
             name: 'nav-1-1-3',

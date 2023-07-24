@@ -47,7 +47,7 @@ onUnmounted(() => {
     <h1 class="page-title" :style="titleStyle">無此權限</h1>
     <img
       class="page-img"
-      src="@/assets/images/page404.svg"
+      src="@/assets/images/noPermissions.svg"
       alt="404"
       :style="imgStyle"
     />
