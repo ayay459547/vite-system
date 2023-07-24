@@ -469,19 +469,27 @@ defineExpose({
   .el-table {
     // 修 table 寬度自適應
     position: absolute;
-    .el-table__header .cell {
-      box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: normal;
-      word-break: break-all;
-      line-height: 23px;
-      padding: 0 12px;
+    .el-table__header {
+      table-layout: fixed;
+      border-collapse: separate;
+      height: 100%;
+      .cell {
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        word-break: break-all;
+        line-height: 23px;
+        padding: 0 12px;
 
-      display: flex;
-      align-items: center;
-      & > div {
-        width: 100%;
+        display: flex;
+        align-items: center;
+
+        height: 100%;
+        & > div {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }

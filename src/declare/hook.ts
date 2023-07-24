@@ -38,3 +38,10 @@ export declare type Hook = () => {
   eventList: HookList.eventList
   swal: HookList.swal
 }
+
+export declare type SwalResult = {
+  isConfirmed: boolean
+  isDenied: boolean
+  isDismissed: boolean
+  value: boolean
+}

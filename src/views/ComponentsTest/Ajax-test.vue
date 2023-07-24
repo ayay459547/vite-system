@@ -135,4 +135,4 @@ const tableColumns = [
   flex-direction: column;
   gap: 16px;
 }
-</style>@/lib/lib_ajax
+</style>

@@ -93,7 +93,7 @@ const validateField = (veeValue: ModelValue) => {
   if (!props.required) return true
 
   // 必填
-  if (props.required && [null, undefined].includes(veeValue)) {
+  if (props.required && [null, undefined, ''].includes(veeValue as any)) {
     return '此輸入框為必填'
   }
 

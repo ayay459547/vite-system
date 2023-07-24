@@ -171,7 +171,7 @@ export default defineComponent({
 
         <div v-if="!hasLeaves(route)" class="tree-item-operations-lg">
           <CustomButton
-            label="新增選項"
+            label="新增分頁"
             icon-name="plus"
             @click="addHistory(route)"
           />

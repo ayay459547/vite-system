@@ -24,10 +24,12 @@ export default defineComponent({
   <div class="app-container">
     <GlobalView>
       <template #menu-header="{ isShow }">
-        <div class="menu-header">
-          <CustomIcon name="home" size="large"/>
-          <h2 v-if="isShow">HOME</h2>
-        </div>
+        <RouterLink to="/home" v-slot="{ navigate }">
+          <div class="menu-header" @click="navigate">
+            <CustomIcon name="home" size="large"/>
+            <h2 v-if="isShow">HOME</h2>
+          </div>
+        </RouterLink>
       </template>
 
       <template #menu-footer="{ isShow }">
@@ -36,7 +38,8 @@ export default defineComponent({
         </div>
       </template>
 
-      <template #logo>LOGO</template>
+      <!-- <template #header-left></template> -->
+      <!-- <template #header-right></template> -->
     </GlobalView>
   </div>
 </template>
@@ -55,6 +58,12 @@ export default defineComponent({
     align-items: center;
     gap: 16px;
     padding: 16px 16px;
+    color: #fff;
+    transition-duration: 0.3s;
+
+    &:hover {
+      color: $warning;
+    }
   }
 
   &-footer {

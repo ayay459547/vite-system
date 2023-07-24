@@ -27,6 +27,10 @@ const props = defineProps({
     type: String as PropType<string>,
     default: 'text'
   },
+  rows: {
+    type: Number as PropType<number>,
+    default: 2
+  },
   clearable: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -44,6 +48,7 @@ const props = defineProps({
 const bindAttributes = computed(() => {
   return {
     type: props.type,
+    rows: props.rows,
     clearable: props.clearable,
     disabled: props.disabled,
     showPassword: props.showPassword

@@ -179,7 +179,7 @@ const clickOutside = () => {
         }
       }
       &-default {
-        width: 50%;
+        width: 60%;
         @media (max-width: 992px) {
           width: 70%;
         }
@@ -200,7 +200,7 @@ const clickOutside = () => {
         height: 80%;
       }
       &-default {
-        height: 50%;
+        height: 60%;
       }
       &-small {
         height: 400px;

@@ -13,18 +13,14 @@ const props = defineProps<{
 
 <template>
   <div class="side-container" :class="props.isOpen ? 'is-open': 'is-close'">
-    <RouterLink
-      to="/home"
-      class="side-logo"
-      v-slot="{ navigate }"
-    >
-      <div class="side-logo-navigate open" @click="navigate">
+    <div class="side-logo">
+      <div class="side-logo-navigate open">
         <slot name="header" :is-show="true"></slot>
       </div>
-      <div class="side-logo-navigate close" @click="navigate">
+      <div class="side-logo-navigate close">
         <slot name="header" :is-show="false"></slot>
       </div>
-    </RouterLink>
+    </div>
 
     <div class="side-nav">
       <NavigationView
@@ -34,18 +30,14 @@ const props = defineProps<{
       />
     </div>
 
-    <RouterLink
-      to="/home"
-      class="side-footer"
-      v-slot="{ navigate }"
-    >
-      <div class="side-footer-navigate open" @click="navigate">
+    <div class="side-footer">
+      <div class="side-footer-navigate open">
         <slot name="footer" :is-show="true"></slot>
       </div>
-      <div class="side-footer-navigate close" @click="navigate">
+      <div class="side-footer-navigate close">
         <slot name="footer" :is-show="false"></slot>
       </div>
-    </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -108,11 +100,7 @@ const props = defineProps<{
       display: flex;
       align-items: center;
       white-space: nowrap;
-      cursor: pointer;
-    }
-
-    &:hover {
-      color: $warning;
+      cursor: default;
     }
   }
 

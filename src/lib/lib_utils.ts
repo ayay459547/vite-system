@@ -77,6 +77,17 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
 
 /**
  * @author Caleb
+ * @description 數字取四捨五入到第n位
+ * @param num 要四捨五入的數字
+ * @param n 取小數點到第n位
+ * @returns {Number}
+ */
+export const round = (num: number, n = 2) => {
+  return +(Math.round((num + `e+${n}`) as unknown as number)  + `e-${n}`)
+}
+
+/**
+ * @author Caleb
  * @description Swal 互動式彈窗
  * @param options 自訂選項
  * @returns {Promise}

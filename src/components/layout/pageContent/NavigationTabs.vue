@@ -84,7 +84,7 @@ const clearHistory = () => {
 
     <div class="history-clear">
       <CustomButton
-        label="清除路由選項"
+        label="清除分頁"
         icon-name="broom"
         icon-move="rotate"
         @click="clearHistory"

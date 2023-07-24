@@ -16,7 +16,7 @@ import { getData, getDataCount, deleteData } from './api'
 import { columnSetting } from './columns'
 
 import CreateModal from './Components/CreateModal.vue'
-import UpdateModel from './Components/UpdateModel.vue'
+import UpdateModal from './Components/UpdateModal.vue'
 
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -226,7 +226,7 @@ onActivated(() => {
       :title="i18nTranslate('edit')"
       @submit="onUpdateSubmit"
     >
-      <UpdateModel ref="updateRef" :data="editData"/>
+      <UpdateModal ref="updateRef" :data="editData"/>
     </CustomModal>
   </div>
 </template>
@@ -240,4 +240,4 @@ onActivated(() => {
   flex-direction: column;
   gap: 8px;
 }
-</style>@/lib/lib_permission./columns
+</style>

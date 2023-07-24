@@ -183,4 +183,4 @@ onBeforeMount(async () => {
     }
   }
 }
-</style>@/lib/lib_idb
+</style>

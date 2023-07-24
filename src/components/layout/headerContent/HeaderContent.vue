@@ -121,7 +121,7 @@ const openUserEffect = (e: MouseEvent) => {
     },
     {
       icon: ['fas', props.historyIsOpen ? 'eye-slash' : 'history'],
-      label: `${props.historyIsOpen ? '隱藏' : '顯示' }路由選項`,
+      label: `${props.historyIsOpen ? '隱藏' : '顯示' }分頁`,
       event: () => emit('changeHistory', !props.historyIsOpen)
     }
   ], {
@@ -135,6 +135,7 @@ const openUserEffect = (e: MouseEvent) => {
   <div class="header-container">
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen"></HamburgerIcon>
+      <slot name="header-left"></slot>
 
       <div class="header-breadcrumb-lg">
         <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
@@ -154,16 +155,10 @@ const openUserEffect = (e: MouseEvent) => {
     </div>
 
     <div class="header-right">
-      <RouterLink
-        v-if="hasSlot('logo')"
-        to="/home"
-        class="header-right-effect"
-        v-slot="{ navigate }"
-      >
-        <div @click="navigate">
-          <slot name="logo"></slot>
-        </div>
-      </RouterLink>
+
+      <div v-if="hasSlot('header-right')" class="header-right-effect">
+        <slot name="header-right"></slot>
+      </div>
 
       <div class="header-right-effect" @click="openLangType">
         <div class="lang-md">
@@ -286,4 +281,4 @@ const openUserEffect = (e: MouseEvent) => {
     }
   }
 }
-</style>@/stores/stores_api@/stores/stores_locale
+</style>

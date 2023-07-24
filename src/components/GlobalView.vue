@@ -7,7 +7,8 @@ import {
   provide,
   onMounted,
   onBeforeMount,
-  nextTick
+  nextTick,
+  useSlots
 } from 'vue'
 // layout
 import SideContent from '@/components/layout/sideContent/SideContent.vue'
@@ -40,6 +41,12 @@ import { useI18n } from 'vue-i18n'
 
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
 
 const navIsOpen = ref(false)
 const historyIsOpen = ref(false)
@@ -300,8 +307,11 @@ const login = async (userId: number) => {
             @logout="logout"
             @change-locale="setWebTitle"
           >
-            <template #logo>
-              <slot name="logo"></slot>
+            <template v-if="hasSlot('header-left')" #header-left>
+              <slot name="header-left"></slot>
+            </template>
+            <template v-if="hasSlot('header-right')" #header-right>
+              <slot name="header-right"></slot>
             </template>
           </HeaderContent>
         </div>

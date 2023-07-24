@@ -37,8 +37,13 @@ const onUpdateVisible = (value: boolean): boolean => {
   return value
 }
 
-const isShow = computed<boolean>(() => {
-  return onUpdateVisible(tempVisible.value)
+const isShow = computed<boolean>({
+  get: () => {
+    return tempVisible.value || tempElVisible.value
+  },
+  set: (v: boolean) => {
+    onUpdateVisible(v)
+  }
 })
 
 </script>
@@ -49,6 +54,7 @@ const isShow = computed<boolean>(() => {
       :visible="isShow"
       :placement="props.placement"
       :trigger="props.trigger"
+      effect="light"
       @update:visible="onUpdateVisible"
     >
       <template #default>
