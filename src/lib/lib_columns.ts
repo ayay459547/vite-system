@@ -8,6 +8,55 @@ import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/lib_idb'
 import { tipLog } from '@/lib/lib_utils'
+import { v4 as uuidv4 } from 'uuid'
+
+const _validate = async (refMap: Record<string, any>) => {
+  const validateList = []
+  const validateInput = []
+
+  const successList = []
+  const errorList = []
+
+  refMap.$forEach((input: IinputRefItem) => {
+    const { key, value, validate } = input
+    validateList.push(validate())
+    validateInput.push({
+      key,
+      value,
+      el: input,
+      getDom: () => {
+        return document.getElementsByClassName(`input-${key}-error`)[0]
+      }
+    })
+  })
+
+  await Promise.all(validateList).then(resList => {
+    resList.forEach((resItme, resIndex) => {
+      const { errors, valid } = resItme
+      const validateRes = {
+        ...validateInput[resIndex],
+          errors,
+          valid
+      }
+
+      if (valid) {
+        successList.push(validateRes)
+      } else {
+        errorList.push(validateRes)
+      }
+    })
+  }).catch(errors => {
+    throw new Error(errors)
+  })
+
+  return new Promise((resolve, reject) => {
+    if (errorList.length > 0) {
+      reject(errorList)
+    } else {
+      resolve(successList)
+    }
+  })
+}
 
 export interface FormSetting<T> {
   columns: Record<string, any>
@@ -86,54 +135,70 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       })
     },
     validate: async () => {
-      const validateList = []
-      const validateInput = []
-
-      const successList = []
-      const errorList = []
-
-      refMap.$forEach((input: IinputRefItem) => {
-        const { key, value, validate } = input
-        validateList.push(validate())
-        validateInput.push({
-          key,
-          value,
-          el: input,
-          getDom: () => {
-            return document.getElementsByClassName(`input-${key}-error`)[0]
-          }
-        })
-      })
-
-      await Promise.all(validateList).then(resList => {
-        resList.forEach((resItme, resIndex) => {
-          const { errors, valid } = resItme
-          const validateRes = {
-            ...validateInput[resIndex],
-              errors,
-              valid
-          }
-
-          if (valid) {
-            successList.push(validateRes)
-          } else {
-            errorList.push(validateRes)
-          }
-        })
-      }).catch(errors => {
-        throw new Error(errors)
-      })
-
-      return new Promise((resolve, reject) => {
-        if (errorList.length > 0) {
-          reject(errorList)
-        } else {
-          resolve(successList)
-        }
-      })
+      return await _validate(refMap) as Promise<Array<any>>
     }
   }
 
+}
+
+export interface FormListSetting<T> {
+  defaultValue: T,
+  columns: Record<string, any>
+  forms: Array<T>
+  reset: () => void
+  validate: () => Promise<Array<any>>
+}
+export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []) => {
+  const resColumns = {}
+  const refMap = reactive<Record<string, any>>({})
+  const formList = reactive<Array<T>>([])
+
+  const hasOwnProperty = Object.prototype.hasOwnProperty
+
+  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+    return {
+      ref: (el: IinputRefItem) => {
+        if (el) {
+          refMap[uuidv4()] = el
+        }
+      },
+      key,
+      validateKey: key,
+      clearable: true,
+      default: null,
+      validate: [],
+      required: false,
+      resizable: true,
+      showOverflowTooltip: false,
+      label: column?.label ?? '',
+      ...column[type]
+    }
+  }
+
+  const defaultValue = {}
+  columns.$forEach((column: Record<string, any>, key: string) => {
+    if(hasOwnProperty.call(column, type)) {
+      const temp = getColumnData(column, type, key)
+      resColumns[key] = temp
+
+      defaultValue[key] = temp.default
+    }
+  })
+
+  formList.push(...initData)
+
+  return {
+    defaultValue,
+    columns: resColumns as Record<string, any>,
+    forms: formList as Array<T>,
+    reset: () => {
+      formList.splice(0)
+      formList.push(...initData)
+    },
+    validate: async () => {
+      return await _validate(refMap) as Promise<Array<any>>
+    }
+  }
 }
 
 export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
@@ -319,12 +384,12 @@ export const getTableSetting = (
   }
 }
 
-export interface DataTableSetting {
+export interface SimpleTableSetting {
   title: string
   tableColumns: Record<string, any>,
   downloadExcel: (tableData: Record<string, any>[]) => void
 }
-export interface DataTableColumnsItem {
+export interface SimpleTableColumnsItem {
   key: string
   prop: string
   slotKey: string
@@ -333,18 +398,18 @@ export interface DataTableColumnsItem {
 }
 /**
  * @author Caleb
- * @description 取的 Columns 設定 DataTable用的資料
+ * @description 取的 Columns 設定 SimpleTable用的資料
  *              slot prop 預設是 key
  * @param {Ojbect} columns
  * @param {String} type 取得 columnSetting 中的類型
  * @param {Object} options 設定用的參數
  * @returns {Ojbect}
  */
-export const getDataTableSetting = (
+export const getSimpleTableSetting = (
   columns: Record<string, any>,
   type: string,
   title?: ''
-): DataTableSetting => {
+): SimpleTableSetting => {
 
   // 設定 table 用的 column
   const hasOwnProperty = Object.prototype.hasOwnProperty

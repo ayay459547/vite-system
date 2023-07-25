@@ -407,7 +407,7 @@ defineExpose({
           <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
             <div :class="column.sortable ? 'header-slot' : ''">
               <slot
-                :name="`header-${column.prop}`"
+                :name="`header-${column.slotKey}`"
                 :label="column.label"
                 :row-index="scope.$index"
                 :column="column"
@@ -429,7 +429,7 @@ defineExpose({
 
           <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
             <slot
-              :name="`column-${column.prop}`"
+              :name="`column-${column.slotKey}`"
               :data="scope.row[column.key]"
               :row="scope.row"
               :row-index="scope.$index"

@@ -8,7 +8,7 @@
 
 .__data-table-container {
   width: 100%;
-  height: 100%;
+  height: fit-content;
   min-width: fit-content;
   min-height: fit-content;
   position: relative;
@@ -21,6 +21,7 @@
   top: 0;
   background-color: #fff;
   border-bottom: 1px solid #ebeef5;
+  z-index: 1;
 }
 
 .__data-table-body {
@@ -51,9 +52,10 @@
 }
 
 .__data-table-column {
-  /* flex: 1; */
+  flex: 1;
   border-left: 1px solid #ebeef5;
   padding: 8px;
+  background-color: inherit;
 }
 
 .__data-table-column:nth-child(1) {

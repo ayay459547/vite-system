@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DataTable, CustomInput, CustomIcon } from '@/components'
-import { getDataTableSetting } from '@/lib/lib_columns'
+import { SimpleTable, CustomInput, CustomIcon } from '@/components'
+import { getSimpleTableSetting } from '@/lib/lib_columns'
 import { ref } from 'vue'
 
 const columnsSetting = {
@@ -46,7 +46,7 @@ const columnsSetting = {
 
 const {
   tableColumns
-} = getDataTableSetting(columnsSetting, 'table')
+} = getSimpleTableSetting(columnsSetting, 'table')
 
 const tableData = [
 {
@@ -111,14 +111,14 @@ const onInput = (value: string) => {
     <h1>Data-table-test</h1>
 
     <div class="i-mt-xl">
-      <DataTable
+      <SimpleTable
         :table-data="tableData"
         :table-columns="tableColumns"
       >
         <template #header-all="{ data }">
           {{ data + ' ==> header' }}
         </template>
-      </DataTable>
+      </SimpleTable>
     </div>
 
     <CustomInput

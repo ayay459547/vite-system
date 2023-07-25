@@ -11,11 +11,11 @@ import {
   useSlots
 } from 'vue'
 // layout
-import SideContent from '@/components/layout/sideContent/SideContent.vue'
-import HeaderContent from '@/components/layout/headerContent/HeaderContent.vue'
+import SideContent from '@/components/layout/SideContent/SideContent.vue'
+import HeaderContent from '@/components/layout/HeaderContent/HeaderContent.vue'
 
-import PageContent from '@/components/layout/pageContent/PageContent.vue'
-import NavigationTabs from '@/components/layout/pageContent/NavigationTabs.vue'
+import PageContent from '@/components/layout/PageContent/PageContent.vue'
+import NavigationTabs from '@/components/layout/PageContent/NavigationTabs.vue'
 
 // element ui plus config
 import { ElConfigProvider } from 'element-plus'

@@ -47,9 +47,8 @@ onUnmounted(() => {
     <h1 class="page-title" :style="titleStyle">無此權限</h1>
     <img
       class="page-img"
-      src="@/assets/images/noPermissions.svg"
+      src="@/assets/images/common/noPermissions.svg"
       alt="404"
-      :style="imgStyle"
     />
   </div>
 </template>
@@ -73,10 +72,10 @@ onUnmounted(() => {
 
   &-img {
     transition-duration: 0.3s;
-    width: 80%;
+    width: 70%;
     position: absolute;
-    bottom: 32px;
-    right: 32px;
+    bottom: 0;
+    right: 0;
   }
 }
 </style>

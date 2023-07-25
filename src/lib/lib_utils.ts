@@ -1,9 +1,21 @@
 import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
+import { useSlots } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
+
+/**
+ * @author Caleb
+ * @description 判斷 slot 是否存在
+ * @param prop slot 名稱
+ * @returns {Boolean}
+ */
+export const hasSlot = (prop: string): boolean => {
+  const slots = useSlots()
+  return Object.prototype.hasOwnProperty.call(slots, prop)
+}
 
 const mode = (import.meta as any).env.MODE
 
@@ -185,7 +197,8 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
     el.scrollIntoView(setting)
   } else {
     tipLog('無法執行 scrollToEl', [
-      '請給 html 的 dom 物件'
+      '請給 html 的 dom 物件',
+      `傳入參數: ${el}`
     ])
   }
 }

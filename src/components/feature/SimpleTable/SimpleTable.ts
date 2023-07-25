@@ -1,6 +1,6 @@
 import { h } from 'vue'
 
-function getColumnSlotNode (slots, columnKey, isHeader) {
+function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
   let temp = null
   if (isHeader) {
     temp = slots[`header-${columnKey}`]
@@ -18,12 +18,14 @@ function getColumnSlotNode (slots, columnKey, isHeader) {
   return null
 }
 
-const columnNode = (slots, column, rowItem, isHeader) => {
+const columnNode = (slots: Record<string, any>, column: Record<string, any>, rowItem: any, isHeader: boolean) => {
   return column.map(columnItem => {
     const {
       label = '',
       width = 0,
       minWidth = 0,
+      align = 'left',
+      fixed = '',
       // class: columnClass = '',
       style: columnStyle = '',
       key: columnKey = '',
@@ -54,19 +56,80 @@ const columnNode = (slots, column, rowItem, isHeader) => {
       showStyle = columnStyle
 
       if (width > 0) {
-        showStyle += `width: ${width}px;`
+        showStyle += `
+          max-width: ${width}px;
+          min-width: ${width}px;
+        `
       }
       if (minWidth > 0) {
-        showStyle += `min-width: ${minWidth}px;`
+        showStyle += `
+          width: ${minWidth}px;
+          min-width: ${width}px;
+        `
+      }
+
+      showStyle += 'display: flex; align-items: center;'
+      switch (align) {
+        case 'left':
+          showStyle += 'justify-content: flex-start;'
+          break
+        case 'center':
+          showStyle += 'justify-content: center;'
+          break
+        case 'right':
+          showStyle += 'justify-content: flex-end;'
+          break
+      }
+
+      switch (fixed) {
+        case 'left':
+          showStyle += `
+            position: sticky;
+            left: 0;
+          `
+          break
+        case 'right':
+          showStyle += `
+            position: sticky;
+            right: 0;
+          `
+          break
       }
     } else if(Object.prototype.toString.call(columnStyle) === '[object Object]') {
       showStyle = {...columnStyle}
 
       if (width > 0) {
-        showStyle['width'] = `${width}px`
+        showStyle['max-width'] = `${width}px`
+        showStyle['min-width'] = `${width}px`
       }
       if (minWidth > 0) {
-        showStyle['minWidth'] = `${minWidth}px`
+        showStyle['width'] = `${minWidth}px`
+        showStyle['min-width'] = `${width}px`
+      }
+
+      showStyle['display'] = 'flex'
+      showStyle['align-items'] = 'center'
+      switch (align) {
+        case 'left':
+          showStyle['justify-content'] = 'flex-start'
+          break
+        case 'center':
+          showStyle['justify-content'] = 'center'
+          break
+        case 'right':
+          showStyle['justify-content'] = 'flex-end'
+          break
+      }
+
+      switch (fixed) {
+        case 'left':
+          showStyle['position'] = 'sticky'
+          showStyle['left'] = '0'
+          break
+        case 'right':
+          showStyle['position'] = 'sticky'
+          showStyle['right'] = '0'
+          break
       }
     } else {
       showStyle = {}
@@ -85,6 +148,8 @@ const columnNode = (slots, column, rowItem, isHeader) => {
       },
       ![undefined, null].includes(columnNode) ? columnNode({
         key: columnKey,
+        row: rowItem,
+        column: { ...columnItem },
         rowIndex,
         columnIndex,
         data: defaultRender
@@ -93,7 +158,7 @@ const columnNode = (slots, column, rowItem, isHeader) => {
   })
 }
 
-const rowNode = (slots, column, tableData, isHeader) => {
+const rowNode = (slots: Record<string, any>, column: Record<string, any>, tableData: any[], isHeader: boolean) => {
   if (isHeader) {
     return h(
       'div',
@@ -103,7 +168,7 @@ const rowNode = (slots, column, tableData, isHeader) => {
       columnNode(slots, column, {}, true)
     )
   } else {
-    return tableData.map((rowData, rowIndex) => {
+    return tableData.map((rowData: any, rowIndex: number) => {
       return h(
         'div',
         {
@@ -118,21 +183,21 @@ const rowNode = (slots, column, tableData, isHeader) => {
   }
 }
 
-const headerNode = (slots, column) => {
+const headerNode = (slots: Record<string, any>, column: Record<string, any>) => {
   return rowNode(slots, column, [], true)
 }
 
-const bodyNode = (slots, column, tableData) => {
+const bodyNode = (slots: Record<string, any>, column: Record<string, any>, tableData: any[]) => {
   if (tableData.length === 0) {
     return h('div', {
       class: '__data-table-body',
-      style: 'padding: 16px; font-size: 1.2em'
+      style: 'padding: 12px 16px; font-size: 1.2em'
     }, h(
       'div',
       {
         class: '__data-emtpy'
       },
-      'No Data'
+      'Empty'
     ))
   } else {
     return h(
@@ -151,7 +216,7 @@ interface Props {
 }
 
 
-const DataTable = (props: Props, context) => {
+const SimpleTable = (props: Props, context: any) => {
   const { slots = {} } = context
   const _tableColumns = props['table-columns']
   const _tableData = props['table-data'] ?? []
@@ -192,4 +257,4 @@ const DataTable = (props: Props, context) => {
   }, slots)
 }
 
-export default DataTable
+export default SimpleTable

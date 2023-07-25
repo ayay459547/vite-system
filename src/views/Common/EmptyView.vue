@@ -48,7 +48,7 @@ onUnmounted(() => {
     <h1 class="empty-title" :style="titleStyle">功能開發中</h1>
     <img
       class="empty-img"
-      src="@/assets/images/empty.svg"
+      src="@/assets/images/common/empty.svg"
       alt="login"
       :style="imgStyle"
     />

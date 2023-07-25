@@ -1,6 +1,6 @@
 @import './css/normalize.css';
 @import './css/reset.css';
-@import './css/dataTable.css';
+@import './css/SimpleTable.css';
 
 #app {
   height: 100%;

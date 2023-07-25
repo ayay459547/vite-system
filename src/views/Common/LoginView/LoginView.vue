@@ -71,7 +71,7 @@ const {
   <div class="login-wrapper">
     <img
       class="login-img-lg"
-      src="@/assets/images/login-lg.svg"
+      src="@/assets/images/common/login-lg.svg"
       alt="login"
     />
 
@@ -80,7 +80,7 @@ const {
       <div class="login-form">
         <img
           class="login-img-xs"
-          src="@/assets/images/login-xs.svg"
+          src="@/assets/images/common/login-xs.svg"
           alt="login"
         />
 

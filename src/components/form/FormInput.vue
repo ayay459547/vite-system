@@ -36,7 +36,7 @@ const props = defineProps({
   },
   validate: {
     type: [Array, String, null] as PropType<ValidateType[] | ValidateType>,
-    default: ''
+    default: null
   },
   // element ui plus
   type: {

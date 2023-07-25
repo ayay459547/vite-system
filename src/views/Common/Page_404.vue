@@ -70,7 +70,7 @@ onUnmounted(() => {
     <h1 class="page-title" :style="titleStyle">頁面不存在</h1>
     <img
       class="page-img"
-      src="@/assets/images/page404.svg"
+      src="@/assets/images/common/page404.svg"
       alt="404"
     />
     <div class="man-body">

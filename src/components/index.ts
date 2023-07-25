@@ -80,7 +80,7 @@ export type {
 } from './feature/CustomTooltip/CustomTooltip.vue'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
 
-export { default as DataTable } from './feature/DataTable/DataTable'
+export { default as SimpleTable } from './feature/SimpleTable/SimpleTable'
 
 // form
 export { default as FormCheckbox } from './form/FormCheckbox.vue'
@@ -103,3 +103,4 @@ export type {
 } from './form/FormSelect.vue'
 export { default as FormSelect } from './form/FormSelect.vue'
 
+export { default as FormList } from './form/FormList.vue'
