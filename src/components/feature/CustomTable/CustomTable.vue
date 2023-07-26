@@ -352,7 +352,7 @@ const getColumnSlot = (slotKey: string): string => {
 
 const slotKeyList = computed(() => {
   return showColumns.flatMap(column => {
-    if (column.columns.length > 0) {
+    if (column.columns && column.columns.length > 0) {
       return [
         ...column.columns.map(child => `${column.slotKey}-${child.slotKey}`),
         column.slotKey
@@ -445,7 +445,7 @@ onMounted(() => {
         @expand-change="onExpandChange"
       >
         <template v-if="hasSlot('column-expand')" #column-expand="scope">
-          <slot v-bind="scope"></slot>
+          <slot name="column-expand" v-bind="scope"></slot>
         </template>
 
         <template

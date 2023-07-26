@@ -139,7 +139,7 @@ defineExpose({
       </template>
 
       <template v-for="column in showColumns" :key="column.prop">
-        <template v-if="column.columns.length > 0">
+        <template v-if="column.columns && column.columns.length > 0">
           <ElTableColumn
             :key="column.prop"
             :prop="column.prop"
