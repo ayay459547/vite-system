@@ -92,6 +92,8 @@ export declare interface FormInputExpose {
   value: Ref<string>
   handleReset: () => void
   validate: (opts?: Partial<ValidationOptions>) => Promise<ValidationResult>
+  setvalidateKey: (validateKey: string) => void
+  getDom: () => Element
 }
 
 export { default as FormInput } from './form/FormInput.vue'

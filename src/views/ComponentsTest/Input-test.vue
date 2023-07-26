@@ -103,6 +103,7 @@ const submit = () => {
     console.log('vee success => ', successList)
   }).catch(errorList => {
     console.log('vee error => ', errorList)
+    console.log(errorList)
     const el = errorList[0].getDom()
     scrollToEl(el)
   })

@@ -7,58 +7,10 @@ import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/lib_idb'
-import { tipLog } from '@/lib/lib_utils'
-import { v4 as uuidv4 } from 'uuid'
-
-const _validate = async (refMap: Record<string, any>) => {
-  const validateList = []
-  const validateInput = []
-
-  const successList = []
-  const errorList = []
-
-  refMap.$forEach((input: IinputRefItem) => {
-    const { key, value, validate } = input
-    validateList.push(validate())
-    validateInput.push({
-      key,
-      value,
-      el: input,
-      getDom: () => {
-        return document.getElementsByClassName(`input-${key}-error`)[0]
-      }
-    })
-  })
-
-  await Promise.all(validateList).then(resList => {
-    resList.forEach((resItme, resIndex) => {
-      const { errors, valid } = resItme
-      const validateRes = {
-        ...validateInput[resIndex],
-          errors,
-          valid
-      }
-
-      if (valid) {
-        successList.push(validateRes)
-      } else {
-        errorList.push(validateRes)
-      }
-    })
-  }).catch(errors => {
-    throw new Error(errors)
-  })
-
-  return new Promise((resolve, reject) => {
-    if (errorList.length > 0) {
-      reject(errorList)
-    } else {
-      resolve(successList)
-    }
-  })
-}
+import { tipLog, getUuid } from '@/lib/lib_utils'
 
 export interface FormSetting<T> {
+  defaultValue: T
   columns: Record<string, any>
   forms: T
   reset: () => void
@@ -113,16 +65,19 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     }
   }
 
+  const defaultValue = {}
   columns.$forEach((column: Record<string, any>, key: string) => {
     if(hasOwnProperty.call(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
 
       formMap[key] = temp.default
+      defaultValue[key] = temp.default
     }
   })
 
   return {
+    defaultValue: defaultValue as T,
     columns: resColumns,
     forms: formMap as T,
     reset: () => {
@@ -135,14 +90,57 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       })
     },
     validate: async () => {
-      return await _validate(refMap) as Promise<Array<any>>
+      const validateList = []
+      const validateInput = []
+
+      const successList = []
+      const errorList = []
+
+      refMap.$forEach((input: IinputRefItem) => {
+        const { key, value, validate, getDom } = input
+
+        validateList.push(validate())
+        validateInput.push({
+          key,
+          value,
+          input,
+          el: getDom(),
+          getDom
+        })
+      })
+
+      await Promise.all(validateList).then(resList => {
+        resList.forEach((resItme, resIndex) => {
+          const { errors, valid } = resItme
+          const validateRes = {
+            ...validateInput[resIndex],
+              errors,
+              valid
+          }
+
+          if (valid) {
+            successList.push(validateRes)
+          } else {
+            errorList.push(validateRes)
+          }
+        })
+      }).catch(errors => {
+        throw new Error(errors)
+      })
+
+      return new Promise((resolve, reject) => {
+        if (errorList.length > 0) {
+          reject(errorList)
+        } else {
+          resolve(successList)
+        }
+      })
     }
   }
-
 }
 
 export interface FormListSetting<T> {
-  defaultValue: T,
+  defaultValue: T
   columns: Record<string, any>
   forms: Array<T>
   reset: () => void
@@ -159,7 +157,9 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
     return {
       ref: (el: IinputRefItem) => {
         if (el) {
-          refMap[uuidv4()] = el
+          const validateKey = getUuid()
+          refMap[validateKey] = el
+          el.setvalidateKey(validateKey)
         }
       },
       key,
@@ -188,7 +188,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
   formList.push(...initData)
 
   return {
-    defaultValue,
+    defaultValue: defaultValue as T,
     columns: resColumns as Record<string, any>,
     forms: formList as Array<T>,
     reset: () => {
@@ -196,7 +196,58 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
       formList.push(...initData)
     },
     validate: async () => {
-      return await _validate(refMap) as Promise<Array<any>>
+      const validateList = []
+      const validateInput = []
+
+      const successList = []
+      const errorList = []
+
+      const checkRepeatSet = new Set()
+      refMap.$forEach((input: IinputRefItem, mapKey: string) => {
+        const { key, value, validate, getDom } = input
+        const el = getDom()
+        if (checkRepeatSet.has(el) || el === null) {
+          delete refMap[mapKey]
+        } else {
+          checkRepeatSet.add(el)
+
+          validateList.push(validate())
+          validateInput.push({
+            key,
+            value,
+            input,
+            el,
+            getDom
+          })
+        }
+      })
+
+      await Promise.all(validateList).then(resList => {
+        resList.forEach((resItme, resIndex) => {
+          const { errors, valid } = resItme
+          const validateRes = {
+            ...validateInput[resIndex],
+              errors,
+              valid
+          }
+
+          if (valid) {
+            successList.push(validateRes)
+          } else {
+            errorList.push(validateRes)
+          }
+        })
+      }).catch(errors => {
+        throw new Error(errors)
+      })
+
+      return new Promise((resolve, reject) => {
+        if (errorList.length > 0) {
+          reject(errorList)
+        } else {
+          resolve(successList)
+        }
+      })
     }
   }
 }

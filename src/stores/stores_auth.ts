@@ -11,7 +11,7 @@ import routes from '@/router/routes'
 import { setCookie, getCookie, removeCookie } from '@/lib/lib_cookie'
 
 // token
-import { v4 as uuidv4 } from 'uuid'
+import { getUuid } from '@/lib/lib_utils'
 import AES from 'crypto-js/aes'
 import Utf8 from 'crypto-js/enc-utf8'
 
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 	const setToken = (userId: number) => {
 		const _token = JSON.stringify({
-			uid: uuidv4(),
+			uid: getUuid(),
 			date: new Date(),
 			userId
 		})

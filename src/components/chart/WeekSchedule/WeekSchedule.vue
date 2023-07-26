@@ -28,7 +28,7 @@ import {
 } from './planUtils'
 // import PlanItem from './PlanItem.vue'
 
-import { v4 as uuidv4 } from 'uuid'
+import { getUuid } from '@/lib/lib_utils'
 
 export type TypeItem = {
   key: any
@@ -433,7 +433,7 @@ const updateSchedule = async () => {
   if (tempPlanStyle.display === 'block') {
     const { start, startSecond, end, endSecond } = tempPlanTime
     createDataPlan(currentDayId.value, {
-      id: uuidv4(),
+      id: getUuid(),
       status: 'new',
       start,
       startSecond,

@@ -5,6 +5,16 @@ import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
+import { v4 as uuidv4 } from 'uuid'
+
+/**
+ * @author Caleb
+ * @description 取的隨機生成 id
+ * @returns {String}
+ */
+export const getUuid = (): string => {
+  return uuidv4()
+}
 
 /**
  * @author Caleb
@@ -198,7 +208,7 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   } else {
     tipLog('無法執行 scrollToEl', [
       '請給 html 的 dom 物件',
-      `傳入參數: ${el}`
+      `傳入參數: ${el} => ${getType(el)}`
     ])
   }
 }

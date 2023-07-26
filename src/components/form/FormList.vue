@@ -51,7 +51,7 @@ const props = defineProps({
       return {}
     }
   },
-  formList: {
+  tableData: {
     type: Array as PropType<any[]>,
     default () {
       return []
@@ -72,12 +72,10 @@ const showTableColumns = ref()
 const add = () => {
   emit('add')
 
-  setTimeout(() => {
-    nextTick(() => {
-      const newEl = document.querySelector('.__data-table-row:last-child')
-      if (newEl) scrollToEl(newEl)
-    })
-  }, 500)
+  nextTick(() => {
+    const newEl = document.querySelector('.__data-table-row:last-child')
+    if (newEl) scrollToEl(newEl)
+  })
 }
 
 const remove = (rowIndex: number) => {
@@ -98,7 +96,6 @@ onBeforeMount(() => {
   afterColumn['row_operations'][props.tableKey] = {
     width: 80,
     align: 'center',
-    fixed: 'right',
     isOperations: true
   }
 
@@ -125,7 +122,7 @@ onBeforeMount(() => {
 <template>
   <div class="form-container">
     <SimpleTable
-      :table-data="props.formList"
+      :table-data="props.tableData"
       :table-columns="showTableColumns"
     >
       <template

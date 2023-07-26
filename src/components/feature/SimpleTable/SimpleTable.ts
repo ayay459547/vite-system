@@ -81,20 +81,6 @@ const columnNode = (slots: Record<string, any>, column: Record<string, any>, row
           break
       }
 
-      switch (fixed) {
-        case 'left':
-          showStyle += `
-            position: sticky;
-            left: 0;
-          `
-          break
-        case 'right':
-          showStyle += `
-            position: sticky;
-            right: 0;
-          `
-          break
-      }
     } else if(Object.prototype.toString.call(columnStyle) === '[object Object]') {
       showStyle = {...columnStyle}
 
@@ -118,17 +104,6 @@ const columnNode = (slots: Record<string, any>, column: Record<string, any>, row
           break
         case 'right':
           showStyle['justify-content'] = 'flex-end'
-          break
-      }
-
-      switch (fixed) {
-        case 'left':
-          showStyle['position'] = 'sticky'
-          showStyle['left'] = '0'
-          break
-        case 'right':
-          showStyle['position'] = 'sticky'
-          showStyle['right'] = '0'
           break
       }
     } else {
@@ -169,9 +144,11 @@ const rowNode = (slots: Record<string, any>, column: Record<string, any>, tableD
     )
   } else {
     return tableData.map((rowData: any, rowIndex: number) => {
+
       return h(
         'div',
         {
+          key: rowData.key ? rowData.key : rowIndex,
           class: '__data-table-row'
         },
         columnNode(slots, column, {
@@ -240,16 +217,24 @@ const SimpleTable = (props: Props, context: any) => {
         ]
         // style: { ...tableStyle }
       },
-      h(
-        'div',
-        {
-          class: ['container', '__data-table-container']
-        },
-        [
-          headerNode(slots, tableColumns),
-          bodyNode(slots, tableColumns, tableData)
-        ]
-      )
+      [
+        h(
+          'div',
+          {
+            class: ['__data-table-container']
+          },
+          [
+            headerNode(slots, tableColumns),
+            h(
+              'div',
+              {
+                class: ['__data-table-body-container']
+              },
+              [ bodyNode(slots, tableColumns, tableData) ]
+            )
+          ]
+        )
+      ]
     )
   }, {
     tableColumns: _tableColumns,

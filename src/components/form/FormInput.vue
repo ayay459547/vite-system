@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import { ElInput } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
@@ -161,11 +161,22 @@ const validationListeners = computed(() => {
   }
 })
 
+const _domValidateKey = ref<string>('')
+const domValidateKey = computed(() => {
+  return _domValidateKey.value.length > 0 ? _domValidateKey.value : props.validateKey
+})
+
 defineExpose({
   key: props.validateKey,
   value: tempValue,
   handleReset,
-  validate
+  validate,
+  setvalidateKey (validateKey: string) {
+    _domValidateKey.value = validateKey
+  },
+  getDom () {
+    return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
+  }
 })
 
 // slot
@@ -180,7 +191,7 @@ const hasSlot = (prop: string): boolean => {
   <div
     class="input-container"
     :class="[
-      `input-${validateKey}-${validateRes}`,
+      `input-${domValidateKey}-${validateRes}`,
       `${props.direction}`,
       props.hiddenLabel ? 'hidden-label' : ''
     ]"

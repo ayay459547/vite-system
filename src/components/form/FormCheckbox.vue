@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import { useField } from 'vee-validate'
 
@@ -92,11 +92,22 @@ const validationListeners = computed(() => {
   return event
 })
 
+const _domValidateKey = ref<string>('')
+const domValidateKey = computed(() => {
+  return _domValidateKey.value.length > 0 ? _domValidateKey.value : props.validateKey
+})
+
 defineExpose({
   key: props.validateKey,
   value: tempValue,
   handleReset,
-  validate
+  validate,
+  setvalidateKey (validateKey: string) {
+    _domValidateKey.value = validateKey
+  },
+  getDom () {
+    return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
+  }
 })
 
 </script>
@@ -105,7 +116,7 @@ defineExpose({
   <div
     class="input-container"
     :class="[
-      `input-${validateKey}-${validateRes}`,
+      `input-${domValidateKey}-${validateRes}`,
       `${props.direction}`,
       props.hiddenLabel ? 'hidden-label' : ''
     ]"

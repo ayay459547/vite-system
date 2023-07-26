@@ -3,7 +3,7 @@ import { FormList, FormInput } from '@/components'
 import { columnSetting } from './columns'
 import { getFormListSetting } from '@/lib/lib_columns'
 import { reactive } from 'vue'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl, getUuid } from '@/lib/lib_utils'
 
 const testData = reactive<Form[]>([
   { name: 'Tom', date: '', age: '12', address: 'address1' },
@@ -13,6 +13,7 @@ const testData = reactive<Form[]>([
 ])
 
 interface Form {
+  key?: string
   name?: string
   date?: string
   age?: string
@@ -27,7 +28,10 @@ const {
 } = getFormListSetting<Form>(columnSetting, 'form', testData)
 
 const add = () => {
-  formList.push(defaultValue)
+  formList.push({
+    key: getUuid(),
+    ...defaultValue
+  })
 }
 
 const remove = (rowIndex: number) => {
@@ -49,7 +53,7 @@ const submit = () => {
 <template>
   <div class="container">
     <FormList
-      :form-list="formList"
+      :table-data="formList"
       :column-setting="columnSetting"
       @add="add"
       @remove="remove"
