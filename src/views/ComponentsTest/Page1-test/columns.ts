@@ -38,6 +38,24 @@ export const columnSetting = {
       ]
     }
   },
+  test: {
+    label: '多欄測試',
+    table: {
+      sortable: false,
+      children: {
+        state: {
+          label: '狀態',
+          width: 160,
+          align: 'center'
+        },
+        city: {
+          label: '城市',
+          width: 250,
+          align: 'left'
+        }
+      }
+    }
+  },
   operations: {
     label: '操作',
     table: {

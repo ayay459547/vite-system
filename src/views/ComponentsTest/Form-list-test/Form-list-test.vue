@@ -51,7 +51,7 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container flex-column-center i-ga-md">
     <FormList
       :table-data="formList"
       :column-setting="columnSetting"

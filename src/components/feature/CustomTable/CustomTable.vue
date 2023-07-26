@@ -8,11 +8,12 @@ import {
   onUnmounted
 } from 'vue'
 
-import type { ElTable as ElTableType } from 'element-plus'
-import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
+import { ElPagination } from 'element-plus'
 
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
+
+import { tipLog } from '@/lib/lib_utils'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
@@ -20,6 +21,7 @@ import type { ColumnItem } from '@/declare/columnSetting'
 import { CustomButton, CustomPopover, CustomSelect, CustomIcon } from '@/components'
 
 import ColumnSetting from './ColumnSetting.vue'
+import TableMain from './TableMain.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 export interface PageChange {
@@ -108,12 +110,6 @@ const emit = defineEmits([
   'expand-change'
 ])
 
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
-
 const loading = ref(true)
 const renderKey = ref(1)
 const isRender = ref(false)
@@ -152,11 +148,7 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const elTableRef = ref<InstanceType<typeof ElTableType>>()
-const resetScroll = (): void => {
-  elTableRef.value?.setScrollTop(0)
-}
-
+const elTableRef = ref(null)
 const pageChange: PageChange = (page, pageSize) => {
   currentPage.value = page
 
@@ -167,7 +159,9 @@ const pageChange: PageChange = (page, pageSize) => {
     sort: currentSort.value
   })
 
-  resetScroll()
+  if (elTableRef.value) {
+    elTableRef.value.resetScroll()
+  }
 }
 
 const onRowClick = (row: any, column: any, event: Event) => {
@@ -235,6 +229,29 @@ const showData = computed(() => {
 const columnSetting = ref(null)
 const showColumns = reactive([...props.tableColumns])
 
+const checkTableColumns = (tempColumnList: ColumnItem[]) => {
+  const originColumnsKey = tempColumnList.map(item => item.key)
+  const settingColumnsKey = props.tableColumns.map(item => item.key)
+
+  if (originColumnsKey.length !== settingColumnsKey.length) {
+    tipLog('欄位數量不同', [
+      `table => ${props.title}`,
+      `原始欄位列表 => ${tempColumnList.map(item => item?.label ?? '').join(' , ')}`,
+      `設定欄位列表 => ${props.tableColumns.map(item => item?.label ?? '').join(' , ')}`,
+      '如果欄位有要新增 請變更 version'
+    ])
+  }
+
+  if (settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])) {
+    tipLog('欄位異動', [
+      `table => ${props.title}`,
+      `原始欄位列表 => ${originColumnsKey}`,
+      `設定欄位列表 => ${settingColumnsKey}`,
+      '如果欄位有要異動 請變更 version'
+    ])
+  }
+}
+
 const initShowColumns = async () => {
   loading.value = true
 
@@ -243,12 +260,18 @@ const initShowColumns = async () => {
 
     const tempColumnList = await columnSetting.value.getcolumnList() as ColumnItem[]
 
+    // 確認欄位 如果有變更 給予提示
+    checkTableColumns(tempColumnList)
+
     const resColumns = tempColumnList.reduce((resColumn, tempColumn) => {
       if (tempColumn.isShow) {
         const showColumn = props.tableColumns.find(column => {
           return tempColumn.key === column.key
         })
-        resColumn.push(showColumn)
+
+        if (showColumn) {
+          resColumn.push(showColumn)
+        }
       }
 
       return resColumn
@@ -299,6 +322,48 @@ defineExpose({
       sort: currentSort.value
     }
   }
+})
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
+
+const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
+  switch (type) {
+    case 'header':
+      if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
+      if (hasSlot('header-all')) return 'header-all'
+      break
+    case 'column':
+      if (hasSlot(`column-${slotKey}`)) return `column-${slotKey}`
+      if (hasSlot('column-all')) return 'column-all'
+      break
+  }
+  return 'null'
+}
+const getHeaderSlot = (slotKey: string): string => {
+  return getSlot(slotKey, 'header')
+}
+const getColumnSlot = (slotKey: string): string => {
+  return getSlot(slotKey, 'column')
+}
+
+const slotKeyList = computed(() => {
+  return showColumns.flatMap(column => {
+    if (column.columns.length > 0) {
+      return [
+        ...column.columns.map(child => `${column.slotKey}-${child.slotKey}`),
+        column.slotKey
+      ]
+    }
+    return column.slotKey
+  })
+})
+
+onMounted(() => {
+  console.log(slotKeyList.value)
 })
 
 </script>
@@ -365,90 +430,40 @@ defineExpose({
     </div>
 
     <div ref="tableMain" class="table-container">
-      <ElTable
+      <TableMain
         v-if="isRender"
         ref="elTableRef"
-        stripe
-        style="width: 100%"
-        :key="renderKey"
-        :data="showData"
-        :height="tableHeight"
-        :border="true"
+        :render-key="renderKey"
+        :show-data="showData"
+        :show-columns="showColumns"
+        :sort="props.sort"
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
-        :default-sort="{
-          prop: props.sort.key,
-          order: props.sort.order,
-        }"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
       >
-        <template v-if="hasSlot('column-expand')">
-          <ElTableColumn type="expand">
-            <template #default="scope">
-              <slot
-                name="column-expand"
-                :row="scope.row"
-                :row-index="scope.$index"
-                :expanded="scope.expanded"
-                :store="scope.store"
-              ></slot>
-            </template>
-          </ElTableColumn>
+        <template v-if="hasSlot('column-expand')" #column-expand="scope">
+          <slot v-bind="scope"></slot>
         </template>
 
-        <ElTableColumn
-          v-for="column in showColumns"
-          :key="column.prop"
-          v-bind="column"
+        <template
+          v-for="slotKey in slotKeyList"
+          :key="slotKey"
+          #[getHeaderSlot(slotKey)]="scope"
         >
-          <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
-            <div :class="column.sortable ? 'header-slot' : ''">
-              <slot
-                :name="`header-${column.slotKey}`"
-                :label="column.label"
-                :row-index="scope.$index"
-                :column="column"
-                :prop="column.prop"
-              ></slot>
-            </div>
-          </template>
-          <template v-else-if="hasSlot('header-all')" #header="scope">
-            <div :class="column.sortable ? 'header-slot' : ''">
-              <slot
-                name="header-all"
-                :label="column.label"
-                :row-index="scope.$index"
-                :column="column"
-                :prop="column.prop"
-              ></slot>
-            </div>
-          </template>
+          <slot :name="getHeaderSlot(slotKey)" v-bind="scope"></slot>
+        </template>
 
-          <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
-            <slot
-              :name="`column-${column.slotKey}`"
-              :data="scope.row[column.key]"
-              :row="scope.row"
-              :row-index="scope.$index"
-              :column="column"
-              :prop="column.prop"
-            ></slot>
-          </template>
-          <template v-else-if="hasSlot('column-all')" #default="scope">
-            <slot
-              name="column-all"
-              :data="scope.row[column.key]"
-              :row="scope.row"
-              :row-index="scope.$index"
-              :column="column"
-              :prop="column.prop"
-            ></slot>
-          </template>
-        </ElTableColumn>
-      </ElTable>
+        <template
+          v-for="slotKey in slotKeyList"
+          :key="slotKey"
+          #[getColumnSlot(slotKey)]="scope"
+        >
+          <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>
+        </template>
+      </TableMain>
     </div>
 
     <div class="table-pagination">
@@ -465,54 +480,6 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.table-container) {
-  .el-table {
-    // 修 table 寬度自適應
-    position: absolute;
-    .el-table__header {
-      table-layout: fixed;
-      border-collapse: separate;
-      height: 100%;
-      .cell {
-        box-sizing: border-box;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-        word-break: break-all;
-        line-height: 23px;
-        padding: 0 12px;
-
-        display: flex;
-        align-items: center;
-
-        height: 100%;
-        & > div {
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-  }
-  .caret-wrapper {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    height: 14px;
-    width: 24px;
-    vertical-align: middle;
-    cursor: pointer;
-    overflow: initial;
-    position: relative;
-  }
-
-  .sort-caret {
-    width: 0;
-    height: 0;
-    border: solid 5px transparent;
-    position: absolute;
-    left: 7px;
-  }
-}
 .table {
   &-wrapper {
     width: 100%;

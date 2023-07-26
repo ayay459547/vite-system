@@ -59,6 +59,7 @@ export const tipLog = (title: string = '', messages: string[] = []): void => {
   messages.forEach(message => {
     console.log('%c%s', style, message)
   })
+  console.groupEnd()
 }
 
 export type LogType = 'info' | 'warn' | 'error' | 'table' | 'trace'

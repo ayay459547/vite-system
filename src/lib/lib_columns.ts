@@ -312,6 +312,21 @@ export const getTableSetting = (
 
   // 設定 table 用的 column
   const hasOwnProperty = Object.prototype.hasOwnProperty
+  const getChildrenData = (columns: Record<string, any>): Array<any> => {
+    const resChildren = []
+
+    columns.$forEach((child: Record<string, any>, childkey: string) => {
+      resChildren.push({
+        childkey,
+        prop: childkey,
+        slotKey: childkey,
+        label: child?.label ?? '',
+        sortable: child?.isOperations ? false : 'custom',
+        ...child
+      })
+    })
+    return resChildren
+  }
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
       key,
@@ -320,6 +335,7 @@ export const getTableSetting = (
       sortable: column[type]?.isOperations ? false : 'custom',
       isOperations: false,
       label: column?.label ?? '',
+      columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
   }
@@ -327,6 +343,12 @@ export const getTableSetting = (
   columns.$forEach((column: Record<string, any>, key: string) => {
     if(hasOwnProperty.call(column, type)) {
       const temp = getColumnData(column, type, key)
+      if (temp.children ?? false) {
+        delete temp.children
+      }
+      if (temp.columns.length > 0) {
+        delete temp.prop
+      }
       resColumns.push(temp)
     }
   })

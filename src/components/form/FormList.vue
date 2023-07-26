@@ -31,7 +31,7 @@ const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
       if (hasSlot('column-all')) return 'column-all'
       break
   }
-  return 'empty'
+  return 'null'
 }
 const getHeaderSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'header')

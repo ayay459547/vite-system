@@ -6,6 +6,8 @@ export type TableData = {
   date: string
   name: string
   address: string
+  state?: string
+  city?: string
   children?: Array<TableData>
 }
 
@@ -14,19 +16,25 @@ export const fakeTableData: TableData[] = [
     id: 1,
     date: '2016-05-03',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
+    address: 'No. 189, Grove St, Los Angeles',
+    state: 'success',
+    city: 'city1'
   },
   {
     id: 2,
     date: '2016-05-02',
     name: 'Caleb',
     address: 'No. 189, Grove St, Los Angeles',
+    state: 'success',
+    city: 'city1',
     children: [
       {
         id: 21,
         date: '2016-05-02',
         name: 'Caleb2',
-        address: 'No. 189, Grove St, Los Angeles'
+        address: 'No. 189, Grove St, Los Angeles',
+        state: 'success',
+        city: 'city1'
       },
       {
         id: 22,
@@ -40,7 +48,9 @@ export const fakeTableData: TableData[] = [
     id: 3,
     date: '2016-05-04',
     name: 'Peter',
-    address: 'No. 189, Grove St, Los Angeles'
+    address: 'No. 189, Grove St, Los Angeles',
+    state: 'success',
+    city: 'city1'
   },
   {
     id: 4,

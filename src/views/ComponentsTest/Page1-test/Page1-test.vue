@@ -42,7 +42,7 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: pageTranslate('testTable'),
-  version: '1.0.3',
+  version: '1.0.4',
   settingKey: 'test'
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)

@@ -4,7 +4,7 @@ import { reactive, ref } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { inject, nextTick } from 'vue'
 import throttle from '@/lib/lib_throttle'
-import { getType } from '@/lib/lib_utils'
+import { getType, getUuid } from '@/lib/lib_utils'
 
 import { CustomPopover, CustomButton } from '@/components'
 
@@ -27,8 +27,6 @@ import {
   secondToTime
 } from './planUtils'
 // import PlanItem from './PlanItem.vue'
-
-import { getUuid } from '@/lib/lib_utils'
 
 export type TypeItem = {
   key: any
