@@ -120,7 +120,7 @@ const hasSlot = (prop: string): boolean => {
       props.hiddenLabel ? 'hidden-label' : ''
     ]"
   >
-    <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
+    <label v-if="!props.hiddenLabel" class="input-label">
       <span class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
@@ -200,6 +200,7 @@ const hasSlot = (prop: string): boolean => {
   &-label {
     width: fit-content;
     white-space: nowrap;
+    height: 21px;
   }
 
   &-main {

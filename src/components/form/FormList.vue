@@ -120,7 +120,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="form-container">
+  <div class="form-container hover-card-shadow">
     <SimpleTable
       :table-data="props.tableData"
       :table-columns="showTableColumns"
@@ -187,20 +187,16 @@ onBeforeMount(() => {
 .form {
   &-container {
     width: 100%;
-    height: 100%;
+    // height: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 16px;
     padding: 8px;
-    transition-duration: 0.3s;
 
     position: sticky;
     left: 0;
-    &:hover {
-      box-shadow: 1px 1px 6px 2px #c6e2ff;
-    }
   }
 }
 </style>

@@ -117,7 +117,7 @@ const onChange = () => {
       props.hiddenLabel ? 'hidden-label' : ''
     ]"
   >
-    <label v-if="!props.hiddenLabel && props.label.length > 0" class="input-label">
+    <label v-if="!props.hiddenLabel" class="input-label">
       <span>{{ props.label }}</span>
     </label>
 
@@ -186,6 +186,7 @@ const onChange = () => {
   &-label {
     width: fit-content;
     white-space: nowrap;
+    height: 21px;
   }
 
   &-group {

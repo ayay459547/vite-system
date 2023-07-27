@@ -145,6 +145,8 @@ export interface FormListSetting<T> {
   forms: Array<T>
   reset: () => void
   validate: () => Promise<Array<any>>
+  add: () => void
+  remove: () => void
 }
 export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []) => {
   const resColumns = {}
@@ -159,7 +161,9 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
         if (el) {
           const validateKey = getUuid()
           refMap[validateKey] = el
-          el.setvalidateKey(validateKey)
+          if (el.setvalidateKey) {
+            el.setvalidateKey(validateKey)
+          }
         }
       },
       key,
@@ -248,6 +252,16 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
           resolve(successList)
         }
       })
+    },
+    add: () => {
+      const newData = {
+        key: getUuid(),
+        ...defaultValue
+      } as any
+      formList.push(newData)
+    },
+    remove: (rowIndex: number) => {
+      formList.splice(rowIndex, 1)
     }
   }
 }
@@ -317,7 +331,7 @@ export const getTableSetting = (
 
     columns.$forEach((child: Record<string, any>, childkey: string) => {
       resChildren.push({
-        childkey,
+        key: childkey,
         prop: childkey,
         slotKey: childkey,
         label: child?.label ?? '',

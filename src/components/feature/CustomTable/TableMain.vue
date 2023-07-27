@@ -6,6 +6,7 @@ import throttle from '@/lib/lib_throttle'
 import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
+import type { SpanMethod } from './CustomTable.vue'
 
 // slot
 const slots = useSlots()
@@ -44,6 +45,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: true,
     description: '資料存在 children 時 預設是否展開'
+  },
+  spanMethod: {
+    type: Function as PropType<SpanMethod>,
+    description: '資料跨欄'
   }
 })
 
@@ -104,154 +109,210 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="tableMain" class="table-main">
-    <ElTable
-      ref="elTableRef"
-      stripe
-      style="width: 100%"
-      :key="props.renderKey"
-      :data="props.showData"
-      :height="tableHeight"
-      :border="true"
-      :row-key="props.rowKey"
-      :default-expand-all="props.defaultExpandAll"
-      :default-sort="{
-        prop: props.sort.key,
-        order: props.sort.order,
-      }"
-      @row-click="onRowClick"
-      @sort-change="onSortChange"
-      @header-click="onHeaderClick"
-      @expand-change="onExpandChange"
-    >
-      <template v-if="hasSlot('column-expand')">
-        <ElTableColumn type="expand">
-          <template #default="scope">
-            <slot
-              name="column-expand"
-              :row="scope.row"
-              :row-index="scope.$index"
-              :expanded="scope.expanded"
-              :store="scope.store"
-            ></slot>
-          </template>
-        </ElTableColumn>
-      </template>
+  <div ref="tableMain" class="table-main-wrapper">
+    <div class="table-main-container">
+      <ElTable
+        ref="elTableRef"
+        stripe
+        :key="props.renderKey"
+        :data="props.showData"
+        :height="tableHeight"
+        :border="true"
+        :row-key="props.rowKey"
+        :default-expand-all="props.defaultExpandAll"
+        :default-sort="{
+          prop: props.sort.key,
+          order: props.sort.order,
+        }"
+        :span-method="props.spanMethod"
+        @row-click="onRowClick"
+        @sort-change="onSortChange"
+        @header-click="onHeaderClick"
+        @expand-change="onExpandChange"
+      >
+        <template v-if="hasSlot('column-expand')">
+          <ElTableColumn type="expand">
+            <template #default="scope">
+              <slot
+                name="column-expand"
+                :row="scope.row"
+                :row-index="scope.$index"
+                :expanded="scope.expanded"
+                :store="scope.store"
+              ></slot>
+            </template>
+          </ElTableColumn>
+        </template>
 
-      <template v-for="column in showColumns" :key="column.prop">
-        <template v-if="column.columns && column.columns.length > 0">
-          <ElTableColumn
-            :key="column.prop"
-            :prop="column.prop"
-            :label="column.label"
-            :sortable="column.sortable"
-            v-bind="column"
-          >
-            <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
-              <div :class="column.sortable ? 'header-slot' : ''">
+        <template v-for="column in showColumns" :key="column.prop">
+          <template v-if="column.columns && column.columns.length > 0">
+            <ElTableColumn
+              :key="column.prop"
+              :prop="column.prop"
+              :label="column.label"
+              :sortable="column.sortable"
+              v-bind="column"
+            >
+              <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
+                <div :class="column.sortable ? 'header-slot' : ''">
+                  <slot
+                    :name="`header-${column.slotKey}`"
+                    :label="column.label"
+                    :row-index="scope.$index"
+                    :column="column"
+                    :prop="column.prop"
+                  ></slot>
+                </div>
+              </template>
+              <template v-else-if="hasSlot('header-all')" #header="scope">
+                <div :class="column.sortable ? 'header-slot' : ''">
+                  <slot
+                    name="header-all"
+                    :label="column.label"
+                    :row-index="scope.$index"
+                    :column="column"
+                    :prop="column.prop"
+                  ></slot>
+                </div>
+              </template>
+              <ElTableColumn
+                v-for="child in column.columns"
+                :key="child.prop"
+                v-bind="child"
+              >
+                <template v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)" #header="scope">
+                  <div :class="child.sortable ? 'header-slot' : ''">
+                    <slot
+                      :name="`header-${column.slotKey}-${child.slotKey}`"
+                      :label="child.label"
+                      :row-index="scope.$index"
+                      :column="child"
+                      :prop="child.prop"
+                    ></slot>
+                  </div>
+                </template>
+                <template v-else-if="hasSlot(`header-${child.slotKey}-all}`)" #header="scope">
+                  <div :class="child.sortable ? 'header-slot' : ''">
+                    <slot
+                      :name="`header-${column.slotKey}-all}`"
+                      :label="child.label"
+                      :row-index="scope.$index"
+                      :column="child"
+                      :prop="child.prop"
+                    ></slot>
+                  </div>
+                </template>
+                <template v-else-if="hasSlot('header-all')" #header="scope">
+                  <div :class="column.sortable ? 'header-slot' : ''">
+                    <slot
+                      name="header-all"
+                      :label="child.label"
+                      :row-index="scope.$index"
+                      :column="child"
+                      :prop="child.prop"
+                    ></slot>
+                  </div>
+                </template>
+
+                <template v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)" #default="scope">
+                  <slot
+                    :name="`column-${column.slotKey}-${child.slotKey}`"
+                    :data="scope.row[child.key]"
+                    :row="scope.row"
+                    :row-index="scope.$index"
+                    :column="child"
+                    :prop="child.prop"
+                  ></slot>
+                </template>
+                <template v-else-if="hasSlot(`column-${column.slotKey}-all}`)" #default="scope">
+                  <slot
+                    :name="`column-${column.slotKey}-all}`"
+                    :data="scope.row[child.key]"
+                    :row="scope.row"
+                    :row-index="scope.$index"
+                    :column="child"
+                    :prop="child.prop"
+                  ></slot>
+                </template>
+                <template v-else-if="hasSlot(`column-all}`)" #default="scope">
+                  <slot
+                    :name="`column-all}`"
+                    :data="scope.row[child.key]"
+                    :row="scope.row"
+                    :row-index="scope.$index"
+                    :column="child"
+                    :prop="child.prop"
+                  ></slot>
+                </template>
+              </ElTableColumn>
+            </ElTableColumn>
+          </template>
+
+          <template v-else>
+            <ElTableColumn
+              :key="column.prop"
+              :prop="column.prop"
+              :label="column.label"
+              :sortable="column.sortable"
+              v-bind="column"
+            >
+              <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
+                <div :class="column.sortable ? 'header-slot' : ''">
+                  <slot
+                    :name="`header-${column.slotKey}`"
+                    :label="column.label"
+                    :row-index="scope.$index"
+                    :column="column"
+                    :prop="column.prop"
+                  ></slot>
+                </div>
+              </template>
+              <template v-else-if="hasSlot('header-all')" #header="scope">
+                <div :class="column.sortable ? 'header-slot' : ''">
+                  <slot
+                    name="header-all"
+                    :label="column.label"
+                    :row-index="scope.$index"
+                    :column="column"
+                    :prop="column.prop"
+                  ></slot>
+                </div>
+              </template>
+
+              <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
                 <slot
-                  :name="`header-${column.slotKey}`"
-                  :label="column.label"
+                  :name="`column-${column.slotKey}`"
+                  :data="scope.row[column.key]"
+                  :row="scope.row"
                   :row-index="scope.$index"
                   :column="column"
                   :prop="column.prop"
                 ></slot>
-              </div>
-            </template>
-            <ElTableColumn
-              v-for="child in column.columns"
-              :key="child.prop"
-              v-bind="child"
-            >
-              <template v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)" #header="scope">
-                <div :class="child.sortable ? 'header-slot' : ''">
-                  <slot
-                    :name="`header-${column.slotKey}-${child.slotKey}`"
-                    :label="child.label"
-                    :row-index="scope.$index"
-                    :column="child"
-                    :prop="child.prop"
-                  ></slot>
-                </div>
               </template>
-              <template v-else-if="hasSlot(`header-${column.slotKey}-all}`)" #header="scope">
-                <div :class="child.sortable ? 'header-slot' : ''">
-                  <slot
-                    :name="`header-${column.slotKey}-all}`"
-                    :label="child.label"
-                    :row-index="scope.$index"
-                    :column="child"
-                    :prop="child.prop"
-                  ></slot>
-                </div>
+              <template v-else-if="hasSlot('column-all')" #default="scope">
+                <slot
+                  name="column-all"
+                  :data="scope.row[column.key]"
+                  :row="scope.row"
+                  :row-index="scope.$index"
+                  :column="column"
+                  :prop="column.prop"
+                ></slot>
               </template>
             </ElTableColumn>
-          </ElTableColumn>
+          </template>
         </template>
-
-        <template v-else>
-          <ElTableColumn
-            :key="column.prop"
-            :prop="column.prop"
-            :label="column.label"
-            :sortable="column.sortable"
-            v-bind="column"
-          >
-            <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
-              <div :class="column.sortable ? 'header-slot' : ''">
-                <slot
-                  :name="`header-${column.slotKey}`"
-                  :label="column.label"
-                  :row-index="scope.$index"
-                  :column="column"
-                  :prop="column.prop"
-                ></slot>
-              </div>
-            </template>
-            <template v-else-if="hasSlot('header-all')" #header="scope">
-              <div :class="column.sortable ? 'header-slot' : ''">
-                <slot
-                  name="header-all"
-                  :label="column.label"
-                  :row-index="scope.$index"
-                  :column="column"
-                  :prop="column.prop"
-                ></slot>
-              </div>
-            </template>
-
-            <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
-              <slot
-                :name="`column-${column.slotKey}`"
-                :data="scope.row[column.key]"
-                :row="scope.row"
-                :row-index="scope.$index"
-                :column="column"
-                :prop="column.prop"
-              ></slot>
-            </template>
-            <template v-else-if="hasSlot('column-all')" #default="scope">
-              <slot
-                name="column-all"
-                :data="scope.row[column.key]"
-                :row="scope.row"
-                :row-index="scope.$index"
-                :column="column"
-                :prop="column.prop"
-              ></slot>
-            </template>
-          </ElTableColumn>
-        </template>
-      </template>
-    </ElTable>
+      </ElTable>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.table-main::v-deep {
+:deep(.table-main-container) {
   .el-table {
     // 修 table 寬度自適應
     position: absolute;
+    width: 100%;
     .el-table__header {
       table-layout: fixed;
       border-collapse: separate;
@@ -272,6 +333,18 @@ defineExpose({
         & > div {
           width: 100%;
           height: 100%;
+        }
+      }
+
+      .is {
+        &-left > .cell {
+          justify-content: flex-start;
+        }
+        &-center > .cell {
+          justify-content: center;
+        }
+        &-right > .cell {
+          justify-content: flex-end;
         }
       }
     }
@@ -298,8 +371,13 @@ defineExpose({
 }
 
 .table-main {
-  width: 100%;
-  height: 100%;
-  position: relative;
+  &-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  &-container {
+    display: contents;
+  }
 }
 </style>

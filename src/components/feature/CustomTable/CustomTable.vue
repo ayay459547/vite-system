@@ -4,14 +4,10 @@ import {
   ref,
   reactive,
   computed,
-  onMounted,
-  onUnmounted
+  onMounted
 } from 'vue'
 
 import { ElPagination } from 'element-plus'
-
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
 
 import { tipLog } from '@/lib/lib_utils'
 
@@ -38,6 +34,15 @@ export interface TableParams {
   sort: Sort
 }
 
+export type SpanMethod = (
+  (data: {
+    row: any,
+    column: Record<string, any>,
+    rowIndex: number,
+    columnIndex: number
+  }) => number[] | { rowspan: number, colspan: number }
+) | null
+
 export interface Props extends Record<string, any> {
   /**
    * table 標題
@@ -61,12 +66,14 @@ export interface Props extends Record<string, any> {
    * tableData: 表單資料
    * rowKey: 每行資料的key 預設是id
    * defaultExpandAll: 資料存在 children 時 預設是否展開
+   * spanMethod: 資料跨欄
    */
   tableColumns: PropsTableColumn[]
   tableData: any[]
   tableDataCount?: number
   rowKey?: string
   defaultExpandAll?: boolean
+  spanMethod?: SpanMethod
   /**
    * 表單顯示相關
    * page 當前分頁
@@ -90,6 +97,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   tableDataCount: 0,
   rowKey: 'id',
   defaultExpandAll: false,
+  spanMethod: null,
   page: 1,
   pageSize: 100,
   sort: () => {
@@ -295,24 +303,6 @@ onMounted(async () => {
   isRender.value = true
 })
 
-let tableHeight = ref(500)
-const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
-    tableHeight.value = entry.contentRect.height
-  })
-}, 100) as ResizeObserverCallback
-const RO = new ResizeObserver(ROcallback)
-
-const tableMain = ref(null)
-onMounted(() => {
-  if (tableMain.value !== null) {
-    RO.observe(tableMain.value)
-  }
-})
-onUnmounted(() => {
-  RO.disconnect()
-})
-
 defineExpose({
   pageChange,
   getTableParams: () => {
@@ -360,10 +350,6 @@ const slotKeyList = computed(() => {
     }
     return column.slotKey
   })
-})
-
-onMounted(() => {
-  console.log(slotKeyList.value)
 })
 
 </script>
@@ -429,7 +415,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div ref="tableMain" class="table-container">
+    <div class="table-container">
       <TableMain
         v-if="isRender"
         ref="elTableRef"
@@ -439,6 +425,7 @@ onMounted(() => {
         :sort="props.sort"
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
+        :span-method="props.spanMethod"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"

@@ -214,6 +214,9 @@ onActivated(() => {
       @excel="download"
       @show-change="init"
     >
+    <template #header-name>
+      name
+    </template>
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
           <CustomIcon name="ellipsis-vertical"/>
