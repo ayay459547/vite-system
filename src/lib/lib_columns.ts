@@ -253,10 +253,11 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
         }
       })
     },
-    add: () => {
+    add: (value?: any) => {
       const newData = {
-        key: getUuid(),
-        ...defaultValue
+        ...defaultValue,
+        ...value,
+        key: getUuid()
       } as any
       formList.push(newData)
     },

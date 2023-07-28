@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, onMounted, onBeforeUnmount, ref } from 'vue'
+import { computed, useSlots, onMounted, onBeforeUnmount, ref, nextTick } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { ValidateType } from '@/lib/lib_validate'
@@ -124,8 +124,15 @@ const validationListeners = computed(() => {
     focus: (e: FocusEvent): void => {
       emit('focus', e)
     },
-    blur: (e: FocusEvent): void => {
+    blur: async (e: FocusEvent): Promise<void> => {
       emit('blur', e)
+
+      // 確保畫面更新完才做驗證
+      // 太快做驗證會一瞬間 出現紅色
+      await nextTick()
+      setTimeout(() => {
+        handleChange(tempValue.value, true)
+      }, 300)
     },
     change: (value: ModelValue): void => {
       emit('change', value)

@@ -92,55 +92,57 @@ const clickOutside = () => {
 </script>
 
 <template>
-  <div v-show="wrapperIsShow" class="modal-wrapper">
-    <Transition name="modal">
-      <div
-        v-show="containerIsShow"
-        v-click-outside="clickOutside"
-        class="modal-container"
-        :class="[
-          `width-${props.widthSize}`,
-          `height-${props.heightSize}`
-        ]"
-      >
-        <div class="modal-header">
-          <slot name="header">
-            <h3>{{ props.title }}</h3>
-          </slot>
-          <CustomButton
-            icon-name="close"
-            text
-            @click="close"
-          />
-        </div>
+  <div v-show="wrapperIsShow" style="display: contents;">
+    <div :class="containerIsShow ? 'is-show': 'is-close'" class="modal-wrapper">
+      <Transition name="modal">
+        <div
+          v-show="containerIsShow"
+          v-click-outside="clickOutside"
+          class="modal-container"
+          :class="[
+            `width-${props.widthSize}`,
+            `height-${props.heightSize}`
+          ]"
+        >
+          <div class="modal-header">
+            <slot name="header">
+              <h3>{{ props.title }}</h3>
+            </slot>
+            <CustomButton
+              icon-name="close"
+              text
+              @click="close"
+            />
+          </div>
 
-        <div class="modal-body">
-          <div v-if="tempValue" style="width: 100%; height: 100%">
-            <slot>Body</slot>
+          <div class="modal-body">
+            <div v-if="tempValue" style="width: 100%; height: 100%">
+              <slot>Body</slot>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <slot name="footer">
+              <div class="modal-footer-btn">
+                <CustomButton
+                  label="取消"
+                  icon-name="angle-left"
+                  icon-move="translate"
+                  @click="cancel"
+                />
+                <CustomButton
+                  type="success"
+                  label="確認"
+                  icon-name="check"
+                  icon-move="scale"
+                  @click="submit"
+                />
+              </div>
+            </slot>
           </div>
         </div>
-
-        <div class="modal-footer">
-          <slot name="footer">
-            <div class="modal-footer-btn">
-              <CustomButton
-                label="取消"
-                icon-name="angle-left"
-                icon-move="translate"
-                @click="cancel"
-              />
-              <CustomButton
-                type="success"
-                label="確認"
-                icon-name="check"
-                icon-move="scale"
-                @click="submit"
-              />
-            </div>
-          </slot>
-        </div>
-      </div>
-    </Transition>
+      </Transition>
+    </div>
   </div>
 </template>
 
@@ -154,7 +156,14 @@ const clickOutside = () => {
     z-index: $modal-index;
     left: 0;
     top: 0;
-    background-color: #00000066;
+    transition-duration: 0.3s;
+
+    &.is-close {
+      background-color: #00000000;
+    }
+    &.is-show {
+      background-color: #00000066;
+    }
 
     @extend %flex-center;
   }
@@ -168,6 +177,7 @@ const clickOutside = () => {
     transition-duration: 0.3s;
     min-width: 400px;
     min-height: 300px;
+    border-radius: 6px;
     &.width {
       &-large {
         width: 80%;

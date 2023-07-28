@@ -4,16 +4,29 @@
 }
 .modal-leave-active {
   transition: opacity 0.2s ease;
-  animation: modal-in 0.2s reverse;
+  animation: modal-out 0.2s reverse;
 }
 @keyframes modal-in {
   0% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.8);
   }
   50% {
     opacity: 0.6;
-    transform: scale(1.1);
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes modal-out {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.6;
   }
   100% {
     opacity: 1;
@@ -21,6 +34,7 @@
   }
 }
 
+// Transition name="fixed"
 .fixed-enter-active,
 .fixed-leave-active {
   transition: opacity 0.3s ease;
@@ -28,5 +42,32 @@
 
 .fixed-enter-from,
 .fixed-leave-to {
+  opacity: 0;
+}
+
+// Transition name="slide-up" mode="out-in"
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+// Transition name="fade"
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }

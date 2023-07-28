@@ -31,7 +31,7 @@ const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
       if (hasSlot('column-all')) return 'column-all'
       break
   }
-  return 'null'
+  return 'empty'
 }
 const getHeaderSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'header')
@@ -44,6 +44,11 @@ const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
 
 const props = defineProps({
+  label: {
+    type: String as PropType<string>,
+    required: false,
+    default: ''
+  },
   columnSetting: {
     type: Object as PropType<Record<string, any>>,
     required: true,
@@ -121,6 +126,9 @@ onBeforeMount(() => {
 
 <template>
   <div class="form-container hover-card-shadow">
+    <div class="form-label">
+      <span>{{ props.label }}</span>
+    </div>
     <SimpleTable
       :table-data="props.tableData"
       :table-columns="showTableColumns"
@@ -194,9 +202,14 @@ onBeforeMount(() => {
     align-items: center;
     gap: 16px;
     padding: 8px;
+    transition-duration: 0.3s;
 
     position: sticky;
     left: 0;
+  }
+
+  &-label {
+    width: 100%;
   }
 }
 </style>
