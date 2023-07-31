@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { computed, useSlots, ref, nextTick } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 import { useField } from 'vee-validate'
+import { isEmpty } from '@/lib/lib_utils'
 
 export type Options = Array<{
   label: string
@@ -41,6 +42,10 @@ const props = defineProps({
     default () {
       return []
     }
+  },
+  text: {
+    type: Boolean as PropType<boolean>,
+    default: false
   },
   // element ui plus
   clearable: {
@@ -83,7 +88,7 @@ const emit = defineEmits([
 ])
 
 const validateRes = computed<string>(() => {
-  if ([null, undefined, ''].includes(errorMessage.value)) return 'success'
+  if (isEmpty(errorMessage.value)) return 'success'
   return 'error'
 })
 
@@ -93,7 +98,7 @@ const validateField = (veeValue: ModelValue) => {
   if (!props.required) return true
 
   // 必填
-  if (props.required && [null, undefined, ''].includes(veeValue as any)) {
+  if (props.required && isEmpty(veeValue as any)) {
     return '此輸入框為必填'
   }
 
@@ -167,6 +172,12 @@ const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
 }
 
+const getTextValue = (tempValue: ModelValue) => {
+  if (isEmpty(tempValue)) return ''
+
+  return props.options.find(option => option.value === tempValue) ?? ''
+}
+
 </script>
 
 <template>
@@ -180,11 +191,15 @@ const hasSlot = (prop: string): boolean => {
   >
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>
-      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
+    <div v-if="props.text">
+      {{ getTextValue(tempValue) }}
+    </div>
+
     <ElSelect
+      v-else
       v-model="tempValue"
       :placeholder="$t('pleaseSelect')"
       class="input-main"
@@ -237,6 +252,7 @@ const hasSlot = (prop: string): boolean => {
     height: 88px;
     display: flex;
     gap: 4px;
+    position: relative;
     &.hidden-label {
       height: 48px;
     }
@@ -252,12 +268,12 @@ const hasSlot = (prop: string): boolean => {
 
   &-prefix {
     display: inline-block;
-    width: 10px;
+    position: absolute;
+    left: -10px;
+    top: 0;
   }
   &-required {
     color: $danger;
-    display: inline-block;
-    padding-right: 2px;
   }
 
   &-label {

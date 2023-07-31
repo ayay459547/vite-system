@@ -276,6 +276,7 @@ export interface TableSetting {
     settingKey: string
     params: TableParams
     tableColumns: Record<string, any>
+    hiddenExcel: boolean
   },
   downloadExcel: (tableData: Record<string, any>[]) => void
   getParams: (tableRef: TableRef) => TableParams
@@ -310,7 +311,8 @@ export const getTableSetting = (
     sort?: {
       key: null | string,
       order: null | 'ascending' | 'descending'
-    }
+    },
+    hiddenExcel?: boolean
   }
 ): TableSetting => {
   const {
@@ -322,7 +324,8 @@ export const getTableSetting = (
     sort = {
       key: null,
       order: null
-    }
+    },
+    hiddenExcel = false
   } = options
 
   // 設定 table 用的 column
@@ -443,7 +446,8 @@ export const getTableSetting = (
       version,
       settingKey,
       params: tableParams,
-      tableColumns: resColumns
+      tableColumns: resColumns,
+      hiddenExcel
     },
     downloadExcel,
     getParams: (tableRef: TableRef): TableParams => {

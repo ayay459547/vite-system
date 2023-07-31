@@ -163,7 +163,7 @@ onBeforeMount(() => {
       </template>
 
       <template #header-row_index="{ data }">
-        <span>{{ data }}</span>
+        <label>{{ data }}</label>
       </template>
       <template #column-row_index="{ rowIndex }">
         <span>{{ rowIndex + 1 }}</span>

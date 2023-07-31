@@ -5,6 +5,7 @@ import { ElDatePicker } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { ValidateType } from '@/lib/lib_validate'
 import { useI18n } from 'vue-i18n'
+import { isEmpty, datetimeFormat } from '@/lib/lib_utils'
 const { t } = useI18n()
 
 type BaseValue = string | null
@@ -45,6 +46,10 @@ const props = defineProps({
     type: [Array, String, null] as PropType<ValidateType[] | ValidateType>,
     required: false,
     default: ''
+  },
+  text: {
+    type: Boolean as PropType<boolean>,
+    default: false
   },
   // element ui plus
   clearable: {
@@ -88,7 +93,7 @@ const emit = defineEmits([
 ])
 
 const validateRes = computed<string>(() => {
-  if ([null, undefined, ''].includes(errorMessage.value)) return 'success'
+  if (isEmpty(errorMessage.value)) return 'success'
   return 'error'
 })
 
@@ -101,10 +106,10 @@ const validateField = (veeValue: ModelValue) => {
   if (Array.isArray(veeValue)) {
     const [ value1, value2 ] = veeValue
 
-    if([null, undefined, ''].includes(value1)) return '此輸入框為必填'
-    if([null, undefined, ''].includes(value2)) return '此輸入框為必填'
+    if(isEmpty(value1)) return '此輸入框為必填'
+    if(isEmpty(value2)) return '此輸入框為必填'
   } else {
-    if([null, undefined, ''].includes(veeValue)) return '此輸入框為必填'
+    if(isEmpty(veeValue)) return '此輸入框為必填'
   }
 
   return true
@@ -175,6 +180,17 @@ onBeforeUnmount(() => {
   window.removeEventListener('touchstart', e => e.preventDefault())
 })
 
+const getTextValue = (tempValue: ModelValue) => {
+  if (isEmpty(tempValue)) return ''
+
+  if (Array.isArray(tempValue)) {
+    const [value1, value2] = tempValue
+    return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(value2, props.format)}`
+  } else {
+    return datetimeFormat(tempValue, props.format)
+  }
+}
+
 </script>
 
 <template>
@@ -187,11 +203,15 @@ onBeforeUnmount(() => {
   >
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>
-      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
+    <div v-if="props.text">
+      {{ getTextValue(tempValue) }}
+    </div>
+
     <ElDatePicker
+      v-else
       v-model="tempValue"
       :placeholder="$t('pleaseInput')"
       class="input-main"
@@ -248,6 +268,7 @@ onBeforeUnmount(() => {
     height: 88px;
     display: flex;
     gap: 4px;
+    position: relative;
     &.hidden-label {
       height: 48px;
     }
@@ -263,7 +284,9 @@ onBeforeUnmount(() => {
 
   &-prefix {
     display: inline-block;
-    width: 10px;
+    position: absolute;
+    left: -10px;
+    top: 0;
   }
   &-required {
     color: $danger;

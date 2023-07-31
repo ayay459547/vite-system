@@ -6,6 +6,78 @@ import { getI18nMessages } from '@/i18n'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 import { v4 as uuidv4 } from 'uuid'
+import dayjs from 'dayjs'
+
+/**
+ * @author Caleb
+ * @description 取的準確的資料類型
+ * @param {*} any
+ * @returns {String} 類型
+ */
+export const getType = (any: any): string => {
+  const stringType = Object.prototype.toString.call(any)
+  const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
+  const res = stringType.match(regexp)
+  return res[1]
+}
+
+/**
+ * @author Caleb
+ * @description 判斷東西是否有值
+ * @param {*} value
+ * @returns {Boolean}
+ */
+export const isSet = (value: any): boolean => {
+  if ([null, undefined].includes(value)) return false
+  const hasOwnProperty = Object.prototype.hasOwnProperty
+  const type = getType(value)
+
+  switch (type) {
+    case 'Array':
+    case 'String':
+      if (value.length > 0) return true
+      return false
+    case 'Object':
+      for (const key in value) {
+        if (hasOwnProperty.call(value, key)) return true
+      }
+      return false
+    case 'Number':
+      if (!isNaN(parseInt(value))) return true
+      return false
+    default:
+      return true
+  }
+}
+
+/**
+ * @author Caleb
+ * @description 判斷東西是否為空
+ * @param {*} value
+ * @returns {Boolean}
+ */
+export const isEmpty = (value: any): boolean => {
+  if ([null, undefined].includes(value)) return true
+  const type = getType(value)
+  const hasOwnProperty = Object.hasOwnProperty
+
+  switch (type) {
+    case 'Array':
+    case 'String':
+      if (value.length > 0) return false
+      return true
+    case 'Object':
+      for (const key in value) {
+        if (hasOwnProperty.call(value, key)) return false
+      }
+      return true
+    case 'Number':
+      if (!isNaN(parseInt(value))) return false
+      return true
+    default:
+      return false
+  }
+}
 
 /**
  * @author Caleb
@@ -28,19 +100,6 @@ export const hasSlot = (prop: string): boolean => {
 }
 
 const mode = (import.meta as any).env.MODE
-
-/**
- * @author Caleb
- * @description 取的準確的資料類型
- * @param {*} any
- * @returns {String} 類型
- */
-export const getType = (any: any): string => {
-  const stringType = Object.prototype.toString.call(any)
-  const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
-  const res = stringType.match(regexp)
-  return res[1]
-}
 
 /**
  * @author Caleb
@@ -105,8 +164,19 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
  * @param n 取小數點到第n位
  * @returns {Number}
  */
-export const round = (num: number, n = 2) => {
+export const round = (num: number, n = 2): number => {
   return +(Math.round((num + `e+${n}`) as unknown as number)  + `e-${n}`)
+}
+
+/**
+ * @author Caleb
+ * @description https://day.js.org/docs/en/display/format
+ * @param value 日期
+ * @param format 想要的格式
+ * @returns {String} 格式化後的日期
+ */
+export const datetimeFormat = (value: string, format: string): string => {
+  return dayjs(value).format(format)
 }
 
 /**
@@ -115,7 +185,7 @@ export const round = (num: number, n = 2) => {
  * @param options 自訂選項
  * @returns {Promise}
  */
-export const swal = (options: SweetAlertOptions<any, any>) => {
+export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
   const defaultOPtions = {
     // icon 類型
     // info, warning, success, error, question
@@ -214,13 +284,18 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   }
 }
 
+
+export type PageI18n = Partial<Composer & {
+  i18nTranslate: ComposerTranslation,
+  i18nTest: (key: string) => boolean
+}>
 /**
  * @author Caleb
  * @description 針對各頁面 設定翻譯 不影響其他地方
  * @param langMap 設定key 對應的語言顯示的資料
  * @returns {Object} 翻譯工具
  */
-export const usePageI18n = (langMap: LangMap): Partial<Composer & { i18nTranslate: ComposerTranslation, i18nTest: (key: string) => boolean }> => {
+export const usePageI18n = (langMap: LangMap): PageI18n => {
   const pageI18n = useI18n({
     messages: getI18nMessages(langMap)
   }) as Partial<Composer>

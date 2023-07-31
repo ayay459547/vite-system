@@ -5,12 +5,13 @@ import { ElInput } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
+import { isEmpty } from '@/lib/lib_utils'
 
-type ModelValue = string | null
+type ModelValue = string | number | null
 
 const props = defineProps({
   modelValue: {
-    type: [String, null] as PropType<ModelValue>,
+    type: [String, Number, null] as PropType<ModelValue>,
     required: true
   },
   validateKey: {
@@ -37,6 +38,10 @@ const props = defineProps({
   validate: {
     type: [Array, String, null] as PropType<ValidateType[] | ValidateType>,
     default: null
+  },
+  text: {
+    type: Boolean as PropType<boolean>,
+    default: false
   },
   // element ui plus
   type: {
@@ -81,18 +86,18 @@ const emit = defineEmits([
 ])
 
 const validateRes = computed<string>(() => {
-  if ([null, undefined, ''].includes(errorMessage.value)) return 'success'
+  if (isEmpty(errorMessage.value)) return 'success'
   return 'error'
 })
 
 // 驗證
 const validateField = (veeValue: ModelValue) => {
   // 必填
-  if (props.required && (veeValue?.trim() ?? '') === '') {
+  if (props.required && isEmpty(veeValue)) {
     return '此輸入框為必填'
   }
   // 非必填
-  if ((veeValue?.trim() ?? '') === '') return true
+  if (isEmpty(veeValue)) return true
 
   // 多個驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {
@@ -191,6 +196,12 @@ const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
 }
 
+const getTextValue = (tempValue: ModelValue) => {
+  if (isEmpty(tempValue)) return ''
+
+  return tempValue
+}
+
 </script>
 
 <template>
@@ -204,11 +215,15 @@ const hasSlot = (prop: string): boolean => {
   >
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>
-      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
 
+    <div v-if="props.text">
+      {{ getTextValue(tempValue) }}
+    </div>
+
     <ElInput
+      v-else
       v-model="tempValue"
       :placeholder="$t('pleaseInput')"
       class="input-main"
@@ -262,6 +277,7 @@ const hasSlot = (prop: string): boolean => {
     height: 88px;
     display: flex;
     gap: 4px;
+    position: relative;
     &.hidden-label {
       height: 48px;
     }
@@ -277,7 +293,9 @@ const hasSlot = (prop: string): boolean => {
 
   &-prefix {
     display: inline-block;
-    width: 10px;
+    position: absolute;
+    left: -10px;
+    top: 0;
   }
   &-required {
     color: $danger;

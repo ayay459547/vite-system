@@ -7,6 +7,7 @@ import {
   onMounted
 } from 'vue'
 
+import type { TableColumnCtx } from 'element-plus'
 import { ElPagination } from 'element-plus'
 
 import { tipLog } from '@/lib/lib_utils'
@@ -37,10 +38,10 @@ export interface TableParams {
 export type SpanMethod = (
   (data: {
     row: any,
-    column: Record<string, any>,
+    column: TableColumnCtx<any>,
     rowIndex: number,
     columnIndex: number
-  }) => number[] | { rowspan: number, colspan: number }
+  }) => number[] | { rowspan: number, colspan: number } | void
 ) | null
 
 export interface Props extends Record<string, any> {
@@ -86,6 +87,7 @@ export interface Props extends Record<string, any> {
   pageSize?: number
   sort?: Sort
   showType?: 'custom' | 'auto'
+  hiddenExcel?: boolean
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -103,7 +105,8 @@ const props: Props = withDefaults(defineProps<Props>(), {
   sort: () => {
     return { key: null, order: null }
   },
-  showType: 'custom'
+  showType: 'custom',
+  hiddenExcel: false
 })
 
 const emit = defineEmits([
@@ -359,6 +362,7 @@ const slotKeyList = computed(() => {
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-8">
         <CustomPopover
+          v-if="!props.hiddenExcel"
           v-model:visible="excelIsShow"
           placement="bottom"
           :width="150"
@@ -523,6 +527,7 @@ const slotKeyList = computed(() => {
       &-center {
         justify-content: center;
         min-height: 40px;
+        font-weight: 600;
       }
       &-right {
         justify-content: flex-end;

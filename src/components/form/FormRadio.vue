@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { computed, ref } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
 import { useField } from 'vee-validate'
+import { isEmpty } from '@/lib/lib_utils'
 
 export type Options = Array<{
   label: string
@@ -46,6 +47,10 @@ const props = defineProps({
   optionDirection: {
     type: String as PropType<'column' | 'row'>,
     default: 'row'
+  },
+  text: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -61,7 +66,7 @@ const emit = defineEmits([
 ])
 
 const validateRes = computed<string>(() => {
-  if ([null, undefined, ''].includes(errorMessage.value)) return 'success'
+  if (isEmpty(errorMessage.value)) return 'success'
   return 'error'
 })
 
@@ -71,7 +76,7 @@ const validateField = (veeValue: ModelValue) => {
   if (!props.required) return true
 
   // 必填
-  if (props.required && veeValue === null) {
+  if (props.required && isEmpty(veeValue)) {
     return '此輸入框為必填'
   }
 
@@ -116,6 +121,12 @@ defineExpose({
   }
 })
 
+const getTextValue = (tempValue: ModelValue) => {
+  if (isEmpty(tempValue)) return ''
+
+  return props.options.find(option => option.value === tempValue) ?? ''
+}
+
 </script>
 
 <template>
@@ -133,7 +144,12 @@ defineExpose({
       <span>{{ props.label }}</span>
     </label>
 
+    <div v-if="props.text">
+      {{ getTextValue(tempValue) }}
+    </div>
+
     <ElRadioGroup
+      v-else
       v-model="tempValue"
       size="large"
       :validate-event="false"
@@ -161,6 +177,7 @@ defineExpose({
     height: 88px;
     display: flex;
     gap: 4px;
+    position: relative;
     &.hidden-label {
       height: 48px;
     }
@@ -176,7 +193,9 @@ defineExpose({
 
   &-prefix {
     display: inline-block;
-    width: 10px;
+    position: absolute;
+    left: -10px;
+    top: 0;
   }
   &-required {
     color: $danger;

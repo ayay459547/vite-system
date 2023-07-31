@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { computed, ref } from 'vue'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import { useField } from 'vee-validate'
+import { isEmpty } from '@/lib/lib_utils'
 
 type ModelValue = Array<string | number | null>
 
@@ -40,6 +41,10 @@ const props = defineProps({
   optionDirection: {
     type: String as PropType<'column' | 'row'>,
     default: 'row'
+  },
+  text: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -55,7 +60,7 @@ const emit = defineEmits([
 ])
 
 const validateRes = computed<string>(() => {
-  if ([null, undefined, ''].includes(errorMessage.value)) return 'success'
+  if (isEmpty(errorMessage.value)) return 'success'
   return 'error'
 })
 
@@ -65,7 +70,7 @@ const validateField = (veeValue: ModelValue) => {
   if (!props.required) return true
 
   // 必填
-  if (props.required && veeValue.length === 0) {
+  if (props.required && isEmpty(veeValue)) {
     return '此輸入框為必填'
   }
 
@@ -110,6 +115,19 @@ defineExpose({
   }
 })
 
+const getTextValue = (tempValue: ModelValue) => {
+  if (isEmpty(tempValue)) return ''
+
+  if (Array.isArray(tempValue)) {
+    return tempValue.map(item => {
+      const _option = props.options.find(option => option.value === item)
+      return _option.label
+    })
+  } else {
+    return ''
+  }
+}
+
 </script>
 
 <template>
@@ -123,9 +141,12 @@ defineExpose({
   >
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>
-      <span v-else class="input-prefix"></span>
       <span>{{ props.label }}</span>
     </label>
+
+    <div v-if="props.text">
+      {{ getTextValue(tempValue) }}
+    </div>
 
     <ElCheckboxGroup
       v-model="tempValue"
@@ -153,6 +174,7 @@ defineExpose({
     height: 88px;
     display: flex;
     gap: 4px;
+    position: relative;
     &.hidden-label {
       height: 48px;
     }
@@ -168,12 +190,12 @@ defineExpose({
 
   &-prefix {
     display: inline-block;
-    width: 10px;
+    position: absolute;
+    left: -10px;
+    top: 0;
   }
   &-required {
     color: $danger;
-    display: inline-block;
-    padding-right: 2px;
   }
 
   &-label {

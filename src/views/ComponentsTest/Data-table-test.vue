@@ -3,7 +3,7 @@ import { SimpleTable, CustomInput, CustomIcon } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
 import { ref } from 'vue'
 
-const columnsSetting = {
+const columnSetting = {
   date: {
     label: '生日',
     table: {
@@ -46,7 +46,7 @@ const columnsSetting = {
 
 const {
   tableColumns
-} = getSimpleTableSetting(columnsSetting, 'table')
+} = getSimpleTableSetting(columnSetting, 'table')
 
 const tableData = [
 {

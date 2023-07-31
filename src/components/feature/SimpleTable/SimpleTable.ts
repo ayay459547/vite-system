@@ -174,7 +174,7 @@ const bodyNode = (slots: Record<string, any>, column: Record<string, any>, table
       {
         class: '__data-emtpy'
       },
-      'Empty'
+      '無資料'
     ))
   } else {
     return h(

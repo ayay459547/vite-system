@@ -1,10 +1,26 @@
+// 置中
+%flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .flex-row {
   display: flex;
+
+  &-center {
+    @extend %flex-center;
+  }
 }
 
 .flex-column {
   display: flex;
   flex-direction: column;
+
+  &-center {
+    flex-direction: column;
+    @extend %flex-center;
+  }
 }
 
 .content {
