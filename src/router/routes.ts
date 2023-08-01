@@ -18,6 +18,10 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav-1-1-1',
             title: '選單1-1-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
             systemType: ['new'],
             path: '/nav-1-1-1',
             component: () => import('@/views/nav-1-1-1/nav-1-1-1.vue')

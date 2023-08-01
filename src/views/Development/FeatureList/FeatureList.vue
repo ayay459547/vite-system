@@ -1,16 +1,56 @@
 <script setup lang="ts">
-import { CustomTable, CustomInput } from '@/components'
+import { CustomTable, CustomInput, CustomSelect, CustomIcon } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { ref, onMounted } from 'vue'
 import { getData, getDataCount } from './api'
 
 type TableData = {
+  status: 'completed' | 'inProgress' | 'new'
   title: string
   path: string
   breadcrumbTitle: string
 }
 
 const columnSetting = {
+  status: {
+    label: '狀態',
+    table: {
+      width: 180
+    },
+    filter: {
+      default: '',
+      options: [
+        { label: '全部', value: '' },
+        { label: '已完成', value: 'completed' },
+        { label: '進行中', value: 'inProgress' },
+        { label: '未完成', value: 'new' }
+      ]
+    },
+    getValue (data: string) {
+      switch (data) {
+        case 'completed': return '已完成'
+        case 'inProgress': return '進行中'
+        case 'new': return '未完成'
+        default: return '未完成'
+      }
+    },
+    getIcon (data: string) {
+      switch (data) {
+        case 'completed': return 'check'
+        case 'inProgress': return 'hammer'
+        case 'new': return 'xmark'
+        default: return 'xmark'
+      }
+    },
+    getClass (data: string) {
+      switch (data) {
+        case 'completed': return 'text-success'
+        case 'inProgress': return 'text-warning'
+        case 'new': return 'text-danger'
+        default: return 'text-danger'
+      }
+    }
+  },
   title: {
     label: '名稱',
     table: {
@@ -21,9 +61,9 @@ const columnSetting = {
     }
   },
   path: {
-    label: '路由',
+    label: '網址',
     table: {
-      width: 300
+      width: 200
     },
     filter: {
       default: null
@@ -45,13 +85,18 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '功能列表',
-  version: '1.0.0',
+  version: '1.0.1',
   settingKey: 'feature-list'
 }
 const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
-  downloadExcel(tableData.value)
+  downloadExcel(tableData.value.map(item => {
+    return {
+      ...item,
+      status: columnSetting.status.getValue(item.status)
+    }
+  }))
 }
 
 // filter
@@ -103,6 +148,31 @@ onMounted(() => {
             direction="row"
             @change="init()"
           />
+        </template>
+        <template #header-status="{ prop }">
+          <CustomSelect
+            v-model="filter[prop]"
+            v-bind="filterColumn[prop]"
+            direction="row"
+            @change="init()"
+          />
+        </template>
+        <template #column-status="{ prop, data }">
+          <div class="flex-row i-ga-sm" :class="columnSetting[prop].getClass(data)">
+            <CustomIcon :name="columnSetting[prop].getIcon(data)"/>
+            <span>{{ columnSetting[prop].getValue(data) }}</span>
+          </div>
+        </template>
+        <template #column-path="{ data }">
+          <RouterLink
+            :to="`${data}`"
+            v-slot="{ navigate }"
+          >
+          <div class="flex-row i-ga-sm text-primary" @click="navigate">
+            <CustomIcon name="up-right-from-square"/>
+            <span>{{ data }}</span>
+          </div>
+          </RouterLink>
         </template>
       </CustomTable>
     </div>

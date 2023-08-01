@@ -11,7 +11,8 @@ const testRoutes: RouterTree[] = [
         name: 'search-view',
         title: '功能樹狀表',
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          status: 'completed'
         },
         systemType: ['development'],
         path: '/search-view',
@@ -21,7 +22,8 @@ const testRoutes: RouterTree[] = [
         name: 'feature-list',
         title: '功能列表',
         meta: {
-          keepAlive: false
+          keepAlive: false,
+          status: 'completed'
         },
         systemType: ['development'],
         path: '/feature-list',
@@ -31,7 +33,8 @@ const testRoutes: RouterTree[] = [
         name: 'i18n-list',
         title: '翻譯值列表',
         meta: {
-          keepAlive: false
+          keepAlive: false,
+          status: 'inProgress'
         },
         systemType: ['development'],
         path: '/i18n-list',

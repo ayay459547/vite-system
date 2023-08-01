@@ -14,9 +14,11 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
     nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
     nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
   }
+  const status = nextNode?.meta?.status ?? 'new'
 
   if (!['', null, undefined].includes(nextNode.path)) {
     routesData.push({
+      status,
       title: nextNode.title,
       path: nextNode.path,
       breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')
@@ -31,7 +33,7 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
 
 export const getData = (params: any) => {
   const {
-    title, path, breadcrumbTitle,
+    status, title, path, breadcrumbTitle,
     sort, page, size
   } = params
 
@@ -41,7 +43,7 @@ export const getData = (params: any) => {
   const end = start + size
 
   const filterList = ({
-    title, path, breadcrumbTitle
+    status, title, path, breadcrumbTitle
   } as any).$reduce((
     res: Record<string, string>[],
     curr: string,
@@ -58,12 +60,14 @@ export const getData = (params: any) => {
       const { key, value } = item
 
       switch (key){
+        case 'status':
+          return value === route.status
         case 'title':
           return new RegExp(value).test(route.title)
         case 'path':
           return new RegExp(value).test(route.path)
         case 'breadcrumbTitle':
-          return new RegExp(value).test(route.breadcrumbTitle.join(' / '))
+          return new RegExp(value).test(route.breadcrumbTitle)
         default:
           return true
       }
@@ -79,7 +83,7 @@ export const getData = (params: any) => {
         break
       case 'descending':
         tempData.sort((a, b) => {
-          return b[sortKey].localeCompare(a[sortKey], 'zh-Hans-TW', { sensitivity: 'accent' })
+           return b[sortKey].localeCompare(a[sortKey], 'zh-Hans-TW', { sensitivity: 'accent' })
         })
         break
       }
@@ -88,10 +92,10 @@ export const getData = (params: any) => {
 }
 
 export const getDataCount = (params: any) => {
-  const { title, path, breadcrumbTitle } = params
+  const { status, title, path, breadcrumbTitle } = params
 
   const filterList = ({
-    title, path, breadcrumbTitle
+    status, title, path, breadcrumbTitle
   } as any).$reduce((
     res: Record<string, string>[],
     curr: string,
@@ -108,12 +112,14 @@ export const getDataCount = (params: any) => {
       const { key, value } = item
 
       switch (key){
+        case 'status':
+          return value === route.status
         case 'title':
           return new RegExp(value).test(route.title)
         case 'path':
           return new RegExp(value).test(route.path)
         case 'breadcrumbTitle':
-          return new RegExp(value).test(route.breadcrumbTitle.join(' / '))
+          return new RegExp(value).test(route.breadcrumbTitle)
         default:
           return true
       }

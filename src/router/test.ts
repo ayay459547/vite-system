@@ -11,7 +11,8 @@ const testRoutes: RouterTree[] = [
         name: 'test-page-1',
         title: '測試頁面-1',
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          status: 'completed'
         },
         systemType: ['development', 'test'],
         path: '/page1-test',
@@ -21,7 +22,8 @@ const testRoutes: RouterTree[] = [
         name: 'form-list-test',
         title: '多行編輯測試',
         meta: {
-          keepAlive: false
+          keepAlive: false,
+          status: 'completed'
         },
         systemType: ['development', 'test'],
         path: '/form-list-test',
@@ -31,7 +33,8 @@ const testRoutes: RouterTree[] = [
         name: 'week-schedule-test',
         title: '一周時間分配組件測試',
         meta: {
-          keepAlive: false
+          keepAlive: false,
+          status: 'completed'
         },
         systemType: ['development', 'test'],
         path: '/week-schedule-test',
@@ -41,7 +44,8 @@ const testRoutes: RouterTree[] = [
         name: 'ajax-test',
         title: 'AJAX測試',
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          status: 'completed'
         },
         systemType: ['development', 'test'],
         path: '/ajax-test',

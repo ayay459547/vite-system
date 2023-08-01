@@ -185,10 +185,10 @@ const currentSort = ref<Sort>({
 })
 const onSortChange = (props: {
   column: any,
-  prop: string,
+  key: string,
   order: null | 'ascending' | 'descending'
 }) => {
-  const { prop: key = '', order } = props
+  const { key = '', order } = props
 
   if (order) {
     currentSort.value = { key, order }

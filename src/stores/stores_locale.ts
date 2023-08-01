@@ -60,6 +60,7 @@ export const useLocaleStore = defineStore('locale', () => {
 
   return {
     currentLang,
-    locale
+    locale,
+    mode: 'dark'
   }
 })
