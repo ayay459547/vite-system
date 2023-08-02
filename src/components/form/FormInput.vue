@@ -116,6 +116,18 @@ const validateField = (veeValue: ModelValue) => {
   return true
 }
 
+// 去空白
+const inputValue = computed({
+  get: () => props.modelValue,
+  set: (value: ModelValue) => {
+    let _value = value
+    if (typeof value === 'string') {
+      _value = value.trim()
+    }
+    emit('update:modelValue', _value)
+  }
+})
+
 /**
  * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
  * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
@@ -129,7 +141,11 @@ const {
   handleChange,     // 換值
   handleReset,      // 重置
   validate          // 驗證
-} = useField('field', validateField, { validateOnValueUpdate: false })
+} = useField('field', validateField, {
+  validateOnValueUpdate: false,
+  initialValue: inputValue.value,
+  valueProp: inputValue.value
+})
 
 // event
 const validationListeners = computed(() => {
@@ -155,8 +171,14 @@ const validationListeners = computed(() => {
       handleChange(value, true)
     },
     input: (value: string | number): void => {
-      emit('input', value)
-      handleChange(value, true)
+      let _value = value
+      if (typeof value === 'string') {
+        _value = value.trim()
+      }
+      emit('update:modelValue', _value)
+
+      emit('input', _value)
+      handleChange(_value, true)
     }
   }
   if ([null, undefined, ''].includes(errorMessage.value)) {
@@ -224,7 +246,7 @@ const getTextValue = (tempValue: ModelValue) => {
 
     <ElInput
       v-else
-      v-model="tempValue"
+      v-model="inputValue"
       :placeholder="$t('pleaseInput')"
       class="input-main"
       :class="[`validate-${validateRes}`]"

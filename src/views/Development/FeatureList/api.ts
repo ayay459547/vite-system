@@ -3,6 +3,8 @@ import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
 const routesData = []
+const options = []
+
 refactorRoutes<Navigation>((leafNode, parentsNode) => {
   const nextNode: Navigation = {
     ...leafNode
@@ -10,6 +12,11 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
   if (parentsNode === null) {
     nextNode.breadcrumbName = [leafNode.name]
     nextNode.breadcrumbTitle = [leafNode.title]
+
+    options.push({
+      label: leafNode.title,
+      value: leafNode.name
+    })
   } else{
     nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
     nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
@@ -21,6 +28,8 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
       status,
       title: nextNode.title,
       path: nextNode.path,
+      name: nextNode.breadcrumbName[0],
+      mode: nextNode.breadcrumbTitle[0],
       breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')
     })
   }
@@ -31,9 +40,13 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
   }
 }, routes)
 
+export const getOptions = () => {
+  return options
+}
+
 export const getData = (params: any) => {
   const {
-    status, title, path, breadcrumbTitle,
+    status, title, path, mode, breadcrumbTitle,
     sort, page, size
   } = params
 
@@ -43,7 +56,7 @@ export const getData = (params: any) => {
   const end = start + size
 
   const filterList = ({
-    status, title, path, breadcrumbTitle
+    status, title, path, mode, breadcrumbTitle
   } as any).$reduce((
     res: Record<string, string>[],
     curr: string,
@@ -66,6 +79,8 @@ export const getData = (params: any) => {
           return new RegExp(value).test(route.title)
         case 'path':
           return new RegExp(value).test(route.path)
+        case 'mode':
+          return route.name === value
         case 'breadcrumbTitle':
           return new RegExp(value).test(route.breadcrumbTitle)
         default:

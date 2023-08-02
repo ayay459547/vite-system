@@ -14,6 +14,9 @@ $color-list: (
   .bg-#{$type} {
     background-color: $color !important;
   }
+  .border-#{$type} {
+    border: 1px solid $color !important;
+  }
 }
 
 // 目前還未使用

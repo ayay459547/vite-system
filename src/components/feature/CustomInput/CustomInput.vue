@@ -66,7 +66,13 @@ const emit = defineEmits([
 
 const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => emit('update:modelValue', value)
+  set: (value: ModelValue) => {
+    let _value = value
+    if (typeof value === 'string') {
+      _value = value.trim()
+    }
+    emit('update:modelValue', _value)
+  }
 })
 
 // event

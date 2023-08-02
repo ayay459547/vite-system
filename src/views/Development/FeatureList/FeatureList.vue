@@ -2,7 +2,7 @@
 import { CustomTable, CustomInput, CustomSelect, CustomIcon } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { ref, onMounted } from 'vue'
-import { getData, getDataCount } from './api'
+import { getData, getDataCount, getOptions } from './api'
 
 type TableData = {
   status: 'completed' | 'inProgress' | 'new'
@@ -54,7 +54,7 @@ const columnSetting = {
   title: {
     label: '名稱',
     table: {
-      width: 300
+      width: 250
     },
     filter: {
       default: null
@@ -64,6 +64,15 @@ const columnSetting = {
     label: '網址',
     table: {
       width: 200
+    },
+    filter: {
+      default: null
+    }
+  },
+  mode: {
+    label: '功能模組',
+    table: {
+      width: 250
     },
     filter: {
       default: null
@@ -85,7 +94,7 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '功能列表',
-  version: '1.0.1',
+  version: '1.0.2',
   settingKey: 'feature-list'
 }
 const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -108,6 +117,7 @@ const {
 const isLoading = ref(false)
 
 const table = ref()
+const modeOptions = ref()
 
 const init = () => {
   isLoading.value = true
@@ -118,6 +128,8 @@ const init = () => {
   })
 
   tableDataCount.value = getDataCount({ ...filter })
+
+  modeOptions.value = getOptions()
 
   setTimeout(() => {
     isLoading.value = false
@@ -153,6 +165,15 @@ onMounted(() => {
           <CustomSelect
             v-model="filter[prop]"
             v-bind="filterColumn[prop]"
+            direction="row"
+            @change="init()"
+          />
+        </template>
+        <template #header-mode="{ prop }">
+          <CustomSelect
+            v-model="filter[prop]"
+            v-bind="filterColumn[prop]"
+            :options="modeOptions"
             direction="row"
             @change="init()"
           />
