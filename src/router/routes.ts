@@ -24,7 +24,7 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav-1-1-1',
-            component: () => import('@/views/nav-1-1-1/nav-1-1-1.vue')
+            component: () => import('@/views/Nav-1-1-1/Nav-1-1-1.vue')
           },
           {
             name: 'nav-1-1-2',
@@ -70,10 +70,10 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav-1-2-2',
-            title: '選單1-2-1',
+            title: '選單1-2-2',
             systemType: ['new'],
             path: '/nav-1-2-2',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav-1-2-2/Nav-1-2-2.vue')
           },
           {
             name: 'nav-1-2-3',

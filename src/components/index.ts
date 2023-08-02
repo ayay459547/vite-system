@@ -80,6 +80,14 @@ export type {
 } from './feature/CustomTooltip/CustomTooltip.vue'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
 
+export type {
+  Size as TimeLineSize,
+  Placement as TimeLinePlacement,
+  TimeType,
+  Options as TimeLineOptions
+} from './feature/CustomTimeLine/CustomTimeLine.vue'
+export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
+
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable'
 
 // form
