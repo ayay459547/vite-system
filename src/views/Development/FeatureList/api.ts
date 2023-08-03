@@ -3,6 +3,13 @@ import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { cutTableData } from '@/lib/lib_utils'
 
+export type TableData = {
+  status: 'completed' | 'inProgress' | 'new'
+  title: string
+  path: string
+  breadcrumbTitle: string
+}
+
 const routesData = []
 const options = []
 

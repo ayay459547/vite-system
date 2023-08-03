@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, inject, onMounted } from 'vue'
+import { ref, reactive, inject, onMounted } from 'vue'
 import {
   CustomButton,
   CustomTable,
   CustomInput,
-  CustomSelect
+  CustomSelect,
+  CustomModal
 } from '@/components'
 
 import { deepClone, usePageI18n } from '@/lib/lib_utils'
@@ -16,6 +17,8 @@ import { getData, getDataCount, getExcelData } from './api'
 import { columnSetting } from './columns'
 
 import message from './i18n'
+
+import DetailModal from './Components/DetailModal.vue'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
@@ -97,18 +100,39 @@ onMounted(() => {
   init()
 })
 
+// modal
+const model = reactive({
+  detail: false
+})
+const currnetData = ref()
+
+const onUserIdClick = (rowData: any) => {
+  currnetData.value = rowData
+
+  model.detail = true
+}
+
 </script>
 
 <template>
   <div v-i-loading="isLoading" class="page">
-    <div class="flex-row content-end">
+    <!-- <div class="flex-row content-end">
       <CustomButton
         :label="i18nTranslate('refrush')"
         icon-name="rotate"
         icon-move="rotate"
         @click="init()"
       />
-    </div>
+    </div> -->
+
+    <CustomModal
+      v-model="model.detail"
+      :title="i18nTranslate('detail')"
+      click-outside
+      @submit="model.detail = false"
+    >
+      <DetailModal :data="currnetData"/>
+    </CustomModal>
 
     <CustomTable
       ref="tableRef"
@@ -131,6 +155,16 @@ onMounted(() => {
           v-model="filter[prop]"
           v-bind="filterColumns[prop]"
           @change="init('input')"
+        />
+      </template>
+
+      <template #column-userId="{ data, row }">
+        <CustomButton
+          :label="`${data}`"
+          type="primary"
+          icon-name="info"
+          text
+          @click="onUserIdClick(row)"
         />
       </template>
     </CustomTable>

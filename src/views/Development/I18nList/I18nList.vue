@@ -1,65 +1,20 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
-import { ref, reactive, onMounted } from 'vue'
-import { langMap } from '@/i18n'
-
-type TableData = {
-  key: string
-  zhTw: string
-  zhCn: string
-  en: string
-}
-
-const columnSetting = {
-  key: {
-    label: '翻譯key值',
-    table: {
-      minWidth: 200
-    },
-    filter: {
-      default: null
-    }
-  },
-  zhTw: {
-    label: '繁體中文',
-    table: {
-      minWidth: 200
-    },
-    filter: {
-      default: null
-    }
-  },
-  zhCn: {
-    label: '簡體中文',
-    table: {
-      minWidth: 200
-    },
-    filter: {
-      default: null
-    }
-  },
-  en: {
-    label: '英文',
-    table: {
-      minWidth: 200
-    },
-    filter: {
-      default: null
-    }
-  }
-}
-
-const tempData = reactive<TableData[]>([])
+import { ref, onMounted } from 'vue'
+import { columnSetting } from './columns'
+import type { TableData } from './api'
+import { getData, getDataCount } from './api'
 
 const tableData = ref<TableData[]>([])
+const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '翻譯值列表',
   version: '1.0.0',
   settingKey: 'i18n-list'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData.value)
@@ -71,22 +26,23 @@ const {
   forms: filter
 } = getFormSetting<TableData>(columnSetting, 'filter')
 
+const isLoading = ref(false)
+
+const table = ref()
+
 const init = () => {
-  if (tempData.length > 0) {
-    tempData.splice(0)
-  }
+  isLoading.value = true
 
-  (langMap as any).$forEach((lang: {
-    zhTw: string
-    zhCn: string
-    en: string
-  }, key: string) => {
-    const { zhTw, zhCn, en } = lang
-
-    tempData.push({ key, zhTw, zhCn, en })
+  tableData.value = getData({
+    ...filter,
+    ...getParams(table.value)
   })
 
-  tableData.value = tempData
+  tableDataCount.value = getDataCount({ ...filter })
+
+  setTimeout(() => {
+    isLoading.value = false
+  }, 300)
 }
 
 onMounted(() => {
@@ -96,13 +52,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="table-test">
+  <div v-i-loading="isLoading" class="table-test">
     <div class="table-main">
       <CustomTable
+        ref="table"
         :table-data="tableData"
         :table-data-count="tableData.length"
         v-bind="tableSetting"
         @excel="download"
+        @show-change="init()"
       >
         <template #header-all="{ prop }">
           <CustomInput
