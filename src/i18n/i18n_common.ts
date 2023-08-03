@@ -21,10 +21,10 @@ export default {
     zhCn: '新增',
     en: 'create'
   },
-  edit: {
+  update: {
     zhTw: '編輯',
     zhCn: '编辑',
-    en: 'edit'
+    en: 'update'
   },
   delete: {
     zhTw: '刪除',

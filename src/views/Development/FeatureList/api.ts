@@ -1,6 +1,7 @@
 import type { Navigation } from '@/declare/routes'
 import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
+import { cutTableData } from '@/lib/lib_utils'
 
 const routesData = []
 const options = []
@@ -47,13 +48,10 @@ export const getOptions = () => {
 export const getData = (params: any) => {
   const {
     status, title, path, mode, breadcrumbTitle,
-    sort, page, size
+    sort = {}, page, size
   } = params
 
   const { key: sortKey, order: sortType} = sort
-
-  const start = (page - 1) * size
-  const end = start + size
 
   const filterList = ({
     status, title, path, mode, breadcrumbTitle
@@ -68,26 +66,28 @@ export const getData = (params: any) => {
     return res
   }, []) as Record<string, string>[]
 
-  const tempData = routesData.filter(route => {
-    return filterList.every(item => {
-      const { key, value } = item
+  const tempData = cutTableData(page, size,
+    routesData.filter(route => {
+      return filterList.every(item => {
+        const { key, value } = item
 
-      switch (key){
-        case 'status':
-          return value === route.status
-        case 'title':
-          return new RegExp(value).test(route.title)
-        case 'path':
-          return new RegExp(value).test(route.path)
-        case 'mode':
-          return route.name === value
-        case 'breadcrumbTitle':
-          return new RegExp(value).test(route.breadcrumbTitle)
-        default:
-          return true
-      }
+        switch (key){
+          case 'status':
+            return value === route.status
+          case 'title':
+            return new RegExp(value).test(route.title)
+          case 'path':
+            return new RegExp(value).test(route.path)
+          case 'mode':
+            return route.name === value
+          case 'breadcrumbTitle':
+            return new RegExp(value).test(route.breadcrumbTitle)
+          default:
+            return true
+        }
+      })
     })
-  }).splice(start, end)
+  )
 
   if (sortKey !== null) {
     switch (sortType) {

@@ -33,8 +33,9 @@ export default defineComponent({
       </template>
 
       <template #menu-footer="{ isShow }">
-        <div v-if="isShow" class="menu-footer">
-          {{ `${system} version ${version}` }}
+        <div class="menu-footer">
+          <span v-if="isShow">{{ `${system} version ${version}` }}</span>
+          <span v-else>{{ `v${version}` }}</span>
         </div>
       </template>
 
@@ -69,7 +70,7 @@ export default defineComponent({
   &-footer {
     background-color: #e6e6e6;
     color: #324157;
-    padding: 8px 16px;
+    padding: 8px 12px;
     border-radius: 6px;
     transition-duration: 0.3s;
     margin: 0 auto;

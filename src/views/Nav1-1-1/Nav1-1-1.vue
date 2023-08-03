@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, inject, reactive, onActivated, computed } from 'vue'
+import { ref, inject, reactive, onMounted, computed } from 'vue'
 import {
   CustomButton,
   CustomTable,
@@ -12,7 +12,7 @@ import { deepClone, usePageI18n } from '@/lib/lib_utils'
 import { getTableSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
-import { getData, getDataCount, deleteData } from './api'
+import { getData, getDataCount, getExcelData, deleteData } from './api'
 import { columnSetting } from './columns'
 
 import CreateModal from './Components/CreateModal.vue'
@@ -42,13 +42,30 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: pageTranslate('testTable'),
-  version: '1.0.4',
-  settingKey: 'test'
+  version: '1.0.0',
+  settingKey: 'nav1-1-1'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const {
+  tableSetting,
+  downloadExcel,
+  getParams
+} = getTableSetting(columnSetting, 'table', tableOptions)
 
-const download = () => {
-  downloadExcel(tableData.value)
+const download = async ({ type }) => {
+  let excelData = []
+  const apiParam = {
+    ...getParams(tableRef.value) as any
+  }.$filter(item => item !== null)
+
+  switch (type) {
+    case 'all':
+      excelData = await getExcelData(apiParam)
+      break
+    case 'page':
+      excelData = tableData.value
+      break
+  }
+  downloadExcel(excelData)
 }
 
 // modal
@@ -62,37 +79,23 @@ const editData = ref({})
 
 const onCreateSubmit = async () => {
   if (createRef.value) {
-    loading(true, '新增資料中')
+    const status = await createRef.value.submit()
 
-    const res = await createRef.value.submit()
-
-    if (res.status === 'success') {
-      swal({
-        icon: 'success',
-        title: '新增成功'
-      })
+    if (status === 'success') {
       model.create = false
       init()
     }
-    loading(false)
   }
 }
 
 const onUpdateSubmit = async () => {
   if (updateRef.value) {
-    loading(true, '更新資料中')
+    const status = await updateRef.value.submit()
 
-    const res = await updateRef.value.submit()
-
-    if (res.status === 'success') {
-      swal({
-        icon: 'success',
-        title: '更新成功'
-      })
+    if (status === 'success') {
       model.update = false
       init()
     }
-    loading(false)
   }
 }
 
@@ -135,49 +138,35 @@ const remove = (rowData: TableData) => {
   })
 }
 
-const table = ref(null)
+const tableRef = ref(null)
+const isLoading = ref(false)
 
-const init = async (props = tableSetting) => {
-  tableData.value = []
-  loading(true)
-  const { page = 1, size = 100, sort = {} } = props?.params ?? {}
+const init = async (props?: any) => {
+  isLoading.value = true
 
-  const apiParam  = { page, size, sort }
-  console.log(apiParam)
-
-  const [resData, resDataCount ] = await Promise.all([ getData(), getDataCount() ])
-
-  if (resData.status === 'success') {
-    tableData.value = deepClone([], resData.data)
-  } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: '請聯絡資訊人員'
-    })
+  let apiParam = {}
+  if (typeof props === 'object') {
+    apiParam = {
+      ...getParams(tableRef.value) as any
+    }.$filter(item => item !== null)
   }
 
-  if (resDataCount.status === 'success') {
-    tableDataCount.value = resDataCount.data
-  } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: '請聯絡資訊人員'
-    })
-  }
+  const [resData, resDataCount ] = await Promise.all([ getData(apiParam), getDataCount() ])
 
-  loading(false)
+  tableData.value = deepClone([], resData)
+  tableDataCount.value = resDataCount
+
+  isLoading.value = false
 }
 
-onActivated(() => {
+onMounted(() => {
   init()
 })
 
 </script>
 
 <template>
-  <div class="page">
+  <div v-i-loading="isLoading" class="page">
     <div class="flex-row content-between">
       <CustomButton
         type="primary"
@@ -214,9 +203,6 @@ onActivated(() => {
       @excel="download"
       @show-change="init"
     >
-    <template #header-name>
-      name
-    </template>
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
           <CustomIcon name="ellipsis-vertical"/>

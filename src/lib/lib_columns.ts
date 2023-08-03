@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance } from 'vue'
-import type { FormInputExpose, CustomTableExpose, TableParams } from '@/components'
+import type { FormInputExpose, CustomTableExpose, TableParams, Sort } from '@/components'
 import type { ValidateType } from './lib_validate'
 import { reactive } from 'vue'
 
@@ -275,6 +275,9 @@ export interface TableSetting {
     version: string
     settingKey: string
     params: TableParams
+    page?: number
+    pageSize?: number
+    sort?: Sort,
     tableColumns: Record<string, any>
     hiddenExcel: boolean
   },
@@ -446,6 +449,9 @@ export const getTableSetting = (
       version,
       settingKey,
       params: tableParams,
+      page: tableParams.page,
+      pageSize: tableParams.size,
+      sort: tableParams.sort,
       tableColumns: resColumns,
       hiddenExcel
     },

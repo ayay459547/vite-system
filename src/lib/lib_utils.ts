@@ -306,3 +306,9 @@ export const usePageI18n = (langMap: LangMap): PageI18n => {
     i18nTest: pageI18n.te
   }
 }
+
+export const cutTableData = (page: number, size: number, data: any[]): any[] => {
+  const start = (page - 1) * size
+
+  return data.splice(start, size)
+}

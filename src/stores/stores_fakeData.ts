@@ -46,7 +46,7 @@ export const fakePermissionData = [
 ]
 
 export const allPermissionData = refactorRoutes(leafNode => {
-  const hiddenRoutes = ['nav-1-2-1', 'nav-1-1-3']
+  const hiddenRoutes = ['nav1-2-1', 'nav1-1-3']
   if (hiddenRoutes.includes(leafNode.name)) {
     return {
       refactorNode: {
