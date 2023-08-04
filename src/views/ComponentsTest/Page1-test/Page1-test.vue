@@ -82,7 +82,7 @@ const onUpdateSubmit = async () => {
   if (updateRef.value) {
     loading(true, '更新資料中')
 
-    const res = await updateRef.value.submit()
+    const res = await updateRef.value?.submit()
 
     if (res.status === 'success') {
       swal({

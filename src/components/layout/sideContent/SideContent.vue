@@ -70,8 +70,12 @@ const props = defineProps<{
       box-shadow: 1px 0px 20px 0px #707070;
     }
 
-    &:hover,
-    &.is-open {
+    &,
+    &.is-close {
+      min-width: $side-width;
+    }
+
+    &:hover {
       min-width: $nav-lg-width;
 
       @media (max-width: 768px) {
@@ -86,6 +90,25 @@ const props = defineProps<{
       .side-logo .close,
       .side-footer .close {
         display: none;
+      }
+    }
+
+    // 至少要 992px 才可以定住選單
+    &.is-open {
+      @media (min-width: 992px) {
+        min-width: $nav-lg-width;
+
+        @media (max-width: 768px) {
+          min-width: $nav-md-width;
+        }
+        .side-logo .open,
+        .side-footer .open {
+          display: block;
+        }
+        .side-logo .close,
+        .side-footer .close {
+          display: none;
+        }
       }
     }
   }

@@ -1,18 +1,3 @@
-@mixin createCard ($className, $color) {
-  .#{$className} {
-    box-shadow: 2px 2px 8px 1px $color;
-  }
-  .hover-#{$className} {
-    transition-duration: 0.3s;
-    &:hover{
-      box-shadow: 2px 2px 8px 1px $color;
-    }
-  }
-}
-
-@include createCard('card', #c6e2ff);
-@include createCard('card-shadow', #0000001f);
-
 .fill {
   width: 100%;
   height: 100%;

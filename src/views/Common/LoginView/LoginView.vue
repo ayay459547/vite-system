@@ -75,7 +75,7 @@ const {
       alt="login"
     />
 
-    <div class="login-container card">
+    <div class="login-container card-primary">
 
       <div class="login-form">
         <img

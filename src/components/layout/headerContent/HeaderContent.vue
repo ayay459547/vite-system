@@ -134,7 +134,7 @@ const openUserEffect = (e: MouseEvent) => {
 <template>
   <div class="header-container">
     <div class="header-left">
-      <HamburgerIcon v-model:isOpen="tempIsOpen"></HamburgerIcon>
+      <HamburgerIcon class="header-hamburger" v-model:isOpen="tempIsOpen"></HamburgerIcon>
       <slot name="header-left"></slot>
 
       <div class="header-breadcrumb-lg">
@@ -207,6 +207,14 @@ const openUserEffect = (e: MouseEvent) => {
     align-items: center;
     padding: 0 16px;
     font-size: 1.2em;
+  }
+
+  // 至少要 992px 才可以定住選單
+  &-hamburger {
+    display: none;
+    @media (min-width: 992px) {
+      display: block;
+    }
   }
 
   &-breadcrumb-lg {

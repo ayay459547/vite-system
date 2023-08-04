@@ -417,16 +417,22 @@ const login = async (userId: number) => {
     top: 0;
     transition-duration: 0.3s;
     will-change: width, left;
+    &,
     &.is-close {
       width: calc(100% - $side-width);
       left: $side-width;
     }
-    &.is-open {
-      width: calc(100% - $nav-lg-width);
-      left: $nav-lg-width;
-      @media (max-width: 768px) {
-        width: calc(100% - $nav-md-width);
-        left: $nav-md-width;
+
+    // 至少要 992px 才可以定住選單
+    @media (min-width: 992px) {
+      &.is-open {
+        width: calc(100% - $nav-lg-width);
+        left: $nav-lg-width;
+
+        @media (max-width: 768px) {
+          width: calc(100% - $nav-md-width);
+          left: $nav-md-width;
+        }
       }
     }
 

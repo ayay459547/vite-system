@@ -125,7 +125,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="form-container hover-card-shadow">
+  <div class="form-container hover-card-info">
     <div class="form-label">
       <span>{{ props.label }}</span>
     </div>

@@ -17,6 +17,16 @@ $color-list: (
   .border-#{$type} {
     border: 1px solid $color !important;
   }
+
+  .card-#{$type} {
+    box-shadow: 2px 2px 8px 1px lighten($color, 20%);
+  }
+  .hover-card-#{$type} {
+    transition-duration: 0.3s;
+    &:hover{
+      box-shadow: 2px 2px 8px 1px lighten($color, 20%);
+    }
+  }
 }
 
 // 目前還未使用
@@ -24,8 +34,8 @@ $color-list: (
   .system-color-#{$type} {
     background-color: $color;
   }
-} 
+}
 
-@include systemColor ('base', '#454545');
-@include systemColor ('blue', '#324157');
-@include systemColor ('green', '#3b723e');
+@include systemColor ('base', #454545);
+@include systemColor ('blue', #324157);
+@include systemColor ('green', #3b723e);

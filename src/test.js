@@ -66,3 +66,17 @@ const baseRoutesName = baseRoutes.reduce((res, curr) => {
 }, [])
 
 console.log(baseRoutesName)
+
+const temp = { value: '' }
+const testProxy = new Proxy(temp, {
+  get (obj, prop) {
+    if (prop === 'value') return obj[prop]
+    return 'input.value'
+  },
+  set (obj, prop, value) {
+    obj.value = value.trim()
+  }
+})
+
+testProxy.value = ' 789'
+console.log(testProxy.value)

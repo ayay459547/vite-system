@@ -8,11 +8,11 @@ export type Options = Array<{
   value: string | number | boolean | null
 }>
 
-export type ModelValue = string | number | null | Record<string, any> | Array<any>
+export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
 
 const props = defineProps({
   modelValue: {
-    type: [String, Number, Array, Object, null] as PropType<ModelValue>,
+    type: [String, Number, Boolean, Array, Object, null] as PropType<ModelValue>,
     required: true
   },
   direction: {
@@ -34,6 +34,18 @@ const props = defineProps({
     }
   },
   // element ui plus
+  loading: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  remote: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  remoteMethod: {
+    type: Function as PropType<Function>,
+    required: false
+  },
   clearable: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -49,6 +61,10 @@ const props = defineProps({
   filterable: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  allowCreate: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -59,7 +75,8 @@ const bindAttributes = computed(() => {
     filterable: props.filterable,
     multiple: props.multiple,
     collapseTags: props.multiple,
-    collapseTagsTooltip: props.multiple
+    collapseTagsTooltip: props.multiple,
+    allowCreate: props.allowCreate
   }
 })
 
@@ -130,6 +147,9 @@ const hasSlot = (prop: string): boolean => {
       :placeholder="$t('pleaseSelect')"
       class="input-main"
       :validate-event="false"
+      :loading="props.loading"
+      :remote="props.remote"
+      :remote-method="props.remoteMethod"
       v-bind="bindAttributes"
       v-on="validationListeners"
       @click.stop

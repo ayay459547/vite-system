@@ -90,7 +90,7 @@ const onCreateSubmit = async () => {
 
 const onUpdateSubmit = async () => {
   if (updateRef.value) {
-    const status = await updateRef.value.submit()
+    const status = await updateRef.value?.submit()
 
     if (status === 'success') {
       model.update = false

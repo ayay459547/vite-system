@@ -180,7 +180,7 @@ const clickOutside = () => {
     border-radius: 6px;
     &.width {
       &-large {
-        width: 80%;
+        width: 85%;
         @media (max-width: 992px) {
           width: 90%;
         }
@@ -189,7 +189,7 @@ const clickOutside = () => {
         }
       }
       &-default {
-        width: 60%;
+        width: 65%;
         @media (max-width: 992px) {
           width: 70%;
         }
@@ -198,8 +198,10 @@ const clickOutside = () => {
         }
       }
       &-small {
-        width: 500px;
-
+        width: 650px;
+        @media (max-width: 992px) {
+          width: 65%;
+        }
         @media (max-width: 576px) {
           width: 85%;
         }
@@ -207,20 +209,20 @@ const clickOutside = () => {
     }
     &.height {
       &-large {
-        height: 80%;
+        height: 85%;
       }
       &-default {
-        height: 60%;
+        height: 65%;
       }
       &-small {
-        height: 400px;
+        height: 500px;
       }
 
       &-large,
       &-default,
       &-small {
         @media (max-height: 576px) {
-          height: 85%;
+          height: 90%;
         }
       }
     }
