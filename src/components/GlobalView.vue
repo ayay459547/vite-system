@@ -401,13 +401,17 @@ const login = async (userId: number) => {
     left: 0;
     top: 0;
 
-    &.is-close {
+    &.is-close,
+    &.is-open {
       width: $side-width;
     }
-    &.is-open {
-      width: $nav-lg-width;
-      @media (max-width: 768px) {
-        width: $nav-md-width;
+    // 至少要 992px 才可以定住選單
+    @media (min-width: 992px) {
+      &.is-open {
+        width: $nav-lg-width;
+        @media (max-width: 768px) {
+          width: $nav-md-width;
+        }
       }
     }
   }
@@ -417,8 +421,9 @@ const login = async (userId: number) => {
     top: 0;
     transition-duration: 0.3s;
     will-change: width, left;
-    &,
-    &.is-close {
+
+    &.is-close,
+    &.is-open {
       width: calc(100% - $side-width);
       left: $side-width;
     }

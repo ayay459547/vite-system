@@ -42,6 +42,22 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
+@mixin navOpen () {
+  min-width: $nav-lg-width;
+
+  @media (max-width: 768px) {
+    min-width: $nav-md-width;
+  }
+  .side-logo .open,
+  .side-footer .open {
+    display: block;
+  }
+  .side-logo .close,
+  .side-footer .close {
+    display: none;
+  }
+}
+
 .side {
   &-container {
     width: 100%;
@@ -66,49 +82,14 @@ const props = defineProps<{
       display: block;
     }
 
-    &:hover.is-close {
-      box-shadow: 1px 0px 20px 0px #707070;
-    }
-
-    &,
-    &.is-close {
-      min-width: $side-width;
-    }
-
     &:hover {
-      min-width: $nav-lg-width;
-
-      @media (max-width: 768px) {
-        min-width: $nav-md-width;
-      }
-
-      .side-logo .open,
-      .side-footer .open {
-        display: block;
-      }
-
-      .side-logo .close,
-      .side-footer .close {
-        display: none;
-      }
+      box-shadow: 1px 0px 20px 0px #707070;
+      @include navOpen();
     }
 
-    // 至少要 992px 才可以定住選單
-    &.is-open {
-      @media (min-width: 992px) {
-        min-width: $nav-lg-width;
-
-        @media (max-width: 768px) {
-          min-width: $nav-md-width;
-        }
-        .side-logo .open,
-        .side-footer .open {
-          display: block;
-        }
-        .side-logo .close,
-        .side-footer .close {
-          display: none;
-        }
+    @media (min-width: 992px) {
+      &.is-open {
+        @include navOpen();
       }
     }
   }
