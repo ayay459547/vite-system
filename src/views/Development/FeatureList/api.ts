@@ -29,11 +29,17 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
     nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
     nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
   }
-  const status = nextNode?.meta?.status ?? 'new'
+  const {
+    status = 'new',
+    startDate = '',
+    completedDate = ''
+  } = nextNode?.meta ?? {}
 
   if (!['', null, undefined].includes(nextNode.path)) {
     routesData.push({
       status,
+      startDate,
+      completedDate,
       title: nextNode.title,
       path: nextNode.path,
       name: nextNode.breadcrumbName[0],

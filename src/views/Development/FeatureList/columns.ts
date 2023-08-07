@@ -38,6 +38,18 @@ export const columnSetting = {
       }
     }
   },
+  startDate: {
+    label: '預計開始日',
+    table: {
+      width: 130
+    }
+  },
+  completedDate: {
+    label: '預計完成日',
+    table: {
+      width: 130
+    }
+  },
   title: {
     label: '名稱',
     table: {
@@ -68,7 +80,7 @@ export const columnSetting = {
   breadcrumbTitle: {
     label: '路徑',
     table: {
-      minWidth: 300
+      minWidth: 320
     },
     filter: {
       default: null

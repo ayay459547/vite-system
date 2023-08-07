@@ -22,6 +22,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  onlyNumber: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   // element ui plus
   type: {
     type: String as PropType<string>,
@@ -70,6 +74,11 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
     let _value = value
     if (typeof value === 'string') {
       _value = value.trim()
+
+      if (props.onlyNumber) {
+        const regexp = /[\D]/g
+        _value = _value.replace(regexp, '')
+      }
     }
     emit('update:modelValue', _value)
   }

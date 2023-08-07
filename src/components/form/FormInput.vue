@@ -31,6 +31,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  onlyNumber: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   required: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -123,6 +127,11 @@ const inputValue = computed({
     let _value = value
     if (typeof value === 'string') {
       _value = value.trim()
+
+      if (props.onlyNumber) {
+        const regexp = /[\D]/g
+        _value = _value.replace(regexp, '')
+      }
     }
     emit('update:modelValue', _value)
   }

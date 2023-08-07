@@ -4,18 +4,19 @@ import { refactorRoutes } from '@/lib/lib_routes'
 
 const mode = (import.meta as any).env.MODE
 
-export type RouterType = 'system' | 'new' | 'development' | 'test' | 'complete'
+export type RouterType = 'system' | 'new' | 'inProgress' | 'completed' | 'development' | 'test'
 
 /**
  * key: 類型
  * value: icon
  */
 export const routerTypeIcon: Record<RouterType, [IconType, string]> = {
-  system: ['fas', 'i'],
-  new: ['far', 'paper-plane'],
+  system: ['fas', 'paper-plane'],
+  new: ['fas', 'xmark'],
+  inProgress: ['fas', 'hammer'],
+  completed: ['far', 'check'],
   development: ['fas', 'wrench'],
-  test: ['fas', 'flask-vial'],
-  complete: ['far', 'paper-plane']
+  test: ['fas', 'flask-vial']
 }
 
 /**
@@ -27,7 +28,7 @@ export const developmentInjectType: Array<RouterType> = [
   'new',
   'development',
   'test',
-  'complete'
+  'completed'
 ]
 
 /**
@@ -35,8 +36,8 @@ export const developmentInjectType: Array<RouterType> = [
  * production
  */
 export const productionInjectType: Array<RouterType> = [
-  'system',
-  'complete'
+  'system'
+  // 'completed'
 ]
 
 /**

@@ -20,7 +20,9 @@ const routes: Array<RouterTree> = [
             title: '選單1-1-1',
             meta: {
               keepAlive: false,
-              status: 'completed'
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
             },
             systemType: ['new'],
             path: '/nav1-1-1',
@@ -29,6 +31,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-1-2',
             title: '選單1-1-2',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-1-2',
             component: () => import('@/views/Nav1-1-2/Nav1-1-2.vue')
@@ -36,6 +44,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-1-3',
             title: '選單1-1-3',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-1-3',
             component: () => import('@/views/Common/FixView.vue')
@@ -43,6 +57,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-1-4',
             title: '選單1-1-4',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-1-4',
             component: () => import('@/views/Nav1-1-4/Nav1-1-4.vue')
@@ -50,6 +70,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-1-5',
             title: '選單1-1-5',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-1-5',
             component: () => import('@/views/Nav1-1-5/Nav1-1-5.vue')
@@ -64,6 +90,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-2-1',
             title: '選單1-2-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-2-1',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -71,6 +103,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-2-2',
             title: '選單1-2-2',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-2-2',
             component: () => import('@/views/Nav1-2-2/Nav1-2-2.vue')
@@ -78,6 +116,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-2-3',
             title: '選單1-2-3',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-2-3',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -85,6 +129,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-2-4',
             title: '選單1-2-4',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-2-4',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -92,6 +142,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav-1-2-5',
             title: '選單1-2-5',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav-1-2-5',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -101,6 +157,12 @@ const routes: Array<RouterTree> = [
       {
         name: 'nav1-3',
         title: '選單1-3',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2023-08',
+          completedDate: '2023-08'
+        },
         systemType: ['new'],
         path: '/nav1-3',
         component: () => import('@/views/Common/EmptyView.vue')
@@ -113,6 +175,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-4-1',
             title: '選單1-4-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-4-1',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -120,6 +188,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-4-2',
             title: '選單1-4-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-4-2',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -127,6 +201,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav1-4-3',
             title: '選單1-4-3',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav1-4-3',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -138,6 +218,12 @@ const routes: Array<RouterTree> = [
   {
     name: 'nav2',
     title: '選單2',
+    meta: {
+      keepAlive: false,
+      status: 'completed',
+      startDate: '2023-08',
+      completedDate: '2023-08'
+    },
     systemType: ['new'],
     icon: 'shield-halved',
     path: '/nav2',
@@ -157,6 +243,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-1-1',
             title: '選單3-1-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-1-1',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -164,6 +256,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-1-2',
             title: '選單3-1-2',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-1-2',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -171,6 +269,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-1-3',
             title: '選單3-1-3',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-1-3',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -185,6 +289,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-2-1',
             title: '選單3-2-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-2-1',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -192,6 +302,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-2-2',
             title: '選單3-2-1',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-2-2',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -199,6 +315,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-2-3',
             title: '選單3-2-3',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-2-3',
             component: () => import('@/views/Common/EmptyView.vue')
@@ -206,6 +328,12 @@ const routes: Array<RouterTree> = [
           {
             name: 'nav3-2-4',
             title: '選單3-2-4',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
             systemType: ['new'],
             path: '/nav3-2-4',
             component: () => import('@/views/Common/EmptyView.vue')

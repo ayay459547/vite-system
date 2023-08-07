@@ -11,7 +11,7 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '功能列表',
-  version: '1.0.2',
+  version: '1.0.4',
   settingKey: 'feature-list'
 }
 const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -85,6 +85,12 @@ onMounted(() => {
             direction="row"
             @change="init()"
           />
+        </template>
+        <template #header-startDate="{ column }">
+          <div class="flex-column-center align-start fill-y">{{ column.label }}</div>
+        </template>
+        <template #header-completedDate="{ column }">
+          <div class="flex-column-center align-start fill-y">{{ column.label }}</div>
         </template>
         <template #header-mode="{ prop }">
           <CustomSelect

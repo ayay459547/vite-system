@@ -3,6 +3,8 @@ import type { RouterType } from '@/router/setting'
 interface Meta {
   keepAlive: boolean        // 顯示時，決定是否放在 <KeepAlive></KeepAlive> 中
   status: 'completed' | 'inProgress' | 'new'
+  startDate?: string
+  completedDate?: string
 }
 
 interface BaseTree {
