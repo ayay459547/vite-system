@@ -7,7 +7,7 @@ import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/lib_idb'
-import { tipLog, getUuid } from '@/lib/lib_utils'
+import { systemLog, tipLog, getUuid, isEmpty } from '@/lib/lib_utils'
 
 export interface FormSetting<T> {
   defaultValue: T
@@ -75,6 +75,14 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       defaultValue[key] = temp.default
     }
   })
+
+  if (isEmpty(resColumns)) {
+    systemLog(columns, 'table')
+    tipLog('無欄位資料', [
+      '檢查 columns.ts 中的 欄位的 key',
+      `傳入 type 值 => ${type}`
+    ])
+  }
 
   return {
     defaultValue: defaultValue as T,

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ref, onBeforeMount } from 'vue'
-import Draggable from 'vuedraggable'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { PropsTableColumn } from './CustomTable.vue'
