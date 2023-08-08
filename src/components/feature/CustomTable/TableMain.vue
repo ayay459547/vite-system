@@ -47,7 +47,7 @@ const props = defineProps({
     description: '資料存在 children 時 預設是否展開'
   },
   spanMethod: {
-    type: Function as PropType<SpanMethod>,
+    type: Function as PropType<SpanMethod | any>,
     description: '資料跨欄'
   }
 })

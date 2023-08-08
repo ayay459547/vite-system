@@ -5,7 +5,12 @@ import Draggable from 'vuedraggable'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { PropsTableColumn } from './CustomTable.vue'
-import { CustomButton, CustomPopover, CustomCheckbox } from '@/components'
+import {
+  CustomButton,
+  CustomPopover,
+  CustomCheckbox,
+  CustomDraggable
+} from '@/components'
 
 import {
   getColumnSetting,
@@ -131,13 +136,13 @@ onBeforeMount(async () => {
         />
       </template>
 
-      <Draggable
+      <CustomDraggable
         v-model="columnList"
-        group="people"
         @start="drag = true"
         @end="onDragend"
         item-key="key"
         class="column-list"
+        :handle="`.draggable-handle`"
       >
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">
@@ -145,10 +150,10 @@ onBeforeMount(async () => {
               v-model="element.isShow"
               @change="updateSetting"
             />
-            <div class="text">{{ element.label }}</div>
+            <div class="draggable-handle text">{{ element.label }}</div>
           </div>
         </template>
-      </Draggable>
+      </CustomDraggable>
 
     </CustomPopover>
   </div>

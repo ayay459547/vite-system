@@ -19,6 +19,11 @@ export type {
 } from './feature/CustomDatePicker/CustomDatePicker.vue'
 export { default as CustomDatePicker } from './feature/CustomDatePicker/CustomDatePicker.vue'
 
+export type {
+  Change as DraggableChange
+} from './feature/CustomDraggable/CustomDraggable.vue'
+export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
+
 export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
