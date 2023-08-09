@@ -1,3 +1,4 @@
+<script lang="ts">
 import { h } from 'vue'
 
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
@@ -25,7 +26,6 @@ const columnNode = (slots: Record<string, any>, column: Record<string, any>, row
       width = 0,
       minWidth = 0,
       align = 'left',
-      fixed = '',
       // class: columnClass = '',
       style: columnStyle = '',
       key: columnKey = '',
@@ -172,7 +172,7 @@ const bodyNode = (slots: Record<string, any>, column: Record<string, any>, table
     }, h(
       'div',
       {
-        class: '__data-emtpy'
+        class: '__data-table-emtpy'
       },
       '無資料'
     ))
@@ -187,21 +187,24 @@ const bodyNode = (slots: Record<string, any>, column: Record<string, any>, table
   }
 }
 
-interface Props {
-  tableColumns: Record<string, any>
-  tableData?: Array<any>
+export interface Props {
+  tableColumns?: Array<any> | any
+  tableData?: Array<any> | any
 }
-
 
 const SimpleTable = (props: Props, context: any) => {
   const { slots = {} } = context
-  const _tableColumns = props['table-columns']
-  const _tableData = props['table-data'] ?? []
+
+  const{
+    tableColumns = [],
+    tableData = []
+  } = props
 
   return h<{
-    tableColumns: Record<string, any>
+    tableColumns: Array<any>
     tableData: Array<any>
   }>((props, context) => {
+
     const { slots = {} } = context
     const { tableColumns, tableData } = props
     // console.log('props => ', props)
@@ -237,9 +240,111 @@ const SimpleTable = (props: Props, context: any) => {
       ]
     )
   }, {
-    tableColumns: _tableColumns,
-    tableData: _tableData
+    tableColumns,
+    tableData
   }, slots)
 }
 
+SimpleTable.props = {
+  tableColumns: {
+    type: Array,
+    default () {
+      return []
+    }
+  },
+  tableData: {
+    type: Array,
+    default () {
+      return []
+    }
+  }
+}
+
 export default SimpleTable
+</script>
+
+<style lang="scss">
+.__data-table {
+  &-wrapper {
+    border-radius: 6px;
+    border: 1px solid #ebeef5;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+  }
+
+  &-container {
+    width: fit-content;
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-header {
+    height: fit-content;
+    display: flex;
+    background-color: #f5f7fa;
+    border-bottom: 1px solid #ebeef5;
+    z-index: 1;
+    overflow-y: scroll;
+  }
+
+  &-body-container {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-width: fit-content;
+    min-height: fit-content;
+    position: relative;
+    overflow-y: scroll;
+  }
+
+  &-header::-webkit-scrollbar-track,
+  &-body-container::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #ffffff00;
+    border-radius: 6px;
+  }
+
+  &-body {
+    background-color: #fff;
+    width: 100%;
+    height: fit-content
+  }
+
+  &-emtpy {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-row {
+    display: flex;
+    background-color: #fff;
+    transition-duration: 0.2s;
+    border-bottom: 1px solid #ebeef5;
+
+    &:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    &:hover,
+    &:nth-child(even):hover {
+      background-color: #f5f7fa;
+    }
+  }
+
+  &-column {
+    flex: 1;
+    border-left: 1px solid #ebeef5;
+    padding: 8px;
+    background-color: inherit;
+
+    &:nth-child(1) {
+      border-left: none;
+    }
+  }
+}
+</style>

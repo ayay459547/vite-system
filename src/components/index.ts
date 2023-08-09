@@ -100,7 +100,8 @@ export type {
 } from './feature/CustomTimeLine/CustomTimeLine.vue'
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
-export { default as SimpleTable } from './feature/SimpleTable/SimpleTable'
+// export { default as SimpleTable } from './feature/SimpleTable/SimpleTable'
+export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 
 // form
 export { default as FormCheckbox } from './form/FormCheckbox.vue'
