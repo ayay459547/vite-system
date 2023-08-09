@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
-export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | null
+export type Options = Array<{
+  label: string
+  value: string | number | boolean | null
+}>
+
+export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
 export type OperatorValue = string | number | null
 export type ModelValue = [OperatorOptions, OperatorValue]
 
@@ -26,6 +31,16 @@ const props = defineProps({
   hiddenLabel: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  options: {
+    type: Array as PropType<Options>,
+    default () {
+      return [
+        { label: '=', value: 'equal' },
+        { label: '>=', value: 'greatthan' },
+        { label: '<=', value: 'lessthan' }
+      ]
+    }
   },
   // element ui plus
   clearable: {
@@ -106,6 +121,11 @@ const onChange = () => {
   emit('change', [operatorType, operatorNumber])
 }
 
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return Object.prototype.hasOwnProperty.call(slots, prop)
+}
 
 </script>
 
@@ -129,9 +149,22 @@ const onChange = () => {
         :disabled="props.disabled"
         v-on="validationListeners"
       >
-        <ElOption label="=" value="equal"/>
-        <ElOption label=">=" value="greatthan"/>
-        <ElOption label="<=" value="lessthan"/>
+        <ElOption
+          v-for="item in props.options"
+          :key="`${item.value}`"
+          :label="item.label"
+          :value="item.value"
+        >
+          <template v-if="hasSlot('defalut')" #defalut>
+            <slot
+              name="defalut"
+              :label="item.label"
+              :value="item.value"
+            >
+              {{ item.label }}
+            </slot>
+          </template>
+        </ElOption>
       </ElSelect>
 
       <ElInput

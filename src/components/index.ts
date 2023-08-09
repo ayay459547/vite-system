@@ -80,6 +80,13 @@ export type {
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 
 export type {
+  TagType,
+  TagSize,
+  TagEffect
+} from './feature/CustomTag/CustomTag.vue'
+export { default as CustomTag } from './feature/CustomTag/CustomTag.vue'
+
+export type {
   Placement as TooltipPlacement,
   Trigger as TooltipTrigger
 } from './feature/CustomTooltip/CustomTooltip.vue'

@@ -6,7 +6,8 @@ import {
   CustomTable,
   CustomInput,
   CustomSelect,
-  CustomModal
+  CustomModal,
+  CustomTag
 } from '@/components'
 
 import { deepClone, usePageI18n } from '@/lib/lib_utils'

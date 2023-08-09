@@ -165,7 +165,9 @@ const hasSlot = (prop: string): boolean => {
             name="defalut"
             :label="item.label"
             :value="item.value"
-          ></slot>
+          >
+            {{ item.label }}
+          </slot>
         </template>
       </ElOption>
       <template v-if="hasSlot('prefix')" #prefix>

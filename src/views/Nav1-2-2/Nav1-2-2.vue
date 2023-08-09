@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomTimeLine } from '@/components'
+import { CustomTimeLine, CustomTag } from '@/components'
 import { ElCard } from 'element-plus'
 
 const options = [
@@ -54,6 +54,18 @@ const options = [
         </ElCard>
       </template>
     </CustomTimeLine>
+
+    <div class="flex-column i-ga-md">
+      <CustomTag label="test"/>
+      <CustomTag
+        label="test2"
+        type="danger"
+        icon-name="user"
+        icon-move="translate"
+      />
+      <CustomTag label="test3" type="success"/>
+      <CustomTag label="test4" type="info"/>
+    </div>
   </div>
 </template>
 
@@ -62,5 +74,8 @@ const options = [
   width: 100%;
   height: 100%;
   padding: 32px;
+
+  display: flex;
+  gap: 32px;
 }
 </style>
