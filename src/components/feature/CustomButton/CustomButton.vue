@@ -123,12 +123,14 @@ const onClick = ($event: Event) => {
         </template>
 
         <template v-if="props.label.length > 0" #default>
-          <span
-            class="button-label"
-            :class="`size-${ElSize[props.size]}`"
-          >
-            {{ props.label }}
-          </span>
+          <slot>
+            <span
+              class="button-label"
+              :class="`size-${ElSize[props.size]}`"
+            >
+              {{ props.label }}
+            </span>
+          </slot>
         </template>
       </ElButton>
     </div>

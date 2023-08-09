@@ -1,5 +1,6 @@
 <script lang="ts">
-import { h } from 'vue'
+import { h, defineEmits } from 'vue'
+import { CustomDraggable } from '@/components'
 
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
   let temp = null
@@ -19,7 +20,7 @@ function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHea
   return null
 }
 
-const columnNode = (slots: Record<string, any>, column: Record<string, any>, rowItem: any, isHeader: boolean) => {
+const columnNode = (slots: Record<string, any>, column: Array<any>, rowItem: any, isHeader: boolean) => {
   return column.map(columnItem => {
     const {
       label = '',
@@ -133,7 +134,20 @@ const columnNode = (slots: Record<string, any>, column: Record<string, any>, row
   })
 }
 
-const rowNode = (slots: Record<string, any>, column: Record<string, any>, tableData: any[], isHeader: boolean) => {
+const rowNode = (
+  slots: Record<string, any>,
+  column: Array<any>,
+  tableData: Array<any>,
+  options: {
+    isHeader: boolean
+    isDraggable: boolean
+  }
+) => {
+  const {
+    isHeader = false
+  } = options
+
+  // 渲染 header 的 row
   if (isHeader) {
     return h(
       'div',
@@ -142,9 +156,9 @@ const rowNode = (slots: Record<string, any>, column: Record<string, any>, tableD
       },
       columnNode(slots, column, {}, true)
     )
+  // 渲染 資料 的 row
   } else {
     return tableData.map((rowData: any, rowIndex: number) => {
-
       return h(
         'div',
         {
@@ -160,11 +174,20 @@ const rowNode = (slots: Record<string, any>, column: Record<string, any>, tableD
   }
 }
 
-const headerNode = (slots: Record<string, any>, column: Record<string, any>) => {
-  return rowNode(slots, column, [], true)
+const headerNode = (slots: Record<string, any>, column: Array<any>) => {
+  return rowNode(slots, column, [], {
+    isHeader: true,
+    isDraggable: false
+  })
 }
 
-const bodyNode = (slots: Record<string, any>, column: Record<string, any>, tableData: any[]) => {
+const bodyNode = (
+  slots: Record<string, any>,
+  emit: Array<string>,
+  column: Array<any>,
+  tableData: any[],
+  isDraggable: boolean
+) => {
   if (tableData.length === 0) {
     return h('div', {
       class: '__data-table-body',
@@ -176,13 +199,32 @@ const bodyNode = (slots: Record<string, any>, column: Record<string, any>, table
       },
       '無資料'
     ))
+  }
+
+  // 可拖拉
+  if (isDraggable) {
+    return h(
+      CustomDraggable,
+      {
+        class: '__data-table-body',
+        modelValue: tableData,
+        onUpdate: (value) => {
+          console.log(value)
+          console.log(emit)
+        },
+        itemKey: 'key'
+      }
+    )
   } else {
     return h(
       'div',
       {
         class: '__data-table-body'
       },
-      rowNode(slots, column, tableData, false)
+      rowNode(slots, column, tableData, {
+        isHeader: false,
+        isDraggable
+      })
     )
   }
 }
@@ -190,23 +232,27 @@ const bodyNode = (slots: Record<string, any>, column: Record<string, any>, table
 export interface Props {
   tableColumns?: Array<any> | any
   tableData?: Array<any> | any
+  isDraggable?: boolean | any
 }
 
 const SimpleTable = (props: Props, context: any) => {
-  const { slots = {} } = context
+  const {
+    slots = {},
+    emit = []
+  } = context
+
+  console.log(context)
 
   const{
     tableColumns = [],
-    tableData = []
+    tableData = [],
+    isDraggable = false
   } = props
 
-  return h<{
-    tableColumns: Array<any>
-    tableData: Array<any>
-  }>((props, context) => {
+  return h<Props>((props, context) => {
 
     const { slots = {} } = context
-    const { tableColumns, tableData } = props
+    const { tableColumns, tableData, isDraggable } = props
     // console.log('props => ', props)
     // console.log('context => ', context)
 
@@ -233,7 +279,7 @@ const SimpleTable = (props: Props, context: any) => {
               {
                 class: ['__data-table-body-container']
               },
-              [ bodyNode(slots, tableColumns, tableData) ]
+              [ bodyNode(slots, emit, tableColumns, tableData, isDraggable) ]
             )
           ]
         )
@@ -241,7 +287,8 @@ const SimpleTable = (props: Props, context: any) => {
     )
   }, {
     tableColumns,
-    tableData
+    tableData,
+    isDraggable
   }, slots)
 }
 
@@ -257,8 +304,16 @@ SimpleTable.props = {
     default () {
       return []
     }
+  },
+  isDraggable: {
+    type: Boolean,
+    default: false
   }
 }
+
+SimpleTable.emit = [
+  'update:modelValue'
+]
 
 export default SimpleTable
 </script>
