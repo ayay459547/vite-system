@@ -1,7 +1,7 @@
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, Ref } from 'vue'
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort } from '@/components'
 import type { ValidateType } from './lib_validate'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -159,7 +159,7 @@ export interface FormListSetting<T> {
 export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []) => {
   const resColumns = {}
   const refMap = reactive<Record<string, any>>({})
-  const formList = reactive<Array<T>>([])
+  const formList = ref<Array<T>>([])
 
   const hasOwnProperty = Object.prototype.hasOwnProperty
 
@@ -197,15 +197,15 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
     }
   })
 
-  formList.push(...initData)
+  formList.value.push(...initData)
 
   return {
     defaultValue: defaultValue as T,
     columns: resColumns as Record<string, any>,
-    forms: formList as Array<T>,
+    forms: formList as Ref<Array<T>>,
     reset: () => {
-      formList.splice(0)
-      formList.push(...initData)
+      formList.value.splice(0)
+      formList.value.push(...initData)
     },
     validate: async () => {
       const validateList = []
@@ -267,10 +267,10 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
         ...value,
         key: getUuid()
       } as any
-      formList.push(newData)
+      formList.value.push(newData)
     },
     remove: (rowIndex: number) => {
-      formList.splice(rowIndex, 1)
+      formList.value.splice(rowIndex, 1)
     }
   }
 }

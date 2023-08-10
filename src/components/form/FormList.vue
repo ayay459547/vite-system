@@ -73,6 +73,11 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: 'table'
+  },
+  itemKey: {
+    type: String as PropType<string>,
+    required: false,
+    default: 'id'
   }
 })
 
@@ -82,13 +87,10 @@ const emit = defineEmits([
   'update:modelValue'
 ])
 
-const renderKey = ref(0)
-
 const tempValue = computed({
   get: () => props.modelValue,
   set: (value: any[]) => {
     emit('update:modelValue', value)
-    renderKey.value++
   }
 })
 
@@ -99,7 +101,8 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector('.__data-table-row:last-child')
+    // const newEl = document.querySelector('.__data-table-row:last-child')
+    const newEl = document.querySelector('.list-group-item:last-child')
     if (newEl) scrollToEl(newEl)
   })
 }
@@ -120,7 +123,7 @@ onBeforeMount(() => {
 
   afterColumn['row_operations'] = { label: '操作' }
   afterColumn['row_operations'][props.tableKey] = {
-    width: 80,
+    width: 90,
     align: 'center',
     isOperations: true
   }
@@ -151,10 +154,11 @@ onBeforeMount(() => {
       <span>{{ props.label }}</span>
     </div>
     <SimpleTable
-      :key="renderKey"
       v-model="tempValue"
       :table-data="props.tableData"
       :table-columns="showTableColumns"
+      :handle="'.form-item-move'"
+      :item-key="props.itemKey"
       is-draggable
     >
       <template
@@ -196,12 +200,20 @@ onBeforeMount(() => {
         <span>{{ data }}</span>
       </template>
       <template #column-row_operations="{ rowIndex }">
-        <CustomButton
-          type="danger"
-          icon-name="trash-can"
-          text
-          @click="remove(rowIndex)"
-        />
+        <div class="flex-row">
+          <CustomButton
+            type="danger"
+            icon-name="trash-can"
+            text
+            @click="remove(rowIndex)"
+          />
+          <CustomButton
+            type="info"
+            icon-name="bars"
+            text
+            class="form-item-move"
+          />
+        </div>
       </template>
     </SimpleTable>
 

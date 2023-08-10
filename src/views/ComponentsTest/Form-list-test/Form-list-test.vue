@@ -3,7 +3,7 @@ import { FormList, FormInput } from '@/components'
 import { columnSetting } from './columns'
 import { getFormListSetting } from '@/lib/lib_columns'
 import { reactive } from 'vue'
-import { scrollToEl, getUuid } from '@/lib/lib_utils'
+import { scrollToEl } from '@/lib/lib_utils'
 
 const testData = reactive<Form[]>([
   { name: 'Tom', date: '', age: '12', address: 'address1' },
@@ -21,22 +21,13 @@ interface Form {
 }
 
 const {
-  defaultValue,
+  // defaultValue,
   columns: formColumn,
   forms: formList,
-  validate: validateForm
+  validate: validateForm,
+  add,
+  remove
 } = getFormListSetting<Form>(columnSetting, 'form', testData)
-
-const add = () => {
-  formList.push({
-    key: getUuid(),
-    ...defaultValue
-  })
-}
-
-const remove = (rowIndex: number) => {
-  formList.splice(rowIndex, 1)
-}
 
 const submit = () => {
   validateForm().then(successList => {
@@ -48,6 +39,16 @@ const submit = () => {
   })
 }
 
+const sortList = () => {
+  setTimeout(() => {
+    formList.value.sort((a, b) => {
+      const aAge = a?.age ?? '0'
+      const bAge = b?.age ?? '0'
+      return parseInt(aAge) - parseInt(bAge)
+    })
+  }, 1000)
+}
+
 </script>
 
 <template>
@@ -57,6 +58,7 @@ const submit = () => {
         v-model="formList"
         :table-data="formList"
         :column-setting="columnSetting"
+        item-key="age"
         @add="add"
         @remove="remove"
       >
@@ -81,6 +83,8 @@ const submit = () => {
           <FormInput
             v-model="formList[rowIndex].age"
             v-bind="formColumn.age"
+            only-number
+            @change="sortList"
           ></FormInput>
         </template>
         <template #column-address="{ rowIndex }">

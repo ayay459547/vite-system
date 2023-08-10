@@ -1,5 +1,5 @@
 <script lang="ts">
-import { h } from 'vue'
+import { h, Transition } from 'vue'
 import { CustomDraggable } from '@/components'
 
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
@@ -183,12 +183,25 @@ const headerNode = (slots: Record<string, any>, column: Array<any>) => {
 
 const bodyNode = (
   slots: Record<string, any>,
-  props: any,
-  emit: Function,
   column: Array<any>,
-  tableData: any[],
-  isDraggable: boolean
+  options:  {
+    props: Props,
+    emit: Function,
+    tableData: any[],
+    isDraggable: boolean,
+    handle: string
+    itemKey: string
+  }
 ) => {
+  const {
+    props,
+    emit,
+    tableData,
+    isDraggable,
+    handle,
+    itemKey
+  } = options
+
   if (tableData.length === 0) {
     return h('div', {
       class: '__data-table-body',
@@ -210,26 +223,18 @@ const bodyNode = (
         class: '__data-table-body',
         modelValue: props.tableData,
         'onUpdate:modelValue': (value) => {
-          console.log(value)
           emit('update:modelValue', value)
         },
-        itemKey: 'key'
+        handle,
+        itemKey
       },
       {
         item: (scope) => {
           const { element: rowData, index: rowIndex } = scope
-
-          return h(
-            'div',
-            {
-              key: rowData.key ? rowData.key : rowIndex,
-              class: '__data-table-row'
-            },
-            columnNode(slots, column, {
-              ...rowData,
-              index: rowIndex
-            }, false)
-          )
+          return columnNode(slots, column, {
+            ...rowData,
+            index: rowIndex
+          }, false)
         }
       }
     )
@@ -249,9 +254,12 @@ const bodyNode = (
 
 export interface Props {
   modelValue?: Array<any> | any
+  isDraggable?: boolean | any
+  handle?: string | any
+  itemKey?: string | any
+
   tableData?: Array<any> | any
   tableColumns?: Array<any> | any
-  isDraggable?: boolean | any
 }
 
 const SimpleTable = (props: Props, context: any) => {
@@ -262,9 +270,12 @@ const SimpleTable = (props: Props, context: any) => {
 
   const{
     modelValue = [],
+    isDraggable = false,
+    handle = '.__draggable',
+    itemKey = 'id',
+
     tableData = [],
-    tableColumns = [],
-    isDraggable = false
+    tableColumns = []
   } = props
 
   return h<Props>((props, context) => {
@@ -297,7 +308,16 @@ const SimpleTable = (props: Props, context: any) => {
               {
                 class: ['__data-table-body-container']
               },
-              [ bodyNode(slots, props, emit, tableColumns, tableData, isDraggable) ]
+              [
+                bodyNode(slots, tableColumns, {
+                  props,
+                  emit,
+                  tableData,
+                  isDraggable,
+                  handle,
+                  itemKey
+                })
+              ]
             )
           ]
         )
@@ -305,19 +325,35 @@ const SimpleTable = (props: Props, context: any) => {
     )
   }, {
     modelValue,
+    isDraggable,
+    handle,
+    itemKey,
     tableData,
-    tableColumns,
-    isDraggable
+    tableColumns
   }, slots)
 }
 
 SimpleTable.props = {
+  // row 可拖拉 table
   modelValue: {
     type: Array,
     default () {
       return []
     }
   },
+  isDraggable: {
+    type: Boolean,
+    default: false
+  },
+  handle: {
+    type: String,
+    default: '.__draggable'
+  },
+  itemKey: {
+    type: String,
+    default: 'id'
+  },
+  // 一般 table
   tableData: {
     type: Array,
     default () {
@@ -329,10 +365,6 @@ SimpleTable.props = {
     default () {
       return []
     }
-  },
-  isDraggable: {
-    type: Boolean,
-    default: false
   }
 }
 
@@ -403,7 +435,7 @@ export default SimpleTable
   &-row {
     display: flex;
     background-color: #fff;
-    transition-duration: 0.2s;
+    transition-duration: 0.3s;
     border-bottom: 1px solid #ebeef5;
 
     &:nth-child(even) {

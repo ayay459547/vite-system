@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import type { PropType } from 'vue'
+import { isEmpty } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()
@@ -24,10 +25,16 @@ const props = defineProps({
     required: false,
     default: '.__draggable'
   },
+  rowClass: {
+    type: String as PropType<string>,
+    required: false,
+    default: ''
+  },
   tag: {
     type: String as PropType<string>,
     required: false,
-    default: 'div'
+    // default: 'TransitionGroup'
+    default: 'ul'
   },
   clone: {
     type: Function as PropType<Function>,
@@ -73,14 +80,25 @@ const emit = defineEmits([
   'update:modelValue'
 ])
 
-const onStart = ($event: any) => emit('start', $event)
+const drag = ref(false)
+
+const onStart = ($event: any) => {
+  drag.value = true
+  emit('start', $event)
+}
 const onAdd = ($event: any) => emit('add', $event)
 const onRemove = ($event: any) => emit('remove', $event)
 const onUpdate = ($event: any) => emit('update', $event)
-const onEnd = ($event: any) => emit('end', $event)
+const onEnd = ($event: any) => {
+  drag.value = false
+  emit('end', $event)
+}
 const onChoose = ($event: any) => emit('choose', $event)
 const onUnchoose = ($event: any) => emit('unchoose', $event)
-const onSort = ($event: any) => emit('sort', $event)
+const onSort = ($event: any) => {
+  console.log('sort')
+  emit('sort', $event)
+}
 const onFilter = ($event: any) => emit('filter', $event)
 const onClone = ($event: any) => emit('clone', $event)
 
@@ -99,10 +117,15 @@ export type Change = {
     element: Record<string, any>
   }
 }
-const onChange = ($event: Change) => emit('change', $event)
+const onChange = ($event: Change) => {
+  drag.value = false
+  emit('change', $event)
+}
 
 const listValue = computed({
   get () {
+    if (isEmpty(props.modelValue)) return []
+
     return props.modelValue
   },
   set (value: any[]) {
@@ -115,45 +138,47 @@ const listValue = computed({
 <template>
   <div class="draggable-wrapper">
     <Draggable
-        v-model="listValue"
-        :handle="props.handle"
-        :group="props.group"
-        :item-key="props.itemKey"
-        :tag="props.tag"
-        :ghost-class="props.ghostClass"
-        :move="props.move"
-        :clone="props.clone"
-        @start="onStart"
-        @add="onAdd"
-        @remove="onRemove"
-        @update="onUpdate"
-        @end="onEnd"
-        @choose="onChoose"
-        @unchoose="onUnchoose"
-        @sort="onSort"
-        @filter="onFilter"
-        @clone="onClone"
-        @change="onChange"
-      >
-        <template v-if="hasSlot('header')" #header>
-          <slot name="header"></slot>
-        </template>
+      v-model="listValue"
+      :handle="props.handle"
+      :group="props.group"
+      :move="props.move"
+      :clone="props.clone"
+      :item-key="props.itemKey"
+      :tag="props.tag"
+      :disabled="false"
+      :animation="200"
+      class="list-group"
+      ghost-class="ghost"
+      @start="onStart"
+      @add="onAdd"
+      @remove="onRemove"
+      @update="onUpdate"
+      @end="onEnd"
+      @choose="onChoose"
+      @unchoose="onUnchoose"
+      @sort="onSort"
+      @filter="onFilter"
+      @clone="onClone"
+      @change="onChange"
+    >
+      <template v-if="hasSlot('header')" #header>
+        <slot name="header"></slot>
+      </template>
 
-        <template v-if="hasSlot('item')" #item="scoped">
-          <div class="__draggable">
-            <slot
-              name="item"
-              v-bind="scoped"
-              :element="scoped.element"
-              :index="scoped.index"
-            ></slot>
-          </div>
-        </template>
+      <template #item="{ element, index }">
+        <li :class="`__draggable list-group-item ${props.rowClass}`">
+          <slot
+            name="item"
+            :element="element"
+            :index="index"
+          ></slot>
+        </li>
+      </template>
 
-        <template v-if="hasSlot('footer')" #footer>
-          <slot name="footer"></slot>
-        </template>
-      </Draggable>
+      <template v-if="hasSlot('footer')" #footer>
+        <slot name="footer"></slot>
+      </template>
+    </Draggable>
   </div>
 </template>
 
@@ -164,8 +189,32 @@ const listValue = computed({
 
     .__draggable {
       width: 100%;
-      height: 100%;
+      display: flex;
+      // height: 100%;
     }
   }
 }
+.ghost {
+  opacity: 0.7;
+  background: #c8ebfb;
+}
+
+.list-group {
+  &-item {
+    background-color: #fff;
+    border-bottom: 1px solid #ebeef5;
+
+    &:nth-child(even) {
+      background-color: #fafafa;
+      transition-duration: 0.3s;
+    }
+
+    &:hover,
+    &:nth-child(even):hover {
+      background-color: #f5f7fa;
+      transition-duration: 0.3s;
+    }
+  }
+}
+
 </style>

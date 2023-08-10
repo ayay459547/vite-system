@@ -3,6 +3,8 @@ export interface ColumnItem {
   key: string
   label: string
   isOperations: boolean
+  width?: number | null
+  minWidth?: number | null
 }
 export interface SettingData {
   version: string

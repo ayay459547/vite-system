@@ -56,7 +56,8 @@ const emit = defineEmits([
   'row-click',
   'sort-change',
   'header-click',
-  'expand-change'
+  'expand-change',
+  'header-dragend'
 ])
 
 const onRowClick = (row: any, column: any, event: Event) => {
@@ -75,6 +76,9 @@ const onHeaderClick = (column: any, event: Event) => {
 }
 const onExpandChange = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
+}
+const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
+  emit('header-dragend', newWidth, oddWidth, column, event)
 }
 
 
@@ -129,7 +133,15 @@ defineExpose({
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
+        @header-dragend="onHeaderDragend"
       >
+        <template v-if="hasSlot('empty')">
+          <slot name="empty"></slot>
+        </template>
+        <template v-if="hasSlot('append')">
+          <slot name="append"></slot>
+        </template>
+
         <template v-if="hasSlot('column-expand')">
           <ElTableColumn type="expand">
             <template #default="scope">

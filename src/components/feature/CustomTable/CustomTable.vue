@@ -57,10 +57,11 @@ export interface Props extends Record<string, any> {
    * settingKey:
    *     欄位設定 在 indexedDB 上的 key
    *     建議參考路由 避免重複使用 key
+   * settingWidth: 寬度
    */
   version: string
   settingKey: string
-
+  settingWidth?: number
   /**
    * 表單資料相關
    * tableColumns: 表單欄位顯示用設定
@@ -94,6 +95,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   title: '',
   version: '',
   settingKey: '',
+  settingWidth: 250,
   tableColumns: () => [],
   tableData: () => [],
   tableDataCount: 0,
@@ -118,7 +120,8 @@ const emit = defineEmits([
   'page-change',
   'size-change',
   'show-change',
-  'expand-change'
+  'expand-change',
+  'header-dragend'
 ])
 
 const loading = ref(true)
@@ -209,6 +212,13 @@ const onHeaderClick = (column: any, event: Event) => {
 const onExpandChange = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
 }
+const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
+  if (columnSetting.value) {
+    const props = column?.rawColumnKey ?? column?.property
+    columnSetting.value.setColumnWidth(props, newWidth)
+  }
+  emit('header-dragend', newWidth, oddWidth, column, event)
+}
 
 /**
  * 更換設定
@@ -231,7 +241,7 @@ const showData = computed(() => {
     return props.tableData
   } else {
     const start = (currentPage.value - 1) * pageSize.value
-    const end = start + pageSize.value
+    const end = pageSize.value
 
     return (props.tableData as Array<any>).slice(start, end)
   }
@@ -281,7 +291,10 @@ const initShowColumns = async () => {
         })
 
         if (showColumn) {
-          resColumn.push(showColumn)
+          resColumn.push({
+            ...showColumn,
+            ...tempColumn
+          })
         }
       }
 
@@ -394,6 +407,7 @@ const slotKeyList = computed(() => {
           :columns="props.tableColumns"
           :version="props.version"
           :setting-key="props.settingKey"
+          :setting-width="props.settingWidth"
           @change="initShowColumns"
         />
         <slot name="setting-left"></slot>
@@ -434,7 +448,15 @@ const slotKeyList = computed(() => {
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
+        @header-dragend="onHeaderDragend"
       >
+        <template v-if="hasSlot('empty')">
+          <slot name="empty"></slot>
+        </template>
+        <template v-if="hasSlot('append')">
+          <slot name="append"></slot>
+        </template>
+
         <template v-if="hasSlot('column-expand')" #column-expand="scope">
           <slot name="column-expand" v-bind="scope"></slot>
         </template>
