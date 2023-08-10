@@ -54,6 +54,7 @@ const submit = () => {
   <div class="container">
     <div class="test">
       <FormList
+        v-model="formList"
         :table-data="formList"
         :column-setting="columnSetting"
         @add="add"

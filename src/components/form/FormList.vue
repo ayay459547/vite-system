@@ -7,7 +7,8 @@ import {
   inject,
   onBeforeMount,
   nextTick,
-  useSlots
+  useSlots,
+  computed
 } from 'vue'
 
 import { SimpleTable, CustomButton } from '@/components'
@@ -44,6 +45,18 @@ const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
 
 const props = defineProps({
+  modelValue: {
+    type: Array as PropType<any[]>,
+    default () {
+      return []
+    }
+  },
+  tableData: {
+    type: Array as PropType<any[]>,
+    default () {
+      return []
+    }
+  },
   label: {
     type: String as PropType<string>,
     required: false,
@@ -56,12 +69,6 @@ const props = defineProps({
       return {}
     }
   },
-  tableData: {
-    type: Array as PropType<any[]>,
-    default () {
-      return []
-    }
-  },
   tableKey: {
     type: String as PropType<string>,
     required: false,
@@ -69,7 +76,21 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['add', 'remove'])
+const emit = defineEmits([
+  'add',
+  'remove',
+  'update:modelValue'
+])
+
+const renderKey = ref(0)
+
+const tempValue = computed({
+  get: () => props.modelValue,
+  set: (value: any[]) => {
+    emit('update:modelValue', value)
+    renderKey.value++
+  }
+})
 
 const tableColumns = ref()
 const showTableColumns = ref()
@@ -130,8 +151,11 @@ onBeforeMount(() => {
       <span>{{ props.label }}</span>
     </div>
     <SimpleTable
+      :key="renderKey"
+      v-model="tempValue"
       :table-data="props.tableData"
       :table-columns="showTableColumns"
+      is-draggable
     >
       <template
         v-for="column in tableColumns"

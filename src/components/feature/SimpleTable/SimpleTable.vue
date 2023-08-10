@@ -1,5 +1,5 @@
 <script lang="ts">
-import { h, defineEmits } from 'vue'
+import { h } from 'vue'
 import { CustomDraggable } from '@/components'
 
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
@@ -183,7 +183,8 @@ const headerNode = (slots: Record<string, any>, column: Array<any>) => {
 
 const bodyNode = (
   slots: Record<string, any>,
-  emit: Array<string>,
+  props: any,
+  emit: Function,
   column: Array<any>,
   tableData: any[],
   isDraggable: boolean
@@ -207,12 +208,29 @@ const bodyNode = (
       CustomDraggable,
       {
         class: '__data-table-body',
-        modelValue: tableData,
-        onUpdate: (value) => {
+        modelValue: props.tableData,
+        'onUpdate:modelValue': (value) => {
           console.log(value)
-          console.log(emit)
+          emit('update:modelValue', value)
         },
         itemKey: 'key'
+      },
+      {
+        item: (scope) => {
+          const { element: rowData, index: rowIndex } = scope
+
+          return h(
+            'div',
+            {
+              key: rowData.key ? rowData.key : rowIndex,
+              class: '__data-table-row'
+            },
+            columnNode(slots, column, {
+              ...rowData,
+              index: rowIndex
+            }, false)
+          )
+        }
       }
     )
   } else {
@@ -230,22 +248,22 @@ const bodyNode = (
 }
 
 export interface Props {
-  tableColumns?: Array<any> | any
+  modelValue?: Array<any> | any
   tableData?: Array<any> | any
+  tableColumns?: Array<any> | any
   isDraggable?: boolean | any
 }
 
 const SimpleTable = (props: Props, context: any) => {
   const {
     slots = {},
-    emit = []
+    emit
   } = context
 
-  console.log(context)
-
   const{
-    tableColumns = [],
+    modelValue = [],
     tableData = [],
+    tableColumns = [],
     isDraggable = false
   } = props
 
@@ -279,21 +297,22 @@ const SimpleTable = (props: Props, context: any) => {
               {
                 class: ['__data-table-body-container']
               },
-              [ bodyNode(slots, emit, tableColumns, tableData, isDraggable) ]
+              [ bodyNode(slots, props, emit, tableColumns, tableData, isDraggable) ]
             )
           ]
         )
       ]
     )
   }, {
-    tableColumns,
+    modelValue,
     tableData,
+    tableColumns,
     isDraggable
   }, slots)
 }
 
 SimpleTable.props = {
-  tableColumns: {
+  modelValue: {
     type: Array,
     default () {
       return []
@@ -305,13 +324,19 @@ SimpleTable.props = {
       return []
     }
   },
+  tableColumns: {
+    type: Array,
+    default () {
+      return []
+    }
+  },
   isDraggable: {
     type: Boolean,
     default: false
   }
 }
 
-SimpleTable.emit = [
+SimpleTable.emits = [
   'update:modelValue'
 ]
 
