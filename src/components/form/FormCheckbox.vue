@@ -144,7 +144,7 @@ const getTextValue = (tempValue: ModelValue) => {
       <span>{{ props.label }}</span>
     </label>
 
-    <div v-if="props.text">
+    <div v-if="props.text" class="i-pt-sm">
       {{ getTextValue(tempValue) }}
     </div>
 

@@ -27,6 +27,14 @@ const props = defineProps({
   heightSize: {
     type: String as PropType<HeightSize>,
     default: 'default'
+  },
+  hiddenSubmit: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  hiddenCancel: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -125,12 +133,14 @@ const clickOutside = () => {
             <slot name="footer">
               <div class="modal-footer-btn">
                 <CustomButton
+                  v-if="!props.hiddenCancel"
                   label="取消"
                   icon-name="angle-left"
                   icon-move="translate"
                   @click="cancel"
                 />
                 <CustomButton
+                  v-if="!props.hiddenSubmit"
                   type="success"
                   label="確認"
                   icon-name="check"

@@ -124,7 +124,8 @@ defineExpose({
 const getTextValue = (tempValue: ModelValue) => {
   if (isEmpty(tempValue)) return ''
 
-  return props.options.find(option => option.value === tempValue) ?? ''
+  const _option = props.options.find(option => option.value === tempValue)
+  return _option?.label ?? ''
 }
 
 </script>
@@ -144,7 +145,7 @@ const getTextValue = (tempValue: ModelValue) => {
       <span>{{ props.label }}</span>
     </label>
 
-    <div v-if="props.text">
+    <div v-if="props.text" class="i-pt-sm">
       {{ getTextValue(tempValue) }}
     </div>
 

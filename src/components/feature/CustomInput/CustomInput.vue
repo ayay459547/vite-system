@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import { ElInput } from 'element-plus'
 
 export type ModelValue = string | null
@@ -113,6 +113,15 @@ const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
 }
 
+const elInputRef = ref(null)
+defineExpose({
+  focus () {
+    if (elInputRef.value) {
+      elInputRef.value.focus()
+    }
+  }
+})
+
 </script>
 
 <template>
@@ -128,6 +137,7 @@ const hasSlot = (prop: string): boolean => {
     </label>
 
     <ElInput
+      ref="elInputRef"
       v-model="tempValue"
       :placeholder="$t('pleaseInput')"
       class="input-main"

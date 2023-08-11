@@ -1,5 +1,5 @@
 <script lang="ts">
-import { h, Transition } from 'vue'
+import { h } from 'vue'
 import { CustomDraggable } from '@/components'
 
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
@@ -351,7 +351,7 @@ SimpleTable.props = {
   },
   itemKey: {
     type: String,
-    default: 'id'
+    default: 'key'
   },
   // 一般 table
   tableData: {

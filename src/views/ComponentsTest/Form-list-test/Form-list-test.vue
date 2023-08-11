@@ -58,7 +58,7 @@ const sortList = () => {
         v-model="formList"
         :table-data="formList"
         :column-setting="columnSetting"
-        item-key="age"
+        item-key="key"
         @add="add"
         @remove="remove"
       >

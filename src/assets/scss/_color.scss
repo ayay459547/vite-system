@@ -11,11 +11,31 @@ $color-list: (
   .text-#{$type} {
     color: $color !important;
   }
+  .hover-text-#{$type} {
+    transition-duration: 0.3s;
+    &:hover{
+      color: lighten($color, 20%) !important;
+    }
+  }
+
   .bg-#{$type} {
     background-color: lighten($color, 15%) !important;
   }
+  .hover-bg-#{$type} {
+    transition-duration: 0.3s;
+    &:hover{
+      background-color: lighten($color, 20%) !important;
+    }
+  }
+
   .border-#{$type} {
     border: 1px solid lighten($color, 5%) !important;
+  }
+  .hover-border-#{$type} {
+    transition-duration: 0.3s;
+    &:hover{
+      border: 1px solid lighten($color, 10%) !important;
+    }
   }
 
   .card-#{$type} {
@@ -24,7 +44,7 @@ $color-list: (
   .hover-card-#{$type} {
     transition-duration: 0.3s;
     &:hover{
-      box-shadow: 2px 2px 8px 1px lighten($color, 20%);
+      box-shadow: 2px 2px 8px 1px lighten($color, 25%);
     }
   }
 }

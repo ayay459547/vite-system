@@ -77,7 +77,7 @@ const props = defineProps({
   itemKey: {
     type: String as PropType<string>,
     required: false,
-    default: 'id'
+    default: 'key'
   }
 })
 
