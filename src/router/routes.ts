@@ -124,7 +124,7 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav1-2-3',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav1-2-3/Nav1-2-3.vue')
           },
           {
             name: 'nav1-2-4',
