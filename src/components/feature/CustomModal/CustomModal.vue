@@ -28,6 +28,10 @@ const props = defineProps({
     type: String as PropType<HeightSize>,
     default: 'default'
   },
+  hiddenFooter: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   hiddenSubmit: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -129,7 +133,7 @@ const clickOutside = () => {
             </div>
           </div>
 
-          <div class="modal-footer">
+          <div v-if="!props.hiddenFooter" class="modal-footer">
             <slot name="footer">
               <div class="modal-footer-btn">
                 <CustomButton
@@ -149,6 +153,9 @@ const clickOutside = () => {
                 />
               </div>
             </slot>
+          </div>
+          <div v-else class="modal-footer-hidden">
+
           </div>
         </div>
       </Transition>
@@ -262,6 +269,12 @@ const clickOutside = () => {
     align-items: center;
     padding: 0 8px;
     border-top: 1px solid #d6d6d6;
+
+    &-hidden {
+      width: 100%;
+      height: 24px;
+      border-top: 1px solid #d6d6d6;
+    }
 
     &-btn {
       display: flex;

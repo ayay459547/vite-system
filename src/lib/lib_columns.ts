@@ -271,6 +271,9 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
     },
     remove: (rowIndex: number) => {
       formList.value.splice(rowIndex, 1)
+    },
+    clear: () => {
+      formList.value.splice(0)
     }
   }
 }

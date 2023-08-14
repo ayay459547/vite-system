@@ -42,16 +42,10 @@ const getColumnSlot = (slotKey: string): string => {
 }
 
 const hook: Hook = inject('hook')
-const { i18nTranslate } = hook()
+const { i18nTranslate, swal } = hook()
 
 const props = defineProps({
   modelValue: {
-    type: Array as PropType<any[]>,
-    default () {
-      return []
-    }
-  },
-  tableData: {
     type: Array as PropType<any[]>,
     default () {
       return []
@@ -61,6 +55,16 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: ''
+  },
+  min: {
+    type: Number as PropType<number>,
+    required: false,
+    default: 0
+  },
+  max: {
+    type: Number as PropType<number>,
+    required: false,
+    default: Infinity
   },
   columnSetting: {
     type: Object as PropType<Record<string, any>>,
@@ -98,16 +102,31 @@ const tableColumns = ref()
 const showTableColumns = ref()
 
 const add = () => {
+  if (tempValue.value.length >= props.max) {
+    return swal({
+      icon: 'warning',
+      title: '無法新增',
+      text: `資料列表不能超過 ${props.max} 筆資料`
+    })
+  }
+
   emit('add')
 
   nextTick(() => {
-    // const newEl = document.querySelector('.__data-table-row:last-child')
     const newEl = document.querySelector('.list-group-item:last-child')
     if (newEl) scrollToEl(newEl)
   })
 }
 
 const remove = (rowIndex: number) => {
+  if (tempValue.value.length < props.min + 1) {
+    return swal({
+      icon: 'warning',
+      title: '無法刪除',
+      text: `資料列表至少要有 ${props.min} 筆資料`
+    })
+  }
+
   emit('remove', rowIndex)
 }
 
@@ -155,11 +174,11 @@ onBeforeMount(() => {
     </div>
     <SimpleTable
       v-model="tempValue"
-      :table-data="props.tableData"
-      :table-columns="showTableColumns"
-      :handle="'.form-item-move'"
       :item-key="props.itemKey"
       is-draggable
+      :handle="'.form-item-move'"
+      :table-data="tempValue"
+      :table-columns="showTableColumns"
     >
       <template
         v-for="column in tableColumns"

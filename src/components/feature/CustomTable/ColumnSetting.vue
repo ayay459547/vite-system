@@ -164,7 +164,7 @@ onBeforeMount(async () => {
 <template>
   <div class="column-setting">
     <CustomPopover
-      placement="bottom"
+      placement="bottom-start"
       :width="props.settingWidth"
       trigger="click"
       popper-style="padding: 4px;"
