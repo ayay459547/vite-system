@@ -2,12 +2,13 @@
 import type { PropType } from 'vue'
 import { useSlots } from 'vue'
 import { ElTimeline, ElTimelineItem } from 'element-plus'
+import type { TimelineItemProps } from 'element-plus'
 
 export type Size = 'large'| 'default'| 'small'
 export type Placement = 'top'| 'bottom'
 export type TimeType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
 
-export type Options = {
+export type Options = TimelineItemProps & {
   label?: string
   timestamp?: string
   type?: TimeType
@@ -25,7 +26,7 @@ const hasSlot = (prop: string): boolean => {
 
 const props = defineProps({
   options: {
-    type: Array as PropType<Options>,
+    type: Array as PropType<Options[]>,
     default () {
       return []
     }
@@ -43,7 +44,7 @@ const props = defineProps({
         v-bind="option"
       >
         <template v-if="hasSlot('dot')" #dot>
-          <slot name="dot"></slot>
+          <slot name="dot" v-bind="option"></slot>
         </template>
 
         <template #default>

@@ -8,6 +8,17 @@ const testRoutes: RouterTree[] = [
     icon: 'code',
     leaves: [
       {
+        name: 'schedule',
+        title: '工作進度表',
+        meta: {
+          keepAlive: true,
+          status: 'completed'
+        },
+        systemType: ['development'],
+        path: '/schedule',
+        component: () => import('@/views/Development/ScheduleView/ScheduleView.vue')
+      },
+      {
         name: 'search-view',
         title: '功能樹狀表',
         meta: {

@@ -64,6 +64,8 @@ export type {
 } from './feature/CustomRadio/CustomRadio.vue'
 export { default as CustomSelect } from './feature/CustomSelect/CustomSelect.vue'
 
+export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'
+
 import type { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
 export declare interface CustomTableExpose {
   pageChange: PageChange

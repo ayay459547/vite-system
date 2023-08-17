@@ -35,6 +35,11 @@ const props = defineProps({
     required: true,
     description: '資料存在 children 時 預設是否展開'
   },
+  clearColumnPadding: {
+    type: Boolean as PropType<boolean>,
+    required: true,
+    description: '是否清除 column 內的 padding + margin'
+  },
   // element ui
   rowKey: {
     type: String as PropType<string>,
@@ -114,7 +119,7 @@ defineExpose({
 
 <template>
   <div ref="tableMain" class="table-main-wrapper">
-    <div class="table-main-container">
+    <div class="table-main-container" :class="{'clear-padding' : props.clearColumnPadding}">
       <ElTable
         ref="elTableRef"
         stripe
@@ -329,6 +334,16 @@ defineExpose({
       table-layout: fixed;
       border-collapse: separate;
       height: 100%;
+      thead {
+        background-color: lighten($system-bg-color, 60%);
+        & > tr {
+           background-color: inherit;
+
+          & > th {
+             background-color: inherit;
+          }
+        }
+      }
       .cell {
         box-sizing: border-box;
         overflow: hidden;
@@ -345,6 +360,8 @@ defineExpose({
         & > div {
           width: 100%;
           height: 100%;
+
+          color: #535353;
         }
       }
 
@@ -379,6 +396,30 @@ defineExpose({
     border: solid 5px transparent;
     position: absolute;
     left: 7px;
+  }
+
+  &.clear-padding {
+    .el-table__row {
+      .el-table__cell {
+        padding: 0;
+        min-width: 0;
+        box-sizing: border-box;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+        position: relative;
+        text-align: left;
+        z-index: 1;
+
+        .cell {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: normal;
+          word-break: break-all;
+          line-height: 23px;
+          padding: 0;
+        }
+      }
+    }
   }
 }
 

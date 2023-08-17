@@ -89,6 +89,7 @@ export interface Props extends Record<string, any> {
   sort?: Sort
   showType?: 'custom' | 'auto'
   hiddenExcel?: boolean
+  clearColumnPadding: boolean
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -108,7 +109,8 @@ const props: Props = withDefaults(defineProps<Props>(), {
     return { key: null, order: null }
   },
   showType: 'custom',
-  hiddenExcel: false
+  hiddenExcel: false,
+  clearColumnPadding: false
 })
 
 const emit = defineEmits([
@@ -240,7 +242,8 @@ const showData = computed(() => {
   if (props.showType === 'custom') {
     return props.tableData
   } else {
-    const start = (currentPage.value - 1) * pageSize.value
+    // const start = (currentPage.value - 1) * pageSize.value
+    const start = 0
     const end = pageSize.value
 
     return (props.tableData as Array<any>).slice(start, end)
@@ -444,6 +447,7 @@ const slotKeyList = computed(() => {
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
         :span-method="props.spanMethod"
+        :clear-column-padding="props.clearColumnPadding"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -511,7 +515,7 @@ const slotKeyList = computed(() => {
 
   &-setting {
     height: fit-content;
-    background-color: #f5f7fa;
+    background-color: lighten($system-bg-color, 55%);
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;

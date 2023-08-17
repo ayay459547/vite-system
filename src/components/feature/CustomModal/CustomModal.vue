@@ -3,8 +3,8 @@ import type { WritableComputedRef, PropType } from 'vue'
 import { ref, computed, watch } from 'vue'
 import { CustomButton } from '@/components'
 
-export type WidthSize = 'large'| 'default'| 'small'
-export type HeightSize = 'large'| 'default'| 'small'
+export type WidthSize = 'fill' | 'large'| 'default'| 'small'
+export type HeightSize = 'fill' | 'large'| 'default'| 'small'
 export type ModelValue = boolean
 
 const props = defineProps({
@@ -196,6 +196,9 @@ const clickOutside = () => {
     min-height: 300px;
     border-radius: 6px;
     &.width {
+      &-fill {
+        width: 100%;
+      }
       &-large {
         width: 85%;
         @media (max-width: 992px) {
@@ -225,6 +228,9 @@ const clickOutside = () => {
       }
     }
     &.height {
+      &-fill {
+        height: 100%;
+      }
       &-large {
         height: 85%;
       }
