@@ -89,7 +89,7 @@ export interface Props extends Record<string, any> {
   sort?: Sort
   showType?: 'custom' | 'auto'
   hiddenExcel?: boolean
-  clearColumnPadding: boolean
+  clearColumnPadding?: boolean
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -484,14 +484,20 @@ const slotKeyList = computed(() => {
     </div>
 
     <div class="table-pagination">
-      <ElPagination
-        background
-        layout="prev, pager, next"
-        :total="props.tableDataCount"
-        :page-size="pageSize"
-        :current-page="currentPage"
-        @update:current-page="onPageChange"
-      />
+      <div class="table-pagination-left"></div>
+      <div class="table-pagination-center">
+        <ElPagination
+          background
+          layout="prev, pager, next"
+          :total="props.tableDataCount"
+          :page-size="pageSize"
+          :current-page="currentPage"
+          @update:current-page="onPageChange"
+        />
+      </div>
+      <div class="table-pagination-right">
+        <span>總筆數：{{ props.tableDataCount }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -549,6 +555,10 @@ const slotKeyList = computed(() => {
 
       &-left {
         justify-content: flex-start;
+
+        @media (max-width: 992px) {
+          padding-top: 6px;
+        }
       }
       &-center {
         justify-content: center;
@@ -557,6 +567,7 @@ const slotKeyList = computed(() => {
       }
       &-right {
         justify-content: flex-end;
+
         @media (max-width: 992px) {
           justify-content: center;
         }
@@ -572,9 +583,32 @@ const slotKeyList = computed(() => {
 
   &-pagination {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 40px;
+    height: fit-content;
+    min-height: 40px;
+    padding: 6px;
+    gap: 6px;
+
+    @media (max-width: 992px) {
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    &-left,
+    &-right {
+      flex: 1;
+      display: flex;
+    }
+    &-right {
+      text-align: right;
+      justify-content: flex-end;
+    }
+
+    &-center {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 

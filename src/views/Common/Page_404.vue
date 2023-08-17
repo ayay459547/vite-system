@@ -3,52 +3,29 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 
+const imgStyle = ref('')
 const titleStyle = ref('')
-const container = ref(null)
-const centerPoint = reactive({
-  x: 0, y: 0
-})
 
 const setImgStyle = (e: MouseEvent) => {
   const { clientX, clientY } = e
   const diffX = centerPoint.x - clientX
   const diffY = centerPoint.y - clientY
 
+  imgStyle.value = `transform: translateX(${diffX / 5}px) translateY(${diffY / 5}px);`
   titleStyle.value = `transform: translateX(${diffX / 12}px) translateY(${diffY / 12}px);`
 }
+const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) => void
 
-const eyeStyle = ref('')
-const eye = ref(null)
-const eyeCenter = reactive({
+const container = ref(null)
+const centerPoint = reactive({
   x: 0, y: 0
 })
 
-const setEyeAngle = (e: MouseEvent) => {
-  const { clientX, clientY } = e
-  const diffX = clientX - eyeCenter.x
-  const diffY = clientY - eyeCenter.y
-  const radian = Math.atan2(diffY, diffX)
-  const degrees = (180 / Math.PI) * radian
-  eyeStyle.value = `transform: rotateZ(${degrees - 90}deg);`
-}
-
-const onMouseMove = (e: MouseEvent) => {
-  setImgStyle(e)
-  setEyeAngle(e)
-}
-const throttleOnMouseMove = throttle(onMouseMove, 80) as (payload: MouseEvent) => void
-
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
-    // 寬度中心
     const { x, y, width, height } = entry.contentRect
     centerPoint.x = x + width / 2
     centerPoint.y = y + height / 2
-
-    // 眼睛中心
-    const { top, height: eyeHeight, left, width: eyeWidth } = eye.value.getBoundingClientRect()
-    eyeCenter.x = left + eyeWidth / 2
-    eyeCenter.y = top + eyeHeight / 2
   })
 }, 100) as ResizeObserverCallback
 
@@ -66,72 +43,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="container" class="page" @mousemove="throttleOnMouseMove">
+  <div ref="container" class="page" @mousemove="throttleSetImgStyle">
     <h1 class="page-title" :style="titleStyle">頁面不存在</h1>
     <img
       class="page-img"
       src="@/assets/images/common/page404.svg"
       alt="404"
     />
-    <div class="man-body">
-      <div ref="eye" class="man-eye" :style="eyeStyle">
-        <div class="man-eye-ball"></div>
-      </div>
-      <div class="man-hand left"></div>
-      <div class="man-hand right"></div>
-    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@mixin circle($width, $color) {
-  background-color: $color;
-  width: $width;
-  height: $width;
-  border-radius: 50%;
-}
-.man {
-  &-body {
-    @include circle(196px, #2f2e41);
-    position: absolute;
-    top: -32px;
-    left: 64px;
-  }
-
-  &-eye {
-    @include circle(80px, #fff);
-    position: relative;
-    top: 50%;
-    left: 30%;
-    transition-duration: 0.2s;
-
-    &-ball {
-      @include circle(32px, #2f2e41);
-      position: relative;
-      top: 50%;
-      left: 30%;
-    }
-  }
-
-  &-hand {
-    position: relative;
-    background-color: #2f2e41;
-    width: 80px;
-    height: 24px;
-    border-radius: 50%;
-
-    &.left {
-      left: -48px;
-      top: 6px;
-    }
-    &.right {
-      left: 164px;
-      top: 12px;
-      transform: rotateZ(45deg);
-    }
-  }
-}
-
 .page {
   width: 100%;
   height: 100%;
@@ -150,7 +72,7 @@ onUnmounted(() => {
 
   &-img {
     transition-duration: 0.3s;
-    width: 80%;
+    width: 70%;
     position: absolute;
     bottom: 0;
     right: 0;
