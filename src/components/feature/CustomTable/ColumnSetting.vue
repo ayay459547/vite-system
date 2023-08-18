@@ -231,6 +231,9 @@ onBeforeMount(async () => {
   &-list {
     display: flex;
     flex-direction: column;
+    max-height: 70vh;
+    height: fit-content;
+    overflow: auto;
   }
   &-item {
     display: flex;

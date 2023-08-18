@@ -120,10 +120,12 @@ export const getData = (params: any) => {
 }
 
 export const getDataCount = (params: any) => {
-  const { status, title, path, breadcrumbTitle } = params
+  const {
+    status, title, path, mode, breadcrumbTitle
+  } = params
 
   const filterList = ({
-    status, title, path, breadcrumbTitle
+    status, title, path, mode, breadcrumbTitle
   } as any).$reduce((
     res: Record<string, string>[],
     curr: string,
@@ -146,6 +148,8 @@ export const getDataCount = (params: any) => {
           return new RegExp(value).test(route.title)
         case 'path':
           return new RegExp(value).test(route.path)
+        case 'mode':
+          return route.name === value
         case 'breadcrumbTitle':
           return new RegExp(value).test(route.breadcrumbTitle)
         default:

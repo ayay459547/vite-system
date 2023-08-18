@@ -6,7 +6,13 @@ import throttle from '@/lib/lib_throttle'
 import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
-import type { SpanMethod } from './CustomTable.vue'
+import type {
+  SpanMethod,
+  RowClassName,
+  RowStyle,
+  CellClassName,
+  CellStyle
+} from './CustomTable.vue'
 
 // slot
 const slots = useSlots()
@@ -35,11 +41,6 @@ const props = defineProps({
     required: true,
     description: '資料存在 children 時 預設是否展開'
   },
-  clearColumnPadding: {
-    type: Boolean as PropType<boolean>,
-    required: true,
-    description: '是否清除 column 內的 padding + margin'
-  },
   // element ui
   rowKey: {
     type: String as PropType<string>,
@@ -54,6 +55,22 @@ const props = defineProps({
   spanMethod: {
     type: Function as PropType<SpanMethod | any>,
     description: '資料跨欄'
+  },
+  rowClassName: {
+    type: Function as PropType<RowClassName | any>,
+    description: 'row class callback'
+  },
+  rowStyle: {
+    type: Function as PropType<RowStyle | any>,
+    description: 'row style callback'
+  },
+  cellClassName: {
+    type: Function as PropType<CellClassName | any>,
+    description: 'cell class callback'
+  },
+  cellStyle: {
+    type: Function as PropType<CellStyle | any>,
+    description: 'cell style callback'
   }
 })
 
@@ -119,7 +136,7 @@ defineExpose({
 
 <template>
   <div ref="tableMain" class="table-main-wrapper">
-    <div class="table-main-container" :class="{'clear-padding' : props.clearColumnPadding}">
+    <div class="table-main-container">
       <ElTable
         ref="elTableRef"
         stripe
@@ -134,6 +151,10 @@ defineExpose({
           order: props.sort.order,
         }"
         :span-method="props.spanMethod"
+        :row-class-name="props.rowClassName"
+        :row-style="props.rowStyle"
+        :cell-class-name="props.cellClassName"
+        :cell-style="props.cellStyle"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -377,6 +398,23 @@ defineExpose({
         }
       }
     }
+
+    .el-table__body {
+      .el-table__row--striped {
+        background: var(--el-fill-color-lighter);
+      }
+      .el-table__row,
+      .el-table__row--striped {
+        &:hover {
+          transition-duration: 0.2s;
+          background-color: var(--el-table-row-hover-bg-color);
+        }
+      }
+      .el-table__row .el-table__cell {
+        background-color: inherit;
+        transition: background-color 0.1s ease-out;
+      }
+    }
   }
   .caret-wrapper {
     display: inline-flex;
@@ -396,30 +434,6 @@ defineExpose({
     border: solid 5px transparent;
     position: absolute;
     left: 7px;
-  }
-
-  &.clear-padding {
-    .el-table__row {
-      .el-table__cell {
-        padding: 0;
-        min-width: 0;
-        box-sizing: border-box;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-        position: relative;
-        text-align: left;
-        z-index: 1;
-
-        .cell {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: normal;
-          word-break: break-all;
-          line-height: 23px;
-          padding: 0;
-        }
-      }
-    }
   }
 }
 

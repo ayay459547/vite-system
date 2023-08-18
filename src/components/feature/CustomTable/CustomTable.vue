@@ -44,6 +44,26 @@ export type SpanMethod = (
   }) => number[] | { rowspan: number, colspan: number } | void
 ) | null
 
+type RowCallback<T> = (
+  (data: {
+    row: any,
+    rowIndex: number
+  }) => T
+) | null
+export type RowClassName = RowCallback<string>
+export type RowStyle = RowCallback<Record<string, any>>
+
+type CellCallback<T> = (
+  (data: {
+    row: any,
+    column: TableColumnCtx<any>,
+    rowIndex: number,
+    columnIndex: number
+  }) => T
+) | null
+export type CellClassName = CellCallback<string>
+export type CellStyle = CellCallback<Record<string, any>>
+
 export interface Props extends Record<string, any> {
   /**
    * table 標題
@@ -76,6 +96,10 @@ export interface Props extends Record<string, any> {
   rowKey?: string
   defaultExpandAll?: boolean
   spanMethod?: SpanMethod
+  rowClassName?: RowClassName
+  rowStyle?: RowStyle
+  cellClassName?: CellClassName
+  cellStyle?: CellStyle
   /**
    * 表單顯示相關
    * page 當前分頁
@@ -89,7 +113,6 @@ export interface Props extends Record<string, any> {
   sort?: Sort
   showType?: 'custom' | 'auto'
   hiddenExcel?: boolean
-  clearColumnPadding?: boolean
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -103,14 +126,14 @@ const props: Props = withDefaults(defineProps<Props>(), {
   rowKey: 'id',
   defaultExpandAll: false,
   spanMethod: null,
+  rowClassName: null,
   page: 1,
   pageSize: 100,
   sort: () => {
     return { key: null, order: null }
   },
   showType: 'custom',
-  hiddenExcel: false,
-  clearColumnPadding: false
+  hiddenExcel: false
 })
 
 const emit = defineEmits([
@@ -447,7 +470,10 @@ const slotKeyList = computed(() => {
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
         :span-method="props.spanMethod"
-        :clear-column-padding="props.clearColumnPadding"
+        :row-class-name="props.rowClassName"
+        :row-style="props.rowStyle"
+        :cell-class-name="props.cellClassName"
+        :cell-style="props.cellStyle"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
