@@ -38,17 +38,19 @@ defineExpose<Expose>({
 </script>
 
 <template>
-  <div v-show="isOpen" class="loader-wrapper">
-    <div class="loader-container">
-        <div class="loader-circle"></div>
-        <div class="loader-circle"></div>
-        <div class="loader-circle"></div>
-        <div class="loader-shadow"></div>
-        <div class="loader-shadow"></div>
-        <div class="loader-shadow"></div>
-        <div class="loader-loading">{{ massage }}</div>
+  <Transition name="fade">
+    <div v-show="isOpen" class="loader-wrapper">
+      <div class="loader-container">
+          <div class="loader-circle"></div>
+          <div class="loader-circle"></div>
+          <div class="loader-circle"></div>
+          <div class="loader-shadow"></div>
+          <div class="loader-shadow"></div>
+          <div class="loader-shadow"></div>
+          <div class="loader-loading">{{ massage }}</div>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>

@@ -237,8 +237,14 @@ const initNavigationRoutes = async () => {
   router.push({ name: 'home' })
 
   await nextTick()
-  isShow.value = true
-  loading(false, 'loading')
+
+  setTimeout(() => {
+    isShow.value = true
+  }, 100)
+
+  setTimeout(() => {
+    loading(false, 'loading')
+  }, 300)
 }
 
 onBeforeMount(() => {
@@ -246,6 +252,12 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
+  const _navIsOpen = localStorage.getItem('navIsOpen')
+  const _historyIsOpen = localStorage.getItem('historyIsOpen')
+
+  navIsOpen.value = _navIsOpen === 'true'
+  historyIsOpen.value = _historyIsOpen === 'true'
+
   loading(true, '系統初始化')
 })
 

@@ -33,8 +33,11 @@ const emit = defineEmits<{
 }>()
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
-  get: () => props.isOpen,
-  set: value => emit('update:isOpen', value)
+  get () { return props.isOpen },
+  set (value) {
+    localStorage.setItem('navIsOpen', `${value}`)
+    emit('update:isOpen', value)
+  }
 })
 
 type Breadcrumb = {
@@ -122,7 +125,11 @@ const openUserEffect = (e: MouseEvent) => {
     {
       icon: ['fas', props.historyIsOpen ? 'eye-slash' : 'history'],
       label: `${props.historyIsOpen ? '隱藏' : '顯示' }分頁`,
-      event: () => emit('changeHistory', !props.historyIsOpen)
+      event: () => {
+        const value = !props.historyIsOpen
+        localStorage.setItem('historyIsOpen', `${value}`)
+        emit('changeHistory', value)
+      }
     }
   ], {
     width: 180
