@@ -17,8 +17,8 @@ import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton, CustomPopover, CustomSelect, CustomIcon } from '@/components'
 
-import ColumnSetting from './ColumnSetting.vue'
-import TableMain from './TableMain.vue'
+import ColumnSetting from '../ColumnSetting.vue'
+import TableMain from '../TableMain.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 export interface PageChange {
@@ -266,6 +266,12 @@ const onLoad = () => {
     size: pageSize.value,
     sort: currentSort.value
   })
+
+  onShowChange({
+    page: currentPage.value,
+    pageSize: pageSize.value,
+    sort: currentSort.value
+  })
 }
 
 /**
@@ -288,7 +294,8 @@ const showData = computed(() => {
   if (props.showType === 'custom') {
     return props.tableData
   } else {
-    const start = (currentPage.value - 1) * pageSize.value
+    // const start = (currentPage.value - 1) * pageSize.value
+    const start = 0
     const end = pageSize.value
 
     return (props.tableData as Array<any>).slice(start, end)
@@ -416,6 +423,17 @@ const slotKeyList = computed(() => {
   })
 })
 
+const svg = `
+  <path class="path" d="
+    M 30 15
+    L 28 17
+    M 25.61 25.61
+    A 15 15, 0, 0, 1, 15 30
+    A 15 15, 0, 1, 1, 27.99 7.5
+    L 15 15
+  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+`
+
 </script>
 
 <template>
@@ -498,7 +516,6 @@ const slotKeyList = computed(() => {
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
         :infinite-scroll-disabled="infiniteScrollDisabled"
-        :lazy-loading="lazyLoading"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -508,6 +525,17 @@ const slotKeyList = computed(() => {
       >
         <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
+        </template>
+        <template v-if="props.lazyLoading" #append>
+          <div v-if="props.infiniteScrollDisabled" class="table-append">No more</div>
+          <div
+            v-else
+            v-i-loading="true"
+            element-loading-text="Loading..."
+            :element-loading-spinner="svg"
+            element-loading-svg-view-box="-10, -10, 50, 50"
+            class="table-append"
+          ></div>
         </template>
 
         <template v-if="hasSlot('column-expand')" #column-expand="scope">
@@ -629,6 +657,14 @@ const slotKeyList = computed(() => {
     flex: 1;
     width: 100%;
     position: relative;
+  }
+
+  &-append {
+    width: calc(100% - 12px);
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &-pagination {

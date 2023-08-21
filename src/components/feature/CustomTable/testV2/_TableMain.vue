@@ -4,7 +4,7 @@ import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-import type { Sort } from './CustomTable.vue'
+import type { Sort } from '../CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 import type {
@@ -13,7 +13,7 @@ import type {
   RowStyle,
   CellClassName,
   CellStyle
-} from './CustomTable.vue'
+} from '../CustomTable.vue'
 
 // slot
 const slots = useSlots()
@@ -81,10 +81,6 @@ const props = defineProps({
   infiniteScrollDisabled: {
     type: Boolean as PropType<boolean>,
     description: '是否可以無限滾動'
-  },
-  lazyLoading: {
-    type: Boolean as PropType<boolean>,
-    description: '懶加載'
   }
 })
 
@@ -123,12 +119,10 @@ const load = () => {
 const debounceLoad = debounce(load, 100)
 
 
-// width height rwd
-const tableWidth = ref(500)
-const tableHeight = ref(500)
+// height rwd
+let tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
-    tableWidth.value = entry.contentRect.width
     tableHeight.value = entry.contentRect.height
   })
 }, 100) as ResizeObserverCallback
@@ -152,17 +146,6 @@ const resetScroll = (): void => {
 defineExpose({
   resetScroll
 })
-
-const svg = `
-  <path class="path" d="
-    M 30 15
-    L 28 17
-    M 25.61 25.61
-    A 15 15, 0, 0, 1, 15 30
-    A 15 15, 0, 1, 1, 27.99 7.5
-    L 15 15
-  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-`
 
 </script>
 
@@ -199,22 +182,8 @@ const svg = `
         <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
         </template>
-
-        <template v-if="props.lazyLoading" #append>
-          <div
-            v-if="props.infiniteScrollDisabled"
-            class="table-main-append"
-            :style="`width: ${tableWidth}px;`"
-          >No more</div>
-          <div
-            v-else
-            v-i-loading="true"
-            element-loading-text="Loading..."
-            :element-loading-spinner="svg"
-            element-loading-svg-view-box="-10, -10, 50, 50"
-            class="table-main-append"
-            :style="`width: ${tableWidth}px;`"
-          ></div>
+        <template v-if="hasSlot('append')" #append>
+          <slot name="append"></slot>
         </template>
 
         <template v-if="hasSlot('column-expand')">
@@ -478,11 +447,6 @@ const svg = `
         transition: background-color 0.1s ease-out;
       }
     }
-
-    .el-table__append-wrapper {
-      overflow: visible;
-      position: relative;
-    }
   }
   .caret-wrapper {
     display: inline-flex;
@@ -513,16 +477,6 @@ const svg = `
   }
   &-container {
     display: contents;
-  }
-  &-append {
-    height: 80px;
-    padding: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: sticky;
-    left: 0;
-    top: 0;
   }
 }
 </style>
