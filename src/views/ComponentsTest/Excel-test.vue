@@ -13,6 +13,7 @@ import {
   CustomTable,
   CustomTooltip
 } from '@/components'
+import { downloadStaticFile } from '@/lib/lib_utils'
 
 const hook: Hook = inject('hook')
 const { loading } = hook()
@@ -134,6 +135,10 @@ const tableData2 = [
   }
 ]
 
+const downloadWord = () => {
+  downloadStaticFile('下載word測試.docx')
+}
+
 const tooltipPlacement: TooltipTrigger = 'click'
 </script>
 
@@ -148,6 +153,8 @@ const tooltipPlacement: TooltipTrigger = 'click'
       <CustomButton label="loading-test" type="warning" @click="changeLoading"/>
 
       <CustomButton label="OpenModal" @click="openModal"/>
+
+      <CustomButton label="下載word" @click="downloadWord"/>
 
       <CustomModal
         v-model="modalShow"

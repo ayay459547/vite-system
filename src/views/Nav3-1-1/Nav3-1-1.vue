@@ -5,7 +5,7 @@ import {
   CustomButton
 } from '@/components'
 import { getTableSetting } from '@/lib/lib_columns'
-import { ref, reactive } from 'vue'
+import { ref, onBeforeMount, reactive } from 'vue'
 
 const columnSetting = {
   date: {
@@ -41,31 +41,66 @@ const download = () => {
   downloadExcel(tableData)
 }
 
-const tableData = reactive([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-02',
-    name: 'Caleb',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-04',
-    name: 'Peter',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Amy',
-    address: 'No. 189, Grove St, Los Angeles'
-  }
-])
+const tableData = reactive([])
+
+const disabled = ref(false)
 
 const initData = (props: any) => {
   console.log('init data', props)
+
+  loadData(false)
+}
+
+const loadData = (delay = true) => {
+  const temp = [
+    {
+      date: '2016-05-03',
+      name: 'Tom',
+      address: 'No. 189, Grove St, Los Angeles'
+    },
+    {
+      date: '2016-05-02',
+      name: 'Caleb',
+      address: 'No. 189, Grove St, Los Angeles'
+    },
+    {
+      date: '2016-05-04',
+      name: 'Peter',
+      address: 'No. 189, Grove St, Los Angeles'
+    },
+    {
+      date: '2016-05-01',
+      name: 'Amy',
+      address: 'No. 189, Grove St, Los Angeles'
+    }
+  ].flatMap(item => {
+    const res = []
+
+    for (let i = 0; i < 25; i++) {
+      res.push({
+        date: `${item.date}-${i}`,
+        name: `${item.name}-${i}`,
+        address: `${item.address}-${i}`
+      })
+    }
+
+    return res
+  })
+
+  if (delay) {
+    setTimeout(() => {
+      console.log(temp)
+      tableData.push(...temp)
+
+      if (tableData.length >= 300) {
+        disabled.value = true
+      } else {
+        disabled.value = false
+      }
+    }, 3000)
+  } else {
+    tableData.push(...temp)
+  }
 }
 
 const filterName = ref('')
@@ -78,6 +113,11 @@ const addData = () => {
   })
 }
 
+onBeforeMount(() => {
+  disabled.value = false
+  initData('')
+})
+
 </script>
 
 <template>
@@ -86,12 +126,18 @@ const addData = () => {
       label="測試新增資料"
       @click="addData"
     />
+
     <div class="table-main">
       <CustomTable
         :table-data="tableData"
+        :table-data-count="tableData.length"
         v-bind="tableSetting"
+        lazy-loading
+        :infinite-scroll-disabled="disabled"
+        show-no
         @excel="download"
         @change-setting="initData"
+        @load="loadData"
       >
         <template #header-name="{ column }">
           <CustomInput
@@ -116,6 +162,7 @@ const addData = () => {
     padding: 32px;
     display: flex;
     flex-direction: column;
+    gap: 16px;
   }
   &-main {
     flex: 1;

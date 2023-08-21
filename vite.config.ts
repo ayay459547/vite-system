@@ -24,6 +24,7 @@ export default defineConfig({
     // extensions: ['.js', '.ts', '.vue'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '$': fileURLToPath(new URL('./public', import.meta.url)),
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
     }
   },

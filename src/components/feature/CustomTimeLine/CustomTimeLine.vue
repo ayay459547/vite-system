@@ -16,7 +16,7 @@ export type Options = TimelineItemProps & {
   size?: Size
   hollow?: boolean
   placement?: Placement
-}
+} & any
 
 // slot
 const slots = useSlots()

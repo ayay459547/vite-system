@@ -9,7 +9,7 @@ export type Options = {
   lable?: string
   description?: string
   status?: StatusType | ''
-}
+} & any
 
 // slot
 const slots = useSlots()

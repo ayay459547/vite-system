@@ -263,7 +263,7 @@ export const deepClone = (targetElement: any, origin: any): any => {
  * @param {Object} options 選項
  *  behavior: auto, smooth
  *  block: start, center, end, nearest
- *  inline: start, center, end, nearest"
+ *  inline: start, center, end, nearest'
  */
 export const scrollToEl = (el: Element = document.querySelector('#app'), options: ScrollIntoViewOptions = {}): void => {
   const setting: ScrollIntoViewOptions = {
@@ -311,4 +311,20 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
   const start = (page - 1) * size
 
   return data.splice(start, size)
+}
+
+export const downloadStaticFile = (fileName: string) => {
+  const a = document.createElement('a')
+
+  if (mode !== 'development') {
+    a.href = `$/static/${fileName}`
+  } else {
+    a.href = `/static/${fileName}`
+  }
+
+  a.download = `${fileName}`
+  a.style.display = 'none'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
 }

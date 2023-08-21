@@ -100,19 +100,31 @@ export interface Props extends Record<string, any> {
   rowStyle?: RowStyle
   cellClassName?: CellClassName
   cellStyle?: CellStyle
+
+  showNo?: boolean
   /**
    * 表單顯示相關
    * page 當前分頁
    * pageSize 顯示筆數
    * tableDataCount 資料總筆數 計算頁數用
-   * showType: custom 依據api切資料
-   *           auto 依據 page 和 pageSize 切資料
+   * showType:
+   *    custom 依據api切資料
+   *    auto 依據 page 和 pageSize 切資料
    */
   page?: number
   pageSize?: number
   sort?: Sort
   showType?: 'custom' | 'auto'
   hiddenExcel?: boolean
+  /**
+   * 資料懶加載
+   * lazyLoading: 是否啟用
+   * infiniteScrollDisabled:
+   *    ture: 當沒資料時 不用再 emit load 事件
+   *    false: 滾動到底時 emit load
+   */
+  lazyLoading?: boolean
+  infiniteScrollDisabled?: boolean
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -127,13 +139,16 @@ const props: Props = withDefaults(defineProps<Props>(), {
   defaultExpandAll: false,
   spanMethod: null,
   rowClassName: null,
+  showNo: false,
   page: 1,
   pageSize: 100,
   sort: () => {
     return { key: null, order: null }
   },
   showType: 'custom',
-  hiddenExcel: false
+  hiddenExcel: false,
+  lazyLoading: false,
+  infiniteScrollDisabled: true
 })
 
 const emit = defineEmits([
@@ -146,7 +161,8 @@ const emit = defineEmits([
   'size-change',
   'show-change',
   'expand-change',
-  'header-dragend'
+  'header-dragend',
+  'load'
 ])
 
 const loading = ref(true)
@@ -243,6 +259,19 @@ const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event:
     columnSetting.value.setColumnWidth(props, newWidth)
   }
   emit('header-dragend', newWidth, oddWidth, column, event)
+}
+const onLoad = () => {
+  emit('load', {
+    page: ++currentPage.value,
+    size: pageSize.value,
+    sort: currentSort.value
+  })
+
+  onShowChange({
+    page: currentPage.value,
+    pageSize: pageSize.value,
+    sort: currentSort.value
+  })
 }
 
 /**
@@ -394,6 +423,17 @@ const slotKeyList = computed(() => {
   })
 })
 
+const svg = `
+  <path class="path" d="
+    M 30 15
+    L 28 17
+    M 25.61 25.61
+    A 15 15, 0, 0, 1, 15 30
+    A 15 15, 0, 1, 1, 27.99 7.5
+    L 15 15
+  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+`
+
 </script>
 
 <template>
@@ -450,7 +490,7 @@ const slotKeyList = computed(() => {
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomSelect
             v-model="pageSize"
-            label="顯示筆數 : "
+            :label="`${!props.lazyLoading ? '顯示筆數' : '單次載入筆數'}:`"
             :options="sizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -463,6 +503,7 @@ const slotKeyList = computed(() => {
       <TableMain
         v-if="isRender"
         ref="elTableRef"
+        :show-no="props.showNo"
         :render-key="renderKey"
         :show-data="showData"
         :show-columns="showColumns"
@@ -474,17 +515,27 @@ const slotKeyList = computed(() => {
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
+        :infinite-scroll-disabled="infiniteScrollDisabled"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
         @header-dragend="onHeaderDragend"
+        @load="onLoad"
       >
-        <template v-if="hasSlot('empty')">
+        <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
         </template>
-        <template v-if="hasSlot('append')">
-          <slot name="append"></slot>
+        <template v-if="props.lazyLoading" #append>
+          <div v-if="props.infiniteScrollDisabled" class="table-append">No more</div>
+          <div
+            v-else
+            v-i-loading="true"
+            element-loading-text="Loading..."
+            :element-loading-spinner="svg"
+            element-loading-svg-view-box="-10, -10, 50, 50"
+            class="table-append"
+          ></div>
         </template>
 
         <template v-if="hasSlot('column-expand')" #column-expand="scope">
@@ -513,6 +564,7 @@ const slotKeyList = computed(() => {
       <div class="table-pagination-left"></div>
       <div class="table-pagination-center">
         <ElPagination
+          v-if="!props.lazyLoading"
           background
           layout="prev, pager, next"
           :total="props.tableDataCount"
@@ -522,7 +574,7 @@ const slotKeyList = computed(() => {
         />
       </div>
       <div class="table-pagination-right">
-        <span>總筆數：{{ props.tableDataCount }}</span>
+        <span>{{ `${!props.lazyLoading ? '總筆數' : '資料筆數'}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>
@@ -605,6 +657,14 @@ const slotKeyList = computed(() => {
     flex: 1;
     width: 100%;
     position: relative;
+  }
+
+  &-append {
+    width: calc(100% - 12px);
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &-pagination {

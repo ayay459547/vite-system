@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
+import debounce from '@/lib/lib_debounce'
 import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
@@ -41,6 +42,11 @@ const props = defineProps({
     required: true,
     description: '資料存在 children 時 預設是否展開'
   },
+  showNo: {
+    type: Boolean as PropType<boolean>,
+    required: true,
+    description: '重新渲染用的key'
+  },
   // element ui
   rowKey: {
     type: String as PropType<string>,
@@ -71,6 +77,10 @@ const props = defineProps({
   cellStyle: {
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
+  },
+  infiniteScrollDisabled: {
+    type: Boolean as PropType<boolean>,
+    description: '是否可以無限滾動'
   }
 })
 
@@ -79,7 +89,8 @@ const emit = defineEmits([
   'sort-change',
   'header-click',
   'expand-change',
-  'header-dragend'
+  'header-dragend',
+  'load'
 ])
 
 const onRowClick = (row: any, column: any, event: Event) => {
@@ -102,6 +113,10 @@ const onExpandChange = (row: any, expanded: boolean) => {
 const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
+const load = () => {
+  emit('load')
+}
+const debounceLoad = debounce(load, 100)
 
 
 // height rwd
@@ -140,10 +155,11 @@ defineExpose({
       <ElTable
         ref="elTableRef"
         stripe
+        scrollbar-always-on
+        :border="true"
         :key="props.renderKey"
         :data="props.showData"
         :height="tableHeight"
-        :border="true"
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
         :default-sort="{
@@ -155,16 +171,18 @@ defineExpose({
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
+        v-el-table-infinite-scroll="debounceLoad"
+        :infinite-scroll-disabled="infiniteScrollDisabled"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
         @header-dragend="onHeaderDragend"
       >
-        <template v-if="hasSlot('empty')">
+        <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
         </template>
-        <template v-if="hasSlot('append')">
+        <template v-if="hasSlot('append')" #append>
           <slot name="append"></slot>
         </template>
 
@@ -181,6 +199,20 @@ defineExpose({
             </template>
           </ElTableColumn>
         </template>
+
+        <ElTableColumn
+          v-if="props.showNo"
+          width="80"
+          :align="'center'"
+          key="__data-no"
+          prop="__data-no"
+          label="#"
+          :sortable="false"
+        >
+          <template #default="scope">
+            <span>{{ scope.$index + 1 }}</span>
+          </template>
+        </ElTableColumn>
 
         <template v-for="column in showColumns" :key="column.prop">
           <template v-if="column.columns && column.columns.length > 0">

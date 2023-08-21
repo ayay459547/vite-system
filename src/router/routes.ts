@@ -251,7 +251,7 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav3-1-1',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav3-1-1/Nav3-1-1.vue')
           },
           {
             name: 'nav3-1-2',
