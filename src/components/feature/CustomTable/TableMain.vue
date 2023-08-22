@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
+import debounce from '@/lib/lib_debounce'
 import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
@@ -156,10 +157,23 @@ onMounted(() => {
       IO = new IntersectionObserver(IOcallback, {
         root: tableMainRef.value,
         rootMargin: '0px 0px 0px 0px',
-        threshold: 1
+        threshold: 0.5
       })
       IO.observe(loadMoreRef.value)
     }
+  }
+
+  const debounceScollHandler = debounce(() => {
+    console.log('test 777')
+  }, 100)
+  /**
+   * 測試拿 elScrollbar
+   * 使用 scrollbar 的距離 切出顯示的資料
+   * 虛擬渲染dom
+   */
+  if(elTableRef.value) {
+    const scrollbar = elTableRef.value.scrollBarRef.wrapRef
+    scrollbar.addEventListener('scroll', debounceScollHandler)
   }
 })
 onUnmounted(() => {
