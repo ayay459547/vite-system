@@ -43,7 +43,7 @@ const download = () => {
 
 const tableData = reactive([])
 
-const disabled = ref(false)
+const lazyLoadingStatus = ref('loadMore')
 
 const initData = (props: any) => {
   console.log('init data', props)
@@ -52,6 +52,8 @@ const initData = (props: any) => {
 }
 
 const loadData = (delay = true) => {
+  lazyLoadingStatus.value = 'loading'
+
   const temp = [
     {
       date: '2016-05-03',
@@ -93,13 +95,16 @@ const loadData = (delay = true) => {
       tableData.push(...temp)
 
       if (tableData.length >= 300) {
-        disabled.value = true
+        lazyLoadingStatus.value = 'noMore'
       } else {
-        disabled.value = false
+        lazyLoadingStatus.value = 'loadMore'
       }
     }, 3000)
   } else {
-    tableData.push(...temp)
+    setTimeout(() => {
+      tableData.push(...temp)
+      lazyLoadingStatus.value = 'loadMore'
+    }, 0)
   }
 }
 
@@ -114,7 +119,7 @@ const addData = () => {
 }
 
 onBeforeMount(() => {
-  disabled.value = false
+  lazyLoadingStatus.value = 'loadMore'
   initData('')
 })
 
@@ -133,7 +138,7 @@ onBeforeMount(() => {
         :table-data-count="tableData.length"
         v-bind="tableSetting"
         lazy-loading
-        :infinite-scroll-disabled="disabled"
+        :lazy-loading-status="lazyLoadingStatus"
         show-no
         @excel="download"
         @change-setting="initData"

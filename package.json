@@ -31,7 +31,6 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
     "echarts": "^5.4.2",
-    "el-table-infinite-scroll": "^3.0.1",
     "element-plus": "^2.3.0",
     "exceljs": "^4.3.0",
     "idb": "^7.1.1",

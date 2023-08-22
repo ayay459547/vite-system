@@ -22,7 +22,7 @@ import TableMain from './TableMain.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 export interface PageChange {
-  (page: number, pageSize: number): void
+  (page: number, pageSize: number, ...payload: any[]): void
 }
 
 export interface Sort {
@@ -63,6 +63,7 @@ type CellCallback<T> = (
 ) | null
 export type CellClassName = CellCallback<string>
 export type CellStyle = CellCallback<Record<string, any>>
+export type LazyLoadingStatus = 'loadMore' | 'loading' | 'noMore'
 
 export interface Props extends Record<string, any> {
   /**
@@ -119,12 +120,10 @@ export interface Props extends Record<string, any> {
   /**
    * 資料懶加載
    * lazyLoading: 是否啟用
-   * infiniteScrollDisabled:
-   *    ture: 當沒資料時 不用再 emit load 事件
-   *    false: 滾動到底時 emit load
+   * lazyLoadingStatus: 狀態
    */
   lazyLoading?: boolean
-  infiniteScrollDisabled?: boolean
+  lazyLoadingStatus?: LazyLoadingStatus
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -148,7 +147,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   showType: 'custom',
   hiddenExcel: false,
   lazyLoading: false,
-  infiniteScrollDisabled: true
+  lazyLoadingStatus: 'noMore'
 })
 
 const emit = defineEmits([
@@ -203,7 +202,7 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const elTableRef = ref(null)
+const tableMainRef = ref(null)
 const pageChange: PageChange = (page, pageSize) => {
   currentPage.value = page
 
@@ -214,8 +213,8 @@ const pageChange: PageChange = (page, pageSize) => {
     sort: currentSort.value
   })
 
-  if (elTableRef.value) {
-    elTableRef.value.resetScroll()
+  if (tableMainRef.value) {
+    tableMainRef.value.resetScroll()
   }
 }
 
@@ -484,7 +483,7 @@ const slotKeyList = computed(() => {
     <div class="table-container">
       <TableMain
         v-if="isRender"
-        ref="elTableRef"
+        ref="tableMainRef"
         :show-no="props.showNo"
         :render-key="renderKey"
         :show-data="showData"
@@ -497,8 +496,8 @@ const slotKeyList = computed(() => {
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
-        :infinite-scroll-disabled="infiniteScrollDisabled"
         :lazy-loading="lazyLoading"
+        :lazy-loading-status="props.lazyLoadingStatus"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"

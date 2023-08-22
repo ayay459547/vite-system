@@ -3,7 +3,6 @@ import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
 import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
@@ -12,8 +11,10 @@ import type {
   RowClassName,
   RowStyle,
   CellClassName,
-  CellStyle
+  CellStyle,
+  LazyLoadingStatus
 } from './CustomTable.vue'
+import { CustomButton } from '@/components'
 
 // slot
 const slots = useSlots()
@@ -78,13 +79,13 @@ const props = defineProps({
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
   },
-  infiniteScrollDisabled: {
-    type: Boolean as PropType<boolean>,
-    description: '是否可以無限滾動'
-  },
   lazyLoading: {
     type: Boolean as PropType<boolean>,
     description: '懶加載'
+  },
+  lazyLoadingStatus: {
+    type: String as PropType<LazyLoadingStatus>,
+    description: '懶加載狀態'
   }
 })
 
@@ -117,13 +118,9 @@ const onExpandChange = (row: any, expanded: boolean) => {
 const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const load = () => {
-  emit('load')
-}
-const debounceLoad = debounce(load, 100)
 
-
-// width height rwd
+// 監聽寬度高度變化
+const tableMainRef = ref(null)
 const tableWidth = ref(500)
 const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
@@ -134,14 +131,40 @@ const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
 }, 100) as ResizeObserverCallback
 const RO = new ResizeObserver(ROcallback)
 
-const tableMain = ref(null)
+// 滾動到底時 emit load
+const loadMoreRef = ref(null)
+const load = () => {
+  if (props.lazyLoadingStatus === 'loadMore') {
+    emit('load')
+  }
+}
+const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
+  entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
+    const { isIntersecting, isVisible } = entry
+    if (isIntersecting) {
+      load()
+    }
+  })
+}, 300) as IntersectionObserverCallback
+let IO = null
+
 onMounted(() => {
-  if (tableMain.value !== null) {
-    RO.observe(tableMain.value)
+  if (tableMainRef.value !== null) {
+    RO.observe(tableMainRef.value)
+
+    if (loadMoreRef.value !== null) {
+      IO = new IntersectionObserver(IOcallback, {
+        root: tableMainRef.value,
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 1
+      })
+      IO.observe(loadMoreRef.value)
+    }
   }
 })
 onUnmounted(() => {
   RO.disconnect()
+  IO.disconnect()
 })
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
@@ -167,7 +190,7 @@ const svg = `
 </script>
 
 <template>
-  <div ref="tableMain" class="table-main-wrapper">
+  <div ref="tableMainRef" class="table-main-wrapper">
     <div class="table-main-container">
       <ElTable
         ref="elTableRef"
@@ -188,8 +211,6 @@ const svg = `
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
-        v-el-table-infinite-scroll="debounceLoad"
-        :infinite-scroll-disabled="infiniteScrollDisabled"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -200,21 +221,44 @@ const svg = `
           <slot name="empty"></slot>
         </template>
 
+        <!-- 滾動到底 emit load -->
         <template v-if="props.lazyLoading" #append>
           <div
-            v-if="props.infiniteScrollDisabled"
+            v-show="props.lazyLoadingStatus === 'noMore'"
             class="table-main-append"
             :style="`width: ${tableWidth}px;`"
-          >No more</div>
+          >
+            無更多資料
+          </div>
+
           <div
-            v-else
-            v-i-loading="true"
-            element-loading-text="Loading..."
-            :element-loading-spinner="svg"
-            element-loading-svg-view-box="-10, -10, 50, 50"
+            v-show="props.lazyLoadingStatus === 'loading'"
             class="table-main-append"
             :style="`width: ${tableWidth}px;`"
-          ></div>
+          >
+            <div
+              style="width: 100%; height: 50px;"
+              v-i-loading="true"
+              element-loading-text="Loading..."
+              :element-loading-spinner="svg"
+              element-loading-svg-view-box="-10, -10, 50, 50"
+            ></div>
+            <div style="width: 100%; height: 30px;"></div>
+          </div>
+
+          <div
+            v-show="props.lazyLoadingStatus === 'loadMore'"
+            class="table-main-append"
+            :style="`width: ${tableWidth}px;`"
+          >
+            <CustomButton
+              label="載入更多資料"
+              type="info"
+              text
+              @click="load"
+            />
+            <div ref="loadMoreRef" class="load-more"></div>
+          </div>
         </template>
 
         <template v-if="hasSlot('column-expand')">
@@ -231,19 +275,20 @@ const svg = `
           </ElTableColumn>
         </template>
 
-        <ElTableColumn
-          v-if="props.showNo"
-          width="80"
-          :align="'center'"
-          key="__data-no"
-          prop="__data-no"
-          label="#"
-          :sortable="false"
-        >
-          <template #default="scope">
-            <span>{{ scope.$index + 1 }}</span>
-          </template>
-        </ElTableColumn>
+        <template v-if="props.showNo">
+          <ElTableColumn
+            width="80"
+            :align="'center'"
+            key="__data-no"
+            prop="__data-no"
+            label="#"
+            :sortable="false"
+          >
+            <template #default="scope">
+              <span>{{ scope.$index + 1 }}</span>
+            </template>
+          </ElTableColumn>
+        </template>
 
         <template v-for="column in showColumns" :key="column.prop">
           <template v-if="column.columns && column.columns.length > 0">
@@ -518,11 +563,20 @@ const svg = `
     height: 80px;
     padding: 12px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: sticky;
     left: 0;
     top: 0;
+
+    .load-more {
+      width: 100px;
+      height: 2px;
+      position: absolute;
+      bottom: 0;
+      background-color: #ff000000;
+    }
   }
 }
 </style>

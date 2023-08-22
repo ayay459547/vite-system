@@ -91,7 +91,7 @@ export const getUuid = (): string => {
 /**
  * @author Caleb
  * @description 判斷 slot 是否存在
- * @param prop slot 名稱
+ * @param {String} prop slot 名稱
  * @returns {Boolean}
  */
 export const hasSlot = (prop: string): boolean => {
@@ -160,8 +160,8 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
 /**
  * @author Caleb
  * @description 數字取四捨五入到第n位
- * @param num 要四捨五入的數字
- * @param n 取小數點到第n位
+ * @param {Number} num 要四捨五入的數字
+ * @param {Number} n 取小數點到第n位
  * @returns {Number}
  */
 export const round = (num: number, n = 2): number => {
@@ -171,8 +171,8 @@ export const round = (num: number, n = 2): number => {
 /**
  * @author Caleb
  * @description https://day.js.org/docs/en/display/format
- * @param value 日期
- * @param format 想要的格式
+ * @param {String} value 日期
+ * @param {String} format 想要的格式
  * @returns {String} 格式化後的日期
  */
 export const datetimeFormat = (value: string, format: string): string => {
@@ -182,7 +182,7 @@ export const datetimeFormat = (value: string, format: string): string => {
 /**
  * @author Caleb
  * @description Swal 互動式彈窗
- * @param options 自訂選項
+ * @param {Object} options 自訂選項
  * @returns {Promise}
  */
 export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
@@ -292,7 +292,7 @@ export type PageI18n = Partial<Composer & {
 /**
  * @author Caleb
  * @description 針對各頁面 設定翻譯 不影響其他地方
- * @param langMap 設定key 對應的語言顯示的資料
+ * @param {Object} langMap 設定key 對應的語言顯示的資料
  * @returns {Object} 翻譯工具
  */
 export const usePageI18n = (langMap: LangMap): PageI18n => {
@@ -307,12 +307,25 @@ export const usePageI18n = (langMap: LangMap): PageI18n => {
   }
 }
 
+/**
+ * @author Caleb
+ * @description 手動將資料 依照分頁資訊 做切割
+ * @param {Number} page 當前頁碼
+ * @param {Number} size 顯示筆數
+ * @param {Array} data 資料
+ * @returns {Array} 切完後的資料
+ */
 export const cutTableData = (page: number, size: number, data: any[]): any[] => {
   const start = (page - 1) * size
 
   return data.splice(start, size)
 }
 
+/**
+ * @author Caleb
+ * @description 下載靜態檔案 檔案放在 pubic/static 下
+ * @param {String} fileName 檔案名
+ */
 export const downloadStaticFile = (fileName: string) => {
   const a = document.createElement('a')
 

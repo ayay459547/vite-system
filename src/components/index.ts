@@ -71,7 +71,12 @@ export declare interface CustomTableExpose {
   pageChange: PageChange
   getTableParams: () => TableParams
 }
-export type { PageChange, TableParams, Sort } from './feature/CustomTable/CustomTable.vue'
+export type {
+  PageChange,
+  TableParams,
+  Sort,
+  LazyLoadingStatus
+} from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 export type {
