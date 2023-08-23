@@ -10,7 +10,7 @@ import {
 import type { TableColumnCtx } from 'element-plus'
 import { ElPagination } from 'element-plus'
 
-import { tipLog } from '@/lib/lib_utils'
+import { tipLog, isEmpty } from '@/lib/lib_utils'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
@@ -41,14 +41,14 @@ export type SpanMethod = (
     column: TableColumnCtx<any>,
     rowIndex: number,
     columnIndex: number
-  }) => number[] | { rowspan: number, colspan: number } | void
+  }, ...payload: any[]) => number[] | { rowspan: number, colspan: number } | void
 ) | null
 
 type RowCallback<T> = (
   (data: {
     row: any,
     rowIndex: number
-  }) => T
+  }, ...payload: any[]) => T
 ) | null
 export type RowClassName = RowCallback<string>
 export type RowStyle = RowCallback<Record<string, any>>
@@ -59,7 +59,7 @@ type CellCallback<T> = (
     column: TableColumnCtx<any>,
     rowIndex: number,
     columnIndex: number
-  }) => T
+  }, ...payload: any[]) => T
 ) | null
 export type CellClassName = CellCallback<string>
 export type CellStyle = CellCallback<Record<string, any>>
@@ -186,9 +186,17 @@ const sizeOptions = [
   { value: 30, label: '30' },
   { value: 50, label: '50' },
   { value: 100, label: '100' },
-  { value: 200, label: '200' },
-  { value: 300, label: '300' }
+  { value: 300, label: '300' },
+  { value: 500, label: '500' }
 ]
+const lazyLoadSizeOptions = [
+  { value: 100, label: '100' },
+  { value: 500, label: '500' },
+  { value: 1000, label: '1000' },
+  { value: 5000, label: '5000' },
+  { value: -1, label: '全部' }
+]
+
 const onSizeChange = (v: number) => {
   pageChange(1, v)
 
@@ -374,6 +382,41 @@ defineExpose({
       size: pageSize.value,
       sort: currentSort.value
     }
+  },
+  setTableParams: (param: {
+    page?: number
+    size?: number
+    sort?: Sort
+  }) => {
+    const {
+      page,
+      size,
+      sort
+    } = param
+
+    if (!isEmpty(page) && (typeof page === 'number')) {
+      currentPage.value = page
+    }
+    if (!isEmpty(size)) {
+      const _index = ((lazyLoading) => {
+        if (lazyLoading) {
+          return lazyLoadSizeOptions.findIndex(option => {
+            option.value === size
+          })
+        } else {
+          return sizeOptions.findIndex(option => {
+            option.value === size
+          })
+        }
+      })(props.lazyLoading)
+
+      if (_index >= 0) {
+        pageSize.value = size
+      }
+    }
+    if (!isEmpty(sort)) {
+      currentSort.value = sort
+    }
   }
 })
 
@@ -470,9 +513,18 @@ const slotKeyList = computed(() => {
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomSelect
+            v-if="!props.lazyLoading"
             v-model="pageSize"
-            :label="`${!props.lazyLoading ? '顯示筆數' : '載入筆數'}:`"
+            label="顯示筆數"
             :options="sizeOptions"
+            direction="row"
+            @change="onSizeChange"
+          />
+          <CustomSelect
+            v-if="props.lazyLoading"
+            v-model="pageSize"
+            label="載入筆數"
+            :options="lazyLoadSizeOptions"
             direction="row"
             @change="onSizeChange"
           />
@@ -487,6 +539,7 @@ const slotKeyList = computed(() => {
         :show-no="props.showNo"
         :render-key="renderKey"
         :show-data="showData"
+        :table-data-count="tableDataCount"
         :show-columns="showColumns"
         :sort="props.sort"
         :row-key="props.rowKey"

@@ -8,6 +8,14 @@ import { getTableSetting } from '@/lib/lib_columns'
 import { ref, onBeforeMount, reactive } from 'vue'
 
 const columnSetting = {
+  no: {
+    label: '項次',
+    table: {
+      width: 80,
+      align: 'left',
+      sortable: false
+    }
+  },
   date: {
     label: '生日',
     table: {
@@ -32,7 +40,7 @@ const columnSetting = {
 
 const tableOptions = {
   title: '測試表單',
-  version: '1.0.0',
+  version: '1.0.1',
   settingKey: 'test'
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -45,11 +53,11 @@ const tableData = reactive([])
 
 const lazyLoadingStatus = ref('loadMore')
 
-const initData = (props: any) => {
-  console.log('init data', props)
-
+const initData = () => {
   loadData(false)
 }
+
+let no = 1
 
 const loadData = (delay = true) => {
   lazyLoadingStatus.value = 'loading'
@@ -80,6 +88,7 @@ const loadData = (delay = true) => {
 
     for (let i = 0; i < 25; i++) {
       res.push({
+        no: `${no++}`,
         date: `${item.date}-${i}`,
         name: `${item.name}-${i}`,
         address: `${item.address}-${i}`
@@ -120,7 +129,7 @@ const addData = () => {
 
 onBeforeMount(() => {
   lazyLoadingStatus.value = 'loadMore'
-  initData('')
+  initData()
 })
 
 </script>
