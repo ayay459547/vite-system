@@ -108,8 +108,8 @@ export type {
 } from './feature/CustomTimeLine/CustomTimeLine.vue'
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
-// export { default as SimpleTable } from './feature/SimpleTable/SimpleTable'
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
+export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
 // form
 export { default as FormCheckbox } from './form/FormCheckbox.vue'

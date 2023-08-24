@@ -152,7 +152,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav-1-2-5',
-            title: '選單1-2-5',
+            title: 'QRcode',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -161,7 +161,8 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav-1-2-5',
-            component: () => import('@/views/Common/EmptyView.vue')
+            icon: 'qrcode',
+            component: () => import('@/views/Nav1-2-5/Nav1-2-5.vue')
           }
         ]
       },
