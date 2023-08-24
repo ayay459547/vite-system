@@ -317,8 +317,9 @@ export const usePageI18n = (langMap: LangMap): PageI18n => {
  */
 export const cutTableData = (page: number, size: number, data: any[]): any[] => {
   const start = (page - 1) * size
+  const end = start + size
 
-  return data.splice(start, size)
+  return data.splice(start, end)
 }
 
 /**

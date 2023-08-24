@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
 const isOpen = ref(false)
 const massage = ref('Loading')
@@ -7,29 +7,51 @@ const massage = ref('Loading')
 const minTime = 500
 const openTime = ref<number | null>(null)
 
+const barPercentage = ref(0)
+
+let timer = null
+
 interface Expose {
   openLoader: (message: string) => void
   closeLoader: () => void
 }
 
+const close = async () => {
+  barPercentage.value = 100
+  await nextTick()
+
+  setTimeout(() => {
+    isOpen.value = false
+    if (timer) clearInterval(timer)
+  }, 200)
+}
+
 defineExpose<Expose>({
   openLoader: (message: string) => {
+    barPercentage.value = 0
     massage.value = message
 
     if (isOpen.value) return
     isOpen.value = true
     openTime.value = Date.now()
+
+    timer = setInterval(() => {
+      if (barPercentage.value < 90) {
+        barPercentage.value += Math.floor(Math.random() * 10)
+      } else {
+        clearInterval(timer)
+      }
+    }, 1000)
   },
   // 至少大於一段時間才能關閉 不然會閃一下
   closeLoader: () => {
     if (!isOpen.value) return
 
     if (Date.now() >= openTime.value + minTime) {
-      isOpen.value = false
-
+      close()
     } else {
       setTimeout(() => {
-        isOpen.value = false
+        close()
       }, minTime)
     }
   }
@@ -49,6 +71,10 @@ defineExpose<Expose>({
           <div class="loader-shadow"></div>
           <div class="loader-loading">{{ massage }}</div>
       </div>
+      <div
+        class="loader-bar"
+        :style="`width: calc(${barPercentage}% - 2px)`"
+      ></div>
     </div>
   </Transition>
 </template>
@@ -158,6 +184,16 @@ defineExpose<Expose>({
     letter-spacing: 12px;
     color: #464646;
     white-space: nowrap;
+  }
+
+  &-bar {
+    height: 10px;
+    border-radius: 4px;
+    background-color: $system-bg-color;
+    position: absolute;
+    bottom: 1px;
+    left: 1px;
+    transition-duration: 0.3s;
   }
 }
 </style>

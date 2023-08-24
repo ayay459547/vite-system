@@ -30,9 +30,9 @@ export interface Sort {
   order: null | 'ascending' | 'descending'
 }
 export interface TableParams {
-  page?: number
-  size?: number
-  sort?: Sort
+  page: number
+  size: number
+  sort: Sort
 }
 
 export type SpanMethod = (
@@ -383,7 +383,7 @@ defineExpose({
       sort: currentSort.value
     }
   },
-  setTableParams: (params: {
+  setTableParams: (param: {
     page?: number
     size?: number
     sort?: Sort
@@ -392,7 +392,7 @@ defineExpose({
       page,
       size,
       sort
-    } = params
+    } = param
 
     if (!isEmpty(page) && (typeof page === 'number')) {
       currentPage.value = page

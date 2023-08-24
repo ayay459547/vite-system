@@ -39,15 +39,31 @@ const columnSetting = {
   }
 }
 
-const tableOptions = {
+const tableOptions1 = {
   title: '測試表單',
   version: '1.0.1',
-  settingKey: 'test'
+  settingKey: 'test-1'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const {
+  tableSetting: tableSetting1,
+  downloadExcel: downloadExcel1
+} = getTableSetting(columnSetting, 'table', tableOptions1)
+const download1 = () => {
+  downloadExcel1(tableData)
+}
 
-const download = () => {
-  downloadExcel(tableData)
+
+const tableOptions2 = {
+  title: '測試表單',
+  version: '1.0.1',
+  settingKey: 'test-2'
+}
+const {
+  tableSetting: tableSetting2,
+  downloadExcel: downloadExcel2
+} = getTableSetting(columnSetting, 'table', tableOptions2)
+const download2 = () => {
+  downloadExcel2(tableData)
 }
 
 const tableData = reactive([])
@@ -87,7 +103,7 @@ const loadData = (delay = true) => {
   ].flatMap(item => {
     const res = []
 
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 125; i++) {
       res.push({
         no: `${no++}`,
         date: `${item.date}-${i}`,
@@ -113,7 +129,8 @@ const loadData = (delay = true) => {
   } else {
     setTimeout(() => {
       tableData.push(...temp)
-      lazyLoadingStatus.value = 'loadMore'
+      // lazyLoadingStatus.value = 'loadMore'
+      lazyLoadingStatus.value = 'noMore'
     }, 0)
   }
 }
@@ -138,7 +155,7 @@ onBeforeMount(() => {
 <template>
   <div class="table-test">
     <div class="flex-row-center i-ga-md">
-      <label>Element ui plus table 手寫虛擬列表</label>
+      <label>Element ui plus table Clusterize.js 虛擬列表</label>
 
       <CustomButton
         label="測試新增資料"
@@ -150,11 +167,34 @@ onBeforeMount(() => {
       <CustomTable
         :table-data="tableData"
         :table-data-count="tableData.length"
-        v-bind="tableSetting"
+        v-bind="tableSetting1"
         lazy-loading
         :lazy-loading-status="lazyLoadingStatus"
         show-no
-        @excel="download"
+        @excel="download1"
+        @change-setting="initData"
+        @load="loadData"
+      >
+        <template #header-name="{ column }">
+          <CustomInput
+            v-model="filterName"
+            direction="row"
+            :label="column.label"
+          />
+        </template>
+        <template #header-date="{ column }">
+          {{  column.label }}
+        </template>
+      </CustomTable>
+
+      <CustomTable
+        :table-data="tableData"
+        :table-data-count="tableData.length"
+        v-bind="tableSetting2"
+        lazy-loading
+        :lazy-loading-status="lazyLoadingStatus"
+        show-no
+        @excel="download2"
         @change-setting="initData"
         @load="loadData"
       >

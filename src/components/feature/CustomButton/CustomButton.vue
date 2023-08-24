@@ -70,6 +70,11 @@ const props = defineProps({
     required: false,
     default: false
   },
+  loading: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  },
   color: {
     type: String as PropType<string |  undefined>,
     required: false,
@@ -110,9 +115,10 @@ const onClick = ($event: Event) => {
         :circle="props.circle"
         :disabled="props.disabled"
         :color="props.color"
+        :loading="props.loading"
         @click="onClick"
       >
-        <template v-if="props.iconName.length > 0" #icon>
+        <template v-if="!props.loading && props.iconName.length > 0" #icon>
           <CustomIcon
             class="icon"
             :class="`icon-${iconMove}`"

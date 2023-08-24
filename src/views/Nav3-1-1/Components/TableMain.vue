@@ -5,7 +5,11 @@ import {
   ref,
   onMounted,
   onUnmounted,
-  computed
+  computed,
+  h,
+  createVNode,
+  render,
+  nextTick
 } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
@@ -130,6 +134,96 @@ const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event:
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
 
+// 虛擬列表渲染 計算
+const rowHeight = 40
+const appendHeight = 80
+let spliceCount = 0 // 切割的長度依照表單高度
+
+const bufferCount = 15 // 上下有緩衝用的資料 滾動時比較自然
+const virtualMarginTop = ref(0)
+const spliceData = ref([])
+
+const totalHeight = computed<number>(() => {
+  // 資料新增時 重新渲染虛擬列表
+  setTableView(true)
+  return props.tableDataCount * rowHeight + appendHeight
+})
+
+interface ElementStyle extends Element { style: any }
+let scrollbarRef = null
+let scrollbarWrapper = null
+let showDataTable = null
+let appendDiv = null
+let prevScrollTop = 0
+
+const setSpliceData = (start: number, _spliceCount: number) => {
+  // macrotask queue 效能優化
+  setTimeout(async () => {
+    spliceData.value = props.showData.slice(start, start + _spliceCount)
+  }, 0)
+}
+
+/**
+ * 拿 elScrollbar
+ * 使用 scrollbar 的距離 切出顯示的資料
+ * 虛擬渲染dom
+ */
+const setTableView = (isMandatoryReset: boolean) => {
+  if (scrollbarWrapper as (Element | null)) {
+    scrollbarRef.update()
+
+    let _scrollTop = scrollbarWrapper.scrollTop
+    const start = Math.max(Math.floor(_scrollTop / rowHeight) - bufferCount, 0)
+
+    const isResetView = (
+      // 高度變化不大 不用在渲染
+      ((_scrollTop > prevScrollTop + 10) || (_scrollTop < prevScrollTop - 10)) &&
+      // 最後面資料 不用再切了
+      (start + spliceCount) < (props.tableDataCount + bufferCount)
+    )
+
+    if (isMandatoryReset || isResetView) {
+      setSpliceData(start, spliceCount)
+
+      const _translateY = Math.max(_scrollTop - rowHeight * bufferCount, 0)
+      showDataTable.style.transform = `translateY(${_translateY}px)`
+      appendDiv.style.transform = `translateY(${_translateY}px)`
+    }
+    prevScrollTop = _scrollTop
+  }
+}
+const throttleScollHandler = throttle(async () => {
+  setTableView(false)
+}, 80)
+
+/**
+ * 虛擬列表的高度
+ * 全部資料高度 - (表單資料的高度 + append區的高度)
+ */
+const insertVirtualDom = () => {
+  const insertPosition = document.querySelector('.el-scrollbar__view')
+  // const insertPosition = document.querySelector('.el-table__body')
+
+  const tempVirtualDom = () => {
+    return h(
+      'div',
+      {
+        class: 'table-main-virtual',
+        style: {
+          height: `${totalHeight.value}px`,
+          marginTop: `-${virtualMarginTop.value}px`
+        }
+      },
+      `${props.tableDataCount} => ${totalHeight.value}px`
+    )
+  }
+  const virtualDom = createVNode(tempVirtualDom, null)
+
+  if (insertPosition) {
+    render(virtualDom, insertPosition)
+  }
+}
+
 // 監聽寬度高度變化
 const tableMainRef = ref(null)
 const tableWidth = ref(500)
@@ -137,7 +231,12 @@ const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
     tableWidth.value = entry.contentRect.width
-    tableHeight.value = entry.contentRect.height
+
+    const _tableHeight = entry.contentRect.height
+    tableHeight.value = _tableHeight
+
+    spliceCount = Math.floor(_tableHeight / rowHeight) + bufferCount * 2
+    virtualMarginTop.value = spliceCount * rowHeight + appendHeight
   })
 }, 100) as ResizeObserverCallback
 const RO = new ResizeObserver(ROcallback)
@@ -172,6 +271,31 @@ onMounted(async () => {
       IO.observe(loadMoreRef.value)
     }
   }
+
+  /**
+   * 懶加載
+   * 設定切片資料
+   * 插入元素 撐高高度
+   * 監聽滾動 重新切資料
+   */
+  if (props.lazyLoading) {
+    await nextTick()
+    setSpliceData(0, 100)
+
+    insertVirtualDom()
+
+    if(elTableRef.value) {
+      scrollbarRef = elTableRef.value.scrollBarRef
+
+      showDataTable = document.querySelector('table.el-table__body') as ElementStyle
+      // showDataTable.style.transitionDuration = '0.1s'
+
+      appendDiv = document.querySelector('div.el-table__append-wrapper') as ElementStyle
+      // appendDiv.style.transitionDuration = '0.1s'
+      scrollbarWrapper = scrollbarRef.wrapRef
+      scrollbarWrapper.addEventListener('scroll', throttleScollHandler)
+    }
+  }
 })
 onUnmounted(() => {
   RO.disconnect()
@@ -188,6 +312,15 @@ const resetScroll = (): void => {
 
 defineExpose({
   resetScroll
+})
+
+/**
+ * 懶加載 使用切片資料 虛擬列表
+ * 一般表單 有分頁 資料直接使用
+ */
+ const elTableData = computed(() => {
+  if (props.lazyLoading) return spliceData.value
+  return props.showData
 })
 
 const svg = `
@@ -212,7 +345,7 @@ const svg = `
         scrollbar-always-on
         :border="true"
         :key="props.renderKey"
-        :data="props.showData"
+        :data="elTableData"
         :height="tableHeight"
         :row-key="props.rowKey"
         :default-expand-all="props.defaultExpandAll"
@@ -560,6 +693,10 @@ const svg = `
     border: solid 5px transparent;
     position: absolute;
     left: 7px;
+  }
+  .table-main-virtual {
+    width: 100%;
+    background-color: #00800000;
   }
 }
 

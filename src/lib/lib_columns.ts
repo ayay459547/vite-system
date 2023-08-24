@@ -1,5 +1,10 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
-import type { FormInputExpose, CustomTableExpose, TableParams, Sort } from '@/components'
+import type {
+  FormInputExpose,
+  CustomTableExpose,
+  TableParams,
+  Sort
+} from '@/components'
 import type { ValidateType } from './lib_validate'
 import { reactive, ref } from 'vue'
 
@@ -17,9 +22,10 @@ export interface FormSetting<T> {
   validate: () => Promise<Array<any>>
 }
 
-export interface IinputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
+export interface InputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
+
 export interface FormColumnsItem {
-  ref: (el: IinputRefItem) => void
+  ref: (el: InputRefItem) => void
   key: string
   validateKey: string
   clearable: boolean
@@ -47,7 +53,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
-      ref: (el: IinputRefItem) => {
+      ref: (el: InputRefItem) => {
         if (el) {
           refMap[key] = el
         }
@@ -104,7 +110,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       const successList = []
       const errorList = []
 
-      refMap.$forEach((input: IinputRefItem) => {
+      refMap.$forEach((input: InputRefItem) => {
         const { key, value, validate, getDom } = input
 
         validateList.push(validate())
@@ -165,7 +171,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
-      ref: (el: IinputRefItem) => {
+      ref: (el: InputRefItem) => {
         if (el) {
           const validateKey = getUuid()
           refMap[validateKey] = el
@@ -215,7 +221,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
       const errorList = []
 
       const checkRepeatSet = new Set()
-      refMap.$forEach((input: IinputRefItem, mapKey: string) => {
+      refMap.$forEach((input: InputRefItem, mapKey: string) => {
         const { key, value, validate, getDom } = input
         const el = getDom()
         if (checkRepeatSet.has(el) || el === null) {
@@ -281,7 +287,9 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
 export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
 
 export interface TableSetting {
+  tableRef: TableRef,
   tableSetting: {
+    ref: (el: TableRef) => void
     title: string
     version: string
     settingKey: string
@@ -293,8 +301,9 @@ export interface TableSetting {
     hiddenExcel: boolean
   },
   downloadExcel: (tableData: Record<string, any>[]) => void
-  getParams: (tableRef: TableRef) => TableParams
-  changePage: (tableRef: TableRef) => void
+  getParams: (tableRef?: TableRef) => TableParams
+  setParams: (params: TableParams, tableRef?: TableRef) => void
+  changePage: (tableRef?: TableRef) => void
 }
 export interface TableColumnsItem {
   key: string
@@ -454,8 +463,17 @@ export const getTableSetting = (
     size,
     sort
   })
+
+  const _tableRef = ref(null)
+
   return {
+    tableRef: _tableRef,
     tableSetting: {
+      ref: (el: TableRef) => {
+        if (el) {
+          _tableRef.value = el
+        }
+      },
       title,
       version,
       settingKey,
@@ -470,16 +488,39 @@ export const getTableSetting = (
     getParams: (tableRef: TableRef): TableParams => {
       if (tableRef) {
         return tableRef.getTableParams()
+      } else if (_tableRef.value !== null) {
+        return _tableRef.value.getTableParams()
       } else {
         return {
           ...tableParams
         }
       }
     },
+    setParams: (params: {
+      page?: number
+      size?: number
+      sort?: Sort
+    }, tableRef: TableRef) => {
+      if (tableRef) {
+        tableRef.setTableParams(params)
+      } else if (_tableRef.value !== null) {
+        _tableRef.value.setTableParams(params)
+      } else {
+        tipLog('無法設定 Table 參數', [
+          '給 table 的 ref',
+          '從 CustomTable 上找 ref 屬性',
+          '如果沒有 自己給 ref="table"',
+          'const talbe = ref(null)',
+          '<CustomTable ref="table"></CustomTable>'
+        ])
+      }
+    },
     changePage: (tableRef: TableRef): void => {
       const { page, size } = tableParams
       if (tableRef) {
         tableRef.pageChange(page, size)
+      } else if (_tableRef.value !== null) {
+        _tableRef.value.pageChange(page, size)
       } else {
         tipLog('無法換頁', [
           '給 table 的 ref',

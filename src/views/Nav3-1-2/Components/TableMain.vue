@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { useSlots, ref, onMounted, onUnmounted } from 'vue'
+import {
+  useSlots,
+  ref,
+  onMounted,
+  onUnmounted,
+  nextTick
+} from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
-import type { Sort } from '../CustomTable.vue'
+import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 import type {
@@ -12,8 +17,11 @@ import type {
   RowClassName,
   RowStyle,
   CellClassName,
-  CellStyle
-} from '../CustomTable.vue'
+  CellStyle,
+  LazyLoadingStatus
+} from './CustomTable.vue'
+import { CustomButton } from '@/components'
+import Clusterize from 'clusterize.js'
 
 // slot
 const slots = useSlots()
@@ -32,6 +40,11 @@ const props = defineProps({
     required: true,
     description: '顯示資料'
   },
+  tableDataCount: {
+    type: Number as PropType<number>,
+    required: true,
+    description: '總資料筆數 計算虛擬渲染用'
+  },
   showColumns: {
     type: Array as PropType<Array<any>>,
     required: true,
@@ -46,6 +59,18 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: true,
     description: '重新渲染用的key'
+  },
+  settingKey: {
+    type: String as PropType<string>,
+    description: '設定 最外層 class 確保不重複'
+  },
+  lazyLoading: {
+    type: Boolean as PropType<boolean>,
+    description: '懶加載'
+  },
+  lazyLoadingStatus: {
+    type: String as PropType<LazyLoadingStatus>,
+    description: '懶加載狀態'
   },
   // element ui
   rowKey: {
@@ -77,10 +102,6 @@ const props = defineProps({
   cellStyle: {
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
-  },
-  infiniteScrollDisabled: {
-    type: Boolean as PropType<boolean>,
-    description: '是否可以無限滾動'
   }
 })
 
@@ -113,29 +134,90 @@ const onExpandChange = (row: any, expanded: boolean) => {
 const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const load = () => {
-  emit('load')
-}
-const debounceLoad = debounce(load, 100)
 
-
-// height rwd
-let tableHeight = ref(500)
+// 監聽寬度高度變化
+const tableMainRef = ref(null)
+const tableWidth = ref(500)
+const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
+    tableWidth.value = entry.contentRect.width
     tableHeight.value = entry.contentRect.height
   })
 }, 100) as ResizeObserverCallback
 const RO = new ResizeObserver(ROcallback)
 
-const tableMain = ref(null)
-onMounted(() => {
-  if (tableMain.value !== null) {
-    RO.observe(tableMain.value)
+// 滾動到底時 emit load
+const loadMoreRef = ref(null)
+const load = () => {
+  if (props.lazyLoadingStatus === 'loadMore') {
+    emit('load')
   }
+}
+const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
+  entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
+    const { isIntersecting, isVisible } = entry
+    if (isIntersecting) {
+      load()
+    }
+  })
+}, 300) as IntersectionObserverCallback
+let IO = null
+
+// 虛擬列表 最多渲染 200 條
+let clusterize = null
+const initClusterize = () => {
+  if (elTableRef.value) {
+    const scrollbarWrapper = elTableRef.value.scrollBarRef.wrapRef
+
+    const [
+      rows, scrollElem, contentElem
+    ] = [
+      document.querySelectorAll(`.${props.settingKey} .el-table__row`),
+      scrollbarWrapper,
+      document.querySelector(`.${props.settingKey} .el-table__body tbody`)
+    ]
+
+    console.log('rows => ', Array.from(rows).length)
+    console.log(scrollElem)
+    console.log(contentElem)
+
+    clusterize = new Clusterize({
+      rows,
+      scrollElem,
+      contentElem
+    })
+
+    console.log('clusterize => ', clusterize)
+  }
+}
+
+onMounted(async () => {
+  if (tableMainRef.value !== null) {
+    RO.observe(tableMainRef.value)
+
+    if (loadMoreRef.value !== null) {
+      IO = new IntersectionObserver(IOcallback, {
+        root: tableMainRef.value,
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0.1
+      })
+      IO.observe(loadMoreRef.value)
+    }
+  }
+
+  await nextTick()
+
+  setTimeout(() => {
+    initClusterize()
+  }, 2000)
 })
 onUnmounted(() => {
   RO.disconnect()
+
+  if (IO) {
+    IO.disconnect()
+  }
 })
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
@@ -147,12 +229,28 @@ defineExpose({
   resetScroll
 })
 
+const svg = `
+  <path class="path" d="
+    M 30 15
+    L 28 17
+    M 25.61 25.61
+    A 15 15, 0, 0, 1, 15 30
+    A 15 15, 0, 1, 1, 27.99 7.5
+    L 15 15
+  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+`
+
 </script>
 
 <template>
-  <div ref="tableMain" class="table-main-wrapper">
+  <div
+    ref="tableMainRef"
+    class="table-main-wrapper"
+    :class="`${props.settingKey}`"
+  >
     <div class="table-main-container">
       <ElTable
+        v-show="props.lazyLoading"
         ref="elTableRef"
         stripe
         scrollbar-always-on
@@ -171,8 +269,6 @@ defineExpose({
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
-        v-el-table-infinite-scroll="debounceLoad"
-        :infinite-scroll-disabled="infiniteScrollDisabled"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -182,8 +278,45 @@ defineExpose({
         <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
         </template>
-        <template v-if="hasSlot('append')" #append>
-          <slot name="append"></slot>
+
+        <!-- 滾動到底 emit load -->
+        <template v-if="props.lazyLoading" #append>
+          <div
+            v-show="props.lazyLoadingStatus === 'noMore'"
+            class="table-main-append"
+            :style="`width: ${tableWidth}px;`"
+          >
+            無更多資料
+          </div>
+
+          <div
+            v-show="props.lazyLoadingStatus === 'loading'"
+            class="table-main-append"
+            :style="`width: ${tableWidth}px;`"
+          >
+            <div
+              style="width: 100%; height: 50px;"
+              v-i-loading="true"
+              element-loading-text="Loading..."
+              :element-loading-spinner="svg"
+              element-loading-svg-view-box="-10, -10, 50, 50"
+            ></div>
+            <div style="width: 100%; height: 30px;"></div>
+          </div>
+
+          <div
+            v-show="props.lazyLoadingStatus === 'loadMore'"
+            class="table-main-append"
+            :style="`width: ${tableWidth}px;`"
+          >
+            <CustomButton
+              label="載入更多資料"
+              type="info"
+              text
+              @click="load"
+            />
+            <div ref="loadMoreRef" class="load-more"></div>
+          </div>
         </template>
 
         <template v-if="hasSlot('column-expand')">
@@ -200,19 +333,20 @@ defineExpose({
           </ElTableColumn>
         </template>
 
-        <ElTableColumn
-          v-if="props.showNo"
-          width="80"
-          :align="'center'"
-          key="__data-no"
-          prop="__data-no"
-          label="#"
-          :sortable="false"
-        >
-          <template #default="scope">
-            <span>{{ scope.$index + 1 }}</span>
-          </template>
-        </ElTableColumn>
+        <template v-if="props.showNo">
+          <ElTableColumn
+            width="80"
+            :align="'center'"
+            key="__data-no"
+            prop="__data-no"
+            label="#"
+            :sortable="false"
+          >
+            <template #default="scope">
+              <span>{{ scope.$index + 1 }}</span>
+            </template>
+          </ElTableColumn>
+        </template>
 
         <template v-for="column in showColumns" :key="column.prop">
           <template v-if="column.columns && column.columns.length > 0">
@@ -447,6 +581,11 @@ defineExpose({
         transition: background-color 0.1s ease-out;
       }
     }
+
+    .el-table__append-wrapper {
+      overflow: visible;
+      position: relative;
+    }
   }
   .caret-wrapper {
     display: inline-flex;
@@ -459,7 +598,6 @@ defineExpose({
     overflow: initial;
     position: relative;
   }
-
   .sort-caret {
     width: 0;
     height: 0;
@@ -477,6 +615,25 @@ defineExpose({
   }
   &-container {
     display: contents;
+  }
+  &-append {
+    height: 80px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    left: 0;
+    top: 0;
+
+    .load-more {
+      width: 100px;
+      height: 2px;
+      position: absolute;
+      bottom: 0;
+      background-color: #ff000000;
+    }
   }
 }
 </style>

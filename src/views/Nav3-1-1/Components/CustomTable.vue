@@ -10,19 +10,19 @@ import {
 import type { TableColumnCtx } from 'element-plus'
 import { ElPagination } from 'element-plus'
 
-import { tipLog } from '@/lib/lib_utils'
+import { tipLog, isEmpty } from '@/lib/lib_utils'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton, CustomPopover, CustomSelect, CustomIcon } from '@/components'
 
-import ColumnSetting from '../ColumnSetting.vue'
-import TableMain from '../TableMain.vue'
+import ColumnSetting from './ColumnSetting.vue'
+import TableMain from './TableMain.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
 export interface PageChange {
-  (page: number, pageSize: number): void
+  (page: number, pageSize: number, ...payload: any[]): void
 }
 
 export interface Sort {
@@ -41,14 +41,14 @@ export type SpanMethod = (
     column: TableColumnCtx<any>,
     rowIndex: number,
     columnIndex: number
-  }) => number[] | { rowspan: number, colspan: number } | void
+  }, ...payload: any[]) => number[] | { rowspan: number, colspan: number } | void
 ) | null
 
 type RowCallback<T> = (
   (data: {
     row: any,
     rowIndex: number
-  }) => T
+  }, ...payload: any[]) => T
 ) | null
 export type RowClassName = RowCallback<string>
 export type RowStyle = RowCallback<Record<string, any>>
@@ -59,10 +59,11 @@ type CellCallback<T> = (
     column: TableColumnCtx<any>,
     rowIndex: number,
     columnIndex: number
-  }) => T
+  }, ...payload: any[]) => T
 ) | null
 export type CellClassName = CellCallback<string>
 export type CellStyle = CellCallback<Record<string, any>>
+export type LazyLoadingStatus = 'loadMore' | 'loading' | 'noMore'
 
 export interface Props extends Record<string, any> {
   /**
@@ -119,12 +120,10 @@ export interface Props extends Record<string, any> {
   /**
    * 資料懶加載
    * lazyLoading: 是否啟用
-   * infiniteScrollDisabled:
-   *    ture: 當沒資料時 不用再 emit load 事件
-   *    false: 滾動到底時 emit load
+   * lazyLoadingStatus: 狀態
    */
   lazyLoading?: boolean
-  infiniteScrollDisabled?: boolean
+  lazyLoadingStatus?: LazyLoadingStatus
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
@@ -148,7 +147,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   showType: 'custom',
   hiddenExcel: false,
   lazyLoading: false,
-  infiniteScrollDisabled: true
+  lazyLoadingStatus: 'noMore'
 })
 
 const emit = defineEmits([
@@ -187,9 +186,17 @@ const sizeOptions = [
   { value: 30, label: '30' },
   { value: 50, label: '50' },
   { value: 100, label: '100' },
-  { value: 200, label: '200' },
-  { value: 300, label: '300' }
+  { value: 300, label: '300' },
+  { value: 500, label: '500' }
 ]
+const lazyLoadSizeOptions = [
+  { value: 100, label: '100' },
+  { value: 500, label: '500' },
+  { value: 1000, label: '1000' },
+  { value: 5000, label: '5000' },
+  { value: -1, label: '全部' }
+]
+
 const onSizeChange = (v: number) => {
   pageChange(1, v)
 
@@ -203,7 +210,7 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const elTableRef = ref(null)
+const tableMainRef = ref(null)
 const pageChange: PageChange = (page, pageSize) => {
   currentPage.value = page
 
@@ -214,8 +221,8 @@ const pageChange: PageChange = (page, pageSize) => {
     sort: currentSort.value
   })
 
-  if (elTableRef.value) {
-    elTableRef.value.resetScroll()
+  if (tableMainRef.value) {
+    tableMainRef.value.resetScroll()
   }
 }
 
@@ -266,12 +273,6 @@ const onLoad = () => {
     size: pageSize.value,
     sort: currentSort.value
   })
-
-  onShowChange({
-    page: currentPage.value,
-    pageSize: pageSize.value,
-    sort: currentSort.value
-  })
 }
 
 /**
@@ -294,8 +295,7 @@ const showData = computed(() => {
   if (props.showType === 'custom') {
     return props.tableData
   } else {
-    // const start = (currentPage.value - 1) * pageSize.value
-    const start = 0
+    const start = (currentPage.value - 1) * pageSize.value
     const end = pageSize.value
 
     return (props.tableData as Array<any>).slice(start, end)
@@ -382,6 +382,41 @@ defineExpose({
       size: pageSize.value,
       sort: currentSort.value
     }
+  },
+  setTableParams: (param: {
+    page?: number
+    size?: number
+    sort?: Sort
+  }) => {
+    const {
+      page,
+      size,
+      sort
+    } = param
+
+    if (!isEmpty(page) && (typeof page === 'number')) {
+      currentPage.value = page
+    }
+    if (!isEmpty(size)) {
+      const _index = ((lazyLoading) => {
+        if (lazyLoading) {
+          return lazyLoadSizeOptions.findIndex(option => {
+            option.value === size
+          })
+        } else {
+          return sizeOptions.findIndex(option => {
+            option.value === size
+          })
+        }
+      })(props.lazyLoading)
+
+      if (_index >= 0) {
+        pageSize.value = size
+      }
+    }
+    if (!isEmpty(sort)) {
+      currentSort.value = sort
+    }
   }
 })
 
@@ -422,17 +457,6 @@ const slotKeyList = computed(() => {
     return column.slotKey
   })
 })
-
-const svg = `
-  <path class="path" d="
-    M 30 15
-    L 28 17
-    M 25.61 25.61
-    A 15 15, 0, 0, 1, 15 30
-    A 15 15, 0, 1, 1, 27.99 7.5
-    L 15 15
-  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-`
 
 </script>
 
@@ -489,9 +513,18 @@ const svg = `
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomSelect
+            v-if="!props.lazyLoading"
             v-model="pageSize"
-            :label="`${!props.lazyLoading ? '顯示筆數' : '載入筆數'}:`"
+            label="顯示筆數"
             :options="sizeOptions"
+            direction="row"
+            @change="onSizeChange"
+          />
+          <CustomSelect
+            v-if="props.lazyLoading"
+            v-model="pageSize"
+            label="載入筆數"
+            :options="lazyLoadSizeOptions"
             direction="row"
             @change="onSizeChange"
           />
@@ -502,10 +535,11 @@ const svg = `
     <div class="table-container">
       <TableMain
         v-if="isRender"
-        ref="elTableRef"
+        ref="tableMainRef"
         :show-no="props.showNo"
         :render-key="renderKey"
         :show-data="showData"
+        :table-data-count="tableDataCount"
         :show-columns="showColumns"
         :sort="props.sort"
         :row-key="props.rowKey"
@@ -515,8 +549,8 @@ const svg = `
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
-        :infinite-scroll-disabled="infiniteScrollDisabled"
-        :lazy-loading="props.lazyLoading"
+        :lazy-loading="lazyLoading"
+        :lazy-loading-status="props.lazyLoadingStatus"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -526,17 +560,6 @@ const svg = `
       >
         <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
-        </template>
-        <template v-if="props.lazyLoading" #append>
-          <div v-if="props.infiniteScrollDisabled" class="table-append">No more</div>
-          <div
-            v-else
-            v-i-loading="true"
-            element-loading-text="Loading..."
-            :element-loading-spinner="svg"
-            element-loading-svg-view-box="-10, -10, 50, 50"
-            class="table-append"
-          ></div>
         </template>
 
         <template v-if="hasSlot('column-expand')" #column-expand="scope">
@@ -658,14 +681,6 @@ const svg = `
     flex: 1;
     width: 100%;
     position: relative;
-  }
-
-  &-append {
-    width: calc(100% - 12px);
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   &-pagination {

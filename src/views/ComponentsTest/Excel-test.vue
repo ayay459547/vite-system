@@ -150,6 +150,14 @@ const tooltipPlacement: TooltipTrigger = 'click'
         :size="size"
         @click="onClick"
       />
+
+      <CustomButton
+        label="loadingTest"
+        :size="size"
+        loading
+        @click="onClick"
+      />
+
       <CustomButton label="loading-test" type="warning" @click="changeLoading"/>
 
       <CustomButton label="OpenModal" @click="openModal"/>

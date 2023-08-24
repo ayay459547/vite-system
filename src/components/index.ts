@@ -70,6 +70,7 @@ import type { TableParams, PageChange } from './feature/CustomTable/CustomTable.
 export declare interface CustomTableExpose {
   pageChange: PageChange
   getTableParams: () => TableParams
+  setTableParams: (params: TableParams) => void
 }
 export type {
   PageChange,

@@ -138,7 +138,7 @@ onBeforeMount(() => {
 <template>
   <div class="table-test">
     <div class="flex-row-center i-ga-md">
-      <label>Element ui plus table 手寫虛擬列表</label>
+      <label>Element ui plus table 懶加載(無虛擬列表)</label>
 
       <CustomButton
         label="測試新增資料"
