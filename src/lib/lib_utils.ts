@@ -175,7 +175,7 @@ export const round = (num: number, n = 2): number => {
  * @param {String} format 想要的格式
  * @returns {String} 格式化後的日期
  */
-export const datetimeFormat = (value: string, format: string): string => {
+export const datetimeFormat = (value: string | Date, format: string): string => {
   return dayjs(value).format(format)
 }
 

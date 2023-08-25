@@ -8,7 +8,7 @@ $color-list: (
   'white': #ffffff,
   'gray': #bcbcbc,
   'yellow': #ffee55,
-  'green': #84ff68
+  'green': #a0ff8a
 );
 
 @each $type, $color in $color-list {

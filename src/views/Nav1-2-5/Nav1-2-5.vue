@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { SimpleQRcode } from '@/components'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
+import { datetimeFormat } from '@/lib/lib_utils'
+import { onMounted, ref } from 'vue'
 
 const url = 'https://www.npmjs.com/package/vue-qr'
 const img = 'https://raw.githubusercontent.com/Binaryify/vue-qr/master/src/assets/result1.png'
 const bgimg = 'https://raw.githubusercontent.com/Binaryify/vue-qr/master/src/assets/result2.png'
-const test = () => {
-  // console.log(777)
-}
+
+const now = ref('')
+
+onMounted(() => {
+  const date = '2028-11-12 12:45:32.0'
+
+  const res = datetimeFormat(date, 'YYYY-MM-DD')
+  console.log('res => ', res)
+
+  now.value = datetimeFormat(new Date(), 'YYYY-MM-DD A hh:mm:ss')
+})
 
 </script>
 
@@ -28,6 +38,8 @@ const test = () => {
       :bgSrc='bgimg'
       :logoSrc="img"
     />
+
+    <h4>{{ now }}</h4>
   </div>
 </template>
 

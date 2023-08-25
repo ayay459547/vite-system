@@ -2,6 +2,7 @@
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 import type { PropType } from 'vue'
 import { h } from 'vue'
+import { isEmpty } from '@/lib/lib_utils'
 
 export default {
   props: {
@@ -25,17 +26,25 @@ export default {
     bgSrc: {
       type: String as PropType<string>,
       required: false,
+      default: null,
       description: '背景圖片 src'
     },
     logoSrc: {
       type: String as PropType<string>,
       required: false,
+      default: null,
       description: '中心logo src'
     }
   },
   // emits: [],
   setup (props) {
-    return () => h(
+    const qrProps = ({
+      text: props.url,
+      bgSrc: props.bgSrc,
+      logoSrc: props.logoSrc
+    } as any).$filter(prop => !isEmpty(prop))
+
+    const SimpleQRcode = () => h(
       'div',
       {
         class: '__qrcode',
@@ -45,13 +54,11 @@ export default {
         }
       },
       [
-        h(vueQr, {
-          text: props.url,
-          bgSrc: props.bgSrc,
-          logoSrc: props.logoSrc
-        }, null)
+        h(vueQr, { ...qrProps }, null)
       ]
     )
+
+    return SimpleQRcode
   }
 }
 

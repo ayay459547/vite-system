@@ -522,6 +522,9 @@ const svg = `
     }
 
     .el-table__body {
+      // border 生效
+      border-collapse: collapse;
+      // border-collapse: separate;
       .el-table__row--striped {
         background: var(--el-fill-color-lighter);
       }

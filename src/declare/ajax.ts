@@ -1,7 +1,8 @@
 import type { AxiosRequestConfig } from 'axios'
 
 export type Api<T> = {
-  data: T,
+  result?: T,
+  data?: T,
   status?: 'success' | 'error',
   msg?: any
 }
