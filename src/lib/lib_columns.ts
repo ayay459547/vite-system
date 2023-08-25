@@ -6,7 +6,7 @@ import type {
   Sort
 } from '@/components'
 import type { ValidateType } from './lib_validate'
-import { reactive, ref } from 'vue'
+import { shallowReactive, ref } from 'vue'
 
 import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -46,8 +46,8 @@ export interface FormColumnsItem {
  */
 export const getFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
-  const formMap = reactive<Record<string, any>>({})
-  const refMap = reactive<Record<string, any>>({})
+  const formMap = shallowReactive<Record<string, any>>({})
+  const refMap = shallowReactive<Record<string, any>>({})
 
   const hasOwnProperty = Object.prototype.hasOwnProperty
 
@@ -164,7 +164,7 @@ export interface FormListSetting<T> {
 }
 export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []) => {
   const resColumns = {}
-  const refMap = reactive<Record<string, any>>({})
+  const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
 
   const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -458,7 +458,7 @@ export const getTableSetting = (
     })
   }
 
-  const tableParams = reactive<TableParams>({
+  const tableParams = shallowReactive<TableParams>({
     page,
     size,
     sort

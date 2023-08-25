@@ -2,7 +2,7 @@
 import type { Ref } from 'vue'
 import {
   ref,
-  reactive,
+  shallowReactive,
   computed,
   provide,
   onMounted,
@@ -63,7 +63,7 @@ const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
 const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
 
 const queueId = ref(0)
-const customPopoverQueue: CustomPopoverQueue[] = reactive([])
+const customPopoverQueue: CustomPopoverQueue[] = shallowReactive([])
 const deleteCustomPopoverQueue = () => customPopoverQueue.pop()
 
 const loading: HookList.loading = (isOpen, message) => {

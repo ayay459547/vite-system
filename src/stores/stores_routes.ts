@@ -1,5 +1,5 @@
-import type { ComputedRef, Ref } from 'vue'
-import { ref, computed, reactive, onBeforeMount } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
+import { shallowRef, computed, shallowReactive, onBeforeMount } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
@@ -23,26 +23,26 @@ export const useRoutesStore = defineStore('routes', () => {
   })
 
   // 左側選單欄 確認是否 active
-  const breadcrumbName: Ref<string[]> = ref([])
+  const breadcrumbName: ShallowRef<string[]> = shallowRef([])
   const setBreadcrumbName = (newBreadcrumb: string[]) => {
     breadcrumbName.value = newBreadcrumb
   }
 
   // 導覽
-  const breadcrumbTitle: Ref<string[]> = ref([])
+  const breadcrumbTitle: ShallowRef<string[]> = shallowRef([])
   const setBreadcrumbTitle = (newBreadcrumb: string[]) => {
     breadcrumbTitle.value = newBreadcrumb
   }
 
   // 當前路由
-  const currentNavigation: Ref<Navigation | null> = ref(null)
+  const currentNavigation: ShallowRef<Navigation | null> = shallowRef(null)
   const setCurrentNavigation = (route: Navigation) => {
     currentNavigation.value = route
   }
 
   // 歷史路由
   const map = new Map<string, Navigation>()
-  const historyNavigation = reactive(map)
+  const historyNavigation = shallowReactive(map)
   const addHistoryNavigation = (key: string, value: Navigation) => {
     if (!historyNavigation.has(key)) {
       historyNavigation.set(key, value)
@@ -83,8 +83,8 @@ export const useRoutesStore = defineStore('routes', () => {
   })
 
   // Navigation 三層選單 + 歷史選單 用
-  const navigationRoutes: Ref<Navigation[]> = ref([])
-  const navigationMap: Ref<Map<string, Navigation>> = ref(new Map())
+  const navigationRoutes: ShallowRef<Navigation[]> = shallowRef([])
+  const navigationMap: ShallowRef<Map<string, Navigation>> = shallowRef(new Map())
 
   // 設置 選單用資料 + 搜尋用 map
   const setNavigationRoutes = (routesPermission: Map<string, any>) => {

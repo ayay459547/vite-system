@@ -2,7 +2,9 @@
 import {
   useSlots,
   ref,
+  shallowRef,
   reactive,
+  shallowReactive,
   computed,
   onMounted
 } from 'vue'
@@ -230,7 +232,7 @@ const onRowClick = (row: any, column: any, event: Event) => {
   emit('row-click', row, column, event)
 }
 
-const currentSort = ref<Sort>({
+const currentSort = shallowRef<Sort>({
   key: null,
   order: null
 })
@@ -303,7 +305,7 @@ const showData = computed(() => {
 })
 
 const columnSetting = ref(null)
-const showColumns = reactive([...props.tableColumns])
+const showColumns = shallowReactive([...props.tableColumns])
 
 const checkTableColumns = (tempColumnList: ColumnItem[]) => {
   const originColumnsKey = tempColumnList.map(item => item.key)

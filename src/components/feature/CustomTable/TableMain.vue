@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import {
-  useSlots,
-  ref,
-  onMounted,
-  onUnmounted,
-  computed
-} from 'vue'
+import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import type { Sort } from './CustomTable.vue'

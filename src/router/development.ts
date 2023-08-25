@@ -19,17 +19,6 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/Development/ScheduleView/ScheduleView.vue')
       },
       {
-        name: 'search-view',
-        title: '功能樹狀表',
-        meta: {
-          keepAlive: true,
-          status: 'completed'
-        },
-        systemType: ['development'],
-        path: '/search-view',
-        component: () => import('@/views/Development/SearchView/SearchView.vue')
-      },
-      {
         name: 'feature-list',
         title: '功能列表',
         meta: {
@@ -50,6 +39,17 @@ const testRoutes: RouterTree[] = [
         systemType: ['development'],
         path: '/i18n-list',
         component: () => import('@/views/Development/I18nList/I18nList.vue')
+      },
+      {
+        name: 'search-view',
+        title: '功能樹狀表',
+        meta: {
+          keepAlive: true,
+          status: 'completed'
+        },
+        systemType: ['development'],
+        path: '/search-view',
+        component: () => import('@/views/Development/SearchView/SearchView.vue')
       }
     ]
   }

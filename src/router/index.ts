@@ -5,7 +5,7 @@ import type {
 } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { ComputedRef } from 'vue'
-import { ref, computed } from 'vue'
+import { shallowRef, computed } from 'vue'
 
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/stores_auth'
@@ -120,7 +120,7 @@ const router = createRouter({
 })
 
 // 暫存使用者想去的路由名稱
-const tempTo = ref<RouteLocationNormalized | null>(null)
+const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
 router.beforeEach(
   (

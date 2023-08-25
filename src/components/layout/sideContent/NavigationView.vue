@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, inject } from 'vue'
+import { ref, shallowRef, inject } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { RouterType } from '@/router/setting'
 import { routerTypeIcon } from '@/router/setting'
@@ -20,8 +20,8 @@ const { i18nTest, i18nTranslate } = hook()
 
 // 第二層路由
 const level2IsOpen = ref<boolean>(false)
-const level2Nav = ref<Navigation>()
-const level2List = ref<Navigation[]>([])
+const level2Nav = shallowRef<Navigation>()
+const level2List = shallowRef<Navigation[]>([])
 
 const level2OpenMap = ref<Record<string, boolean>>({})
 const changeMap = (name: string): void => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, onMounted } from 'vue'
+import { ref, shallowRef, onMounted } from 'vue'
 
 import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
@@ -12,7 +12,7 @@ const placement = ref<Placement>('bottom')
 const left = ref<number>(0)
 const top = ref<number>(0)
 
-const callbackList = ref<EventItem[]>([])
+const callbackList = shallowRef<EventItem[]>([])
 const popoverWidth = ref(150)
 
 const props = defineProps({

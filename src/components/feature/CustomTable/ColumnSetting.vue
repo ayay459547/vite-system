@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, onBeforeMount } from 'vue'
+import { ref, shallowRef, onBeforeMount } from 'vue'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { PropsTableColumn } from './CustomTable.vue'
@@ -46,7 +46,7 @@ const props = defineProps({
 
 const emit = defineEmits(['change'])
 
-const columnList = ref<ColumnItem[]>([])
+const columnList = shallowRef<ColumnItem[]>([])
 
 const getcolumnList = async () => {
   const getRes: SettingData = await getColumnSetting(props.settingKey)

@@ -1,6 +1,6 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { ref, computed, reactive } from 'vue'
+import { shallowRef, computed, shallowReactive } from 'vue'
 import type { AuthData, PermissionData } from './stores_api'
 import { getUserData, getRoutesPermission } from './stores_api'
 import { permission } from '@/lib/lib_permission'
@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 使用者資料相關
 	 * 使用者資料會帶動權限
 	 */
-	const authData = ref<AuthData>({
+	const authData = shallowRef<AuthData>({
 		id: null,
 		name: null
 	})
@@ -103,7 +103,7 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 路由權限
 	 * key(string): permissions(number)
 	 */
-	const routesPermission = reactive(new Map())
+	const routesPermission = shallowReactive(new Map())
 
 	const setRoutesPermission = async (permissionList: PermissionData[]) => {
 		permissionList.forEach(permissionItem => {
