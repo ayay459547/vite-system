@@ -122,7 +122,8 @@ const setColumnWidth = (props: string, newWidth: number) => {
   if (isEmpty(temp)) return
 
   temp.width = newWidth
-  updateSetting()
+  // 改寬度不用重新設定 columns 資料
+  updateSetting(false)
 }
 
 defineExpose({
@@ -134,7 +135,12 @@ defineExpose({
 
 const drag = ref(false)
 
-const updateSetting = async () => {
+/**
+ * 更新 indexedDB 上的資料
+ * 如果 emit change 會重新設定 columns 資料
+ * @param isEmitChange 是否 emit change 事件
+ */
+const updateSetting = async (isEmitChange = true) => {
   const temp = columnList.value
 
   const settingData: SettingData = {
@@ -144,7 +150,9 @@ const updateSetting = async () => {
   }
   await setColumnSetting(props.settingKey, settingData)
 
-  emit('change')
+  if (isEmitChange) {
+    emit('change')
+  }
 }
 
 const onDragend = () => {

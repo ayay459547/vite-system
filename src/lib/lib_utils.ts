@@ -330,11 +330,7 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
 export const downloadStaticFile = (fileName: string) => {
   const a = document.createElement('a')
 
-  if (mode !== 'development') {
-    a.href = `$/static/${fileName}`
-  } else {
-    a.href = `/static/${fileName}`
-  }
+  a.href = `/static/file/${fileName}`
 
   a.download = `${fileName}`
   a.style.display = 'none'
