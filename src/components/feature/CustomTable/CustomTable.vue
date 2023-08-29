@@ -3,7 +3,6 @@ import {
   useSlots,
   ref,
   shallowRef,
-  reactive,
   shallowReactive,
   computed,
   onMounted

@@ -3,7 +3,7 @@ import type { AxiosRequestConfig } from 'axios'
 export type Api<T> = {
   result?: T,
   data?: T,
-  status?: 'success' | 'error',
+  status?: 'success' | 'error' | 'fail',
   msg?: any
 }
 

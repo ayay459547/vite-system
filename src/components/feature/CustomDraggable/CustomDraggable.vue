@@ -62,6 +62,10 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: ''
+  },
+  direction: {
+    type: String as PropType<'column' | 'row'>,
+    default: 'column'
   }
 })
 
@@ -148,6 +152,7 @@ const listValue = computed({
       :disabled="false"
       :animation="200"
       class="list-group"
+      :class="`flex-${props.direction}`"
       ghost-class="ghost"
       @start="onStart"
       @add="onAdd"

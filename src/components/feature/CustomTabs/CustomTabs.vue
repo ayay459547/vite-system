@@ -50,11 +50,13 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
 const scrollToCurrentTab = (currentTab: string) => {
   const el = document.querySelector(`.__tab_${currentTab}`)
 
-  setTimeout(() => {
-    scrollToEl(el, {
-      inline: 'start'
-    })
-  }, 200)
+  if (el) {
+    setTimeout(() => {
+      scrollToEl(el, {
+        inline: 'start'
+      })
+    }, 200)
+  }
 }
 const debounceScrollToCurrentTab = debounce(scrollToCurrentTab, 200)
 

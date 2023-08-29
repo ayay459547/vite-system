@@ -72,6 +72,14 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  multipleLimit: {
+    type: Number as PropType<number>,
+    default: 3
+  },
+  maxCollapseTags: {
+    type: Number as PropType<number>,
+    default: 3
+  },
   filterable: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -90,6 +98,8 @@ const bindAttributes = computed(() => {
     multiple: props.multiple,
     collapseTags: props.multiple,
     collapseTagsTooltip: props.multiple,
+    multipleLimit: props.multipleLimit,
+    maxCollapseTags: props.maxCollapseTags,
     allowCreate: props.allowCreate
   }
 })
