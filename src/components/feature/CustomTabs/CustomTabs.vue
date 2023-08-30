@@ -166,13 +166,14 @@ onUnmounted(() => {
           <slot :key="element.key" :label="element.label" :value="element.value">
             <span>{{ element.label }}</span>
           </slot>
-          <CustomIcon
-            v-if="props.remove"
-            name="xmark"
-            class="tabs-item-remove"
-            :class="{ 'is-active': props.modelValue === element.key }"
-            @click="removeTab(element.key, element.label, element.value)"
-          />
+          <template v-if="props.remove">
+            <CustomIcon
+              v-if="props.modelValue !== element.key"
+              name="xmark"
+              class="tabs-item-remove"
+              @click="removeTab(element.key, element.label, element.value)"
+            />
+          </template>
         </div>
       </div>
     </div>

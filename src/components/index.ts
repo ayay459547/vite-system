@@ -19,6 +19,8 @@ export type {
 } from './feature/CustomDatePicker/CustomDatePicker.vue'
 export { default as CustomDatePicker } from './feature/CustomDatePicker/CustomDatePicker.vue'
 
+export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
+
 export type {
   Change as DraggableChange
 } from './feature/CustomDraggable/CustomDraggable.vue'

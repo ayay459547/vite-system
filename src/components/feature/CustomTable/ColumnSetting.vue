@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, shallowRef, onBeforeMount } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { PropsTableColumn } from './CustomTable.vue'
@@ -46,7 +46,7 @@ const props = defineProps({
 
 const emit = defineEmits(['change'])
 
-const columnList = shallowRef<ColumnItem[]>([])
+const columnList = ref<ColumnItem[]>([])
 
 const getcolumnList = async () => {
   const getRes: SettingData = await getColumnSetting(props.settingKey)
@@ -198,7 +198,7 @@ onBeforeMount(async () => {
             <div class="flex-row i-ga-sm">
               <CustomCheckbox
                 v-model="element.isShow"
-                @change="updateSetting"
+                @change="updateSetting(true)"
               />
               <div class="text">{{ element.label }}</div>
             </div>

@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { CustomTimeLine, CustomTag } from '@/components'
+import {
+  CustomTimeLine,
+  CustomTag,
+  CustomDivider
+} from '@/components'
 import { ElCard } from 'element-plus'
 
 const options = [
@@ -43,6 +47,7 @@ const options = [
 <template>
   <div class="nav-1-2-2">
     <h1 class="i-mb-md">nav-1-2-2</h1>
+    <CustomDivider />
     <CustomTimeLine
       :options="options"
     >
