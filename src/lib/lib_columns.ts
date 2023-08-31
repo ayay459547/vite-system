@@ -6,7 +6,7 @@ import type {
   Sort
 } from '@/components'
 import type { ValidateType } from './lib_validate'
-import { shallowReactive, ref } from 'vue'
+import { reactive, shallowReactive, ref } from 'vue'
 
 import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -46,7 +46,7 @@ export interface FormColumnsItem {
  */
 export const getFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
-  const formMap = shallowReactive<Record<string, any>>({})
+  const formMap = reactive<Record<string, any>>({})
   const refMap = shallowReactive<Record<string, any>>({})
 
   const hasOwnProperty = Object.prototype.hasOwnProperty

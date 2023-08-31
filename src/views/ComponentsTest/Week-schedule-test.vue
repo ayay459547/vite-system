@@ -41,6 +41,14 @@ const typeList = [
         {{ i18nTranslate(label) }}
       </template>
     </WeekSchedule>
+
+    <WeekSchedule
+      :type-list="typeList"
+    >
+      <template #label="{ label }">
+        {{ i18nTranslate(label) }}
+      </template>
+    </WeekSchedule>
   </div>
 </template>
 
