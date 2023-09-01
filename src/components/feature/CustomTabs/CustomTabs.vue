@@ -33,6 +33,10 @@ const props = defineProps({
   background: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  move: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -61,7 +65,9 @@ const scrollToCurrentTab = (currentTab: string) => {
 const debounceScrollToCurrentTab = debounce(scrollToCurrentTab, 200)
 
 watch(tempValue, (newValue) => {
-  debounceScrollToCurrentTab(newValue)
+  if (props.move) {
+    debounceScrollToCurrentTab(newValue)
+  }
 })
 
 const onTabClick = (key: string, label: string, value: any) => {
@@ -137,8 +143,12 @@ onMounted(() => {
   debounceScrollToCurrentTab(tempValue.value)
 })
 onUnmounted(() => {
-  wrapRO.disconnect()
-  listRO.disconnect()
+  if (wrapRO) {
+    wrapRO.disconnect()
+  }
+  if (listRO) {
+    listRO.disconnect()
+  }
 })
 
 </script>
@@ -232,12 +242,7 @@ $is-background: #f5f7fa;
   }
   &-list {
     display: flex;
-    gap: 1px;
     height: 100%;
-
-    &.is-background {
-      gap: 0;
-    }
   }
   &-item {
     @extend %flex-center;

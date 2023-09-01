@@ -516,6 +516,10 @@ const svg = `
     }
 
     .el-table__body {
+      // fix table x scroll
+      &-wrapper {
+        width: calc(100% + 1px);
+      }
       // border 生效
       border-collapse: collapse;
       // border-collapse: separate;

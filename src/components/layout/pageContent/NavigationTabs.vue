@@ -68,6 +68,7 @@ const clearHistory = () => {
       :list="tabs"
       class="history-tabs"
       remove
+      move
       @remove="removeHistory"
     >
       <template #default="slotProps">

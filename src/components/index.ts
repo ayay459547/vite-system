@@ -102,6 +102,8 @@ export type {
 } from './feature/CustomTooltip/CustomTooltip.vue'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
 
+export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
+
 export type {
   Size as TimeLineSize,
   Placement as TimeLinePlacement,

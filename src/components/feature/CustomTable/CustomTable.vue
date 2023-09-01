@@ -464,7 +464,7 @@ const slotKeyList = computed(() => {
 <template>
   <div v-i-loading="loading" class="table-wrapper">
     <div class="table-setting grid-row">
-      <div class="setting-left grid-col-xs-24 grid-col-lg-8">
+      <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
         <CustomPopover
           v-if="!props.hiddenExcel"
           v-model:visible="excelIsShow"
@@ -504,13 +504,13 @@ const slotKeyList = computed(() => {
         <slot name="setting-left"></slot>
       </div>
 
-      <div class="setting-center grid-col-xs-24 grid-col-lg-8">
+      <div class="setting-center grid-col-xs-24 grid-col-md-12 grid-col-xl-6">
         <slot name="setting-center">
-          <span>{{ props.title }}</span>
+          <span class="setting-center-title">{{ props.title }}</span>
         </slot>
       </div>
 
-      <div class="setting-right grid-col-xs-24 grid-col-lg-8">
+      <div class="setting-right grid-col-xs-24 grid-col-md-12 grid-col-xl-9">
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomSelect
@@ -628,7 +628,7 @@ const slotKeyList = computed(() => {
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;
-    padding: 0 8px;
+    padding: 4px 8px;
 
     &::-webkit-scrollbar {
       width: 4px;
@@ -658,22 +658,23 @@ const slotKeyList = computed(() => {
 
       &-left {
         justify-content: flex-start;
-
-        @media (max-width: 992px) {
-          padding-top: 6px;
-        }
       }
       &-center {
         justify-content: center;
-        min-height: 40px;
         font-weight: 600;
+
+        &-title {
+          overflow:hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        @media (max-width: 1200px) {
+          justify-content: flex-start;
+        }
       }
       &-right {
         justify-content: flex-end;
-
-        @media (max-width: 992px) {
-          justify-content: center;
-        }
       }
     }
   }

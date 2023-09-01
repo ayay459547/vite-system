@@ -168,7 +168,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav1-3',
-        title: '選單1-3',
+        title: '測試檔案上傳',
         meta: {
           keepAlive: false,
           status: 'completed',
@@ -177,7 +177,7 @@ const routes: Array<RouterTree> = [
         },
         systemType: ['new'],
         path: '/nav1-3',
-        component: () => import('@/views/Common/EmptyView.vue')
+        component: () => import('@/views/Nav1-3/Nav1-3.vue')
       },
       {
         name: 'nav1-4',
