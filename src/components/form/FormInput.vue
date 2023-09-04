@@ -120,13 +120,14 @@ const validateField = (veeValue: ModelValue) => {
   return true
 }
 
-// 去空白
+// 轉數字
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => {
     let _value = value
     if (typeof value === 'string') {
-      _value = value.trim()
+      // _value = value.trim()
+      _value = value
 
       if (props.onlyNumber) {
         const regexp = /[\D]/g
@@ -255,7 +256,7 @@ const getTextValue = (tempValue: ModelValue) => {
 
     <ElInput
       v-else
-      v-model="inputValue"
+      v-model.trim="inputValue"
       :placeholder="$t('pleaseInput')"
       class="input-main"
       :class="[`validate-${validateRes}`]"

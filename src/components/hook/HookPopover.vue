@@ -38,7 +38,9 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const callEvent = (callback: Function) => {
+const callEvent = (callback: Function, disabled: boolean) => {
+  if (typeof disabled === 'boolean' && disabled) return
+
   callback()
 }
 
@@ -119,7 +121,8 @@ defineExpose<Expose>({
           v-for="(callbackItem, callbackIndex) in callbackList"
           class="popover-item"
           :key="callbackIndex"
-          @click="callEvent(callbackItem.event)"
+          :class="callbackItem.disabled ? 'disabled' : ''"
+          @click="callEvent(callbackItem.event, callbackItem.disabled)"
         >
           <div style="width: fit-content">
             <font-awesome-icon
@@ -172,6 +175,12 @@ defineExpose<Expose>({
     &:hover {
       color: #409EFF;
       background-color: #f5f7fa;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      color: #999999;
+      background-color: #eeeeee;
     }
   }
 }

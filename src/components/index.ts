@@ -3,7 +3,7 @@ import type { ValidationOptions, ValidationResult } from 'vee-validate'
 
 // chart
 export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
-export { default as GanttChart } from './chart/GanttChart.vue'
+export { default as GanttChart } from './chart/GanttChart/GanttChart.vue'
 
 // feature
 export type { ButtonType, ButtonSize } from './feature/CustomButton/CustomButton.vue'
@@ -18,8 +18,6 @@ export type {
   ModelValue as DatePickerModelValue
 } from './feature/CustomDatePicker/CustomDatePicker.vue'
 export { default as CustomDatePicker } from './feature/CustomDatePicker/CustomDatePicker.vue'
-
-export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
 export type {
   Change as DraggableChange
@@ -101,8 +99,6 @@ export type {
   Trigger as TooltipTrigger
 } from './feature/CustomTooltip/CustomTooltip.vue'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
-
-export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
 
 export type {
   Size as TimeLineSize,

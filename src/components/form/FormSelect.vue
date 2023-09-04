@@ -74,7 +74,7 @@ const props = defineProps({
   },
   multipleLimit: {
     type: Number as PropType<number>,
-    default: 3
+    default: 0
   },
   maxCollapseTags: {
     type: Number as PropType<number>,
@@ -132,13 +132,28 @@ const validateField = (veeValue: ModelValue) => {
   return true
 }
 
+/**
+ * 複選 格式是 array
+ * vee 驗證 modelValue 轉字串
+ */
+const inputValue = computed({
+  get: () => props.modelValue,
+  set: (value: ModelValue) => {
+    emit('update:modelValue', value)
+  }
+})
+
 const {
   errorMessage,     // 錯誤訊息
   value: tempValue, // 值
   handleChange,     // 換值
   handleReset,      // 重置
   validate          // 驗證
-} = useField('field', validateField, { validateOnValueUpdate: false })
+} = useField('field', validateField, {
+  validateOnValueUpdate: false,
+  initialValue: inputValue.value,
+  valueProp: inputValue.value
+})
 
 // event
 const validationListeners = computed(() => {
@@ -228,7 +243,7 @@ const getTextValue = (tempValue: ModelValue) => {
 
     <ElSelect
       v-else
-      v-model="tempValue"
+      v-model="inputValue"
       :placeholder="$t('pleaseSelect')"
       class="input-main"
       :class="[`validate-${validateRes}`]"

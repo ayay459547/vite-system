@@ -4,11 +4,14 @@ import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 export declare interface EventItem {
   icon: [IconType, string] | []
   label: string
+  disabled?: boolean
   event: Function
 }
+
 export declare interface EventOptions {
   width: number
 }
+
 export declare interface CustomPopoverQueue {
   queueId: number
   clientX: number
@@ -16,6 +19,7 @@ export declare interface CustomPopoverQueue {
   eventList: EventItem[]
   options?: EventOptions
 }
+
 export declare namespace HookList {
   type loading = (isOpen: boolean, message?: string) => void
 
@@ -31,6 +35,7 @@ export declare namespace HookList {
 
   type swal = (options: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 }
+
 export declare type Hook = () => {
   loading: HookList.loading
   i18nTranslate: HookList.i18nTranslate

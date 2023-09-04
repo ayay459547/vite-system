@@ -68,12 +68,14 @@ const emit = defineEmits([
   'clear'
 ])
 
+// 轉數字
 const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => {
     let _value = value
     if (typeof value === 'string') {
-      _value = value.trim()
+      // _value = value.trim()
+      _value = value
 
       if (props.onlyNumber) {
         const regexp = /[\D]/g
@@ -138,7 +140,7 @@ defineExpose({
 
     <ElInput
       ref="elInputRef"
-      v-model="tempValue"
+      v-model.trim="tempValue"
       :placeholder="$t('pleaseInput')"
       class="input-main"
       :validate-event="false"
