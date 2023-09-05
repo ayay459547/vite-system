@@ -19,6 +19,8 @@ export type {
 } from './feature/CustomDatePicker/CustomDatePicker.vue'
 export { default as CustomDatePicker } from './feature/CustomDatePicker/CustomDatePicker.vue'
 
+export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
+
 export type {
   Change as DraggableChange
 } from './feature/CustomDraggable/CustomDraggable.vue'
@@ -44,6 +46,8 @@ export type {
   ModelValue as OperatorModelValue
 } from './feature/CustomOperator/CustomOperator.vue'
 export { default as CustomOperator } from './feature/CustomOperator/CustomOperator.vue'
+
+export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
 
 export type {
   Placement as PopoverPlacement,

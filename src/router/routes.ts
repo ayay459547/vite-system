@@ -177,16 +177,18 @@ const routes: Array<RouterTree> = [
         },
         systemType: ['new'],
         path: '/nav1-3',
-        component: () => import('@/views/Nav1-3/Nav1-3.vue')
+        component: () => import('@/views/Nav1-3/Nav1-3.vue'),
+        icon: 'file-arrow-up'
       },
       {
         name: 'nav1-4',
         title: '選單1-4',
         systemType: ['new'],
+        icon: 'mug-hot',
         leaves: [
           {
             name: 'nav1-4-1',
-            title: '選單1-4-1',
+            title: '甘特圖測試',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -195,7 +197,8 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav1-4-1',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav1-4-1/Nav1-4-1.vue'),
+            icon: 'chart-gantt'
           },
           {
             name: 'nav1-4-2',

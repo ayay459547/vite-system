@@ -48,6 +48,7 @@ const options = [
   <div class="nav-1-2-2">
     <h1 class="i-mb-md">nav-1-2-2</h1>
     <CustomDivider />
+    <CustomDivider border-style="dashed">div</CustomDivider>
     <CustomTimeLine
       :options="options"
     >
@@ -81,6 +82,7 @@ const options = [
   padding: 32px;
 
   display: flex;
+  flex-direction: column;
   gap: 32px;
 }
 </style>

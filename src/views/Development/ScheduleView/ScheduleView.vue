@@ -6,7 +6,7 @@ import {
   CustomButton
 } from '@/components'
 
-import { columnSetting } from './columns.ts'
+import { columnSetting } from './columns'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
 
 import { isEmpty, downloadStaticFile } from '@/lib/lib_utils'
