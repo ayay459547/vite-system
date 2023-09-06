@@ -7,7 +7,7 @@ export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
 
 export interface Props {
   visible?: boolean | null
-  width?: number
+  width?: number | string
   title?: string
   placement?: Placement
   trigger?: Trigger

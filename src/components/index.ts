@@ -112,7 +112,11 @@ export type {
 } from './feature/CustomTimeLine/CustomTimeLine.vue'
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
+// @ts-ignore
+export { default as SimpleFilter } from '@/components/feature/SimpleFilter/SimpleFilter.tsx'
+
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
+
 export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
 // form

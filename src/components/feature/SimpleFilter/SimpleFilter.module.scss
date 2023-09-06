@@ -1,0 +1,33 @@
+.simple-filter {
+  width: fit-content;
+  height: fit-content;
+}
+
+.filter {
+  &-container {
+    width: 100%;
+  }
+  &-list {
+    width: 100%;
+    padding: 8px;
+    height: fit-content;
+    max-height: 60vh;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &-item {
+    flex: 1;
+    min-width: 130px;
+    border-radius: 6px;
+  }
+
+  &-btn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 8px;
+  }
+}

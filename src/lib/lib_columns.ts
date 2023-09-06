@@ -18,6 +18,7 @@ export interface FormSetting<T> {
   defaultValue: T
   columns: Record<string, any>
   forms: T
+  ableds: Record<string, boolean>
   reset: () => void
   validate: () => Promise<Array<any>>
 }
@@ -47,6 +48,8 @@ export interface FormColumnsItem {
 export const getFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
   const formMap = reactive<Record<string, any>>({})
+  const resAbleds = reactive<Record<string, boolean>>({})
+
   const refMap = shallowReactive<Record<string, any>>({})
 
   const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -78,6 +81,8 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       resColumns[key] = temp
 
       formMap[key] = temp.default
+      resAbleds[key] = true
+
       defaultValue[key] = temp.default
     }
   })
@@ -94,9 +99,11 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     defaultValue: defaultValue as T,
     columns: resColumns,
     forms: formMap as T,
+    ableds: resAbleds,
     reset: () => {
       formMap.$forEach((value: any, key: string) => {
         formMap[key] = resColumns[key]?.default ?? null
+        resAbleds[key] = true
 
         if (typeof refMap[key]?.handleReset === 'function') {
           refMap[key].handleReset()

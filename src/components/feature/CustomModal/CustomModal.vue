@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import type { Hook } from '@/declare/hook'
 import type { WritableComputedRef, PropType } from 'vue'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { CustomButton } from '@/components'
 
 export type WidthSize = 'fill' | 'large'| 'default'| 'small'
 export type HeightSize = 'fill' | 'large'| 'default'| 'small'
 export type ModelValue = boolean
+
+const hook: Hook = inject('hook')
+const { i18nTranslate } = hook()
 
 const props = defineProps({
   modelValue: {
@@ -138,7 +142,7 @@ const clickOutside = () => {
               <div class="modal-footer-btn">
                 <CustomButton
                   v-if="!props.hiddenCancel"
-                  label="取消"
+                  :label="i18nTranslate('cancel')"
                   icon-name="angle-left"
                   icon-move="translate"
                   @click="cancel"
@@ -146,7 +150,7 @@ const clickOutside = () => {
                 <CustomButton
                   v-if="!props.hiddenSubmit"
                   type="success"
-                  label="確認"
+                  :label="i18nTranslate('confirm')"
                   icon-name="check"
                   icon-move="scale"
                   @click="submit"

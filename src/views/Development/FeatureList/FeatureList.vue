@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { CustomTable, CustomInput, CustomSelect, CustomIcon } from '@/components'
+import {
+  CustomTable,
+  CustomInput,
+  CustomSelect,
+  CustomIcon
+} from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { ref, onMounted } from 'vue'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
+
+import FilterView from './FilterView.vue'
 
 const tableData = ref<TableData[]>([])
 const tableDataCount = ref(0)
@@ -28,7 +35,9 @@ const download = () => {
 // filter
 const {
   columns: filterColumn,
-  forms: filter
+  forms: filter,
+  ableds: fitlerAbleds,
+  reset: filterReset
 } = getFormSetting<TableData>(columnSetting, 'filter')
 
 const isLoading = ref(false)
@@ -61,6 +70,16 @@ onMounted(() => {
 
 <template>
   <div v-i-loading="isLoading" class="table-test">
+    <div class="flex-row content-end">
+      <FilterView
+        v-model:forms="filter"
+        :columns="filterColumn"
+        :ableds="fitlerAbleds"
+        @reset="filterReset()"
+        @submit="init()"
+      />
+    </div>
+
     <div class="table-main">
       <CustomTable
         ref="table"
@@ -128,9 +147,10 @@ onMounted(() => {
   &-test {
     width: 100%;
     height: 100%;
-    padding: 32px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
+    gap: 8px;
   }
   &-main {
     flex: 1;

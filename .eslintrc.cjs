@@ -20,7 +20,11 @@ module.exports = {
     }
   ],
   parserOptions: {
-    ecmaVersion: 'latest'
+    ecmaVersion: 'latest',
+    ecmaFeatures: {
+      tsx: true // Allows for the parsing of JSX
+      // jsx: true
+    }
   },
   rules: {
     // 要求使用 === 和 !==
