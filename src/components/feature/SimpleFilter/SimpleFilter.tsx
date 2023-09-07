@@ -1,6 +1,8 @@
+// @ts-ignore
 import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
 import { defineComponent, inject, computed, ref } from 'vue'
+// @ts-ignore
 import type { PopoverPlacement } from '@/components'
 import { CustomButton, CustomPopover } from '@/components'
 import styles from './SimpleFilter.module.scss'
@@ -11,11 +13,22 @@ const SimpleFilter = defineComponent({
   props: {
     columns: {
       type: Object as PropType<Record<string, any>>,
-      required: true
+      default: () => {
+        return {}
+      },
+      required: false
+    },
+    width: {
+      type: [String, Number] as PropType<string | number>,
+      default: '65vw'
+    },
+    class: {
+      type: String as PropType<string>,
+      default: ''
     },
     placement: {
       type: String as PropType<PopoverPlacement>,
-      default: 'left'
+      default: 'right-start'
     }
   },
   emits: ['reset', 'submit'],
@@ -48,9 +61,7 @@ const SimpleFilter = defineComponent({
           column
         })
       }
-      return (
-        <div>{ column.label }</div>
-      )
+      return null
     }
 
     const isVisible = ref(false)
@@ -68,30 +79,39 @@ const SimpleFilter = defineComponent({
             default: () => (
               <div
                 class={styles['filter-container']}
-                v-click-outside={(e: MouseEvent) => {
-                  isVisible.value = false
-                  e.stopPropagation()
-                }}
+                // v-click-outside={(e: MouseEvent) => {
+                //   isVisible.value = false
+                //   e.stopPropagation()
+                // }}
               >
-                <div class={styles['filter-list']}>
+                <div class={styles['filter-header']}>
+                  <CustomButton
+                    iconName='close'
+                    text
+                    onClick={(e: MouseEvent) => {
+                      isVisible.value = false
+                      e.stopPropagation()
+                    }}
+                  />
+                </div>
+
+                <div class={`${styles['filter-body']} ${props.class}`}>
                   {
+                    columnList.value.length > 0 ?
                     columnList.value.map(column => {
                       const { key } = column
 
-                      return (
-                        <div class={`${styles['filter-item']}`}>
-                          { getSlot(key, column) }
-                        </div>
-                      )
-                    })
+                      return getSlot(key, column)
+                    }).filter(item => !isEmpty(item)) :
+                    'empty'
                   }
                 </div>
 
-                <div class={styles['filter-btn']}>
+                <div class={styles['filter-footer']}>
                   <CustomButton
-                    iconName='close'
-                    iconMove='scale'
-                    label={i18nTranslate('close')}
+                    iconName='chevron-left'
+                    iconMove='translate'
+                    label={i18nTranslate('return')}
                     onClick={(e: MouseEvent) => {
                       isVisible.value = false
                       e.stopPropagation()
@@ -113,6 +133,7 @@ const SimpleFilter = defineComponent({
                     type='success'
                     label={i18nTranslate('confirm')}
                     onClick={(e: MouseEvent) => {
+                      isVisible.value = false
                       emit('submit')
                       e.stopPropagation()
                     }}
@@ -124,6 +145,7 @@ const SimpleFilter = defineComponent({
             reference: () => (
               <CustomButton
                 iconName='filter'
+                type='primary'
                 label={i18nTranslate('filter')}
                 onClick={(e: MouseEvent) => {
                   isVisible.value = !isVisible.value

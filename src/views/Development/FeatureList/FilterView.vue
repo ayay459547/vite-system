@@ -6,20 +6,19 @@ import {
   CustomSelect,
   SimpleFilter
 } from '@/components'
-import type { TableData } from './api'
 import { getOptions } from './api'
 
 const props = defineProps({
   columns: {
-    type: Object as PropType<Record<string, any>>,
+    type: Object as PropType<any>,
     required: true
   },
   forms: {
-    type: Object as PropType<TableData & any>,
+    type: Object as PropType<any>,
     required: true
   },
   ableds: {
-    type: Object as PropType<Record<string, boolean>>,
+    type: Object as PropType<any>,
     required: true
   }
 })
@@ -46,27 +45,26 @@ onBeforeMount(() => {
 <template>
   <div class="filter">
     <SimpleFilter
+      width="65vw"
+      class="grid-row"
+      placement="left-end"
       :columns="props.columns"
       @reset="emit('reset')"
       @submit="emit('submit')"
     >
-      <template #filter-status="{ prop }">
-        <CustomSelect
+      <template #filter-all="{ prop }">
+        <CustomInput
+          class="grid-col-xs-24 grid-col-md-8"
           v-model="filterValue[prop]"
           v-bind="props.columns[prop]"
         />
       </template>
       <template #filter-mode="{ prop }">
-        <CustomSelect
+        <CustomInput
+          class="grid-col-xs-24 grid-col-md-8"
           v-model="filterValue[prop]"
           v-bind="props.columns[prop]"
           :options="modeOptions"
-        />
-      </template>
-      <template #filter-all="{ prop }">
-        <CustomInput
-          v-model="filterValue[prop]"
-          v-bind="props.columns[prop]"
         />
       </template>
     </SimpleFilter>

@@ -140,6 +140,9 @@ const downloadWord = () => {
 }
 
 const tooltipPlacement: TooltipTrigger = 'click'
+
+const isPopoverVisible = ref(false)
+
 </script>
 
 <template>
@@ -198,6 +201,29 @@ const tooltipPlacement: TooltipTrigger = 'click'
           <CustomButton label="滑鼠點擊 Popover" type="danger"/>
         </template>
       </CustomPopover>
+
+      <CustomPopover
+        :visible="isPopoverVisible"
+        width="300px"
+      >
+        <div>
+          Popover 內容1
+          <CustomButton
+            icon-name="close"
+            label="滑鼠點擊 Popover"
+            type="info"
+            @click="isPopoverVisible = !isPopoverVisible"
+          />
+        </div>
+        <template #reference>
+          <CustomButton
+            label="滑鼠點擊 Popover"
+            type="info"
+            @click="isPopoverVisible = !isPopoverVisible"
+          />
+        </template>
+      </CustomPopover>
+
 
       <CustomPopover
         :width="300"

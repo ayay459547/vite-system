@@ -1,3 +1,4 @@
+/// <reference types="./vite-env-override.d.ts" />
 /* eslint-disable */
 import type { DefineComponent } from 'vue'
 
@@ -12,10 +13,10 @@ declare module '@vue/runtime-core' {
   }
 }
 
-declare module '*.scss' {
-  const content: Record<string, string>
-  export default content
-}
+// declare module '*.module.scss' {
+//   const classes: any
+//   export default classes
+// }
 
 declare module '@/components' {
   const content: any

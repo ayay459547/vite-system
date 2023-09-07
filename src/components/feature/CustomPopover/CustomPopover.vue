@@ -13,6 +13,7 @@ export interface Props {
   trigger?: Trigger
   popperStyle?: string
   showArrow?: boolean
+  offset?: number
 }
 const props = withDefaults(defineProps<Props>(), {
   visible: null,
@@ -21,7 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   placement: 'bottom',
   trigger: 'click',
   popperStyle: '',
-  showArrow: true
+  showArrow: true,
+  offset: 0
 })
 
 const emit = defineEmits<{
@@ -66,6 +68,7 @@ const isShow = computed<boolean>({
       :trigger="props.trigger"
       :popper-style="props.popperStyle"
       :show-arrow="props.showArrow"
+      :offset="props.offset"
       @update:visible="onUpdateVisible"
     >
       <template #reference>
