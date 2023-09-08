@@ -4,12 +4,20 @@ import { computed } from 'vue'
 
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
+import { isEmpty } from '@/lib/lib_utils'
 
 export type ModelValue = CheckboxValueType | CheckboxGroupValueType
 
+export type CheckBoxOption = {
+  label: string
+  value: string | number
+  color?: string
+}
+export type CheckBoxOptions = CheckBoxOption[]
+
 const props = defineProps({
   modelValue: {
-    type: [String, Number, Boolean, Array<String | Number>] as PropType<ModelValue>,
+    type: [String, Number, Boolean, Array] as PropType<ModelValue>,
     required: true
   },
   label: {
@@ -21,7 +29,7 @@ const props = defineProps({
     default: false
   },
   options: {
-    type: Array as PropType<{ label: string, value: string | number }[]>,
+    type: Array as PropType<CheckBoxOptions>,
     default () {
       return []
     }
@@ -38,8 +46,20 @@ const emit = defineEmits([
   'change'
 ])
 
-const onCheckboxChange = (val: ModelValue) => {
+const onGroupCheckboxChange = (val: CheckboxGroupValueType) => {
   emit('change', val)
+}
+
+const onCheckboxChange = (val: CheckboxValueType) => {
+  emit('change', val)
+}
+
+const getStyle = (isChecked: boolean, color?: string) => {
+  if (!isChecked) return {}
+
+  if (isEmpty(color)) return { color: '#409EFF' }
+
+  return { color }
 }
 
 </script>
@@ -51,13 +71,25 @@ const onCheckboxChange = (val: ModelValue) => {
         v-model="tempValue"
         :validate-event="false"
         :disabled="props.disabled"
+        @change="onGroupCheckboxChange"
       >
+      <!--  -->
         <ElCheckbox
           v-for="item in options"
           :key="item.value"
           :label="item.value"
         >
-          {{ item.label }}
+          <slot
+            name="options"
+            :value="item.value"
+            :label="item.label"
+            :color="item?.color ?? '#ffffff'"
+            :is-checked="tempValue.includes(item.value)"
+          >
+            <span
+              :style="getStyle(tempValue.includes(item.value), item?.color)"
+            >{{ item.label }}</span>
+          </slot>
         </ElCheckbox>
       </ElCheckboxGroup>
     </template>
@@ -69,7 +101,9 @@ const onCheckboxChange = (val: ModelValue) => {
         :validate-event="false"
         @change="onCheckboxChange"
       >
-        {{ props.label }}
+        <slot name="default">
+          {{ props.label }}
+        </slot>
       </ElCheckbox>
     </template>
   </div>

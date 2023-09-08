@@ -53,7 +53,7 @@ const hasSlot = (prop: string): boolean => {
 .divider {
   &-wrapper {
     width: 100%;
-    height: fit-content
+    height: fit-content;
   }
 }
 </style>

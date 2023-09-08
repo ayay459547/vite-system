@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SimpleQRcode } from '@/components'
+import { SimpleQRcode, CustomSwitch } from '@/components'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 import { datetimeFormat } from '@/lib/lib_utils'
 import { onMounted, ref } from 'vue'
@@ -19,6 +19,8 @@ onMounted(() => {
   now.value = datetimeFormat(new Date(), 'YYYY-MM-DD A hh:mm:ss')
 })
 
+const switchValue = ref(false)
+
 </script>
 
 <template>
@@ -33,8 +35,12 @@ onMounted(() => {
       ></vue-qr>
     </div>
 
+    <CustomSwitch
+      v-model="switchValue"
+    />
+
     <SimpleQRcode
-      :url="url"
+      :text="url"
       :bgSrc='bgimg'
       :logoSrc="img"
     />

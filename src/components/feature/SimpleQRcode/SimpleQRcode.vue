@@ -6,10 +6,10 @@ import { isEmpty } from '@/lib/lib_utils'
 
 export default {
   props: {
-    url: {
+    text: {
       type: String as PropType<string>,
       required: true,
-      description: 'url'
+      description: 'text'
     },
     width: {
       type: String as PropType<string>,
@@ -39,7 +39,7 @@ export default {
   // emits: [],
   setup (props) {
     const qrProps = ({
-      text: props.url,
+      text: props.text,
       bgSrc: props.bgSrc,
       logoSrc: props.logoSrc
     } as any).$filter(prop => !isEmpty(prop))

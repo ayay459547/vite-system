@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import { CustomCheckbox, CustomDivider } from '@/components'
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 
@@ -10,6 +10,14 @@ const valuePhone = ref<string>('')
 
 // console.log(envStore)
 
+const checkboxValue = ref([])
+const options = [
+  { label: 'test1', value: '1', color: '#909399' },
+  { label: 'test2', value: '2', color: '#b88230' },
+  { label: 'test3', value: '3', color: '#67C23A' },
+  { label: 'test4', value: '4' },
+  { label: 'test5', value: '5' }
+]
 </script>
 
 <template>
@@ -26,6 +34,20 @@ const valuePhone = ref<string>('')
       label="測試phone"
       :validate="['phone']"
     />
+
+    <CustomCheckbox v-model="checkboxValue" :options="options">
+      <!-- <template #options="{ label, value, color, isChecked }">
+        <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
+      </template> -->
+    </CustomCheckbox>
+
+    <CustomDivider />
+
+    <CustomCheckbox v-model="checkboxValue" :options="options">
+      <template #options="{ label, value, color, isChecked }">
+        <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
+      </template>
+    </CustomCheckbox>
   </div>
 </template>
 

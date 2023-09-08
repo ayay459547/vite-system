@@ -70,6 +70,12 @@ export { default as CustomSelect } from './feature/CustomSelect/CustomSelect.vue
 
 export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'
 
+export type {
+  Size as SwitchSize,
+  ModelValue as SwitchModelValue
+} from './feature/CustomSwitch/CustomSwitch.vue'
+export { default as CustomSwitch } from './feature/CustomSwitch/CustomSwitch.vue'
+
 import type { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
 export declare interface CustomTableExpose {
   pageChange: PageChange
