@@ -242,7 +242,7 @@ const routes: Array<RouterTree> = [
     systemType: ['new'],
     icon: 'shield-halved',
     path: '/nav2',
-    component: () => import('@/views/Nav2/Nav2.vue')
+    component: () => import('@/views/Nav2/Nav2-1.vue')
   },
   {
     name: 'nav3',

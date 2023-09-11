@@ -26,6 +26,8 @@ export type {
 } from './feature/CustomDraggable/CustomDraggable.vue'
 export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
 
+export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
+
 export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 

@@ -33,67 +33,80 @@ const props = defineProps({
   label: {
     type: String as PropType<string>,
     required: false,
-    default: ''
+    default: '',
+    description: '文字'
   },
   size: {
     type: String as PropType<ButtonSize>,
     required: false,
-    default: 'default'
+    default: 'default',
+    description: '大小'
   },
   type: {
     type: String as PropType<ButtonType>,
     required: false,
-    default: 'default'
+    default: 'default',
+    description: '類型 對應到不同顏色'
   },
   text: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '外型樣式'
   },
   plain: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '外型樣式'
   },
   round: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '外型樣式-圓角'
   },
   circle: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '外型樣式-圓形'
   },
   disabled: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '不可點擊'
   },
   loading: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '讀取中(無法點擊)'
   },
   color: {
     type: String as PropType<string |  undefined>,
     required: false,
-    default: undefined
+    default: undefined,
+    description: '顏色'
   },
   iconType: {
     type: String as PropType<IconType>,
     required: false,
-    default: 'fas'
+    default: 'fas',
+    description: '前綴圖示類型 參考 fontawesome'
   },
   iconName: {
     type: String as PropType<string>,
     required: false,
-    default: ''
+    default: '',
+    description: '前綴圖示 參考 fontawesome'
   },
   iconMove: {
     type: String as PropType<'none' | 'translate'| 'rotate' | 'scale'>,
     required: false,
-    default: 'none'
+    default: 'none',
+    description: 'hover後 的效果'
   }
 })
 

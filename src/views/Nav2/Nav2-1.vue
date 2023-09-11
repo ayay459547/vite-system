@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomCheckbox, CustomDivider } from '@/components'
+import { CustomCheckbox, CustomDivider, CustomEmpty } from '@/components'
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 
@@ -48,6 +48,8 @@ const options = [
         <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
       </template>
     </CustomCheckbox>
+
+    <CustomEmpty />
   </div>
 </template>
 
