@@ -60,7 +60,7 @@ const props = defineProps({
   },
   multipleLimit: {
     type: Number as PropType<number>,
-    default: 3
+    default: 0
   },
   maxCollapseTags: {
     type: Number as PropType<number>,
@@ -236,6 +236,7 @@ const hasSlot = (prop: string): boolean => {
   }
 
   &-main {
+    width: 100%;
     height: fit-content;
   }
 }

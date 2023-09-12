@@ -329,6 +329,7 @@ const getTextValue = (tempValue: ModelValue) => {
   }
 
   &-main {
+    width: 100%;
     height: fit-content;
   }
 
