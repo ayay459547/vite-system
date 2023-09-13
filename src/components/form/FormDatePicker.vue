@@ -213,7 +213,7 @@ const getTextValue = (tempValue: ModelValue) => {
     <ElDatePicker
       v-else
       v-model="tempValue"
-      :placeholder="$t('pleaseInput')"
+      :placeholder="$t('pleaseSelect')"
       class="input-main"
       :start-placeholder="t('startTime')"
       :end-placeholder="t('endTime')"

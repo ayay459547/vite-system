@@ -3,7 +3,7 @@ import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/lib_columns'
 
-import { FormInput, CustomIcon } from '@/components'
+import { CustomIcon, SimpleInput } from '@/components'
 import { loginSystem } from './api'
 
 const hook: Hook = inject('hook')
@@ -40,6 +40,7 @@ const columnSetting = {
   account: {
     label: '帳號',
     fitler: {
+      type: 'text',
       default: 'admin',
       required: true
     }
@@ -86,15 +87,15 @@ const {
 
         <h1>登入</h1>
 
-        <FormInput
+        <SimpleInput
           v-model="form.account"
           v-bind="formColumn.account"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
-        </FormInput>
-        <FormInput
+        </SimpleInput>
+        <SimpleInput
           v-model="form.passowrd"
           v-bind="formColumn.passowrd"
           show-password
@@ -103,7 +104,7 @@ const {
           <template #prefix>
             <CustomIcon name="unlock-keyhole"/>
           </template>
-        </FormInput>
+        </SimpleInput>
 
         <button class="login-button" @click="login">登入</button>
       </div>

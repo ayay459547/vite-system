@@ -24,7 +24,8 @@ import type { ModelValue } from './props'
 import {
   custom,
   elCommon,
-  elInput
+  elInput,
+  elSelect
 } from './props'
 
 // @ts-ignore
@@ -37,7 +38,8 @@ const SimpleInput = defineComponent({
   props: {
     ...custom,
     ...elCommon,
-    ...elInput
+    ...elInput,
+    ...elSelect
   },
   emits: [
     'update:modelValue',
@@ -46,7 +48,10 @@ const SimpleInput = defineComponent({
     'input',
     'focus',
     'clear',
-    'blur'
+    'blur',
+    // select
+    'remove-tag',
+    'visible-change'
   ],
   setup (props, { slots, emit, expose }) {
     const hook: Hook = inject('hook')
@@ -135,6 +140,13 @@ const SimpleInput = defineComponent({
         onInput: (value: string | number): void => {
           emit('input', value)
           handleChange(value, true)
+        },
+        // select
+        onRemoveTag: (tagValue: any): void => {
+          emit('remove-tag', tagValue)
+        },
+        onVisibleChange: (visible: boolean): void => {
+          emit('visible-change', visible)
         }
       }
       if ([null, undefined, ''].includes(errorMessage.value)) {
@@ -180,13 +192,17 @@ const SimpleInput = defineComponent({
     // 'data' | 'datetime' | 'daterange' | 'dateitmerange'
 
     const getTextValue = computed(() => {
+      if (isEmpty(tempValue)) return ''
+
       switch (props.type) {
         case 'text':
         case 'textarea':
         case 'password':
-          if (isEmpty(tempValue)) return ''
           return tempValue.value
-        case 'select':
+        case 'select': {
+          const _option = props.options.find(_option => _option.value === tempValue.value)
+          return _option?.label ?? ''
+        }
         case 'checkbox':
         case 'radio':
         case 'data':
@@ -226,11 +242,11 @@ const SimpleInput = defineComponent({
               onUpdate:modelValue={
                 ($event: string) => (inputValue.value = $event)
               }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
               type={props.type}
               onlyNumber={props.onlyNumber}
               errorMessage={errorMessage.value}
-              // v-bind 綁定屬性
-              { ...bindAttributes.value }
               // v-on 接收事件
               onFocus={ (e) => { onEvent.value.onFocus(e) } }
               onClear={ () => { onEvent.value.onClear() } }
@@ -242,6 +258,28 @@ const SimpleInput = defineComponent({
             </FormInput>
           )
         case 'select':
+          return (
+            <FormSelect
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: string) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              type={props.type}
+              options={props.options}
+              errorMessage={errorMessage.value}
+              // v-on 接收事件
+              onFocus={ (e) => { onEvent.value.onFocus(e) } }
+              onClear={ () => { onEvent.value.onClear() } }
+              onBlur={ (e) => { onEvent.value.onBlur(e) } }
+              onChange={ (e) => { onEvent.value.onChange(e) } }
+              onRemove-tag={ (e) => { onEvent.value.onRemoveTag(e) } }
+              onVisible-change={ (e) => { onEvent.value.onVisibleChange(e) } }
+            >
+              {{ ...getTemplate(['prefix', 'empty']) }}
+            </FormSelect>
+          )
         case 'checkbox':
         case 'radio':
         case 'data':

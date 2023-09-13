@@ -8,6 +8,7 @@ import { isEmpty } from '@/lib/lib_utils'
 export type Options = Array<{
   label: string
   value: string | number | boolean | null
+  disabled?: boolean
 }>
 
 export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
@@ -17,25 +18,9 @@ const props = defineProps({
     type: [String, Number, Boolean, Array, Object, null] as PropType<ModelValue>,
     required: true
   },
-  validateKey: {
+  errorMessage: {
     type: String as PropType<string>,
     default: ''
-  },
-  direction: {
-    type: String as PropType<'column' | 'row'>,
-    default: 'column'
-  },
-  label: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  hiddenLabel: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  required: {
-    type: Boolean as PropType<boolean>,
-    default: false
   },
   options: {
     type: Array as PropType<Options>,
@@ -43,11 +28,20 @@ const props = defineProps({
       return []
     }
   },
-  text: {
+  // 區別一般 select 與 group select 尚未製作
+  type: {
+    type: String as PropType<string>,
+    default: 'text'
+  },
+  // element ui plus
+  clearable: {
     type: Boolean as PropType<boolean>,
     default: false
   },
-  // element ui plus
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   loading: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -59,14 +53,6 @@ const props = defineProps({
   remoteMethod: {
     type: Function as PropType<Function>,
     required: false
-  },
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
   },
   multiple: {
     type: Boolean as PropType<boolean>,
@@ -94,117 +80,38 @@ const bindAttributes = computed(() => {
   return {
     clearable: props.clearable,
     disabled: props.disabled,
-    filterable: props.filterable,
+    loading: props.loading,
+    remote: props.remote,
+    remoteMethod: props.remoteMethod,
     multiple: props.multiple,
-    collapseTags: props.multiple,
-    collapseTagsTooltip: props.multiple,
     multipleLimit: props.multipleLimit,
     maxCollapseTags: props.maxCollapseTags,
+    collapseTags: props.multiple,
+    collapseTagsTooltip: props.multiple,
+    filterable: props.filterable,
     allowCreate: props.allowCreate
   }
 })
 
 const emit = defineEmits([
   'update:modelValue',
-  'blur',
   'focus',
+  'blur',
+  'clear',
   'change',
   'remove-tag',
-  'visible-change',
-  'clear'
+  'visible-change'
 ])
 
 const validateRes = computed<string>(() => {
-  if (isEmpty(errorMessage.value)) return 'success'
+  if (isEmpty(props.errorMessage)) return 'success'
   return 'error'
 })
 
-// 驗證
-const validateField = (veeValue: ModelValue) => {
-  // 非必填
-  if (!props.required) return true
-
-  // 必填
-  if (props.required && isEmpty(veeValue as any)) {
-    return '此輸入框為必填'
-  }
-
-  return true
-}
-
-/**
- * 複選 格式是 array
- * vee 驗證 modelValue 轉字串
- */
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => {
     emit('update:modelValue', value)
-  }
-})
-
-const {
-  errorMessage,     // 錯誤訊息
-  value: tempValue, // 值
-  handleChange,     // 換值
-  handleReset,      // 重置
-  validate          // 驗證
-} = useField('field', validateField, {
-  validateOnValueUpdate: false,
-  initialValue: inputValue.value,
-  valueProp: inputValue.value
-})
-
-// event
-const validationListeners = computed(() => {
-  const event = {
-    focus: (e: FocusEvent): void => {
-      emit('focus', e)
-    },
-    clear: (): void => {
-      emit('clear')
-    },
-    blur: async (e: FocusEvent): Promise<void> => {
-      emit('blur', e)
-
-      // 確保畫面更新完才做驗證
-      // 太快做驗證會一瞬間 出現紅色
-      await nextTick()
-      setTimeout(() => {
-        handleChange(tempValue.value, true)
-      }, 300)
-    },
-    change: (value: ModelValue): void => {
-      emit('change', value)
-      handleChange(value, true)
-    },
-    'remove-tag': (value: ModelValue): void => {
-      emit('remove-tag', value)
-      handleChange(value, true)
-    },
-    'visible-change': (value: boolean): void => {
-      emit('visible-change', value)
-    }
-  }
-
-  return event
-})
-
-const _domValidateKey = ref<string>('')
-const domValidateKey = computed(() => {
-  return _domValidateKey.value.length > 0 ? _domValidateKey.value : props.validateKey
-})
-
-defineExpose({
-  key: props.validateKey,
-  value: tempValue,
-  handleReset,
-  validate,
-  setvalidateKey (validateKey: string) {
-    _domValidateKey.value = validateKey
-  },
-  getDom () {
-    return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
   }
 })
 
@@ -214,45 +121,38 @@ const hasSlot = (prop: string): boolean => {
   return Object.prototype.hasOwnProperty.call(slots, prop)
 }
 
-const getTextValue = (tempValue: ModelValue) => {
-  if (isEmpty(tempValue)) return ''
-
-  const _option = props.options.find(option => option.value === tempValue)
-  return _option?.label ?? ''
+const onEvent = {
+  focus: (e: FocusEvent): void => {
+    emit('focus', e)
+  },
+  clear: (): void => {
+    emit('clear')
+  },
+  blur: async (e: FocusEvent): Promise<void> => {
+    emit('blur', e)
+  },
+  change: (value: string | number): void => {
+    emit('change', value)
+  },
+  removeTag: (tagValue: any): void => {
+    emit('remove-tag', tagValue)
+  },
+  visibleChange: (visible: boolean): void => {
+    emit('visible-change', visible)
+  }
 }
 
 </script>
 
 <template>
-  <div
-    class="input-container"
-    :class="[
-      `input-${domValidateKey}-${validateRes}`,
-      `${props.direction}`,
-      props.hiddenLabel ? 'hidden-label' : ''
-    ]"
-  >
-    <label v-if="!props.hiddenLabel" class="input-label">
-      <span v-if="props.required" class="input-required input-prefix">*</span>
-      <span>{{ props.label }}</span>
-    </label>
-
-    <div v-if="props.text" class="i-pt-sm">
-      {{ getTextValue(tempValue) }}
-    </div>
-
+  <div class="el-select">
     <ElSelect
-      v-else
       v-model="inputValue"
       :placeholder="$t('pleaseSelect')"
-      class="input-main"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
-      :loading="props.loading"
-      :remote="props.remote"
-      :remote-method="props.remoteMethod"
       v-bind="bindAttributes"
-      v-on="validationListeners"
+      v-on="onEvent"
     >
       <slot>
         <ElOption
@@ -269,13 +169,11 @@ const getTextValue = (tempValue: ModelValue) => {
         <slot name="empty"></slot>
       </template>
     </ElSelect>
-
-    <span class="input-error">{{ errorMessage }}</span>
   </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.input-main) {
+:deep(.el-select) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -292,49 +190,8 @@ const getTextValue = (tempValue: ModelValue) => {
     background-color: lighten($danger, 20%);
   }
 }
-.input {
-  &-container {
-    width: 100%;
-    height: 88px;
-    display: flex;
-    gap: 4px;
-    position: relative;
-    &.hidden-label {
-      height: 48px;
-    }
-    &.row {
-      flex-direction: row;
-      align-items: center;
-      height: 48px;
-    }
-    &.column {
-      flex-direction: column;
-    }
-  }
-
-  &-prefix {
-    display: inline-block;
-    position: absolute;
-    left: -10px;
-    top: 0;
-  }
-  &-required {
-    color: $danger;
-  }
-
-  &-label {
-    width: fit-content;
-    white-space: nowrap;
-    height: 21px;
-  }
-
-  &-main {
-    width: 100%;
-    height: fit-content;
-  }
-
-  &-error {
-    color: $danger;
-  }
+.el-select {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -13,9 +13,11 @@ import FormDatePicker from './form/FormDatePicker.vue'
 import FormCheckbox from './form/FormCheckbox.vue'
 import FormRadio from './form/FormRadio.vue'
 
+import { ref, onMounted } from 'vue'
+
 const columnSetting = {
-  textName: {
-    label: '名稱',
+  age: {
+    label: '年齡',
     filter: {
       type: 'text',
       default: null,
@@ -81,6 +83,7 @@ const columnSetting = {
   select: {
     label: '選擇框',
     filter: {
+      type: 'select',
       default: null,
       required: true,
       options: [
@@ -121,6 +124,7 @@ interface Form {
   name?: string
   passowrd?: string
   phone?: string
+  ps?: string
   date?: string
   daterange?: [string, string]
   select?: string
@@ -146,16 +150,26 @@ const submit = () => {
   })
 }
 
+const isLoading = ref(true)
+
+onMounted(() => {
+  isLoading.value = true
+
+  setTimeout(() => {
+    isLoading.value = false
+  }, 400)
+})
+
 </script>
 
 <template>
-  <div class="input-test">
-    <div class="input-container">
+  <div v-i-loading="isLoading" class="input-test">
+    <div v-if="!isLoading" class="input-container">
       <!-- 更新架構 -->
       <div class="input-simple">
         <SimpleInput
           v-model="form.name"
-          v-bind="formColumn.textName"
+          v-bind="formColumn.name"
         >
           <template #prefix>
             <CustomIcon name="user"/>
@@ -163,8 +177,8 @@ const submit = () => {
         </SimpleInput>
 
         <SimpleInput
-          v-model="form.name"
-          v-bind="formColumn.name"
+          v-model="form.age"
+          v-bind="formColumn.age"
         >
           <template #prefix>
             <CustomIcon name="user"/>
@@ -185,13 +199,22 @@ const submit = () => {
           v-model="form.ps"
           v-bind="formColumn.ps"
         />
+
+        <SimpleInput
+          v-model="form.select"
+          v-bind="formColumn.select"
+        >
+          <template #prefix>
+            <CustomIcon name="user"/>
+          </template>
+        </SimpleInput>
       </div>
 
       <!-- 原來架構 -->
       <div class="input-form">
         <FormInput
           v-model="form.name"
-          v-bind="formColumn.textName"
+          v-bind="formColumn.name"
         >
           <template #prefix>
             <CustomIcon name="user"/>
@@ -199,8 +222,8 @@ const submit = () => {
         </FormInput>
 
         <FormInput
-          v-model="form.name"
-          v-bind="formColumn.name"
+          v-model="form.age"
+          v-bind="formColumn.age"
         >
           <template #prefix>
             <CustomIcon name="user"/>

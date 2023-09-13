@@ -67,7 +67,7 @@ export { default as CustomRadio } from './feature/CustomRadio/CustomRadio.vue'
 export type {
   Options as SelectOptions,
   ModelValue as SelectModelValue
-} from './feature/CustomRadio/CustomRadio.vue'
+} from './feature/CustomSelect/CustomSelect.vue'
 export { default as CustomSelect } from './feature/CustomSelect/CustomSelect.vue'
 
 export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'

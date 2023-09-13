@@ -1,5 +1,6 @@
 import type { PropType } from 'vue'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
+import type { SelectOptions } from '@/components'
 
 export type ModelValue = any
 export type InputType = (
@@ -93,5 +94,55 @@ export const elInput = {
     default: false,
     description: `切換是否顯示密碼的按鈕
       type="password" 才有效果 `
+  }
+}
+
+export const elSelect = {
+  options: {
+    type: Array as PropType<SelectOptions>,
+    default () {
+      return []
+    },
+    description: '選項'
+  },
+  loading: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+    description: '是否讀取中'
+  },
+  remote: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+    description: '選項是否來自函數'
+  },
+  remoteMethod: {
+    type: Function as PropType<Function>,
+    required: false,
+    description: '函數取的選項'
+  },
+  multiple: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+    description: '是否多選'
+  },
+  multipleLimit: {
+    type: Number as PropType<number>,
+    default: 0,
+    description: '多選限制最多幾個'
+  },
+  maxCollapseTags: {
+    type: Number as PropType<number>,
+    default: 3,
+    description: '多選顯示標籤數量'
+  },
+  filterable: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+    description: '是否可輸入文字過濾'
+  },
+  allowCreate: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+    description: '是否可依照輸入文字建立選項'
   }
 }

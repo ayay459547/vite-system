@@ -20,14 +20,6 @@ const props = defineProps({
     default: false
   },
   // element ui plus
-  type: {
-    type: String as PropType<string>,
-    default: 'text'
-  },
-  rows: {
-    type: Number as PropType<number>,
-    default: 2
-  },
   clearable: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -35,6 +27,14 @@ const props = defineProps({
   disabled: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  type: {
+    type: String as PropType<string>,
+    default: 'text'
+  },
+  rows: {
+    type: Number as PropType<number>,
+    default: 2
   },
   showPassword: {
     type: Boolean as PropType<boolean>,
@@ -45,20 +45,20 @@ const props = defineProps({
 const bindAttributes = computed(() => {
   return {
     type: props.type,
-    rows: props.rows,
     clearable: props.clearable,
     disabled: props.disabled,
+    rows: props.rows,
     showPassword: props.showPassword
   }
 })
 
 const emit = defineEmits([
   'update:modelValue',
-  'blur',
   'focus',
+  'blur',
+  'clear',
   'change',
   'input',
-  'clear',
   'click'
 ])
 
@@ -67,16 +67,11 @@ const validateRes = computed<string>(() => {
   return 'error'
 })
 
-// 轉數字
+
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => {
-    let _value = value
-    if (typeof _value === 'string' && props.onlyNumber) {
-      const regexp = /[\D]/g
-      _value = _value.replace(regexp, '')
-    }
-    emit('update:modelValue', _value)
+    emit('update:modelValue', value)
   }
 })
 
@@ -101,6 +96,18 @@ const onEvent = {
   },
   input: (value: string | number): void => {
     emit('input', value)
+
+    // 轉數字
+    setTimeout(() => {
+      if (props.onlyNumber) {
+        let _value = value
+        if (typeof _value === 'string' && props.onlyNumber) {
+          const regexp = /[\D]/g
+          _value = _value.replace(regexp, '')
+        }
+        emit('update:modelValue', _value)
+      }
+    }, 0)
   }
 }
 
@@ -115,7 +122,6 @@ const onEvent = {
       :validate-event="false"
       v-bind="bindAttributes"
       v-on="onEvent"
-      @click.stop
     >
       <!-- 輸入框用 -->
       <template v-if="hasSlot('prepend')" #prepend>
