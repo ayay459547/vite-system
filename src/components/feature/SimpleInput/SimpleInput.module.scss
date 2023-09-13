@@ -1,0 +1,48 @@
+.input {
+  &-container {
+    width: 100%;
+    height: 88px;
+    display: flex;
+    gap: 8px;
+    position: relative;
+  }
+
+  &-hidden-label {
+    height: 48px;
+  }
+
+  &-row {
+    flex-direction: row;
+    align-items: center;
+    height: 48px;
+  }
+  &-column {
+    flex-direction: column;
+  }
+
+  &-prefix {
+    display: inline-block;
+    position: absolute;
+    left: -10px;
+    top: 0;
+  }
+  &-required {
+    color: $danger;
+  }
+
+  &-label {
+    width: fit-content;
+    white-space: nowrap;
+    height: 21px;
+  }
+
+  &-main {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &-error {
+    color: $danger;
+  }
+}

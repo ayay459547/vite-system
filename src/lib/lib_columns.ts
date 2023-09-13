@@ -62,6 +62,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
       },
       key,
+      type: 'text',
       validateKey: key,
       clearable: true,
       default: null,

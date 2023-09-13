@@ -202,16 +202,17 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-4-2',
-            title: '選單1-4-1',
+            title: '輸入框換架構',
             meta: {
               keepAlive: false,
               status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
+              startDate: '2023-09',
+              completedDate: '2023-09'
             },
             systemType: ['new'],
             path: '/nav1-4-2',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav1-4-2/Nav1-4-2.vue'),
+            icon: 'keyboard'
           },
           {
             name: 'nav1-4-3',

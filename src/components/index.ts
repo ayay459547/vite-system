@@ -122,6 +122,8 @@ export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLi
 
 // @ts-ignore
 export { default as SimpleFilter } from '@/components/feature/SimpleFilter/SimpleFilter.tsx'
+// @ts-ignore
+export { default as SimpleInput } from '@/components/feature/SimpleInput/SimpleInput.tsx'
 
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 
