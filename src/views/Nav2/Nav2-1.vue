@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomCheckbox, CustomDivider, CustomEmpty } from '@/components'
+import { CustomInput, CustomDivider, CustomEmpty } from '@/components'
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 
@@ -23,31 +23,44 @@ const options = [
 <template>
   <div class="nav-2">
     <h1 class="i-mb-md">This is Nav-2 page</h1>
-    <FormInput
+    <CustomInput
       v-model="value"
       label="測試密碼"
       required
       :validate="['password']"
     />
-    <FormInput
+
+    <CustomDivider />
+
+    <CustomInput
       v-model="valuePhone"
       label="測試phone"
       :validate="['phone']"
     />
 
-    <CustomCheckbox v-model="checkboxValue" :options="options">
+    <CustomDivider />
+
+    <CustomInput
+      v-model="checkboxValue"
+      type="checkbox"
+      :options="options"
+    >
       <!-- <template #options="{ label, value, color, isChecked }">
         <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
       </template> -->
-    </CustomCheckbox>
+    </CustomInput>
 
     <CustomDivider />
 
-    <CustomCheckbox v-model="checkboxValue" :options="options">
-      <template #options="{ label, value, color, isChecked }">
+    <CustomInput
+      v-model="checkboxValue"
+      type="checkbox"
+      :options="options"
+    >
+      <template #option="{ label, value, color, isChecked }">
         <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
       </template>
-    </CustomCheckbox>
+    </CustomInput>
 
     <CustomEmpty />
   </div>

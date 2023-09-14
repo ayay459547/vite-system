@@ -4,7 +4,7 @@ import { scrollToEl } from '@/lib/lib_utils'
 import {
   CustomIcon,
   CustomButton,
-  SimpleInput
+  CustomInput
 } from '@/components'
 
 import FormInput from './form/FormInput.vue'
@@ -96,6 +96,7 @@ const columnSetting = {
   checkbox: {
     label: '多選',
     filter: {
+      type: 'checkbox',
       default: [],
       required: true,
       options: [
@@ -109,6 +110,7 @@ const columnSetting = {
   radio: {
     label: '單選',
     filter: {
+      type: 'radio',
       default: null,
       required: true,
       options: [
@@ -124,6 +126,7 @@ interface Form {
   name?: string
   passowrd?: string
   phone?: string
+  age?: number | string
   ps?: string
   date?: string
   daterange?: [string, string]
@@ -157,6 +160,8 @@ onMounted(() => {
 
   setTimeout(() => {
     isLoading.value = false
+
+    console.log(formColumn)
   }, 400)
 })
 
@@ -167,52 +172,72 @@ onMounted(() => {
     <div v-if="!isLoading" class="input-container">
       <!-- 更新架構 -->
       <div class="input-simple">
-        <SimpleInput
+        <CustomInput
           v-model="form.name"
           v-bind="formColumn.name"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
-        </SimpleInput>
+        </CustomInput>
 
-        <SimpleInput
+        <CustomInput
           v-model="form.age"
           v-bind="formColumn.age"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
-        </SimpleInput>
+        </CustomInput>
 
-        <SimpleInput
+        <CustomInput
           v-model="form.passowrd"
           v-bind="formColumn.passowrd"
         />
 
-        <SimpleInput
+        <CustomInput
           v-model="form.phone"
           v-bind="formColumn.phone"
         />
 
-        <SimpleInput
+        <CustomInput
           v-model="form.ps"
           v-bind="formColumn.ps"
         />
 
-        <SimpleInput
+        <CustomInput
           v-model="form.select"
           v-bind="formColumn.select"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
-        </SimpleInput>
+        </CustomInput>
+
+        <CustomInput
+          v-model="form.date"
+          v-bind="formColumn.date"
+        />
+
+        <CustomInput
+          v-model="form.daterange"
+          v-bind="formColumn.daterange"
+        />
+
+        <CustomInput
+          v-model="form.checkbox"
+          v-bind="formColumn.checkbox"
+        />
+
+        <CustomInput
+          v-model="form.radio"
+          v-bind="formColumn.radio"
+        />
       </div>
 
       <!-- 原來架構 -->
       <div class="input-form">
-        <FormInput
+        <!-- <FormInput
           v-model="form.name"
           v-bind="formColumn.name"
         >
@@ -268,7 +293,7 @@ onMounted(() => {
         <FormRadio
           v-model="form.radio"
           v-bind="formColumn.radio"
-        />
+        /> -->
       </div>
     </div>
 

@@ -63,6 +63,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       },
       key,
       type: 'text',
+      isValidate: true,
       validateKey: key,
       clearable: true,
       default: null,
@@ -189,6 +190,8 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
         }
       },
       key,
+      type: 'text',
+      isValidate: true,
       validateKey: key,
       clearable: true,
       default: null,

@@ -13,7 +13,7 @@ export type TableData = {
   id?: number
   date: string
   name: string
-  address: string
+  address?: string
   state?: string
   city?: string
   children?: Array<TableData>

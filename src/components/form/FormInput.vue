@@ -62,38 +62,11 @@ const emit = defineEmits([
   'click'
 ])
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
-
-const inputValue = computed({
-  get: () => props.modelValue,
-  set: (value: ModelValue) => {
-    emit('update:modelValue', value)
-  }
-})
-
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
-}
-
 const onEvent = {
-  focus: (e: FocusEvent): void => {
-    emit('focus', e)
-  },
-  clear: (): void => {
-    emit('clear')
-  },
-  blur: async (e: FocusEvent): Promise<void> => {
-    emit('blur', e)
-  },
-  change: (value: string | number): void => {
-    emit('change', value)
-  },
+  focus: (e: FocusEvent): void => emit('focus', e),
+  clear: (): void => emit('clear'),
+  blur: (e: FocusEvent): void => emit('blur', e),
+  change: (value: string | number): void => emit('change', value),
   input: (value: string | number): void => {
     emit('input', value)
 
@@ -111,17 +84,37 @@ const onEvent = {
   }
 }
 
+const validateRes = computed<string>(() => {
+  if (isEmpty(props.errorMessage)) return 'success'
+  return 'error'
+})
+
+const inputValue = computed({
+  get: () => props.modelValue,
+  set: (value: ModelValue) => {
+    emit('update:modelValue', value)
+  }
+})
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return Object.prototype.hasOwnProperty.call(slots, prop)
+}
+
 </script>
 
 <template>
-  <div class="el-input">
+  <div class="i-input">
     <ElInput
       v-model.trim="inputValue"
+      class="i-input"
       :placeholder="$t('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
       v-on="onEvent"
+      @click.stop
     >
       <!-- 輸入框用 -->
       <template v-if="hasSlot('prepend')" #prepend>
@@ -142,7 +135,7 @@ const onEvent = {
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-input) {
+:deep(.i-input) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -160,7 +153,7 @@ const onEvent = {
   }
 }
 
-.el-input {
+.i-input {
   width: 100%;
   height: 100%;
 }

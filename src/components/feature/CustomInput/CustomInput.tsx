@@ -9,23 +9,26 @@ import {
   nextTick
 } from 'vue'
 
-import type { PopoverPlacement } from '@/components'
 import {
   FormInput,
-  FormCheckbox,
-  FormRadio,
+  FormSelect,
   FormDatePicker,
-  FormSelect
+  FormCheckbox,
+  FormRadio
+  // @ts-ignore
 } from '@/components'
-import styles from './SimpleInput.module.scss'
-import { isEmpty } from '@/lib/lib_utils'
+import styles from './CustomInput.module.scss'
+import { isEmpty, datetimeFormat, tipLog } from '@/lib/lib_utils'
 // @ts-ignore
 import type { ModelValue } from './props'
 import {
   custom,
   elCommon,
   elInput,
-  elSelect
+  elSelect,
+  elDatePicker,
+  elCheckbox,
+  elRadio
 } from './props'
 
 // @ts-ignore
@@ -33,13 +36,16 @@ import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 import { useField } from 'vee-validate'
 
-const SimpleInput = defineComponent({
-  name: 'SimpleInput',
+const CustomInput = defineComponent({
+  name: 'CustomInput',
   props: {
     ...custom,
     ...elCommon,
     ...elInput,
-    ...elSelect
+    ...elSelect,
+    ...elDatePicker,
+    ...elCheckbox,
+    ...elRadio
   },
   emits: [
     'update:modelValue',
@@ -57,12 +63,12 @@ const SimpleInput = defineComponent({
     const hook: Hook = inject('hook')
     const { i18nTranslate } = hook()
 
-    const inputValue = computed({
-      get: () => props.modelValue,
-      set: (value: ModelValue) => {
-        emit('update:modelValue', value)
-      }
-    })
+    // const inputValue = computed({
+    //   get: () => props.modelValue,
+    //   set: (value: ModelValue) => {
+    //     emit('update:modelValue', value)
+    //   }
+    // })
 
     // 驗證
     const validateField = (veeValue: ModelValue) => {
@@ -97,15 +103,15 @@ const SimpleInput = defineComponent({
      * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
      */
     const {
-      errorMessage,     // 錯誤訊息
-      value: tempValue, // 值
-      handleChange,     // 換值
-      handleReset,      // 重置
-      validate          // 驗證
+      errorMessage,      // 錯誤訊息
+      value: inputValue, // 值
+      handleChange,      // 換值
+      handleReset,       // 重置
+      validate           // 驗證
     } = useField('field', validateField, {
-      validateOnValueUpdate: false,
-      initialValue: inputValue.value,
-      valueProp: inputValue.value
+      validateOnValueUpdate: false
+      // initialValue: inputValue,
+      // valueProp: inputValue
     })
 
     // element ui plus 相關屬性直接綁定
@@ -114,7 +120,22 @@ const SimpleInput = defineComponent({
         clearable: props.clearable,
         disabled: props.disabled,
         rows: props.rows,
-        showPassword: props.showPassword
+        showPassword: props.showPassword,
+        loading: props.loading,
+        // select
+        remote: props.remote,
+        remoteMethod: props.remoteMethod,
+        multiple: props.multiple,
+        multipleLimit: props.multipleLimit,
+        maxCollapseTags: props.maxCollapseTags,
+        collapseTags: props.multiple,
+        collapseTagsTooltip: props.multiple,
+        filterable: props.filterable,
+        allowCreate: props.allowCreate,
+        // datePicker
+        format: props.format,
+        valueFormat: props.valueFormat,
+        shortcuts: props.shortcuts
       }
     })
 
@@ -133,7 +154,7 @@ const SimpleInput = defineComponent({
             handleChange(inputValue.value, true)
           }, 300)
         },
-        onChange: (value: string | number): void => {
+        onChange: (value: any): void => {
           emit('change', value)
           handleChange(value, true)
         },
@@ -174,7 +195,7 @@ const SimpleInput = defineComponent({
 
     expose({
       key: props.validateKey,
-      value: tempValue,
+      value: inputValue.value,
       handleReset,
       validate,
       setvalidateKey (validateKey: string) {
@@ -192,25 +213,47 @@ const SimpleInput = defineComponent({
     // 'data' | 'datetime' | 'daterange' | 'dateitmerange'
 
     const getTextValue = computed(() => {
-      if (isEmpty(tempValue)) return ''
+      if (isEmpty(inputValue.value)) return ''
 
       switch (props.type) {
         case 'text':
         case 'textarea':
         case 'password':
-          return tempValue.value
+          return inputValue.value
         case 'select': {
-          const _option = props.options.find(_option => _option.value === tempValue.value)
-          return _option?.label ?? ''
+          const option = props.options.find(_option => _option.value === inputValue.value)
+          return option?.label ?? ''
         }
-        case 'checkbox':
-        case 'radio':
-        case 'data':
+        case 'year':
+        case 'month':
+        case 'date':
+        case 'dates':
         case 'datetime':
+        case 'week':
+        case 'datetimerange':
         case 'daterange':
-        case 'dateitmerange':
+        case 'monthrange':
+          if (Array.isArray(inputValue.value)) {
+            const [value1, value2] = inputValue.value
+            return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(value2, props.format)}`
+          } else {
+            return datetimeFormat(inputValue.value, props.format)
+          }
+        case 'checkbox':
+          if (Array.isArray(inputValue.value)) {
+            return inputValue.value.map(item => {
+              const option = props.options.find(_option => _option.value === item)
+              return option.label
+            })
+          } else {
+            return `${inputValue.value}`
+          }
+        case 'radio': {
+            const option = props.options.find(_option => _option.value === inputValue.value)
+            return option?.label ?? ''
+          }
         default:
-          return 'empty'
+          return ''
       }
     })
 
@@ -240,7 +283,7 @@ const SimpleInput = defineComponent({
             <FormInput
               modelValue={inputValue.value}
               onUpdate:modelValue={
-                ($event: string) => (inputValue.value = $event)
+                ($event: any) => (inputValue.value = $event)
               }
               // v-bind 綁定屬性
               { ...bindAttributes.value }
@@ -262,7 +305,7 @@ const SimpleInput = defineComponent({
             <FormSelect
               modelValue={inputValue.value}
               onUpdate:modelValue={
-                ($event: string) => (inputValue.value = $event)
+                ($event: any) => (inputValue.value = $event)
               }
               // v-bind 綁定屬性
               { ...bindAttributes.value }
@@ -280,14 +323,78 @@ const SimpleInput = defineComponent({
               {{ ...getTemplate(['prefix', 'empty']) }}
             </FormSelect>
           )
-        case 'checkbox':
-        case 'radio':
-        case 'data':
+        case 'year':
+        case 'month':
+        case 'date':
+        case 'dates':
         case 'datetime':
+        case 'week':
+        case 'datetimerange':
         case 'daterange':
-        case 'dateitmerange':
+        case 'monthrange':
+          return (
+            <FormDatePicker
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: any) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              type={props.type}
+              errorMessage={errorMessage.value}
+              // v-on 接收事件
+              onFocus={ (e) => { onEvent.value.onFocus(e) } }
+              onBlur={ (e) => { onEvent.value.onBlur(e) } }
+              onChange={ (e) => { onEvent.value.onChange(e) } }
+            >
+              {{ ...getTemplate(['default', 'range-separator']) }}
+            </FormDatePicker>
+          )
+        case 'checkbox':
+          return (
+            <FormCheckbox
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: any) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              label={props.label}
+              options={props.options}
+              errorMessage={errorMessage.value}
+              onChange={ (e) => { onEvent.value.onChange(e) } }
+            >
+              {{ ...getTemplate(['option']) }}
+            </FormCheckbox>
+          )
+        case 'radio':
+          return (
+            <FormRadio
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: string) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              options={props.options}
+              errorMessage={errorMessage.value}
+              onChange={ (e) => { onEvent.value.onChange(e) } }
+            >
+              {{ ...getTemplate(['option']) }}
+            </FormRadio>
+          )
         default:
-          break
+          console.log('')
+          tipLog(`輸入框類型 ${props.type} 不存在`, [
+            '以下為可用類型',
+            'text', 'textarea', 'password', 'select',
+            'year', 'month', 'date', 'dates', 'datetime', 'week',
+            'datetimerange', 'daterange', 'monthrange',
+            'checkbox', 'radio'
+          ])
+          return (
+            <div></div>
+          )
       }
     }
 
@@ -296,15 +403,14 @@ const SimpleInput = defineComponent({
         class={[
           styles['input-container'],
           `input-${domValidateKey.value}-${validateRes.value}`,
-          styles[`input-${props.direction}`],
-          props.hiddenLabel ? 'input-hidden-label' : ''
+          styles[`input-${props.direction}`]
         ]}
       >
         {
           !props.hiddenLabel && (
             <label class={styles['input-label']}>
               {
-                props.required && <span class={[
+                props.isValidate && props.required && <span class={[
                   styles['input-required'],
                   styles['input-prefix']
                 ]}>*</span>
@@ -321,11 +427,13 @@ const SimpleInput = defineComponent({
             <div class="i-pt-sm">{ getTextValue.value }</div> :
             renderInput()
           }
-          <span class={styles['input-error']}>{ errorMessage.value }</span>
+          {
+            props.isValidate && <span class={styles['input-error']}>{ errorMessage.value }</span>
+          }
         </div>
       </div>
     )
   }
 })
 
-export default SimpleInput
+export default CustomInput

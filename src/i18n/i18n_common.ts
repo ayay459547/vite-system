@@ -65,5 +65,10 @@ export default {
     zhTw: '關閉',
     zhCn: '关闭',
     en: 'Close'
+  },
+  login: {
+    zhTw: '登入',
+    zhCn: '登入',
+    en: 'Login'
   }
 } as LangMap

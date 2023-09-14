@@ -5,13 +5,17 @@ export const columnSetting = {
       width: 180
     },
     filter: {
+      type: 'select',
+      isValidate: false,
       default: '',
+      direction: 'row',
       options: [
         { label: '全部', value: '' },
         { label: '已完成', value: 'completed' },
         { label: '進行中', value: 'inProgress' },
         { label: '未完成', value: 'new' }
-      ]
+      ],
+      hiddenErrorMessage: true
     },
     getValue (data: string) {
       switch (data) {
@@ -56,7 +60,11 @@ export const columnSetting = {
       width: 250
     },
     filter: {
-      default: null
+      type: 'text',
+      isValidate: false,
+      default: null,
+      direction: 'row',
+      hiddenErrorMessage: true
     }
   },
   path: {
@@ -65,7 +73,11 @@ export const columnSetting = {
       width: 200
     },
     filter: {
-      default: null
+      type: 'text',
+      isValidate: false,
+      default: null,
+      direction: 'row',
+      hiddenErrorMessage: true
     }
   },
   mode: {
@@ -74,7 +86,11 @@ export const columnSetting = {
       width: 250
     },
     filter: {
-      default: null
+      type: 'select',
+      isValidate: false,
+      default: null,
+      direction: 'row',
+      hiddenErrorMessage: true
     }
   },
   breadcrumbTitle: {
@@ -83,7 +99,11 @@ export const columnSetting = {
       minWidth: 320
     },
     filter: {
-      default: null
+      type: 'text',
+      isValidate: false,
+      default: null,
+      direction: 'row',
+      hiddenErrorMessage: true
     }
   }
 }

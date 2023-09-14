@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FormList, FormInput } from '@/components'
+import { FormList, CustomInput } from '@/components'
 import { columnSetting } from './columns'
 import { getFormListSetting } from '@/lib/lib_columns'
 import { reactive } from 'vue'
@@ -68,30 +68,30 @@ const sortList = () => {
         </template>
 
         <template #column-name="{ rowIndex }">
-          <FormInput
+          <CustomInput
             v-model="formList[rowIndex].name"
             v-bind="formColumn.name"
-          ></FormInput>
+          ></CustomInput>
         </template>
         <template #column-date="{ rowIndex }">
-          <FormInput
+          <CustomInput
             v-model="formList[rowIndex].date"
             v-bind="formColumn.date"
-          ></FormInput>
+          ></CustomInput>
         </template>
         <template #column-age="{ rowIndex }">
-          <FormInput
+          <CustomInput
             v-model="formList[rowIndex].age"
             v-bind="formColumn.age"
             only-number
             @change="sortList"
-          ></FormInput>
+          ></CustomInput>
         </template>
         <template #column-address="{ rowIndex }">
-          <FormInput
+          <CustomInput
             v-model="formList[rowIndex].address"
             v-bind="formColumn.address"
-          ></FormInput>
+          ></CustomInput>
         </template>
       </FormList>
     </div>

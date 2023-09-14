@@ -150,8 +150,10 @@ const getTextValue = (tempValue: ModelValue) => {
 
     <ElCheckboxGroup
       v-model="tempValue"
+      class="i-checkbox"
+      :class="[`validate-${validateRes}`]"
       :validate-event="false"
-      v-bind:class="bindAttributes"
+      v-bind="bindAttributes"
       v-on="validationListeners"
     >
       <ElCheckbox
@@ -168,10 +170,17 @@ const getTextValue = (tempValue: ModelValue) => {
 </template>
 
 <style lang="scss" scoped>
+:deep(.i-checkbox) {
+  &.validate-error .el-checkbox__inner {
+    border: 1px solid $danger;
+    background-color: lighten($danger, 20%);
+  }
+}
 .input {
   &-container {
     width: 100%;
-    height: 88px;
+    min-height: 88px;
+    height: fit-content;
     display: flex;
     gap: 4px;
     position: relative;

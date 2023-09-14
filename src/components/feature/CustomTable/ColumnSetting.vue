@@ -7,7 +7,7 @@ import type { PropsTableColumn } from './CustomTable.vue'
 import {
   CustomButton,
   CustomPopover,
-  CustomCheckbox,
+  CustomInput,
   CustomDraggable
 } from '@/components'
 
@@ -196,10 +196,14 @@ onBeforeMount(async () => {
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">
             <div class="flex-row i-ga-sm">
-              <CustomCheckbox
-                v-model="element.isShow"
-                @change="updateSetting(true)"
-              />
+              <div>
+                <CustomInput
+                  v-model="element.isShow"
+                  type="checkbox"
+                  hidden-label
+                  @change="updateSetting(true)"
+                />
+              </div>
               <div class="text">{{ element.label }}</div>
             </div>
 

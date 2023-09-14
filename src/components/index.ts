@@ -9,16 +9,6 @@ export { default as GanttChart } from './chart/GanttChart/GanttChart.vue'
 export type { ButtonType, ButtonSize } from './feature/CustomButton/CustomButton.vue'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
-export type {
-  ModelValue as CheckboxModelValue
-} from './feature/CustomCheckbox/CustomCheckbox.vue'
-export { default as CustomCheckbox } from './feature/CustomCheckbox/CustomCheckbox.vue'
-
-export type {
-  ModelValue as DatePickerModelValue
-} from './feature/CustomDatePicker/CustomDatePicker.vue'
-export { default as CustomDatePicker } from './feature/CustomDatePicker/CustomDatePicker.vue'
-
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
 export type {
@@ -32,9 +22,12 @@ export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
 export type {
-  ModelValue as InputModelValue
-} from './feature/CustomInput/CustomInput.vue'
-export { default as CustomInput } from './feature/CustomInput/CustomInput.vue'
+  ModelValue as InputModelValue,
+  Option,
+  Options
+} from './feature/CustomInput/props'
+// @ts-ignore
+export { default as CustomInput } from './feature/CustomInput/CustomInput.tsx'
 
 export type {
   WidthSize,
@@ -56,19 +49,6 @@ export type {
   Trigger as PopoverTrigger
 } from './feature/CustomPopover/CustomPopover.vue'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
-
-
-export type {
-  Options as RadioOptions,
-  ModelValue as RadioModelValue
-} from './feature/CustomRadio/CustomRadio.vue'
-export { default as CustomRadio } from './feature/CustomRadio/CustomRadio.vue'
-
-export type {
-  Options as SelectOptions,
-  ModelValue as SelectModelValue
-} from './feature/CustomSelect/CustomSelect.vue'
-export { default as CustomSelect } from './feature/CustomSelect/CustomSelect.vue'
 
 export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'
 
@@ -122,8 +102,6 @@ export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLi
 
 // @ts-ignore
 export { default as SimpleFilter } from '@/components/feature/SimpleFilter/SimpleFilter.tsx'
-// @ts-ignore
-export { default as SimpleInput } from '@/components/feature/SimpleInput/SimpleInput.tsx'
 
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 
@@ -132,6 +110,10 @@ export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue
 // form
 export { default as FormCheckbox } from './form/FormCheckbox.vue'
 
+export type {
+  Shortcuts,
+  PickerType
+} from './form/FormDatePicker.vue'
 export { default as FormDatePicker } from './form/FormDatePicker.vue'
 
 export declare interface FormInputExpose {

@@ -11,7 +11,7 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '翻譯值列表',
-  version: '1.0.0',
+  version: '1.0.1',
   settingKey: 'i18n-list'
 }
 const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -57,8 +57,9 @@ onMounted(() => {
       <CustomTable
         ref="table"
         :table-data="tableData"
-        :table-data-count="tableData.length"
+        :table-data-count="tableDataCount"
         v-bind="tableSetting"
+        show-no
         @excel="download"
         @show-change="init()"
       >

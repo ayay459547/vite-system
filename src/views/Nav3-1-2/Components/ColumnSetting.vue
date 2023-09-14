@@ -7,7 +7,7 @@ import type { PropsTableColumn } from './CustomTable.vue'
 import {
   CustomButton,
   CustomPopover,
-  CustomCheckbox,
+  CustomInput,
   CustomDraggable
 } from '@/components'
 
@@ -122,7 +122,8 @@ const setColumnWidth = (props: string, newWidth: number) => {
   if (isEmpty(temp)) return
 
   temp.width = newWidth
-  updateSetting()
+  // 改寬度不用重新設定 columns 資料
+  updateSetting(false)
 }
 
 defineExpose({
@@ -134,7 +135,12 @@ defineExpose({
 
 const drag = ref(false)
 
-const updateSetting = async () => {
+/**
+ * 更新 indexedDB 上的資料
+ * 如果 emit change 會重新設定 columns 資料
+ * @param isEmitChange 是否 emit change 事件
+ */
+const updateSetting = async (isEmitChange = true) => {
   const temp = columnList.value
 
   const settingData: SettingData = {
@@ -144,7 +150,9 @@ const updateSetting = async () => {
   }
   await setColumnSetting(props.settingKey, settingData)
 
-  emit('change')
+  if (isEmitChange) {
+    emit('change')
+  }
 }
 
 const onDragend = () => {
@@ -188,10 +196,14 @@ onBeforeMount(async () => {
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">
             <div class="flex-row i-ga-sm">
-              <CustomCheckbox
-                v-model="element.isShow"
-                @change="updateSetting"
-              />
+              <div>
+                <CustomInput
+                  v-model="element.isShow"
+                  type="checkbox"
+                  hidden-label
+                  @change="updateSetting(true)"
+                />
+              </div>
               <div class="text">{{ element.label }}</div>
             </div>
 
@@ -231,7 +243,7 @@ onBeforeMount(async () => {
   &-list {
     display: flex;
     flex-direction: column;
-    max-height: 70vh;
+    max-height: 60vh;
     height: fit-content;
     overflow: auto;
   }

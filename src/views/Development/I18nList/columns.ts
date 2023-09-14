@@ -1,10 +1,11 @@
 export const columnSetting = {
-  key: {
+  keyword: {
     label: '翻譯key值',
     table: {
       minWidth: 200
     },
     filter: {
+      isValidate: false,
       default: null
     }
   },
@@ -14,6 +15,7 @@ export const columnSetting = {
       minWidth: 200
     },
     filter: {
+      isValidate: false,
       default: null
     }
   },
@@ -23,6 +25,7 @@ export const columnSetting = {
       minWidth: 200
     },
     filter: {
+      isValidate: false,
       default: null
     }
   },
@@ -32,6 +35,7 @@ export const columnSetting = {
       minWidth: 200
     },
     filter: {
+      isValidate: false,
       default: null
     }
   }

@@ -5,9 +5,7 @@ import {
   CustomButton,
   CustomTable,
   CustomInput,
-  CustomSelect,
-  CustomModal,
-  CustomTag
+  CustomModal
 } from '@/components'
 
 import { deepClone, usePageI18n } from '@/lib/lib_utils'
@@ -152,7 +150,7 @@ const onUserIdClick = (rowData: any) => {
         />
       </template>
       <template #header-completed="{ prop }">
-        <CustomSelect
+        <CustomInput
           v-model="filter[prop]"
           v-bind="filterColumns[prop]"
           @change="init('input')"

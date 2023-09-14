@@ -2,9 +2,11 @@
 import {
   CustomTimeLine,
   CustomTag,
-  CustomDivider
+  CustomDivider,
+  CustomInput
 } from '@/components'
 import { ElCard } from 'element-plus'
+import { ref } from 'vue'
 
 const options = [
   {
@@ -42,12 +44,51 @@ const options = [
   }
 ]
 
+const isCheck = ref(false)
+const isCheckList = ref([])
+const onCheckboxChange = () => {
+  console.log(777)
+}
+const checkOptions = [
+  { label: 'checkbox1', value: true },
+  { label: 'checkbox2', value: false },
+  { label: 'checkbox3', value: 2 },
+  { label: 'checkbox4', value: 3 }
+]
+
 </script>
 
 <template>
   <div class="nav-1-2-2">
     <h1 class="i-mb-md">nav-1-2-2</h1>
     <CustomDivider />
+    <!-- <CustomInput
+      label="測試checkbox"
+      v-model="isCheck"
+      :options="checkOptions"
+      type="select"
+    /> -->
+    <!-- <CustomInput
+      label="測試checkbox"
+      v-model="isCheck"
+      :options="checkOptions"
+      type="radio"
+      @change="onCheckboxChange"
+    /> -->
+    <CustomInput
+      label="測試checkbox"
+      v-model="isCheck"
+      type="checkbox"
+      hidden-label
+      @change="onCheckboxChange"
+    />
+    <CustomInput
+      label="測試checkbox"
+      v-model="isCheckList"
+      :options="checkOptions"
+      type="checkbox"
+      @change="onCheckboxChange"
+    />
     <CustomDivider border-style="dashed">div</CustomDivider>
     <CustomTimeLine
       :options="options"

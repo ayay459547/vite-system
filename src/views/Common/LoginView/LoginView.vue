@@ -3,11 +3,11 @@ import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/lib_columns'
 
-import { CustomIcon, SimpleInput } from '@/components'
+import { CustomIcon, CustomInput } from '@/components'
 import { loginSystem } from './api'
 
 const hook: Hook = inject('hook')
-const { loading, swal } = hook()
+const { i18nTranslate ,loading, swal } = hook()
 
 const emit = defineEmits(['login'])
 
@@ -87,15 +87,15 @@ const {
 
         <h1>登入</h1>
 
-        <SimpleInput
+        <CustomInput
           v-model="form.account"
           v-bind="formColumn.account"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
-        </SimpleInput>
-        <SimpleInput
+        </CustomInput>
+        <CustomInput
           v-model="form.passowrd"
           v-bind="formColumn.passowrd"
           show-password
@@ -104,9 +104,9 @@ const {
           <template #prefix>
             <CustomIcon name="unlock-keyhole"/>
           </template>
-        </SimpleInput>
+        </CustomInput>
 
-        <button class="login-button" @click="login">登入</button>
+        <button class="login-button" @click="login">{{ i18nTranslate('login') }}</button>
       </div>
 
     </div>

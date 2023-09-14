@@ -15,7 +15,7 @@ import { tipLog, isEmpty } from '@/lib/lib_utils'
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
 
-import { CustomButton, CustomPopover, CustomSelect, CustomIcon } from '@/components'
+import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
 import ColumnSetting from './ColumnSetting.vue'
 import TableMain from './TableMain.vue'
@@ -512,17 +512,19 @@ const slotKeyList = computed(() => {
       <div class="setting-right grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
-          <CustomSelect
+          <CustomInput
             v-if="!props.lazyLoading"
             v-model="pageSize"
+            type="select"
             label="顯示筆數"
             :options="sizeOptions"
             direction="row"
             @change="onSizeChange"
           />
-          <CustomSelect
+          <CustomInput
             v-if="props.lazyLoading"
             v-model="pageSize"
+            type="select"
             label="載入筆數"
             :options="lazyLoadSizeOptions"
             direction="row"

@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import { getFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
-import {
-  FormInput,
-  FormDatePicker,
-  FormSelect,
-  FormCheckbox,
-  FormRadio,
-  CustomButton
-} from '@/components'
+import { CustomInput, CustomButton } from '@/components'
 
 const columnSetting = {
   passowrd: {
     label: '密碼',
     filter: {
+      type: 'password',
       default: null,
       validate: ['password'],
       required: true
@@ -22,6 +16,7 @@ const columnSetting = {
   phone: {
     label: '手機',
     filter: {
+      type: 'text',
       default: null,
       validate: ['phone'],
       required: false
@@ -30,6 +25,7 @@ const columnSetting = {
   date: {
     label: '選擇日期',
     filter: {
+      type: 'date',
       default: null,
       required: true
     }
@@ -45,6 +41,7 @@ const columnSetting = {
   select: {
     label: '選擇框',
     filter: {
+      type: 'select',
       default: null,
       required: true,
       options: [
@@ -57,6 +54,7 @@ const columnSetting = {
   checkbox: {
     label: '多選',
     filter: {
+      type: 'checkbox',
       default: [],
       required: true,
       options: [
@@ -70,6 +68,7 @@ const columnSetting = {
   radio: {
     label: '單選',
     filter: {
+      type: 'radio',
       default: null,
       required: true,
       options: [
@@ -113,37 +112,37 @@ const submit = () => {
 
 <template>
   <div class="input-test">
-    <FormInput
+    <CustomInput
       v-model="form.passowrd"
       v-bind="formColumn.passowrd"
     />
 
-    <FormInput
+    <CustomInput
       v-model="form.phone"
       v-bind="formColumn.phone"
     />
 
-    <FormSelect
+    <CustomInput
       v-model="form.select"
       v-bind="formColumn.select"
     />
 
-    <FormDatePicker
+    <CustomInput
       v-model="form.date"
       v-bind="formColumn.date"
     />
 
-    <FormDatePicker
+    <CustomInput
       v-model="form.daterange"
       v-bind="formColumn.daterange"
     />
 
-    <FormCheckbox
+    <CustomInput
       v-model="form.checkbox"
       v-bind="formColumn.checkbox"
     />
 
-    <FormRadio
+    <CustomInput
       v-model="form.radio"
       v-bind="formColumn.radio"
     />

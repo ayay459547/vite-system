@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, ref, nextTick } from 'vue'
+import { computed, useSlots } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
-import { useField } from 'vee-validate'
 import { isEmpty } from '@/lib/lib_utils'
 
-export type Options = Array<{
+export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
+
+export type Option = {
   label: string
   value: string | number | boolean | null
   disabled?: boolean
-}>
+}
 
-export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
+export type Options = Array<Option>
 
 const props = defineProps({
   modelValue: {
@@ -103,24 +104,6 @@ const emit = defineEmits([
   'visible-change'
 ])
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
-const inputValue = computed({
-  get: () => props.modelValue,
-  set: (value: ModelValue) => {
-    emit('update:modelValue', value)
-  }
-})
-
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
-}
-
 const onEvent = {
   focus: (e: FocusEvent): void => {
     emit('focus', e)
@@ -142,12 +125,31 @@ const onEvent = {
   }
 }
 
+const validateRes = computed<string>(() => {
+  if (isEmpty(props.errorMessage)) return 'success'
+  return 'error'
+})
+
+const inputValue = computed({
+  get: () => props.modelValue,
+  set: (value: ModelValue) => {
+    emit('update:modelValue', value)
+  }
+})
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return Object.prototype.hasOwnProperty.call(slots, prop)
+}
+
 </script>
 
 <template>
-  <div class="el-select">
+  <div class="i-select">
     <ElSelect
       v-model="inputValue"
+      class="i-select"
       :placeholder="$t('pleaseSelect')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
@@ -173,7 +175,7 @@ const onEvent = {
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-select) {
+:deep(.i-select) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -190,7 +192,7 @@ const onEvent = {
     background-color: lighten($danger, 20%);
   }
 }
-.el-select {
+.i-select {
   width: 100%;
   height: 100%;
 }

@@ -2,7 +2,6 @@
 import {
   CustomTable,
   CustomInput,
-  CustomSelect,
   CustomIcon
 } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
@@ -86,6 +85,7 @@ onMounted(() => {
         :table-data="tableData"
         :table-data-count="tableDataCount"
         v-bind="tableSetting"
+        show-no
         @excel="download"
         @show-change="init()"
       >
@@ -93,15 +93,13 @@ onMounted(() => {
           <CustomInput
             v-model="filter[prop]"
             v-bind="filterColumn[prop]"
-            direction="row"
             @change="init()"
           />
         </template>
         <template #header-status="{ prop }">
-          <CustomSelect
+          <CustomInput
             v-model="filter[prop]"
             v-bind="filterColumn[prop]"
-            direction="row"
             @change="init()"
           />
         </template>
@@ -112,11 +110,10 @@ onMounted(() => {
           <div class="flex-column-center align-start fill-y">{{ column.label }}</div>
         </template>
         <template #header-mode="{ prop }">
-          <CustomSelect
+          <CustomInput
             v-model="filter[prop]"
             v-bind="filterColumn[prop]"
             :options="modeOptions"
-            direction="row"
             @change="init()"
           />
         </template>

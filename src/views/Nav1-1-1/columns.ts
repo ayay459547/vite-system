@@ -5,6 +5,7 @@ export const columnSetting = {
       width: 150
     },
     form: {
+      type: 'text',
       default: null,
       validate: [],
       required: true
@@ -18,6 +19,7 @@ export const columnSetting = {
       align: 'center'
     },
     form: {
+      type: 'date',
       default: null,
       validate: [],
       required: true
@@ -29,7 +31,8 @@ export const columnSetting = {
       minWidth: 300
     },
     form: {
-      default: null,
+      type: 'select',
+      default: '',
       required: false,
       options: [
         { label: 'address-1-No. 189, Grove St, Los Angeles', value: 'address-1' },

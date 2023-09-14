@@ -1,48 +1,42 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+
+import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
-import { useField } from 'vee-validate'
 import { isEmpty } from '@/lib/lib_utils'
 
-type ModelValue = Array<string | number | null>
+export type ModelValue = CheckboxValueType | CheckboxGroupValueType | any
+
+export type Option = {
+  label: string
+  value: string | number | boolean | null
+  disabled?: boolean
+  color?: string
+}
+export type Options = Array<Option>
 
 const props = defineProps({
   modelValue: {
-    type: Array as PropType<ModelValue>,
+    type: [Array, String, Number, Boolean] as PropType<ModelValue>,
     required: true
   },
-  validateKey: {
+  errorMessage: {
     type: String as PropType<string>,
     default: ''
   },
-  direction: {
-    type: String as PropType<'column' | 'row'>,
-    default: 'column'
+  options: {
+    type: Array as PropType<Options>,
+    default () {
+      return []
+    }
   },
   label: {
     type: String as PropType<string>,
     default: ''
   },
-  hiddenLabel: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  required: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  options: {
-    type: Array as PropType<{ label: string, value: string | number }[]>,
-    default () {
-      return []
-    }
-  },
-  optionDirection: {
-    type: String as PropType<'column' | 'row'>,
-    default: 'row'
-  },
-  text: {
+  // element ui plus
+  disabled: {
     type: Boolean as PropType<boolean>,
     default: false
   }
@@ -50,7 +44,7 @@ const props = defineProps({
 
 const bindAttributes = computed(() => {
   return {
-    validateEvent: false
+    disabled: props.disabled
   }
 })
 
@@ -59,157 +53,92 @@ const emit = defineEmits([
   'change'
 ])
 
+const onEvent = {
+  groupChange: (value: CheckboxGroupValueType): void => emit('change', value),
+  change: (value: CheckboxValueType): void => emit('change', value)
+}
+
 const validateRes = computed<string>(() => {
-  if (isEmpty(errorMessage.value)) return 'success'
+  if (isEmpty(props.errorMessage)) return 'success'
   return 'error'
 })
 
-// 驗證
-const validateField = (veeValue: ModelValue) => {
-  // 非必填
-  if (!props.required) return true
-
-  // 必填
-  if (props.required && isEmpty(veeValue)) {
-    return '此輸入框為必填'
-  }
-
-  return true
-}
-
-const {
-  errorMessage,     // 錯誤訊息
-  value: tempValue, // 值
-  handleChange,     // 換值
-  handleReset,      // 重置
-  validate          // 驗證
-} = useField('field', validateField, { validateOnValueUpdate: false })
-
-// event
-const validationListeners = computed(() => {
-  const event = {
-    change: (value: ModelValue): void => {
-      emit('change', value)
-      handleChange(value, true)
-    }
-  }
-
-  return event
-})
-
-const _domValidateKey = ref<string>('')
-const domValidateKey = computed(() => {
-  return _domValidateKey.value.length > 0 ? _domValidateKey.value : props.validateKey
-})
-
-defineExpose({
-  key: props.validateKey,
-  value: tempValue,
-  handleReset,
-  validate,
-  setvalidateKey (validateKey: string) {
-    _domValidateKey.value = validateKey
-  },
-  getDom () {
-    return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
+const inputValue = computed({
+  get: () => props.modelValue,
+  set: (value: ModelValue) => {
+    emit('update:modelValue', value)
   }
 })
 
-const getTextValue = (tempValue: ModelValue) => {
-  if (isEmpty(tempValue)) return ''
+const getStyle = (isChecked: boolean, color?: string) => {
+  if (!isChecked) return {}
 
-  if (Array.isArray(tempValue)) {
-    return tempValue.map(item => {
-      const _option = props.options.find(option => option.value === item)
-      return _option.label
-    })
-  } else {
-    return ''
-  }
+  if (isEmpty(color)) return { color: '#409EFF' }
+
+  return { color }
 }
 
 </script>
 
 <template>
-  <div
-    class="input-container"
-    :class="[
-      `input-${domValidateKey}-${validateRes}`,
-      `${props.direction}`,
-      props.hiddenLabel ? 'hidden-label' : ''
-    ]"
-  >
-    <label v-if="!props.hiddenLabel" class="input-label">
-      <span v-if="props.required" class="input-required input-prefix">*</span>
-      <span>{{ props.label }}</span>
-    </label>
-
-    <div v-if="props.text" class="i-pt-sm">
-      {{ getTextValue(tempValue) }}
-    </div>
-
-    <ElCheckboxGroup
-      v-model="tempValue"
-      :validate-event="false"
-      v-bind:class="bindAttributes"
-      v-on="validationListeners"
-    >
-      <ElCheckbox
-        v-for="item in options"
-        :key="item.value"
-        :label="item.value"
+  <div class="i-checkbox">
+    <template v-if="options.length > 0 && Array.isArray(inputValue)">
+      <ElCheckboxGroup
+        v-model="inputValue"
+        class="i-checkbox"
+        :class="[`validate-${validateRes}`]"
+        :validate-event="false"
+        v-bind="bindAttributes"
+        @change="onEvent.groupChange"
       >
-        {{ item.label }}
+        <ElCheckbox
+          v-for="item in options"
+          :key="`${item.value}`"
+          :label="item.value"
+          :validate-event="false"
+          :disabled="item.disabled ?? false"
+        >
+          <span :style="getStyle(inputValue.includes(item.value), item?.color)">
+            <slot
+              name="option"
+              :is-checked="inputValue.includes(item.value)"
+              :label="item.label"
+              :value="item.value"
+              :color="item?.color ?? '#ffffff'"
+            >
+              {{ item.label }}
+            </slot>
+          </span>
+        </ElCheckbox>
+      </ElCheckboxGroup>
+    </template>
+    <template v-else>
+      <ElCheckbox
+        v-model="inputValue"
+        class="i-checkbox"
+        :class="[`validate-${validateRes}`]"
+        size="large"
+        :validate-event="false"
+        v-bind="bindAttributes"
+        @change="onEvent.change"
+      >
+        <slot name="default">
+          {{ props.label }}
+        </slot>
       </ElCheckbox>
-    </ElCheckboxGroup>
-
-    <span class="input-error">{{ errorMessage }}</span>
+    </template>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.input {
-  &-container {
-    width: 100%;
-    height: 88px;
-    display: flex;
-    gap: 4px;
-    position: relative;
-    &.hidden-label {
-      height: 48px;
-    }
-    &.row {
-      flex-direction: row;
-      align-items: center;
-      height: 48px;
-    }
-    &.column {
-      flex-direction: column;
-    }
+:deep(.i-checkbox) {
+  &.validate-error .el-checkbox__inner {
+    border: 1px solid $danger;
+    background-color: lighten($danger, 20%);
   }
-
-  &-prefix {
-    display: inline-block;
-    position: absolute;
-    left: -10px;
-    top: 0;
-  }
-  &-required {
-    color: $danger;
-  }
-
-  &-label {
-    width: fit-content;
-    white-space: nowrap;
-    height: 21px;
-  }
-
-  &-main {
-    height: fit-content;
-  }
-
-  &-error {
-    color: $danger;
-  }
+}
+.i-checkbox {
+  width: 100%;
+  height: fit-content;
 }
 </style>

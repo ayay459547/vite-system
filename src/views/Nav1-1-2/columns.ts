@@ -7,6 +7,8 @@ export const columnSetting = {
       align: 'center'
     },
     filter: {
+      type: 'text',
+      isValidate: false,
       default: null
     }
   },
@@ -16,6 +18,8 @@ export const columnSetting = {
       width: 150
     },
     filter: {
+      type: 'text',
+      isValidate: false,
       default: null
     }
   },
@@ -25,6 +29,8 @@ export const columnSetting = {
       minWidth: 300
     },
     filter: {
+      type: 'text',
+      isValidate: false,
       default: null
     }
   },
@@ -34,7 +40,9 @@ export const columnSetting = {
       width: 120
     },
     filter: {
+      type: 'select',
       default: '',
+      isValidate: false,
       options: [
         { label: '全部', value: '' },
         { label: '已完成', value: '1' },

@@ -1,9 +1,9 @@
 
 import { langMap } from '@/i18n'
-import { cutTableData } from '@/lib/lib_utils'
+import { cutTableData, isEmpty } from '@/lib/lib_utils'
 
 export type TableData = {
-  key: string
+  keyword: string
   zhTw: string
   zhCn: string
   en: string
@@ -18,25 +18,25 @@ const langData = [] as TableData[]
 }, key: string) => {
   const { zhTw, zhCn, en } = lang
 
-  langData.push({ key, zhTw, zhCn, en })
+  langData.push({ keyword: key, zhTw, zhCn, en })
 })
 
 export const getData = (params: any) => {
   const {
-    key, zhTw, zhCn, en,
+    keyword, zhTw, zhCn, en,
     sort = {}, page, size
   } = params
 
   const { key: sortKey, order: sortType} = sort
 
   const filterList = ({
-    key, zhTw, zhCn, en
+    keyword, zhTw, zhCn, en
   } as any).$reduce((
     res: Record<string, string>[],
     curr: string,
     key: string
   ) => {
-    if (!['', null, undefined].includes(curr)) {
+    if (!isEmpty(curr)) {
       res.push({ key, value: curr})
     }
     return res
@@ -44,12 +44,14 @@ export const getData = (params: any) => {
 
   const tempData = cutTableData(page, size,
     langData.filter(route => {
+      if (isEmpty(filterList)) return true
+
       return filterList.every(item => {
         const { key, value } = item
 
         switch (key){
-          case 'key':
-            return new RegExp(value).test(route.key)
+          case 'keyword':
+            return new RegExp(value).test(route.keyword)
           case 'zhTw':
             return new RegExp(value).test(route.zhTw)
           case 'zhCn':
@@ -80,29 +82,31 @@ export const getData = (params: any) => {
   return tempData
 }
 
-export const getDataCount = (params: any) => {
-  const { key, zhTw, zhCn, en } = params
+export const getDataCount = (params: any): number => {
+  const { keyword, zhTw, zhCn, en } = params
 
   const filterList = ({
-    key, zhTw, zhCn, en
+    keyword, zhTw, zhCn, en
   } as any).$reduce((
     res: Record<string, string>[],
     curr: string,
     key: string
   ) => {
-    if (!['', null, undefined].includes(curr)) {
+    if (!isEmpty(curr)) {
       res.push({ key, value: curr})
     }
     return res
   }, []) as Record<string, string>[]
 
   return langData.filter(route => {
+    if (isEmpty(filterList)) return true
+
     return filterList.every(item => {
       const { key, value } = item
 
       switch (key){
-        case 'key':
-          return new RegExp(value).test(route.key)
+        case 'keyword':
+          return new RegExp(value).test(route.keyword)
         case 'zhTw':
           return new RegExp(value).test(route.zhTw)
         case 'zhCn':
