@@ -8,7 +8,7 @@ import {
   CustomButton,
   CustomModal,
   CustomIcon,
-  CustomCheckbox,
+  CustomInput,
   CustomPopover,
   CustomTable,
   CustomTooltip
@@ -189,7 +189,9 @@ const isPopoverVisible = ref(false)
     </div>
 
     <div class="flex-row i-ga-xxl">
-      <CustomCheckbox
+      <CustomInput
+        type="checkbox"
+        hidden-label
         label="是否確認"
         v-model="ischeck"
         @change="testCheck"

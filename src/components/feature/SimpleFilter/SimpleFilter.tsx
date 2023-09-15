@@ -20,7 +20,7 @@ const SimpleFilter = defineComponent({
     },
     width: {
       type: [String, Number] as PropType<string | number>,
-      default: '65vw'
+      default: '55vw'
     },
     class: {
       type: String as PropType<string>,
@@ -71,7 +71,7 @@ const SimpleFilter = defineComponent({
         <CustomPopover
           visible={isVisible.value}
           placement={props.placement}
-          width="65vw"
+          width={props.width}
           popper-style="padding: 0px;"
         >
           {{

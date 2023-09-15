@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ref, onBeforeMount, computed } from 'vue'
-import {
-  CustomInput,
-  CustomSelect,
-  SimpleFilter
-} from '@/components'
+import { CustomInput, SimpleFilter } from '@/components'
 import { getOptions } from './api'
 
 const props = defineProps({

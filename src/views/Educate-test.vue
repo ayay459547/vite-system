@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { OperatorModelValue } from '@/components'
-import {
-  CustomRadio,
-  CustomCheckbox,
-  CustomDatePicker,
-  CustomSelect,
-  CustomOperator
-} from '@/components'
+import { CustomInput, CustomOperator } from '@/components'
 
 const valueTest = ref<number | null>(null)
 
@@ -43,18 +37,25 @@ const onOperatorChange = (v) => {
       label="Operator測試"
       @change="onOperatorChange"
     />
-    <CustomDatePicker
+    <CustomInput
       v-model="dateValue"
+      type="date"
       label="日期測試"
     />
-    <CustomCheckbox v-model="checkValue" label="勾選測試"/>
-    <CustomSelect
+    <CustomInput
+      v-model="checkValue"
+      label="勾選測試"
+      type="checkbox"
+    />
+    <CustomInput
       v-model="selectValue"
       label="選項測試"
+      type="select"
       :options="options"
     />
-    <CustomRadio
+    <CustomInput
       v-model="valueTest"
+      type="radio"
       :options="options"
     />
   </div>

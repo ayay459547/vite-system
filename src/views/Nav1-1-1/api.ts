@@ -96,7 +96,7 @@ export const getExcelData = async (params: any) => {
     delay: 300
   })
 
-  const { data, status } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     return data
@@ -104,7 +104,7 @@ export const getExcelData = async (params: any) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員'
     })
 
     return []
@@ -139,7 +139,7 @@ export const getData = async (params: any) => {
     delay: 300
   })
 
-  const { data, status } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     return data
@@ -147,7 +147,7 @@ export const getData = async (params: any) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員'
     })
 
     return []
@@ -168,7 +168,7 @@ export const getDataCount = async () => {
     delay: 300
   })
 
-  const { data, status } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     return data
@@ -176,7 +176,7 @@ export const getDataCount = async () => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員'
     })
 
     return 0

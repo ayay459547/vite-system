@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { getFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
-import {
-  FormInput,
-  FormDatePicker,
-  FormSelect
-} from '@/components'
+import { CustomInput } from '@/components'
 import { onMounted } from 'vue'
 
 import type { TableData } from '../api'
@@ -60,18 +56,18 @@ defineExpose({
 
 <template>
   <div class="update grid-row">
-    <FormInput
+    <CustomInput
       class="grid-col-xs-24 grid-col-md-12"
       v-model="form.name"
       v-bind="formrColumn.name"
     />
-    <FormDatePicker
+    <CustomInput
       class="grid-col-xs-24 grid-col-md-12"
       v-model="form.date"
       v-bind="formrColumn.date"
     />
 
-    <FormSelect
+    <CustomInput
       class="grid-col-md-24"
       v-model="form.address"
       v-bind="formrColumn.address"

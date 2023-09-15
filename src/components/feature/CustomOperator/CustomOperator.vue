@@ -202,7 +202,7 @@ const hasSlot = (prop: string): boolean => {
     width: 100%;
     height: 100%;
     display: flex;
-    gap: 4px;
+    gap: 8px;
     &.hidden-label {
       height: fit-content;
     }

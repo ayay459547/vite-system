@@ -18,6 +18,11 @@ export { default as CustomDraggable } from './feature/CustomDraggable/CustomDrag
 
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
+export type {
+  Fit
+} from './feature/CustomImage/CustomImage.vue'
+export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
+
 export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 

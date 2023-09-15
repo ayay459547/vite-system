@@ -59,7 +59,7 @@ export const getData = async (userId: number) => {
     }
   })
 
-  const { data, status } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     return data[0] ?? {}
@@ -67,7 +67,7 @@ export const getData = async (userId: number) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員'
     })
 
     return {}

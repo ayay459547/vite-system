@@ -17,7 +17,7 @@ export const createData = async (postData: TableData) => {
     delay: 300
   })
 
-  const { data, status } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     swal({
@@ -30,7 +30,7 @@ export const createData = async (postData: TableData) => {
     swal({
       icon: 'error',
       title: '新增資料失敗',
-      text: '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員'
     })
 
     return 0
@@ -51,7 +51,7 @@ export const updateData = async (postData: TableData) => {
     delay: 300
   })
 
-  const { data, status } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     swal({
@@ -64,7 +64,7 @@ export const updateData = async (postData: TableData) => {
     swal({
       icon: 'error',
       title: '新增資料失敗',
-      text: '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員'
     })
 
     return 0

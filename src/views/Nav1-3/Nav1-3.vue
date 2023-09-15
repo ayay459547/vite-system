@@ -6,7 +6,10 @@ import { CustomUpload } from '@/components'
   <div class="page">
     <h3>測試檔案上傳</h3>
 
-    <CustomUpload />
+    <CustomUpload
+      type="image"
+      multiple
+    />
   </div>
 </template>
 
