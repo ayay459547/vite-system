@@ -35,6 +35,10 @@ const props = defineProps({
     required: false,
     description: '瀏覽圖片縮放比'
   },
+  initialIndex: {
+    type: Number as PropType<number>,
+    default: 0
+  },
   previewSrcList: {
     type: Array as PropType<string[]>,
     required: false,
@@ -84,6 +88,7 @@ const hasSlot = (prop: string): boolean => {
       :alt="props.alt"
       :referrerpolicy="props.referrerpolicy"
       :zoom-rate="props.zoomRate"
+      :initial-index="props.initialIndex"
       :preview-src-list="props.previewSrcList"
       :hide-on-click-modal="props.hideOnClickModal"
       :preview-teleported="props.previewTeleported"

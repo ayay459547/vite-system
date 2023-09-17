@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import type { Hook } from '@/declare/hook'
+import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 import type { PropType } from 'vue'
-import { CustomButton } from '@/components'
-import { getFileType, readImage } from '@/lib/lib_files'
+import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
+import { getFileType, readImage, byteConvert } from '@/lib/lib_files'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import ImagesView from './ImagesView.vue'
 
-export type FileType = '' | 'image'
+export type FileType = '' | 'image' | 'excel' | 'word'
 
 interface Info {
   src?: string
+  fileSize?: string
 }
 export interface FileInfo extends Partial<File>, Info {
   uuid: string
 }
-
 export type FilesInfo = Array<FileInfo>
 
 const props = defineProps({
   type: {
-    type: [Array, String] as PropType<FileType[] | FileType>,
+    type: String as PropType<FileType>,
     required: false,
-    default: null,
+    default: '',
     description: '上傳類型'
   },
   multiple: {
@@ -41,33 +42,75 @@ const props = defineProps({
 
 const emit = defineEmits(['file'])
 
+const fileTypeMap = {
+  image: ['image/png', 'image/jpeg'],
+  word: [
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ],
+  excel: [
+
+  ]
+}
+
+const hook: Hook = inject('hook')
+const { i18nTranslate, swal, loading, eventList } = hook()
+
 const drag = ref(null)
 const active = ref(false)
 
 const files = ref<FileInfo[]>([])
 
-const initFilesData = async (_files: Array<File>) => {
-  _files.forEach(async (_file) => {
-    const fileType = getFileType(_file)
-
-    const info: Info = {
-      src: ''
-    }
-
-    switch (fileType) {
-      case 'image':
-        info.src = await readImage(_file)
-        break
-      default:
-        break
-    }
-
-    files.value.push({
-      uuid: getUuid(),
-      ..._file,
-      ...info
-    })
+const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
+  return _files.every(_file => {
+    if (fileTypeMap[fileType].includes(_file.type)) return true
+    return false
   })
+}
+
+const initFilesData = async (_files: Array<File>) => {
+  console.log(_files)
+  if (checkFilesType(_files, props.type)) {
+    _files.forEach(async (_file) => {
+      const fileType = getFileType(_file)
+      const {
+        name,
+        type,
+        size,
+        lastModified,
+        webkitRelativePath
+      } = _file
+
+      const info: Info = {
+        src: '',
+        fileSize: byteConvert(size)
+      }
+
+      console.log(!fileTypeMap.image.includes(type))
+      switch (fileType) {
+        case 'image':
+          info.src = await readImage(_file)
+          break
+        default:
+          break
+      }
+
+      files.value.push({
+        uuid: getUuid(),
+        name,
+        type,
+        size,
+        lastModified,
+        webkitRelativePath,
+        ...info
+      })
+    })
+  } else {
+    swal({
+      icon: 'error',
+      title: '上傳檔案失敗',
+      text: '檔案資料格式錯誤'
+    })
+  }
 
   await nextTick()
   emit('file', files.value)
@@ -115,6 +158,21 @@ const onClick = () => {
   const input = document.createElement('input')
   input.type = 'file'
 
+  switch (props.type) {
+    case 'image':
+      input.accept = fileTypeMap.image.join(', ')
+      break
+    case 'word':
+      input.accept = fileTypeMap.word.join(', ')
+      break
+    case 'excel':
+      input.accept = ''
+      break
+    default:
+      input.accept = ''
+      break
+  }
+
   input.style.display = 'none'
   document.body.appendChild(input)
   input.click()
@@ -140,7 +198,17 @@ const onClick = () => {
       :class="[{'upload-active': active}]"
     >
       <div class="upload-file">
-        <template v-if="props.type === 'image'">
+        <template v-if="isEmpty(files)">
+          <CustomEmpty
+            :image-size="100"
+            description="上傳檔案"
+          >
+            <template #image>
+              <CustomIcon name="image"/>
+            </template>
+          </CustomEmpty>
+        </template>
+        <template v-else-if="props.type === 'image'">
           <ImagesView
             :files="files"
             :multiple="props.multiple"

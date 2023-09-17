@@ -1,5 +1,35 @@
-import { tipLog } from '@/lib/lib_utils'
-import { nextTick } from 'vue'
+import { tipLog, round } from '@/lib/lib_utils'
+
+/**
+ * @author Caleb
+ * @description 將bytes做轉換
+ * @param {Number} bytes 檔案大小
+ * @returns {String} format後的檔案大小
+ */
+export const byteConvert = (bytes: number): string => {
+  if (isNaN(bytes)) return ''
+
+  const symbols = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+  const exp = (() => {
+    /**
+     * 對數運算 (換底公式)
+     * log 2 (bytes) = log 2 (bytes) / log 2 2
+     */
+    const _exp = Math.floor(Math.log(bytes) / Math.log(2))
+    return round(_exp, 0)
+  })()
+
+  const i = Math.floor(exp / 10)
+  const unit = symbols[i]
+
+  const size = ((i) => {
+    const _size = bytes / Math.pow(2, 10 * i)
+    return round(_size, 2)
+  })(i)
+
+  return `${size}${unit}`
+}
 
 /**
  * @author Caleb
@@ -9,27 +39,26 @@ import { nextTick } from 'vue'
  */
 export const getFileType = (file: File): string => {
   const {
-    name
+    name,
+    type
     // size,
-    // type,
     // lastModified,
     // lastModifiedDate,
     // webkitRelativePath
   } = file
 
+  if (type.startsWith('image/')) return 'image'
+
   const regexp = /\.\w*$/
   const fileType = name.match(regexp)[0] ?? ''
 
-  switch (fileType) {
+  switch (fileType.toLocaleLowerCase()) {
     case '.xlsx':
       return 'excel'
     case '.docx':
       return 'word'
-    case '.png':
-    case '.jpg':
-      return 'image'
     default:
-      return fileType.substr(1)
+      return fileType.substring(1)
   }
 }
 
@@ -42,7 +71,7 @@ export const getFileType = (file: File): string => {
 export const readImage = async (file: File): Promise<string> => {
   const { name, type } = file
 
-  if (type && !type.startsWith('image/')) {
+  if (!type.startsWith('image/')) {
     tipLog('上傳並非圖片檔', [type, name])
     return ''
   }

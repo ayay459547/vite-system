@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomUpload } from '@/components'
+import { CustomUpload, CustomDivider } from '@/components'
 </script>
 
 <template>
@@ -8,6 +8,13 @@ import { CustomUpload } from '@/components'
 
     <CustomUpload
       type="image"
+      multiple
+    />
+
+    <CustomDivider />
+
+    <CustomUpload
+      type="word"
       multiple
     />
   </div>

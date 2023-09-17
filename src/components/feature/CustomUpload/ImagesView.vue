@@ -34,14 +34,20 @@ const previewSrcList = computed(() => {
       <!-- 多張圖片 -->
       <div class="image-multiple" v-if="props.multiple">
         <div
-          v-for="file in props.files"
+          v-for="(file, fileIndex) in props.files"
           :key="file.uuid"
           class="image-sigle"
         >
           <CustomImage
             :src="file.src"
             :preview-src-list="previewSrcList"
+            :initial-index="fileIndex"
           />
+
+          <div class="image-info">
+            <div>{{ file.name }}</div>
+            <div>{{ file.fileSize }}</div>
+          </div>
         </div>
       </div>
       <!-- 單張圖片 -->
@@ -51,17 +57,6 @@ const previewSrcList = computed(() => {
           :preview-src-list="previewSrcList"
         />
       </div>
-    </template>
-    <!-- 沒圖片 -->
-    <template v-else>
-      <CustomEmpty
-        :image-size="100"
-        description="上傳圖片"
-      >
-        <template #image>
-          <CustomIcon name="image"/>
-        </template>
-      </CustomEmpty>
     </template>
   </div>
 </template>
@@ -81,7 +76,7 @@ const previewSrcList = computed(() => {
     width: 150px;
     border-radius: 6px;
     padding: 8px;
-    border: 1px solid gray;
+    border: 1px solid #ddd;
   }
 }
 

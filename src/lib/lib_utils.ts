@@ -164,7 +164,7 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
  * @param {Number} n 取小數點到第n位
  * @returns {Number}
  */
-export const round = (num: number, n = 2): number => {
+export const round = (num: number, n: number = 2): number => {
   return +(Math.round((num + `e+${n}`) as unknown as number)  + `e-${n}`)
 }
 
