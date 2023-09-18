@@ -8,6 +8,8 @@ import Swal from 'sweetalert2'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
 
+export const hasOwnProperty = Object.prototype.hasOwnProperty
+
 /**
  * @author Caleb
  * @description 取的準確的資料類型
@@ -29,7 +31,6 @@ export const getType = (any: any): string => {
  */
 export const isSet = (value: any): boolean => {
   if ([null, undefined].includes(value)) return false
-  const hasOwnProperty = Object.prototype.hasOwnProperty
   const type = getType(value)
 
   switch (type) {
@@ -59,7 +60,6 @@ export const isSet = (value: any): boolean => {
 export const isEmpty = (value: any): boolean => {
   if ([null, undefined].includes(value)) return true
   const type = getType(value)
-  const hasOwnProperty = Object.hasOwnProperty
 
   switch (type) {
     case 'Array':
@@ -96,7 +96,7 @@ export const getUuid = (): string => {
  */
 export const hasSlot = (prop: string): boolean => {
   const slots = useSlots()
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 const mode = (import.meta as any).env.MODE
@@ -220,7 +220,6 @@ export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
  */
 export const deepClone = (targetElement: any, origin: any): any => {
   const toStr = Object.prototype.toString
-  const hasOwnProperty = Object.prototype.hasOwnProperty
 
   const targetElementType = toStr.call(targetElement)
   const originType = toStr.call(origin)

@@ -5,7 +5,7 @@ import { ElDatePicker } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { ValidateType } from '@/lib/lib_validate'
 import { useI18n } from 'vue-i18n'
-import { isEmpty, datetimeFormat } from '@/lib/lib_utils'
+import { isEmpty, datetimeFormat, hasOwnProperty } from '@/lib/lib_utils'
 const { t } = useI18n()
 
 type BaseValue = string | null
@@ -169,7 +169,7 @@ defineExpose({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 onMounted(() => {

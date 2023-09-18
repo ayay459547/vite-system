@@ -2,6 +2,7 @@
 import type { PropType } from 'vue'
 import { useSlots } from 'vue'
 import { ElImage } from 'element-plus'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
 export type Fit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 
@@ -75,7 +76,7 @@ const onEvent = {
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 </script>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import type { FilesInfo } from './CustomUpload.vue'
-import { CustomIcon, CustomImage } from '@/components'
+import { CustomIcon, CustomImage, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 
 const props = defineProps({
@@ -19,6 +20,11 @@ const props = defineProps({
     description: '上傳類型'
   }
 })
+
+const emit = defineEmits(['remove'])
+
+const hook: Hook = inject('hook')
+const { i18nTranslate, swal, loading, eventList } = hook()
 
 const previewSrcList = computed(() => {
   return props.files.map(item => {
@@ -54,31 +60,33 @@ const getIcon = (fileType: string) => {
           :key="file.uuid"
           class="file-sigle"
         >
-          <CustomImage
-            v-if="file.fileType === 'image' && !isEmpty(file.src)"
-            :src="file.src"
-            fit="contain"
-            :preview-src-list="previewSrcList"
-            :initial-index="fileIndex"
-          />
-          <CustomIcon
-            v-else
-            class="file-icon"
-            :class="`file-${file.fileType}`"
-            :name="getIcon(file.fileType)"
-          />
+          <div class="file-icon">
+            <CustomImage
+              v-if="file.fileType === 'image' && !isEmpty(file.src)"
+              :src="file.src"
+              fit="contain"
+              :preview-src-list="previewSrcList"
+              :initial-index="fileIndex"
+            />
+            <CustomIcon
+              v-else
+              class="icon"
+              :class="`file-${file.fileType}`"
+              :name="getIcon(file.fileType)"
+            />
+          </div>
 
           <div class="file-info">
-            <div
-              v-i-fixed="{
-                text: file.name,
-                class: '',
-                style: ''
-              }"
-              class="info-text ellipsis"
-            >{{ file.name }}</div>
-            <div class="info-size ellipsis">{{ file.fileSize }}</div>
+            <div class="info-text">{{ file.name }}</div>
+            <div class="info-size">{{ file.fileSize }}</div>
           </div>
+
+          <CustomButton
+            type="danger"
+            icon-name="trash-can"
+            text
+            @click="emit('remove', fileIndex)"
+          />
 
         </div>
       </div>
@@ -89,7 +97,7 @@ const getIcon = (fileType: string) => {
 <style lang="scss" scoped>
 @mixin iconColor ($type, $color) {
   &-#{$type} {
-    color: $color;
+    color: $color !important;
   }
 }
 
@@ -102,18 +110,36 @@ const getIcon = (fileType: string) => {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     gap: 8px;
   }
   &-sigle {
-    width: 150px;
-    height: 100%;
+    width: 100%;
+    height: 70px;
     border-radius: 6px;
     padding: 8px;
     border: 1px solid #ddd;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    flex: 1;
+
+    transition-duration: 0.3s;
+    &:hover {
+      background-color: #ecf5ff;
+    }
   }
   &-icon {
-    font-size: 8em !important;
-    color: #909399;
+    width: fit-content;
+    min-width: 40px;
+    height: inherit;
+    .icon {
+      font-size: 3em !important;
+      line-height: 70px;
+      color: #909399;
+    }
   }
   @include iconColor('word', #409EFF);
   @include iconColor('excel', #67C23A);
@@ -125,6 +151,7 @@ const getIcon = (fileType: string) => {
     font-weight: 600;
     font-size: 1.1em;
     padding-top: 8px;
+    white-space: nowrap;
   }
 }
 

@@ -13,12 +13,12 @@ import {
 
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 const getSlot = (slotKey: string, type: ('header' | 'column')): string => {

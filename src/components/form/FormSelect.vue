@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, useSlots } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
 export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
 
@@ -140,7 +140,7 @@ const inputValue = computed({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 </script>

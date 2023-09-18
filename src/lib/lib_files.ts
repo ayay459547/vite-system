@@ -1,4 +1,5 @@
-import { tipLog, round } from '@/lib/lib_utils'
+import { tipLog, round, hasOwnProperty } from '@/lib/lib_utils'
+import * as XLSX from 'xlsx/xlsx.mjs'
 
 /**
  * @author Caleb
@@ -101,3 +102,24 @@ export const readImage = async (file: File): Promise<string> => {
   })
 }
 
+export const readExcel = async (file: File): Promise<any> => {
+  const reader = new FileReader()
+  return new Promise((resolve) => {
+    reader.onload = (event) => {
+      const result = event.target.result
+
+      const workbook = XLSX.read(result, { type: 'binary' })
+
+      const excel = []
+      for (const sheet in workbook.Sheets) {
+        if (hasOwnProperty.call(workbook.Sheets, sheet)) {
+            // 利用 sheet_to_json 方法將 excel 轉成 json 數據
+            const rowData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+            excel.push(rowData)
+        }
+      }
+      resolve(excel[0] ?? [])
+    }
+    reader.readAsBinaryString(file)
+  })
+}

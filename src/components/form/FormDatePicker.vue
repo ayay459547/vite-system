@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed, useSlots, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 const { t } = useI18n()
 
 type BaseValue = string | null
@@ -86,7 +86,7 @@ const inputValue = computed({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 // event

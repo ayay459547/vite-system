@@ -5,7 +5,7 @@ import { ElInput } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 
@@ -229,7 +229,7 @@ defineExpose({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 const getTextValue = (tempValue: ModelValue) => {

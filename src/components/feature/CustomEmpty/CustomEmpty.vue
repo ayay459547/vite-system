@@ -2,6 +2,7 @@
 import type { PropType } from 'vue'
 import { useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
 const props = defineProps({
   image: {
@@ -26,7 +27,7 @@ const props = defineProps({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 </script>
 

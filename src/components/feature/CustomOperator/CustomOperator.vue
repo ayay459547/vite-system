@@ -2,6 +2,7 @@
 import type { PropType, WritableComputedRef } from 'vue'
 import { computed, useSlots } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
 export type Options = Array<{
   label: string
@@ -124,7 +125,7 @@ const onChange = () => {
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 </script>

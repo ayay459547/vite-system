@@ -12,7 +12,7 @@ import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
 import { getColumnSetting } from '@/lib/lib_idb'
-import { systemLog, tipLog, getUuid, isEmpty } from '@/lib/lib_utils'
+import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
 export interface FormSetting<T> {
   defaultValue: T
@@ -51,8 +51,6 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
   const resAbleds = reactive<Record<string, boolean>>({})
 
   const refMap = shallowReactive<Record<string, any>>({})
-
-  const hasOwnProperty = Object.prototype.hasOwnProperty
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
@@ -175,8 +173,6 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
   const resColumns = {}
   const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
-
-  const hasOwnProperty = Object.prototype.hasOwnProperty
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
@@ -363,7 +359,6 @@ export const getTableSetting = (
   } = options
 
   // 設定 table 用的 column
-  const hasOwnProperty = Object.prototype.hasOwnProperty
   const getChildrenData = (columns: Record<string, any>): Array<any> => {
     const resChildren = []
 
@@ -573,7 +568,6 @@ export const getSimpleTableSetting = (
 ): SimpleTableSetting => {
 
   // 設定 table 用的 column
-  const hasOwnProperty = Object.prototype.hasOwnProperty
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
       key,

@@ -3,7 +3,12 @@ import type { Hook } from '@/declare/hook'
 import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 import type { PropType } from 'vue'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
-import { getFileType, readImage, byteConvert } from '@/lib/lib_files'
+import {
+  getFileType,
+  byteConvert,
+  readImage,
+  readExcel
+} from '@/lib/lib_files'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import FilesView from './FilesView.vue'
@@ -14,6 +19,7 @@ interface Info {
   src?: string
   fileSize?: string
   fileType?: string
+  excel?: any
 }
 export interface FileInfo extends Partial<File>, Info {
   uuid: string
@@ -104,6 +110,8 @@ const initFilesData = async (_files: Array<File>) => {
           info.src = await readImage(_file)
           break
         case 'excel':
+          info.excel = await readExcel(_file)
+          break
         case 'word':
           break
         default:
@@ -130,6 +138,10 @@ const initFilesData = async (_files: Array<File>) => {
 
   await nextTick()
   emit('file', files.value)
+}
+
+const remove = (fileIndex: number) => {
+  files.value.splice(fileIndex, 1)
 }
 
 const handleDrop = (e: DragEvent) => {
@@ -173,6 +185,7 @@ onBeforeUnmount(() => {
 const onClick = () => {
   const input = document.createElement('input')
   input.type = 'file'
+  input.multiple = props.multiple
 
   switch (props.type) {
     case 'image':
@@ -229,6 +242,7 @@ const onClick = () => {
           <FilesView
             :files="files"
             :multiple="props.multiple"
+            @remove="remove"
           />
         </template>
 
@@ -249,6 +263,11 @@ const onClick = () => {
   &-wrapper {
     width: 100%;
     height: fit-content;
+
+    transition-duration: 0.3s;
+    &:hover {
+      background-color: #f4f4f5a9;
+    }
   }
 
   &-container {

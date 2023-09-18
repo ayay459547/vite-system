@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed, useSlots, ref, nextTick } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 import { useField } from 'vee-validate'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
 export type Options = Array<{
   label: string
@@ -211,7 +211,7 @@ defineExpose({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(slots, prop)
+  return hasOwnProperty.call(slots, prop)
 }
 
 const getTextValue = (tempValue: ModelValue) => {
