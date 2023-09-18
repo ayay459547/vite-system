@@ -5,7 +5,7 @@ import {
   CustomIcon
 } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
@@ -44,8 +44,9 @@ const isLoading = ref(false)
 const table = ref()
 const modeOptions = ref()
 
-const init = () => {
+const init = async () => {
   isLoading.value = true
+  await nextTick()
 
   tableData.value = getData({
     ...filter,

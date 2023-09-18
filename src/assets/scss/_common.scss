@@ -22,3 +22,9 @@
 .hidden-text {
   color: #ffffff00;
 }
+
+.ellipsis {
+  overflow:hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -90,5 +90,16 @@ export default {
     zhTw: '請選擇',
     zhCn: '请选择',
     en: 'Please Select'
+  },
+  // CustomUpload
+  upload: {
+    zhTw: '上傳',
+    zhCn: '上传',
+    en: 'Upload'
+  },
+  file: {
+    zhTw: '文件',
+    zhCn: '文件',
+    en: 'File'
   }
 } as LangMap

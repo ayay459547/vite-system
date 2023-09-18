@@ -6,13 +6,14 @@ import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import { getFileType, readImage, byteConvert } from '@/lib/lib_files'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import ImagesView from './ImagesView.vue'
+import FilesView from './FilesView.vue'
 
-export type FileType = '' | 'image' | 'excel' | 'word'
+export type FileType = '' | 'image' | 'excel' | 'word' | 'powerpoint' | 'zip'
 
 interface Info {
   src?: string
   fileSize?: string
+  fileType?: string
 }
 export interface FileInfo extends Partial<File>, Info {
   uuid: string
@@ -48,7 +49,17 @@ const fileTypeMap = {
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   ],
   excel: [
-
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ],
+  powerpoint: [
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  ],
+  zip: [
+    '',
+    'application/x-zip-compressed'
+  ],
+  json: [
+    'application/json'
   ]
 }
 
@@ -61,6 +72,8 @@ const active = ref(false)
 const files = ref<FileInfo[]>([])
 
 const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
+  if (isEmpty(props.type)) return true
+
   return _files.every(_file => {
     if (fileTypeMap[fileType].includes(_file.type)) return true
     return false
@@ -82,13 +95,16 @@ const initFilesData = async (_files: Array<File>) => {
 
       const info: Info = {
         src: '',
-        fileSize: byteConvert(size)
+        fileSize: byteConvert(size),
+        fileType: fileType
       }
 
-      console.log(!fileTypeMap.image.includes(type))
       switch (fileType) {
         case 'image':
           info.src = await readImage(_file)
+          break
+        case 'excel':
+        case 'word':
           break
         default:
           break
@@ -201,15 +217,16 @@ const onClick = () => {
         <template v-if="isEmpty(files)">
           <CustomEmpty
             :image-size="100"
-            description="上傳檔案"
           >
             <template #image>
-              <CustomIcon name="image"/>
+              <CustomIcon v-if="props.type === 'image'" name="image"/>
+              <CustomIcon v-else name="file"/>
             </template>
+            <template #description></template>
           </CustomEmpty>
         </template>
-        <template v-else-if="props.type === 'image'">
-          <ImagesView
+        <template v-else>
+          <FilesView
             :files="files"
             :multiple="props.multiple"
           />
@@ -217,7 +234,7 @@ const onClick = () => {
 
       </div>
       <CustomButton
-        label="檔案上傳"
+        :label="`${i18nTranslate('upload')}${i18nTranslate('file')}`"
         icon-name="cloud-arrow-up"
         size="large"
         type="primary"

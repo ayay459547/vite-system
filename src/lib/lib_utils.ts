@@ -181,6 +181,17 @@ export const datetimeFormat = (value: string | Date, format: string): string => 
 
 /**
  * @author Caleb
+ * @description 時間換 毫秒時間
+ * @param {String} date YYYY-MM-DD
+ * @param {String} time 00:00:00
+ * @returns {Number}
+ */
+export const getMilliseconds = (date: string, time: string): number => {
+  return Date.parse(date + 'T' + time)
+}
+
+/**
+ * @author Caleb
  * @description Swal 互動式彈窗
  * @param {Object} options 自訂選項
  * @returns {Promise}

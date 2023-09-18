@@ -57,6 +57,11 @@ export const getFileType = (file: File): string => {
       return 'excel'
     case '.docx':
       return 'word'
+    case '.pptx':
+      return 'powerpoint'
+    case '.zip':
+    case '.7z':
+      return 'zip'
     default:
       return fileType.substring(1)
   }

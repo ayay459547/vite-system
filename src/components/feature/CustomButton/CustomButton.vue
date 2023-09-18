@@ -216,6 +216,7 @@ const onClick = ($event: Event) => {
   &-label {
     display: inline-block;
     padding-top: 2px;
+    transform: translateY(-1px);
 
     &.size-large {
       font-size: 1.3em;

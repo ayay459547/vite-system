@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CustomTable, CustomInput } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { columnSetting } from './columns'
 import type { TableData } from './api'
 import { getData, getDataCount } from './api'
@@ -30,8 +30,9 @@ const isLoading = ref(false)
 
 const table = ref()
 
-const init = () => {
+const init = async () => {
   isLoading.value = true
+  await nextTick()
 
   tableData.value = getData({
     ...filter,

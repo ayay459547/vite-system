@@ -86,6 +86,7 @@ const hasSlot = (prop: string): boolean => {
       style="width: 100%; height: 100%;"
       :src="props.src"
       :alt="props.alt"
+      :fit="props.fit"
       :referrerpolicy="props.referrerpolicy"
       :zoom-rate="props.zoomRate"
       :initial-index="props.initialIndex"

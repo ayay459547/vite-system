@@ -1,7 +1,7 @@
 // @ts-ignore
 import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
-import { defineComponent, inject, computed, ref } from 'vue'
+import { defineComponent, inject, computed, ref, onMounted } from 'vue'
 // @ts-ignore
 import type { PopoverPlacement } from '@/components'
 import { CustomButton, CustomPopover } from '@/components'
@@ -32,7 +32,7 @@ const SimpleFilter = defineComponent({
     }
   },
   emits: ['reset', 'submit'],
-  setup (props, { slots, emit }) {
+  setup (props, { slots, emit, expose }) {
     const hook: Hook = inject('hook')
     const { i18nTranslate } = hook()
 
@@ -65,6 +65,12 @@ const SimpleFilter = defineComponent({
     }
 
     const isVisible = ref(false)
+
+    expose({
+      setIsVisible (visible: boolean) {
+        isVisible.value = visible
+      }
+    })
 
     return () => (
       <div class={styles['simple-filter']}>
@@ -128,10 +134,10 @@ const SimpleFilter = defineComponent({
                     }}
                   />
                   <CustomButton
-                    iconName='check'
+                    iconName='search'
                     iconMove='scale'
                     type='success'
-                    label={i18nTranslate('confirm')}
+                    label={i18nTranslate('search')}
                     onClick={(e: MouseEvent) => {
                       isVisible.value = false
                       emit('submit')

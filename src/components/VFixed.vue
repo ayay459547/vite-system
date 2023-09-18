@@ -58,21 +58,22 @@ export default defineComponent({
     bindStyle ({ elAttr, options }) {
       const { left, top, width, height } = elAttr
       const { style } = options
+      const padding = 6
 
       if (typeof style === 'object') {
         return {
           ...style,
-          left: `${left}px`,
-          top: `${top}px`,
-          width: `${width}px`,
-          height: `${height}px`
+          left: `${left - padding}px`,
+          top: `${top - padding}px`,
+          width: `${padding * 2 + width}px`,
+          height: `${padding * 2 + height}px`
         }
       } else {
         return `
-          left: ${left}px;
-          top: ${top}px;
-          width: ${width}px;
-          height: ${height}px;
+          left: ${left - padding}px;
+          top: ${top - padding}px;
+          width: ${padding * 2 + width}px;
+          height: ${padding * 2 + height}px;
         ` + style
       }
     }
@@ -156,7 +157,7 @@ export default defineComponent({
     color: #fff;
     background-color: lighten($system-bg-color, 5%);
     border-radius: 6px;
-    padding: 2px 6px;
+    padding: 2px 8px;
     cursor: default;
     position: fixed;
     z-index: $v-i-fixed-index;

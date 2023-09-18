@@ -14,7 +14,6 @@ import { CustomUpload, CustomDivider } from '@/components'
     <CustomDivider />
 
     <CustomUpload
-      type="word"
       multiple
     />
   </div>

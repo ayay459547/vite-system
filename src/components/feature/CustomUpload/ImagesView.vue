@@ -73,7 +73,7 @@ const previewSrcList = computed(() => {
   }
   &-sigle {
     width: 150px;
-    width: 150px;
+    height: 150px;
     border-radius: 6px;
     padding: 8px;
     border: 1px solid #ddd;
