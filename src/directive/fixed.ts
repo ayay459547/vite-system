@@ -28,7 +28,7 @@ const fixedSet = new Set<{
 }>()
 
 type Options = {
-  text: string
+  text: string | Function
   style?: string | Record<string, any>
   class?: string | Record<string, any> | any[]
 }
@@ -42,10 +42,15 @@ type Options = {
 function createHandler (this: Element, options: Options) {
   const clientRect = this.getBoundingClientRect()
   const {
-    text,
+    text: tempText,
     style: textStyle = '',
     class: textClass = ''
   } = options
+
+  const text = ((tempText) => {
+    if (typeof tempText === 'function') return tempText()
+    return tempText
+  })(tempText)
 
   const newEl = document.createElement('div')
   this.appendChild(newEl)

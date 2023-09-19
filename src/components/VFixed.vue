@@ -64,16 +64,16 @@ export default defineComponent({
         return {
           ...style,
           left: `${left - padding}px`,
-          top: `${top - padding}px`,
+          top: `${top - padding + 2}px`,
           width: `${padding * 2 + width}px`,
-          height: `${padding * 2 + height}px`
+          height: `${padding + height}px`
         }
       } else {
         return `
           left: ${left - padding}px;
-          top: ${top - padding}px;
+          top: ${top - padding + 2}px;
           width: ${padding * 2 + width}px;
-          height: ${padding * 2 + height}px;
+          height: ${padding + height}px;
         ` + style
       }
     }
@@ -157,7 +157,7 @@ export default defineComponent({
     color: #fff;
     background-color: lighten($system-bg-color, 5%);
     border-radius: 6px;
-    padding: 2px 8px;
+    padding: 0px 8px;
     cursor: default;
     position: fixed;
     z-index: $v-i-fixed-index;

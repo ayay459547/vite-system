@@ -65,7 +65,7 @@ const props = defineProps({
   },
   maxCollapseTags: {
     type: Number as PropType<number>,
-    default: 3
+    default: 1
   },
   filterable: {
     type: Boolean as PropType<boolean>,

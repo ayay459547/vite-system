@@ -51,6 +51,7 @@ $bar-height: 5px;
     position: relative;
     cursor: pointer;
     width: $bar-width;
+    min-width: $bar-width;
     height: $bar-width;
     .item-bar {
       transition-duration: 0.3s;

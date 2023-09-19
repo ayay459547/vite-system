@@ -54,7 +54,7 @@ const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
     } else {
       res.push({
         type: 'icon',
-        name: '/'
+        name: ' / '
       }, {
         type: 'text',
         name: crumb
@@ -70,6 +70,10 @@ const breadcrumbSpan = computed<string>(() => {
     return res + crumb.name
   }, '')
 })
+
+const getBreadcrumbSpan = () => {
+  return breadcrumbSpan.value
+}
 
 const localeStore = useLocaleStore()
 
@@ -145,10 +149,14 @@ const openUserEffect = (e: MouseEvent) => {
       <slot name="header-left"></slot>
 
       <div class="header-breadcrumb-lg">
-        <template v-for="(path, pathIndex) in currentPath" :key="pathIndex">
-            <span v-if="path.type === 'text'">{{ path.name }}</span>
-            <span v-else style="font-weight: 600;">{{ ' / ' }}</span>
-          </template>
+        <div
+          v-i-fixed="{
+            text: getBreadcrumbSpan,
+            class: 'text-white',
+            style: ''
+          }"
+          class="text ellipsis"
+        >{{ breadcrumbSpan }}</div>
       </div>
       <div class="header-breadcrumb-xs">
         <CustomTooltip>
@@ -228,6 +236,19 @@ const openUserEffect = (e: MouseEvent) => {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
+    flex: 1;
+    width: 100%;
+    height: 40px;
+    position: relative;
+    .text {
+      max-width: 100%;
+      width: fit-content;
+      line-height: 40px;
+
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
   }
   &-breadcrumb-xs {
     display: none;
@@ -246,6 +267,7 @@ const openUserEffect = (e: MouseEvent) => {
     display: flex;
     align-items: center;
     gap: 16px;
+    flex: 1;
   }
 
   &-right {

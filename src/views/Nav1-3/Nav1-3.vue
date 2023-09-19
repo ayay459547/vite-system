@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { CustomUpload, CustomDivider } from '@/components'
+import { onMounted } from 'vue'
+
+
+onMounted(() => {
+  console.log(123)
+})
+
 </script>
 
 <template>

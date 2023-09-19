@@ -99,10 +99,7 @@ const onEnd = ($event: any) => {
 }
 const onChoose = ($event: any) => emit('choose', $event)
 const onUnchoose = ($event: any) => emit('unchoose', $event)
-const onSort = ($event: any) => {
-  console.log('sort')
-  emit('sort', $event)
-}
+const onSort = ($event: any) => emit('sort', $event)
 const onFilter = ($event: any) => emit('filter', $event)
 const onClone = ($event: any) => emit('clone', $event)
 
@@ -205,6 +202,9 @@ const listValue = computed({
 }
 
 .list-group {
+  width: 100%;
+  height: 100%;
+
   &-item {
     background-color: #fff;
     border-bottom: 1px solid #ebeef5;

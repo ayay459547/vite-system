@@ -3,6 +3,7 @@ h1, h2, h3, h4, h5, h6,
 ul, li {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* 將監聽事件 標示為被動 會報錯 */
@@ -24,7 +25,7 @@ a {
   text-decoration: none;
 }
 
-a, div, nav, main {
+a, div, nav, main, label, span {
   box-sizing: border-box;
 }
 
