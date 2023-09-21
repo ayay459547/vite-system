@@ -173,6 +173,12 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
   const resColumns = {}
   const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
+  const _initData = initData.map(item => {
+    return {
+      ...item,
+      key: getUuid()
+    }
+  })
 
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
     return {
@@ -210,7 +216,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
     }
   })
 
-  formList.value.push(...initData)
+  formList.value.push(..._initData)
 
   return {
     defaultValue: defaultValue as T,
@@ -218,7 +224,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
     forms: formList as Ref<Array<T>>,
     reset: () => {
       formList.value.splice(0)
-      formList.value.push(...initData)
+      formList.value.push(..._initData)
     },
     validate: async () => {
       const validateList = []

@@ -14,6 +14,8 @@ import {
   keysHistoryNavigation as keysHistory
 } from '@/lib/lib_idb'
 
+import { getProxyData } from '@/lib/lib_utils'
+
 import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission'
 
 export const useRoutesStore = defineStore('routes', () => {
@@ -46,7 +48,7 @@ export const useRoutesStore = defineStore('routes', () => {
   const addHistoryNavigation = (key: string, value: Navigation) => {
     if (!historyNavigation.has(key)) {
       historyNavigation.set(key, value)
-      const _value = JSON.parse(JSON.stringify(value))
+      const _value = getProxyData(value)
       setHistory(key, _value)
     }
   }

@@ -39,8 +39,9 @@ import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useI18n } from 'vue-i18n'
 
-import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
+import type { NotificationOptionsTyped } from 'element-plus'
+import { ElNotification } from 'element-plus'
 
 // slot
 const slots = useSlots()
@@ -95,19 +96,35 @@ provide<Hook>('hook', () => {
       })
       queueId.value++
     },
-    swal: (options: SweetAlertOptions<any, any>) => {
+    swal: (options) => {
       const defaultOPtions = {
-        // info, warning, success, error, question
+        // 'info' | 'warning' | 'success' | 'error' | 'question'
         // icon: 'info',
         reverseButtons: true,
         confirmButtonText: '確認',
         confirmButtonColor: '#409eff',
         showCancelButton: true,
-        cancelButtonText: '取消',
-        ...options
+        cancelButtonText: '取消'
       }
 
-      return Swal.fire({ ...defaultOPtions })
+      return Swal.fire({
+        ...defaultOPtions,
+        ...options
+      })
+    },
+    notification: (options) => {
+      const defaultOPtions = {
+        // 'success' | 'warning' | 'info' | 'error' | ''
+        type: '',
+        icon: '',
+        title: '',
+        message: ''
+      } as Partial<NotificationOptionsTyped>
+
+      return ElNotification({
+        ...defaultOPtions,
+        ...options
+      })
     }
   }
 })

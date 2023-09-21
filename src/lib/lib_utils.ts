@@ -348,3 +348,13 @@ export const downloadStaticFile = (fileName: string) => {
   a.click()
   a.remove()
 }
+
+/**
+ * @author Caleb
+ * @description 取得 Proxy 中的數據
+ * @param {Object} value 被代理的數據
+ * @returns {*} 解開代理後的資料
+ */
+export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
+  return JSON.parse(JSON.stringify(value))
+}

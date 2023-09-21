@@ -195,7 +195,7 @@ onBeforeMount(async () => {
       >
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">
-            <div class="flex-row i-ga-sm">
+            <div class="flex-row i-ga-xs">
               <div>
                 <CustomInput
                   v-model="element.isShow"

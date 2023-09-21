@@ -87,7 +87,7 @@ const downloadWord = () => {
                 :to="`${row.path}`"
                 v-slot="{ navigate }"
               >
-              <div class="flex-row i-ga-sm text-primary" @click="navigate">
+              <div class="flex-row i-ga-xs text-primary" @click="navigate">
                 <CustomIcon name="up-right-from-square"/>
                 <span>{{ row.path }}</span>
               </div>

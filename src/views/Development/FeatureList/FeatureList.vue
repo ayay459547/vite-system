@@ -119,7 +119,7 @@ onMounted(() => {
           />
         </template>
         <template #column-status="{ prop, data }">
-          <div class="flex-row i-ga-sm" :class="columnSetting[prop].getClass(data)">
+          <div class="flex-row i-ga-xs" :class="columnSetting[prop].getClass(data)">
             <CustomIcon :name="columnSetting[prop].getIcon(data)"/>
             <span>{{ columnSetting[prop].getValue(data) }}</span>
           </div>
@@ -129,7 +129,7 @@ onMounted(() => {
             :to="`${data}`"
             v-slot="{ navigate }"
           >
-          <div class="flex-row i-ga-sm text-primary" @click="navigate">
+          <div class="flex-row i-ga-xs text-primary" @click="navigate">
             <CustomIcon name="up-right-from-square"/>
             <span>{{ data }}</span>
           </div>

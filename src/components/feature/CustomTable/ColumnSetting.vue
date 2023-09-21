@@ -17,7 +17,7 @@ import {
   delColumnSetting
 } from '@/lib/lib_idb'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
 const props = defineProps({
   columns: {
@@ -146,7 +146,7 @@ const updateSetting = async (isEmitChange = true) => {
   const settingData: SettingData = {
     version: props.version,
     settingKey: props.settingKey,
-    columns: JSON.parse(JSON.stringify(temp))
+    columns: getProxyData(temp)
   }
   await setColumnSetting(props.settingKey, settingData)
 
@@ -195,7 +195,7 @@ onBeforeMount(async () => {
       >
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">
-            <div class="flex-row i-ga-sm">
+            <div class="flex-row i-ga-xs">
               <div>
                 <CustomInput
                   v-model="element.isShow"

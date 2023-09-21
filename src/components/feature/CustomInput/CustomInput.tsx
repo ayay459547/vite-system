@@ -364,7 +364,7 @@ const CustomInput = defineComponent({
               errorMessage={errorMessage.value}
               onChange={ (e) => { onEvent.value.onChange(e) } }
             >
-              {{ ...getTemplate(['option']) }}
+              {{ ...getTemplate(['default', 'option']) }}
             </FormCheckbox>
           )
         case 'radio':

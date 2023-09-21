@@ -104,15 +104,15 @@ const onFilter = ($event: any) => emit('filter', $event)
 const onClone = ($event: any) => emit('clone', $event)
 
 export type Change = {
-  added: {
+  added?: {
     newIndex: number
     element: Record<string, any>
   }
-  removed: {
+  removed?: {
     oldIndex: number
     element: Record<string, any>
   }
-  moved: {
+  moved?: {
     newIndex: number
     oldIndex: number
     element: Record<string, any>

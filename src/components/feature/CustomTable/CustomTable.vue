@@ -11,7 +11,7 @@ import {
 import type { TableColumnCtx } from 'element-plus'
 import { ElPagination } from 'element-plus'
 
-import { tipLog, isEmpty } from '@/lib/lib_utils'
+import { tipLog, isEmpty, getProxyData } from '@/lib/lib_utils'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
@@ -288,7 +288,7 @@ const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
   emit('show-change', {
     page,
     size: pageSize,
-    sort: JSON.parse(JSON.stringify(sort))
+    sort: getProxyData(sort)
   })
 }
 // 顯示資料

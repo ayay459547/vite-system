@@ -13,7 +13,7 @@ import {
 
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
-import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils'
+import { scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()
@@ -113,7 +113,7 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector('.list-group-item:last-child')
+    const newEl = document.querySelector(`.__${scopedId} .list-group-item:last-child`)
     if (newEl) scrollToEl(newEl)
   })
 }
@@ -165,10 +165,12 @@ onBeforeMount(() => {
   showTableColumns.value = _showTableColumns
 })
 
+const scopedId = getUuid()
+
 </script>
 
 <template>
-  <div class="form-container hover-card-info">
+  <div class="form-container hover-card-info" :class="`__${scopedId}`">
     <div class="form-label">
       <span>{{ props.label }}</span>
     </div>
@@ -176,7 +178,7 @@ onBeforeMount(() => {
       v-model="tempValue"
       :item-key="props.itemKey"
       is-draggable
-      :handle="'.form-item-move'"
+      :handle="`.form-item-move__${scopedId}`"
       :table-data="tempValue"
       :table-columns="showTableColumns"
     >
@@ -230,7 +232,7 @@ onBeforeMount(() => {
             type="info"
             icon-name="bars"
             text
-            class="form-item-move"
+            :class="`form-item-move__${scopedId}`"
           />
         </div>
       </template>

@@ -70,5 +70,10 @@ export default {
     zhTw: '登入',
     zhCn: '登入',
     en: 'Login'
+  },
+  copy: {
+    zhTw: '複製',
+    zhCn: '复制',
+    en: 'Copy'
   }
 } as LangMap

@@ -171,7 +171,7 @@ export const elSelect = {
   maxCollapseTags: {
     type: Number as PropType<number>,
     required: false,
-    default: 3,
+    default: 1,
     description: '多選顯示標籤數量'
   },
   filterable: {
