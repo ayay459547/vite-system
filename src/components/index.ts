@@ -34,6 +34,8 @@ export type {
 // @ts-ignore
 export { default as CustomInput } from './feature/CustomInput/CustomInput.tsx'
 
+export { default as CustomMarkdown } from './feature/CustomMarkdown/CustomMarkdown.vue'
+
 export type {
   WidthSize,
   HeightSize,

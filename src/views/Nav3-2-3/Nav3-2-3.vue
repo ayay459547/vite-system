@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomDraggable, CustomDivider } from '@/components'
+import { CustomDraggable } from '@/components'
 import { ref } from 'vue'
 
 const options = [
@@ -54,8 +54,6 @@ const clone = (original: any) => {
       </template>
     </CustomDraggable>
 
-    <CustomDivider />
-
     <CustomDraggable
       v-model="list2"
       group="option"
@@ -64,8 +62,6 @@ const clone = (original: any) => {
         <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
       </template>
     </CustomDraggable>
-
-    <CustomDivider />
 
     <CustomDraggable
       v-model="list3"
@@ -82,5 +78,7 @@ const clone = (original: any) => {
   width: 100%;
   height: 100%;
   padding: 16px;
+  display: flex;
+  gap: 16px;
 }
 </style>

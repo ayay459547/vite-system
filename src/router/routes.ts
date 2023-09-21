@@ -337,7 +337,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-2-3',
-            title: '雙拖拉測試',
+            title: '拖拉測試',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -360,7 +360,8 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav3-2-4',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav3-2-4/Nav3-2-4.vue'),
+            icon: 'arrow-down-short-wide'
           }
         ]
       },
