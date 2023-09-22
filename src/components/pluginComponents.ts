@@ -28,18 +28,6 @@ import 'prismjs/components/prism-json'
 
 VMdPreview.use(vuepressTheme, { Prism })
 
-// markdown
-import VMdPreview from '@kangc/v-md-editor/lib/preview'
-import '@kangc/v-md-editor/lib/style/preview.css'
-// VuePress 樣式
-import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
-import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
-// 代碼亮色
-import Prism from 'prismjs'
-import 'prismjs/components/prism-json'
-
-VMdPreview.use(vuepressTheme, { Prism })
-
 const pluginComponents = {
   install (app: App): void {
     library.add(fas, fab, far)
