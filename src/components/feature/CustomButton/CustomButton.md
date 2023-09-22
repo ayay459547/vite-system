@@ -1,4 +1,4 @@
-# CustomButton API
+# CustomButton
 ### 使用範例
 ```vue
 <script setup lang="ts">
@@ -20,9 +20,9 @@ const size: ButtonSize = 'large'
 </template>
 ```
 ## Element UI Plus
-https://element-plus.org/en-US/component/button.html
+[https://element-plus.org/en-US/component/button.html](https://)
 ### 找圖示
-https://fontawesome.com/search?o=r&m=free
+[https://fontawesome.com/search?o=r&m=free](https://)
 
 ### Attributes ( props )
 | 屬姓名     | 說明             | 类型    | 默認值     |
@@ -35,6 +35,7 @@ https://fontawesome.com/search?o=r&m=free
 | round     | 是否圓角          | boolean | false     |
 | circle    | 是否圓形          | boolean | false     |
 | disabled  | 是否禁用          | boolean | false     |
+| loading   | 是否加載中        | boolean | false     |
 | color     | 自訂按鈕顏色      | string  | ''        |
 | iconType  | 圖示類型          | enum    | 'fas'     |
 | iconName  | 圖示名稱          | string  | ''        |

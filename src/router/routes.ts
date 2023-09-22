@@ -1,5 +1,6 @@
 import type { RouterTree } from '@/declare/routes'
 import testRoutes from './test'
+import descriptionRoutes from './description'
 import developmentRoutes from './development'
 import { getInjectRoutes } from './setting'
 
@@ -337,7 +338,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-2-3',
-            title: '雙拖拉測試',
+            title: '拖拉測試',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -360,7 +361,8 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav3-2-4',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav3-2-4/Nav3-2-4.vue'),
+            icon: 'arrow-down-short-wide'
           }
         ]
       },
@@ -398,6 +400,7 @@ const routes: Array<RouterTree> = [
 
 export default getInjectRoutes([
   ...routes,
+  ...descriptionRoutes,
   ...developmentRoutes,
   ...testRoutes
 ])

@@ -113,7 +113,7 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector(`.__${scopedId} .list-group-item:last-child`)
+    const newEl = document.querySelector(`.__form-list${scopedId} .list-group-item:last-child`)
     if (newEl) scrollToEl(newEl)
   })
 }
@@ -170,7 +170,7 @@ const scopedId = getUuid()
 </script>
 
 <template>
-  <div class="form-container hover-card-info" :class="`__${scopedId}`">
+  <div class="form-container hover-card-info" :class="`__form-list${scopedId}`">
     <div class="form-label">
       <span>{{ props.label }}</span>
     </div>

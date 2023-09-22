@@ -67,7 +67,8 @@ export const getData = async (userId: number) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員',
+      showCancelButton: false
     })
 
     return {}

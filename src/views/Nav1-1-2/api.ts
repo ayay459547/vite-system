@@ -60,7 +60,8 @@ export const getExcelData = async (params: any) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員',
+      showCancelButton: false
     })
 
     return []
@@ -147,7 +148,8 @@ export const getData = async (params: any) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員',
+      showCancelButton: false
     })
 
     return []
@@ -222,7 +224,8 @@ export const getDataCount = async (params: any) => {
     swal({
       icon: 'error',
       title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員',
+      showCancelButton: false
     })
 
     return 0

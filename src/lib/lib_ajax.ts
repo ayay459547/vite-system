@@ -99,6 +99,7 @@ export const ajax = <ResData>(
     case 'auto':
     default:
       if (getFakeData) {
+        console.log('config => ', config)
         return fakeApi<ResData>(config, { fakeData, delay, callback })
       } else {
         return axiosApi<ResData>(config, baseUrl)

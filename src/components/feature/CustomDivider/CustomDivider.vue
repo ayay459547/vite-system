@@ -13,17 +13,22 @@ const props = defineProps({
   direction: {
     type: String as PropType<Direction>,
     required: false,
-    default: 'horizontal'
+    default: 'horizontal',
+    description: `horizontal: 橫線
+    vertical: 直線`
   },
   borderStyle: {
     type: String as PropType<BorderStyle>,
     required: false,
-    default: 'solid'
+    default: 'solid',
+    description: `線的類型
+      css border 的 style`
   },
   contentPosition: {
     type: String as PropType<ContentPosition>,
     required: false,
-    default: 'left'
+    default: 'center',
+    description: '文字位置'
   }
 })
 

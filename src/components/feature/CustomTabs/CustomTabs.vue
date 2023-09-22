@@ -7,7 +7,7 @@ import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 
 import { CustomIcon } from '@/components'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl, getUuid } from '@/lib/lib_utils'
 
 export type ListItem = {
   key: string | number
@@ -58,8 +58,9 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
+const scopedId = getUuid()
 const scrollToCurrentTab = (currentTab: string) => {
-  const el = document.querySelector(`.__tab_${currentTab}`)
+  const el = document.querySelector(`__tabs${scopedId} .__tab_${currentTab}`)
 
   if (el) {
     setTimeout(() => {
@@ -165,7 +166,7 @@ onUnmounted(() => {
     <div class="tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>
     </div>
-    <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }">
+    <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }" :class="`__tabs${scopedId}`">
       <div ref="listRef" class="tabs-list" :class="{ 'is-background': props.background }">
         <div
           v-for="element in props.list"

@@ -30,7 +30,8 @@ export const createData = async (postData: TableData) => {
     swal({
       icon: 'error',
       title: '新增資料失敗',
-      text: msg ?? '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員',
+      showCancelButton: false
     })
 
     return 0
@@ -64,7 +65,8 @@ export const updateData = async (postData: TableData) => {
     swal({
       icon: 'error',
       title: '新增資料失敗',
-      text: msg ?? '請聯絡資訊人員'
+      text: msg ?? '請聯絡資訊人員',
+      showCancelButton: false
     })
 
     return 0
