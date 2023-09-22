@@ -79,7 +79,7 @@ export interface Props extends Record<string, any> {
    * settingKey:
    *     欄位設定 在 indexedDB 上的 key
    *     建議參考路由 避免重複使用 key
-   * settingWidth: 寬度
+   * settingWidth: 欄位設定框寬度
    */
   version: string
   settingKey: string
@@ -91,6 +91,10 @@ export interface Props extends Record<string, any> {
    * rowKey: 每行資料的key 預設是id
    * defaultExpandAll: 資料存在 children 時 預設是否展開
    * spanMethod: 資料跨欄
+   * rowClassName: 自訂 rowClass
+   * rowStyle: 自訂 rowStyle
+   * cellClassName: 自訂 columnClass
+   * cellStyle: 自訂 columnStyle
    */
   tableColumns: PropsTableColumn[]
   tableData: any[]

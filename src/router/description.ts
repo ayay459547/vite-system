@@ -18,6 +18,18 @@ const descriptionRoutes: RouterTree[] = [
         path: '/description-button',
         component: () => import('@/views/ComponentsDescription/DescriptionButton.vue'),
         icon: 'hand-pointer'
+      },
+      {
+        name: 'description-table',
+        title: 'CustomTable',
+        meta: {
+          keepAlive: true,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-table',
+        component: () => import('@/views/ComponentsDescription/DescriptionTable.vue'),
+        icon: 'table'
       }
     ]
   }

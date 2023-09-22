@@ -2,26 +2,6 @@ import type { RouterTree } from '@/declare/routes'
 
 const testRoutes: RouterTree[] = [
   {
-    name: 'components-description',
-    title: '組件說明',
-    systemType: ['development', 'test'],
-    icon: 'book',
-    leaves: [
-      {
-        name: 'description-button',
-        title: 'CustomButton',
-        meta: {
-          keepAlive: true,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/description-button',
-        component: () => import('@/views/ComponentsDescription/DescriptionButton.vue'),
-        icon: 'hand-pointer'
-      }
-    ]
-  },
-  {
     name: 'components-test',
     title: '組件測試',
     systemType: ['development', 'test'],
