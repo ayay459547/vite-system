@@ -217,7 +217,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-4-3',
-            title: '選單1-4-3',
+            title: '柱狀圖測試',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -226,7 +226,8 @@ const routes: Array<RouterTree> = [
             },
             systemType: ['new'],
             path: '/nav1-4-3',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav1-4-3/Nav1-4-3.vue'),
+            icon: 'chart-column'
           }
         ]
       }
@@ -399,8 +400,8 @@ const routes: Array<RouterTree> = [
 ]
 
 export default getInjectRoutes([
+  ...testRoutes,
   ...routes,
   ...descriptionRoutes,
-  ...developmentRoutes,
-  ...testRoutes
+  ...developmentRoutes
 ])

@@ -34,6 +34,7 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <div class="empty-wrapper">
     <ElEmpty
+      class="empty-container"
       :image="props.image"
       :description="props.description"
       :image-size="props.imageSize"
@@ -52,6 +53,11 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
+:deep(.empty-container) {
+  &.el-empty {
+    padding: 12px 0;
+  }
+}
 .empty {
   &-wrapper {
     width: 100%;

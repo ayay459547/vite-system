@@ -5,7 +5,7 @@ import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-import { isEmpty, datetimeFormat } from '@/lib/lib_utils'
+import { isEmpty, datetimeFormat, getUuid } from '@/lib/lib_utils'
 
 export default defineComponent({
   name: 'CanttChart',
@@ -165,6 +165,7 @@ export default defineComponent({
       }
     }, 200)
 
+    const scopedId = getUuid()
     const init = () => {
       _typeData.splice(0)
       _ganttData.splice(0)
@@ -180,7 +181,7 @@ export default defineComponent({
         _ganttData.push(...tempList)
       })
 
-      const chartDom = document.getElementsByClassName(`${props.domKey}-chart`)[0]
+      const chartDom = document.getElementsByClassName(`${props.domKey}-chart__${scopedId}`)[0]
 
       if (isEmpty(myChart)) {
         myChart = echarts.init(chartDom as HTMLElement)
@@ -435,6 +436,7 @@ export default defineComponent({
       ganttContainer,
       init,
       option,
+      scopedId,
       showGanttData: _ganttData
     }
   }
@@ -443,7 +445,7 @@ export default defineComponent({
 
 <template>
   <div class="gantt-container" ref="ganttContainer">
-    <div class="gantt-main" :class="`${domKey}-chart`"></div>
+    <div class="gantt-main" :class="`${domKey}-chart__${scopedId}`"></div>
   </div>
 </template>
 

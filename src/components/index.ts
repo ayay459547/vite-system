@@ -2,8 +2,9 @@ import type { Ref } from 'vue'
 import type { ValidationOptions, ValidationResult } from 'vee-validate'
 
 // chart
-export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
+export { default as CustomCharts } from './chart/CustomCharts/CustomCharts.vue'
 export { default as GanttChart } from './chart/GanttChart/GanttChart.vue'
+export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
 
 // feature
 export type { ButtonType, ButtonSize } from './feature/CustomButton/CustomButton.vue'

@@ -151,7 +151,7 @@ const tableData2 = [
 | header-all          | header顯示內容              |
 | column-{{欄位key}}  | 指定對應欄位 資料的顯示內容   |
 | column-all          | 資料的顯示內容              |
-| column-expand       | 展開的顯示內容              |
+| row-expand       | 展開的顯示內容              |
 | empty               | 沒資料的顯示內容            |
 
 ### Events ( emits )

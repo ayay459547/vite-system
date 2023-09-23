@@ -278,7 +278,6 @@ const CustomInput = defineComponent({
       switch (props.type) {
         case 'text':
         case 'textarea':
-        case 'password':
           return (
             <FormInput
               modelValue={inputValue.value}
@@ -299,6 +298,30 @@ const CustomInput = defineComponent({
             >
               {{ ...getTemplate(['prepend', 'append', 'prefix', 'suffix']) }}
             </FormInput>
+          )
+        case 'password':
+          return (
+            <form>
+              <FormInput
+                modelValue={inputValue.value}
+                onUpdate:modelValue={
+                  ($event: any) => (inputValue.value = $event)
+                }
+                // v-bind 綁定屬性
+                { ...bindAttributes.value }
+                type={props.type}
+                onlyNumber={props.onlyNumber}
+                errorMessage={errorMessage.value}
+                // v-on 接收事件
+                onFocus={ (e) => { onEvent.value.onFocus(e) } }
+                onClear={ () => { onEvent.value.onClear() } }
+                onBlur={ (e) => { onEvent.value.onBlur(e) } }
+                onChange={ (e) => { onEvent.value.onChange(e) } }
+                onInput={ (e) => { onEvent.value.onInput(e) } }
+              >
+                {{ ...getTemplate(['prepend', 'append', 'prefix', 'suffix']) }}
+              </FormInput>
+            </form>
           )
         case 'select':
           return (

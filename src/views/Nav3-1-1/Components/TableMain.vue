@@ -408,11 +408,11 @@ const svg = `
           </div>
         </template>
 
-        <template v-if="hasSlot('column-expand')">
+        <template v-if="hasSlot('row-expand')">
           <ElTableColumn type="expand">
             <template #default="scope">
               <slot
-                name="column-expand"
+                name="row-expand"
                 :row="scope.row"
                 :row-index="scope.$index"
                 :expanded="scope.expanded"

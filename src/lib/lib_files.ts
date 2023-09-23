@@ -1,4 +1,5 @@
 import { tipLog, round, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 import * as XLSX from 'xlsx/xlsx.mjs'
 
 /**
@@ -102,6 +103,90 @@ export const readImage = async (file: File): Promise<string> => {
   })
 }
 
+/**
+ * @author Caleb
+ * @description 將Excel欄位轉數字
+ * @param {String} column
+ * @returns {Number}
+ */
+export const excelColumnToNumber = (column: string): number => {
+  const wordList = column.split('').reverse()
+
+  return wordList.reduce((res, word, wordIndex) => {
+    return res + (word.charCodeAt(0) - 64) * (26 ** wordIndex)
+  }, 0)
+}
+/**
+ * @author Caleb
+ * @description 將數字轉Excel欄位
+ * @param {String} num
+ * @returns {Number}
+ */
+export const numberToExcelColumn = (num: number): string => {
+  const _num = num - 1
+  const quotient = Math.floor(_num / 26)
+  const remainder = _num % 26
+
+  // 如果 商 <= 0
+  if (quotient <= 0) {
+    return String.fromCharCode(64 + remainder + 1)
+  }
+  return numberToExcelColumn(quotient) + String.fromCharCode(64 + remainder + 1)
+}
+
+/**
+ * 原數據是以 key: value 的形式呈現
+ * 轉換成矩陣的形式呈現
+ */
+const excelDataToMatrix = (excelData: any[]) => {
+  const resExcelData = []
+  if (!isEmpty(excelData)) {
+    const oldKeyList = Object.keys(excelData[0])
+
+    const firstRowData = oldKeyList.reduce((res, oldKey, keyIndex) => {
+      const excleColumn = numberToExcelColumn(keyIndex + 1)
+      res[keyIndex] = excleColumn
+      return res
+    }, [])
+    resExcelData.push(firstRowData)
+    resExcelData.push(oldKeyList)
+
+    const newExcelData = excelData.map(rowData => {
+      return Object.values(rowData)
+    })
+    resExcelData.push(...newExcelData)
+  }
+  return resExcelData
+}
+/**
+ * 原數據以第一行作為 object 的 key
+ * 將原數據 key 轉換成 A B C...
+ **/
+const excelDataToMap = (excelData: any[]) => {
+  const resExcelData = []
+  if (!isEmpty(excelData)) {
+    const oldKeyList = Object.keys(excelData[0])
+
+    const firstRowData = oldKeyList.reduce((res, oldKey, keyIndex) => {
+      const excleColumn = numberToExcelColumn(keyIndex + 1)
+      res[excleColumn] = oldKey
+      return res
+    }, {})
+    resExcelData.push(firstRowData)
+
+    const newExcelData = excelData.map(rowData => {
+      const valueList = Object.values(rowData)
+
+      return valueList.reduce((res, value, valueIndex) => {
+        const excleColumn = numberToExcelColumn(valueIndex + 1)
+        res[excleColumn] = value
+        return res
+      }, {})
+    })
+    resExcelData.push(...newExcelData)
+  }
+  return resExcelData
+}
 export const readExcel = async (file: File): Promise<any> => {
   const reader = new FileReader()
   return new Promise((resolve) => {
@@ -113,9 +198,13 @@ export const readExcel = async (file: File): Promise<any> => {
       const excel = []
       for (const sheet in workbook.Sheets) {
         if (hasOwnProperty.call(workbook.Sheets, sheet)) {
-            // 利用 sheet_to_json 方法將 excel 轉成 json 數據
-            const rowData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
-            excel.push(rowData)
+          // 利用 sheet_to_json 方法將 excel 轉成 json 數據
+          const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+
+          excel.push({
+            map: excelDataToMap(excelData),
+            matrix: excelDataToMatrix(excelData)
+          })
         }
       }
       resolve(excel[0] ?? [])

@@ -2,6 +2,38 @@ import type { RouterTree } from '@/declare/routes'
 
 const testRoutes: RouterTree[] = [
   {
+    name: 'charts-test',
+    title: '圖表測試',
+    systemType: ['development', 'test'],
+    icon: 'chart-simple',
+    leaves: [
+      {
+        name: 'chart-1',
+        title: '南丁格爾玫瑰圖',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/chart-1',
+        icon: 'chart-pie',
+        component: () => import('@/views/ChartsTest/Chart1.vue')
+      },
+      {
+        name: 'chart-2',
+        title: '柱狀圖',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/chart-2',
+        icon: 'chart-column',
+        component: () => import('@/views/ChartsTest/Chart2.vue')
+      }
+    ]
+  },
+  {
     name: 'components-test',
     title: '組件測試',
     systemType: ['development', 'test'],
@@ -92,16 +124,16 @@ const testRoutes: RouterTree[] = [
         systemType: ['development', 'test'],
         path: '/excel-test',
         component: () => import('@/views/ComponentsTest/Excel-test.vue')
+      },
+      {
+        name: 'educate-test',
+        title: '教育訓練',
+        systemType: ['development', 'test'],
+        icon: 'feather',
+        path: '/educate-test',
+        component: () => import('@/views/Educate-test.vue')
       }
     ]
-  },
-  {
-    name: 'educate-test',
-    title: '教育訓練',
-    systemType: ['development', 'test'],
-    icon: 'feather',
-    path: '/educate-test',
-    component: () => import('@/views/Educate-test.vue')
   }
 ]
 

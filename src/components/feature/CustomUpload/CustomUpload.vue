@@ -9,9 +9,11 @@ import {
   readImage,
   readExcel
 } from '@/lib/lib_files'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid, deepClone, getProxyData, usePageI18n } from '@/lib/lib_utils'
 
 import FilesView from './FilesView.vue'
+
+import message from './i18n'
 
 export type FileType = '' | 'image' | 'excel' | 'word' | 'powerpoint' | 'zip'
 
@@ -19,7 +21,8 @@ interface Info {
   src?: string
   fileSize?: string
   fileType?: string
-  excel?: any
+  excel?: any[]
+  properties?: any
 }
 export interface FileInfo extends Partial<File>, Info {
   uuid: string
@@ -38,6 +41,12 @@ const props = defineProps({
     required: false,
     default: false,
     description: '是否可上傳多個檔案'
+  },
+  limitCount: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: '限制檔案數量'
   },
   limitType: {
     type: [Array, String] as PropType<FileType[] | FileType>,
@@ -70,7 +79,8 @@ const fileTypeMap = {
 }
 
 const hook: Hook = inject('hook')
-const { i18nTranslate, swal, loading, eventList } = hook()
+const { swal, loading, eventList } = hook()
+const { i18nTranslate } = usePageI18n(message)
 
 const drag = ref(null)
 const active = ref(false)
@@ -86,8 +96,19 @@ const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
   })
 }
 
+const showCount = ref(1)
 const initFilesData = async (_files: Array<File>) => {
-  console.log(_files)
+  const total = _files.length + files.value.length
+  if (total > showCount.value) {
+    swal({
+      icon: 'error',
+      title: '上傳檔案失敗',
+      text: '超過檔案上傳數量限制',
+      showCancelButton: false
+    })
+    return
+  }
+
   if (checkFilesType(_files, props.type)) {
     _files.forEach(async (_file) => {
       const fileType = getFileType(_file)
@@ -132,7 +153,8 @@ const initFilesData = async (_files: Array<File>) => {
     swal({
       icon: 'error',
       title: '上傳檔案失敗',
-      text: '檔案資料格式錯誤'
+      text: '檔案資料格式錯誤',
+      showCancelButton: false
     })
   }
 
@@ -144,6 +166,13 @@ const remove = (fileIndex: number) => {
   files.value.splice(fileIndex, 1)
 }
 
+defineExpose({
+  getFiles () {
+    const _files = getProxyData(files.value)
+    return deepClone([], _files)
+  }
+})
+
 const handleDrop = (e: DragEvent) => {
   e.stopPropagation()
   e.preventDefault()
@@ -154,6 +183,15 @@ const handleDrop = (e: DragEvent) => {
 }
 
 onMounted(() => {
+  if (props.multiple) {
+    showCount.value = Infinity
+  } else {
+    showCount.value = 1
+  }
+  if (!isEmpty(props.limitCount)) {
+    showCount.value = props.limitCount
+  }
+
   if (drag.value) {
     drag.value.addEventListener('drop', handleDrop)
 
@@ -217,6 +255,27 @@ const onClick = () => {
   input.addEventListener('change', handleFiles, false)
 }
 
+const getIcon = (type: string) => {
+  switch (type) {
+    case 'image': return 'image'
+    case 'excel': return 'file-excel'
+    case 'word': return 'file-word'
+    case '':
+    default:
+      return 'file'
+  }
+}
+const getText = (type: string) => {
+  switch (type) {
+    case 'image': return 'image'
+    case 'excel': return 'excel'
+    case 'word': return 'word'
+    case '':
+    default:
+      return 'file'
+  }
+}
+
 </script>
 
 <template>
@@ -226,29 +285,26 @@ const onClick = () => {
       class="upload-container"
       :class="[{'upload-active': active}]"
     >
-      <div class="upload-file">
-        <template v-if="isEmpty(files)">
-          <CustomEmpty
-            :image-size="100"
-          >
-            <template #image>
-              <CustomIcon v-if="props.type === 'image'" name="image"/>
-              <CustomIcon v-else name="file"/>
-            </template>
-            <template #description></template>
-          </CustomEmpty>
-        </template>
-        <template v-else>
-          <FilesView
-            :files="files"
-            :multiple="props.multiple"
-            @remove="remove"
-          />
-        </template>
-
+      <div v-if="isEmpty(files)">
+        <CustomEmpty :image-size="60">
+          <template #image>
+            <CustomIcon :name="getIcon(props.type)"/>
+          </template>
+          <template #description>
+            <!-- <span>{{ i18nTranslate(getText(props.type)) }}</span> -->
+          </template>
+        </CustomEmpty>
       </div>
+      <div v-else class="upload-file">
+        <FilesView
+          :files="files"
+          :multiple="props.multiple"
+          @remove="remove"
+        />
+      </div>
+
       <CustomButton
-        :label="`${i18nTranslate('upload')}${i18nTranslate('file')}`"
+        :label="`${i18nTranslate('upload')}${i18nTranslate(getText(props.type))}`"
         icon-name="cloud-arrow-up"
         size="large"
         type="primary"
@@ -289,7 +345,7 @@ const onClick = () => {
 
   &-file {
     width: 100%;
-    height: fit-content;
+    height: 100%;
     padding: 8px 0;
   }
 

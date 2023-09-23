@@ -565,8 +565,8 @@ const slotKeyList = computed(() => {
           <slot name="empty"></slot>
         </template>
 
-        <template v-if="hasSlot('column-expand')" #column-expand="scope">
-          <slot name="column-expand" v-bind="scope"></slot>
+        <template v-if="hasSlot('row-expand')" #row-expand="scope">
+          <slot name="row-expand" v-bind="scope"></slot>
         </template>
 
         <template

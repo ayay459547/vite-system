@@ -102,7 +102,7 @@ const download = () => {
         :table-data="tableData1"
         :table-columns="tableColumns1"
       >
-        <template #column-expand="{ rowIndex }">
+        <template #row-expand="{ rowIndex }">
           <div class="i-pa-xl">
             {{ `#${rowIndex + 1} { 可自訂 }` }}
           </div>

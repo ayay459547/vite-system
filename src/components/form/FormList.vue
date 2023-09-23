@@ -101,6 +101,7 @@ const tempValue = computed({
 const tableColumns = ref()
 const showTableColumns = ref()
 
+const scopedId = getUuid()
 const add = () => {
   if (tempValue.value.length >= props.max) {
     return swal({
@@ -113,7 +114,7 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector(`.__form-list${scopedId} .list-group-item:last-child`)
+    const newEl = document.querySelector(`.__form-list__${scopedId} .list-group-item:last-child`)
     if (newEl) scrollToEl(newEl)
   })
 }
@@ -165,12 +166,10 @@ onBeforeMount(() => {
   showTableColumns.value = _showTableColumns
 })
 
-const scopedId = getUuid()
-
 </script>
 
 <template>
-  <div class="form-container hover-card-info" :class="`__form-list${scopedId}`">
+  <div class="form-container hover-card-info" :class="`__form-list__${scopedId}`">
     <div class="form-label">
       <span>{{ props.label }}</span>
     </div>

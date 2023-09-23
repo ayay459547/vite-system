@@ -45,7 +45,7 @@ const tabs: ComputedRef<ListType> = computed(() => {
 })
 
 const removeHistory = (value: ListItem) => {
-  removeHistoryNavigation(value.key)
+  removeHistoryNavigation(`${value.key}`)
 }
 
 const clearHistory = () => {
