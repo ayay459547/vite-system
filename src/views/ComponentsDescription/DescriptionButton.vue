@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import markdown from '@/components/feature/CustomButton/CustomButton.md?raw'
 import {
   CustomInput,
@@ -9,12 +9,6 @@ import {
   CustomButton
 } from '@/components'
 
-const text = ref('# test')
-onMounted(() => {
-  text.value = markdown
-})
-
-// props
 const sizeOptions = [
   { label: 'large', value: 'large' },
   { label: 'default', value: 'default' },

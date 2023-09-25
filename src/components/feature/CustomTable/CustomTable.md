@@ -115,7 +115,7 @@ const tableData2 = [
 </template>
 ```
 ## Element UI Plus
-[https://element-plus.org/en-US/component/table.html](https://)
+[https://element-plus.org/en-US/component/table.html](https://element-plus.org/en-US/component/table.html)
 
 
 ### Attributes ( props )

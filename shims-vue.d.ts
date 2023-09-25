@@ -23,6 +23,11 @@ declare module '@/components' {
   export default content
 }
 
+declare module '@/components*.md*.raw' {
+  const markdown: string
+  export default markdown
+}
+
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'

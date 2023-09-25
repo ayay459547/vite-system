@@ -1,13 +1,14 @@
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
+import { ref } from 'vue'
 import {
-  CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomTable
 } from '@/components'
+
+import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
+
 import { getTableSetting } from '@/lib/lib_columns'
 
 const tableColumns1 = [
@@ -89,6 +90,10 @@ const tableData2 = [
 const download = () => {
   downloadExcel(tableData2)
 }
+
+const test = ref('')
+
+console.log(test)
 
 </script>
 

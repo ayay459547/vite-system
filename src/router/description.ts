@@ -8,10 +8,22 @@ const descriptionRoutes: RouterTree[] = [
     icon: 'book',
     leaves: [
       {
+        name: 'description-badge',
+        title: 'CustomBadge',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-badge',
+        component: () => import('@/views/ComponentsDescription/DescriptionBadge.vue'),
+        icon: 'ribbon'
+      },
+      {
         name: 'description-button',
         title: 'CustomButton',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           status: 'completed'
         },
         systemType: ['development', 'test'],
@@ -23,7 +35,7 @@ const descriptionRoutes: RouterTree[] = [
         name: 'description-table',
         title: 'CustomTable',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           status: 'completed'
         },
         systemType: ['development', 'test'],

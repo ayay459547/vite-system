@@ -21,7 +21,7 @@ const testRoutes: RouterTree[] = [
       },
       {
         name: 'test-2',
-        title: '測試1',
+        title: '測試2',
         meta: {
           keepAlive: false,
           status: 'completed'
@@ -33,7 +33,7 @@ const testRoutes: RouterTree[] = [
       },
       {
         name: 'test-3',
-        title: '測試2',
+        title: '測試3',
         meta: {
           keepAlive: false,
           status: 'completed'
