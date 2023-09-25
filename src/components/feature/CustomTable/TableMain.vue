@@ -229,11 +229,12 @@ const svg = `
         @expand-change="onExpandChange"
         @header-dragend="onHeaderDragend"
       >
+        <!-- 資料為空 顯示內容 -->
         <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>
         </template>
 
-        <!-- 滾動到底 emit load -->
+        <!-- 懶加載用 滾動到底 emit load -->
         <template v-if="props.lazyLoading" #append>
           <div
             v-show="props.lazyLoadingStatus === 'noMore'"
@@ -273,6 +274,7 @@ const svg = `
           </div>
         </template>
 
+        <!-- 展開 自訂內容 -->
         <template v-if="hasSlot('row-expand')">
           <ElTableColumn type="expand">
             <template #default="scope">
@@ -287,6 +289,7 @@ const svg = `
           </ElTableColumn>
         </template>
 
+        <!-- 顯示行數 -->
         <template v-if="props.showNo">
           <ElTableColumn
             width="80"
@@ -302,7 +305,9 @@ const svg = `
           </ElTableColumn>
         </template>
 
+        <!-- 欄位設定 -->
         <template v-for="column in showColumns" :key="column.prop">
+          <!-- header 有子欄位 -->
           <template v-if="column.columns && column.columns.length > 0">
             <ElTableColumn
               :key="column.prop"
@@ -375,6 +380,7 @@ const svg = `
                 <template v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)" #default="scope">
                   <slot
                     :name="`column-${column.slotKey}-${child.slotKey}`"
+                    :label="child.label"
                     :data="scope.row[child.key]"
                     :row="scope.row"
                     :row-index="scope.$index"
@@ -385,6 +391,7 @@ const svg = `
                 <template v-else-if="hasSlot(`column-${column.slotKey}-all}`)" #default="scope">
                   <slot
                     :name="`column-${column.slotKey}-all}`"
+                    :label="child.label"
                     :data="scope.row[child.key]"
                     :row="scope.row"
                     :row-index="scope.$index"
@@ -395,6 +402,7 @@ const svg = `
                 <template v-else-if="hasSlot(`column-all}`)" #default="scope">
                   <slot
                     :name="`column-all}`"
+                    :label="child.label"
                     :data="scope.row[child.key]"
                     :row="scope.row"
                     :row-index="scope.$index"
@@ -406,6 +414,7 @@ const svg = `
             </ElTableColumn>
           </template>
 
+          <!-- header 沒有子欄位 -->
           <template v-else>
             <ElTableColumn
               :key="column.prop"
@@ -440,6 +449,7 @@ const svg = `
               <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
                 <slot
                   :name="`column-${column.slotKey}`"
+                  :label="column.label"
                   :data="scope.row[column.key]"
                   :row="scope.row"
                   :row-index="scope.$index"
@@ -450,6 +460,7 @@ const svg = `
               <template v-else-if="hasSlot('column-all')" #default="scope">
                 <slot
                   name="column-all"
+                  :label="column.label"
                   :data="scope.row[column.key]"
                   :row="scope.row"
                   :row-index="scope.$index"
@@ -487,7 +498,7 @@ const svg = `
       }
       .cell {
         box-sizing: border-box;
-        overflow: hidden;
+        // overflow: hidden;
         text-overflow: ellipsis;
         white-space: normal;
         word-break: break-all;
@@ -504,6 +515,10 @@ const svg = `
           height: 100%;
 
           color: inherit;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
       }
 

@@ -18,7 +18,9 @@ import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
-import ColumnSetting from './ColumnSetting.vue'
+import ColumnSetting from './Components/ColumnSetting.vue'
+import ColumnSorting from './Components/ColumnSorting.vue'
+import GroupSorting from './Components/GroupSorting.vue'
 import TableMain from './TableMain.vue'
 
 export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
@@ -106,22 +108,26 @@ export interface Props extends Record<string, any> {
   rowStyle?: RowStyle
   cellClassName?: CellClassName
   cellStyle?: CellStyle
-
-  showNo?: boolean
   /**
    * 表單顯示相關
    * page 當前分頁
    * pageSize 顯示筆數
    * tableDataCount 資料總筆數 計算頁數用
+   * sort: 單欄位排序
    * showType:
    *    custom 依據api切資料
    *    auto 依據 page 和 pageSize 切資料
+   * hiddenExcel: 是否隱藏下載Excel
+   * showNo: 是否顯示編號
+   * sorting: 是否有多欄位排序
    */
   page?: number
   pageSize?: number
   sort?: Sort
   showType?: 'custom' | 'auto'
   hiddenExcel?: boolean
+  showNo?: boolean
+  sorting?: boolean
   /**
    * 資料懶加載
    * lazyLoading: 是否啟用
@@ -143,7 +149,6 @@ const props: Props = withDefaults(defineProps<Props>(), {
   defaultExpandAll: false,
   spanMethod: null,
   rowClassName: null,
-  showNo: false,
   page: 1,
   pageSize: 100,
   sort: () => {
@@ -151,6 +156,8 @@ const props: Props = withDefaults(defineProps<Props>(), {
   },
   showType: 'custom',
   hiddenExcel: false,
+  showNo: false,
+  sorting: false,
   lazyLoading: false,
   lazyLoadingStatus: 'noMore'
 })
@@ -435,7 +442,9 @@ const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
-      if (hasSlot('header-all')) return 'header-all'
+      // 有多欄位排序時 給 header-all
+      // 預設欄位加入 sorting 組件
+      if (hasSlot('header-all') || props.sorting) return 'header-all'
       break
     case 'column':
       if (hasSlot(`column-${slotKey}`)) return `column-${slotKey}`
@@ -481,18 +490,17 @@ const slotKeyList = computed(() => {
             <CustomButton
               icon-name="file-excel"
               label="Excel"
-              class="i-mr-xs"
             />
           </template>
 
           <div class="excel-list">
             <div class="excel-item" @click="excel('all')">
               <CustomIcon name="table-list" class="icon"/>
-              <div class="text">全部資料</div>
+              <div class="text">{{ $t('allData') }}</div>
             </div>
             <div class="excel-item" @click="excel('page')">
               <CustomIcon type="far" name="file-lines" class="icon"/>
-              <div class="text">當前頁面資料</div>
+              <div class="text">{{ $t('pageData') }}</div>
             </div>
           </div>
         </CustomPopover>
@@ -516,12 +524,13 @@ const slotKeyList = computed(() => {
 
       <div class="setting-right grid-col-xs-24 grid-col-md-12 grid-col-xl-9">
         <slot name="setting-right"></slot>
+
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomInput
             v-if="!props.lazyLoading"
             v-model="pageSize"
             type="select"
-            label="顯示筆數"
+            :label="$t('showCount')"
             :options="sizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -530,12 +539,18 @@ const slotKeyList = computed(() => {
             v-if="props.lazyLoading"
             v-model="pageSize"
             type="select"
-            label="載入筆數"
+            :label="$t('loadCount')"
             :options="lazyLoadSizeOptions"
             direction="row"
             @change="onSizeChange"
           />
         </div>
+
+        <GroupSorting
+          v-if="props.sorting"
+          :columns="props.tableColumns"
+          :setting-width="props.settingWidth"
+        />
       </div>
     </div>
 
@@ -578,7 +593,16 @@ const slotKeyList = computed(() => {
           :key="slotKey"
           #[getHeaderSlot(slotKey)]="scope"
         >
-          <slot :name="getHeaderSlot(slotKey)" v-bind="scope"></slot>
+          <div class="i-mt-xxs">
+            <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
+              <label>{{ scope.label }}</label>
+            </slot>
+          </div>
+          <ColumnSorting
+            v-if="props.sorting"
+            :column="scope.column"
+            :prop="scope.prop"
+          />
         </template>
 
         <template
@@ -605,7 +629,7 @@ const slotKeyList = computed(() => {
         />
       </div>
       <div class="table-pagination-right">
-        <span>{{ `${!props.lazyLoading ? '總筆數' : '資料筆數'}：${props.tableDataCount}` }}</span>
+        <span>{{ `${!props.lazyLoading ? $t('total') : $t('dataCount')}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>
@@ -634,7 +658,7 @@ const slotKeyList = computed(() => {
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;
-    padding: 4px 8px;
+    padding: 6px;
 
     &::-webkit-scrollbar {
       width: 4px;
@@ -660,6 +684,7 @@ const slotKeyList = computed(() => {
         display: flex;
         align-items: center;
         width: 100%;
+        gap: 8px;
       }
 
       &-left {

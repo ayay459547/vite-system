@@ -309,7 +309,11 @@ export interface TableSetting {
     params: TableParams
     page?: number
     pageSize?: number
-    sort?: Sort,
+    // 單一欄位的 sorting (原版)
+    // 暫時不用 先保留功能
+    sort?: Sort
+    // 多欄位用的 sorting (爆改版)
+    sorting?: boolean
     tableColumns: Record<string, any>
     hiddenExcel: boolean
   },
@@ -348,6 +352,7 @@ export const getTableSetting = (
       key: null | string,
       order: null | 'ascending' | 'descending'
     },
+    sorting: boolean
     hiddenExcel?: boolean
   }
 ): TableSetting => {
@@ -361,6 +366,7 @@ export const getTableSetting = (
       key: null,
       order: null
     },
+    sorting = false,
     hiddenExcel = false
   } = options
 
@@ -494,6 +500,7 @@ export const getTableSetting = (
       page: tableParams.page,
       pageSize: tableParams.size,
       sort: tableParams.sort,
+      sorting,
       tableColumns: resColumns,
       hiddenExcel
     },

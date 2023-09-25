@@ -106,6 +106,9 @@ export const readImage = async (file: File): Promise<string> => {
 /**
  * @author Caleb
  * @description 將Excel欄位轉數字
+ *              A -> 1
+ *              Z -> 26
+ *              AA -> 27
  * @param {String} column
  * @returns {Number}
  */
@@ -119,6 +122,9 @@ export const excelColumnToNumber = (column: string): number => {
 /**
  * @author Caleb
  * @description 將數字轉Excel欄位
+ *              1 -> A
+ *              26 -> Z
+ *              27 -> AA
  * @param {String} num
  * @returns {Number}
  */
@@ -211,4 +217,41 @@ export const readExcel = async (file: File): Promise<any> => {
     }
     reader.readAsBinaryString(file)
   })
+}
+
+/**
+ * s: start
+ * e: end
+ *
+ * r: row
+ * c: column
+ */
+type ExcelMerge = {
+  s: { r: number, c: number }
+  e: { r: number, c: number }
+}
+export type ExcelOptions = {
+  name: string
+  merge: Array<ExcelMerge>
+}
+/**
+ * @author Caleb
+ * @description 依據資料下載 Excel
+ * @param {Array} matrix 矩陣資料
+ * @param {String} fileName 名稱
+ */
+export const downloadExcel = (matrix: Array<(string | number)[]>, options: ExcelOptions): void => {
+  const aoa = matrix
+
+  const { name = '', merge = [] } = options
+
+  const ws = XLSX.utils.aoa_to_sheet(aoa)
+  if (!isEmpty(merge)) {
+    ws['!merges'] = merge
+  }
+
+  /* create workbook and export */
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, `${name}`)
+  XLSX.writeFile(wb, `${name}.xlsx`)
 }

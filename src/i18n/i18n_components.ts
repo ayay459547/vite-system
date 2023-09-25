@@ -74,10 +74,60 @@ export default {
     zhCn: '显示笔数',
     en: 'ShowCount'
   },
+  loadCount: {
+    zhTw: '載入筆數',
+    zhCn: '载入笔数',
+    en: 'LoadCount'
+  },
+  allData: {
+    zhTw: '全部資料',
+    zhCn: '全部资料',
+    en: 'AllData'
+  },
+  pageData: {
+    zhTw: '頁面資料',
+    zhCn: '页面资料',
+    en: 'PageData'
+  },
+  total: {
+    zhTw: '總數',
+    zhCn: '总数',
+    en: 'Total'
+  },
+  dataCount: {
+    zhTw: '資料筆數',
+    zhCn: '资料笔数',
+    en: 'DataCount'
+  },
   columnSetting: {
     zhTw: '欄位設定',
     zhCn: '栏位设定',
     en: 'ColumnSetting'
+  },
+  returnDefault: {
+    zhTw: '返回預設值',
+    zhCn: '返回预设值',
+    en: 'ReturnDefault'
+  },
+  sorting: {
+    zhTw: '排序',
+    zhCn: '排序',
+    en: 'Sorting'
+  },
+  none: {
+    zhTw: '無',
+    zhCn: '无',
+    en: 'None'
+  },
+  ascending: {
+    zhTw: '升冪排列',
+    zhCn: '升冪排列',
+    en: 'Ascending'
+  },
+  descending: {
+    zhTw: '降冪排列',
+    zhCn: '降冪排列',
+    en: 'Descending'
   },
   // CustomInput
   pleaseInput: {

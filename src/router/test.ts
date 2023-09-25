@@ -2,6 +2,50 @@ import type { RouterTree } from '@/declare/routes'
 
 const testRoutes: RouterTree[] = [
   {
+    name: 'test-page',
+    title: '測試',
+    systemType: ['development', 'test'],
+    icon: 'vial',
+    leaves: [
+      {
+        name: 'test-1',
+        title: '測試1',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-1',
+        icon: 'file-arrow-down',
+        component: () => import('@/views/TestPage/TestExcel.vue')
+      },
+      {
+        name: 'test-2',
+        title: '測試1',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-2',
+        icon: 'chart-pie',
+        component: () => import('@/views/TestPage/TestChart1.vue')
+      },
+      {
+        name: 'test-3',
+        title: '測試2',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-3',
+        icon: 'chart-column',
+        component: () => import('@/views/TestPage/TestChart2.vue')
+      }
+    ]
+  },
+  {
     name: 'charts-test',
     title: '圖表測試',
     systemType: ['development', 'test'],

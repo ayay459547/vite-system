@@ -10,6 +10,9 @@ export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
 export type { ButtonType, ButtonSize } from './feature/CustomButton/CustomButton.vue'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
+export type { BadgeType } from './feature/CustomBadge/CustomBadge.vue'
+export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
+
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
 export type {

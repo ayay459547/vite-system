@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { ref, onBeforeMount } from 'vue'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
-import type { PropsTableColumn } from './CustomTable.vue'
+import type { PropsTableColumn } from '../CustomTable.vue'
 import {
   CustomButton,
   CustomPopover,
@@ -39,7 +39,7 @@ const props = defineProps({
   },
   settingWidth: {
     type: Number as PropType<number>,
-    required: true,
+    default: 150,
     description: '寬度'
   }
 })
@@ -219,7 +219,7 @@ onBeforeMount(async () => {
         <template #footer>
           <div class="column-reset">
             <CustomButton
-              label="返回預設值"
+              :label="$t('returnDefault')"
               type="info"
               plain
               icon-name="repeat"

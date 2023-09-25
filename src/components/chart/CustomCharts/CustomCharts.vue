@@ -16,7 +16,7 @@ export default defineComponent({
       default: '_charts'
     },
     options: {
-      type: Function as PropType<() => EChartsOption>,
+      type: Function as PropType<() => (EChartsOption | any)>,
       required: true
     }
   },

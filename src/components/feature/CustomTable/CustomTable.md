@@ -135,12 +135,13 @@ const tableData2 = [
 | rowStyle         | 自訂rowStyle    | Function | -                        |        |
 | cellClassName    | 自訂columnClass  | Function | -                        |        |
 | cellStyle        | 自訂columnStyle  | Function | -                        |        |
-| showNo           | 是否有編號       | boolean | false                     |        |
 | page             | 當前分頁         | number  | 1                         |        |
 | pageSize         | 顯示筆數         | number  | 100                       |        |
 | sort             | 預設排序設定     | object  | { key: null, order: null } |        |
 | showType         | 資料顯示類型     | enum    | 'custom'                   |        |
 | hiddenExcel      | 是否隱藏下載excel | boolean | false                     |        |
+| showNo           | 是否顯示編號      | boolean | false                     |        |
+| sorting          | 是否有多欄位排序  | boolean | false                     |        |
 | lazyLoading      | 是否啟用懶加載    | boolean | false                     |        |
 | lazyLoadingStatus | 懶加載狀態       | enum    | 'noMore'                  |        |
 

@@ -42,9 +42,14 @@ export default {
     en: 'Create'
   },
   update: {
+    zhTw: '更新',
+    zhCn: '更新',
+    en: 'Update'
+  },
+  edit: {
     zhTw: '編輯',
     zhCn: '编辑',
-    en: 'Update'
+    en: 'Edit'
   },
   delete: {
     zhTw: '刪除',

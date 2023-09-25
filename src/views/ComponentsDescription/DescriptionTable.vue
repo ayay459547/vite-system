@@ -11,9 +11,9 @@ import {
 import { getTableSetting } from '@/lib/lib_columns'
 
 const tableColumns1 = [
-  { key: 'name', label: '名稱', prop: 'name', width: 150 },
-  { key: 'age', label: '年齡', prop: 'age', width: 120 },
-  { key: 'address', label: '地址', prop: 'address', minWidth: 200 }
+  { key: 'name', label: '名稱', sortable: 'coutom', prop: 'name', width: 150 },
+  { key: 'age', label: '年齡', sortable: 'coutom', prop: 'age', width: 120 },
+  { key: 'address', label: '地址', sortable: 'coutom', prop: 'address', minWidth: 200 }
 ]
 const tableData1 = [
   { id: 1, name: 'Bret', age: 13, address: 'Apt. 556, Kulas Light, Gwenborough' },
@@ -41,7 +41,8 @@ const columnSetting = {
 const tableOptions = {
   title: '表格組件(使用 getTableSetting)',
   version: '1.0.0',
-  settingKey: 'description-table-1'
+  settingKey: 'description-table-1',
+  sorting: true
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
 
@@ -100,6 +101,7 @@ const download = () => {
         setting-key="test-table-1"
         row-key="id"
         :table-data="tableData1"
+        :table-data-count="300"
         :table-columns="tableColumns1"
       >
         <template #row-expand="{ rowIndex }">
@@ -113,6 +115,7 @@ const download = () => {
     <div style="width: 100%; height: 400px;">
       <CustomTable
         :table-data="tableData2"
+        :table-data-count="500"
         show-no
         v-bind="tableSetting"
         @excel="download"

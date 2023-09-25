@@ -1,13 +1,35 @@
 <script setup lang="ts">
+import { CustomButton, CustomBadge } from '@/components'
 
 </script>
 
 <template>
-  <div class="page">3-2-4</div>
+  <div class="page-wrapper">
+    <div class="page-container">
+      <div class="fill-x flex-row i-mb-md">
+        <CustomBadge value="3">
+          <CustomButton label="test"/>
+        </CustomBadge>
+      </div>
+
+      <div class="fill-x flex-row">
+        7
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .page {
-  padding: 16px;
+  &-wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+  }
+  &-container {
+    width: 100%;
+    height: 100%;
+    min-height: fit-content;
+  }
 }
 </style>
