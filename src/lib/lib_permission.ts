@@ -32,6 +32,13 @@ export const totlaPermission = (
   permission.execute
 )
 
+export type Permission = {
+  read: boolean
+  create: boolean
+  update: boolean
+  delete: boolean
+  execute: boolean
+}
 export const getPermission = (permissionTotal: number) => {
   return {
     read: hasPermission(permissionTotal, permission.read),

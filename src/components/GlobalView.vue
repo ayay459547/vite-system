@@ -43,7 +43,11 @@ import Swal from 'sweetalert2'
 import type { NotificationOptionsTyped } from 'element-plus'
 import { ElNotification } from 'element-plus'
 
+import { getPermission } from '@/lib/lib_permission'
+
 // slot
+import { isEmpty } from '@/lib/lib_utils'
+
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
@@ -125,6 +129,12 @@ provide<Hook>('hook', () => {
         ...defaultOPtions,
         ...options
       })
+    },
+    permission: (permissionTotal = null) => {
+      if (!isEmpty(permissionTotal)) return getPermission(permissionTotal)
+
+      const { permission } = currentNavigation.value
+      return getPermission(permission)
     }
   }
 })
@@ -360,19 +370,15 @@ const login = async (userId: number) => {
 
             <div v-i-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
-                <component
-                  v-if="route.name === 'login'"
-                  :is="Component"
-                  @login="login"
-                />
-                <KeepAlive v-else-if="route.meta.keepAlive">
+                <KeepAlive>
                   <component
+                    v-if="route?.meta?.keepAlive ?? false"
                     :key="route.name"
                     :is="Component"
                   />
                 </KeepAlive>
                 <component
-                  v-else
+                  v-if="!(route?.meta?.keepAlive ?? false)"
                   :key="route.name"
                   :is="Component"
                 />

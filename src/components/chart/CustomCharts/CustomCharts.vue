@@ -1,6 +1,6 @@
 <script lang="ts">
 import * as echarts from 'echarts'
-import { EChartsOption } from 'echarts/types/dist/shared'
+import type { EChartsOption } from 'echarts/types/dist/shared'
 import type { PropType } from 'vue'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'

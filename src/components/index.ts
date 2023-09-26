@@ -7,7 +7,12 @@ export { default as GanttChart } from './chart/GanttChart/GanttChart.vue'
 export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
 
 // feature
-export type { ButtonType, ButtonSize } from './feature/CustomButton/CustomButton.vue'
+export type {
+  ButtonType,
+  ButtonSize,
+  ButtonMove,
+  ButtonIconType
+} from './feature/CustomButton/CustomButton.vue'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
 export type { BadgeType } from './feature/CustomBadge/CustomBadge.vue'

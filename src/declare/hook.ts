@@ -1,6 +1,8 @@
 import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
 import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 import type { NotificationProps, NotificationHandle } from 'element-plus'
+import type { Permission } from '@/lib/lib_permission'
+
 export declare interface EventItem {
   icon: [IconType, string] | []
   label: string
@@ -36,6 +38,8 @@ export declare namespace HookList {
   type swal = (options: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 
   type notification = (options: Partial<NotificationProps>) => NotificationHandle
+
+  type permission = (permissionTotal?: number | null) => Permission
 }
 
 export declare type Hook = () => {
@@ -45,6 +49,7 @@ export declare type Hook = () => {
   eventList: HookList.eventList
   swal: HookList.swal
   notification: HookList.notification
+  permission: HookList.permission
 }
 
 export declare type SwalResult = {

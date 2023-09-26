@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref, customRef } from 'vue'
 import type { PropType } from 'vue'
 import type { Sort } from '@/components'
 import { CustomBadge } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import type { Sorting, Order } from '../CustomTable.vue'
 
 const props = defineProps({
+  modelValue: {
+    type: Array as PropType<Sorting[]>,
+    required: true
+  },
   column: {
     type: Object as PropType<any>,
     required: true,
@@ -18,45 +22,71 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
-const isShow = ref(false)
-const sortingData = reactive<Sort>({
-  key: null,
-  order: null
+const columnValue = customRef((track, trigger) => {
+  return {
+    get () {
+      track() // 追蹤數據改變
+      const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
+      return {
+        ...props.modelValue[columnIndex],
+        index: columnIndex
+      }
+    },
+    set (value: Sort & { index?: number }) {
+      const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
+      const _temp = props.modelValue[columnIndex]
+      console.log(value)
+
+      const newValue = [...props.modelValue]
+      newValue[columnIndex] = {
+        ..._temp,
+        ...value
+      }
+      emit('update:modelValue', newValue)
+      trigger() // 通知 vue 重新解析
+    }
+  }
 })
 
+const isShow = ref(false)
+
 const onSortClick = (type: string) => {
-  console.log(type)
+  let newOrder: Order = 'none'
+
   switch (type) {
     case 'asc':
-      if (sortingData.order === 'ascending') {
-        sortingData.order = null
+      if (columnValue.value.order === 'ascending') {
+        newOrder = 'none'
       } else {
-        sortingData.order = 'ascending'
+        newOrder = 'ascending'
       }
       break
     case 'desc':
-      if (sortingData.order === 'descending') {
-        sortingData.order = null
+      if (columnValue.value.order === 'descending') {
+        newOrder = 'none'
       } else {
-        sortingData.order = 'descending'
+        newOrder = 'descending'
       }
       break
     case '':
     default:
-      if (sortingData.order === 'ascending') {
-        sortingData.order = 'descending'
-      } else if (sortingData.order === 'descending') {
-        sortingData.order = null
-      } else if (sortingData.order === null) {
-        sortingData.order = 'ascending'
+      if (columnValue.value.order === 'ascending') {
+        newOrder = 'descending'
+      } else if (columnValue.value.order === 'descending') {
+        newOrder = 'none'
+      } else if (columnValue.value.order === 'none') {
+        newOrder = 'ascending'
       }
       break
   }
-  emit('change', sortingData)
 
-  console.log(sortingData.key, sortingData.order)
+  columnValue.value = {
+    key: props.prop,
+    order: newOrder
+  }
+  emit('change', columnValue.value)
 }
 
 const onAscClick = () => {
@@ -68,9 +98,7 @@ const onDescClick = () => {
 
 // 'ascending' | 'descending'
 onMounted(() => {
-  const { column, prop } = props
-  sortingData.key = prop
-  sortingData.order = null
+  const { column } = props
 
   isShow.value = !(column?.isOperations ?? false)
 })
@@ -79,16 +107,16 @@ onMounted(() => {
 
 <template>
   <div v-if="isShow" class="sort-wrapper" @click="onSortClick('')">
-    <CustomBadge value="n" :hidden="isEmpty(sortingData.order)">
+    <CustomBadge :value="(columnValue.index + 1)" :hidden="columnValue.order === 'none'">
       <div class="sort-container">
         <i
           class="sort-asc"
-          :class="{ 'is-active': sortingData.order === 'ascending' }"
+          :class="{ 'is-active': columnValue.order === 'ascending' }"
           @click.stop="onAscClick"
         ></i>
         <i
           class="sort-desc"
-          :class="{ 'is-active': sortingData.order === 'descending' }"
+          :class="{ 'is-active': columnValue.order === 'descending' }"
           @click.stop="onDescClick"
         ></i>
       </div>
@@ -112,7 +140,7 @@ onMounted(() => {
     vertical-align: middle;
     overflow: initial;
     position: relative;
-    gap: 3px;
+    gap: 2px;
     transform: translate(0, -2px);
   }
 

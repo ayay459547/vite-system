@@ -28,9 +28,13 @@ export interface PageChange {
   (page: number, pageSize: number, ...payload: any[]): void
 }
 
+export type Order = null | 'ascending' | 'descending' | 'none'
 export interface Sort {
   key: null | string
-  order: null | 'ascending' | 'descending'
+  order: Order
+}
+export interface Sorting extends Sort {
+  label: string
 }
 export interface TableParams {
   page?: number
@@ -379,8 +383,21 @@ const initShowColumns = async () => {
   }, 400) // 設 0.4s 才不會閃一下
 }
 
+const sortingList = ref<Sorting[]>([])
+const initSortingList = () => {
+  sortingList.value = props.tableColumns.map(column => {
+    return {
+      label: column.label,
+      key: column.key,
+      order: column?.order ?? 'none'
+    }
+  }, [])
+}
+
 onMounted(async () => {
   isRender.value = false
+
+  initSortingList()
   await initShowColumns()
 
   isRender.value = true
@@ -548,7 +565,7 @@ const slotKeyList = computed(() => {
 
         <GroupSorting
           v-if="props.sorting"
-          :columns="props.tableColumns"
+          v-model="sortingList"
           :setting-width="props.settingWidth"
         />
       </div>
@@ -593,13 +610,14 @@ const slotKeyList = computed(() => {
           :key="slotKey"
           #[getHeaderSlot(slotKey)]="scope"
         >
-          <div class="i-mt-xxs">
+          <div class="table-sorting-column">
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
               <label>{{ scope.label }}</label>
             </slot>
           </div>
           <ColumnSorting
             v-if="props.sorting"
+            v-model="sortingList"
             :column="scope.column"
             :prop="scope.prop"
           />
@@ -714,6 +732,11 @@ const slotKeyList = computed(() => {
     flex: 1;
     width: 100%;
     position: relative;
+  }
+
+  &-sorting-column {
+    width: 100%;
+    margin-top: 4px;
   }
 
   &-pagination {

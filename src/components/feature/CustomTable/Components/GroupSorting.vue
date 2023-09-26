@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, onMounted } from 'vue'
-import type { PropsTableColumn } from '../CustomTable.vue'
+import { computed } from 'vue'
+import type { Sorting, Order } from '../CustomTable.vue'
+import type { Sort } from '@/components'
 
 import {
   CustomPopover,
@@ -11,11 +12,9 @@ import {
 } from '@/components'
 
 const props = defineProps({
-  columns: {
-    type: Object as PropType<PropsTableColumn[]>,
-    default () {
-      return {}
-    }
+  modelValue: {
+    type: Array as PropType<Sorting[]>,
+    required: true
   },
   settingWidth: {
     type: Number as PropType<number>,
@@ -24,7 +23,28 @@ const props = defineProps({
   }
 })
 
-const columnList = ref([])
+const emit = defineEmits(['update:modelValue'])
+
+const tempValue = computed({
+  get: () => props.modelValue,
+  set: (value: Sorting[]) => {
+    emit('update:modelValue', value)
+  }
+})
+
+const setSortingValue = (order: Order, key: string) => {
+  const columnIndex = props.modelValue.findIndex(item => item.key === key)
+  const _temp = props.modelValue[columnIndex]
+
+  const newValue = [...props.modelValue]
+  newValue[columnIndex] = {
+    ..._temp,
+    key,
+    order
+  }
+
+  tempValue.value = newValue
+}
 
 const onRadioChange = () => {
   console.log('onRadioChange')
@@ -37,16 +57,6 @@ const resetSorting = () => {
 const submit = () => {
   console.log('submit')
 }
-
-onMounted(() => {
-  columnList.value = props.columns.map(column => {
-    return {
-      label: column.label,
-      key: column.key,
-      order: null
-    }
-  }, [])
-})
 
 </script>
 
@@ -66,7 +76,7 @@ onMounted(() => {
       </template>
 
       <CustomDraggable
-        v-model="columnList"
+        v-model="tempValue"
         item-key="key"
         class="group-container column-list"
         :handle="`.sorting-move`"
@@ -74,12 +84,13 @@ onMounted(() => {
         <template #item="{ element }">
           <div class="column-item">
             <CustomInput
-              v-model="element.order"
+              :model-value="element.order"
+              @update:model-value="setSortingValue($event, element.key)"
               :label="element.label"
               type="radio"
               :options="[
                 { label: $t('ascending'), value: 'ascending' },
-                { label: $t('none'), value: null },
+                { label: $t('none'), value: 'none' },
                 { label: $t('descending'), value: 'descending' }
               ]"
               @change="onRadioChange"

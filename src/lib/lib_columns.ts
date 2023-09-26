@@ -352,7 +352,7 @@ export const getTableSetting = (
       key: null | string,
       order: null | 'ascending' | 'descending'
     },
-    sorting: boolean
+    sorting?: boolean
     hiddenExcel?: boolean
   }
 ): TableSetting => {

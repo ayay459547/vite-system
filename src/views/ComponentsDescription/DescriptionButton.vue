@@ -9,12 +9,19 @@ import {
   CustomButton
 } from '@/components'
 
+import type {
+  ButtonType,
+  ButtonSize,
+  ButtonMove,
+  ButtonIconType
+} from '@/components'
+
 const sizeOptions = [
   { label: 'large', value: 'large' },
   { label: 'default', value: 'default' },
   { label: 'small', value: 'small' }
 ]
-const size = ref('default')
+const size = ref<ButtonSize>('default')
 
 const typeOptions = [
   { label: 'success', value: 'success' },
@@ -24,7 +31,7 @@ const typeOptions = [
   { label: 'warning', value: 'warning' },
   { label: 'danger', value: 'danger' }
 ]
-const type = ref('success')
+const type = ref<ButtonType>('success')
 
 const styleOptions = [
   { label: '無', value: ''},
@@ -54,7 +61,7 @@ const iconTypeOptions = [
   { label: 'far', value: 'far' },
   { label: 'fab', value: 'fab' }
 ]
-const iconType = ref('fas')
+const iconType = ref<ButtonIconType>('fas')
 
 const iconNameOptions = [
   { label: 'bookmark', value: 'bookmark' },
@@ -72,7 +79,7 @@ const iconMoveOptions = [
   { label: 'rotate', value: 'rotate' },
   { label: 'scale', value: 'scale' }
 ]
-const iconMove = ref('none')
+const iconMove = ref<ButtonMove>('none')
 
 const colorOptions = [
   { label: '無', value: '' },

@@ -7,6 +7,8 @@ import { CustomIcon } from '@/components'
 
 export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
 export type ButtonSize = 'large'| 'default'| 'small'
+export type ButtonMove = 'none' | 'translate'| 'rotate' | 'scale'
+export type ButtonIconType = 'fas' | 'far' | 'fab'
 
 enum ElType {
   default = '',
@@ -103,7 +105,7 @@ const props = defineProps({
     description: '前綴圖示 參考 fontawesome'
   },
   iconMove: {
-    type: String as PropType<'none' | 'translate'| 'rotate' | 'scale'>,
+    type: String as PropType<ButtonMove>,
     required: false,
     default: 'none',
     description: 'hover後 的效果'
