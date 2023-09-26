@@ -18,6 +18,11 @@ export { default as CustomButton } from './feature/CustomButton/CustomButton.vue
 export type { BadgeType } from './feature/CustomBadge/CustomBadge.vue'
 export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
 
+export type {
+  DividerDirection,
+  DividerBorderStyle,
+  DividerContentPosition
+} from './feature/CustomDivider/CustomDivider.vue'
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
 export type {

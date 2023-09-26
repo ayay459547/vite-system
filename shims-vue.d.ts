@@ -18,12 +18,12 @@ declare module '@vue/runtime-core' {
 //   export default classes
 // }
 
-declare module '@/components' {
+declare module '@/components.*' {
   const content: any
   export default content
 }
 
-declare module '@/components*.md*.raw' {
+declare module '@/components/.*.md?raw' {
   const markdown: string
   export default markdown
 }

@@ -32,6 +32,18 @@ const descriptionRoutes: RouterTree[] = [
         icon: 'hand-pointer'
       },
       {
+        name: 'description-divider',
+        title: 'CustomDivider',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-divider',
+        component: () => import('@/views/ComponentsDescription/DescriptionDivider.vue'),
+        icon: 'hand-pointer'
+      },
+      {
         name: 'description-table',
         title: 'CustomTable',
         meta: {

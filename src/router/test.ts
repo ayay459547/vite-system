@@ -98,7 +98,7 @@ const testRoutes: RouterTree[] = [
         name: 'form-list-test',
         title: '多行編輯測試',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           status: 'completed'
         },
         systemType: ['development', 'test'],

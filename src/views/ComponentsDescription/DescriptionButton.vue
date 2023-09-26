@@ -153,7 +153,7 @@ const slotText = ref('slot default')
       :icon-move="iconMove"
       class="i-mt-sm"
     >
-      <span>{{ `{ ${slotText} }` }}</span>
+      <span>{{ `slot{ ${slotText} }` }}</span>
     </CustomButton>
 
     <CustomDivider>markdown</CustomDivider>

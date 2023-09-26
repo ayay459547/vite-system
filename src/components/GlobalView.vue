@@ -370,18 +370,26 @@ const login = async (userId: number) => {
 
             <div v-i-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
-                <KeepAlive>
+                <component
+                  v-if="route.name === 'login'"
+                  :key="route.name"
+                  :is="Component"
+                  @login="login"
+                />
+                <template v-else>
+                  <KeepAlive>
+                    <component
+                      v-if="route?.meta?.keepAlive ?? false"
+                      :key="route.name"
+                      :is="Component"
+                    />
+                  </KeepAlive>
                   <component
-                    v-if="route?.meta?.keepAlive ?? false"
+                    v-if="!(route?.meta?.keepAlive ?? false)"
                     :key="route.name"
                     :is="Component"
                   />
-                </KeepAlive>
-                <component
-                  v-if="!(route?.meta?.keepAlive ?? false)"
-                  :key="route.name"
-                  :is="Component"
-                />
+                </template>
                 <!-- 更換路由執行 -->
                 <div style="display: none;">{{ onRouteChange(route) }}</div>
               </RouterView>

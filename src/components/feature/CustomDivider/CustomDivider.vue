@@ -3,29 +3,29 @@ import type { PropType } from 'vue'
 import { useSlots } from 'vue'
 import { ElDivider } from 'element-plus'
 
-type Direction = 'horizontal' | 'vertical'
+export type DividerDirection = 'horizontal' | 'vertical'
 
-type BorderStyle = 'none'| 'hidden'| 'dotted'| 'dashed'| 'solid'| 'double'| 'groove'| 'ridge'| 'inset'| 'outset'
+export type DividerBorderStyle = 'none'| 'hidden'| 'dotted'| 'dashed'| 'solid'| 'double'| 'groove'| 'ridge'| 'inset'| 'outset'
 
-type ContentPosition = 'left' | 'right' | 'center'
+export type DividerContentPosition = 'left' | 'right' | 'center'
 
 const props = defineProps({
   direction: {
-    type: String as PropType<Direction>,
+    type: String as PropType<DividerDirection>,
     required: false,
     default: 'horizontal',
     description: `horizontal: 橫線
     vertical: 直線`
   },
   borderStyle: {
-    type: String as PropType<BorderStyle>,
+    type: String as PropType<DividerBorderStyle>,
     required: false,
     default: 'solid',
     description: `線的類型
       css border 的 style`
   },
   contentPosition: {
-    type: String as PropType<ContentPosition>,
+    type: String as PropType<DividerContentPosition>,
     required: false,
     default: 'center',
     description: '文字位置'

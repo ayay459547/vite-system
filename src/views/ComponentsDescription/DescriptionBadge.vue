@@ -30,7 +30,7 @@ const styleOptions = [
 ]
 const style = ref('')
 
-const attr = computed(() => {
+const attr = computed<any>(() => {
   switch (style.value) {
     case 'isDot': return { isDot: true }
     case 'hidden': return { hidden: true }
