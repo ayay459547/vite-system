@@ -32,5 +32,4 @@ import { CustomDivider } from '@/components'
 ### Slots
 | 插槽名     | 說明          |
 | --------- | ------------- |
-| default   | 文字顯示內容   
-|
+| default   | 文字顯示內容   |

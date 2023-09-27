@@ -44,6 +44,18 @@ const descriptionRoutes: RouterTree[] = [
         icon: 'slash'
       },
       {
+        name: 'description-empty',
+        title: 'CustomEmpty',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-empty',
+        component: () => import('@/views/ComponentsDescription/DescriptionEmpty.vue'),
+        icon: 'cube'
+      },
+      {
         name: 'description-table',
         title: 'CustomTable',
         meta: {

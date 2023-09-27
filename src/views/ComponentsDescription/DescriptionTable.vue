@@ -92,8 +92,8 @@ const download = () => {
   downloadExcel(tableData2)
 }
 
-const onTableChange = ({ sortingList }: TableParams) => {
-  console.log(sortingList)
+const onTableChange = (params: TableParams) => {
+  console.log(params)
 }
 
 </script>

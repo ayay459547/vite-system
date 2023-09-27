@@ -27,7 +27,7 @@ const filterNoneColumnList = computed(() => {
   return props.modelValue.filter(item => item.order !== 'none')
 })
 
-const columnValue = customRef<Sorting & { index?: number }>((track, trigger) => {
+const columnValue = customRef<Sorting & { index?: number | string }>((track, trigger) => {
   return {
     get () {
       track() // 追蹤數據改變
@@ -36,10 +36,10 @@ const columnValue = customRef<Sorting & { index?: number }>((track, trigger) => 
 
       return {
         ...column,
-        index: serialNumber
+        index: serialNumber === -1 ? '~' : serialNumber + 1
       }
     },
-    set (value: Sorting & { index?: number }) {
+    set (value: Sorting & { index?: number | string }) {
       const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
       const _temp = props.modelValue[columnIndex]
 
@@ -111,7 +111,7 @@ onMounted(() => {
 
 <template>
   <div v-if="isShow" class="sort-wrapper" @click="onSortClick('')">
-    <CustomBadge :value="(columnValue.index + 1)" :hidden="columnValue.order === 'none'">
+    <CustomBadge :value="columnValue.index" :hidden="columnValue.order === 'none'">
       <div class="sort-container">
         <i
           class="sort-asc"

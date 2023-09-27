@@ -19,7 +19,7 @@ onMounted(() => {
 
   setTimeout(() => {
     loading(false, '')
-  }, 2000)
+  }, 1000)
 })
 
 const chartsOptions = () => {

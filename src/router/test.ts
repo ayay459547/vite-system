@@ -8,40 +8,52 @@ const testRoutes: RouterTree[] = [
     icon: 'vial',
     leaves: [
       {
-        name: 'test-1',
+        name: 'test-chart1',
         title: '測試1',
         meta: {
           keepAlive: false,
           status: 'completed'
         },
         systemType: ['development', 'test'],
-        path: '/test-1',
-        icon: 'file-arrow-down',
-        component: () => import('@/views/TestPage/TestExcel.vue')
+        path: '/test-chart1',
+        icon: 'chart-pie',
+        component: () => import('@/views/TestPage/TestChart1.vue')
       },
       {
-        name: 'test-2',
+        name: 'test-chart2',
         title: '測試2',
         meta: {
           keepAlive: false,
           status: 'completed'
         },
         systemType: ['development', 'test'],
-        path: '/test-2',
-        icon: 'chart-pie',
-        component: () => import('@/views/TestPage/TestChart1.vue')
+        path: '/test-chart2',
+        icon: 'satellite-dish',
+        component: () => import('@/views/TestPage/TestChart2.vue')
       },
       {
-        name: 'test-3',
+        name: 'test-chart3',
         title: '測試3',
         meta: {
           keepAlive: false,
           status: 'completed'
         },
         systemType: ['development', 'test'],
-        path: '/test-3',
+        path: '/test-chart3',
         icon: 'chart-column',
-        component: () => import('@/views/TestPage/TestChart2.vue')
+        component: () => import('@/views/TestPage/TestChart3.vue')
+      },
+      {
+        name: 'test-excel',
+        title: '測試Excel',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-excel',
+        icon: 'file-arrow-down',
+        component: () => import('@/views/TestPage/TestExcel.vue')
       }
     ]
   },
