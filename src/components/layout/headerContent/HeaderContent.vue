@@ -150,7 +150,7 @@ const openUserEffect = (e: MouseEvent) => {
 
       <div class="header-breadcrumb-lg">
         <div
-          v-i-fixed="{
+          v-fixed="{
             text: getBreadcrumbSpan,
             class: 'text-white',
             style: ''

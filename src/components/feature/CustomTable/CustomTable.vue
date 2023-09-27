@@ -31,15 +31,18 @@ export interface PageChange {
 export type Order = null | 'ascending' | 'descending' | 'none'
 export interface Sort {
   key: null | string
-  order: Order
+  order: null | 'ascending' | 'descending'
 }
-export interface Sorting extends Sort {
-  label: string
+export interface Sorting {
+  label?: string
+  key?: null | string
+  order?: Order
 }
 export interface TableParams {
   page?: number
   size?: number
   sort?: Sort
+  sortingList?: Sorting[]
 }
 
 export type SpanMethod = (
@@ -172,6 +175,7 @@ const emit = defineEmits([
   'excel',
   'columns-change',
   'sort-change',
+  'sorting-change',
   'page-change',
   'size-change',
   'show-change',
@@ -226,6 +230,12 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
+const resetScroll = () => {
+  if (tableMainRef.value) {
+    tableMainRef.value.resetScroll()
+  }
+}
+
 const tableMainRef = ref(null)
 const pageChange: PageChange = (page, pageSize) => {
   currentPage.value = page
@@ -236,16 +246,14 @@ const pageChange: PageChange = (page, pageSize) => {
     pageSize,
     sort: currentSort.value
   })
-
-  if (tableMainRef.value) {
-    tableMainRef.value.resetScroll()
-  }
+  resetScroll()
 }
 
 const onRowClick = (row: any, column: any, event: Event) => {
   emit('row-click', row, column, event)
 }
 
+// 單欄排序
 const currentSort = shallowRef<Sort>({
   key: null,
   order: null
@@ -270,6 +278,35 @@ const onSortChange = (props: {
     sort: currentSort.value
   })
 }
+// 多欄排序
+const sortingList = ref<Sorting[]>([])
+const emitSortingList = computed(() => {
+  return sortingList.value.filter(item => item.order !== 'none')
+})
+const initSortingList = () => {
+  sortingList.value = props.tableColumns.reduce((res, column) => {
+    const _isOperations = (column?.isOperations ?? false)
+
+    if (!_isOperations) {
+      res.push({
+        label: column.label,
+        key: column.key,
+        order: column?.order ?? 'none'
+      })
+    }
+    return res
+  }, [])
+}
+const onSortingChange = () => {
+  emit('sorting-change', getProxyData(emitSortingList.value))
+
+  onShowChange({
+    page: currentPage.value,
+    pageSize: pageSize.value,
+    sort: currentSort.value
+  })
+}
+
 const onHeaderClick = (column: any, event: Event) => {
   emit('header-click', column, event)
 }
@@ -303,7 +340,8 @@ const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
   emit('show-change', {
     page,
     size: pageSize,
-    sort: getProxyData(sort)
+    sort: getProxyData(sort),
+    sortingList: getProxyData(emitSortingList.value)
   })
 }
 // 顯示資料
@@ -383,17 +421,6 @@ const initShowColumns = async () => {
   }, 400) // 設 0.4s 才不會閃一下
 }
 
-const sortingList = ref<Sorting[]>([])
-const initSortingList = () => {
-  sortingList.value = props.tableColumns.map(column => {
-    return {
-      label: column.label,
-      key: column.key,
-      order: column?.order ?? 'none'
-    }
-  }, [])
-}
-
 onMounted(async () => {
   isRender.value = false
 
@@ -409,18 +436,18 @@ defineExpose({
     return {
       page: currentPage.value,
       size: pageSize.value,
-      sort: currentSort.value
+      sort: getProxyData(currentSort.value),
+      sortingList: getProxyData(emitSortingList.value)
     }
   },
   setTableParams: (params: {
-    page?: number
-    size?: number
-    sort?: Sort
+    [P in keyof TableParams]?: TableParams[P]
   }) => {
     const {
       page,
       size,
-      sort
+      sort,
+      sortingList: _sortingList
     } = params
 
     if (!isEmpty(page) && (typeof page === 'number')) {
@@ -446,7 +473,11 @@ defineExpose({
     if (!isEmpty(sort)) {
       currentSort.value = sort
     }
-  }
+    if (!isEmpty(_sortingList)) {
+      sortingList.value = _sortingList
+    }
+  },
+  resetScroll
 })
 
 // slot
@@ -492,7 +523,7 @@ const slotKeyList = computed(() => {
 </script>
 
 <template>
-  <div v-i-loading="loading" class="table-wrapper">
+  <div v-loading="loading" class="table-wrapper">
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
         <CustomPopover
@@ -567,6 +598,8 @@ const slotKeyList = computed(() => {
           v-if="props.sorting"
           v-model="sortingList"
           :setting-width="props.settingWidth"
+          @reset-sorting="initSortingList"
+          @submit="onSortingChange"
         />
       </div>
     </div>
@@ -620,6 +653,7 @@ const slotKeyList = computed(() => {
             v-model="sortingList"
             :column="scope.column"
             :prop="scope.prop"
+            @change="onSortingChange"
           />
         </template>
 

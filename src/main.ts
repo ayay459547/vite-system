@@ -35,9 +35,6 @@ import i18n from '@/i18n'
 // 暗黑模式 尚未開發
 import 'element-plus/theme-chalk/dark/css-vars.css'
 
-// Three js
-import { TroisJSVuePlugin } from 'troisjs'
-
 const app = createApp(App)
 
 app.config.globalProperties.$log = (any: any) => {
@@ -51,7 +48,5 @@ app.use(router)
 app.use(pluginComponents)
 app.use(pluginDirective)
 app.use(i18n)
-
-app.use(TroisJSVuePlugin)
 
 app.mount('#app')

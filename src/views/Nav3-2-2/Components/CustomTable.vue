@@ -461,7 +461,7 @@ const slotKeyList = computed(() => {
 </script>
 
 <template>
-  <div v-i-loading="loading" class="table-wrapper">
+  <div v-loading="loading" class="table-wrapper">
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-8">
         <CustomPopover

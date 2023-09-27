@@ -168,7 +168,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="input-test">
+  <div v-loading="isLoading" class="input-test">
     <div v-if="!isLoading" class="input-container">
       <!-- 更新架構 -->
       <div class="input-simple">

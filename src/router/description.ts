@@ -41,7 +41,7 @@ const descriptionRoutes: RouterTree[] = [
         systemType: ['development', 'test'],
         path: '/description-divider',
         component: () => import('@/views/ComponentsDescription/DescriptionDivider.vue'),
-        icon: 'hand-pointer'
+        icon: 'slash'
       },
       {
         name: 'description-table',

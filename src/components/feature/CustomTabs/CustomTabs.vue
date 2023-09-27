@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref, PropType, WritableComputedRef } from 'vue'
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, effectScope } from 'vue'
 
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
@@ -73,12 +73,6 @@ const scrollToCurrentTab = (currentTab: string) => {
 }
 const debounceScrollToCurrentTab = debounce(scrollToCurrentTab, 200)
 
-watch(tempValue, (newValue) => {
-  if (props.move) {
-    debounceScrollToCurrentTab(newValue)
-  }
-})
-
 const onTabClick = (key: string | number, label: string, value: any) => {
   tempValue.value = key
 
@@ -142,7 +136,19 @@ const listROcallback = throttle((entries: ResizeObserverEntry[]) => {
   })
 }, 100) as ResizeObserverCallback
 const listRO = new ResizeObserver(listROcallback)
+
+const scope = effectScope()
+
 onMounted(() => {
+  // 有掛載才開啟監聽
+  scope.run(() => {
+    if (props.move) {
+      watch(tempValue, (newValue) => {
+        debounceScrollToCurrentTab(newValue)
+      })
+    }
+  })
+
   if (wrapRef.value !== null) {
     wrapRO.observe(wrapRef.value)
   }
@@ -152,6 +158,8 @@ onMounted(() => {
   debounceScrollToCurrentTab(tempValue.value)
 })
 onUnmounted(() => {
+  scope.stop()
+
   if (wrapRO) {
     wrapRO.disconnect()
   }

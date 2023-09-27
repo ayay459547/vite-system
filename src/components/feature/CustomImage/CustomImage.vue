@@ -4,7 +4,7 @@ import { useSlots } from 'vue'
 import { ElImage } from 'element-plus'
 import { hasOwnProperty } from '@/lib/lib_utils'
 
-export type Fit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+export type ImageFit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 
 const props = defineProps({
   src: {
@@ -14,7 +14,7 @@ const props = defineProps({
     description: '圖片網址'
   },
   fit: {
-    type: String as PropType<Fit>,
+    type: String as PropType<ImageFit>,
     required: false,
     default: '',
     description: '圖片如何適應容器 css object-fit'

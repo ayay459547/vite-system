@@ -318,6 +318,7 @@ export interface TableSetting {
     hiddenExcel: boolean
   },
   downloadExcel: (tableData: Record<string, any>[]) => void
+  resetScroll: (tableRef?: TableRef) => void
   getParams: (tableRef?: TableRef) => TableParams
   setParams: (params: TableParams, tableRef?: TableRef) => void
   changePage: (tableRef?: TableRef) => void
@@ -505,6 +506,13 @@ export const getTableSetting = (
       hiddenExcel
     },
     downloadExcel,
+    resetScroll: (tableRef: TableRef) => {
+      if (tableRef) {
+        return tableRef.resetScroll()
+      } else if (_tableRef.value !== null) {
+        return _tableRef.value.resetScroll()
+      }
+    },
     getParams: (tableRef: TableRef): TableParams => {
       if (tableRef) {
         return tableRef.getTableParams()

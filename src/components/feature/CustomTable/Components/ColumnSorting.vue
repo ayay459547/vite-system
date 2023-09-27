@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, customRef } from 'vue'
+import { onMounted, ref, customRef, computed } from 'vue'
 import type { PropType } from 'vue'
-import type { Sort } from '@/components'
 import { CustomBadge } from '@/components'
-import type { Sorting, Order } from '../CustomTable.vue'
+import type { Sorting, Order } from '@/components'
 
 const props = defineProps({
   modelValue: {
@@ -24,20 +23,25 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const columnValue = customRef((track, trigger) => {
+const filterNoneColumnList = computed(() => {
+  return props.modelValue.filter(item => item.order !== 'none')
+})
+
+const columnValue = customRef<Sorting & { index?: number }>((track, trigger) => {
   return {
     get () {
       track() // 追蹤數據改變
-      const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
+      const column = props.modelValue.find(item => item.key === props.prop)
+      const serialNumber = filterNoneColumnList.value.findIndex(item => item.key === props.prop)
+
       return {
-        ...props.modelValue[columnIndex],
-        index: columnIndex
+        ...column,
+        index: serialNumber
       }
     },
-    set (value: Sort & { index?: number }) {
+    set (value: Sorting & { index?: number }) {
       const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
       const _temp = props.modelValue[columnIndex]
-      console.log(value)
 
       const newValue = [...props.modelValue]
       newValue[columnIndex] = {
@@ -86,7 +90,7 @@ const onSortClick = (type: string) => {
     key: props.prop,
     order: newOrder
   }
-  emit('change', columnValue.value)
+  emit('change')
 }
 
 const onAscClick = () => {

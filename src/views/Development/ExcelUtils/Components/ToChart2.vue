@@ -79,7 +79,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="page">
+  <div v-loading="isLoading" class="page">
     <CustomCharts :options="options" />
   </div>
 </template>

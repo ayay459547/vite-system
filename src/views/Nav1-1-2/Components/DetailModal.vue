@@ -53,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="detal flex-column i-ga-lg">
+  <div v-loading="isLoading" class="detal flex-column i-ga-lg">
     <ElDescriptions
       title="User Information"
       direction="vertical"

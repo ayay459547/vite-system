@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
 import type { WritableComputedRef, PropType } from 'vue'
-import { ref, computed, watch, inject } from 'vue'
+import { ref, computed, watch, inject, effectScope, onMounted, onUnmounted } from 'vue'
 import { CustomButton } from '@/components'
 
 export type WidthSize = 'fill' | 'large'| 'default'| 'small'
@@ -60,14 +60,6 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
-watch(tempValue, (newValue) => {
-  if (newValue) {
-    openModal()
-  } else {
-    closeModal()
-  }
-})
-
 const openModal = () => {
   wrapperIsShow.value = true
 
@@ -104,6 +96,25 @@ const clickOutside = () => {
     tempValue.value = false
   }
 }
+
+const scope = effectScope()
+
+onMounted(() => {
+  scope.run(() => {
+    watch(tempValue, (newValue) => {
+      if (newValue) {
+        openModal()
+      } else {
+        closeModal()
+      }
+    })
+  })
+})
+
+onUnmounted(() => {
+  scope.stop()
+})
+
 
 </script>
 
@@ -158,9 +169,7 @@ const clickOutside = () => {
               </div>
             </slot>
           </div>
-          <div v-else class="modal-footer-hidden">
-
-          </div>
+          <div v-else class="modal-footer-hidden"></div>
         </div>
       </Transition>
     </div>

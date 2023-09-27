@@ -114,7 +114,7 @@ const onUserIdClick = (rowData: any) => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="page">
+  <div v-loading="isLoading" class="page">
     <!-- <div class="flex-row content-end">
       <CustomButton
         :label="i18nTranslate('refrush')"

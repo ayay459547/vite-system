@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import { useSlots } from 'vue'
 import { ElButton } from 'element-plus'
 
 import type { IconType } from '@/components'
@@ -117,6 +118,12 @@ const onClick = ($event: Event) => {
   emit('click', $event)
 }
 
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
+
 </script>
 
 <template>
@@ -143,7 +150,7 @@ const onClick = ($event: Event) => {
           />
         </template>
 
-        <template v-if="props.label.length > 0" #default>
+        <template v-if="props.label.length > 0 || hasSlot('default')" #default>
           <slot>
             <span
               class="button-label"

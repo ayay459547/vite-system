@@ -35,7 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="excel-wrapper">
+  <div v-loading="isLoading" class="excel-wrapper">
     <div class="excel-container">
       <div class="excel-tabs">
         <CustomTabs v-model="tab" :list="tabs" @change="init"/>

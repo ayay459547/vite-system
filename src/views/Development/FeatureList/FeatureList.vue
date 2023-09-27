@@ -69,7 +69,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="table-test">
+  <div v-loading="isLoading" class="table-test">
     <div class="flex-row content-end">
       <FilterView
         v-model:forms="filter"

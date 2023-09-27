@@ -385,7 +385,7 @@ const svg = `
           >
             <div
               style="width: 100%; height: 50px;"
-              v-i-loading="true"
+              v-loading="true"
               element-loading-text="Loading..."
               :element-loading-spinner="svg"
               element-loading-svg-view-box="-10, -10, 50, 50"

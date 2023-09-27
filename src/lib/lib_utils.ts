@@ -3,10 +3,14 @@ import { useI18n } from 'vue-i18n'
 import { useSlots } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
+
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 import { v4 as uuidv4 } from 'uuid'
+
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+dayjs.extend(duration)
 
 export const hasOwnProperty = Object.prototype.hasOwnProperty
 
@@ -173,10 +177,23 @@ export const round = (num: number, n: number = 2): number => {
  * @description https://day.js.org/docs/en/display/format
  * @param {String} value 日期
  * @param {String} format 想要的格式
- * @returns {String} 格式化後的日期
+ * @returns {String} 格式化後的時間
  */
-export const datetimeFormat = (value: string | Date, format: string): string => {
+export const datetimeFormat = (value: string | Date, format: string = 'YYYY-MM-DD'): string => {
   return dayjs(value).format(format)
+}
+
+export type DurationType = 'seconds'| 'minutes'| 'hours'| 'days'| 'months'| 'years'
+/**
+ * @author Caleb
+ * @description https://day.js.org/docs/en/durations/creating
+ * @param {Number} time 時間
+ * @param {DurationType} type 類型
+ * @param {String} format 想要的格式
+ * @returns {String} 格式化後的時間
+ */
+export const durationFormat = (time: number, type: DurationType = 'seconds', format: string = 'HH:mm:ss'): string => {
+  return dayjs.duration(time, type).format(format)
 }
 
 /**

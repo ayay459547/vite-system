@@ -83,7 +83,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="page">
+  <div v-loading="isLoading" class="page">
     <div class="flex-row content-between i-pb-sm">
       <label>Excel 轉 JSON</label>
       <CustomButton label="下載使用範例" type="info" icon-name="download" @click="downloadStaticFile('Excel轉柱狀圖.xlsx')"/>

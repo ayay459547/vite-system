@@ -166,7 +166,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="page">
+  <div v-loading="isLoading" class="page">
     <div class="flex-row content-between">
       <CustomButton
         type="primary"

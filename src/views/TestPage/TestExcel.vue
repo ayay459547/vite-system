@@ -1,7 +1,26 @@
 <script setup lang="ts">
+import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomCharts } from '@/components'
 import { downloadExcel } from '@/lib/lib_files'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, inject } from 'vue'
+// import { storeToRefs } from 'pinia'
+// import { useRoutesStore } from '@/stores/stores_routes'
+// import { getPermission } from '@/lib/lib_permission'
+
+const hook: Hook = inject('hook')
+const { permission, loading } = hook()
+
+onMounted(() => {
+  loading(true, 'test')
+
+  const mission = permission(9)
+
+  console.log('mission => ', mission)
+
+  setTimeout(() => {
+    loading(false, '')
+  }, 2000)
+})
 
 const chartsOptions = () => {
   return {
@@ -105,7 +124,7 @@ const download = () => {
 </script>
 
 <template>
-  <div v-i-loading="isLoading" class="page">
+  <div v-loading="isLoading" class="page">
     <CustomButton label="下載Excel" @click="download" />
 
     <CustomCharts :options="chartsOptions" />

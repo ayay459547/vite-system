@@ -32,9 +32,7 @@ export { default as CustomDraggable } from './feature/CustomDraggable/CustomDrag
 
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
-export type {
-  Fit
-} from './feature/CustomImage/CustomImage.vue'
+export type { ImageFit } from './feature/CustomImage/CustomImage.vue'
 export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
 
 export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
@@ -84,11 +82,14 @@ export declare interface CustomTableExpose {
   pageChange: PageChange
   getTableParams: () => TableParams
   setTableParams: (params: TableParams) => void
+  resetScroll: () => void
 }
 export type {
+  Order,
+  Sort,
+  Sorting,
   PageChange,
   TableParams,
-  Sort,
   LazyLoadingStatus
 } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'

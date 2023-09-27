@@ -13,9 +13,9 @@ const pluginDirective = {
   install (app: App): void {
     app.use(vClickOutside)
 
-    app.directive('i-loading', vLoading)
+    app.directive('loading', vLoading)
 
-    app.directive('i-fixed', vFixed)
+    app.directive('fixed', vFixed)
   }
 }
 

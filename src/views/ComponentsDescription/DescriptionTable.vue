@@ -1,11 +1,12 @@
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import {
   CustomDivider,
   CustomMarkdown,
   CustomTable
 } from '@/components'
+
+import type { TableParams } from '@/components'
 
 import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
 
@@ -91,14 +92,28 @@ const download = () => {
   downloadExcel(tableData2)
 }
 
-const test = ref('')
-
-console.log(test)
+const onTableChange = ({ sortingList }: TableParams) => {
+  console.log(sortingList)
+}
 
 </script>
 
 <template>
   <div class="page">
+    <div style="width: 100%; height: 400px;">
+      <CustomTable
+        :table-data="tableData2"
+        :table-data-count="500"
+        show-no
+        v-bind="tableSetting"
+        @excel="download"
+        @show-change="onTableChange"
+      >
+        <template #header-all="{ column }">{{ `${column.label} { 可自訂 }` }}</template>
+        <template #column-all="{ row, prop }">{{ `${row[prop]} { 可自訂 }` }}</template>
+      </CustomTable>
+    </div>
+
     <div style="width: 100%; height: 400px;">
       <CustomTable
         title="表格組件(不使用 getTableSetting)"
@@ -114,19 +129,6 @@ console.log(test)
             {{ `#${rowIndex + 1} { 可自訂 }` }}
           </div>
         </template>
-      </CustomTable>
-    </div>
-
-    <div style="width: 100%; height: 400px;">
-      <CustomTable
-        :table-data="tableData2"
-        :table-data-count="500"
-        show-no
-        v-bind="tableSetting"
-        @excel="download"
-      >
-        <template #header-all="{ column }">{{ `${column.label} { 可自訂 }` }}</template>
-        <template #column-all="{ row, prop }">{{ `${row[prop]} { 可自訂 }` }}</template>
       </CustomTable>
     </div>
 

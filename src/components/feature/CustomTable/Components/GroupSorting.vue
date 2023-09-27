@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import type { PropType } from 'vue'
-import { computed } from 'vue'
 import type { Sorting, Order } from '../CustomTable.vue'
-import type { Sort } from '@/components'
 
 import {
   CustomPopover,
@@ -23,7 +22,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'reset-sorting', 'submit'])
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -46,16 +45,15 @@ const setSortingValue = (order: Order, key: string) => {
   tempValue.value = newValue
 }
 
-const onRadioChange = () => {
-  console.log('onRadioChange')
+const resetSorting = () => {
+  emit('reset-sorting')
 }
 
-const resetSorting = () => {
-  console.log('resetSorting')
-}
+const visible = ref(false)
 
 const submit = () => {
-  console.log('submit')
+  visible.value = false
+  emit('submit')
 }
 
 </script>
@@ -63,6 +61,7 @@ const submit = () => {
 <template>
   <div class="group-wrapper">
     <CustomPopover
+      v-model:visible="visible"
       :width="props.settingWidth + 120"
       trigger="click"
       placement="bottom-end"
@@ -93,7 +92,6 @@ const submit = () => {
                 { label: $t('none'), value: 'none' },
                 { label: $t('descending'), value: 'descending' }
               ]"
-              @change="onRadioChange"
             />
 
             <CustomButton

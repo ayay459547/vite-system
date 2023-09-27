@@ -10,6 +10,9 @@ import {
   nextTick,
   useSlots
 } from 'vue'
+
+import { isEmpty } from '@/lib/lib_utils'
+
 // layout
 import SideContent from '@/components/layout/SideContent/SideContent.vue'
 import HeaderContent from '@/components/layout/HeaderContent/HeaderContent.vue'
@@ -46,8 +49,6 @@ import { ElNotification } from 'element-plus'
 import { getPermission } from '@/lib/lib_permission'
 
 // slot
-import { isEmpty } from '@/lib/lib_utils'
-
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
@@ -180,6 +181,7 @@ const onRouteChange = (currentRoute: RouteLocationNormalized) => {
 
   setModalView(currentRoute)
   setNavigationData(currentRoute)
+
   setLoading(currentRoute)
   setWebTitle()
 }
@@ -368,7 +370,7 @@ const login = async (userId: number) => {
               />
             </template>
 
-            <div v-i-loading="isLoading" class="layout-mask">
+            <div v-loading="isLoading" class="layout-mask">
               <RouterView v-slot="{ Component, route }">
                 <component
                   v-if="route.name === 'login'"
@@ -503,6 +505,7 @@ const login = async (userId: number) => {
   }
   &-mask {
     width: 100%;
+    min-height: fit-content;
     height: 100%;
     position: absolute;
     overflow: auto;

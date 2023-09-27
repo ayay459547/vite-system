@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { customRef, ref } from 'vue'
 import { ElTooltip } from 'element-plus'
+import { isEmpty } from '@/lib/lib_utils'
 
 export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
 export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
 
 export interface Props {
-  visible?: boolean
+  visible?: boolean | null
   placement?: Placement
   trigger?: Trigger
 }
 const props = withDefaults(defineProps<Props>(), {
-  visible: false,
+  visible: null,
   placement: 'bottom',
   trigger: 'hover'
 })
@@ -20,29 +21,24 @@ const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void
 }>()
 
-const tempVisible = computed<boolean>({
-  get: () => props.visible,
-  set: (value) => emit('update:visible', value)
-})
+const tempVisible = ref(false)
 
-const elVisible = ref(false)
-const tempElVisible = computed<boolean>({
-  get: () => elVisible.value,
-  set: (value: boolean) => elVisible.value = value
-})
+const tempValue = customRef((track, trigger) => {
+  return {
+    get () {
+      track() // 追蹤數據改變
+      if (
+        !isEmpty(props.visible) &&
+        typeof props.visible === 'boolean'
+      ) return props.visible
 
-const onUpdateVisible = (value: boolean): boolean => {
-  tempVisible.value = value
-  tempElVisible.value = value
-  return value
-}
-
-const isShow = computed<boolean>({
-  get: () => {
-    return tempVisible.value || tempElVisible.value
-  },
-  set: (v: boolean) => {
-    onUpdateVisible(v)
+      return tempVisible.value
+    },
+    set (value: boolean) {
+      tempVisible.value = value
+      emit('update:visible', value)
+      trigger() // 通知 vue 重新解析
+    }
   }
 })
 
@@ -51,11 +47,10 @@ const isShow = computed<boolean>({
 <template>
   <div class="popover-container">
     <ElTooltip
-      :visible="isShow"
+      v-model:visible="tempValue"
       :placement="props.placement"
       :trigger="props.trigger"
       effect="light"
-      @update:visible="onUpdateVisible"
     >
       <template #default>
         <slot></slot>
