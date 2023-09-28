@@ -290,11 +290,11 @@ const CustomInput = defineComponent({
               onlyNumber={props.onlyNumber}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e) => { onEvent.value.onFocus(e) } }
-              onClear={ () => { onEvent.value.onClear() } }
-              onBlur={ (e) => { onEvent.value.onBlur(e) } }
-              onChange={ (e) => { onEvent.value.onChange(e) } }
-              onInput={ (e) => { onEvent.value.onInput(e) } }
+              onFocus={ (e: any) => onEvent.value.onFocus(e) }
+              onClear={ () => onEvent.value.onClear() }
+              onBlur={ (e: any) => onEvent.value.onBlur(e) }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onInput={ (e: any) => onEvent.value.onInput(e) }
             >
               {{ ...getTemplate(['prepend', 'append', 'prefix', 'suffix']) }}
             </FormInput>
@@ -313,11 +313,11 @@ const CustomInput = defineComponent({
                 onlyNumber={props.onlyNumber}
                 errorMessage={errorMessage.value}
                 // v-on 接收事件
-                onFocus={ (e) => { onEvent.value.onFocus(e) } }
-                onClear={ () => { onEvent.value.onClear() } }
-                onBlur={ (e) => { onEvent.value.onBlur(e) } }
-                onChange={ (e) => { onEvent.value.onChange(e) } }
-                onInput={ (e) => { onEvent.value.onInput(e) } }
+                onFocus={ (e: any) => onEvent.value.onFocus(e) }
+                onClear={ () => onEvent.value.onClear() }
+                onBlur={ (e: any) => onEvent.value.onBlur(e) }
+                onChange={ (e: any) => onEvent.value.onChange(e) }
+                onInput={ (e: any) => onEvent.value.onInput(e) }
               >
                 {{ ...getTemplate(['prepend', 'append', 'prefix', 'suffix']) }}
               </FormInput>
@@ -336,12 +336,12 @@ const CustomInput = defineComponent({
               options={props.options}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e) => { onEvent.value.onFocus(e) } }
-              onClear={ () => { onEvent.value.onClear() } }
-              onBlur={ (e) => { onEvent.value.onBlur(e) } }
-              onChange={ (e) => { onEvent.value.onChange(e) } }
-              onRemove-tag={ (e) => { onEvent.value.onRemoveTag(e) } }
-              onVisible-change={ (e) => { onEvent.value.onVisibleChange(e) } }
+              onFocus={ (e: any) => onEvent.value.onFocus(e) }
+              onClear={ () => onEvent.value.onClear() }
+              onBlur={ (e: any) => onEvent.value.onBlur(e) }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onRemove-tag={ (e: any) => onEvent.value.onRemoveTag(e) }
+              onVisible-change={ (e: any) => onEvent.value.onVisibleChange(e) }
             >
               {{ ...getTemplate(['prefix', 'empty']) }}
             </FormSelect>
@@ -366,9 +366,9 @@ const CustomInput = defineComponent({
               type={props.type}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e) => { onEvent.value.onFocus(e) } }
-              onBlur={ (e) => { onEvent.value.onBlur(e) } }
-              onChange={ (e) => { onEvent.value.onChange(e) } }
+              onFocus={ (e: any) => onEvent.value.onFocus(e) }
+              onBlur={ (e: any) => onEvent.value.onBlur(e) }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
             >
               {{ ...getTemplate(['default', 'range-separator']) }}
             </FormDatePicker>
@@ -385,7 +385,7 @@ const CustomInput = defineComponent({
               label={props.label}
               options={props.options}
               errorMessage={errorMessage.value}
-              onChange={ (e) => { onEvent.value.onChange(e) } }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
             >
               {{ ...getTemplate(['default', 'option']) }}
             </FormCheckbox>
@@ -401,7 +401,7 @@ const CustomInput = defineComponent({
               { ...bindAttributes.value }
               options={props.options}
               errorMessage={errorMessage.value}
-              onChange={ (e) => { onEvent.value.onChange(e) } }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
             >
               {{ ...getTemplate(['option']) }}
             </FormRadio>

@@ -59,7 +59,7 @@ const init = async () => {
 
   setTimeout(() => {
     isLoading.value = false
-  }, 300)
+  }, 500)
 }
 
 onMounted(() => {

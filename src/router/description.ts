@@ -17,7 +17,7 @@ const descriptionRoutes: RouterTree[] = [
         systemType: ['development', 'test'],
         path: '/description-badge',
         component: () => import('@/views/ComponentsDescription/DescriptionBadge.vue'),
-        icon: 'ribbon'
+        icon: 'medal'
       },
       {
         name: 'description-button',
@@ -42,6 +42,18 @@ const descriptionRoutes: RouterTree[] = [
         path: '/description-divider',
         component: () => import('@/views/ComponentsDescription/DescriptionDivider.vue'),
         icon: 'slash'
+      },
+      {
+        name: 'description-drawer',
+        title: 'CustomDrawer',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-drawer',
+        component: () => import('@/views/ComponentsDescription/DescriptionDrawer.vue'),
+        icon: 'square-caret-down'
       },
       {
         name: 'description-empty',

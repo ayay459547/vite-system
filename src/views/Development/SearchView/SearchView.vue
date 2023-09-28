@@ -84,7 +84,7 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
 <style lang="scss" scoped>
 .home {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 16px);
   padding: 16px;
 
   &-search {

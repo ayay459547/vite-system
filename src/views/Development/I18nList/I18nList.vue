@@ -43,7 +43,7 @@ const init = async () => {
 
   setTimeout(() => {
     isLoading.value = false
-  }, 300)
+  }, 500)
 }
 
 onMounted(() => {
@@ -82,7 +82,7 @@ onMounted(() => {
   &-test {
     width: 100%;
     height: 100%;
-    padding: 32px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
   }

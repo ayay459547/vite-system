@@ -2,7 +2,8 @@ export const columnSetting = {
   status: {
     label: '狀態',
     table: {
-      width: 180
+      width: 180,
+      sortable: 'custom'
     },
     filter: {
       type: 'select',
@@ -45,19 +46,22 @@ export const columnSetting = {
   startDate: {
     label: '預計開始日',
     table: {
-      width: 130
+      width: 130,
+      sortable: 'custom'
     }
   },
   completedDate: {
     label: '預計完成日',
     table: {
-      width: 130
+      width: 130,
+      sortable: 'custom'
     }
   },
   title: {
     label: '名稱',
     table: {
-      width: 250
+      width: 250,
+      sortable: 'custom'
     },
     filter: {
       type: 'text',
@@ -70,7 +74,8 @@ export const columnSetting = {
   path: {
     label: '網址',
     table: {
-      width: 200
+      width: 200,
+      sortable: 'custom'
     },
     filter: {
       type: 'text',
@@ -83,7 +88,8 @@ export const columnSetting = {
   mode: {
     label: '功能模組',
     table: {
-      width: 250
+      width: 250,
+      sortable: 'custom'
     },
     filter: {
       type: 'select',
@@ -96,7 +102,8 @@ export const columnSetting = {
   breadcrumbTitle: {
     label: '路徑',
     table: {
-      minWidth: 320
+      minWidth: 320,
+      sortable: 'custom'
     },
     filter: {
       type: 'text',

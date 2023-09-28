@@ -70,16 +70,19 @@ const onEvent = {
   input: (value: string | number): void => {
     emit('input', value)
 
-    // 轉數字
     setTimeout(() => {
-      if (props.onlyNumber) {
-        let _value = value
-        if (typeof _value === 'string' && props.onlyNumber) {
-          const regexp = /[\D]/g
-          _value = _value.replace(regexp, '')
-        }
-        emit('update:modelValue', _value)
+      let _value = value
+      // 去前後空白
+      if (typeof _value === 'string') {
+        _value = _value.replace(/^(\s+)|(\s+)$/g, '')
       }
+      // 轉數字
+      if (props.onlyNumber && typeof _value === 'string') {
+        const regexp = /[\D]/g
+        _value = _value.replace(regexp, '')
+      }
+
+      emit('update:modelValue', _value)
     }, 0)
   }
 }
@@ -107,7 +110,7 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <div class="i-input">
     <ElInput
-      v-model.trim="inputValue"
+      v-model="inputValue"
       class="i-input"
       :placeholder="$t('pleaseInput')"
       :class="[`validate-${validateRes}`]"

@@ -29,7 +29,7 @@ export default {
   filter: {
     zhTw: '篩選',
     zhCn: '筛选',
-    en: 'filter'
+    en: 'Filter'
   },
   search: {
     zhTw: '搜尋',

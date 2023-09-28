@@ -1,7 +1,7 @@
 // @ts-ignore
 import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
-import { defineComponent, inject, computed, ref, onMounted } from 'vue'
+import { defineComponent, inject, computed, ref } from 'vue'
 // @ts-ignore
 import type { PopoverPlacement } from '@/components'
 import { CustomButton, CustomPopover } from '@/components'

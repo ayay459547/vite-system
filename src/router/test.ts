@@ -96,6 +96,17 @@ const testRoutes: RouterTree[] = [
     icon: 'flask-vial',
     leaves: [
       {
+        name: 'search-test',
+        title: '搜尋組件測試',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/search-test',
+        component: () => import('@/views/ComponentsTest/Search-test.vue')
+      },
+      {
         name: 'test-page-1',
         title: '測試頁面-1',
         meta: {

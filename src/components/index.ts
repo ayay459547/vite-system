@@ -30,6 +30,8 @@ export type {
 } from './feature/CustomDraggable/CustomDraggable.vue'
 export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
 
+export { default as CustomDrawer } from './feature/CustomDrawer/CustomDrawer.vue'
+
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
 export type { ImageFit } from './feature/CustomImage/CustomImage.vue'
@@ -41,7 +43,8 @@ export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 export type {
   ModelValue as InputModelValue,
   Option,
-  Options
+  Options,
+  InputType
 } from './feature/CustomInput/props'
 // @ts-ignore
 export { default as CustomInput } from './feature/CustomInput/CustomInput.tsx'
@@ -68,6 +71,11 @@ export type {
   Trigger as PopoverTrigger
 } from './feature/CustomPopover/CustomPopover.vue'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
+
+// 搜尋用組件
+export { default as CustomSearch } from './feature/CustomSearch/CustomSearch.vue'
+// GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
+export { default as GroupSearch } from './feature/CustomSearch/GroupSearch.vue'
 
 export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'
 
