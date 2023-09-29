@@ -14,7 +14,9 @@ import {
   FormSelect,
   FormDatePicker,
   FormCheckbox,
-  FormRadio
+  FormRadio,
+  FormAutocomplete,
+  FormOperator
   // @ts-ignore
 } from '@/components'
 import styles from './CustomInput.module.scss'
@@ -341,7 +343,7 @@ const CustomInput = defineComponent({
               onBlur={ (e: any) => onEvent.value.onBlur(e) }
               onChange={ (e: any) => onEvent.value.onChange(e) }
               onRemove-tag={ (e: any) => onEvent.value.onRemoveTag(e) }
-              onVisible-change={ (e: any) => onEvent.value.onVisibleChange(e) }
+              onVisible-change={ (e: boolean) => onEvent.value.onVisibleChange(e) }
             >
               {{ ...getTemplate(['prefix', 'empty']) }}
             </FormSelect>
@@ -406,8 +408,15 @@ const CustomInput = defineComponent({
               {{ ...getTemplate(['option']) }}
             </FormRadio>
           )
+        case 'autocomplete':
+          return (
+            <FormAutocomplete></FormAutocomplete>
+          )
+        case 'operator':
+          return (
+            <FormOperator></FormOperator>
+          )
         default:
-          console.log('')
           tipLog(`輸入框類型 ${props.type} 不存在`, [
             '以下為可用類型',
             'text', 'textarea', 'password', 'select',

@@ -39,7 +39,10 @@ const props = defineProps({
   disabled: {
     type: Boolean as PropType<boolean>,
     default: false
-  }
+  },
+  // tsx event
+  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
+  onChange: Function as PropType<(e: CheckboxGroupValueType | CheckboxValueType) => void>
 })
 
 const bindAttributes = computed(() => {

@@ -50,7 +50,12 @@ const props = defineProps({
   shortcuts: {
     type: Array as PropType<Shortcuts[]>,
     required: false
-  }
+  },
+  // tsx event
+  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
+  onFocus: Function as PropType<(e: FocusEvent) => void>,
+  onBlur: Function as PropType<(e: FocusEvent) => void>,
+  onChange: Function as PropType<(e: ModelValue) => void>
 })
 
 const bindAttributes = computed(() => {

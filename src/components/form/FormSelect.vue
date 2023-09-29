@@ -74,7 +74,15 @@ const props = defineProps({
   allowCreate: {
     type: Boolean as PropType<boolean>,
     default: false
-  }
+  },
+  // tsx event
+  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
+  onFocus: Function as PropType<(e: FocusEvent) => void>,
+  onClear: Function as PropType<() => void>,
+  onBlur: Function as PropType<(e: FocusEvent) => void>,
+  onChange: Function as PropType<(value: string | number) => void>,
+  'onRemove-tag': Function as PropType<(tagValue: any) => void>,
+  'onVisible-change': Function as PropType<(visible: boolean) => void>
 })
 
 const bindAttributes = computed(() => {
@@ -105,24 +113,12 @@ const emit = defineEmits([
 ])
 
 const onEvent = {
-  focus: (e: FocusEvent): void => {
-    emit('focus', e)
-  },
-  clear: (): void => {
-    emit('clear')
-  },
-  blur: async (e: FocusEvent): Promise<void> => {
-    emit('blur', e)
-  },
-  change: (value: string | number): void => {
-    emit('change', value)
-  },
-  removeTag: (tagValue: any): void => {
-    emit('remove-tag', tagValue)
-  },
-  visibleChange: (visible: boolean): void => {
-    emit('visible-change', visible)
-  }
+  focus: (e: FocusEvent): void => emit('focus', e),
+  clear: (): void => emit('clear'),
+  blur: (e: FocusEvent): void => emit('blur', e),
+  change: (value: string | number): void => emit('change', value),
+  removeTag: (tagValue: any): void => emit('remove-tag', tagValue),
+  visibleChange: (visible: boolean): void => emit('visible-change', visible)
 }
 
 const validateRes = computed<string>(() => {

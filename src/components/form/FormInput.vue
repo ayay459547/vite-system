@@ -39,7 +39,14 @@ const props = defineProps({
   showPassword: {
     type: Boolean as PropType<boolean>,
     default: false
-  }
+  },
+  // tsx event
+  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
+  onFocus: Function as PropType<(e: FocusEvent) => void>,
+  onClear: Function as PropType<() => void>,
+  onBlur: Function as PropType<(e: FocusEvent) => void>,
+  onChange: Function as PropType<(value: string | number) => void>,
+  onInput: Function as PropType<(value: string | number) => void>
 })
 
 const bindAttributes = computed(() => {

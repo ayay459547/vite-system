@@ -1,11 +1,12 @@
 import type { PropType } from 'vue'
-import type { VeeRes, ValidateType } from '@/lib/lib_validate'
+import type { ValidateType } from '@/lib/lib_validate'
 import type { Shortcuts, PickerType } from '@/components'
 
 export type ModelValue = any | null | undefined
 export type InputType = (
   'text' | 'textarea' | 'password' |
   'select' | 'checkbox' | 'radio' |
+  'autocomplete' | 'operator' |
   PickerType
 )
 export type Option = {

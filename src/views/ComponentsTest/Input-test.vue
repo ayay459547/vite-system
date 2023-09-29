@@ -4,6 +4,22 @@ import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput, CustomButton } from '@/components'
 
 const columnSetting = {
+  autocomplete: {
+    label: '搜尋',
+    filter: {
+      type: 'autocomplete',
+      default: null,
+      required: false
+    }
+  },
+  operator: {
+    label: '條件',
+    filter: {
+      type: 'operator',
+      default: null,
+      required: false
+    }
+  },
   passowrd: {
     label: '密碼',
     filter: {
@@ -81,6 +97,8 @@ const columnSetting = {
 }
 
 interface Form {
+  autocomplete?: string
+  operator?: string
   passowrd?: string
   phone?: string
   date?: string
@@ -112,6 +130,16 @@ const submit = () => {
 
 <template>
   <div class="input-test">
+    <CustomInput
+      v-model="form.autocomplete"
+      v-bind="formColumn.autocomplete"
+    />
+
+    <CustomInput
+      v-model="form.operator"
+      v-bind="formColumn.operator"
+    />
+
     <CustomInput
       v-model="form.passowrd"
       v-bind="formColumn.passowrd"

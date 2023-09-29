@@ -141,6 +141,8 @@ export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
 // form
+export { default as FormAutocomplete } from './form/FormAutocomplete.vue'
+
 export { default as FormCheckbox } from './form/FormCheckbox.vue'
 
 export type {
@@ -159,6 +161,8 @@ export declare interface FormInputExpose {
 }
 
 export { default as FormInput } from './form/FormInput.vue'
+
+export { default as FormOperator } from './form/FormOperator.vue'
 
 export { default as FormRadio } from './form/FormRadio.vue'
 
