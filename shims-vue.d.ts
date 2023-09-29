@@ -23,14 +23,14 @@ declare module '@/components.*' {
   export default content
 }
 
-// declare module '*.md' {
-//   const markdown: string
-//   export default markdown
-// }
-// declare module '.md?raw' {
-//   const markdown: string
-//   export default markdown
-// }
+declare module '*.md' {
+  const markdown: string
+  export default markdown
+}
+declare module '*raw' {
+  const markdown: string
+  export default markdown
+}
 
 declare module '*.png'
 declare module '*.jpg'
