@@ -41,6 +41,7 @@ const onModalSubmit = () => {
 | clickOutside | 點擊外面是否關閉   | boolean | false    |
 | widthSize    | 寬度大小          | enum    | 'default' |
 | heightSize   | 高度大小          | enum    | 'default' |
+
 ### Slots
 | 插槽名     | 說明            |
 | --------- | --------------- |

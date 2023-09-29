@@ -18,8 +18,9 @@ export interface FormSetting<T> {
   defaultValue: T
   columns: Record<string, any>
   forms: T
-  ableds: Record<string, boolean>
+  activeForms: Record<string, boolean>
   reset: () => void
+  getActiveForms: (showEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
 }
 
@@ -47,8 +48,8 @@ export interface FormColumnsItem {
  */
 export const getFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
-  const formMap = reactive<Record<string, any>>({})
-  const resAbleds = reactive<Record<string, boolean>>({})
+  const resForms = reactive<Record<string, any>>({})
+  const resActiveForms = reactive<Record<string, boolean>>({})
 
   const refMap = shallowReactive<Record<string, any>>({})
 
@@ -60,6 +61,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
       },
       key,
+      slotKey: key,
       type: 'text',
       isValidate: true,
       validateKey: key,
@@ -80,8 +82,8 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
 
-      formMap[key] = temp.default
-      resAbleds[key] = true
+      resForms[key] = temp.default
+      resActiveForms[key] = true
 
       defaultValue[key] = temp.default
     }
@@ -98,16 +100,24 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
   return {
     defaultValue: defaultValue as T,
     columns: resColumns,
-    forms: formMap as T,
-    ableds: resAbleds,
+    forms: resForms as T,
+    activeForms: resActiveForms,
     reset: () => {
-      formMap.$forEach((value: any, key: string) => {
-        formMap[key] = resColumns[key]?.default ?? null
-        resAbleds[key] = true
+      resForms.$forEach((value: any, key: string) => {
+        resForms[key] = resColumns[key]?.default ?? null
+        resActiveForms[key] = true
 
         if (typeof refMap[key]?.handleReset === 'function') {
           refMap[key].handleReset()
         }
+      })
+    },
+    getActiveForms: (showEmpty: boolean = false) => {
+      return resForms.$filter((value: any, key: string) => {
+        if (showEmpty) {
+          return resActiveForms[key]
+        }
+        return resActiveForms[key] && !isEmpty(value)
       })
     },
     validate: async () => {

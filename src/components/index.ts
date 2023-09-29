@@ -26,10 +26,13 @@ export type {
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
 export type {
-  Change as DraggableChange
+  DraggableChange
 } from './feature/CustomDraggable/CustomDraggable.vue'
 export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
 
+export type {
+  DrawerDirection
+} from './feature/CustomDrawer/CustomDrawer.vue'
 export { default as CustomDrawer } from './feature/CustomDrawer/CustomDrawer.vue'
 
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'

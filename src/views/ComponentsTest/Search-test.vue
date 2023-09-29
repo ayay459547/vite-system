@@ -3,10 +3,9 @@ import {
   CustomSearch,
   CustomDrawer,
   CustomButton,
-  CustomInput,
   GroupSearch
 } from '@/components'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { getFormSetting } from '@/lib/lib_columns'
 
 type Form = {
@@ -46,11 +45,17 @@ const columnSetting = {
 const {
   columns,
   forms,
-  ableds,
-  reset
+  activeForms,
+  reset,
+  getActiveForms
 } = getFormSetting<Form>(columnSetting, 'filter')
 
 const isShow = ref(false)
+
+const get = () => {
+  const data = getActiveForms(true)
+  console.log(data)
+}
 
 </script>
 
@@ -59,11 +64,14 @@ const isShow = ref(false)
     <GroupSearch
       :columns="columns"
       class="grid-row"
+      @reset="reset"
+      @submit="get"
     >
       <template #search-all="{ prop, column }">
         <CustomSearch
-          class="grid-col-xs-24 grid-col-md-8"
+          class="grid-col-xs-8"
           v-model="forms[prop]"
+          v-model:active="activeForms[prop]"
           v-bind="column"
         />
       </template>
@@ -72,22 +80,24 @@ const isShow = ref(false)
     <CustomSearch
       v-model="forms.text"
       v-bind="columns.text"
+      v-model:active="activeForms.text"
     />
-    <h3>目前資料：{{ forms.text }}</h3>
 
     <CustomSearch
       v-model="forms.select"
       v-bind="columns.select"
+      v-model:active="activeForms.select"
     />
-    <h3>目前資料：{{ forms.select }}</h3>
 
     <CustomSearch
       v-model="forms.date"
       v-bind="columns.date"
+      v-model:active="activeForms.date"
     />
-    <h3>目前資料：{{ forms.date }}</h3>
 
     <CustomButton label="重置" @click="reset"/>
+
+    <CustomButton label="取值" @click="get"/>
 
     <CustomButton label="測試Drawer" @click="isShow = true"/>
 

@@ -6,7 +6,7 @@ import type { PropType } from 'vue'
 
 const props = defineProps({
   columns: {
-    type: Object as PropType<Record<string, any>>,
+    type: Object as PropType<Record<string, Record<string, any>>>,
     default: () => {
       return {}
     },
@@ -16,6 +16,10 @@ const props = defineProps({
     type: String as PropType<string>,
     default: ''
   },
+  size: {
+    type: [String, Number] as PropType<string | number>,
+    default: 300
+  }
 })
 
 const isShow = ref(false)
@@ -51,7 +55,11 @@ const hasSlot = (prop: string): boolean => {
       @click="isShow = true"
     />
 
-    <CustomDrawer v-model="isShow">
+    <CustomDrawer
+      v-model="isShow"
+      :size="props.size"
+      direction="ttb"
+    >
       <template #header>
         <div class="group-header">
           <label>{{ i18nTranslate('search') }}</label>
@@ -61,9 +69,9 @@ const hasSlot = (prop: string): boolean => {
       <template #default>
         <div :class="props.class">
           <template v-for="(column, key) in props.columns" :key="key">
-            <template v-if="hasSlot(`search-${column.key}`)">
+            <template v-if="hasSlot(`search-${column.slotKey}`)">
               <slot
-                :name="`search-${column.key}`"
+                :name="`search-${column.slotKey}`"
                 :label="column.label"
                 :key="key"
                 :prop="key"

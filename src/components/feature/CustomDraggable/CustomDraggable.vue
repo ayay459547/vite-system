@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable'
-import { computed, useSlots, ref } from 'vue'
+import { computed, useSlots } from 'vue'
 import type { PropType } from 'vue'
 import { isEmpty } from '@/lib/lib_utils'
 
@@ -13,59 +13,75 @@ const hasSlot = (prop: string): boolean => {
 const props = defineProps({
   modelValue: {
     type: Array as PropType<any[]>,
-    required: true
+    required: true,
+    description: '綁定資料列表'
   },
   itemKey: {
     type: String as PropType<string>,
     required: false,
-    default: 'id'
+    default: 'id',
+    description: '每筆資料的key'
   },
   handle: {
     type: String as PropType<string>,
     required: false,
-    default: '.__draggable'
+    default: '.__draggable',
+    description: '指定可拖拉的元素(css選擇器)'
+  },
+  class: {
+    type: String as PropType<string>,
+    required: false,
+    default: '',
+    description: '外層class'
   },
   rowClass: {
     type: String as PropType<string>,
     required: false,
-    default: ''
+    default: '',
+    description: '資料列class'
   },
   tag: {
     type: String as PropType<string>,
     required: false,
     // default: 'TransitionGroup'
-    default: 'ul'
+    default: 'ul',
+    description: '外層html標籤'
   },
   clone: {
     type: Function as PropType<Function>,
     required: false,
     default: (original: any) => {
       return original
-    }
+    },
+    description: '自訂拷貝方式'
   },
   move: {
     type: [Function, undefined] as PropType<Function | undefined>,
     required: false,
-    default: undefined
+    default: undefined,
+    description: '移動後的回調函數'
   },
-  componentData: {
-    type: [Object, null] as PropType<Record<any, any> | null>,
+  // componentData: {
+  //   type: [Object, null] as PropType<Record<any, any> | null>,
+  //   required: false,
+  //   default: null
+  // },
+  ghostClass: {
+    type: String as PropType<string>,
     required: false,
-    default: null
+    default: '',
+    description: '移動中的class'
+  },
+  direction: {
+    type: String as PropType<'column' | 'row'>,
+    default: 'column',
+    description: '方向'
   },
   group: {
     type: [String, Object] as PropType<any>,
     required: false,
-    default: 'name'
-  },
-  ghostClass: {
-    type: String as PropType<string>,
-    required: false,
-    default: ''
-  },
-  direction: {
-    type: String as PropType<'column' | 'row'>,
-    default: 'column'
+    default: 'name',
+    description: '資料列class'
   }
 })
 
@@ -84,26 +100,18 @@ const emit = defineEmits([
   'update:modelValue'
 ])
 
-const drag = ref(false)
-
-const onStart = ($event: any) => {
-  drag.value = true
-  emit('start', $event)
-}
+// const onUpdate = ($event: any) => emit('update', $event)
+// const onSort = ($event: any) => emit('sort', $event)
+// const onFilter = ($event: any) => emit('filter', $event)
+const onStart = ($event: any) => emit('start', $event)
+const onEnd = ($event: any) => emit('end', $event)
 const onAdd = ($event: any) => emit('add', $event)
 const onRemove = ($event: any) => emit('remove', $event)
-const onUpdate = ($event: any) => emit('update', $event)
-const onEnd = ($event: any) => {
-  drag.value = false
-  emit('end', $event)
-}
 const onChoose = ($event: any) => emit('choose', $event)
 const onUnchoose = ($event: any) => emit('unchoose', $event)
-const onSort = ($event: any) => emit('sort', $event)
-const onFilter = ($event: any) => emit('filter', $event)
 const onClone = ($event: any) => emit('clone', $event)
 
-export type Change = {
+export type DraggableChange = {
   added?: {
     newIndex: number
     element: Record<string, any>
@@ -118,10 +126,7 @@ export type Change = {
     element: Record<string, any>
   }
 }
-const onChange = ($event: Change) => {
-  drag.value = false
-  emit('change', $event)
-}
+const onChange = ($event: DraggableChange) => emit('change', $event)
 
 const listValue = computed({
   get () {
@@ -149,17 +154,14 @@ const listValue = computed({
       :disabled="false"
       :animation="200"
       class="list-group"
-      :class="`flex-${props.direction}`"
-      ghost-class="ghost"
+      :class="`flex-${props.direction} ${props.class}`"
+      :ghost-class="ghostClass"
       @start="onStart"
+      @end="onEnd"
       @add="onAdd"
       @remove="onRemove"
-      @update="onUpdate"
-      @end="onEnd"
       @choose="onChoose"
       @unchoose="onUnchoose"
-      @sort="onSort"
-      @filter="onFilter"
       @clone="onClone"
       @change="onChange"
     >

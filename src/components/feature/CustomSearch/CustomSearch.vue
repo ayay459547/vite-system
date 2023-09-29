@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CustomSwitch, CustomInput } from '@/components'
 import type { InputType, Options } from '@/components'
-import { ref, customRef, nextTick } from 'vue'
+import { computed } from 'vue'
 import type { PropType } from 'vue'
 
 type ModelValue = any
@@ -95,60 +95,21 @@ const emit = defineEmits([
   'clear'
 ])
 
-const isActive = customRef((track, trigger) => {
-  return {
-    get () {
-      track()
-      return props.active
-    },
-    set (value: boolean) {
-      emit('update:active', value)
-      trigger()
-    }
-  }
-})
-
-const inputValue = ref('')
-
-const tempValue = customRef((track, trigger) => {
-  return {
-    get () {
-      track()
-      if (isActive.value) return props.modelValue
-      return inputValue.value
-    },
-    set (value: ModelValue) {
-      inputValue.value = value
-
-      if (isActive.value) {
-        emit('update:modelValue', value)
-      } else {
-        emit('update:modelValue', null)
-      }
-      trigger()
-    }
-  }
-})
-
-const setValue = (value: ModelValue) => {
-  tempValue.value = value
-}
-const onSwitchChange = async () => {
-  console.log('change')
-  await nextTick()
-  tempValue.value = inputValue.value
-}
-
-defineExpose({
-  handleReset: async () => {
-    isActive.value = true
-    await nextTick()
-    inputValue.value = props.modelValue
+const inpuValue = computed({
+  get () {
+    return props.modelValue
   },
-  changeSwitch: async () => {
-    isActive.value = !isActive.value
-    await nextTick()
-    onSwitchChange()
+  set (value: ModelValue) {
+    emit('update:modelValue', value)
+  }
+})
+
+const isActive = computed({
+  get () {
+    return props.active
+  },
+  set (value: boolean) {
+    emit('update:active', value)
   }
 })
 
@@ -158,12 +119,11 @@ defineExpose({
   <div class="search">
     <div class="search-title">
       <label>{{ props.label }}</label>
-      <CustomSwitch v-model="isActive" @change="onSwitchChange"/>
+      <CustomSwitch v-model="isActive"/>
     </div>
 
     <CustomInput
-      :model-value="tempValue"
-      @update:model-value="setValue"
+      v-model="inpuValue"
       :type="props.type"
       :options="props.options"
       :clearable="props.clearable"

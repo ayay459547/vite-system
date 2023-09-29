@@ -16,7 +16,7 @@ const descriptionRoutes: RouterTree[] = [
         },
         systemType: ['development', 'test'],
         path: '/description-badge',
-        component: () => import('@/views/ComponentsDescription/DescriptionBadge.vue'),
+        component: () => import('@/views/ComponentsDescription/Des_Badge.vue'),
         icon: 'medal'
       },
       {
@@ -28,7 +28,7 @@ const descriptionRoutes: RouterTree[] = [
         },
         systemType: ['development', 'test'],
         path: '/description-button',
-        component: () => import('@/views/ComponentsDescription/DescriptionButton.vue'),
+        component: () => import('@/views/ComponentsDescription/Des_Button.vue'),
         icon: 'hand-pointer'
       },
       {
@@ -40,8 +40,20 @@ const descriptionRoutes: RouterTree[] = [
         },
         systemType: ['development', 'test'],
         path: '/description-divider',
-        component: () => import('@/views/ComponentsDescription/DescriptionDivider.vue'),
+        component: () => import('@/views/ComponentsDescription/Des_Divider.vue'),
         icon: 'slash'
+      },
+      {
+        name: 'description-draggable',
+        title: 'CustomDraggable',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-draggable',
+        component: () => import('@/views/ComponentsDescription/Des_Draggable.vue'),
+        icon: 'grip-vertical'
       },
       {
         name: 'description-drawer',
@@ -52,7 +64,7 @@ const descriptionRoutes: RouterTree[] = [
         },
         systemType: ['development', 'test'],
         path: '/description-drawer',
-        component: () => import('@/views/ComponentsDescription/DescriptionDrawer.vue'),
+        component: () => import('@/views/ComponentsDescription/Des_Drawer.vue'),
         icon: 'square-caret-down'
       },
       {
@@ -64,7 +76,7 @@ const descriptionRoutes: RouterTree[] = [
         },
         systemType: ['development', 'test'],
         path: '/description-empty',
-        component: () => import('@/views/ComponentsDescription/DescriptionEmpty.vue'),
+        component: () => import('@/views/ComponentsDescription/Des_Empty.vue'),
         icon: 'cube'
       },
       {
@@ -76,7 +88,7 @@ const descriptionRoutes: RouterTree[] = [
         },
         systemType: ['development', 'test'],
         path: '/description-table',
-        component: () => import('@/views/ComponentsDescription/DescriptionTable.vue'),
+        component: () => import('@/views/ComponentsDescription/Des_Table.vue'),
         icon: 'table'
       }
     ]

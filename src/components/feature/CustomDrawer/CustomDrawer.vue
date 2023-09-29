@@ -3,7 +3,7 @@ import { computed, useSlots } from 'vue'
 import type { PropType } from 'vue'
 import { ElDrawer } from 'element-plus'
 
-export type Direction = 'rtl' | 'ltr' | 'ttb' | 'btt' | 'rtl'
+export type DrawerDirection = 'rtl' | 'ltr' | 'ttb' | 'btt'
 
 const props = defineProps({
   modelValue: {
@@ -12,8 +12,8 @@ const props = defineProps({
     description: '是否顯示'
   },
   direction: {
-    type: String as PropType<Direction>,
-    default: 'ttb',
+    type: String as PropType<DrawerDirection>,
+    default: 'rtl',
     description: '打開方向'
   },
   title: {
@@ -40,6 +40,11 @@ const props = defineProps({
     type: String as PropType<string>,
     default: '',
     description: '遮罩自訂class'
+  },
+  size: {
+    type: [Number, String] as PropType<number | string>,
+    default: '',
+    description: '視窗大小'
   }
 })
 
@@ -79,10 +84,11 @@ const hasSlot = (prop: string): boolean => {
       class="drawer-container card-info"
       :direction="props.direction"
       :title="props.title"
-      :destroy-on-close="destroyOnClose"
-      :custom-class="customClass"
-      :modal="modal"
-      :modal-class="modalClass"
+      :destroy-on-close="props.destroyOnClose"
+      :custom-class="props.customClass"
+      :modal="props.modal"
+      :modal-class="props.modalClass"
+      :size="props.size"
       @open="onOpen"
       @opened="onOpened"
       @close="onClose"
@@ -106,12 +112,11 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-$padding: 24px;
-
 :deep(.drawer-container) {
   &.el-drawer {
-    inset: $padding $padding;
-    width: calc(100% - $padding * 2);
+    .el-drawer__header {
+      margin-bottom: 0;
+    }
   }
 }
 

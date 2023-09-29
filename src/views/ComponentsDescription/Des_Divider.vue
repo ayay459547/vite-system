@@ -1,13 +1,11 @@
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
 import {
   CustomInput,
   CustomDivider,
-  CustomMarkdown,
-  CustomButton,
-  CustomDrawer
+  CustomMarkdown
 } from '@/components'
 
 import type {
