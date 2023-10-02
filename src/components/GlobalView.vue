@@ -83,6 +83,8 @@ const loading: HookList.loading = (isOpen, message) => {
     customLoader.value.closeLoader()
   }
 }
+// 系統參數
+const envStore = useEnvStore()
 
 provide<Hook>('hook', () => {
   return {
@@ -136,6 +138,9 @@ provide<Hook>('hook', () => {
 
       const { permission } = currentNavigation.value
       return getPermission(permission)
+    },
+    getEnv: () => {
+      return envStore
     }
   }
 })
@@ -175,7 +180,6 @@ const currentRouteName = computed<string>(() => {
 })
 
 // 路由更換時執行
-const envStore = useEnvStore()
 const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
 

@@ -11,9 +11,7 @@ import routes from '@/router/routes'
 import { setCookie, getCookie, removeCookie } from '@/lib/lib_cookie'
 
 // token
-import { getUuid } from '@/lib/lib_utils'
-import AES from 'crypto-js/aes'
-import Utf8 from 'crypto-js/enc-utf8'
+import { getUuid, aesEncrypt, aesDecrypt } from '@/lib/lib_utils'
 
 interface Token {
 	uid: string
@@ -31,19 +29,18 @@ export const useAuthStore = defineStore('auth', () => {
 		const token = getCookie('token')
 		if (['', null, undefined].includes(token)) return null
 
-		const _token = AES.decrypt(token, privateKey).toString(Utf8)
-		return JSON.parse(_token) as Token
+		return aesDecrypt(token, privateKey)
 	}
 	const setToken = (userId: number) => {
-		const _token = JSON.stringify({
+		const _token = {
 			uid: getUuid(),
 			date: new Date(),
 			userId
-		})
+		}
 
 		setCookie(
 			'token',
-			AES.encrypt(_token, privateKey).toString()
+			aesEncrypt(_token, privateKey)
 		)
 	}
 	const clearToken = () => {

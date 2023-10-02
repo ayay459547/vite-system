@@ -12,6 +12,9 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 dayjs.extend(duration)
 
+import AES from 'crypto-js/aes'
+import Utf8 from 'crypto-js/enc-utf8'
+
 export const hasOwnProperty = Object.prototype.hasOwnProperty
 
 /**
@@ -374,4 +377,30 @@ export const downloadStaticFile = (fileName: string) => {
  */
 export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
   return JSON.parse(JSON.stringify(value))
+}
+
+/**
+ * @author Caleb
+ * @description 使用 AES 加密資料
+ * @param {*} value 資料
+ * @param {String} key 加密用的key
+ * @returns {String} 回傳的值
+ */
+export const aesEncrypt = (value: any, key: string): string => {
+  const data = JSON.stringify(value)
+
+  return AES.encrypt(data, key).toString()
+}
+
+/**
+ * @author Caleb
+ * @description 使用 AES 解密資料
+ * @param {String} value 加密後的字串
+ * @param {String} key 加密用的key
+ * @returns {*} 回傳的值
+ */
+export const aesDecrypt = (value: string, key: string): any => {
+  const data = AES.decrypt(value, key).toString(Utf8)
+
+  return JSON.parse(data)
 }

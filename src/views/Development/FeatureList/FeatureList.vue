@@ -35,7 +35,7 @@ const download = () => {
 const {
   columns: filterColumn,
   forms: filter,
-  ableds: fitlerAbleds,
+  activeForms: fitlerAbleds,
   reset: filterReset
 } = getFormSetting<TableData>(columnSetting, 'filter')
 
