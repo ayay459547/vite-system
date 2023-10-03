@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getFormSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl, isEmpty } from '@/lib/lib_utils'
 import { CustomInput, CustomButton } from '@/components'
 
 const columnSetting = {
@@ -9,7 +9,7 @@ const columnSetting = {
     filter: {
       type: 'autocomplete',
       default: null,
-      required: false
+      required: true
     }
   },
   operator: {
@@ -126,6 +126,28 @@ const submit = () => {
   })
 }
 
+const list = [
+  { value: 'vue', link: 'https://github.com/vuejs/vue' },
+  { value: 'element', link: 'https://github.com/ElemeFE/element' },
+  { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+  { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+  { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+  { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+  { value: 'babel', link: 'https://github.com/babel/babel' }
+]
+
+const fetchSuggestions = (queryString: string, cb: (data: any[]) => void) => {
+  if (isEmpty(queryString)) {
+    cb([])
+    return
+  }
+  const results = list.filter(item => {
+    return item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+  })
+
+  cb(results)
+}
+
 </script>
 
 <template>
@@ -133,7 +155,15 @@ const submit = () => {
     <CustomInput
       v-model="form.autocomplete"
       v-bind="formColumn.autocomplete"
-    />
+      :fetch-suggestions="fetchSuggestions"
+    >
+      <template #default="{ item }">
+        <div>
+          <div class="value">{{ item?.value ?? 'value' }}</div>
+          <div class="link">{{ item?.link ?? 'link' }}</div>
+        </div>
+      </template>
+    </CustomInput>
 
     <CustomInput
       v-model="form.operator"

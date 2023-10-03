@@ -127,6 +127,7 @@ export interface Props extends Record<string, any> {
    * hiddenExcel: 是否隱藏下載Excel
    * showNo: 是否顯示編號
    * sorting: 是否有多欄位排序
+   * selection: 是否有checkbox
    */
   page?: number
   pageSize?: number
@@ -135,6 +136,7 @@ export interface Props extends Record<string, any> {
   hiddenExcel?: boolean
   showNo?: boolean
   sorting?: boolean
+  selection?: boolean
   /**
    * 資料懶加載
    * lazyLoading: 是否啟用
@@ -165,6 +167,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   hiddenExcel: false,
   showNo: false,
   sorting: false,
+  selection: false,
   lazyLoading: false,
   lazyLoadingStatus: 'noMore'
 })
@@ -181,6 +184,9 @@ const emit = defineEmits([
   'show-change',
   'expand-change',
   'header-dragend',
+  'select',
+  'select-all',
+  'selection-change',
   'load'
 ])
 
@@ -319,6 +325,15 @@ const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event:
     columnSetting.value.setColumnWidth(props, newWidth)
   }
   emit('header-dragend', newWidth, oddWidth, column, event)
+}
+const onSelect = (selection: any, row: any) => {
+  emit('select', selection, row)
+}
+const onSelectAll = (selection: any) => {
+  emit('select-all', selection)
+}
+const onSelectionChange = (selection: any) => {
+  emit('selection-change', selection)
 }
 const onLoad = () => {
   emit('load', {
@@ -621,6 +636,7 @@ const slotKeyList = computed(() => {
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
+        :selection="props.selection"
         :lazy-loading="lazyLoading"
         :lazy-loading-status="props.lazyLoadingStatus"
         @row-click="onRowClick"
@@ -628,6 +644,9 @@ const slotKeyList = computed(() => {
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
         @header-dragend="onHeaderDragend"
+        @select="onSelect"
+        @select-all="onSelectAll"
+        @selection-change="onSelectionChange"
         @load="onLoad"
       >
         <template v-if="hasSlot('empty')" #empty>

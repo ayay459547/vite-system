@@ -120,6 +120,7 @@ const onTableChange = (params: TableParams) => {
         version="1.0.0"
         setting-key="test-table-1"
         row-key="id"
+        selection
         :table-data="tableData1"
         :table-data-count="300"
         :table-columns="tableColumns1"

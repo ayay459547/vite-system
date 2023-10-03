@@ -30,7 +30,8 @@ import {
   elSelect,
   elDatePicker,
   elCheckbox,
-  elRadio
+  elRadio,
+  elAutocomplete
 } from './props'
 
 // @ts-ignore
@@ -47,7 +48,8 @@ const CustomInput = defineComponent({
     ...elSelect,
     ...elDatePicker,
     ...elCheckbox,
-    ...elRadio
+    ...elRadio,
+    ...elAutocomplete
   },
   emits: [
     'update:modelValue',
@@ -59,7 +61,9 @@ const CustomInput = defineComponent({
     'blur',
     // select
     'remove-tag',
-    'visible-change'
+    'visible-change',
+    // autocomplete
+    'select'
   ],
   setup (props, { slots, emit, expose }) {
     const hook: Hook = inject('hook')
@@ -137,7 +141,11 @@ const CustomInput = defineComponent({
         // datePicker
         format: props.format,
         valueFormat: props.valueFormat,
-        shortcuts: props.shortcuts
+        shortcuts: props.shortcuts,
+        // autocomplete
+        valueKey: props.valueKey,
+        fitInputWidth: props.fitInputWidth,
+        fetchSuggestions: props.fetchSuggestions
       }
     })
 
@@ -170,6 +178,10 @@ const CustomInput = defineComponent({
         },
         onVisibleChange: (visible: boolean): void => {
           emit('visible-change', visible)
+        },
+        // autocomplete
+        onSelect: (item: any): void => {
+          emit('select', item)
         }
       }
       if ([null, undefined, ''].includes(errorMessage.value)) {
@@ -298,7 +310,14 @@ const CustomInput = defineComponent({
               onChange={ (e: any) => onEvent.value.onChange(e) }
               onInput={ (e: any) => onEvent.value.onInput(e) }
             >
-              {{ ...getTemplate(['prepend', 'append', 'prefix', 'suffix']) }}
+              {{
+                ...getTemplate([
+                  'prepend',
+                  'append',
+                  'prefix',
+                  'suffix'
+                ])
+              }}
             </FormInput>
           )
         case 'password':
@@ -321,7 +340,14 @@ const CustomInput = defineComponent({
                 onChange={ (e: any) => onEvent.value.onChange(e) }
                 onInput={ (e: any) => onEvent.value.onInput(e) }
               >
-                {{ ...getTemplate(['prepend', 'append', 'prefix', 'suffix']) }}
+                {{
+                  ...getTemplate([
+                    'prepend',
+                    'append',
+                    'prefix',
+                    'suffix'
+                  ])
+                }}
               </FormInput>
             </form>
           )
@@ -410,7 +436,29 @@ const CustomInput = defineComponent({
           )
         case 'autocomplete':
           return (
-            <FormAutocomplete></FormAutocomplete>
+            <FormAutocomplete
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: string) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              errorMessage={errorMessage.value}
+              onSelect={ (e: any) => onEvent.value.onSelect(e) }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
+            >
+              {{
+                ...getTemplate([
+                  'prepend',
+                  'append',
+                  'prefix',
+                  'suffix'
+                ]),
+                default: ({ item }) => {
+                  return slots.default?.({ item })
+                }
+              }}
+            </FormAutocomplete>
           )
         case 'operator':
           return (

@@ -1,6 +1,10 @@
 import type { PropType } from 'vue'
 import type { ValidateType } from '@/lib/lib_validate'
-import type { Shortcuts, PickerType } from '@/components'
+import type {
+  Shortcuts,
+  PickerType,
+  FetchSuggestions
+} from '@/components'
 
 export type ModelValue = any | null | undefined
 export type InputType = (
@@ -209,3 +213,20 @@ export const elDatePicker = {
 export const elCheckbox = {}
 
 export const elRadio = {}
+
+export const elAutocomplete = {
+  valueKey: {
+    type: String as PropType<string>,
+    required: false,
+    default: 'value'
+  },
+  fitInputWidth: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  },
+  fetchSuggestions: {
+    type: Function as PropType<FetchSuggestions>,
+    required: false
+  }
+}

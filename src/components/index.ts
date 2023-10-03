@@ -141,6 +141,9 @@ export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
 // form
+export type {
+  FetchSuggestions
+} from './form/FormAutocomplete.vue'
 export { default as FormAutocomplete } from './form/FormAutocomplete.vue'
 
 export { default as FormCheckbox } from './form/FormCheckbox.vue'

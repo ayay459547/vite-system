@@ -84,6 +84,10 @@ const props = defineProps({
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
   },
+  selection: {
+    type: Boolean as PropType<boolean>,
+    description: 'checkbox'
+  },
   lazyLoading: {
     type: Boolean as PropType<boolean>,
     description: '懶加載'
@@ -100,6 +104,9 @@ const emit = defineEmits([
   'header-click',
   'expand-change',
   'header-dragend',
+  'select',
+  'select-all',
+  'selection-change',
   'load'
 ])
 
@@ -122,6 +129,15 @@ const onExpandChange = (row: any, expanded: boolean) => {
 }
 const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
+}
+const onSelect = (selection: any, row: any) => {
+  emit('select', selection, row)
+}
+const onSelectAll = (selection: any) => {
+  emit('select-all', selection)
+}
+const onSelectionChange = (selection: any) => {
+  emit('selection-change', selection)
 }
 
 // 監聽寬度高度變化
@@ -228,6 +244,9 @@ const svg = `
         @header-click="onHeaderClick"
         @expand-change="onExpandChange"
         @header-dragend="onHeaderDragend"
+        @select="onSelect"
+        @select-all="onSelectAll"
+        @selection-change="onSelectionChange"
       >
         <!-- 資料為空 顯示內容 -->
         <template v-if="hasSlot('empty')" #empty>
@@ -303,6 +322,15 @@ const svg = `
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </ElTableColumn>
+        </template>
+
+        <!-- 勾選 checkbox -->
+        <template v-if="props.selection">
+          <ElTableColumn
+            width="50"
+            :align="'center'"
+            type="selection"
+          />
         </template>
 
         <!-- 欄位設定 -->
