@@ -34,7 +34,7 @@ const testRoutes: RouterTree[] = [
         title: 'Excel工具',
         meta: {
           keepAlive: false,
-          status: 'inProgress'
+          status: 'completed'
         },
         systemType: ['development'],
         path: '/excel-utils',

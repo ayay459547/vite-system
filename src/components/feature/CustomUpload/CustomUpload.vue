@@ -86,6 +86,7 @@ const drag = ref(null)
 const active = ref(false)
 
 const files = ref<FileInfo[]>([])
+const formData = ref(new FormData())
 
 const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
   if (isEmpty(props.type)) return true
@@ -97,7 +98,12 @@ const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
 }
 
 const showCount = ref(1)
-const initFilesData = async (_files: Array<File>) => {
+const initFilesData = async (target: FileList) => {
+  for (let _target of target) {
+    formData.value.append('file', _target)
+  }
+
+  const _files = Array.from(target) as Array<File>
   const total = _files.length + files.value.length
   if (total > showCount.value) {
     swal({
@@ -167,6 +173,9 @@ const remove = (fileIndex: number) => {
 }
 
 defineExpose({
+  getFormData () {
+    return formData.value
+  },
   getFiles () {
     const _files = getProxyData(files.value)
     return deepClone([], _files)
@@ -178,8 +187,8 @@ const handleDrop = (e: DragEvent) => {
   e.preventDefault()
   active.value = false
 
-  const _files = Array.from(e.dataTransfer.files)
-  initFilesData(_files)
+  const target = e.dataTransfer.files
+  initFilesData(target)
 }
 
 onMounted(() => {
@@ -246,8 +255,9 @@ const onClick = () => {
 
   const handleFiles = async (e: Event) => {
     const _input = e.target as HTMLInputElement
-    const _files = Array.from(_input.files)
-    initFilesData(_files)
+    const target = _input.files
+
+    initFilesData(target)
 
     await nextTick()
     input.remove()

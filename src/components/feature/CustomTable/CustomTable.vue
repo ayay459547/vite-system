@@ -770,6 +770,7 @@ const slotKeyList = computed(() => {
 
   &-sorting-column {
     width: 100%;
+    height: 100%;
     margin-top: 4px;
   }
 

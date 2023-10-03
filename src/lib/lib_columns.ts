@@ -326,7 +326,8 @@ export interface TableSetting {
     sorting?: boolean
     tableColumns: Record<string, any>
     hiddenExcel: boolean
-  },
+    // 其他 table 的 props
+  } & Record<string, any>,
   downloadExcel: (tableData: Record<string, any>[]) => void
   resetScroll: (tableRef?: TableRef) => void
   getParams: (tableRef?: TableRef) => TableParams
@@ -499,6 +500,7 @@ export const getTableSetting = (
   return {
     tableRef: _tableRef,
     tableSetting: {
+      ...options,
       ref: (el: TableRef) => {
         if (el) {
           _tableRef.value = el
