@@ -16,7 +16,12 @@ const columnSetting = {
     label: '條件',
     filter: {
       type: 'operator',
-      default: null,
+      default: ['', ''],
+      options: [
+        { label: '=', value: 'equal' },
+        { label: '>=', value: 'greatthan' },
+        { label: '<=', value: 'lessthan' }
+      ],
       required: false
     }
   },
@@ -98,7 +103,7 @@ const columnSetting = {
 
 interface Form {
   autocomplete?: string
-  operator?: string
+  operator?: [string, string]
   passowrd?: string
   phone?: string
   date?: string

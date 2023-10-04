@@ -152,8 +152,12 @@ const CustomInput = defineComponent({
     // event
     const onEvent = computed(() => {
       const _event = {
-        onFocus: (e: FocusEvent): void => emit('focus', e),
-        onClear: (): void => emit('clear'),
+        onFocus: (e: FocusEvent): void => {
+          emit('focus', e)
+        },
+        onClear: (): void => {
+          emit('clear')
+        },
         onBlur: async (e: FocusEvent): Promise<void> => {
           emit('blur', e)
 
@@ -423,7 +427,7 @@ const CustomInput = defineComponent({
             <FormRadio
               modelValue={inputValue.value}
               onUpdate:modelValue={
-                ($event: string) => (inputValue.value = $event)
+                ($event: any) => (inputValue.value = $event)
               }
               // v-bind 綁定屬性
               { ...bindAttributes.value }
@@ -439,7 +443,7 @@ const CustomInput = defineComponent({
             <FormAutocomplete
               modelValue={inputValue.value}
               onUpdate:modelValue={
-                ($event: string) => (inputValue.value = $event)
+                ($event: any) => (inputValue.value = $event)
               }
               // v-bind 綁定屬性
               { ...bindAttributes.value }
@@ -462,7 +466,31 @@ const CustomInput = defineComponent({
           )
         case 'operator':
           return (
-            <FormOperator></FormOperator>
+            <FormOperator
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: any) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              options={props.options}
+              errorMessage={errorMessage.value}
+              // v-on 接收事件
+              onClear={ () => onEvent.value.onClear() }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
+            >
+              {{
+                ...getTemplate([
+                  // 'prepend',
+                  'append',
+                  'prefix',
+                  'suffix'
+                ]),
+                default: ({ label, value }) => {
+                  return slots.default?.({ label, value })
+                }
+              }}
+            </FormOperator>
           )
         default:
           tipLog(`輸入框類型 ${props.type} 不存在`, [
