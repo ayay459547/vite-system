@@ -525,7 +525,7 @@ export const getTableSetting = (
         return _tableRef.value.resetScroll()
       }
     },
-    getParams: (tableRef: TableRef): TableParams => {
+    getParams: (tableRef?: TableRef): TableParams => {
       if (tableRef) {
         return tableRef.getTableParams()
       } else if (_tableRef.value !== null) {
@@ -540,7 +540,7 @@ export const getTableSetting = (
       page?: number
       size?: number
       sort?: Sort
-    }, tableRef: TableRef) => {
+    }, tableRef?: TableRef) => {
       if (tableRef) {
         tableRef.setTableParams(params)
       } else if (_tableRef.value !== null) {
@@ -555,7 +555,7 @@ export const getTableSetting = (
         ])
       }
     },
-    changePage: (tableRef: TableRef): void => {
+    changePage: (tableRef?: TableRef): void => {
       const { page, size } = tableParams
       if (tableRef) {
         tableRef.pageChange(page, size)

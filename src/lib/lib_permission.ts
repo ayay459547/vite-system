@@ -39,7 +39,7 @@ export type Permission = {
   delete: boolean
   execute: boolean
 }
-export const getPermission = (permissionTotal: number) => {
+export const getPermission = (permissionTotal: number): Permission => {
   return {
     read: hasPermission(permissionTotal, permission.read),
     create: hasPermission(permissionTotal, permission.create),

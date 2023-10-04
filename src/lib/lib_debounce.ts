@@ -9,7 +9,7 @@ export interface ResizeObserverCallback {
  * @param {Number} delay 延遲
  * @returns {Function}
  */
-export const debounce = (callback: Function, delay: number): Function => {
+export const debounce = <T = Function>(callback: Function, delay: number): T => {
   let timeoutId: NodeJS.Timeout | null
 
   const scopeData = {}
@@ -36,7 +36,7 @@ export const debounce = (callback: Function, delay: number): Function => {
         callback.call(thisArg, ...params)
       }, delay)
     }
-  })
+  }) as T
 }
 
 export default debounce

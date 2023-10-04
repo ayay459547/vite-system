@@ -16,7 +16,7 @@ export type ThrottleOptions = {
  *                 noTrailing: 是否不執行setTimeout的回調函數
  * @returns {Object} 包含回調函數的Proxy
  */
-export const throttle = (callback: Function, delay: number, options: ThrottleOptions = {}): Function => {
+export const throttle = <T = Function>(callback: Function, delay: number, options: ThrottleOptions = {}): T => {
   let now: number
   let timeoutId: NodeJS.Timeout | null
   let lastTime: number | null
@@ -71,7 +71,7 @@ export const throttle = (callback: Function, delay: number, options: ThrottleOpt
         }
       }
     }
-  })
+  }) as T
 }
 
 export default throttle

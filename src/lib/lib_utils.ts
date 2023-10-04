@@ -1,6 +1,7 @@
 import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
-import { useSlots } from 'vue'
+import { useSlots, customRef } from 'vue'
+import type { Ref } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
@@ -403,4 +404,30 @@ export const aesDecrypt = (value: string, key: string): any => {
   const data = AES.decrypt(value, key).toString(Utf8)
 
   return JSON.parse(data)
+}
+
+/**
+ * @author Caleb
+ * @description ref debounce
+ * @param {*} value 資料
+ * @returns {*}
+ */
+export function useDebouncedRef (value: any): Ref<any> {
+  let timeout: any
+
+  return customRef((track, trigger) => {
+    return {
+      get () {
+        track()
+        return value
+      },
+      set (newValue) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          value = newValue
+          trigger()
+        }, 200)
+      }
+    }
+  })
 }

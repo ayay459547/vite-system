@@ -44,6 +44,12 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+defineExpose({
+  setIsVisible: (value: boolean) => {
+    isShow.value = value
+  }
+})
+
 </script>
 
 <template>
