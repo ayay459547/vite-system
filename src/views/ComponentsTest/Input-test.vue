@@ -22,7 +22,8 @@ const columnSetting = {
         { label: '>=', value: 'greatthan' },
         { label: '<=', value: 'lessthan' }
       ],
-      required: false
+      required: true,
+      onlyNumber: true
     }
   },
   passowrd: {

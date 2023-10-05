@@ -120,7 +120,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
         return resActiveForms[key] && !isEmpty(value)
       })
     },
-    validate: async () => {
+    validate: async (): Promise<any[]> => {
       const validateList = []
       const validateInput = []
 
@@ -236,7 +236,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
       formList.value.splice(0)
       formList.value.push(..._initData)
     },
-    validate: async () => {
+    validate: async (): Promise<any[]> => {
       const validateList = []
       const validateInput = []
 

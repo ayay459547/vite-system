@@ -79,8 +79,24 @@ const CustomInput = defineComponent({
     // 驗證
     const validateField = (veeValue: ModelValue) => {
       // 必填
-      if (props.required && isEmpty(veeValue)) {
-        return '此輸入框為必填'
+      if (props.required) {
+        switch (props.type) {
+          case 'operator':
+            if (
+              !Array.isArray(veeValue) ||
+              isEmpty(veeValue[0]) ||
+              isEmpty(veeValue[1])
+            ) {
+              return '此輸入框為必填'
+            }
+            break
+          case 'text':
+          default:
+            if (isEmpty(veeValue)) {
+              return '此輸入框為必填'
+            }
+            break
+        }
       }
       // 非必填
       if (isEmpty(veeValue)) return true
@@ -269,6 +285,11 @@ const CustomInput = defineComponent({
         case 'radio': {
             const option = props.options.find(_option => _option.value === inputValue.value)
             return option?.label ?? ''
+          }
+        case 'operator': {
+            const [ selectValue = '', inputText = '' ] = inputValue.value
+            const option = props.options.find(_option => _option.value === selectValue)
+            return `${option?.label ?? ''}-${inputText}`
           }
         default:
           return ''
@@ -474,6 +495,7 @@ const CustomInput = defineComponent({
               // v-bind 綁定屬性
               { ...bindAttributes.value }
               options={props.options}
+              onlyNumber={props.onlyNumber}
               errorMessage={errorMessage.value}
               // v-on 接收事件
               onClear={ () => onEvent.value.onClear() }

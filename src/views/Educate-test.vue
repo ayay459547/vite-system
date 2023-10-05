@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { OperatorModelValue } from '@/components'
-import { CustomInput, CustomOperator } from '@/components'
+import { CustomInput } from '@/components'
 
 const valueTest = ref<number | null>(null)
 
@@ -32,8 +32,14 @@ const onOperatorChange = (v) => {
 <template>
   <div class="container">
     <div>教育訓練</div>
-    <CustomOperator
+    <CustomInput
       v-model="operatorValue"
+      type="operator"
+      :options="[
+        { label: '=', value: 'equal' },
+        { label: '>=', value: 'greatthan' },
+        { label: '<=', value: 'lessthan' }
+      ]"
       label="Operator測試"
       @change="onOperatorChange"
     />

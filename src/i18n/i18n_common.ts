@@ -11,6 +11,16 @@ export default {
     zhCn: '测试',
     en: 'Test'
   },
+  empty: {
+    zhTw: '無',
+    zhCn: '无',
+    en: 'Empty'
+  },
+  noData: {
+    zhTw: '無資料',
+    zhCn: '无资料',
+    en: 'NoData'
+  },
   reset: {
     zhTw: '重置',
     zhCn: '重置',
