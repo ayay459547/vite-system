@@ -130,7 +130,8 @@ const remove = (rowData: TableData) => {
       await deleteData(rowData)
       swal({
         icon: 'success',
-        title: '刪除成功'
+        title: '刪除成功',
+        showCancelButton: false
       })
       init()
       loading(false)

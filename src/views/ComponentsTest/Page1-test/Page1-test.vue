@@ -69,7 +69,8 @@ const onCreateSubmit = async () => {
     if (res.status === 'success') {
       swal({
         icon: 'success',
-        title: '新增成功'
+        title: '新增成功',
+        showCancelButton: false
       })
       model.create = false
       init()
@@ -87,7 +88,8 @@ const onUpdateSubmit = async () => {
     if (res.status === 'success') {
       swal({
         icon: 'success',
-        title: '更新成功'
+        title: '更新成功',
+        showCancelButton: false
       })
       model.update = false
       init()
@@ -127,7 +129,8 @@ const remove = (rowData: TableData) => {
       await deleteData(rowData)
       swal({
         icon: 'success',
-        title: '刪除成功'
+        title: '刪除成功',
+        showCancelButton: false
       })
       init()
       loading(false)
