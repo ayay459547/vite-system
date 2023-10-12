@@ -19,6 +19,12 @@ const props = defineProps({
     type: Number as PropType<number>,
     default: 150,
     description: '寬度'
+  },
+  settingHeight: {
+    type: String as PropType<string>,
+    required: false,
+    default: '100%',
+    description: '列表高度'
   }
 })
 
@@ -52,8 +58,8 @@ const resetSorting = () => {
 const visible = ref(false)
 
 const submit = () => {
-  visible.value = false
   emit('submit')
+  visible.value = false
 }
 
 </script>
@@ -79,6 +85,7 @@ const submit = () => {
         item-key="key"
         class="group-container column-list"
         :handle="`.sorting-move`"
+        :height="props.settingHeight"
       >
         <template #item="{ element }">
           <div class="column-item">

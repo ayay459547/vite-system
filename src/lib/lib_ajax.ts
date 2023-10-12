@@ -32,7 +32,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     timeout,
     //   withCredentials: true
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json;charset=utf8'
     }
   })
 
@@ -87,6 +87,7 @@ export const ajax = <ResData>(
   const {
     getFakeData = false,
     fakeData = null,
+    showLog = false,
     delay = 0,
     callback = null
   } = options
@@ -98,8 +99,19 @@ export const ajax = <ResData>(
       return fakeApi<ResData>(config, { fakeData, delay, callback })
     case 'auto':
     default:
+      if (showLog) {
+        const style = `
+          font-size: 1em;
+          color: #409EFF;
+        `
+        const { url, method, data } = config
+
+        console.groupCollapsed('%c%s', style, `api 資訊：${url}`)
+        console.log('%c%s', style, `method: ${method}`)
+        console.table(data)
+        console.groupEnd()
+      }
       if (getFakeData) {
-        console.trace('config => ', config)
         return fakeApi<ResData>(config, { fakeData, delay, callback })
       } else {
         return axiosApi<ResData>(config, baseUrl)

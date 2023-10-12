@@ -28,6 +28,18 @@ const props = defineProps({
     default: '.__draggable',
     description: '指定可拖拉的元素(css選擇器)'
   },
+  width: {
+    type: String as PropType<string>,
+    required: false,
+    default: '100%',
+    description: '列表寬度'
+  },
+  height: {
+    type: String as PropType<string>,
+    required: false,
+    default: '100%',
+    description: '列表高度'
+  },
   class: {
     type: String as PropType<string>,
     required: false,
@@ -156,6 +168,10 @@ const listValue = computed({
       class="list-group"
       :class="`flex-${props.direction} ${props.class}`"
       :ghost-class="ghostClass"
+      :style="{
+        width: props.width,
+        height: props.height
+      }"
       @start="onStart"
       @end="onEnd"
       @add="onAdd"
@@ -204,8 +220,9 @@ const listValue = computed({
 }
 
 .list-group {
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
+  overflow: auto;
 
   &-item {
     background-color: #fff;

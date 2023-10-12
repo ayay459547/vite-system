@@ -107,7 +107,9 @@ const emit = defineEmits([
   'select',
   'select-all',
   'selection-change',
-  'load'
+  'load',
+  // 更新 table 大小
+  'update-size'
 ])
 
 const onRowClick = (row: any, column: any, event: Event) => {
@@ -146,8 +148,15 @@ const tableWidth = ref(500)
 const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach((entry) => {
-    tableWidth.value = entry.contentRect.width
-    tableHeight.value = entry.contentRect.height
+    const newWidth = entry.contentRect.width
+    const newHeight = entry.contentRect.height
+    tableWidth.value = newWidth
+    tableHeight.value = newHeight
+
+    emit('update-size', {
+      width: newWidth,
+      height: newHeight
+    })
   })
 }, 100) as ResizeObserverCallback
 const RO = new ResizeObserver(ROcallback)

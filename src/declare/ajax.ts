@@ -10,7 +10,8 @@ export type Api<T, O = {}> = ApiCommon<T> & O
 
 export type AjaxOptions<T> = {
   getFakeData?: boolean
-  delay?: number
   fakeData?: T | null
+  showLog?: boolean
+  delay?: number
   callback?: (config: AxiosRequestConfig, fakeData: T) => any | null
 }

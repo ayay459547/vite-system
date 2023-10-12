@@ -535,6 +535,18 @@ const slotKeyList = computed(() => {
   })
 })
 
+// 欄位設定高度不超過 table 本身
+type TableSize = {
+  width: number
+  height: number
+}
+const tableWidth = ref(500)
+const tableHeight = ref(500)
+const onUpdateSize = (newSize: TableSize) => {
+  const { width, height } = newSize
+  tableWidth.value = width
+  tableHeight.value = height
+}
 </script>
 
 <template>
@@ -574,6 +586,7 @@ const slotKeyList = computed(() => {
           :version="props.version"
           :setting-key="props.settingKey"
           :setting-width="props.settingWidth"
+          :setting-height="`${tableHeight - 40}px`"
           @change="initShowColumns"
         />
         <slot name="setting-left"></slot>
@@ -613,6 +626,7 @@ const slotKeyList = computed(() => {
           v-if="props.sorting"
           v-model="sortingList"
           :setting-width="props.settingWidth"
+          :setting-height="`${tableHeight - 40}px`"
           @reset-sorting="initSortingList"
           @submit="onSortingChange"
         />
@@ -648,6 +662,7 @@ const slotKeyList = computed(() => {
         @select-all="onSelectAll"
         @selection-change="onSelectionChange"
         @load="onLoad"
+        @update-size="onUpdateSize"
       >
         <template v-if="hasSlot('empty')" #empty>
           <slot name="empty"></slot>

@@ -41,6 +41,12 @@ const props = defineProps({
     type: Number as PropType<number>,
     default: 150,
     description: '寬度'
+  },
+  settingHeight: {
+    type: String as PropType<string>,
+    required: false,
+    default: '100%',
+    description: '列表高度'
   }
 })
 
@@ -192,6 +198,7 @@ onBeforeMount(async () => {
         item-key="key"
         class="column-list"
         :handle="`.setting-move`"
+        :height="props.settingHeight"
       >
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">
@@ -243,7 +250,6 @@ onBeforeMount(async () => {
   &-list {
     display: flex;
     flex-direction: column;
-    max-height: 60vh;
     height: fit-content;
     overflow: auto;
   }
