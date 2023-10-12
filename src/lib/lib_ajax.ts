@@ -106,7 +106,8 @@ export const ajax = <ResData>(
         `
         const { url, method, data } = config
 
-        console.groupCollapsed('%c%s', style, `api 資訊：${url}`)
+        console.group('%c%s', style, 'api 資訊')
+        console.log('%c%s', style, `url: ${url}`)
         console.log('%c%s', style, `method: ${method}`)
         console.table(data)
         console.groupEnd()
