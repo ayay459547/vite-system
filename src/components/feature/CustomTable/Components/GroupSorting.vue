@@ -85,7 +85,9 @@ const submit = () => {
         item-key="key"
         class="group-container column-list"
         :handle="`.sorting-move`"
-        :height="props.settingHeight"
+        :style="{
+          maxHeight: props.settingHeight
+        }"
       >
         <template #item="{ element }">
           <div class="column-item">

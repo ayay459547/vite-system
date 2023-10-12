@@ -198,7 +198,9 @@ onBeforeMount(async () => {
         item-key="key"
         class="column-list"
         :handle="`.setting-move`"
-        :height="props.settingHeight"
+        :style="{
+          maxHeight: props.settingHeight
+        }"
       >
         <template #item="{ element }">
           <div v-if="!element.isOperations" class="column-item">

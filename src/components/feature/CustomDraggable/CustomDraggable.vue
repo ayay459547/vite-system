@@ -40,6 +40,14 @@ const props = defineProps({
     default: '100%',
     description: '列表高度'
   },
+  style: {
+    type: Object as PropType<Record<string, string>>,
+    required: false,
+    default () {
+      return {}
+    },
+    description: '外層style 類型為object 不能使用string'
+  },
   class: {
     type: String as PropType<string>,
     required: false,
@@ -170,7 +178,8 @@ const listValue = computed({
       :ghost-class="ghostClass"
       :style="{
         width: props.width,
-        height: props.height
+        height: props.height,
+        ...props.style
       }"
       @start="onStart"
       @end="onEnd"

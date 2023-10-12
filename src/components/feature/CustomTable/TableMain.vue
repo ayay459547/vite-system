@@ -12,6 +12,7 @@ import type {
   RowStyle,
   CellClassName,
   CellStyle,
+  Load,
   LazyLoadingStatus
 } from './CustomTable.vue'
 import { CustomButton } from '@/components'
@@ -83,6 +84,18 @@ const props = defineProps({
   cellStyle: {
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
+  },
+  lazy: {
+    type: Boolean as PropType<boolean>,
+    description: '懶加載子節點'
+  },
+  load: {
+    type: Function as PropType<Load | any>,
+    description: '懶加載子節點回調函數'
+  },
+  treeProps: {
+    type: Object as PropType<Record<string, any> | any>,
+    description: '懶加載子節點回調函數'
   },
   selection: {
     type: Boolean as PropType<boolean>,
@@ -248,6 +261,9 @@ const svg = `
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
+        :lazy="props.lazy"
+        :load="props.load"
+        :tree-props="props.treeProps"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"

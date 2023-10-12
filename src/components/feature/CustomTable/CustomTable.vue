@@ -73,6 +73,8 @@ type CellCallback<T> = (
 ) | null
 export type CellClassName = CellCallback<string>
 export type CellStyle = CellCallback<Record<string, any>>
+export type Load = (row, treeNode, resolve) => void | null
+
 export type LazyLoadingStatus = 'loadMore' | 'loading' | 'noMore'
 
 export interface Props extends Record<string, any> {
@@ -115,6 +117,9 @@ export interface Props extends Record<string, any> {
   rowStyle?: RowStyle
   cellClassName?: CellClassName
   cellStyle?: CellStyle
+  lazy?: boolean
+  load?: Load
+  treeProps?: any
   /**
    * 表單顯示相關
    * page 當前分頁
@@ -158,6 +163,11 @@ const props: Props = withDefaults(defineProps<Props>(), {
   defaultExpandAll: false,
   spanMethod: null,
   rowClassName: null,
+  lazy: false,
+  treeProps: {
+    hasChildren: 'hasChildren',
+    children: 'children'
+  },
   page: 1,
   pageSize: 100,
   sort: () => {
@@ -650,6 +660,9 @@ const onUpdateSize = (newSize: TableSize) => {
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
+        :lazy="props.lazy"
+        :load="props.load"
+        :tree-props="props.treeProps"
         :selection="props.selection"
         :lazy-loading="lazyLoading"
         :lazy-loading-status="props.lazyLoadingStatus"
