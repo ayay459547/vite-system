@@ -330,9 +330,10 @@ export interface TableSetting {
   } & Record<string, any>,
   downloadExcel: (tableData: Record<string, any>[]) => void
   resetScroll: (tableRef?: TableRef) => void
+  toggleSelection: (rows: any[], tableRef?: TableRef) => void
   getParams: (tableRef?: TableRef) => TableParams
   setParams: (params: TableParams, tableRef?: TableRef) => void
-  changePage: (tableRef?: TableRef) => void
+  changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }
 export interface TableColumnsItem {
   key: string
@@ -518,11 +519,18 @@ export const getTableSetting = (
       hiddenExcel
     },
     downloadExcel,
-    resetScroll: (tableRef: TableRef) => {
+    resetScroll: (tableRef?: TableRef) => {
       if (tableRef) {
         return tableRef.resetScroll()
       } else if (_tableRef.value !== null) {
         return _tableRef.value.resetScroll()
+      }
+    },
+    toggleSelection: (rows: Array<any>, tableRef?: TableRef) => {
+      if (tableRef) {
+        return tableRef.toggleSelection(rows)
+      } else if (_tableRef.value !== null) {
+        return _tableRef.value.toggleSelection(rows)
       }
     },
     getParams: (tableRef?: TableRef): TableParams => {
@@ -555,12 +563,13 @@ export const getTableSetting = (
         ])
       }
     },
-    changePage: (tableRef?: TableRef): void => {
-      const { page, size } = tableParams
+    changePage: (page?: number, pageSize?: number, tableRef?: TableRef): void => {
+      const { page: defaultPage, size: defaultSize } = tableParams
+
       if (tableRef) {
-        tableRef.pageChange(page, size)
+        tableRef.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
       } else if (_tableRef.value !== null) {
-        _tableRef.value.pageChange(page, size)
+        _tableRef.value.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
       } else {
         tipLog('無法換頁', [
           '給 table 的 ref',

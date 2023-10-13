@@ -84,7 +84,7 @@ const init = async (props?: any) => {
   }
 
   if (props === 'input') {
-    changePage(tableRef.value)
+    changePage()
   }
 
   const [resData, resDataCount ] = await Promise.all([ getData(apiParam), getDataCount(apiParam) ])

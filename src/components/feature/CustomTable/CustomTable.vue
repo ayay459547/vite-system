@@ -251,6 +251,11 @@ const resetScroll = () => {
     tableMainRef.value.resetScroll()
   }
 }
+const toggleSelection = (rows: any[]) => {
+  if (tableMainRef.value) {
+    tableMainRef.value.toggleSelection(rows)
+  }
+}
 
 const tableMainRef = ref(null)
 const pageChange: PageChange = (page, pageSize) => {
@@ -456,6 +461,8 @@ onMounted(async () => {
 })
 
 defineExpose({
+  resetScroll,
+  toggleSelection,
   pageChange,
   getTableParams: () => {
     return {
@@ -501,8 +508,7 @@ defineExpose({
     if (!isEmpty(_sortingList)) {
       sortingList.value = _sortingList
     }
-  },
-  resetScroll
+  }
 })
 
 // slot

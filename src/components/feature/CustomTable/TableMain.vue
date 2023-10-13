@@ -16,6 +16,7 @@ import type {
   LazyLoadingStatus
 } from './CustomTable.vue'
 import { CustomButton } from '@/components'
+import { isEmpty } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()
@@ -215,11 +216,25 @@ onUnmounted(() => {
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
 const resetScroll = (): void => {
-  elTableRef.value?.setScrollTop(0)
+  if(isEmpty(elTableRef.value)) return
+  elTableRef.value.setScrollTop(0)
+}
+
+const toggleSelection = (rows: any[]): void => {
+  if(isEmpty(elTableRef.value)) return
+
+  if (isEmpty(rows)) {
+    elTableRef.value.clearSelection()
+  } else {
+    rows.forEach(row => {
+      elTableRef.value.toggleRowSelection(row, undefined)
+    })
+}
 }
 
 defineExpose({
-  resetScroll
+  resetScroll,
+  toggleSelection
 })
 
 const svg = `

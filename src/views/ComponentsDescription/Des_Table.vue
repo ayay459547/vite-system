@@ -3,7 +3,8 @@
 import {
   CustomDivider,
   CustomMarkdown,
-  CustomTable
+  CustomTable,
+  CustomButton
 } from '@/components'
 
 import type { TableParams } from '@/components'
@@ -12,19 +13,7 @@ import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
 
 import { getTableSetting } from '@/lib/lib_columns'
 
-const tableColumns1 = [
-  { key: 'name', label: '名稱', sortable: 'coutom', prop: 'name', width: 150 },
-  { key: 'age', label: '年齡', sortable: 'coutom', prop: 'age', width: 120 },
-  { key: 'address', label: '地址', sortable: 'coutom', prop: 'address', minWidth: 200 }
-]
-const tableData1 = [
-  { id: 1, name: 'Bret', age: 13, address: 'Apt. 556, Kulas Light, Gwenborough' },
-  { id: 2, name: 'Antonette', age: 22, address: 'Suite 879, Victor Plains, Wisokyburgh' },
-  { id: 3, name: 'Karianne', age: 34, address: 'Suite 847, Douglas Extension, McKenziehaven' },
-  { id: 4, name: 'Samantha', age: 14, address: 'Apt. 692, Hoeger Mall, South Elvis' },
-  { id: 5, name: 'Kamren', age: 56, address: 'Suite 351, Skiles Walks, Roscoeview' },
-  { id: 6, name: 'Maxime_Nienow', age: 72, address: 'Suite 729, Ellsworth Summit, Aliyaview' }
-]
+import { ref } from 'vue'
 
 const columnSetting = {
   name: {
@@ -96,6 +85,29 @@ const onTableChange = (params: TableParams) => {
   console.log(params)
 }
 
+const checkTable = ref()
+const tableColumns1 = [
+  { key: 'name', label: '名稱', sortable: 'coutom', prop: 'name', width: 150 },
+  { key: 'age', label: '年齡', sortable: 'coutom', prop: 'age', width: 120 },
+  { key: 'address', label: '地址', sortable: 'coutom', prop: 'address', minWidth: 200 }
+]
+const tableData1 = [
+  { id: 1, name: 'Bret', age: 13, address: 'Apt. 556, Kulas Light, Gwenborough' },
+  { id: 2, name: 'Antonette', age: 22, address: 'Suite 879, Victor Plains, Wisokyburgh' },
+  { id: 3, name: 'Karianne', age: 34, address: 'Suite 847, Douglas Extension, McKenziehaven' },
+  { id: 4, name: 'Samantha', age: 14, address: 'Apt. 692, Hoeger Mall, South Elvis' },
+  { id: 5, name: 'Kamren', age: 56, address: 'Suite 351, Skiles Walks, Roscoeview' },
+  { id: 6, name: 'Maxime_Nienow', age: 72, address: 'Suite 729, Ellsworth Summit, Aliyaview' }
+]
+const onRandomClick = () => {
+  if (checkTable.value) {
+    checkTable.value.toggleSelection([])
+
+    // const checkedList = []
+    // checkTable.value.toggleSelection()
+  }
+}
+
 </script>
 
 <template>
@@ -114,8 +126,17 @@ const onTableChange = (params: TableParams) => {
       </CustomTable>
     </div>
 
+    <div>
+      <CustomButton
+        type="primary"
+        label="隨機勾選"
+        icon-name="square-check"
+        @click="onRandomClick"
+      />
+    </div>
     <div style="width: 100%; height: 400px;">
       <CustomTable
+        ref="checkTable"
         title="表格組件(不使用 getTableSetting)"
         version="1.0.0"
         setting-key="test-table-1"
