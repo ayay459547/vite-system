@@ -80,6 +80,18 @@ const descriptionRoutes: RouterTree[] = [
         icon: 'cube'
       },
       {
+        name: 'description-icon',
+        title: 'CustomIcon',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-icon',
+        component: () => import('@/views/ComponentsDescription/Des_Icon.vue'),
+        icon: 'flag'
+      },
+      {
         name: 'description-table',
         title: 'CustomTable',
         meta: {

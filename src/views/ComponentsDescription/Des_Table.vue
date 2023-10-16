@@ -101,10 +101,10 @@ const tableData1 = [
 ]
 const onRandomClick = () => {
   if (checkTable.value) {
-    checkTable.value.toggleSelection([])
-
-    // const checkedList = []
-    // checkTable.value.toggleSelection()
+    const newList = tableData1.filter(() => {
+      return Math.random() > 0.5
+    })
+    checkTable.value.toggleSelection(newList)
   }
 }
 
@@ -126,7 +126,7 @@ const onRandomClick = () => {
       </CustomTable>
     </div>
 
-    <div>
+    <div class="i-my-md">
       <CustomButton
         type="primary"
         label="隨機勾選"

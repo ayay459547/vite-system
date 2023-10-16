@@ -184,7 +184,10 @@ const load = () => {
 }
 const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
-    const { isIntersecting, isVisible } = entry
+    const {
+      isIntersecting
+      // isVisible
+    } = entry
     if (isIntersecting) {
       load()
     }
@@ -216,12 +219,12 @@ onUnmounted(() => {
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
 const resetScroll = (): void => {
-  if(isEmpty(elTableRef.value)) return
+  if([null, undefined].includes(elTableRef.value)) return
   elTableRef.value.setScrollTop(0)
 }
 
 const toggleSelection = (rows: any[]): void => {
-  if(isEmpty(elTableRef.value)) return
+  if([null, undefined].includes(elTableRef.value)) return
 
   if (isEmpty(rows)) {
     elTableRef.value.clearSelection()
