@@ -61,12 +61,6 @@ export type {
 } from './feature/CustomModal/CustomModal.vue'
 export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 
-export type {
-  OperatorOptions,
-  ModelValue as OperatorModelValue
-} from './feature/CustomOperator/CustomOperator.vue'
-export { default as CustomOperator } from './feature/CustomOperator/CustomOperator.vue'
-
 export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
 
 export type {

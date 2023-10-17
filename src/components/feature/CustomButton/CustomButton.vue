@@ -110,7 +110,9 @@ const props = defineProps({
     required: false,
     default: 'none',
     description: 'hover後 的效果'
-  }
+  },
+  // tsx event
+  onClick: Function as PropType<(e: MouseEvent) => void>
 })
 
 const emit = defineEmits(['click'])

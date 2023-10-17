@@ -34,13 +34,16 @@ const onModalSubmit = () => {
 </template>
 ```
 ### Attributes ( props )
-| 屬姓名        | 說明             | 类型    | 默認值     |
-| ------------ | ---------------- | ------- | --------- |
-| modelValue   | v-modal 綁定的值  | boolean | false     |
-| title        | 標題              | string  | ''       |
-| clickOutside | 點擊外面是否關閉   | boolean | false    |
-| widthSize    | 寬度大小          | enum    | 'default' |
-| heightSize   | 高度大小          | enum    | 'default' |
+| 屬姓名        | 說明               | 类型    | 默認值     |
+| ------------ | ------------------ | ------- | --------- |
+| modelValue   | v-modal 綁定的值    | boolean | false     |
+| title        | 標題                | string  | ''       |
+| clickOutside | 點擊外面是否關閉     | boolean | false    |
+| widthSize    | 寬度大小            | enum    | 'default' |
+| heightSize   | 高度大小            | enum    | 'default' |
+| hiddenFooter | 是否隱藏最下面的區域 | boolean | false     |
+| hiddenSubmit | 是否隱藏確認按鈕     | boolean | false     |
+| hiddenCancel | 是否隱藏取消按鈕     | boolean | false     |
 
 ### Slots
 | 插槽名     | 說明            |

@@ -14,8 +14,7 @@ import {
 import { isEmpty } from '@/lib/lib_utils'
 
 // layout
-import SideContent from '@/components/layout/SideContent/SideContent.vue'
-import HeaderContent from '@/components/layout/HeaderContent/HeaderContent.vue'
+import SystemLayout from '@/components/layout/SystemLayout.vue'
 
 import PageContent from '@/components/layout/PageContent/PageContent.vue'
 import NavigationTabs from '@/components/layout/PageContent/NavigationTabs.vue'
@@ -53,10 +52,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
-const navIsOpen = ref(false)
-const historyIsOpen = ref(false)
-const changeHistory = (v: boolean) => historyIsOpen.value = v
 
 // hook
 const {
@@ -203,6 +198,8 @@ const setWebTitle = () => {
   document.title = currentTitle
 }
 
+const systemLayoutRef = ref()
+
 // 如果是另開視窗 將選單縮起來
 const setModalView = async (currentRoute: RouteLocationNormalized) => {
   const isModal = currentRoute?.query?.isModal ?? false
@@ -211,8 +208,7 @@ const setModalView = async (currentRoute: RouteLocationNormalized) => {
     isShow.value = false
     await nextTick()
 
-    navIsOpen.value = false
-    historyIsOpen.value = false
+    systemLayoutRef.value?.setModalView()
     isShow.value = true
   }
 }
@@ -260,7 +256,7 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
  * 初始化系統使用者 + 權限
  * 用權限 設置路由選項
  */
- const isShow = ref(false)
+const isShow = ref(false)
 const initNavigationRoutes = async () => {
   isShow.value = false
 
@@ -284,16 +280,6 @@ onBeforeMount(() => {
   initNavigationRoutes()
 })
 
-onMounted(() => {
-  const _navIsOpen = localStorage.getItem('navIsOpen')
-  const _historyIsOpen = localStorage.getItem('historyIsOpen')
-
-  navIsOpen.value = _navIsOpen === 'true'
-  historyIsOpen.value = _historyIsOpen === 'true'
-
-  loading(true, '系統初始化')
-})
-
 // 登出
 const logout = async () => {
   loading(true, '登出中')
@@ -311,105 +297,98 @@ const login = async (userId: number) => {
   router.push({ name: 'home' })
 }
 
+// 歷史路由
+const historyIsOpen = ref(false)
+const changeHistory = (v: boolean) => historyIsOpen.value = v
+
+onMounted(() => {
+  const _historyIsOpen = localStorage.getItem('historyIsOpen')
+  historyIsOpen.value = _historyIsOpen === 'true'
+
+  loading(true, '系統初始化')
+})
+
 </script>
 
 <template>
   <ElConfigProvider :locale="locale.el">
     <!-- layout -->
-    <div class="layout-wrapper">
-      <div
-        v-show="isShow"
-        class="layout-left layout-side"
-        :class="navIsOpen ? 'is-open': 'is-close'"
-      >
-        <SideContent
-          :is-open="navIsOpen"
-          :show-routes="navigationRoutes"
-          :current-route-name="currentRouteName"
-          :breadcrumb-name="breadcrumbName"
+    <SystemLayout
+      ref="systemLayoutRef"
+      :is-show="isShow"
+      :show-routes="navigationRoutes"
+      :current-route-name="currentRouteName"
+      :breadcrumbName="breadcrumbName"
+      :history-is-open="historyIsOpen"
+      :auth-data="authData"
+      :breadcrumb-title="breadcrumbTitle"
+      @logout="logout"
+      @change-locale="setWebTitle"
+      @change-history="changeHistory"
+    >
+      <template #menu-header="{ isShow }">
+        <slot name="menu-header" :is-show="isShow"></slot>
+      </template>
+      <template #menu-footer="{ isShow }">
+        <slot name="menu-footer" :is-show="isShow"></slot>
+      </template>
+
+      <template v-if="hasSlot('header-left')" #header-left>
+        <slot name="header-left"></slot>
+      </template>
+      <template v-if="hasSlot('header-right')" #header-right>
+        <slot name="header-right"></slot>
+      </template>
+
+      <template #content>
+        <PageContent
+          :history-is-open="historyIsOpen"
+          :history-navigation="historyNavigation"
+          :current-navigation="currentNavigation"
         >
-          <template #header="{ isShow }">
-            <slot name="menu-header" :is-show="isShow"></slot>
+          <template #tabs="{ isShow }">
+            <NavigationTabs
+              v-if="isShow"
+              :history-navigation="historyNavigation"
+              :current-navigation="currentNavigation"
+            />
           </template>
-          <template #footer="{ isShow }">
-            <slot name="menu-footer" :is-show="isShow"></slot>
-          </template>
-        </SideContent>
-      </div>
 
-      <div
-        v-show="isShow"
-        class="layout-right"
-        :class="navIsOpen ? 'is-open': 'is-close'"
-      >
-        <div class="layout-header">
-          <HeaderContent
-            v-model:is-open="navIsOpen"
-            :history-is-open="historyIsOpen"
-            :auth-data="authData"
-            :breadcrumb-title="breadcrumbTitle"
-            @change-history="changeHistory"
-            @logout="logout"
-            @change-locale="setWebTitle"
-          >
-            <template v-if="hasSlot('header-left')" #header-left>
-              <slot name="header-left"></slot>
-            </template>
-            <template v-if="hasSlot('header-right')" #header-right>
-              <slot name="header-right"></slot>
-            </template>
-          </HeaderContent>
-        </div>
-        <div class="layout-view">
-          <PageContent
-            :history-is-open="historyIsOpen"
-            :history-navigation="historyNavigation"
-            :current-navigation="currentNavigation"
-          >
-            <template #tabs="{ isShow }">
-              <NavigationTabs
-                v-if="isShow"
-                :history-navigation="historyNavigation"
-                :current-navigation="currentNavigation"
+          <div v-loading="isLoading" class="layout-mask">
+            <RouterView v-slot="{ Component, route }">
+              <component
+                v-if="route.name === 'login'"
+                :key="route.name"
+                :is="Component"
+                @login="login"
               />
-            </template>
-
-            <div v-loading="isLoading" class="layout-mask">
-              <RouterView v-slot="{ Component, route }">
-                <component
-                  v-if="route.name === 'login'"
-                  :key="route.name"
-                  :is="Component"
-                  @login="login"
-                />
-                <template v-else>
-                  <KeepAlive>
-                    <component
-                      v-if="route?.meta?.keepAlive ?? false"
-                      :key="route.name"
-                      :is="Component"
-                    />
-                  </KeepAlive>
+              <template v-else>
+                <KeepAlive>
                   <component
-                    v-if="!(route?.meta?.keepAlive ?? false)"
+                    v-if="route?.meta?.keepAlive ?? false"
                     :key="route.name"
                     :is="Component"
                   />
-                </template>
-                <!-- 更換路由執行 -->
-                <div style="display: none;">{{ onRouteChange(route) }}</div>
-              </RouterView>
-            </div>
-          </PageContent>
-        </div>
-      </div>
+                </KeepAlive>
+                <component
+                  v-if="!(route?.meta?.keepAlive ?? false)"
+                  :key="route.name"
+                  :is="Component"
+                />
+              </template>
+              <!-- 更換路由執行 -->
+              <div style="display: none;">{{ onRouteChange(route) }}</div>
+            </RouterView>
+          </div>
+        </PageContent>
+      </template>
 
       <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
       <div v-show="isLoading" class="is-disabled"></div>
-    </div>
+    </SystemLayout>
+
     <!-- hook loading -->
     <HookLoader ref="customLoader"/>
-
     <!-- hook popover -->
     <template v-if="customPopoverQueue.length > 0">
       <HookPopover
@@ -425,88 +404,6 @@ const login = async (userId: number) => {
 
 <style lang="scss" scoped>
 .layout {
-  &-wrapper {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-
-    display: flex;
-    position: relative;
-
-    .is-disabled {
-      width: 100%;
-      height: 100%;
-      z-index: $global-disabled-index;
-      position: absolute;
-      left: 0;
-      top: 0;
-      background-color: #00000000;
-    }
-  }
-
-  &-left {
-    z-index: $side-index;
-    height: 100%;
-    transition-duration: 0.3s;
-    will-change: width;
-    position: absolute;
-    left: 0;
-    top: 0;
-
-    &.is-close,
-    &.is-open {
-      width: $side-width;
-    }
-    // 至少要 992px 才可以定住選單
-    @media (min-width: 992px) {
-      &.is-open {
-        width: $nav-lg-width;
-        @media (max-width: 768px) {
-          width: $nav-md-width;
-        }
-      }
-    }
-  }
-
-  &-right {
-    position: relative;
-    top: 0;
-    transition-duration: 0.3s;
-    will-change: width, left;
-
-    &.is-close,
-    &.is-open {
-      width: calc(100% - $side-width);
-      left: $side-width;
-    }
-
-    // 至少要 992px 才可以定住選單
-    @media (min-width: 992px) {
-      &.is-open {
-        width: calc(100% - $nav-lg-width);
-        left: $nav-lg-width;
-
-        @media (max-width: 768px) {
-          width: calc(100% - $nav-md-width);
-          left: $nav-md-width;
-        }
-      }
-    }
-
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-    background-color: lighten($system-bg-color, 60%);
-  }
-  &-header {
-    width: 100%;
-    height: fit-content;
-  }
-  &-view {
-    width: 100%;
-    height: 100%;
-    flex: 1;
-  }
   &-mask {
     width: 100%;
     min-height: fit-content;

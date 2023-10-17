@@ -5,6 +5,7 @@ import { ElImage } from 'element-plus'
 import { hasOwnProperty } from '@/lib/lib_utils'
 
 export type ImageFit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+export type ImageLoading = 'eager' | 'lazy'
 
 const props = defineProps({
   src: {
@@ -25,6 +26,11 @@ const props = defineProps({
     default: '',
     description: '原生屬性 alt'
   },
+  loading: {
+    type: String as PropType<ImageLoading>,
+    required: false,
+    description: '原生屬性 loading'
+  },
   referrerpolicy: {
     type: String as PropType<string>,
     required: false,
@@ -34,11 +40,13 @@ const props = defineProps({
   zoomRate: {
     type: Number as PropType<number>,
     required: false,
+    default: 1.2,
     description: '瀏覽圖片縮放比'
   },
   initialIndex: {
     type: Number as PropType<number>,
-    default: 0
+    default: 0,
+    description: '預覽圖片的索引值'
   },
   previewSrcList: {
     type: Array as PropType<string[]>,
@@ -86,8 +94,9 @@ const hasSlot = (prop: string): boolean => {
     <ElImage
       style="width: 100%; height: 100%;"
       :src="props.src"
-      :alt="props.alt"
       :fit="props.fit"
+      :alt="props.alt"
+      :loading="props.loading"
       :referrerpolicy="props.referrerpolicy"
       :zoom-rate="props.zoomRate"
       :initial-index="props.initialIndex"
@@ -102,9 +111,9 @@ const hasSlot = (prop: string): boolean => {
       <template v-if="hasSlot('error')" #error>
         <slot name="error"></slot>
       </template>
-      <template v-if="hasSlot('viewer')" #viewer>
+      <!-- <template v-if="hasSlot('viewer')" #viewer>
         <slot name="viewer"></slot>
-      </template>
+      </template> -->
     </ElImage>
   </div>
 </template>

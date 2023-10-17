@@ -92,6 +92,30 @@ const descriptionRoutes: RouterTree[] = [
         icon: 'flag'
       },
       {
+        name: 'description-image',
+        title: 'CustomImage',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-image',
+        component: () => import('@/views/ComponentsDescription/Des_Image.vue'),
+        icon: 'images'
+      },
+      {
+        name: 'description-modal',
+        title: 'CustomModal',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/description-modal',
+        component: () => import('@/views/ComponentsDescription/Des_Modal.vue'),
+        icon: 'window-restore'
+      },
+      {
         name: 'description-table',
         title: 'CustomTable',
         meta: {
