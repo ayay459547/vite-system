@@ -9,7 +9,9 @@ $color-list: (
   'white': #ffffff,
   'gray': #bcbcbc,
   'yellow': #ffee55,
-  'green': #a0ff8a
+  'green': #a0ff8a,
+
+  'empty': #ffffff00
 );
 
 @each $type, $color in $color-list {

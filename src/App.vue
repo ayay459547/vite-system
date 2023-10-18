@@ -2,11 +2,11 @@
 import GlobalView from '@/components/GlobalView.vue'
 import { useEnvStore } from '@/stores/stores_env'
 import { defineComponent } from 'vue'
-import { CustomIcon } from '@/components'
+// import { CustomIcon } from '@/components'
 
 export default defineComponent({
   name: 'AppView',
-  components: { GlobalView, CustomIcon },
+  components: { GlobalView },
   setup () {
     const envStore = useEnvStore()
     const { system, version } = envStore
@@ -23,13 +23,11 @@ export default defineComponent({
 <template>
   <div class="app-container">
     <GlobalView>
-      <template #menu-header="{ isShow }">
-        <RouterLink to="/home" v-slot="{ navigate }">
-          <div class="menu-header" @click="navigate">
-            <CustomIcon name="home" size="large"/>
-            <h2 v-if="isShow">HOME</h2>
-          </div>
-        </RouterLink>
+      <template #logo>
+        <div class="menu-logo">
+          <img class="vue-img" src="@/assets/images/Vue-logo.png" alt="vue" />
+          <h2 class="vue-text">Demo</h2>
+        </div>
       </template>
 
       <template #menu-footer="{ isShow }">
@@ -53,17 +51,23 @@ export default defineComponent({
 }
 
 .menu {
-  &-header {
-    font-size: 1.2em;
+  &-logo {
+    width: fit-content;
+    height: 58px;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 16px;
-    padding: 16px 16px;
-    color: #fff;
-    transition-duration: 0.3s;
+    padding: 0 8px;
 
-    &:hover {
-      color: $warning;
+    .vue {
+      &-img {
+        width: 46px;
+      }
+      &-text {
+        font-size: 1.6em;
+        font-weight: 600;
+      }
     }
   }
 
@@ -81,5 +85,15 @@ export default defineComponent({
     }
   }
 }
+
+.header {
+  &-right {
+    color: #535353;
+    transition-duration: 0.3s;
+
+    &:hover {
+      color: #409eff;
+    }
+  }
+}
 </style>
-@/stores/stores_env

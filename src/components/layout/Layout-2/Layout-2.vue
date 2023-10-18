@@ -19,8 +19,12 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'changeHistory', value: boolean): void
-  (e: 'changeLocale'): void
+  (e: 'preferences'): void
 }>()
+
+const onChangeHistory = (v: boolean) => {
+  emit('changeHistory', v)
+}
 
 </script>
 
@@ -34,7 +38,13 @@ const emit = defineEmits<{
         :history-is-open="props.historyIsOpen"
         :auth-data="props.authData"
         :breadcrumb-title="props.breadcrumbTitle"
+        @change-history="onChangeHistory"
+        @logout="emit('logout')"
+        @preferences="emit('preferences')"
       >
+        <template #logo>
+          <slot name="logo"></slot>
+        </template>
         <template #menu-left>
           <slot name="menu-left"></slot>
         </template>

@@ -59,8 +59,8 @@ export const useLocaleStore = defineStore('locale', () => {
   })
 
   return {
+    elLocale,
     currentLang,
-    locale,
-    mode: 'dark'
+    locale
   }
 })

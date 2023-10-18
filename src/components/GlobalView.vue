@@ -326,8 +326,8 @@ onMounted(() => {
       @change-locale="setWebTitle"
       @change-history="changeHistory"
     >
-      <template #menu-header="{ isShow }">
-        <slot name="menu-header" :is-show="isShow"></slot>
+      <template #logo="{ isShow }">
+        <slot name="logo" :is-show="isShow"></slot>
       </template>
       <template #menu-footer="{ isShow }">
         <slot name="menu-footer" :is-show="isShow"></slot>

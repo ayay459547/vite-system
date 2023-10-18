@@ -24,7 +24,7 @@ const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'update:isOpen', value: boolean): void
   (e: 'changeHistory', value: boolean): void
-  (e: 'changeLocale'): void
+  (e: 'preferences'): void
 }>()
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
@@ -37,12 +37,6 @@ const tempIsOpen: WritableComputedRef<boolean> = computed({
 const onChangeHistory = (v: boolean) => {
   emit('changeHistory', v)
 }
-const onLogout = () => {
-  emit('logout')
-}
-const  onChangeLocale = () => {
-  emit('changeLocale')
-}
 
 </script>
 
@@ -54,13 +48,14 @@ const  onChangeLocale = () => {
       :class="tempIsOpen ? 'is-open': 'is-close'"
     >
       <SideContent
-        :is-open="tempIsOpen"
+        v-model:is-open="tempIsOpen"
         :show-routes="props.showRoutes"
         :current-route-name="props.currentRouteName"
         :breadcrumb-name="props.breadcrumbName"
+        @close="emit('update:isOpen', false)"
       >
-        <template #header="{ isShow }">
-          <slot name="menu-header" :is-show="isShow"></slot>
+        <template #logo="{ isShow }">
+          <slot name="logo" :is-show="isShow"></slot>
         </template>
         <template #footer="{ isShow }">
           <slot name="menu-footer" :is-show="isShow"></slot>
@@ -80,8 +75,8 @@ const  onChangeLocale = () => {
           :auth-data="props.authData"
           :breadcrumb-title="props.breadcrumbTitle"
           @change-history="onChangeHistory"
-          @logout="onLogout"
-          @change-locale="onChangeLocale"
+          @logout="emit('logout')"
+          @preferences="emit('preferences')"
         >
           <template #header-left>
             <slot name="header-left"></slot>

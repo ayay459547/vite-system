@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Navigation } from '@/declare/routes'
 import NavigationView from './NavigationView.vue'
+import { CustomIcon } from '@/components'
+import { computed } from 'vue'
 
 const props = defineProps<{
   isOpen: boolean
@@ -9,16 +11,32 @@ const props = defineProps<{
   breadcrumbName: string[]
 }>()
 
+const emit = defineEmits<{
+  (e: 'update:isOpen', value: boolean): void
+}>()
+
+const tempIsOpen = computed<boolean>({
+  get () { return props.isOpen },
+  set (value) {
+    localStorage.setItem('navIsOpen', `${value}`)
+    emit('update:isOpen', value)
+  }
+})
+
 </script>
 
 <template>
-  <div class="side-container" :class="props.isOpen ? 'is-open': 'is-close'">
+  <div class="side-container" :class="tempIsOpen ? 'is-open': 'is-close'">
     <div class="side-logo">
       <div class="side-logo-navigate open">
-        <slot name="header" :is-show="true"></slot>
+        <slot name="logo" :is-show="true"></slot>
       </div>
       <div class="side-logo-navigate close">
-        <slot name="header" :is-show="false"></slot>
+        <slot name="logo" :is-show="false"></slot>
+      </div>
+
+      <div class="side-logo-close" @click="tempIsOpen = false">
+        <CustomIcon name="close"/>
       </div>
     </div>
 
@@ -82,12 +100,13 @@ const props = defineProps<{
       display: block;
     }
 
-    &:hover {
+    &.is-open {
       box-shadow: 1px 0px 20px 0px #707070;
       @include navOpen();
     }
 
     @media (min-width: 992px) {
+      &:hover,
       &.is-open {
         @include navOpen();
       }
@@ -96,6 +115,9 @@ const props = defineProps<{
 
   &-logo,
   &-footer {
+    display: flex;
+    align-items: center;
+
     color: #fff;
     transition-duration: 0.3s;
     width: 100%;
@@ -105,6 +127,18 @@ const props = defineProps<{
       align-items: center;
       white-space: nowrap;
       cursor: default;
+      flex: 1;
+    }
+
+    &-close {
+      padding: 4px 8px;
+      margin: 0 6px;
+      cursor: pointer;
+      font-size: 1.5em;
+      // 大於 992px 不用顯示
+      @media (min-width: 992px) {
+        display: none;
+      }
     }
   }
 

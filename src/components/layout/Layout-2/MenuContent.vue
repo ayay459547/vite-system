@@ -2,7 +2,9 @@
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/stores/stores_api'
 
-import { CustomIcon, CustomTooltip } from '@/components'
+import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
+import MenuHome from '@/components/layout/Menu/MenuHome.vue'
+import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 
 import { computed } from 'vue'
 
@@ -19,42 +21,11 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'changeHistory', value: boolean): void
-  (e: 'changeLocale'): void
+  (e: 'preferences'): void
 }>()
 
-type Breadcrumb = {
-  type: string
-  name: string
-}
-const currentPath = computed<Breadcrumb[]>(() => {
-  return props.breadcrumbTitle.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
-    if (crumbIndex === 0){
-      res.push({
-        type: 'text',
-        name: crumb
-      })
-    } else {
-      res.push({
-        type: 'icon',
-        name: ' / '
-      }, {
-        type: 'text',
-        name: crumb
-      })
-    }
-
-    return res
-  }, [])
-})
-
-const breadcrumbSpan = computed<string>(() => {
-  return currentPath.value.reduce((res, crumb) => {
-    return res + crumb.name
-  }, '')
-})
-
-const getBreadcrumbSpan = () => {
-  return breadcrumbSpan.value
+const onChangeHistory = ($event: boolean) => {
+  emit('changeHistory', $event)
 }
 
 </script>
@@ -62,22 +33,24 @@ const getBreadcrumbSpan = () => {
 <template>
   <div class="menu-wrapper">
     <div class="menu-left">
+      <slot name="logo"></slot>
+      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" />
       <slot name="menu-left"></slot>
-
-      <div class="menu-breadcrumb">
-        <div
-          v-fixed="{
-            text: getBreadcrumbSpan,
-            class: 'text-white',
-            style: ''
-          }"
-          class="text ellipsis"
-        >{{ breadcrumbSpan }}</div>
-      </div>
     </div>
 
     <div class="menu-right">
-
+      <div class="menu-right-effect">
+        <MenuHome />
+      </div>
+      <div class="menu-right-effect">
+        <MenuUser
+          :auth-data="props.authData"
+          :history-is-open="props.historyIsOpen"
+          @change-history="onChangeHistory"
+          @logout="emit('logout')"
+          @preferences="emit('preferences')"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -91,41 +64,46 @@ const getBreadcrumbSpan = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 16px;
+    padding: 0 8px;
     font-size: 1.2em;
 
-    background-color: lighten($system-bg-color, 10%);
+    background-color: lighten($system-bg-color, 5%);
 
     color: #ffffff;
   }
 
   &-left {
-    flex: 1;
-    display: flex;
-    align-content: center;
-    gap: 8px;
-  }
-  &-breadcrumb {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    flex: 1;
     width: 100%;
-    height: 40px;
-    position: relative;
-    .text {
-      max-width: 100%;
-      width: fit-content;
-      line-height: 40px;
-
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
+    height: fit-content;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   &-right {
+    display: flex;
     width: fit-content;
+    align-items: center;
+    gap: 8px;
+
+    &-effect {
+      display: flex;
+      justify-content: flex-start;
+      width: fit-content;
+      align-items: center;
+      padding: 8px;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+
+      transition-duration: 0.3s;
+      color: #ffffff;
+
+      &:hover {
+        color: $warning;
+      }
+    }
   }
 }
 </style>

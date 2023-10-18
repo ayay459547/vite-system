@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { OperatorModelValue } from '@/components'
 import { CustomInput } from '@/components'
 
 const valueTest = ref<number | null>(null)
@@ -21,7 +20,7 @@ const dateValue = ref(null)
 
 const selectValue = ref(null)
 
-const operatorValue = ref<OperatorModelValue>([null, null])
+const operatorValue = ref<any>([null, null])
 
 const onOperatorChange = (v) => {
   console.log(v)
