@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
-import { ref, shallowRef, inject } from 'vue'
+import { ref, shallowRef } from 'vue'
 import type { Navigation } from '@/declare/routes'
-import type { RouterType } from '@/router/setting'
-import { routerTypeIcon } from '@/router/setting'
 import SubNavigationView from './SubNavigationView.vue'
-
-import type { IconType } from '@/components'
+import { routesHook } from '@/lib/lib_routes'
 import { CustomIcon } from '@/components'
 
 const props = defineProps<{
@@ -15,14 +11,14 @@ const props = defineProps<{
   breadcrumbName: string[]
 }>()
 
-const hook: Hook = inject('hook')
-const { i18nTest, i18nTranslate } = hook()
+const { getRouteIcon, getRouteTitle } = routesHook()
 
 // 第二層路由
 const level2IsOpen = ref<boolean>(false)
 const level2Nav = shallowRef<Navigation>()
 const level2List = shallowRef<Navigation[]>([])
 
+// 第二層子路由是否打開
 const level2OpenMap = ref<Record<string, boolean>>({})
 const changeMap = (name: string): void => {
   level2OpenMap.value[name] = !level2OpenMap.value[name]
@@ -42,22 +38,6 @@ const setLevel2Router = (level2Router: Navigation): void => {
   })
 }
 
-// 路由圖示
-const getIcon = (icon:  [IconType, string] | string): [IconType, string] => {
-  if (typeof icon === 'string') return ['fas', icon]
-  return icon
-}
-const getLastTypeIcon = (systemType: RouterType[]) => {
-  const lastType = systemType[systemType.length - 1]
-  return routerTypeIcon[lastType]
-}
-const getNavTitle = (nav: Navigation | null | undefined): string => {
-  if ([null, undefined].includes(nav)) return ''
-
-  if (i18nTest(nav.name)) return i18nTranslate(nav.name)
-  return nav.title
-}
-
 </script>
 
 <template>
@@ -74,9 +54,8 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
             class="nav-item-left"
             :class="{ active: props.breadcrumbName[0] === level1Item.name }"
           >
-            <CustomIcon v-if="level1Item.icon" :icon="getIcon(level1Item.icon)" class="item-icon"></CustomIcon>
-            <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ getNavTitle(level1Item) }}</span>
+            <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+            <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
           </div>
 
           <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
@@ -94,9 +73,8 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
             :class="{ active: props.currentRouteName === level1Item.name }"
             @click="navigate"
           >
-            <CustomIcon v-if="level1Item.icon" :icon="getIcon(level1Item.icon)" class="item-icon"></CustomIcon>
-            <CustomIcon v-else :icon="getLastTypeIcon(level1Item.systemType)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ getNavTitle(level1Item) }}</span>
+            <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+            <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
           </div>
 
           <div class="nav-item-right"></div>
@@ -108,14 +86,11 @@ const getNavTitle = (nav: Navigation | null | undefined): string => {
     <div class="nav-list level2">
       <SubNavigationView
         v-model:isOpen="level2IsOpen"
-        :title="getNavTitle(level2Nav)"
+        :title="getRouteTitle(level2Nav)"
         :level2-list="level2List"
         :open-map="level2OpenMap"
         :current-route-name="props.currentRouteName"
         :breadcrumb-name="props.breadcrumbName"
-        :get-icon="getIcon"
-        :get-last-type-icon="getLastTypeIcon"
-        :get-nav-title="getNavTitle"
         @change-map="changeMap"
       />
     </div>

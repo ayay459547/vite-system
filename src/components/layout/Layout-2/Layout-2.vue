@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import MenuContent from './MenuContent.vue'
+import SubMenu from './SubMenu.vue'
 
 import type { Navigation } from '@/declare/routes'
+import { isEmpty } from '@/lib/lib_utils'
 import type { AuthData } from '@/stores/stores_api'
+import { ref, shallowRef, computed, nextTick } from 'vue'
 
 const props = defineProps<{
   isShow: boolean
 
   showRoutes: Navigation[]
-  currentRouteName: string
+  currentNavigation: Navigation
   breadcrumbName: string[]
 
   historyIsOpen: boolean
@@ -26,14 +29,66 @@ const onChangeHistory = (v: boolean) => {
   emit('changeHistory', v)
 }
 
+// 第二層路由
+const level2Nav = shallowRef<Navigation>()
+const level2List = shallowRef<Navigation[]>([])
+
+const subMenuRef = ref()
+
+const currentRouteName = computed(() => {
+  const [
+    level1Active = '',
+    level2Active = '',
+    level3Active = ''
+  ] = props.breadcrumbName
+
+  return {
+    level1: level1Active,
+    level2: level2Active,
+    level3: level3Active
+  }
+})
+
+const setLevel2Router = async (level2Router: Navigation) => {
+  if (isEmpty(level2Router)) return
+
+  const { leaves } = level2Router
+  level2Nav.value = level2Router
+  level2List.value = leaves ?? []
+
+  await nextTick()
+  subMenuRef.value.clearLevel3List()
+  subMenuRef.value.setOpen(true)
+}
+
+const init = async () => {
+  await nextTick()
+  if (isEmpty(props.currentNavigation)) return
+
+  const currentLevel1 = props.showRoutes.find(level1Item => {
+    return level1Item.name === currentRouteName.value.level1
+  })
+  setLevel2Router(currentLevel1)
+
+  const tempLevel2List = currentLevel1?.leaves ?? []
+  const currentLevel2 = tempLevel2List.find(level2Item => {
+    return level2Item.name === currentRouteName.value.level2
+  })
+  subMenuRef.value.setLevel3Router(currentLevel2)
+}
+
+defineExpose({
+  init
+})
+
 </script>
 
 <template>
   <div class="layout-wrapper">
-    <div class="layout-menu">
+    <div class="layout-menu level1">
       <MenuContent
         :show-routes="props.showRoutes"
-        :current-route-name="props.currentRouteName"
+        :current-navigation="props.currentNavigation"
         :breadcrumb-name="props.breadcrumbName"
         :history-is-open="props.historyIsOpen"
         :auth-data="props.authData"
@@ -41,6 +96,7 @@ const onChangeHistory = (v: boolean) => {
         @change-history="onChangeHistory"
         @logout="emit('logout')"
         @preferences="emit('preferences')"
+        @set-level2-router="setLevel2Router"
       >
         <template #logo>
           <slot name="logo"></slot>
@@ -52,7 +108,19 @@ const onChangeHistory = (v: boolean) => {
           <slot name="menu-right"></slot>
         </template>
       </MenuContent>
+
+      <div class="level2">
+        <SubMenu
+          ref="subMenuRef"
+          :current-navigation="props.currentNavigation"
+          :level2-nav="level2Nav"
+          :level2-list="level2List"
+          :breadcrumb-name="breadcrumbName"
+        />
+      </div>
     </div>
+
+
     <div class="layout-view">
       <slot name="content"></slot>
     </div>

@@ -65,5 +65,10 @@ export default {
     zhTw: '全螢幕',
     zhCn: '全屏',
     en: 'FullScreen'
+  },
+  systemModule: {
+    zhTw: '系統模組',
+    zhCn: '系统模组',
+    en: 'SystemModule'
   }
 } as LangMap

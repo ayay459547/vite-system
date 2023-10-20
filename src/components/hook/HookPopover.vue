@@ -68,7 +68,8 @@ const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
     popoverWidth.value = 150
   }
 
-  window.addEventListener('wheel', throttleOnWheelChange)
+  window.addEventListener('wheel', throttleClosePopover)
+  window.addEventListener('resize', throttleClosePopover)
 
   setTimeout(() => {
     visible.value = true
@@ -76,14 +77,15 @@ const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
 }
 
 const closePopover = () => {
-  window.removeEventListener('wheel', throttleOnWheelChange)
+  window.removeEventListener('wheel', throttleClosePopover)
+  window.removeEventListener('resize', throttleClosePopover)
 
   if (visible.value) {
     visible.value = false
   }
 }
 
-const throttleOnWheelChange = throttle(closePopover, 0) as (payload: WheelEvent) => void
+const throttleClosePopover = throttle(closePopover, 0) as (payload: WheelEvent) => void
 
 onMounted(() => {
   openPopover(
@@ -129,7 +131,10 @@ defineExpose<Expose>({
           v-for="(callbackItem, callbackIndex) in callbackList"
           class="popover-item"
           :key="callbackIndex"
-          :class="callbackItem.disabled ? 'disabled' : ''"
+          :class="{
+            disabled: callbackItem.disabled,
+            active: callbackItem.active
+          }"
           @click="callEvent(callbackItem.event, callbackItem.disabled)"
         >
           <div style="width: fit-content">
@@ -180,6 +185,7 @@ defineExpose<Expose>({
     background-color: inherit;
     transition-duration: 0.3s;
 
+    &.active,
     &:hover {
       color: #409EFF;
       background-color: #f5f7fa;

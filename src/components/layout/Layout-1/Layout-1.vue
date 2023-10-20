@@ -38,6 +38,14 @@ const onChangeHistory = (v: boolean) => {
   emit('changeHistory', v)
 }
 
+const init = () => {
+  console.log('layout1 init')
+}
+
+defineExpose({
+  init
+})
+
 </script>
 
 <template>

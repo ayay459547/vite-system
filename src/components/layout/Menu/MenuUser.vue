@@ -2,7 +2,7 @@
 import type { Hook } from '@/declare/hook'
 import type { AuthData } from '@/stores/stores_api'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { ref, inject } from 'vue'
+import { inject } from 'vue'
 
 const hook: Hook = inject('hook')
 const { eventList, i18nTranslate } = hook()

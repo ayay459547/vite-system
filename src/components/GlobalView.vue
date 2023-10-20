@@ -270,14 +270,19 @@ const initNavigationRoutes = async () => {
   setTimeout(() => {
     isShow.value = true
   }, 100)
+}
+
+onBeforeMount(async () => {
+  await initNavigationRoutes()
+  await nextTick()
 
   setTimeout(() => {
     loading(false, 'loading')
-  }, 300)
-}
-
-onBeforeMount(() => {
-  initNavigationRoutes()
+  }, 500)
+  // 給 800 毫秒 確保路由跳轉完成後 才執行
+  setTimeout(() => {
+    systemLayoutRef.value.init()
+  }, 800)
 })
 
 // 登出
@@ -317,6 +322,7 @@ onMounted(() => {
       ref="systemLayoutRef"
       :is-show="isShow"
       :show-routes="navigationRoutes"
+      :current-navigation="currentNavigation"
       :current-route-name="currentRouteName"
       :breadcrumbName="breadcrumbName"
       :history-is-open="historyIsOpen"

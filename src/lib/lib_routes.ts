@@ -1,4 +1,11 @@
 import type { RouterTree } from '@/declare/routes'
+import type { Navigation } from '@/declare/routes'
+import { isEmpty } from '@/lib/lib_utils'
+import type { IconType } from '@/components'
+import { routerTypeIcon } from '@/router/setting'
+import type { RouterType } from '@/router/setting'
+
+import { useI18n } from 'vue-i18n'
 
 /**
  * @author Caleb
@@ -103,4 +110,60 @@ export const refactorRoutes = <T>(
   _refactorRoutes(routes, null, res)
 
   return res
+}
+
+const getIcon = (icon:  [IconType, string] | string): [IconType, string] => {
+  if (typeof icon === 'string') return ['fas', icon]
+  return icon
+}
+const getLastTypeIcon = (systemType: RouterType[]): [IconType, string] => {
+  const lastType = systemType[systemType.length - 1]
+  return routerTypeIcon[lastType]
+}
+
+/**
+ * @author Caleb
+ * @description 取得路由的圖示 如果沒有圖示 使用類型的圖示
+ * @param {Object} nav 路由
+ * @returns {Array} 圖示
+ */
+const getRouteIcon = (nav: Navigation | null | undefined): [IconType, string] => {
+  // 如果是 home
+  if ([null, undefined].includes(nav)) return ['fas', 'list']
+
+  if (!isEmpty(nav.icon)) return getIcon(nav.icon)
+  return getLastTypeIcon(nav.systemType)
+}
+
+/**
+ * @author Caleb
+ * @description 取得路由的文字 如果有翻譯使用翻譯 沒有就使用 title
+ * @param {Object} nav 路由
+ * @returns {String} 文字
+ */
+const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18nTest }): string => {
+  if ([null, undefined].includes(nav)) return (i18nTranslate('systemModule') as unknown as string)
+
+  if (i18nTest(nav.name)) return (i18nTranslate(nav.name) as unknown as string)
+  return nav.title
+}
+
+export const routesHook = () => {
+  const {
+    t: i18nTranslate,
+    // locale: i18nLocale,
+    te: i18nTest // 測試 key 是否存在
+  } = useI18n()
+
+  return {
+    getRouterLeafLayer,
+    refactorRoutes,
+    getRouteIcon,
+    getRouteTitle: (nav: Navigation | null | undefined): string => {
+      return getRouteTitle(nav, {
+        i18nTranslate,
+        i18nTest
+      })
+    }
+  }
 }

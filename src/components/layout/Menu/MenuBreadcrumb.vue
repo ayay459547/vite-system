@@ -3,8 +3,11 @@ import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import { CustomIcon, CustomTooltip } from '@/components'
 
+type TextAlign = 'start' | 'end'
+
 const props = defineProps<{
   breadcrumbTitle: string[]
+  textAlign: TextAlign
 }>()
 
 type Breadcrumb = {
@@ -42,14 +45,14 @@ const breadcrumbSpan = computed<string>(() => {
 
 <template>
   <div class="breadcrumb-container">
-    <div class="breadcrumb-lg">
-      <CustomIcon name="map-location-dot" class="icon" icon-class="text-warning"/>
+    <div class="breadcrumb-lg" :class="props.textAlign">
+      <CustomIcon name="location-crosshairs" class="icon" icon-class="text-warning"/>
       <div class="text ellipsis">{{ breadcrumbSpan }}</div>
     </div>
 
     <div class="breadcrumb-xs">
       <CustomTooltip placement="right">
-        <CustomIcon name="map-location-dot" icon-class="text-warning"/>
+        <CustomIcon name="location-crosshairs" icon-class="text-warning"/>
 
         <template #content>
           <div class="breadcrumb-text">{{ breadcrumbSpan }}</div>
@@ -71,21 +74,36 @@ const breadcrumbSpan = computed<string>(() => {
   }
 
   &-lg {
-    width: calc(100% - 36px);
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
     flex: 1;
     position: relative;
-
-    .icon {
-      position: absolute;
+    &.start {
+      .icon,
+      .text {
+        position: absolute;
+      }
+      .text {
+        max-width: 100%;
+        width: fit-content;
+        // 文字超出 ellipsis
+        left: 36px;
+      }
     }
-    .text {
-      max-width: 100%;
-      width: fit-content;
-      // 文字超出 ellipsis
-      position: absolute;
-      left: 36px;
+    &.end {
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    &.end {
+      .text {
+        max-width: 100%;
+        width: fit-content;
+        // 文字超出 ellipsis
+        right: 12px;
+      }
     }
   }
 

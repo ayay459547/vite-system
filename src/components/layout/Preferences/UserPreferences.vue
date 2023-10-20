@@ -48,11 +48,20 @@ onMounted(() => {
 const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
 
+const emit = defineEmits<{
+  (e: 'changeLayout'): void
+}>()
+
 const getLayoutView = (layoutNumber: string) => {
   switch (layoutNumber){
     case '1': return Layout1
     case '2': return Layout2
   }
+}
+
+const onClickLayout = (layoutValue: string) => {
+  layoutStore.currentLayout = layoutValue
+  emit('changeLayout')
 }
 
 </script>
@@ -115,7 +124,7 @@ const getLayoutView = (layoutNumber: string) => {
             :key="layoutOption.value"
             :class="{ active: layout === layoutOption.value }"
             class="layout cursor-pointer"
-            @click="layoutStore.currentLayout = layoutOption.value"
+            @click="onClickLayout(layoutOption.value)"
           >
             <div class="i-mb-sm">{{ i18nTranslate('layout') + layoutOption.label }}</div>
             <component :is="getLayoutView(layoutOption.label)"/>

@@ -7,6 +7,7 @@ export declare interface EventItem {
   icon: [IconType, string] | []
   label: string
   disabled?: boolean
+  active?: boolean
   event: Function
 }
 

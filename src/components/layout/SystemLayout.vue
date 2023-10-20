@@ -21,8 +21,9 @@ const { i18nTranslate } = hook()
 const props = defineProps<{
   isShow: boolean
 
-  showRoutes: Navigation[]
+  currentNavigation: Navigation
   currentRouteName: string
+  showRoutes: Navigation[]
   breadcrumbName: string[]
 
   historyIsOpen: boolean
@@ -44,22 +45,14 @@ onMounted(() => {
   const _navIsOpen = localStorage.getItem('navIsOpen')
   navIsOpen.value = _navIsOpen === 'true'
 })
-defineExpose({
-  setModalView: async () => {
-    await nextTick()
-
-    navIsOpen.value = false
-    emit('changeHistory', false)
-  }
-})
-
 
 const layoutAttr = computed(() => {
   return {
     isShow: props.isShow,
 
-    showRoutes: props.showRoutes,
+    currentNavigation: props.currentNavigation,
     currentRouteName: props.currentRouteName,
+    showRoutes: props.showRoutes,
     breadcrumbName: props.breadcrumbName,
 
     historyIsOpen: props.historyIsOpen,
@@ -82,6 +75,38 @@ const modal = reactive({
   preferences: false
 })
 
+const layout1Ref = ref()
+const layout2Ref = ref()
+
+const init =  async () => {
+    await nextTick()
+
+    setTimeout(() => {
+      switch (layout.value) {
+        case 'layout1':
+          layout1Ref.value.init()
+          break
+        case 'layout2':
+          layout2Ref.value.init()
+          break
+      }
+    }, 100)
+  }
+
+defineExpose({
+  setModalView: async () => {
+    await nextTick()
+
+    navIsOpen.value = false
+    emit('changeHistory', false)
+  },
+  init
+})
+
+const onChangeLayout = () => {
+  init()
+}
+
 </script>
 
 <template>
@@ -95,11 +120,12 @@ const modal = reactive({
         <template #header>
           <label>{{ i18nTranslate('preferences') }}</label>
         </template>
-        <Preferences ref="preferencesRef"/>
+        <Preferences ref="preferencesRef" @change-layout="onChangeLayout"/>
       </CustomModal>
     </div>
 
     <Layout1
+      ref="layout1Ref"
       v-if="layout === 'layout1'"
       v-model:is-open="navIsOpen"
       v-bind="layoutAttr"
@@ -128,6 +154,7 @@ const modal = reactive({
     </Layout1>
 
     <Layout2
+      ref="layout2Ref"
       v-else-if="layout === 'layout2'"
       v-bind="layoutAttr"
       v-on="layoutEvent"

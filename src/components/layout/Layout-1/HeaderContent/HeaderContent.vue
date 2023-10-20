@@ -48,7 +48,7 @@ const tempIsOpen = computed<boolean>({
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen" class="header-hamburger" />
       <slot name="header-left"></slot>
-      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" />
+      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" text-align="start"/>
     </div>
 
     <div class="header-right">
@@ -77,7 +77,7 @@ const tempIsOpen = computed<boolean>({
 .header {
   &-container {
     width: 100%;
-    height: 64px;
+    height: 56px;
 
     display: flex;
     justify-content: space-between;

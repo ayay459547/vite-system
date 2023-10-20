@@ -3,14 +3,14 @@ import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/stores/stores_api'
 
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
+import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'
 import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 
-import { computed } from 'vue'
 
 const props = defineProps<{
   showRoutes: Navigation[]
-  currentRouteName: string
+  currentNavigation: Navigation
   breadcrumbName: string[]
 
   historyIsOpen: boolean
@@ -22,20 +22,36 @@ const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'changeHistory', value: boolean): void
   (e: 'preferences'): void
+  (e: 'setLevel2Router', level2List: Navigation): void
 }>()
 
 const onChangeHistory = ($event: boolean) => {
   emit('changeHistory', $event)
 }
 
+const setLevel2Router = (level2Router: Navigation) => {
+  emit('setLevel2Router', level2Router)
+}
+
 </script>
 
 <template>
-  <div class="menu-wrapper">
+  <div class="menu-container">
     <div class="menu-left">
       <slot name="logo"></slot>
-      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" />
+      <div class="menu-left-effect">
+        <MenuRouter
+          :show-routes="showRoutes"
+          :current-navigation="currentNavigation"
+          :breadcrumb-name="breadcrumbName"
+          @set-level2-router="setLevel2Router"
+        />
+      </div>
       <slot name="menu-left"></slot>
+    </div>
+
+    <div class="menu-center">
+      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" text-align="end"/>
     </div>
 
     <div class="menu-right">
@@ -57,9 +73,9 @@ const onChangeHistory = ($event: boolean) => {
 
 <style lang="scss" scoped>
 .menu {
-  &-wrapper {
+  &-container {
     width: 100%;
-    height: 64px;
+    height: 56px;
 
     display: flex;
     justify-content: space-between;
@@ -73,12 +89,26 @@ const onChangeHistory = ($event: boolean) => {
   }
 
   &-left {
-    width: 100%;
-    height: fit-content;
-    flex: 1;
     display: flex;
     align-items: center;
+    height: fit-content;
     gap: 8px;
+
+    &-effect {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &-center {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 24px;
   }
 
   &-right {
@@ -89,7 +119,6 @@ const onChangeHistory = ($event: boolean) => {
 
     &-effect {
       display: flex;
-      justify-content: flex-start;
       width: fit-content;
       align-items: center;
       padding: 8px;

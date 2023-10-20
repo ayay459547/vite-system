@@ -1,12 +1,9 @@
 <script lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
 import { defineComponent, computed } from 'vue'
-
 import type { Navigation } from '@/declare/routes'
-import type { RouterType } from '@/router/setting'
-
-import type { IconType } from '@/components'
 import { CustomIcon } from '@/components'
+import { routesHook } from '@/lib/lib_routes'
 
 export default defineComponent({
   name: 'SubNavigationView',
@@ -35,22 +32,12 @@ export default defineComponent({
     breadcrumbName: {
       type: Array as PropType<string[]>,
       required: true
-    },
-    getIcon: {
-      type: Function as PropType<(icon: [IconType, string] | string) => [IconType, string]>,
-      required: true
-    },
-    getLastTypeIcon: {
-      type: Function as PropType<(systemType: RouterType[]) => [IconType, string]>,
-      required: true
-    },
-    getNavTitle: {
-      type: Function as PropType<(nav: Navigation) => string>,
-      required: true
     }
   },
   emits: ['update:isOpen', 'changeMap'],
   setup (props, { emit }) {
+    const { getRouteIcon, getRouteTitle } = routesHook()
+
     const tempIsOpen: WritableComputedRef<Boolean> = computed({
       get: () => props.isOpen,
       set: value => emit('update:isOpen', value)
@@ -63,6 +50,8 @@ export default defineComponent({
     const changeOpen = (name: string): void => emit('changeMap', name)
 
     return {
+      getRouteIcon,
+      getRouteTitle,
       navHeight: 54,
       changeOpen,
       tempIsOpen,
@@ -89,9 +78,8 @@ export default defineComponent({
                 class="nav-item-left"
                 :class="{ active: $props.breadcrumbName[1] === routerItem.name }"
               >
-                <CustomIcon v-if="routerItem.icon" :icon="getIcon(routerItem.icon)" class="item-icon"></CustomIcon>
-                <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
-                <span class="item-title">{{ getNavTitle(routerItem) }}</span>
+                <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
+                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
               </div>
 
               <CustomIcon
@@ -121,9 +109,8 @@ export default defineComponent({
                   :class="{ active: $props.currentRouteName === leaf.name }"
                   @click="navigate"
                 >
-                <CustomIcon v-if="leaf.icon" :icon="getIcon(leaf.icon)" class="item-icon"></CustomIcon>
-                  <CustomIcon v-else :icon="getLastTypeIcon(leaf.systemType)" class="item-icon" />
-                  <span class="item-title">{{ getNavTitle(leaf) }}</span>
+                  <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" />
+                  <span class="item-title">{{ getRouteTitle(leaf) }}</span>
                 </div>
 
                 <div class="nav-item-right"></div>
@@ -143,9 +130,8 @@ export default defineComponent({
               :class="{ active: $props.currentRouteName === routerItem.name }"
               @click="navigate"
             >
-            <CustomIcon v-if="routerItem.icon" :icon="getIcon(routerItem.icon)" class="item-icon"></CustomIcon>
-              <CustomIcon v-else :icon="getLastTypeIcon(routerItem.systemType)" class="item-icon" />
-              <span class="item-title">{{ getNavTitle(routerItem) }}</span>
+              <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
+              <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
 
             <div class="nav-item-right"></div>
