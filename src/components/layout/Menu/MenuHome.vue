@@ -9,7 +9,10 @@ const { i18nTranslate } = hook()
 
 const router = useRouter()
 
+const emit = defineEmits(['changeRouter'])
+
 const toHome = () => {
+  emit('changeRouter')
   router.push({ name: 'home' })
 }
 

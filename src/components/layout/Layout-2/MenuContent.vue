@@ -7,11 +7,12 @@ import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'
 import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const props = defineProps<{
   showRoutes: Navigation[]
   currentNavigation: Navigation
-  breadcrumbName: string[]
+  currentRouteName: CurrentRouteName
 
   historyIsOpen: boolean
   authData: AuthData
@@ -23,6 +24,7 @@ const emit = defineEmits<{
   (e: 'changeHistory', value: boolean): void
   (e: 'preferences'): void
   (e: 'setLevel2Router', level2List: Navigation): void
+  (e: 'changeRouter'): void
 }>()
 
 const onChangeHistory = ($event: boolean) => {
@@ -31,6 +33,10 @@ const onChangeHistory = ($event: boolean) => {
 
 const setLevel2Router = (level2Router: Navigation) => {
   emit('setLevel2Router', level2Router)
+}
+
+const onChangeRouter = () => {
+  emit('changeRouter')
 }
 
 </script>
@@ -43,7 +49,7 @@ const setLevel2Router = (level2Router: Navigation) => {
         <MenuRouter
           :show-routes="showRoutes"
           :current-navigation="currentNavigation"
-          :breadcrumb-name="breadcrumbName"
+          :current-route-name="props.currentRouteName"
           @set-level2-router="setLevel2Router"
         />
       </div>
@@ -56,7 +62,7 @@ const setLevel2Router = (level2Router: Navigation) => {
 
     <div class="menu-right">
       <div class="menu-right-effect">
-        <MenuHome />
+        <MenuHome @change-router="onChangeRouter"/>
       </div>
       <div class="menu-right-effect">
         <MenuUser

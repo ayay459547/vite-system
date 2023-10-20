@@ -5,6 +5,8 @@ import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
 import { routesHook } from '@/lib/lib_routes'
 
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+
 export default defineComponent({
   name: 'SubNavigationView',
   components: { CustomIcon },
@@ -26,11 +28,7 @@ export default defineComponent({
       required: true
     },
     currentRouteName: {
-      type: String as PropType<string>,
-      required: true
-    },
-    breadcrumbName: {
-      type: Array as PropType<string[]>,
+      type: Object as PropType<CurrentRouteName>,
       required: true
     }
   },
@@ -76,7 +74,7 @@ export default defineComponent({
             <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div
                 class="nav-item-left"
-                :class="{ active: $props.breadcrumbName[1] === routerItem.name }"
+                :class="{ active: $props.currentRouteName.level2 === routerItem.name }"
               >
                 <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
                 <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
@@ -106,7 +104,7 @@ export default defineComponent({
               >
                 <div
                   class="nav-item-left"
-                  :class="{ active: $props.currentRouteName === leaf.name }"
+                  :class="{ active: $props.currentRouteName.level3 === leaf.name }"
                   @click="navigate"
                 >
                   <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" />
@@ -127,7 +125,7 @@ export default defineComponent({
           >
             <div
               class="nav-item-left"
-              :class="{ active: $props.currentRouteName === routerItem.name }"
+              :class="{ active: $props.currentRouteName.level2 === routerItem.name }"
               @click="navigate"
             >
               <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />

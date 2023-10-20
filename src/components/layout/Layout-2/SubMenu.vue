@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Navigation } from '@/declare/routes'
-import { computed, onMounted, shallowRef, ref } from 'vue'
+import { onMounted, shallowRef, ref } from 'vue'
 import { routesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
+
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const { getRouteIcon, getRouteTitle } = routesHook()
 
@@ -11,24 +13,10 @@ const props = defineProps<{
   currentNavigation: Navigation
   level2Nav: Navigation
   level2List: Navigation[]
-  breadcrumbName: string[]
+  currentRouteName: CurrentRouteName
 }>()
 
 const isOpen = ref(true)
-
-const currentRouteName = computed(() => {
-  const [
-    level1Active = '',
-    level2Active = '',
-    level3Active = ''
-  ] = props.breadcrumbName
-
-  return {
-    level1: level1Active,
-    level2: level2Active,
-    level3: level3Active
-  }
-})
 
 const level3List = shallowRef<Navigation[]>([])
 
@@ -67,7 +55,7 @@ defineExpose({
           <div
             v-if="Object.hasOwnProperty.call(routerItem, 'leaves')"
             class="menu-item"
-            :class="{ active: currentRouteName.level2 === routerItem.name }"
+            :class="{ active: props.currentRouteName.level2 === routerItem.name }"
             @click="setLevel3Router(routerItem)"
           >
             <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
@@ -77,7 +65,7 @@ defineExpose({
           <RouterLink
             v-else
             class="menu-item"
-            :class="{ active: currentRouteName.level2 === routerItem.name }"
+            :class="{ active: props.currentRouteName.level2 === routerItem.name }"
             :to="routerItem.path"
             v-slot="{ navigate }"
             @click="clearLevel3List"
@@ -90,11 +78,11 @@ defineExpose({
         </template>
       </nav>
 
-      <nav v-show="level3List.length > 0" class="menu-list level3" :class="{ active: props.breadcrumbName.length >= 3 }">
+      <nav v-show="level3List.length > 0" class="menu-list level3">
         <template v-for="leaf in level3List" :key="leaf.name">
           <RouterLink
             class="menu-item"
-            :class="{ active: currentRouteName.level3 === leaf.name }"
+            :class="{ active: props.currentRouteName.level3 === leaf.name }"
             :to="leaf.path"
             v-slot="{ navigate }"
           >
@@ -128,7 +116,7 @@ defineExpose({
   &-container {
     width: 100%;
     height: fit-content;
-    transition-duration: 0.2s;
+    transition-duration: 0.3s;
     overflow: hidden;
     will-change: max-height;
     &.is-open {
@@ -143,7 +131,7 @@ defineExpose({
     display: flex;
     flex-wrap: wrap;
     gap: 6px 12px;
-    padding: 6px 8px;
+    padding: 8px;
 
     &.level2 {
       background-color: lighten($system-bg-color, 8%);
@@ -161,11 +149,6 @@ defineExpose({
       height: fit-content;
       background-color: lighten($system-bg-color, 12%);
       overflow: hidden;
-
-      // &.active,
-      // &:hover {
-      //   max-height: 100px;
-      // }
     }
   }
   &-item {

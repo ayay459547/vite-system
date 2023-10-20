@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import type { WritableComputedRef } from 'vue'
-import { computed } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import SideContent from './SideContent/SideContent.vue'
 import type { AuthData } from '@/stores/stores_api'
 import HeaderContent from './HeaderContent/HeaderContent.vue'
 
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+
 const props = defineProps<{
   isOpen: boolean
   isShow: boolean
 
   showRoutes: Navigation[]
-  currentRouteName: string
-  breadcrumbName: string[]
+  currentNavigation: Navigation
+  currentRouteName: CurrentRouteName
 
   historyIsOpen: boolean
   authData: AuthData
@@ -38,8 +40,18 @@ const onChangeHistory = (v: boolean) => {
   emit('changeHistory', v)
 }
 
-const init = () => {
-  console.log('layout1 init')
+const sideRef = ref()
+
+const init = async () => {
+  await nextTick()
+
+  sideRef.value.init()
+}
+
+// 回首頁
+const onChangeRouter = async () => {
+  await nextTick()
+  sideRef.value.setOpen(false)
 }
 
 defineExpose({
@@ -56,10 +68,11 @@ defineExpose({
       :class="tempIsOpen ? 'is-open': 'is-close'"
     >
       <SideContent
+        ref="sideRef"
         v-model:is-open="tempIsOpen"
         :show-routes="props.showRoutes"
+        :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
-        :breadcrumb-name="props.breadcrumbName"
         @close="emit('update:isOpen', false)"
       >
         <template #logo="{ isShow }">
@@ -85,6 +98,7 @@ defineExpose({
           @change-history="onChangeHistory"
           @logout="emit('logout')"
           @preferences="emit('preferences')"
+          @change-router="onChangeRouter"
         >
           <template #header-left>
             <slot name="header-left"></slot>

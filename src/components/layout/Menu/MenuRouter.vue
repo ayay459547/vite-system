@@ -2,11 +2,13 @@
 import type { Hook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { computed, inject } from 'vue'
+import { inject } from 'vue'
 
 import { hasOwnProperty } from '@/lib/lib_utils'
 import { useRouter } from 'vue-router'
 import { routesHook } from '@/lib/lib_routes'
+
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate, eventList } = hook()
@@ -15,7 +17,7 @@ const { getRouteIcon, getRouteTitle } = routesHook()
 const props = defineProps<{
   showRoutes: Navigation[]
   currentNavigation: Navigation
-  breadcrumbName: string[]
+  currentRouteName: CurrentRouteName
 }>()
 
 const emit = defineEmits<{
@@ -23,20 +25,6 @@ const emit = defineEmits<{
 }>()
 
 const router = useRouter()
-
-const currentRouteName = computed(() => {
-  const [
-    level1Active = '',
-    level2Active = '',
-    level3Active = ''
-  ] = props.breadcrumbName
-
-  return {
-    level1: level1Active,
-    level2: level2Active,
-    level3: level3Active
-  }
-})
 
 const openRouterList = (e: MouseEvent) => {
   const level1List = props.showRoutes
@@ -46,7 +34,7 @@ const openRouterList = (e: MouseEvent) => {
     return {
       icon: getRouteIcon(level1Item),
       label: getRouteTitle(level1Item),
-      active: level1Item.name === currentRouteName.value.level1,
+      active: level1Item.name === props.currentRouteName.level1,
       event: () => {
         if (hasOwnProperty.call(level1Item, 'leaves')) {
           emit('setLevel2Router', level1Item)

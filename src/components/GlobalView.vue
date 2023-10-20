@@ -285,6 +285,15 @@ onBeforeMount(async () => {
   }, 800)
 })
 
+// 路由切換
+const onChangeRouter = async () => {
+  await nextTick()
+
+  setTimeout(() => {
+    systemLayoutRef.value.init()
+  }, 100)
+}
+
 // 登出
 const logout = async () => {
   loading(true, '登出中')
@@ -357,6 +366,7 @@ onMounted(() => {
               v-if="isShow"
               :history-navigation="historyNavigation"
               :current-navigation="currentNavigation"
+              @change-router="onChangeRouter"
             />
           </template>
 

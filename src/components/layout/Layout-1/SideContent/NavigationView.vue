@@ -5,10 +5,11 @@ import SubNavigationView from './SubNavigationView.vue'
 import { routesHook } from '@/lib/lib_routes'
 import { CustomIcon } from '@/components'
 
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+
 const props = defineProps<{
   level1List: Navigation[]
-  currentRouteName: string
-  breadcrumbName: string[]
+  currentRouteName: CurrentRouteName
 }>()
 
 const { getRouteIcon, getRouteTitle } = routesHook()
@@ -38,6 +39,15 @@ const setLevel2Router = (level2Router: Navigation): void => {
   })
 }
 
+const setOpen = (value: boolean) => {
+  level2IsOpen.value = value
+}
+
+defineExpose({
+  setLevel2Router,
+  setOpen
+})
+
 </script>
 
 <template>
@@ -52,7 +62,7 @@ const setLevel2Router = (level2Router: Navigation): void => {
         >
           <div
             class="nav-item-left"
-            :class="{ active: props.breadcrumbName[0] === level1Item.name }"
+            :class="{ active: props.currentRouteName.level1 === level1Item.name }"
           >
             <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
             <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
@@ -70,7 +80,7 @@ const setLevel2Router = (level2Router: Navigation): void => {
         >
           <div
             class="nav-item-left"
-            :class="{ active: props.currentRouteName === level1Item.name }"
+            :class="{ active: props.currentRouteName.level1 === level1Item.name }"
             @click="navigate"
           >
             <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
@@ -90,7 +100,6 @@ const setLevel2Router = (level2Router: Navigation): void => {
         :level2-list="level2List"
         :open-map="level2OpenMap"
         :current-route-name="props.currentRouteName"
-        :breadcrumb-name="props.breadcrumbName"
         @change-map="changeMap"
       />
     </div>

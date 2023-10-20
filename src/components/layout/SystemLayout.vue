@@ -22,7 +22,6 @@ const props = defineProps<{
   isShow: boolean
 
   currentNavigation: Navigation
-  currentRouteName: string
   showRoutes: Navigation[]
   breadcrumbName: string[]
 
@@ -46,14 +45,33 @@ onMounted(() => {
   navIsOpen.value = _navIsOpen === 'true'
 })
 
+export type CurrentRouteName = {
+  level1: string
+  level2: string
+  level3: string
+}
+const currentRouteName = computed(() => {
+  const [
+    level1Active = '',
+    level2Active = '',
+    level3Active = ''
+  ] = props.breadcrumbName
+
+  return {
+    level1: level1Active,
+    level2: level2Active,
+    level3: level3Active
+  }
+})
+
 const layoutAttr = computed(() => {
   return {
     isShow: props.isShow,
-
-    currentNavigation: props.currentNavigation,
-    currentRouteName: props.currentRouteName,
     showRoutes: props.showRoutes,
+    currentNavigation: props.currentNavigation,
+
     breadcrumbName: props.breadcrumbName,
+    currentRouteName: currentRouteName.value,
 
     historyIsOpen: props.historyIsOpen,
     authData: props.authData,

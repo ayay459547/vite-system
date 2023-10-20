@@ -2,13 +2,16 @@
 import type { Navigation } from '@/declare/routes'
 import NavigationView from './NavigationView.vue'
 import { CustomIcon } from '@/components'
-import { computed } from 'vue'
+import { computed, ref, nextTick } from 'vue'
+
+import { isEmpty } from '@/lib/lib_utils'
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const props = defineProps<{
   isOpen: boolean
   showRoutes: Navigation[]
-  currentRouteName: string
-  breadcrumbName: string[]
+  currentNavigation: Navigation
+  currentRouteName: CurrentRouteName
 }>()
 
 const emit = defineEmits<{
@@ -20,6 +23,32 @@ const tempIsOpen = computed<boolean>({
   set (value) {
     localStorage.setItem('navIsOpen', `${value}`)
     emit('update:isOpen', value)
+  }
+})
+
+const navRef = ref()
+
+const init = async () => {
+  await nextTick()
+  if (isEmpty(props.currentNavigation)) return
+
+  const currentLevel1 = props.showRoutes.find(level1Item => {
+    return level1Item.name === props.currentRouteName.level1
+  })
+  const hasChild = !isEmpty(currentLevel1?.leaves ?? [])
+
+  if (hasChild) {
+    navRef.value.setLevel2Router(currentLevel1)
+  }
+  navRef.value.setOpen(hasChild)
+}
+
+defineExpose({
+  init,
+  setOpen: (value: boolean) => {
+    if (navRef.value) {
+      navRef.value.setOpen(value)
+    }
   }
 })
 
@@ -42,9 +71,9 @@ const tempIsOpen = computed<boolean>({
 
     <div class="side-nav">
       <NavigationView
+        ref="navRef"
         :level1-list="props.showRoutes"
         :current-route-name="props.currentRouteName"
-        :breadcrumb-name="props.breadcrumbName"
       />
     </div>
 

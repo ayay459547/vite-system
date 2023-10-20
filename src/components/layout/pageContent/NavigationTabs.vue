@@ -25,6 +25,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['changeRouter'])
+
 const currentTab = computed(() => {
   return props.currentNavigation?.name ?? ''
 })
@@ -59,6 +61,11 @@ const clearHistory = () => {
   }
 }
 
+const changeRouter = (navigate: () => void) => {
+  emit('changeRouter')
+  navigate()
+}
+
 </script>
 
 <template>
@@ -78,7 +85,7 @@ const clearHistory = () => {
           :class="{ 'is-active': currentTab === slotProps.key }"
           v-slot="{ navigate }"
         >
-          <span @click="navigate">{{ slotProps.label }}</span>
+          <span @click="changeRouter(navigate)">{{ slotProps.label }}</span>
         </RouterLink>
       </template>
     </CustomTabs>

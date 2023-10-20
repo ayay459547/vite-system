@@ -5,14 +5,16 @@ import SubMenu from './SubMenu.vue'
 import type { Navigation } from '@/declare/routes'
 import { isEmpty } from '@/lib/lib_utils'
 import type { AuthData } from '@/stores/stores_api'
-import { ref, shallowRef, computed, nextTick } from 'vue'
+import { ref, shallowRef, nextTick } from 'vue'
+
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const props = defineProps<{
   isShow: boolean
 
   showRoutes: Navigation[]
   currentNavigation: Navigation
-  breadcrumbName: string[]
+  currentRouteName: CurrentRouteName
 
   historyIsOpen: boolean
   authData: AuthData
@@ -35,20 +37,6 @@ const level2List = shallowRef<Navigation[]>([])
 
 const subMenuRef = ref()
 
-const currentRouteName = computed(() => {
-  const [
-    level1Active = '',
-    level2Active = '',
-    level3Active = ''
-  ] = props.breadcrumbName
-
-  return {
-    level1: level1Active,
-    level2: level2Active,
-    level3: level3Active
-  }
-})
-
 const setLevel2Router = async (level2Router: Navigation) => {
   if (isEmpty(level2Router)) return
 
@@ -57,7 +45,6 @@ const setLevel2Router = async (level2Router: Navigation) => {
   level2List.value = leaves ?? []
 
   await nextTick()
-  subMenuRef.value.clearLevel3List()
   subMenuRef.value.setOpen(true)
 }
 
@@ -66,15 +53,24 @@ const init = async () => {
   if (isEmpty(props.currentNavigation)) return
 
   const currentLevel1 = props.showRoutes.find(level1Item => {
-    return level1Item.name === currentRouteName.value.level1
+    return level1Item.name === props.currentRouteName.level1
   })
   setLevel2Router(currentLevel1)
 
   const tempLevel2List = currentLevel1?.leaves ?? []
   const currentLevel2 = tempLevel2List.find(level2Item => {
-    return level2Item.name === currentRouteName.value.level2
+    return level2Item.name === props.currentRouteName.level2
   })
+
+  subMenuRef.value.clearLevel3List()
   subMenuRef.value.setLevel3Router(currentLevel2)
+}
+
+// 回首頁
+const onChangeRouter = async () => {
+  await nextTick()
+  level2List.value = []
+  subMenuRef.value.clearLevel3List()
 }
 
 defineExpose({
@@ -89,7 +85,7 @@ defineExpose({
       <MenuContent
         :show-routes="props.showRoutes"
         :current-navigation="props.currentNavigation"
-        :breadcrumb-name="props.breadcrumbName"
+        :current-route-name="props.currentRouteName"
         :history-is-open="props.historyIsOpen"
         :auth-data="props.authData"
         :breadcrumb-title="props.breadcrumbTitle"
@@ -97,6 +93,7 @@ defineExpose({
         @logout="emit('logout')"
         @preferences="emit('preferences')"
         @set-level2-router="setLevel2Router"
+        @change-router="onChangeRouter"
       >
         <template #logo>
           <slot name="logo"></slot>
@@ -115,7 +112,7 @@ defineExpose({
           :current-navigation="props.currentNavigation"
           :level2-nav="level2Nav"
           :level2-list="level2List"
-          :breadcrumb-name="breadcrumbName"
+          :current-route-name="props.currentRouteName"
         />
       </div>
     </div>

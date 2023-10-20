@@ -27,6 +27,7 @@ const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'changeHistory', value: boolean): void
   (e: 'preferences'): void
+  (e: 'changeRouter'): void
 }>()
 
 const onChangeHistory = ($event: boolean) => {
@@ -40,6 +41,10 @@ const tempIsOpen = computed<boolean>({
     emit('update:isOpen', value)
   }
 })
+
+const onChangeRouter = () => {
+  emit('changeRouter')
+}
 
 </script>
 
@@ -58,7 +63,7 @@ const tempIsOpen = computed<boolean>({
       </div>
 
       <div class="header-right-effect">
-        <MenuHome />
+        <MenuHome @change-router="onChangeRouter"/>
       </div>
       <div class="header-right-effect">
         <MenuUser
