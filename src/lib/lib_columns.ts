@@ -3,7 +3,8 @@ import type {
   FormInputExpose,
   CustomTableExpose,
   TableParams,
-  Sort
+  Sort,
+  TableSize
 } from '@/components'
 import type { ValidateType } from './lib_validate'
 import { reactive, shallowReactive, ref } from 'vue'
@@ -325,6 +326,7 @@ export interface TableSetting {
     // 多欄位用的 sorting (爆改版)
     sorting?: boolean
     tableColumns: Record<string, any>
+    tableSize?: TableSize
     hiddenExcel: boolean
     // 其他 table 的 props
   } & Record<string, any>,
@@ -366,7 +368,8 @@ export const getTableSetting = (
       order: null | 'ascending' | 'descending'
     },
     sorting?: boolean
-    hiddenExcel?: boolean
+    hiddenExcel?: boolean,
+    tableSize?: TableSize
   }
 ): TableSetting => {
   const {
@@ -380,7 +383,8 @@ export const getTableSetting = (
       order: null
     },
     sorting = false,
-    hiddenExcel = false
+    hiddenExcel = false,
+    tableSize = ''
   } = options
 
   // 設定 table 用的 column
@@ -516,6 +520,7 @@ export const getTableSetting = (
       sort: tableParams.sort,
       sorting,
       tableColumns: resColumns,
+      tableSize,
       hiddenExcel
     },
     downloadExcel,

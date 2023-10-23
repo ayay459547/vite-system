@@ -16,6 +16,7 @@ dayjs.extend(duration)
 import AES from 'crypto-js/aes'
 import Utf8 from 'crypto-js/enc-utf8'
 
+// 使用加上 .call
 export const hasOwnProperty = Object.prototype.hasOwnProperty
 
 /**
@@ -89,7 +90,7 @@ export const isEmpty = (value: any): boolean => {
 
 /**
  * @author Caleb
- * @description 取的隨機生成 id
+ * @description 取隨機生成 id
  * @returns {String}
  */
 export const getUuid = (): string => {

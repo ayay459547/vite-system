@@ -28,7 +28,7 @@ const SimpleFilter = defineComponent({
     },
     placement: {
       type: String as PropType<PopoverPlacement>,
-      default: 'right-start'
+      default: 'bottom-start'
     }
   },
   emits: ['reset', 'submit'],
@@ -139,7 +139,7 @@ const SimpleFilter = defineComponent({
                     type='success'
                     label={i18nTranslate('search')}
                     onClick={(e: MouseEvent) => {
-                      isVisible.value = false
+                      // isVisible.value = false
                       emit('submit')
                       e.stopPropagation()
                     }}

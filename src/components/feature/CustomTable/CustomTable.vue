@@ -44,6 +44,7 @@ export interface TableParams {
   sort?: Sort
   sortingList?: Sorting[]
 }
+export type TableSize = '' | 'large' | 'default' | 'small'
 
 export type SpanMethod = (
   (data: {
@@ -111,6 +112,7 @@ export interface Props extends Record<string, any> {
   tableData: any[]
   tableDataCount?: number
   rowKey?: string
+  tableSize?: TableSize
   defaultExpandAll?: boolean
   spanMethod?: SpanMethod
   rowClassName?: RowClassName
@@ -160,6 +162,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   tableData: () => [],
   tableDataCount: 0,
   rowKey: 'id',
+  tableSize: '',
   defaultExpandAll: false,
   spanMethod: null,
   rowClassName: null,
@@ -552,13 +555,13 @@ const slotKeyList = computed(() => {
 })
 
 // 欄位設定高度不超過 table 本身
-type TableSize = {
+type TableSizeSetting = {
   width: number
   height: number
 }
 const tableWidth = ref(500)
 const tableHeight = ref(500)
-const onUpdateSize = (newSize: TableSize) => {
+const onUpdateSize = (newSize: TableSizeSetting) => {
   const { width, height } = newSize
   tableWidth.value = width
   tableHeight.value = height
@@ -660,6 +663,7 @@ const onUpdateSize = (newSize: TableSize) => {
         :show-columns="showColumns"
         :sort="props.sort"
         :row-key="props.rowKey"
+        :table-size="props.tableSize"
         :default-expand-all="props.defaultExpandAll"
         :span-method="props.spanMethod"
         :row-class-name="props.rowClassName"

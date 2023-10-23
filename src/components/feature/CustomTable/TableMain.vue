@@ -13,7 +13,8 @@ import type {
   CellClassName,
   CellStyle,
   Load,
-  LazyLoadingStatus
+  LazyLoadingStatus,
+  TableSize
 } from './CustomTable.vue'
 import { CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
@@ -60,6 +61,11 @@ const props = defineProps({
     type: String as PropType<string>,
     required: true,
     description: '每行資料的key 預設是id'
+  },
+  tableSize: {
+    type: String as PropType<TableSize>,
+    required: true,
+    description: '表格大小'
   },
   defaultExpandAll: {
     type: Boolean as PropType<boolean>,
@@ -269,6 +275,7 @@ const svg = `
         :data="props.showData"
         :height="tableHeight"
         :row-key="props.rowKey"
+        :size="props.tableSize"
         :default-expand-all="props.defaultExpandAll"
         :default-sort="{
           prop: props.sort.key,

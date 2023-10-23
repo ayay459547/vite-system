@@ -96,7 +96,8 @@ export type {
   Sorting,
   PageChange,
   TableParams,
-  LazyLoadingStatus
+  LazyLoadingStatus,
+  TableSize
 } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
