@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SimpleQRcode, CustomSwitch } from '@/components'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
-import { datetimeFormat } from '@/lib/lib_utils'
+import { datetimeFormat } from '@/lib/lib_day'
 import { onMounted, ref } from 'vue'
 
 const url = 'https://www.npmjs.com/package/vue-qr'

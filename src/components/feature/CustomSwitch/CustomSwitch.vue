@@ -61,12 +61,14 @@ const onSwitchChange = (val: boolean) => {
   <div class="switch-wrapper">
     <ElSwitch
       v-model="tempValue"
+      class="i-switch"
       :style="props.style"
       :active-text="props.activeText"
       :inactive-text="props.inactiveText"
       :disabled="props.disabled"
       :loading="props.loading"
       :width="props.width"
+      :size="props.size"
       :validate-event="false"
       @change="onSwitchChange"
     ></ElSwitch>
@@ -74,6 +76,13 @@ const onSwitchChange = (val: boolean) => {
 </template>
 
 <style lang="scss" scoped>
+:deep(.i-switch) {
+  .el-switch__input {
+    span[aria-hidden] {
+      font-weight: 600;
+    }
+  }
+}
 .switch {
   &-wrapper {
     width: fit-content;

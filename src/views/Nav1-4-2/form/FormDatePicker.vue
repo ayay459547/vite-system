@@ -5,7 +5,8 @@ import { ElDatePicker } from 'element-plus'
 import { useField } from 'vee-validate'
 import type { ValidateType } from '@/lib/lib_validate'
 import { useI18n } from 'vue-i18n'
-import { isEmpty, datetimeFormat, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { datetimeFormat } from '@/lib/lib_day'
 const { t } = useI18n()
 
 type BaseValue = string | null

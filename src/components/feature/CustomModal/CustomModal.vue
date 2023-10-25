@@ -14,35 +14,43 @@ const { i18nTranslate } = hook()
 const props = defineProps({
   modelValue: {
     type: Boolean as PropType<ModelValue>,
-    default: false
+    default: false,
+    description: 'v-model 綁定是否顯示'
   },
   title: {
     type: String as PropType<string>,
-    default: ''
+    default: '',
+    description: '標題'
   },
   clickOutside: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
+    description: '點擊外面是否會關閉'
   },
   widthSize: {
     type: String as PropType<WidthSize>,
-    default: 'default'
+    default: 'default',
+    description: '寬度尺寸類型'
   },
   heightSize: {
     type: String as PropType<HeightSize>,
-    default: 'default'
+    default: 'default',
+    description: '高度尺寸類型'
   },
   hiddenFooter: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
+    description: '是否隱藏footer'
   },
   hiddenSubmit: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
+    description: '是否隱藏 確認按鈕'
   },
   hiddenCancel: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
+    description: '是否隱藏 取消按鈕'
   }
 })
 

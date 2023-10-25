@@ -5,7 +5,8 @@ import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-import { isEmpty, datetimeFormat, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { datetimeFormat } from '@/lib/lib_day'
 
 export default defineComponent({
   name: 'CanttChart',

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PropType, Ref } from 'vue'
 import { useSlots, ref } from 'vue'
-import type { ScrollToOptions } from 'element-plus'
 import { ElScrollbar } from 'element-plus'
 import { hasOwnProperty } from '@/lib/lib_utils'
+import type { CSSProperties } from 'vue'
 
 export type AriaOrientation = 'horizontal' | 'vertical'
 export type OnScrollParams = { scrollLeft: number, scrollTop: number }
@@ -27,7 +27,7 @@ const props = defineProps({
     description: '滾動條最大高度'
   },
   wrapStyle: {
-    type: [Object, String] as PropType<CSSSProperties | CSSSProperties[] | string[]>,
+    type: [Array, String] as PropType<CSSProperties | CSSProperties[] | string[]>,
     required: false,
     default: '',
     description: '容器自訂style'
@@ -39,7 +39,7 @@ const props = defineProps({
     description: '容器自訂class'
   },
   viewStyle: {
-    type: [Object, String] as PropType<CSSSProperties | CSSSProperties[] | string[]>,
+    type: [Array, String] as PropType<CSSProperties | CSSProperties[] | string[]>,
     required: false,
     default: '',
     description: '視圖自訂style'
@@ -186,5 +186,6 @@ defineExpose({
 .scroll-bar {
   width: fit-content;
   height: fit-content;
+  display: contents;
 }
 </style>

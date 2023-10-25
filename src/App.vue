@@ -32,8 +32,8 @@ export default defineComponent({
 
       <template #menu-footer="{ isShow }">
         <div class="menu-footer">
-          <span v-if="isShow">{{ `${system} version ${version}` }}</span>
-          <span v-else>{{ `v${version}` }}</span>
+          <span v-if="isShow">{{ `${system} ${version}` }}</span>
+          <span v-else>{{ `${version.split('-')[0]}` }}</span>
         </div>
       </template>
 

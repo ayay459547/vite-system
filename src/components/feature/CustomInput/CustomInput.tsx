@@ -20,7 +20,8 @@ import {
   // @ts-ignore
 } from '@/components'
 import styles from './CustomInput.module.scss'
-import { isEmpty, datetimeFormat, tipLog } from '@/lib/lib_utils'
+import { isEmpty, tipLog } from '@/lib/lib_utils'
+import { datetimeFormat } from '@/lib/lib_day'
 // @ts-ignore
 import type { ModelValue } from './props'
 import {
@@ -67,7 +68,7 @@ const CustomInput = defineComponent({
   ],
   setup (props, { slots, emit, expose }) {
     const hook: Hook = inject('hook')
-    const { i18nTranslate } = hook()
+    const { i18nTranslate, i18nTest } = hook()
 
     // const inputValue = computed({
     //   get: () => props.modelValue,
@@ -88,13 +89,13 @@ const CustomInput = defineComponent({
               isEmpty(veeValue[1])
             ) {
               // 此輸入框為必填
-              return i18nTranslate('required')
+              return 'required'
             }
             break
           case 'text':
           default:
             if (isEmpty(veeValue)) {
-              return i18nTranslate('required')
+              return 'required'
             }
             break
         }
@@ -135,6 +136,12 @@ const CustomInput = defineComponent({
       validateOnValueUpdate: false
       // initialValue: inputValue,
       // valueProp: inputValue
+    })
+
+    const i18nErrorMessage = computed(() => {
+      const keyword = errorMessage?.value ?? ''
+      if (i18nTest(keyword)) return i18nTranslate(keyword)
+      return keyword
     })
 
     // element ui plus 相關屬性直接綁定
@@ -619,7 +626,7 @@ const CustomInput = defineComponent({
             renderInput()
           }
           {
-            props.isValidate && <span class={styles['input-error']}>{ errorMessage.value }</span>
+            props.isValidate && <span class={styles['input-error']}>{ i18nErrorMessage.value }</span>
           }
         </div>
       </div>

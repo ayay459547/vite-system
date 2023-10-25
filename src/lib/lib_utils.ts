@@ -1,6 +1,6 @@
 import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
-import { useSlots, customRef } from 'vue'
+import { useSlots, customRef, reactive, onMounted, onUnmounted } from 'vue'
 import type { Ref } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
@@ -8,6 +8,8 @@ import { getI18nMessages } from '@/i18n'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 import { v4 as uuidv4 } from 'uuid'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
@@ -179,41 +181,6 @@ export const round = (num: number, n: number = 2): number => {
 
 /**
  * @author Caleb
- * @description https://day.js.org/docs/en/display/format
- * @param {String} value 日期
- * @param {String} format 想要的格式
- * @returns {String} 格式化後的時間
- */
-export const datetimeFormat = (value: string | Date, format: string = 'YYYY-MM-DD'): string => {
-  return dayjs(value).format(format)
-}
-
-export type DurationType = 'seconds'| 'minutes'| 'hours'| 'days'| 'months'| 'years'
-/**
- * @author Caleb
- * @description https://day.js.org/docs/en/durations/creating
- * @param {Number} time 時間
- * @param {DurationType} type 類型
- * @param {String} format 想要的格式
- * @returns {String} 格式化後的時間
- */
-export const durationFormat = (time: number, type: DurationType = 'seconds', format: string = 'HH:mm:ss'): string => {
-  return dayjs.duration(time, type).format(format)
-}
-
-/**
- * @author Caleb
- * @description 時間換 毫秒時間
- * @param {String} date YYYY-MM-DD
- * @param {String} time 00:00:00
- * @returns {Number}
- */
-export const getMilliseconds = (date: string, time: string): number => {
-  return Date.parse(date + 'T' + time)
-}
-
-/**
- * @author Caleb
  * @description Swal 互動式彈窗
  * @param {Object} options 自訂選項
  * @returns {Promise}
@@ -316,10 +283,12 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   }
 }
 
+export type I18nTranslate = ComposerTranslation
+export type I18nTest = (key: string) => boolean
 
 export type PageI18n = Partial<Composer & {
-  i18nTranslate: ComposerTranslation,
-  i18nTest: (key: string) => boolean
+  i18nTranslate: I18nTranslate,
+  i18nTest: I18nTest
 }>
 /**
  * @author Caleb
@@ -402,8 +371,13 @@ export const aesEncrypt = (value: any, key: string): string => {
  * @returns {*} 回傳的值
  */
 export const aesDecrypt = (value: string, key: string): any => {
-  const data = AES.decrypt(value, key).toString(Utf8)
+  // 去掉換行
+  const _value = value.replace(/n*$/g, '').replace(/\n/g, '')
+  const _key = key.replace(/n*$/g, '').replace(/\n/g, '')
 
+  const data = AES.decrypt(_value, _key).toString(Utf8)
+
+  if (isEmpty(data)) return data
   return JSON.parse(data)
 }
 
@@ -431,4 +405,44 @@ export function useDebouncedRef (value: any): Ref<any> {
       }
     }
   })
+}
+
+/**
+ * @author Caleb
+ * @description 給 Dom元素 自動監聽大小變化
+ *              需在 setup 中執行
+ * @param {*} domRef Dom元素
+ * @returns {Object} 大小
+ */
+export function useResize (domRef: Ref<Element>): {
+  width: number
+  height: number
+} {
+  const domSize = reactive({
+    width: 0,
+    height: 0
+  })
+
+  const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
+    entries.forEach((entry) => {
+      domSize.width = entry.contentRect.width
+      domSize.height = entry.contentRect.height
+    })
+  }, 100) as ResizeObserverCallback
+
+  const RO = new ResizeObserver(ROcallback)
+
+  onMounted(() => {
+    if (!isEmpty(domRef.value)) {
+      RO.observe(domRef.value)
+    }
+  })
+
+  onUnmounted(() => {
+    if (RO) {
+      RO.disconnect()
+    }
+  })
+
+  return domSize
 }

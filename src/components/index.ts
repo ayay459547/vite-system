@@ -15,6 +15,8 @@ export type {
 } from './feature/CustomButton/CustomButton.vue'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
+export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue'
+
 export type { BadgeType } from './feature/CustomBadge/CustomBadge.vue'
 export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
 
@@ -68,6 +70,18 @@ export type {
   Trigger as PopoverTrigger
 } from './feature/CustomPopover/CustomPopover.vue'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
+
+export type {
+  AriaOrientation,
+  OnScrollParams,
+  HandleScroll,
+  ScrollTo,
+  SetScrollTop,
+  SetScrollLeft,
+  Update,
+  WrapRef
+} from './feature/CustomScrollbar/CustomScrollbar.vue'
+export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
 // 搜尋用組件
 export { default as CustomSearch } from './feature/CustomSearch/CustomSearch.vue'

@@ -250,7 +250,10 @@ const load = () => {
 }
 const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
-    const { isIntersecting, isVisible } = entry
+    const {
+      isIntersecting
+      // isVisible
+    } = entry
     if (isIntersecting) {
       load()
     }

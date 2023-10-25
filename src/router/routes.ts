@@ -100,6 +100,20 @@ const routes: Array<RouterTree> = [
             path: '/nav1-1-6',
             icon: 'scroll',
             component: () => import('@/views/Nav1-1-6/Nav1-1-6.vue')
+          },
+          {
+            name: 'nav1-1-7',
+            title: '對話框測試',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-10',
+              completedDate: '2023-10'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-7',
+            icon: 'tv',
+            component: () => import('@/views/Nav1-1-7/Nav1-1-7.vue')
           }
         ]
       },

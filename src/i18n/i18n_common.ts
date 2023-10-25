@@ -85,5 +85,10 @@ export default {
     zhTw: '複製',
     zhCn: '复制',
     en: 'Copy'
+  },
+  clear: {
+    zhTw: '清除',
+    zhCn: '清除',
+    en: 'Clear'
   }
 } as LangMap
