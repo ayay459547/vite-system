@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import { ElInput } from 'element-plus'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
@@ -112,11 +112,26 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty.call(slots, prop)
 }
 
+const elInputRef = ref()
+defineExpose({
+  focus: (): void => {
+    if (elInputRef.value) {
+      elInputRef.value.focus()
+    }
+  },
+  blur: (): void => {
+    if (elInputRef.value) {
+      elInputRef.value.blur()
+    }
+  }
+})
+
 </script>
 
 <template>
   <div class="i-input">
     <ElInput
+      ref="elInputRef"
       v-model="inputValue"
       class="i-input"
       :placeholder="$t('pleaseInput')"

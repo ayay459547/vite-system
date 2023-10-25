@@ -217,9 +217,14 @@ export default defineComponent({
         color: $warning;
       }
       .item-title {
+        width: 100%;
+        display: inline-block;
         font-size: 1.3em;
         transform: translateX(0);
         transition-duration: 0.3s;
+
+        overflow: hidden;
+        white-space: nowrap;
 
         @media (max-width: 768px) {
           font-size: 1.2em;

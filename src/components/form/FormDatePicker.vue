@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import {
+  computed,
+  useSlots,
+  onMounted,
+  onBeforeUnmount,
+  ref
+} from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
@@ -109,12 +115,26 @@ onBeforeUnmount(() => {
   window.removeEventListener('touchstart', e => e.preventDefault())
 })
 
-
+const elDatePickerRef = ref()
+defineExpose({
+  focus: (): void => {
+    if (elDatePickerRef.value) {
+      elDatePickerRef.value.focus()
+      elDatePickerRef.value.handleOpen()
+    }
+  },
+  blur: (): void => {
+    if (elDatePickerRef.value) {
+      elDatePickerRef.value.handleClose()
+    }
+  }
+})
 </script>
 
 <template>
   <div class="i-date-picker">
     <ElDatePicker
+      ref="elDatePickerRef"
       v-model="inputValue"
       class="i-date-picker"
       :placeholder="$t('pleaseSelect')"

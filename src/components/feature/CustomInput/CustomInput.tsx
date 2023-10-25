@@ -87,13 +87,14 @@ const CustomInput = defineComponent({
               isEmpty(veeValue[0]) ||
               isEmpty(veeValue[1])
             ) {
-              return '此輸入框為必填'
+              // 此輸入框為必填
+              return i18nTranslate('required')
             }
             break
           case 'text':
           default:
             if (isEmpty(veeValue)) {
-              return '此輸入框為必填'
+              return i18nTranslate('required')
             }
             break
         }
@@ -227,6 +228,10 @@ const CustomInput = defineComponent({
       return _domValidateKey.value.length > 0 ? _domValidateKey.value : props.validateKey
     })
 
+    const inputRef = ref()
+    const selectRef = ref()
+    const datePickerRef = ref()
+    const autocompleteRef = ref()
     expose({
       key: props.validateKey,
       value: inputValue.value,
@@ -237,6 +242,58 @@ const CustomInput = defineComponent({
       },
       getDom () {
         return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
+      },
+      focus () {
+        switch (props.type) {
+          case 'text':
+          case 'textarea':
+          case 'password':
+            inputRef.value.focus()
+            break
+          case 'select':
+            selectRef.value.focus()
+            break
+          case 'year':
+          case 'month':
+          case 'date':
+          case 'dates':
+          case 'datetime':
+          case 'week':
+          case 'datetimerange':
+          case 'daterange':
+          case 'monthrange':
+            datePickerRef.value.focus()
+            break
+          case 'autocomplete':
+            autocompleteRef.value.focus()
+            break
+        }
+      },
+      blur () {
+        switch (props.type) {
+          case 'text':
+          case 'textarea':
+          case 'password':
+            inputRef.value.blur()
+            break
+          case 'select':
+            selectRef.value.blur()
+            break
+          case 'year':
+          case 'month':
+          case 'date':
+          case 'dates':
+          case 'datetime':
+          case 'week':
+          case 'datetimerange':
+          case 'daterange':
+          case 'monthrange':
+            datePickerRef.value.blur()
+            break
+          case 'autocomplete':
+            autocompleteRef.value.blur()
+            break
+        }
       }
     })
 
@@ -245,7 +302,6 @@ const CustomInput = defineComponent({
     // 'text' | 'textarea' | 'password' |
     // 'select' | 'checkbox' | 'radio' |
     // 'data' | 'datetime' | 'daterange' | 'dateitmerange'
-
     const getTextValue = computed(() => {
       if (isEmpty(inputValue.value)) return ''
 
@@ -319,6 +375,7 @@ const CustomInput = defineComponent({
         case 'textarea':
           return (
             <FormInput
+              ref={inputRef}
               modelValue={inputValue.value}
               onUpdate:modelValue={
                 ($event: any) => (inputValue.value = $event)
@@ -349,6 +406,7 @@ const CustomInput = defineComponent({
           return (
             <form>
               <FormInput
+                ref={inputRef}
                 modelValue={inputValue.value}
                 onUpdate:modelValue={
                   ($event: any) => (inputValue.value = $event)
@@ -379,6 +437,7 @@ const CustomInput = defineComponent({
         case 'select':
           return (
             <FormSelect
+              ref={selectRef}
               modelValue={inputValue.value}
               onUpdate:modelValue={
                 ($event: any) => (inputValue.value = $event)
@@ -410,6 +469,7 @@ const CustomInput = defineComponent({
         case 'monthrange':
           return (
             <FormDatePicker
+              ref={datePickerRef}
               modelValue={inputValue.value}
               onUpdate:modelValue={
                 ($event: any) => (inputValue.value = $event)
@@ -462,6 +522,7 @@ const CustomInput = defineComponent({
         case 'autocomplete':
           return (
             <FormAutocomplete
+              ref={autocompleteRef}
               modelValue={inputValue.value}
               onUpdate:modelValue={
                 ($event: any) => (inputValue.value = $event)

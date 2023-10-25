@@ -158,6 +158,9 @@ defineExpose({
     align-items: center;
     cursor: pointer;
 
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
     &:hover {
       background-color: lighten($system-bg-color, 5%);
 

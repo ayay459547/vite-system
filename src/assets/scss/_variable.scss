@@ -21,15 +21,15 @@ $system-bg-color: #324157;
 
 // 選單寬度
 $side-width: 62px;
-$nav-md-width: 380px;
-$nav-lg-width: 400px;
+$nav-md-width: 300px;
+$nav-lg-width: 350px;
 
 /* z-index */
 $loading-index: 3000;
 $login-index: 2090;
 $global-disabled-index: 2080;
-$modal-index: 2070;
-$side-index: 2060; // 大於 element-ul loading
+$modal-index: 2005;
+$side-index: 2003; // 大於 element-ul loading
 $v-loading-index: 2000; // element-ul 設定的
 $v-fixed-index: 99;
 $popover-index: 1;

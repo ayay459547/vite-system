@@ -11,7 +11,7 @@ import {
   useSlots
 } from 'vue'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, scrollToEl } from '@/lib/lib_utils'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
@@ -182,7 +182,11 @@ const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   setNavigationData(currentRoute)
 
   setLoading(currentRoute)
-  setWebTitle()
+
+  setTimeout(() => {
+    pageScrollTop()
+    setWebTitle()
+  }, 0)
 }
 // 設置 網頁 title
 const setWebTitle = () => {
@@ -197,6 +201,15 @@ const setWebTitle = () => {
 
   document.title = currentTitle
 }
+
+// 換頁時 scrollbar 移動到最上面
+const pageScrollTop = () => {
+ const el = document.querySelector('.layout-scroll-top')
+ if (el) {
+   scrollToEl(el, { behavior: 'auto' })
+ }
+}
+
 
 const systemLayoutRef = ref()
 
@@ -275,6 +288,7 @@ const initNavigationRoutes = async () => {
 onBeforeMount(async () => {
   await initNavigationRoutes()
   await nextTick()
+  loading(true, '系統初始化')
 
   setTimeout(() => {
     loading(false, 'loading')
@@ -301,6 +315,10 @@ const logout = async () => {
 
   await initNavigationRoutes()
   router.push({ name: 'login' })
+
+  setTimeout(() => {
+    loading(false)
+  }, 300)
 }
 // 登入
 const login = async (userId: number) => {
@@ -309,6 +327,10 @@ const login = async (userId: number) => {
 
   await initNavigationRoutes()
   router.push({ name: 'home' })
+
+  setTimeout(() => {
+    loading(false)
+  }, 300)
 }
 
 // 歷史路由
@@ -318,8 +340,6 @@ const changeHistory = (v: boolean) => historyIsOpen.value = v
 onMounted(() => {
   const _historyIsOpen = localStorage.getItem('historyIsOpen')
   historyIsOpen.value = _historyIsOpen === 'true'
-
-  loading(true, '系統初始化')
 })
 
 </script>
@@ -371,6 +391,7 @@ onMounted(() => {
           </template>
 
           <div v-loading="isLoading" class="layout-mask">
+            <div class="layout-scroll-top"></div>
             <RouterView v-slot="{ Component, route }">
               <component
                 v-if="route.name === 'login'"
@@ -426,6 +447,10 @@ onMounted(() => {
     height: 100%;
     position: absolute;
     overflow: auto;
+  }
+
+  &-scroll-top {
+    width: 100%;
   }
 }
 </style>

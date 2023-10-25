@@ -91,6 +91,7 @@ defineExpose({
 <style lang="scss" scoped>
 @mixin navOpen () {
   min-width: $nav-lg-width;
+  transition-delay: 0.2s;
 
   @media (max-width: 768px) {
     min-width: $nav-md-width;

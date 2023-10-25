@@ -135,6 +135,11 @@ export default {
     zhCn: '请输入',
     en: 'Please Input'
   },
+  required: {
+    zhTw: '必填',
+    zhCn: '必填',
+    en: 'Required'
+  },
   // CustomSelect
   pleaseSelect: {
     zhTw: '請選擇',

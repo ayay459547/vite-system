@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import { ElAutocomplete } from 'element-plus'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
@@ -80,11 +80,26 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty.call(slots, prop)
 }
 
+const elAutocompleteRef = ref()
+defineExpose({
+  focus: (): void => {
+    if (elAutocompleteRef.value) {
+      elAutocompleteRef.value.focus()
+    }
+  },
+  blur: (): void => {
+    if (elAutocompleteRef.value) {
+      elAutocompleteRef.value.blur()
+    }
+  }
+})
+
 </script>
 
 <template>
   <div class="i-input">
     <ElAutocomplete
+      ref="elAutocompleteRef"
       v-model="inputValue"
       class="i-input"
       :placeholder="$t('pleaseInput')"

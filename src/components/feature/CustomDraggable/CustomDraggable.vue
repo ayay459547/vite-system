@@ -40,6 +40,12 @@ const props = defineProps({
     default: '100%',
     description: '列表高度'
   },
+  stripe: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '列表高度'
+  },
   style: {
     type: Object as PropType<Record<string, string>>,
     required: false,
@@ -195,7 +201,12 @@ const listValue = computed({
       </template>
 
       <template #item="{ element, index }">
-        <li :class="`__draggable list-group-item ${props.rowClass}`">
+        <li
+          :class="[
+            `__draggable list-group-item ${props.rowClass}`,
+            props.stripe ? 'stripe' : ''
+          ]"
+        >
           <slot
             name="item"
             :element="element"
@@ -231,21 +242,22 @@ const listValue = computed({
 .list-group {
   // width: 100%;
   // height: 100%;
-  overflow: auto;
 
   &-item {
     background-color: #fff;
     border-bottom: 1px solid #ebeef5;
 
-    &:nth-child(even) {
-      background-color: #fafafa;
-      transition-duration: 0.3s;
-    }
+    &.stripe {
+      &:nth-child(even) {
+        background-color: #fafafa;
+        transition-duration: 0.3s;
+      }
 
-    &:hover,
-    &:nth-child(even):hover {
-      background-color: #f5f7fa;
-      transition-duration: 0.3s;
+      &:hover,
+      &:nth-child(even):hover {
+        background-color: #f5f7fa;
+        transition-duration: 0.3s;
+      }
     }
   }
 }
