@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 	const setToken = (userId: number) => {
 		const _token = {
-			uid: getUuid(),
+			uuid: `${getUuid()}`,
 			date: new Date(),
 			userId
 		}

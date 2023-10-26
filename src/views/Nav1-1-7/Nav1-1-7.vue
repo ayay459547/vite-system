@@ -2,11 +2,14 @@
 import {
   CustomButton,
   CustomDivider,
-  CustomDialog
+  CustomDialog,
+  CustomModal
 } from '@/components'
 import { ref} from 'vue'
 
 const isShow = ref(false)
+
+const modalIsShow = ref(false)
 
 </script>
 
@@ -17,13 +20,15 @@ const isShow = ref(false)
     <CustomDivider />
 
     <CustomButton
-      label="打開"
+      type="success"
+      label="打開 Dialog"
       class="i-my-sm"
       @click="isShow = true"
     />
 
     <CustomButton
-      label="關閉"
+      type="warning"
+      label="關閉 Dialog"
       class="i-my-sm"
       @click="isShow = false"
     />
@@ -35,6 +40,31 @@ const isShow = ref(false)
     >
       <h3>測試 CustomDialog</h3>
     </CustomDialog>
+
+
+    <CustomDivider />
+
+    <CustomButton
+      type="primary"
+      label="打開 Modal"
+      class="i-my-sm"
+      @click="modalIsShow = true"
+    />
+
+    <CustomButton
+      type="warning"
+      label="關閉 Modal"
+      class="i-my-sm"
+      @click="modalIsShow = false"
+    />
+
+    <CustomModal
+      v-model="modalIsShow"
+      :modal="false"
+      draggable
+    >
+      <h3>測試 CustomModal 拖拉 draggable</h3>
+    </CustomModal>
   </div>
 </template>
 

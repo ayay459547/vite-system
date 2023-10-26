@@ -28,9 +28,17 @@ $nav-lg-width: 350px;
 $loading-index: 3000;
 $login-index: 2090;
 $global-disabled-index: 2080;
+$notification-index: 2050;
 $modal-index: 2005;
 $side-index: 2003; // 大於 element-ul loading
 $v-loading-index: 2000; // element-ul 設定的
 $v-fixed-index: 99;
 $popover-index: 1;
+
+.el-notification {
+  z-index: $notification-index !important;
+}
+.swal2-container.swal2-backdrop-show {
+  z-index: $modal-index;
+}
 

@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
 import type { WritableComputedRef, PropType } from 'vue'
-import { ref, computed, watch, inject, effectScope, onMounted, onUnmounted } from 'vue'
-import { CustomButton } from '@/components'
+import {
+  ref,
+  computed,
+  watch,
+  inject,
+  effectScope,
+  onMounted,
+  onUnmounted,
+  reactive,
+  nextTick
+} from 'vue'
+import { CustomButton, CustomIcon } from '@/components'
+import { useBoundingClientRect, getUuid } from '@/lib/lib_utils'
+import throttle from '@/lib/lib_throttle'
 
 export type WidthSize = 'fill' | 'large'| 'default'| 'small'
 export type HeightSize = 'fill' | 'large'| 'default'| 'small'
@@ -37,6 +49,21 @@ const props = defineProps({
     default: 'default',
     description: '高度尺寸類型'
   },
+  modal: {
+    type: Boolean as PropType<boolean>,
+    default: true,
+    description: '是否需要遮罩'
+  },
+  autoClose: {
+    type: Boolean as PropType<boolean>,
+    default: true,
+    description: '是否點擊x 或 取消 自動關閉'
+  },
+  draggable: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+    description: '是否可拖拉'
+  },
   hiddenFooter: {
     type: Boolean as PropType<boolean>,
     default: false,
@@ -56,10 +83,12 @@ const props = defineProps({
 
 const emit = defineEmits([
   'update:modelValue',
+  'close',
   'cancel',
   'submit'
 ])
 
+const scopedId = getUuid()
 const wrapperIsShow = ref(false)
 const containerIsShow = ref(false)
 
@@ -71,13 +100,29 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
 const openModal = () => {
   wrapperIsShow.value = true
 
+  if (props.draggable) {
+    transform.x = '-50%'
+    transform.y = '-50%'
+  }
+
   setTimeout(() => {
     containerIsShow.value = true
   }, 100)
+
+  // 等過場動畫結束
+  setTimeout(async () => {
+    await nextTick()
+    if (props.draggable) {
+      resetRect()
+      resetMove()
+      isFinishInit.value = true
+    }
+  }, 300)
 }
 
 const closeModal = () => {
   containerIsShow.value = false
+  isFinishInit.value = false
 
   setTimeout(() => {
     wrapperIsShow.value = false
@@ -85,11 +130,16 @@ const closeModal = () => {
 }
 
 const close = () => {
-  tempValue.value = false
+  if (props.autoClose) {
+    tempValue.value = false
+  }
+  emit('close')
 }
 
 const cancel = () => {
-  tempValue.value = false
+  if (props.autoClose) {
+    tempValue.value = false
+  }
   emit('cancel')
 }
 
@@ -97,7 +147,185 @@ const submit = () => {
   emit('submit')
 }
 
+const scope = effectScope()
+
+/**
+ * 拖拉
+ * 移動方式 transform
+ * 單位 px
+ **/
+
+// 中心點
+const centerRect = reactive({ x: 0, y: 0 })
+// 邊界 移動超出退回
+const limitRect = reactive({ x: 0, y: 0 })
+const wrapperStyle = ref('')
+
+// 移動多少
+const move = reactive({
+  // 移動過程中比對用 移動完後更新
+  x: 0,
+  y: 0,
+  // 移動過程中 給最後的位置
+  lastX: 0,
+  lastY: 0
+})
+// 實際移動 style
+const transform = reactive({
+  x: '-50%',
+  y: '-50%'
+})
+
+const containerRef = ref()
+const isFinishInit = ref(false)
+
+// 由於過場動畫
+// 所以需要再重設: 中心的 transform 值 + 移動的邊界值
+const resetRect = () => {
+  const contentRect = containerRef.value.getBoundingClientRect()
+  const { width, height } = contentRect
+  const [ centerX, cneterY ] = [ width / 2, height / 2 ]
+
+  setCenter(centerX, cneterY)
+
+  const [ windowWidth, windowHeight ] = [ window.innerWidth, window.innerHeight ]
+  setLimit(windowWidth / 2 - centerX, windowHeight / 2 - cneterY)
+}
+const setCenter = (x: number, y: number) => {
+  centerRect.x = x
+  centerRect.y = y
+}
+const setLimit = (x: number, y: number) => {
+  limitRect.x = x
+  limitRect.y = y
+}
+const resetMove = () => {
+  move.x = 0
+  move.y = 0
+  move.lastX = 0
+  move.lastY = 0
+}
+
+// 視窗大小變化時 位置重設
+useBoundingClientRect(containerRef, () => {
+  if (!isFinishInit.value || !props.draggable) return
+  resetRect()
+  resetMove()
+})
+
+const mousedownClient = reactive({
+  clientX: 0,
+  clientY: 0
+})
+const updateTransform = (e: MouseEvent) => {
+  const {
+    clientX: mouseDownX,
+    clientY: mouseDownY
+  } = mousedownClient
+
+  const {
+    clientX: mouseMoveX,
+    clientY: mouseMoveY
+  } = e
+
+  const _moveX = mouseMoveX - mouseDownX
+  const _moveY = mouseMoveY - mouseDownY
+
+  const { x: centerX, y: centerY } = centerRect
+
+  const { x: moveX, y: moveY } = move
+
+  const [ newMoveX, newMoveY ] = [ _moveX + moveX, _moveY + moveY ]
+
+  // 舊的位移要加回來
+  transform.x = `${-(centerX - newMoveX)}px`
+  transform.y = `${-(centerY - newMoveY)}px`
+
+  // 移動後 設定已經移動的值
+  move.lastX = newMoveX
+  move.lastY = newMoveY
+
+  e.stopPropagation()
+  e.preventDefault()
+}
+const throttleUpdateTransform = throttle(updateTransform, 3) as typeof updateTransform
+
+const mouseupEvent = () => {
+  const { x: centerX, y: centerY } = centerRect
+  // 有超出邊界
+  if (
+    move.lastX < -limitRect.x ||
+    move.lastX > limitRect.x ||
+    move.lastY < -limitRect.y ||
+    move.lastY > limitRect.y
+  ) {
+    wrapperStyle.value = 'transition-duration: 0.2s;'
+
+    // x軸邊界修正
+  if (move.lastX < -limitRect.x) {
+    move.x = -limitRect.x
+    transform.x = `${-(centerX - (-limitRect.x))}px`
+  } else if (move.lastX > limitRect.x) {
+    move.x = limitRect.x
+    transform.x = `${-(centerX - limitRect.x)}px`
+  } else {
+    move.x = move.lastX
+  }
+
+  // y軸邊界修正
+  if (move.lastY < -limitRect.y) {
+    move.y = -limitRect.y
+    transform.y = `${-(centerY - (-limitRect.y))}px`
+  } else if (move.lastY > limitRect.y) {
+    move.y = limitRect.y
+    transform.y = `${-(centerY - limitRect.y)}px`
+  } else {
+    move.y = move.lastY
+  }
+  move.lastY = move.y
+
+  setTimeout(() => {
+    wrapperStyle.value = ''
+  }, 250)
+
+  } else {
+    wrapperStyle.value = ''
+
+    move.x = move.lastX
+    move.y = move.lastY
+  }
+
+  // 修正最後更新值
+  if (move.lastX !== move.x) {
+    move.lastX = move.x
+  }
+  if (move.lastY !== move.y) {
+    move.lastY = move.y
+  }
+  window.removeEventListener('mousemove', throttleUpdateTransform)
+}
+
+const addEvent = ($event: MouseEvent) => {
+  if (!props.draggable) return
+  resetRect()
+
+  const { clientX, clientY } = $event
+  mousedownClient.clientX = clientX
+  mousedownClient.clientY = clientY
+
+  window.addEventListener('mousemove', throttleUpdateTransform)
+  window.addEventListener('mouseup', mouseupEvent)
+}
+
+const removeEvent = () => {
+  setTimeout(() => {
+    window.removeEventListener('mouseup', mouseupEvent)
+  }, 0)
+}
+
 const clickOutside = () => {
+  removeEvent()
+
   if (!props.clickOutside) return
 
   if (wrapperIsShow.value && containerIsShow.value) {
@@ -105,14 +333,13 @@ const clickOutside = () => {
   }
 }
 
-const scope = effectScope()
-
 onMounted(() => {
   scope.run(() => {
     watch(tempValue, (newValue) => {
       if (newValue) {
         openModal()
       } else {
+        removeEvent()
         closeModal()
       }
     })
@@ -123,26 +350,49 @@ onUnmounted(() => {
   scope.stop()
 })
 
-
 </script>
 
 <template>
-  <div v-show="wrapperIsShow" style="display: contents;">
-    <div :class="containerIsShow ? 'is-show': 'is-close'" class="modal-wrapper">
+  <div
+    v-show="wrapperIsShow"
+    class="modal-mask"
+    :class="containerIsShow ? 'is-show': 'is-close'"
+    :style="props.modal ? 'display: block;' : 'display: contents;'"
+  >
+    <div
+      class="modal-wrapper"
+      :class="[
+        `width-${props.widthSize}`,
+        `height-${props.heightSize}`
+      ]"
+      :style="`
+        transform: translateX(${transform.x}) translateY(${transform.y});
+        ${wrapperStyle};
+        user-select:none;
+      `"
+      v-click-outside="clickOutside"
+    >
       <Transition name="modal">
         <div
+          ref="containerRef"
           v-show="containerIsShow"
-          v-click-outside="clickOutside"
           class="modal-container"
-          :class="[
-            `width-${props.widthSize}`,
-            `height-${props.heightSize}`
-          ]"
+          :class="`__modal__${scopedId}`"
         >
           <div class="modal-header">
             <slot name="header">
-              <h3>{{ props.title }}</h3>
+              <div
+                v-if="props.draggable"
+                class="modal-draggable"
+                @mousedown="addEvent"
+              >
+                <CustomIcon name="up-down-left-right"/>
+                <h3>{{ props.title }}</h3>
+              </div>
+
+              <h3 v-else>{{ props.title }}</h3>
             </slot>
+
             <CustomButton
               icon-name="close"
               text
@@ -187,35 +437,29 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 
 .modal {
-  &-wrapper {
+  &-mask {
     width: 100vw;
     height: 100vh;
     position: fixed;
     z-index: $modal-index;
     left: 0;
     top: 0;
-    transition-duration: 0.3s;
 
+    transition-duration: 0.3s;
     &.is-close {
       background-color: #00000000;
     }
     &.is-show {
       background-color: #00000066;
     }
-
-    @extend %flex-center;
   }
-  &-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border: 1px solid #fff;
-    transition-duration: 0.3s;
-    min-width: 400px;
-    min-height: 300px;
-    border-radius: 6px;
+
+  &-wrapper {
+    position: fixed;
+    z-index: $modal-index;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     &.width {
       &-fill {
         width: 100%;
@@ -272,6 +516,21 @@ onUnmounted(() => {
     }
   }
 
+  &-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    box-shadow: 2px 2px 8px 1px #d6d6d6;
+    transition-duration: 0.3s;
+    min-width: 400px;
+    min-height: 300px;
+    border-radius: 6px;
+  }
+
   &-header {
     width: 100%;
     display: flex;
@@ -280,6 +539,14 @@ onUnmounted(() => {
     padding: 0 8px;
     height: 40px;
     border-bottom: 1px solid #d6d6d6;
+  }
+  &-draggable {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 4px;
+    cursor: pointer;
   }
 
   &-body {

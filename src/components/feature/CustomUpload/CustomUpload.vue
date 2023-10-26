@@ -79,7 +79,7 @@ const fileTypeMap = {
 }
 
 const hook: Hook = inject('hook')
-const { swal, loading, eventList } = hook()
+const { swal } = hook()
 const { i18nTranslate } = usePageI18n(message)
 
 const drag = ref(null)

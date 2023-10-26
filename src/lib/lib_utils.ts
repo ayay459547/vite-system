@@ -1,6 +1,13 @@
 import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
-import { useSlots, customRef, reactive, onMounted, onUnmounted } from 'vue'
+import {
+  useSlots,
+  customRef,
+  reactive,
+  onMounted,
+  onUnmounted,
+  isRef
+} from 'vue'
 import type { Ref } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
@@ -15,8 +22,9 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 dayjs.extend(duration)
 
-import AES from 'crypto-js/aes'
-import Utf8 from 'crypto-js/enc-utf8'
+// import AES from 'crypto-js/aes'
+// import Utf8 from 'crypto-js/enc-utf8'
+import cryptoJS from 'crypto-js'
 
 // 使用加上 .call
 export const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -359,8 +367,9 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
  */
 export const aesEncrypt = (value: any, key: string): string => {
   const data = JSON.stringify(value)
-
-  return AES.encrypt(data, key).toString()
+  const encJson = cryptoJS.AES.encrypt(data, key).toString()
+  const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
+  return encData
 }
 
 /**
@@ -371,14 +380,10 @@ export const aesEncrypt = (value: any, key: string): string => {
  * @returns {*} 回傳的值
  */
 export const aesDecrypt = (value: string, key: string): any => {
-  // 去掉換行
-  const _value = value.replace(/n*$/g, '').replace(/\n/g, '')
-  const _key = key.replace(/n*$/g, '').replace(/\n/g, '')
-
-  const data = AES.decrypt(_value, _key).toString(Utf8)
-
-  if (isEmpty(data)) return data
-  return JSON.parse(data)
+  const decData = cryptoJS.enc.Base64.parse(value).toString(cryptoJS.enc.Utf8)
+  const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
+  if (isEmpty(decJson)) return decJson
+  return JSON.parse(decJson)
 }
 
 /**
@@ -407,34 +412,94 @@ export function useDebouncedRef (value: any): Ref<any> {
   })
 }
 
+export type BoundingClientRect = {
+  target: Element | null
+  width: number
+  height: number
+  bottom: number
+  top: number
+  left: number
+  right: number
+  x: number
+  y: number
+}
+export type updateContentRect = () => BoundingClientRect
 /**
  * @author Caleb
  * @description 給 Dom元素 自動監聽大小變化
  *              需在 setup 中執行
- * @param {*} domRef Dom元素
+ * @param {*} dom Dom元素
+ * @param {*} callback Dom元素變化時執行
  * @returns {Object} 大小
  */
-export function useResize (domRef: Ref<Element>): {
-  width: number
-  height: number
+export function useBoundingClientRect (
+  dom: Ref<Element |  null> | Element,
+  callback?: (contentRect: BoundingClientRect) => void
+): {
+  contentRect: BoundingClientRect
+  updateContentRect: updateContentRect
 } {
-  const domSize = reactive({
+  const defaultContentRect = {
+    target: null,
     width: 0,
-    height: 0
+    height: 0,
+    bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    x: 0,
+    y: 0
+  }
+  const contentRect = reactive({
+    ...defaultContentRect
   })
 
+  const updateContentRect = () => {
+    const target = isRef(dom) ? dom.value : dom
+    if (isEmpty(target)) return defaultContentRect
+
+    const boundingClientRect = target.getBoundingClientRect()
+
+    const {
+      width = 0,
+      height = 0,
+      bottom = 0,
+      top = 0,
+      left = 0,
+      right = 0,
+      x = 0,
+      y = 0
+    } = boundingClientRect ?? {}
+
+    contentRect.target = target ?? null
+    contentRect.width = width
+    contentRect.height = height
+    contentRect.bottom = bottom
+    contentRect.top = top
+    contentRect.left = left
+    contentRect.right = right
+    contentRect.x = x
+    contentRect.y = y
+
+    if (typeof callback === 'function') {
+      callback(contentRect)
+    }
+    return contentRect
+  }
+
   const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-    entries.forEach((entry) => {
-      domSize.width = entry.contentRect.width
-      domSize.height = entry.contentRect.height
+    entries.forEach(() => {
+      updateContentRect()
     })
   }, 100) as ResizeObserverCallback
 
   const RO = new ResizeObserver(ROcallback)
 
   onMounted(() => {
-    if (!isEmpty(domRef.value)) {
-      RO.observe(domRef.value)
+    if (isRef(dom) && !isEmpty(dom.value)) {
+      RO.observe(dom.value)
+    } else if (!isRef(dom) && !isEmpty(dom)) {
+      RO.observe(dom)
     }
   })
 
@@ -444,5 +509,8 @@ export function useResize (domRef: Ref<Element>): {
     }
   })
 
-  return domSize
+  return {
+    contentRect: contentRect,
+    updateContentRect
+  }
 }

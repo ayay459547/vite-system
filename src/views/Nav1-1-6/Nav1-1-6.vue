@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { CustomScrollbar, CustomButton } from '@/components'
-import { useResize } from '@/lib/lib_utils'
+import { useBoundingClientRect } from '@/lib/lib_utils'
 import { ref, onMounted } from 'vue'
 
 const resizeRef = ref()
 
-const testSize = useResize(resizeRef)
+const testSize = useBoundingClientRect(resizeRef)
 
 const list = ref([1, 2, 3, 4, 5])
 const add = () => {
