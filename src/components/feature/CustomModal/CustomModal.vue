@@ -39,6 +39,16 @@ const props = defineProps({
     default: false,
     description: '點擊外面是否會關閉'
   },
+  width: {
+    type: String as PropType<string>,
+    default: '',
+    description: 'style width'
+  },
+  height: {
+    type: String as PropType<string>,
+    default: '',
+    description: 'style height'
+  },
   widthSize: {
     type: String as PropType<WidthSize>,
     default: 'default',
@@ -147,6 +157,17 @@ const submit = () => {
   emit('submit')
 }
 
+const bindStyle = computed(() => {
+  let resStyle = ''
+  if (props.width.length > 0) {
+    resStyle += `width: ${props.width};`
+  }
+  if (props.height.length > 0) {
+    resStyle += `height: ${props.height};`
+  }
+  return resStyle
+})
+
 const scope = effectScope()
 
 /**
@@ -248,7 +269,7 @@ const updateTransform = (e: MouseEvent) => {
   e.stopPropagation()
   e.preventDefault()
 }
-const throttleUpdateTransform = throttle(updateTransform, 3) as typeof updateTransform
+const throttleUpdateTransform = throttle(updateTransform, 1) as typeof updateTransform
 
 const mouseupEvent = () => {
   const { x: centerX, y: centerY } = centerRect
@@ -369,6 +390,7 @@ onUnmounted(() => {
         transform: translateX(${transform.x}) translateY(${transform.y});
         ${wrapperStyle};
         user-select:none;
+        ${bindStyle};
       `"
       v-click-outside="clickOutside"
     >
@@ -380,17 +402,19 @@ onUnmounted(() => {
           :class="`__modal__${scopedId}`"
         >
           <div class="modal-header">
-            <slot name="header">
-              <div
-                v-if="props.draggable"
-                class="modal-draggable"
-                @mousedown="addEvent"
-              >
-                <CustomIcon name="up-down-left-right"/>
+            <div
+              v-if="props.draggable"
+              class="modal-draggable"
+              @mousedown="addEvent"
+            >
+              <CustomIcon name="up-down-left-right"/>
+              <slot name="header">
                 <h3>{{ props.title }}</h3>
-              </div>
+              </slot>
+            </div>
 
-              <h3 v-else>{{ props.title }}</h3>
+            <slot v-else name="header">
+              <h3>{{ props.title }}</h3>
             </slot>
 
             <CustomButton

@@ -46,6 +46,12 @@ const props = defineProps({
     default: false,
     description: '列表高度'
   },
+  class: {
+    type: String as PropType<string>,
+    required: false,
+    default: '',
+    description: '外層class'
+  },
   style: {
     type: Object as PropType<Record<string, string>>,
     required: false,
@@ -54,17 +60,19 @@ const props = defineProps({
     },
     description: '外層style 類型為object 不能使用string'
   },
-  class: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '外層class'
-  },
   rowClass: {
     type: String as PropType<string>,
     required: false,
     default: '',
     description: '資料列class'
+  },
+  rowStyle: {
+    type: Object as PropType<Record<string, string>>,
+    required: false,
+    default () {
+      return {}
+    },
+    description: '資料列style 類型為object 不能使用string'
   },
   tag: {
     type: String as PropType<string>,
@@ -206,6 +214,7 @@ const listValue = computed({
             `__draggable list-group-item ${props.rowClass}`,
             props.stripe ? 'stripe' : ''
           ]"
+          :style="props.rowStyle"
         >
           <slot
             name="item"
