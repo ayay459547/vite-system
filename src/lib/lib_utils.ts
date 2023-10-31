@@ -12,6 +12,7 @@ import type { Ref } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
+import { ElNotification } from 'element-plus'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 import { v4 as uuidv4 } from 'uuid'
@@ -380,10 +381,18 @@ export const aesEncrypt = (value: any, key: string): string => {
  * @returns {*} 回傳的值
  */
 export const aesDecrypt = (value: string, key: string): any => {
-  const decData = cryptoJS.enc.Base64.parse(value).toString(cryptoJS.enc.Utf8)
-  const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
-  if (isEmpty(decJson)) return decJson
-  return JSON.parse(decJson)
+  try {
+    const decData = cryptoJS.enc.Base64.parse(value).toString(cryptoJS.enc.Utf8)
+    const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
+    if (isEmpty(decJson)) return decJson
+
+    return JSON.parse(decJson)
+
+  } catch (error) {
+    console.log(error)
+
+    return null
+  }
 }
 
 /**
@@ -512,5 +521,44 @@ export function useBoundingClientRect (
   return {
     contentRect: contentRect,
     updateContentRect
+  }
+}
+
+/**
+ * @author Caleb
+ * @description 複製文字
+ * @param text 文字
+ */
+export const copyText = async (text: string): Promise<string> => {
+  try {
+    if (!isEmpty(navigator.clipboard)) {
+      await navigator.clipboard.writeText(text)
+    } else {
+      const input = document.createElement('input')
+      document.body.appendChild(input)
+      input.setAttribute('value', text)
+      input.select()
+
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+      }
+      document.body.removeChild(input)
+    }
+
+    ElNotification({
+      type: 'success',
+      title: 'Success to copy',
+      message: text
+    })
+
+    return text
+  } catch (err) {
+
+    ElNotification({
+      type: 'error',
+      title: 'Failed to copy',
+      message: text
+    })
+    return text
   }
 }
