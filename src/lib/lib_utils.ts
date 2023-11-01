@@ -102,9 +102,13 @@ export const isEmpty = (value: any): boolean => {
 /**
  * @author Caleb
  * @description 取隨機生成 id
+ * @param {String} text 前綴
  * @returns {String}
  */
-export const getUuid = (): string => {
+export const getUuid = (text?: string): string => {
+  if (!isEmpty(text) && typeof text === 'string') {
+    return `${text}-${uuidv4()}`
+  }
   return uuidv4()
 }
 

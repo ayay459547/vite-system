@@ -56,7 +56,7 @@ type OpenPopover = (
 const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
   if (visible.value) return
   left.value = clientX
-  top.value = clientY + 10
+  top.value = clientY
 
   if (eventList) {
     callbackList.value = eventList

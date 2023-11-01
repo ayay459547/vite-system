@@ -93,6 +93,7 @@ const CustomInput = defineComponent({
             }
             break
           case 'text':
+          case 'autocomplete':
           default:
             if (isEmpty(veeValue)) {
               return 'required'
@@ -133,7 +134,7 @@ const CustomInput = defineComponent({
       handleReset,       // 重置
       validate           // 驗證
     } = useField('field', validateField, {
-      validateOnValueUpdate: false
+      // validateOnValueUpdate: true
       // initialValue: inputValue,
       // valueProp: inputValue
     })
@@ -316,6 +317,7 @@ const CustomInput = defineComponent({
         case 'text':
         case 'textarea':
         case 'password':
+        case 'autocomplete':
           return inputValue.value
         case 'select': {
           const option = props.options.find(_option => _option.value === inputValue.value)

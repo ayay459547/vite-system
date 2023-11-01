@@ -338,6 +338,7 @@ const historyIsOpen = ref(false)
 const changeHistory = (v: boolean) => historyIsOpen.value = v
 
 onMounted(() => {
+  loading(true, '系統初始化')
   const _historyIsOpen = localStorage.getItem('historyIsOpen')
   historyIsOpen.value = _historyIsOpen === 'true'
 })

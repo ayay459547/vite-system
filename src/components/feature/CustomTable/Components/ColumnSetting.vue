@@ -199,7 +199,8 @@ onBeforeMount(async () => {
         class="column-list"
         :handle="`.setting-move`"
         :style="{
-          maxHeight: props.settingHeight
+          maxHeight: props.settingHeight,
+          overflow: 'auto'
         }"
       >
         <template #item="{ element }">

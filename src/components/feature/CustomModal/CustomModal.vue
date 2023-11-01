@@ -210,7 +210,7 @@ const resetRect = () => {
   setCenter(centerX, cneterY)
 
   const [ windowWidth, windowHeight ] = [ window.innerWidth, window.innerHeight ]
-  setLimit(windowWidth / 2 - centerX, windowHeight / 2 - cneterY)
+  setLimit(windowWidth / 2 - centerX / 2, windowHeight / 2 - cneterY / 2)
 }
 const setCenter = (x: number, y: number) => {
   centerRect.x = x
@@ -432,6 +432,12 @@ onUnmounted(() => {
 
           <div v-if="!props.hiddenFooter" class="modal-footer">
             <slot name="footer">
+              <div
+                v-if="props.draggable"
+                class="modal-footer-draggable"
+                @mousedown="addEvent"
+              ></div>
+
               <div class="modal-footer-btn">
                 <CustomButton
                   v-if="!props.hiddenCancel"
@@ -451,7 +457,13 @@ onUnmounted(() => {
               </div>
             </slot>
           </div>
-          <div v-else class="modal-footer-hidden"></div>
+          <div v-else class="modal-footer-hidden">
+            <div
+              v-if="props.draggable"
+              class="modal-footer-draggable"
+              @mousedown="addEvent"
+            ></div>
+          </div>
         </div>
       </Transition>
     </div>
@@ -468,6 +480,7 @@ onUnmounted(() => {
     z-index: $modal-index;
     left: 0;
     top: 0;
+    transform: none;
 
     transition-duration: 0.3s;
     &.is-close {
@@ -597,6 +610,13 @@ onUnmounted(() => {
     &-btn {
       display: flex;
       gap: 12px;
+    }
+
+    &-draggable {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      cursor: pointer;
     }
   }
 }

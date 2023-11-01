@@ -71,6 +71,7 @@ const inputValue = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => {
     emit('update:modelValue', value)
+    emit('change', value)
   }
 })
 
