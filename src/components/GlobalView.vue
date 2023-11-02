@@ -11,7 +11,7 @@ import {
   useSlots
 } from 'vue'
 
-import { isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { swal, notification, isEmpty, scrollToEl } from '@/lib/lib_utils'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
@@ -40,10 +40,6 @@ import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useI18n } from 'vue-i18n'
-
-import Swal from 'sweetalert2'
-import type { NotificationOptionsTyped } from 'element-plus'
-import { ElNotification } from 'element-plus'
 
 import { getPermission } from '@/lib/lib_permission'
 
@@ -98,36 +94,8 @@ provide<Hook>('hook', () => {
       })
       queueId.value++
     },
-    swal: (options) => {
-      const defaultOPtions = {
-        // 'info' | 'warning' | 'success' | 'error' | 'question'
-        // icon: 'info',
-        reverseButtons: true,
-        confirmButtonText: '確認',
-        confirmButtonColor: '#409eff',
-        showCancelButton: true,
-        cancelButtonText: '取消'
-      }
-
-      return Swal.fire({
-        ...defaultOPtions,
-        ...options
-      })
-    },
-    notification: (options) => {
-      const defaultOPtions = {
-        // 'success' | 'warning' | 'info' | 'error' | ''
-        type: '',
-        icon: '',
-        title: '',
-        message: ''
-      } as Partial<NotificationOptionsTyped>
-
-      return ElNotification({
-        ...defaultOPtions,
-        ...options
-      })
-    },
+    swal,
+    notification,
     permission: (permissionTotal = null) => {
       if (!isEmpty(permissionTotal)) return getPermission(permissionTotal)
 

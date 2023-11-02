@@ -77,36 +77,59 @@ const get = () => {
       </template>
     </GroupSearch>
 
-    <CustomSearch
-      v-model="forms.text"
-      v-bind="columns.text"
-      v-model:active="activeForms.text"
-    />
+    <div class="flex-row i-ga-lg">
+      <div style="flex: 2" class="flex-column i-ga-md">
+        <CustomSearch
+          v-model="forms.text"
+          v-bind="columns.text"
+          v-model:active="activeForms.text"
+        />
+        <CustomSearch
+          v-model="forms.select"
+          v-bind="columns.select"
+          v-model:active="activeForms.select"
+        />
+        <CustomSearch
+          v-model="forms.date"
+          v-bind="columns.date"
+          v-model:active="activeForms.date"
+        />
+        <CustomButton label="重置" @click="reset"/>
+        <CustomButton label="取值" @click="get"/>
+        <CustomButton label="測試Drawer" @click="isShow = true"/>
+      </div>
 
-    <CustomSearch
-      v-model="forms.select"
-      v-bind="columns.select"
-      v-model:active="activeForms.select"
-    />
-
-    <CustomSearch
-      v-model="forms.date"
-      v-bind="columns.date"
-      v-model:active="activeForms.date"
-    />
-
-    <CustomButton label="重置" @click="reset"/>
-
-    <CustomButton label="取值" @click="get"/>
-
-    <CustomButton label="測試Drawer" @click="isShow = true"/>
+      <div style="flex: 1" class="flex-column i-ga-md">
+        <CustomSearch
+          v-model="forms.text"
+          v-bind="columns.text"
+          search
+          v-model:active="activeForms.text"
+        />
+        <CustomSearch
+          v-model="forms.select"
+          v-bind="columns.select"
+          search
+          v-model:active="activeForms.select"
+        />
+        <CustomSearch
+          v-model="forms.date"
+          v-bind="columns.date"
+          search
+          v-model:active="activeForms.date"
+        />
+        <CustomButton label="重置" @click="reset"/>
+        <CustomButton label="取值" @click="get"/>
+        <CustomButton label="測試Drawer" @click="isShow = true"/>
+      </div>
+    </div>
 
     <CustomDrawer
       v-model="isShow"
       title="title"
       direction="rtl"
     >
-      <span>Hi there!</span>
+      <span>Hi there!----------</span>
     </CustomDrawer>
   </div>
 </template>

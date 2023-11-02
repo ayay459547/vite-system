@@ -12,9 +12,11 @@ import type { Ref } from 'vue'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
-import { ElNotification } from 'element-plus'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
+import type { NotificationOptionsTyped, NotificationHandle } from 'element-plus'
+import { ElNotification } from 'element-plus'
+
 import { v4 as uuidv4 } from 'uuid'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
@@ -211,6 +213,21 @@ export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
   }
 
   return Swal.fire({ ...defaultOPtions })
+}
+
+export const notification = (options: Partial<NotificationOptionsTyped>): NotificationHandle => {
+  const defaultOPtions = {
+    // 'success' | 'warning' | 'info' | 'error' | ''
+    type: '',
+    icon: '',
+    title: '',
+    message: ''
+  } as Partial<NotificationOptionsTyped>
+
+  return ElNotification({
+    ...defaultOPtions,
+    ...options
+  })
 }
 
 /**
@@ -551,7 +568,7 @@ export const copyText = async (text: string): Promise<string> => {
 
     ElNotification({
       type: 'success',
-      title: 'Success to copy',
+      title: '複製文字成功',
       message: text
     })
 
@@ -560,9 +577,20 @@ export const copyText = async (text: string): Promise<string> => {
 
     ElNotification({
       type: 'error',
-      title: 'Failed to copy',
+      title: '複製文字失敗',
       message: text
     })
     return text
   }
+}
+
+/**
+ * @author Caleb
+ * @param {Array} data 陣列資料
+ * @returns {Array} 反轉後 陣列資料
+ */
+export const reverse = (list: Array<any>): Array<any> => {
+  if (list.length === 0) return []
+  const temp = list.shift()
+  return [...reverse(list), temp]
 }

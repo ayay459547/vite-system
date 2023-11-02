@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { CustomSwitch, CustomInput } from '@/components'
+import {
+  CustomSwitch,
+  CustomInput,
+  CustomPopover,
+  CustomButton,
+  CustomBadge
+} from '@/components'
 import type { InputType, Options } from '@/components'
-import { computed } from 'vue'
-import type { PropType } from 'vue'
+import { computed, type PropType } from 'vue'
+import { isEmpty } from '@/lib/lib_utils'
 
 type ModelValue = any
 const props = defineProps({
@@ -17,6 +23,12 @@ const props = defineProps({
     description: `是否啟用
       是: 拿到顯示的值
       否: 拿到 null `
+  },
+  search: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否只顯示搜尋按鈕'
   },
   type: {
     type: String as PropType<InputType>,
@@ -109,36 +121,100 @@ const isActive = computed({
     return props.active
   },
   set (value: boolean) {
+    emit('change', inpuValue.value)
     emit('update:active', value)
   }
+})
+
+const isDot = computed(() => {
+  return !isEmpty(inpuValue.value) && isActive.value
 })
 
 </script>
 
 <template>
   <div class="search">
-    <div class="search-title">
-      <label>{{ props.label }}</label>
-      <CustomSwitch v-model="isActive"/>
-    </div>
+    <!-- 只顯示搜尋按鈕 -->
+    <template v-if="props.search">
+      <div class="search-title">
+        <label>{{ props.label }}</label>
 
-    <CustomInput
-      v-model="inpuValue"
-      :type="props.type"
-      :options="props.options"
-      :clearable="props.clearable"
-      :remote="remote"
-      :remote-method="remoteMethod"
-      :multiple="multiple"
-      :multiple-limit="multipleLimit"
-      :max-collapse-tags="maxCollapseTags"
-      :filterable="filterable"
-      :format="format"
-      :value-format="valueFormat"
-      :disabled="!isActive"
-      hidden-label
-      @clear="emit('clear')"
-    />
+        <CustomPopover
+          :width="250"
+          trigger="hover"
+          placement="bottom"
+        >
+          <div>
+            <div class="search-title">
+              <label>{{ props.label }}</label>
+              <CustomSwitch v-model="isActive" />
+            </div>
+
+            <CustomInput
+              v-model="inpuValue"
+              :type="props.type"
+              :options="props.options"
+              :clearable="props.clearable"
+              :remote="remote"
+              :remote-method="remoteMethod"
+              :multiple="multiple"
+              :multiple-limit="multipleLimit"
+              :max-collapse-tags="maxCollapseTags"
+              :filterable="filterable"
+              :format="format"
+              :value-format="valueFormat"
+              :disabled="!isActive"
+              hidden-label
+              @clear="emit('clear')"
+              @change="emit('change', inpuValue)"
+            />
+          </div>
+          <template #reference>
+            <div>
+              <CustomBadge v-if="isDot" is-dot>
+                <CustomButton
+                  icon-name="magnifying-glass"
+                  circle
+                  text
+                />
+              </CustomBadge>
+              <CustomButton
+                v-else
+                icon-name="magnifying-glass"
+                circle
+                text
+              />
+            </div>
+          </template>
+        </CustomPopover>
+      </div>
+    </template>
+    <!-- 直接全部顯示 -->
+    <template v-else>
+      <div class="search-title">
+        <label>{{ props.label }}</label>
+        <CustomSwitch v-model="isActive" />
+      </div>
+
+      <CustomInput
+        v-model="inpuValue"
+        :type="props.type"
+        :options="props.options"
+        :clearable="props.clearable"
+        :remote="remote"
+        :remote-method="remoteMethod"
+        :multiple="multiple"
+        :multiple-limit="multipleLimit"
+        :max-collapse-tags="maxCollapseTags"
+        :filterable="filterable"
+        :format="format"
+        :value-format="valueFormat"
+        :disabled="!isActive"
+        hidden-label
+        @clear="emit('clear')"
+        @change="emit('change', inpuValue)"
+      />
+    </template>
   </div>
 </template>
 

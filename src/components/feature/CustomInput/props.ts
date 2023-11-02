@@ -210,7 +210,14 @@ export const elDatePicker = {
   }
 }
 
-export const elCheckbox = {}
+export const elCheckbox = {
+  indeterminate: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '用在有選但非全選狀態'
+  }
+}
 
 export const elRadio = {}
 
