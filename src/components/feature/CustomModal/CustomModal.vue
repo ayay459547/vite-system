@@ -220,11 +220,17 @@ const setLimit = (x: number, y: number) => {
   limitRect.x = x
   limitRect.y = y
 }
-const resetMove = () => {
+const resetMove = async () => {
   move.x = 0
   move.y = 0
   move.lastX = 0
   move.lastY = 0
+  wrapperStyle.value = 'transition-duration: 0.2s;'
+  transform.x = '-50%'
+  transform.y = '-50%'
+
+  await nextTick()
+  wrapperStyle.value = ''
 }
 
 // 視窗大小變化時 位置重設
