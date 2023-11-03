@@ -3,6 +3,7 @@ import GlobalView from '@/components/GlobalView.vue'
 import { useEnvStore } from '@/stores/stores_env'
 import { defineComponent } from 'vue'
 // import { CustomIcon } from '@/components'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'AppView',
@@ -10,10 +11,12 @@ export default defineComponent({
   setup () {
     const envStore = useEnvStore()
     const { system, version } = envStore
+    const router = useRouter()
 
     return {
       system,
-      version
+      version,
+      router
     }
   }
 })
@@ -24,7 +27,7 @@ export default defineComponent({
   <div class="app-container">
     <GlobalView>
       <template #logo>
-        <div class="menu-logo">
+        <div class="menu-logo" @click="router.push({ name: 'home' })">
           <img class="vue-img" src="@/assets/images/Vue-logo.png" alt="vue" />
           <h2 class="vue-text">Demo</h2>
         </div>
@@ -59,6 +62,7 @@ export default defineComponent({
     justify-content: flex-start;
     gap: 16px;
     padding: 0 8px;
+    cursor: pointer;
 
     .vue {
       &-img {

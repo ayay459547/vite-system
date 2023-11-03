@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, reactive, inject, onMounted } from 'vue'
+import { ref, reactive, inject, onMounted, nextTick } from 'vue'
 import {
   CustomButton,
   CustomTable,
@@ -69,6 +69,7 @@ const isLoading = ref(false)
 
 const init = async (props?: any) => {
   isLoading.value = true
+  await nextTick()
 
   let apiParam = null
   if (typeof props === 'object') {

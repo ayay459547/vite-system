@@ -130,6 +130,24 @@ const isDot = computed(() => {
   return !isEmpty(inpuValue.value) && isActive.value
 })
 
+const bindAttributes = computed(() => {
+  return {
+    type: props.type,
+    options: props.options,
+    clearable: props.clearable,
+    remote: props.remote,
+    remoteMethod: props.remoteMethod,
+    multiple: props.multiple,
+    multipleLimit: props.multipleLimit,
+    maxCollapseTags: props.maxCollapseTags,
+    filterable: props.filterable,
+    format: props.format,
+    valueFormat: props.valueFormat,
+    disabled: !isActive.value,
+    hiddenLabel: true
+  }
+})
+
 </script>
 
 <template>
@@ -142,7 +160,7 @@ const isDot = computed(() => {
         <CustomPopover
           :width="250"
           trigger="hover"
-          placement="bottom"
+          placement="top"
         >
           <div>
             <div class="search-title">
@@ -152,19 +170,7 @@ const isDot = computed(() => {
 
             <CustomInput
               v-model="inpuValue"
-              :type="props.type"
-              :options="props.options"
-              :clearable="props.clearable"
-              :remote="remote"
-              :remote-method="remoteMethod"
-              :multiple="multiple"
-              :multiple-limit="multipleLimit"
-              :max-collapse-tags="maxCollapseTags"
-              :filterable="filterable"
-              :format="format"
-              :value-format="valueFormat"
-              :disabled="!isActive"
-              hidden-label
+              v-bind="bindAttributes"
               @clear="emit('clear')"
               @change="emit('change', inpuValue)"
             />
@@ -198,19 +204,7 @@ const isDot = computed(() => {
 
       <CustomInput
         v-model="inpuValue"
-        :type="props.type"
-        :options="props.options"
-        :clearable="props.clearable"
-        :remote="remote"
-        :remote-method="remoteMethod"
-        :multiple="multiple"
-        :multiple-limit="multipleLimit"
-        :max-collapse-tags="maxCollapseTags"
-        :filterable="filterable"
-        :format="format"
-        :value-format="valueFormat"
-        :disabled="!isActive"
-        hidden-label
+        v-bind="bindAttributes"
         @clear="emit('clear')"
         @change="emit('change', inpuValue)"
       />

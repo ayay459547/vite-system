@@ -195,7 +195,6 @@ onUnmounted(() => {
           </slot>
           <template v-if="props.remove">
             <CustomIcon
-              v-if="props.modelValue !== element.key"
               name="xmark"
               class="tabs-item-remove"
               @click="removeTab(element.key, element.label, element.value)"

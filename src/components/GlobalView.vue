@@ -12,6 +12,7 @@ import {
 } from 'vue'
 
 import { swal, notification, isEmpty, scrollToEl } from '@/lib/lib_utils'
+import throttle from '@/lib/lib_throttle'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
@@ -77,37 +78,6 @@ const loading: HookList.loading = (isOpen, message) => {
 // 系統參數
 const envStore = useEnvStore()
 
-provide<Hook>('hook', () => {
-  return {
-    loading,
-    i18nTranslate: (key) => `${i18nT(key)}`,
-    i18nTest: (key) => i18nTe(key),
-    eventList: (click, eventList, options) => {
-      const { clientX, clientY } = click
-
-      customPopoverQueue.unshift({
-        queueId: queueId.value,
-        clientX,
-        clientY,
-        eventList,
-        options
-      })
-      queueId.value++
-    },
-    swal,
-    notification,
-    permission: (permissionTotal = null) => {
-      if (!isEmpty(permissionTotal)) return getPermission(permissionTotal)
-
-      const { permission } = currentNavigation.value
-      return getPermission(permission)
-    },
-    getEnv: () => {
-      return envStore
-    }
-  }
-})
-
 const router = useRouter()
 
 // store
@@ -127,6 +97,7 @@ const {
   setCurrentNavigation,
   addHistoryNavigation
 } = routesStore
+
 const {
   navigationMap,
   navigationRoutes,
@@ -143,9 +114,9 @@ const currentRouteName = computed<string>(() => {
 })
 
 // 路由更換時執行
+const changeTime = 560
 const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
-
   setModalView(currentRoute)
   setNavigationData(currentRoute)
 
@@ -156,6 +127,9 @@ const onRouteChange = (currentRoute: RouteLocationNormalized) => {
     setWebTitle()
   }, 0)
 }
+// 做節流 因為畫面更新 為觸發多次
+const throttleOnRouteChange = throttle(onRouteChange, changeTime) as typeof onRouteChange
+
 // 設置 網頁 title
 const setWebTitle = () => {
   const currentTitle = ((currentNavigation) => {
@@ -177,7 +151,6 @@ const pageScrollTop = () => {
    scrollToEl(el, { behavior: 'auto' })
  }
 }
-
 
 const systemLayoutRef = ref()
 
@@ -205,7 +178,7 @@ const setLoading = (currentRoute: RouteLocationNormalized) => {
       prevRoute.value = currentRoute.name
 
       isLoading.value = false
-    }, 560)
+    }, changeTime)
   }
 }
 
@@ -311,6 +284,38 @@ onMounted(() => {
   historyIsOpen.value = _historyIsOpen === 'true'
 })
 
+// 向下傳送常用工具
+provide<Hook>('hook', () => {
+  return {
+    loading,
+    i18nTranslate: (key) => `${i18nT(key)}`,
+    i18nTest: (key) => i18nTe(key),
+    eventList: (click, eventList, options) => {
+      const { clientX, clientY } = click
+
+      customPopoverQueue.unshift({
+        queueId: queueId.value,
+        clientX,
+        clientY,
+        eventList,
+        options
+      })
+      queueId.value++
+    },
+    swal,
+    notification,
+    permission: (permissionTotal = null) => {
+      if (!isEmpty(permissionTotal)) return getPermission(permissionTotal)
+
+      const { permission = 0 } = currentNavigation.value
+      return getPermission(permission)
+    },
+    getEnv: () => {
+      return envStore
+    }
+  }
+})
+
 </script>
 
 <template>
@@ -383,7 +388,7 @@ onMounted(() => {
                 />
               </template>
               <!-- 更換路由執行 -->
-              <div style="display: none;">{{ onRouteChange(route) }}</div>
+              <div style="display: none;">{{ throttleOnRouteChange(route) }}</div>
             </RouterView>
           </div>
         </PageContent>

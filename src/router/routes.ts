@@ -18,8 +18,22 @@ const routes: Array<RouterTree> = [
         icon: 'wand-magic-sparkles',
         leaves: [
           {
+            name: 'nav-test-new',
+            title: '測試表格新功能',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/nav-test-new',
+            icon: 'table',
+            component: () => import('@/views/Test-122/Test-122.vue')
+          },
+          {
             name: 'nav1-1-1',
-            title: '測試表單',
+            title: '測試表格',
             meta: {
               keepAlive: false,
               status: 'completed',

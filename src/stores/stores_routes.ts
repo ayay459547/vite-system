@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 import type { Navigation } from '@/declare/routes'
 import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
+import debounce from '@/lib/lib_debounce'
 
 import {
   getHistoryNavigation as getHistory,
@@ -14,9 +15,11 @@ import {
   keysHistoryNavigation as keysHistory
 } from '@/lib/lib_idb'
 
-import { getProxyData } from '@/lib/lib_utils'
+import { getProxyData, isEmpty } from '@/lib/lib_utils'
 
 import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission'
+
+export type HistoryNavigation = Navigation & { visitCount?: number }
 
 export const useRoutesStore = defineStore('routes', () => {
   // 全部的路由
@@ -43,15 +46,42 @@ export const useRoutesStore = defineStore('routes', () => {
   }
 
   // 歷史路由
-  const map = new Map<string, Navigation>()
+  const map = new Map<string, HistoryNavigation>()
   const historyNavigation = shallowReactive(map)
-  const addHistoryNavigation = (key: string, value: Navigation) => {
+  const addHistoryNavigation = async (key: string, value: Navigation) => {
+    let newCount = 0
+
     if (!historyNavigation.has(key)) {
-      historyNavigation.set(key, value)
-      const _value = getProxyData(value)
-      setHistory(key, _value)
+      // idb 取得舊的訪問次數
+      const _value = await getHistory(key)
+      if (!isEmpty(_value)) {
+        const { visitCount: oldCount = 0 } = _value as HistoryNavigation
+        newCount = oldCount
+      } else {
+      // 不存在舊的次數 代表是第一次訪問
+        newCount = 1
+      }
+
+    } else {
+      // 再次訪問時 次數 + 1
+      const navigation = historyNavigation.get(key)
+      const { visitCount: oldCount = 0 } = navigation
+      newCount = oldCount + 1
     }
+
+    const navigation = {
+      ...value,
+      // 訪問次數
+      visitCount: newCount
+    }
+
+    historyNavigation.set(key, navigation)
+    const _navigation = getProxyData(navigation)
+    setHistory(key, _navigation)
   }
+  // 做防抖 避免因為畫面刷新而重複計算 訪問次數
+  const debounceAddHistoryNavigation = debounce(addHistoryNavigation, 700) as typeof addHistoryNavigation
+
   const removeHistoryNavigation = (key: string) => {
     if (historyNavigation.has(key)) {
       historyNavigation.delete(key)
@@ -66,14 +96,18 @@ export const useRoutesStore = defineStore('routes', () => {
   // 從 indexedDB 初始化 先前的路由資料
   const initHistoryNavigation = async () => {
     const keyList = await keysHistory()
-    const historyList: Promise<Navigation>[] = []
+    const historyList: Promise<HistoryNavigation>[] = []
 
     if (keyList.length > 0) {
       keyList.forEach((key: string) => {
         historyList.push(getHistory(key))
       })
-
       const resList = await Promise.all(historyList)
+
+      // 依照訪問次數排序
+      resList.sort((a, b) => {
+        return (b?.visitCount ?? 0) - (a?.visitCount ?? 0)
+      })
 
       resList.forEach(resItem => {
         addHistoryNavigation(resItem.name, resItem)
@@ -141,7 +175,7 @@ export const useRoutesStore = defineStore('routes', () => {
     setCurrentNavigation,
 
     historyNavigation,
-    addHistoryNavigation,
+    addHistoryNavigation: debounceAddHistoryNavigation,
     removeHistoryNavigation,
     clearHistoryNavigation,
 
