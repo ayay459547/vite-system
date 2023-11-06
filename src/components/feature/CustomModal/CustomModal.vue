@@ -395,7 +395,6 @@ onUnmounted(() => {
       :style="`
         transform: translateX(${transform.x}) translateY(${transform.y});
         ${wrapperStyle};
-        user-select:none;
         ${bindStyle};
       `"
       v-click-outside="clickOutside"

@@ -620,6 +620,10 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
       <div class="setting-right grid-col-xs-24 grid-col-md-12 grid-col-xl-9">
         <slot name="setting-right"></slot>
 
+        <div v-if="props.lazyLoading">
+          <label>{{ `${$t('dataCount')}：${props.tableDataCount}` }}</label>
+        </div>
+
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomInput
             v-if="!props.lazyLoading"
@@ -724,11 +728,10 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
       </TableMain>
     </div>
 
-    <div class="table-pagination">
+    <div v-if="!props.lazyLoading" class="table-pagination">
       <div class="table-pagination-left"></div>
       <div class="table-pagination-center">
         <ElPagination
-          v-if="!props.lazyLoading"
           background
           layout="prev, pager, next"
           :total="props.tableDataCount"
@@ -738,7 +741,7 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
         />
       </div>
       <div class="table-pagination-right">
-        <span>{{ `${!props.lazyLoading ? $t('total') : $t('dataCount')}：${props.tableDataCount}` }}</span>
+        <span>{{ `${$t('total')}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>

@@ -14,7 +14,7 @@ import { getI18nMessages } from '@/i18n'
 
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
-import type { NotificationOptionsTyped, NotificationHandle } from 'element-plus'
+import type { NotificationOptions, NotificationOptionsTyped, NotificationHandle } from 'element-plus'
 import { ElNotification } from 'element-plus'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -215,7 +215,7 @@ export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
   return Swal.fire({ ...defaultOPtions })
 }
 
-export const notification = (options: Partial<NotificationOptionsTyped>): NotificationHandle => {
+export const notification = (options: Partial<NotificationOptions>): NotificationHandle => {
   const defaultOPtions = {
     // 'success' | 'warning' | 'info' | 'error' | ''
     type: '',

@@ -21,7 +21,7 @@ export const validateValue = (validate: string[] | string, veeValue: string): bo
 
 const validateFun = {
   number: (value: string): VeeRes => {
-    const regexp = /^(\d){1}[\d|\s|.]*$/
+    const regexp = /^(-?\d+|\d+)\.?(\d+)$/
 
     return {
       test: regexp.test(value),

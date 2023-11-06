@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, useSlots, ref } from 'vue'
 import { ElInput } from 'element-plus'
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, notification, hasOwnProperty } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 
@@ -73,7 +73,25 @@ const onEvent = {
   focus: (e: FocusEvent): void => emit('focus', e),
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: string | number): void => emit('change', value),
+  change: (value: string | number): void => {
+    let _value = value
+    // 檢查數字
+    const regexp = /^(-?\d+|\d+)(\.?\d+|d*)$/g
+    if (
+      !isEmpty(_value) &&
+      props.onlyNumber &&
+      typeof _value === 'string' &&
+      !regexp.test(_value)
+    ) {
+      _value = ''
+      notification({
+        type: 'warning',
+        title: `${value} 不為數字`,
+        duration: 3000
+      })
+    }
+    emit('change', _value)
+  },
   input: (value: string | number): void => {
     emit('input', value)
 
@@ -82,11 +100,6 @@ const onEvent = {
       // 去前後空白
       if (typeof _value === 'string') {
         _value = _value.replace(/^(\s+)|(\s+)$/g, '')
-      }
-      // 轉數字
-      if (props.onlyNumber && typeof _value === 'string') {
-        const regexp = /[\D]/g
-        _value = _value.replace(regexp, '')
       }
 
       emit('update:modelValue', _value)

@@ -90,7 +90,7 @@ const getStyle = (isChecked: boolean, color?: string) => {
 
 <template>
   <div class="i-checkbox">
-    <template v-if="options.length > 0 && Array.isArray(inputValue)">
+    <template v-if="Array.isArray(inputValue)">
       <ElCheckboxGroup
         v-model="inputValue"
         class="i-checkbox"
