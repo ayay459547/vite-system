@@ -43,6 +43,8 @@ export declare namespace HookList {
   type permission = (permissionTotal?: number | null) => Permission
 
   type getEnv = () => Record<string, any>
+
+  type getAuth = () => Record<string, any>
 }
 
 export declare type Hook = () => {
@@ -54,6 +56,7 @@ export declare type Hook = () => {
   notification: HookList.notification
   permission: HookList.permission
   getEnv: HookList.getEnv
+  getAuth: HookList.getAuth
 }
 
 export declare type SwalResult = {

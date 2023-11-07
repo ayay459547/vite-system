@@ -312,6 +312,9 @@ provide<Hook>('hook', () => {
     },
     getEnv: () => {
       return envStore
+    },
+    getAuth: () => {
+      return authData.value
     }
   }
 })
