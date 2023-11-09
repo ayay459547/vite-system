@@ -200,6 +200,14 @@ const transform = reactive({
 const containerRef = ref()
 const isFinishInit = ref(false)
 
+const setCenter = (x: number, y: number) => {
+  centerRect.x = x
+  centerRect.y = y
+}
+const setLimit = (x: number, y: number) => {
+  limitRect.x = x
+  limitRect.y = y
+}
 // 由於過場動畫
 // 所以需要再重設: 中心的 transform 值 + 移動的邊界值
 const resetRect = () => {
@@ -210,27 +218,29 @@ const resetRect = () => {
   setCenter(centerX, cneterY)
 
   const [ windowWidth, windowHeight ] = [ window.innerWidth, window.innerHeight ]
-  setLimit(windowWidth / 2 - centerX / 2, windowHeight / 2 - cneterY / 2)
+
+  // 確保 modal 全顯示
+  // setLimit(windowWidth / 2 - centerX, windowHeight / 2 - cneterY)
+
+  // 確保 有 50 顯示
+  setLimit(windowWidth / 2 - 50, windowHeight / 2 - 50)
 }
-const setCenter = (x: number, y: number) => {
-  centerRect.x = x
-  centerRect.y = y
-}
-const setLimit = (x: number, y: number) => {
-  limitRect.x = x
-  limitRect.y = y
-}
+
 const resetMove = async () => {
   move.x = 0
   move.y = 0
   move.lastX = 0
   move.lastY = 0
   wrapperStyle.value = 'transition-duration: 0.2s;'
+
+  await nextTick()
   transform.x = '-50%'
   transform.y = '-50%'
 
   await nextTick()
-  wrapperStyle.value = ''
+  setTimeout(() => {
+    wrapperStyle.value = ''
+  }, 200)
 }
 
 // 視窗大小變化時 位置重設
@@ -277,6 +287,22 @@ const updateTransform = (e: MouseEvent) => {
 }
 const throttleUpdateTransform = throttle(updateTransform, 1) as typeof updateTransform
 
+// 確認是否超出螢幕 要重設位置
+const fixModalOutSide = () => {
+  const contentRect = containerRef.value.getBoundingClientRect()
+  const { x, y, width, height } = contentRect
+  const [ windowWidth, windowHeight ] = [ window.innerWidth, window.innerHeight ]
+
+  if (
+    x < -width || x > windowWidth ||
+    y < -height || y > windowHeight
+  ) {
+    resetRect()
+    resetMove()
+  }
+}
+const throttleFixModalOutSide = throttle(fixModalOutSide, 2000) as typeof fixModalOutSide
+
 const mouseupEvent = () => {
   const { x: centerX, y: centerY } = centerRect
   // 有超出邊界
@@ -289,31 +315,31 @@ const mouseupEvent = () => {
     wrapperStyle.value = 'transition-duration: 0.2s;'
 
     // x軸邊界修正
-  if (move.lastX < -limitRect.x) {
-    move.x = -limitRect.x
-    transform.x = `${-(centerX - (-limitRect.x))}px`
-  } else if (move.lastX > limitRect.x) {
-    move.x = limitRect.x
-    transform.x = `${-(centerX - limitRect.x)}px`
-  } else {
-    move.x = move.lastX
-  }
+    if (move.lastX < -limitRect.x) {
+      move.x = -limitRect.x
+      transform.x = `${-(centerX - (-limitRect.x))}px`
+    } else if (move.lastX > limitRect.x) {
+      move.x = limitRect.x
+      transform.x = `${-(centerX - limitRect.x)}px`
+    } else {
+      move.x = move.lastX
+    }
 
-  // y軸邊界修正
-  if (move.lastY < -limitRect.y) {
-    move.y = -limitRect.y
-    transform.y = `${-(centerY - (-limitRect.y))}px`
-  } else if (move.lastY > limitRect.y) {
-    move.y = limitRect.y
-    transform.y = `${-(centerY - limitRect.y)}px`
-  } else {
-    move.y = move.lastY
-  }
-  move.lastY = move.y
+    // y軸邊界修正
+    if (move.lastY < -limitRect.y) {
+      move.y = -limitRect.y
+      transform.y = `${-(centerY - (-limitRect.y))}px`
+    } else if (move.lastY > limitRect.y) {
+      move.y = limitRect.y
+      transform.y = `${-(centerY - limitRect.y)}px`
+    } else {
+      move.y = move.lastY
+    }
+    move.lastY = move.y
 
-  setTimeout(() => {
-    wrapperStyle.value = ''
-  }, 250)
+    setTimeout(() => {
+      wrapperStyle.value = ''
+    }, 250)
 
   } else {
     wrapperStyle.value = ''
@@ -330,6 +356,11 @@ const mouseupEvent = () => {
     move.lastY = move.y
   }
   window.removeEventListener('mousemove', throttleUpdateTransform)
+
+  // 有時超出銀幕
+  setTimeout(() => {
+    throttleFixModalOutSide()
+  }, 1000)
 }
 
 const addEvent = ($event: MouseEvent) => {

@@ -13,6 +13,17 @@ export const datetimeFormat = (value: string | Date, format: string = 'YYYY-MM-D
   return dayjs(value).format(format)
 }
 
+/**
+ * @author Caleb
+ * @description https://day.js.org/docs/en/display/as-iso-string
+ *              ISO 8601 格式 YYYY-MM-DDTHH:mm:ss.sssZ
+ * @param {String} value 日期
+ * @returns {String} 格式化後的時間
+ */
+export const formatISO8601 = (value: string) => {
+  return dayjs(value).toISOString()
+}
+
 export type DurationType = 'seconds'| 'minutes'| 'hours'| 'days'| 'months'| 'years'
 /**
  * @author Caleb
