@@ -90,5 +90,15 @@ export default {
     zhTw: '清除',
     zhCn: '清除',
     en: 'Clear'
+  },
+  save: {
+    zhTw: '儲存',
+    zhCn: '储存',
+    en: 'Save'
+  },
+  detail: {
+    zhTw: '詳細資料',
+    zhCn: '详细资料',
+    en: 'Detail'
   }
 } as LangMap

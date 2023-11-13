@@ -19,6 +19,8 @@ import throttle from '@/lib/lib_throttle'
 export type WidthSize = 'fill' | 'large'| 'default'| 'small'
 export type HeightSize = 'fill' | 'large'| 'default'| 'small'
 export type ModelValue = boolean
+export type XPosition = 'start' | 'center' | 'end'
+export type YPosition = 'top' | 'center' | 'bottom'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
@@ -73,6 +75,16 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false,
     description: '是否可拖拉'
+  },
+  xPosition: {
+    type: String as PropType<XPosition>,
+    default: 'center',
+    description: '拖拉預設X軸位置'
+  },
+  yPosition: {
+    type: String as PropType<YPosition>,
+    default: 'center',
+    description: '拖拉預設Y軸位置'
   },
   hiddenFooter: {
     type: Boolean as PropType<boolean>,
@@ -227,15 +239,49 @@ const resetRect = () => {
 }
 
 const resetMove = async () => {
-  move.x = 0
-  move.y = 0
-  move.lastX = 0
-  move.lastY = 0
+  const { x: centerX, y: centerY } = centerRect
+
+  const limitRect = {
+    x: window.innerWidth / 2 - centerX,
+    y: window.innerHeight / 2 - centerY
+  }
+
   wrapperStyle.value = 'transition-duration: 0.2s;'
 
   await nextTick()
-  transform.x = '-50%'
-  transform.y = '-50%'
+
+  switch (props.xPosition) {
+    case 'center':
+      move.x = 0
+      transform.x = '-50%'
+      break
+    case 'start':
+      move.x = -limitRect.x
+      transform.x = `${-(centerX - (-limitRect.x))}px`
+      break
+    case 'end':
+      move.x = limitRect.x
+      transform.x = `${-(centerX - limitRect.x)}px`
+      break
+  }
+
+  switch (props.yPosition) {
+    case 'center':
+      move.y = 0
+      transform.y = '-50%'
+      break
+    case 'top':
+      move.y = -limitRect.y
+      transform.y = `${-(centerY - (-limitRect.y))}px`
+      break
+    case 'bottom':
+      move.y = limitRect.y
+      transform.y = `${-(centerY - limitRect.y)}px`
+      break
+  }
+
+  move.lastX = move.x
+  move.lastY = move.y
 
   await nextTick()
   setTimeout(() => {
@@ -335,7 +381,6 @@ const mouseupEvent = () => {
     } else {
       move.y = move.lastY
     }
-    move.lastY = move.y
 
     setTimeout(() => {
       wrapperStyle.value = ''

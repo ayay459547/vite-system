@@ -31,6 +31,10 @@
     flex-wrap: wrap;
   }
 
+  &-nowrap {
+    flex-wrap: nowrap;
+  }
+
   &-reverse {
     flex-wrap: wrap-reverse;
   }

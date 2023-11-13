@@ -93,6 +93,18 @@ const props = defineProps({
     default: undefined,
     description: '顏色'
   },
+  textColor: {
+    type: String as PropType<string |  undefined>,
+    required: false,
+    default: undefined,
+    description: '文字顏色'
+  },
+  dark: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否為深色模式'
+  },
   iconType: {
     type: String as PropType<IconType>,
     required: false,
@@ -139,6 +151,7 @@ const hasSlot = (prop: string): boolean => {
         :circle="props.circle"
         :disabled="props.disabled"
         :color="props.color"
+        :dark="props.dark"
         :loading="props.loading"
         @click="onClick"
       >
@@ -149,6 +162,7 @@ const hasSlot = (prop: string): boolean => {
             :size="ElSize[props.size]"
             :type="FontIconType[props.iconType]"
             :name="props.iconName"
+            :style="{ color: props.textColor }"
           />
         </template>
 
@@ -157,6 +171,7 @@ const hasSlot = (prop: string): boolean => {
             <span
               class="button-label"
               :class="`size-${ElSize[props.size]}`"
+              :style="{ color: props.textColor }"
             >
               {{ props.label }}
             </span>
