@@ -21,15 +21,11 @@ import { v4 as uuidv4 } from 'uuid'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
-dayjs.extend(duration)
-
 // import AES from 'crypto-js/aes'
 // import Utf8 from 'crypto-js/enc-utf8'
 import cryptoJS from 'crypto-js'
 
-// 使用加上 .call
+// 使用加上 .call => hasOwnProperty.call(obj, key)
 export const hasOwnProperty = Object.prototype.hasOwnProperty
 
 /**
@@ -356,14 +352,14 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
 /**
  * @author Caleb
  * @description 下載靜態檔案 檔案放在 pubic/static 下
- * @param {String} fileName 檔案名
+ * @param {String} path 路徑 + 檔案名
  */
-export const downloadStaticFile = (fileName: string) => {
+export const downloadStaticFile = (path: string) => {
   const a = document.createElement('a')
 
-  a.href = `/static/file/${fileName}`
+  a.href = `/static/file/${path}`
 
-  a.download = `${fileName}`
+  a.download = `${path}`
   a.style.display = 'none'
   document.body.appendChild(a)
   a.click()

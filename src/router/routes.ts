@@ -427,13 +427,15 @@ const routes: Array<RouterTree> = [
         name: 'nav3-3',
         title: '選單3-3',
         systemType: ['new'],
+        icon: 'dice-d20',
         leaves: [
           {
             name: 'nav3-3-1',
-            title: '選單3-3-1',
+            title: '收放展開組件測試',
             systemType: ['new'],
             path: '/nav3-3-1',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav3-3-1/Nav3-3-1.vue'),
+            icon: 'angles-up'
           },
           {
             name: 'nav3-3-3',

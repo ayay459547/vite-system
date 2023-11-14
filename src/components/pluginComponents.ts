@@ -8,8 +8,10 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // element plus
-// import { vLoading } from 'element-plus'
+import { ElCollapseTransition } from 'element-plus'
 import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/base.css'
+// Transition name="el-...name"
 
 // feature
 import CustomIcon from './feature/CustomIcon/CustomIcon.vue'
@@ -33,6 +35,8 @@ const pluginComponents = {
     library.add(fas, fab, far)
     app.component('font-awesome-icon', FontAwesomeIcon)
     app.use(VMdPreview)
+
+    app.component(ElCollapseTransition.name, ElCollapseTransition)
 
     /**
      * 建議從 import { Custom... } from '@/components' 引入

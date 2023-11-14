@@ -152,6 +152,11 @@ export default {
     zhCn: '上传',
     en: 'Upload'
   },
+  select: {
+    zhTw: '選擇',
+    zhCn: '选择',
+    en: 'Select'
+  },
   file: {
     zhTw: '文件',
     zhCn: '文件',

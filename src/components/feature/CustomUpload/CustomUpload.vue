@@ -314,7 +314,7 @@ const getText = (type: string) => {
       </div>
 
       <CustomButton
-        :label="`${i18nTranslate('upload')}${i18nTranslate(getText(props.type))}`"
+        :label="`${i18nTranslate('select')}${i18nTranslate(getText(props.type))}`"
         icon-name="cloud-arrow-up"
         size="large"
         type="primary"

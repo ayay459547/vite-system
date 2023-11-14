@@ -15,6 +15,11 @@ export type {
 } from './feature/CustomButton/CustomButton.vue'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
+export type {
+  ModelValue as CollapseModelValue
+} from './feature/CustomCollapse/CustomCollapse.vue'
+export { default as CustomCollapse } from './feature/CustomCollapse/CustomCollapse.vue'
+
 export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue'
 
 export type { BadgeType } from './feature/CustomBadge/CustomBadge.vue'
@@ -59,7 +64,9 @@ export { default as CustomMarkdown } from './feature/CustomMarkdown/CustomMarkdo
 export type {
   WidthSize,
   HeightSize,
-  ModelValue as ModalModelValue
+  ModelValue as ModalModelValue,
+  XPosition,
+  YPosition
 } from './feature/CustomModal/CustomModal.vue'
 export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 

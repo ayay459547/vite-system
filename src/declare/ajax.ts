@@ -3,10 +3,10 @@ import type { AxiosRequestConfig } from 'axios'
 type ApiCommon<T> = {
   result?: T
   data?: T
-  status?: 'success' | 'error' | 'fail'
+  status?: 'success' | 'error' | 'fail' | boolean
   msg?: any
 }
-export type Api<T, O = {}> = ApiCommon<T> & O
+export type Api<T, O = {}> = ApiCommon<T> & Partial<O>
 
 export type AjaxOptions<T> = {
   getFakeData?: boolean
