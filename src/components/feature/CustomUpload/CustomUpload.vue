@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
+import {
+  ref,
+  // unref,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  inject
+} from 'vue'
 import type { PropType } from 'vue'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import {
@@ -9,7 +16,13 @@ import {
   readImage,
   readExcel
 } from '@/lib/lib_files'
-import { isEmpty, getUuid, deepClone, getProxyData, usePageI18n } from '@/lib/lib_utils'
+import {
+  isEmpty,
+  getUuid,
+  deepClone,
+  getProxyData,
+  usePageI18n
+} from '@/lib/lib_utils'
 
 import FilesView from './FilesView.vue'
 
@@ -21,6 +34,7 @@ interface Info {
   src?: string
   fileSize?: string
   fileType?: string
+  fileTarget?: File
   excel?: any[]
   properties?: any
 }
@@ -35,6 +49,12 @@ const props = defineProps({
     required: false,
     default: '',
     description: '上傳類型'
+  },
+  overwrite: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否再上傳清空原來的檔案'
   },
   multiple: {
     type: Boolean as PropType<boolean>,
@@ -85,8 +105,8 @@ const { i18nTranslate } = usePageI18n(message)
 const drag = ref(null)
 const active = ref(false)
 
-const files = ref<FileInfo[]>([])
-const formData = ref(new FormData())
+const targetList: File[] = []
+const files = ref<FilesInfo>([])
 
 const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
   if (isEmpty(props.type)) return true
@@ -98,13 +118,15 @@ const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
 }
 
 const showCount = ref(1)
+const isLoading = ref(false)
 const initFilesData = async (target: FileList) => {
-  for (let _target of target) {
-    formData.value.append('file', _target)
+  isLoading.value = true
+  if (props.overwrite) {
+    targetList.splice(0)
+    files.value.splice(0)
   }
 
-  const _files = Array.from(target) as Array<File>
-  const total = _files.length + files.value.length
+  const total = target.length + files.value.length
   if (total > showCount.value) {
     swal({
       icon: 'error',
@@ -112,75 +134,80 @@ const initFilesData = async (target: FileList) => {
       text: '超過檔案上傳數量限制',
       showCancelButton: false
     })
+    isLoading.value = false
     return
   }
 
-  if (checkFilesType(_files, props.type)) {
-    _files.forEach(async (_file) => {
-      const fileType = getFileType(_file)
-      const {
-        name,
-        type,
-        size,
-        lastModified,
-        webkitRelativePath
-      } = _file
-
-      const info: Info = {
-        src: '',
-        fileSize: byteConvert(size),
-        fileType: fileType
-      }
-
-      switch (fileType) {
-        case 'image':
-          info.src = await readImage(_file)
-          break
-        case 'excel':
-          info.excel = await readExcel(_file)
-          break
-        case 'word':
-          break
-        default:
-          break
-      }
-
-      files.value.push({
-        uuid: getUuid(),
-        name,
-        type,
-        size,
-        lastModified,
-        webkitRelativePath,
-        ...info
-      })
-    })
-  } else {
+  if (!checkFilesType(Array.from(target), props.type)) {
     swal({
       icon: 'error',
       title: '上傳檔案失敗',
       text: '檔案資料格式錯誤',
       showCancelButton: false
     })
+    isLoading.value = false
+    return
+  }
+
+  for (const _target of target) {
+    targetList.push(_target)
+
+    const fileType = getFileType(_target)
+    const {
+      name,
+      type,
+      size,
+      lastModified,
+      webkitRelativePath
+    } = _target
+
+    const info: Info = {
+      src: '',
+      fileSize: byteConvert(size),
+      fileType: fileType,
+      fileTarget: _target
+    }
+
+    switch (fileType) {
+      case 'image':
+        info.src = await readImage(_target)
+        break
+      case 'excel':
+        info.excel = await readExcel(_target)
+        break
+      case 'word':
+        break
+      default:
+        break
+    }
+
+    files.value.push({
+      uuid: getUuid(),
+      name,
+      type,
+      size,
+      lastModified,
+      webkitRelativePath,
+      ...info
+    })
   }
 
   await nextTick()
-  emit('file', files.value)
+  setTimeout(() => {
+    emit('file', files.value, targetList)
+    isLoading.value = false
+  }, 500)
 }
 
-const remove = (fileIndex: number) => {
+const remove = async (fileIndex: number) => {
   files.value.splice(fileIndex, 1)
-}
+  targetList.splice(fileIndex, 1)
 
-defineExpose({
-  getFormData () {
-    return formData.value
-  },
-  getFiles () {
-    const _files = getProxyData(files.value)
-    return deepClone([], _files)
-  }
-})
+  await nextTick()
+  setTimeout(() => {
+    emit('file', files.value, targetList)
+  }, 500)
+}
 
 const handleDrop = (e: DragEvent) => {
   e.stopPropagation()
@@ -286,10 +313,24 @@ const getText = (type: string) => {
   }
 }
 
+defineExpose({
+  getFormData () {
+    const _formData = new FormData()
+    for (const _target of targetList) {
+      _formData.append('file', _target)
+    }
+    return _formData
+  },
+  getFiles () {
+    const _files = getProxyData(files.value)
+    return deepClone([], _files)
+  }
+})
+
 </script>
 
 <template>
-  <div class="upload-wrapper">
+  <div v-loading="isLoading" class="upload-wrapper">
     <div
       ref="drag"
       class="upload-container"
