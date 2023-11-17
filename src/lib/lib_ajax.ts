@@ -6,7 +6,6 @@ import { ElMessage } from 'element-plus'
 import { hasOwnProperty, isEmpty } from '@/lib/lib_utils'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
-const baseWS = (import.meta as any).env.VITE_API_BASE_WS
 const connectApi = (import.meta as any).env.VITE_API_CONNECT_API
 
 const fakeApi = <ResData>(config: AxiosRequestConfig, options: AjaxOptions<ResData>): PromiseLike<ResData> => {
@@ -33,7 +32,8 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
   const instance = axios.create({
     baseURL: baseUrl,
     timeout,
-    //   withCredentials: true
+    // 允許帶 cookie
+    withCredentials: true,
     headers: {
       'Content-Type': 'application/json;charset=utf8'
     }
@@ -124,6 +124,9 @@ export const ajax = <ResData>(
 }
 
 export default ajax
+
+const baseWS = (import.meta as any).env.VITE_API_BASE_WS
+const baseWSURL = (import.meta as any).env.VITE_API_BASE_WS_URL
 
 export type WebSocketConfig = {
   baseWs?: string
@@ -236,7 +239,7 @@ export class iWebScoket {
     const { baseWs, baseUrl, url, onopen, onclose, onerror, onmessage } = config
 
     this.baseWs = baseWs ?? `${baseWS}`
-    this.baseUrl = baseUrl ?? `${window.location.host}`
+    this.baseUrl = baseUrl ?? `${baseWSURL ?? window.location.host}`
     if (!isEmpty(url)) {
       this.url = url
     } else {
@@ -273,6 +276,7 @@ export class iWebScoket {
       if (this.socket.readyState === 1) {
         this.sendMessageCount = 0
         clearTimeout(_timer)
+        console.log(`send ( ${this.connectUrl} ) `, data)
         this.socket.send(data)
       } else {
         // 無法送出訊息 重新送出10次
@@ -315,7 +319,7 @@ export class iWebScoket {
       this.isReConnect = true
       this.timer = setTimeout(() => {
         this.init(this.config)
-      }, 5000)
+      }, 60000)
     }
   }
 }
