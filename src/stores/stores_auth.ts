@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { shallowRef, computed, shallowReactive } from 'vue'
 import type { AuthData, PermissionData } from './stores_api'
-import { getUserData, getRoutesPermission } from './stores_api'
+import { getAuthData, getRoutesPermission } from './stores_api'
 import { permission } from '@/lib/lib_permission'
 
 import { getRouterLeafLayer } from '@/lib/lib_routes'
@@ -152,7 +152,7 @@ export const useAuthStore = defineStore('auth', () => {
 				{ data: permissionList }
 			] = await Promise.all([
 				// 使用 token 初始化使用者資料
-				getUserData(userId),
+				getAuthData(userId),
 				getRoutesPermission(userId)
 			])
 

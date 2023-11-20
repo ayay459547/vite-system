@@ -7,7 +7,7 @@ export type AuthData = {
   name: string
 }
 
-export const getUserData = async (token: number) => {
+export const getAuthData = async (token: number) => {
   const resData = await ajax<Api<AuthData>>({
     url: '/page1/get',
     method: 'get',

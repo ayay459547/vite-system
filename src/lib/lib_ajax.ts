@@ -90,7 +90,7 @@ export const ajax = <ResData>(
   const {
     getFakeData = false,
     fakeData = null,
-    showLog = false,
+    isLog = false,
     delay = 0,
     callback = null
   } = options
@@ -102,7 +102,7 @@ export const ajax = <ResData>(
       return fakeApi<ResData>(config, { fakeData, delay, callback })
     case 'auto':
     default:
-      if (showLog) {
+      if (isLog) {
         const style = `
           font-size: 1em;
           color: #409EFF;
@@ -112,6 +112,7 @@ export const ajax = <ResData>(
         console.group('%c%s', style, 'api 資訊')
         console.log('%c%s', style, `url: ${url}`)
         console.log('%c%s', style, `method: ${method}`)
+        console.log('%c%s', style, `data: ${data}`)
         console.table(data)
         console.groupEnd()
       }

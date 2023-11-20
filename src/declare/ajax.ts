@@ -11,7 +11,7 @@ export type Api<T, O = {}> = ApiCommon<T> & Partial<O>
 export type AjaxOptions<T> = {
   getFakeData?: boolean
   fakeData?: T | null
-  showLog?: boolean
+  isLog?: boolean
   delay?: number
   callback?: (config: AxiosRequestConfig, fakeData: T) => any | null
 }

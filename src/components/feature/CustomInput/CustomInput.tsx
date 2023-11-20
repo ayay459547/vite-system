@@ -77,8 +77,14 @@ const CustomInput = defineComponent({
     //   }
     // })
 
+    const validateCount = ref(0)
     // 驗證
     const validateField = (veeValue: ModelValue) => {
+      // 一開始不驗證
+      if (validateCount.value === 0) {
+        validateCount.value++
+        return true
+      }
       // 必填
       if (props.required) {
         switch (props.type) {
