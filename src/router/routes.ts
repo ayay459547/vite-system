@@ -439,10 +439,11 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-3-3',
-            title: '選單3-3-3',
+            title: '樹結構組件測試',
             systemType: ['new'],
             path: '/nav3-3-3',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav3-3-3/Nav3-3-3.vue'),
+            icon: 'folder-tree'
           },
           {
             name: 'nav3-3-4',

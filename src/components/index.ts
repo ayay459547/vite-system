@@ -143,6 +143,11 @@ export type {
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
 
 export type {
+  TreeOptionProps
+} from './feature/CustomTree/CustomTree.vue'
+export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
+
+export type {
   Size as TimeLineSize,
   Placement as TimeLinePlacement,
   TimeType,
