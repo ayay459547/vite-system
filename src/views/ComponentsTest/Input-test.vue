@@ -60,6 +60,14 @@ const columnSetting = {
       required: true
     }
   },
+  timerange: {
+    label: '選擇時間區間',
+    filter: {
+      type: 'timerange',
+      default: ['', ''],
+      required: true
+    }
+  },
   select: {
     label: '選擇框',
     filter: {
@@ -109,6 +117,7 @@ interface Form {
   phone?: string
   date?: string
   daterange?: [string, string]
+  timerange?: any
   select?: string
   checkbox?: []
   radio?: number
@@ -199,6 +208,11 @@ const fetchSuggestions = (queryString: string, cb: (data: any[]) => void) => {
     <CustomInput
       v-model="form.daterange"
       v-bind="formColumn.daterange"
+    />
+
+    <CustomInput
+      v-model="form.timerange"
+      v-bind="formColumn.timerange"
     />
 
     <CustomInput

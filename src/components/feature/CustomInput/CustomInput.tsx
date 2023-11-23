@@ -13,6 +13,7 @@ import {
   FormInput,
   FormSelect,
   FormDatePicker,
+  FormTimePicker,
   FormCheckbox,
   FormRadio,
   FormAutocomplete,
@@ -30,6 +31,7 @@ import {
   elInput,
   elSelect,
   elDatePicker,
+  elTimePicker,
   elCheckbox,
   elRadio,
   elAutocomplete
@@ -48,6 +50,7 @@ const CustomInput = defineComponent({
     ...elInput,
     ...elSelect,
     ...elDatePicker,
+    ...elTimePicker,
     ...elCheckbox,
     ...elRadio,
     ...elAutocomplete
@@ -139,7 +142,7 @@ const CustomInput = defineComponent({
       handleChange,      // 換值
       handleReset,       // 重置
       validate           // 驗證
-    } = useField('field', validateField, {
+    } = useField<any>('field', validateField, {
       // validateOnValueUpdate: true
       // initialValue: inputValue,
       // valueProp: inputValue
@@ -173,6 +176,9 @@ const CustomInput = defineComponent({
         format: props.format,
         valueFormat: props.valueFormat,
         shortcuts: props.shortcuts,
+        // timePicker
+        isRange: props.isRange,
+        rangeSeparator: props.rangeSeparator,
         // autocomplete
         valueKey: props.valueKey,
         fitInputWidth: props.fitInputWidth,
@@ -245,6 +251,7 @@ const CustomInput = defineComponent({
     const inputRef = ref()
     const selectRef = ref()
     const datePickerRef = ref()
+    const timePickerRef = ref()
     const autocompleteRef = ref()
     expose({
       key: props.validateKey,
@@ -278,6 +285,10 @@ const CustomInput = defineComponent({
           case 'monthrange':
             datePickerRef.value.focus()
             break
+          case 'time':
+          case 'timerange':
+            timePickerRef.value.focus()
+            break
           case 'autocomplete':
             autocompleteRef.value.focus()
             break
@@ -303,6 +314,10 @@ const CustomInput = defineComponent({
           case 'daterange':
           case 'monthrange':
             datePickerRef.value.blur()
+            break
+          case 'time':
+          case 'timerange':
+            timePickerRef.value.blur()
             break
           case 'autocomplete':
             autocompleteRef.value.blur()
@@ -343,6 +358,14 @@ const CustomInput = defineComponent({
             return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(value2, props.format)}`
           } else {
             return datetimeFormat(inputValue.value, props.format)
+          }
+        case 'time':
+        case 'timerange':
+          if (Array.isArray(inputValue.value)) {
+            const [value1, value2] = inputValue.value
+            return `${value1} ~ ${value2}`
+          } else {
+            return `${inputValue.value}`
           }
         case 'checkbox':
           if (Array.isArray(inputValue.value)) {
@@ -501,6 +524,25 @@ const CustomInput = defineComponent({
               {{ ...getTemplate(['default', 'range-separator']) }}
             </FormDatePicker>
           )
+        case 'time':
+        case 'timerange':
+          return (
+            <FormTimePicker
+              ref={timePickerRef}
+              modelValue={inputValue.value}
+              onUpdate:modelValue={
+                ($event: any) => (inputValue.value = $event)
+              }
+              // v-bind 綁定屬性
+              { ...bindAttributes.value }
+              type={props.type}
+              errorMessage={errorMessage.value}
+              // v-on 接收事件
+              onFocus={ (e: any) => onEvent.value.onFocus(e) }
+              onBlur={ (e: any) => onEvent.value.onBlur(e) }
+              onChange={ (e: any) => onEvent.value.onChange(e) }
+            ></FormTimePicker>
+          )
         case 'checkbox':
           return (
             <FormCheckbox
@@ -596,6 +638,7 @@ const CustomInput = defineComponent({
             'text', 'textarea', 'password', 'select',
             'year', 'month', 'date', 'dates', 'datetime', 'week',
             'datetimerange', 'daterange', 'monthrange',
+            'time', 'timerange',
             'checkbox', 'radio'
           ])
           return (

@@ -15,7 +15,7 @@ const { t } = useI18n()
 type BaseValue = string | null
 type ModelValue = BaseValue | [BaseValue, BaseValue]
 
-export type PickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
+export type DatePickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
 
 export type Shortcuts = {
   text: string
@@ -33,7 +33,7 @@ const props = defineProps({
   },
   // element ui plus
   type: {
-    type: String as PropType<PickerType>,
+    type: String as PropType<DatePickerType>,
     default: 'date'
   },
   clearable: {

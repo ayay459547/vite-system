@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+// import uch from 'dayjs/plugin/utc'
 dayjs.extend(duration)
 
 /**
@@ -20,7 +21,7 @@ export const datetimeFormat = (value: string | Date, format: string = 'YYYY-MM-D
  * @param {String} value 日期
  * @returns {String} 格式化後的時間
  */
-export const formatISO8601 = (value: string) => {
+export const formatISO8601 = (value: string): string => {
   return dayjs(value).toISOString()
 }
 

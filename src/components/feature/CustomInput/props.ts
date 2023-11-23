@@ -2,7 +2,8 @@ import type { PropType } from 'vue'
 import type { ValidateType } from '@/lib/lib_validate'
 import type {
   Shortcuts,
-  PickerType,
+  DatePickerType,
+  TimePickerType,
   FetchSuggestions
 } from '@/components'
 
@@ -11,7 +12,7 @@ export type InputType = (
   'text' | 'textarea' | 'password' |
   'select' | 'checkbox' | 'radio' |
   'autocomplete' | 'operator' |
-  PickerType
+  DatePickerType | TimePickerType
 )
 export type Option = {
   label: string
@@ -197,16 +198,35 @@ export const elDatePicker = {
   format: {
     type: String as PropType<string>,
     required: false,
-    default: 'YYYY-MM-DD'
+    description: '顯示格式'
   },
   valueFormat: {
     type: String as PropType<string>,
     required: false,
-    default: 'YYYY-MM-DD'
+    description: '資料格式'
   },
   shortcuts: {
     type: Array as PropType<Shortcuts[]>,
     required: false
+  }
+}
+
+export const elTimePicker = {
+  // format: {
+  //   type: String as PropType<string>,
+  //   required: false,
+  //   description: '資料及顯示格式'
+  // },
+  isRange: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否可選區間'
+  },
+  rangeSeparator: {
+    type: String as PropType<string>,
+    default: '-',
+    description: '間格文字'
   }
 }
 

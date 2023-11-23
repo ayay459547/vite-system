@@ -172,7 +172,7 @@ export { default as FormCheckbox } from './form/FormCheckbox.vue'
 
 export type {
   Shortcuts,
-  PickerType
+  DatePickerType
 } from './form/FormDatePicker.vue'
 export { default as FormDatePicker } from './form/FormDatePicker.vue'
 
@@ -195,5 +195,10 @@ export type {
   Options as FormSelectOptions
 } from './form/FormSelect.vue'
 export { default as FormSelect } from './form/FormSelect.vue'
+
+export type {
+  TimePickerType
+} from './form/FormTimePicker.vue'
+export { default as FormTimePicker } from './form/FormTimePicker.vue'
 
 export { default as FormList } from './form/FormList.vue'
