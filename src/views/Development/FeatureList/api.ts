@@ -10,6 +10,9 @@ export type TableData = {
   breadcrumbTitle: string
 }
 
+// 網址前綴
+const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
+
 const routesData = []
 const options = []
 
@@ -41,7 +44,7 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
       startDate,
       completedDate,
       title: nextNode.title,
-      path: nextNode.path,
+      path: `${systemUrl}${nextNode.path}`,
       name: nextNode.breadcrumbName[0],
       mode: nextNode.breadcrumbTitle[0],
       breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')

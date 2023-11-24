@@ -19,6 +19,9 @@ import LoginView from '@/views/Common/LoginView/LoginView.vue'
 import NoPermissions from '@/views/Common/NoPermissions.vue'
 import Page_404 from '@/views/Common/Page_404.vue'
 
+// 網址前綴
+const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
+
 /**
  * @author Caleb
  * @description 用DFS的方式 將路由樹轉換成可使用路由
@@ -34,7 +37,7 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
         const { title, name,  meta, path, component } = route
 
         const pushItem = {
-          path,
+          path: `${systemUrl}${path}`,
           name,
           component,
           meta: {
@@ -68,11 +71,15 @@ const baseRoutes: Array<RouteRecordRaw> = [
     redirect: { name: 'home' }
   },
   {
+    path: `${systemUrl}`,
+    redirect: { name: 'home' }
+  },
+  {
     name: 'home',
     meta: {
       title: '首頁'
     },
-    path: '/home',
+    path: `${systemUrl}/home`,
     component: HomeView
   },
   {
@@ -80,7 +87,7 @@ const baseRoutes: Array<RouteRecordRaw> = [
     meta: {
       title: '登入'
     },
-    path: '/login',
+    path: `${systemUrl}/login`,
     component: LoginView
   },
   {
@@ -88,7 +95,7 @@ const baseRoutes: Array<RouteRecordRaw> = [
     meta: {
       title: '無此權限'
     },
-    path: '/noPermissions',
+    path: `${systemUrl}/noPermissions`,
     component: NoPermissions
   },
   {
@@ -96,7 +103,7 @@ const baseRoutes: Array<RouteRecordRaw> = [
     meta: {
       title: '404'
     },
-    path: '/page404',
+    path: `${systemUrl}/page404`,
     component: Page_404
   },
   {

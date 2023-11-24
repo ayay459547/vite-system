@@ -21,6 +21,9 @@ import { permission, defaultPermission, hasPermission } from '@/lib/lib_permissi
 
 export type HistoryNavigation = Navigation & { visitCount?: number }
 
+// 網址前綴
+const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
+
 export const useRoutesStore = defineStore('routes', () => {
   // 全部的路由
   const allRoutes: ComputedRef<Navigation[]> = computed(() => {
@@ -125,15 +128,22 @@ export const useRoutesStore = defineStore('routes', () => {
   // 設置 選單用資料 + 搜尋用 map
   const setNavigationRoutes = (routesPermission: Map<string, any>) => {
     navigationRoutes.value = refactorRoutes<Navigation>((leafNode, parentsNode) => {
+      const {
+        path: leafNodePath = '',
+        name: leafNodeName = '',
+        title: leafNodeTitle = ''
+      } = leafNode
+
       const nextNode: Navigation = {
-        ...leafNode
+        ...leafNode,
+        path: `${systemUrl}${leafNodePath}`
       }
       if (parentsNode === null) {
-        nextNode.breadcrumbName = [leafNode.name]
-        nextNode.breadcrumbTitle = [leafNode.title]
+        nextNode.breadcrumbName = [leafNodeName]
+        nextNode.breadcrumbTitle = [leafNodeTitle]
       } else{
-        nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
-        nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
+        nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNodeName]
+        nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNodeTitle]
       }
 
       /**
@@ -143,7 +153,7 @@ export const useRoutesStore = defineStore('routes', () => {
        *
        * api 沒有 給預設權限
        */
-      const routerPermission = routesPermission.get(leafNode.name)
+      const routerPermission = routesPermission.get(leafNodeName)
 
       if (typeof routerPermission === 'number') {
         nextNode.permission = routerPermission
@@ -154,7 +164,7 @@ export const useRoutesStore = defineStore('routes', () => {
       /**
        * 設置搜尋用 map
        */
-      navigationMap.value.set(leafNode.name, nextNode)
+      navigationMap.value.set(leafNodeName, nextNode)
 
       return {
         refactorNode: nextNode,
