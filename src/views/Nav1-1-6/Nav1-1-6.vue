@@ -34,8 +34,8 @@ onMounted(() => {
 
     <div ref="resizeRef" class="page-resize">
       <h3>hook 計算大小變化</h3>
-      <div>{{ testSize.width }}</div>
-      <div>{{ testSize.height }}</div>
+      <div>{{ testSize.contentRect.width }}</div>
+      <div>{{ testSize.contentRect.height }}</div>
     </div>
   </div>
 </template>
