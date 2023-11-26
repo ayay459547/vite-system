@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+// @ts-ignore
 import markdown from '@/components/feature/CustomButton/CustomButton.md?raw'
 import {
   CustomInput,

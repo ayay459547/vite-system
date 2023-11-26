@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { IconType } from '@/components'
+// @ts-ignore
 import markdown from '@/components/feature/CustomIcon/CustomIcon.md?raw'
 import {
   CustomDivider,

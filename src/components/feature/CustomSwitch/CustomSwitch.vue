@@ -9,35 +9,43 @@ export type ModelValue = boolean
 const props = defineProps({
   modelValue: {
     type: Boolean as PropType<ModelValue>,
-    required: true
+    required: true,
+    description: 'v-model 綁定是否顯示'
   },
   style: {
     type: String as PropType<string>,
-    default: ''
+    default: '',
+    description: '樣式'
   },
   activeText: {
     type: String as PropType<string>,
-    default: ''
+    default: '',
+    description: '啟用文字'
   },
   inactiveText: {
     type: String as PropType<string>,
-    default: ''
+    default: '',
+    description: '不啟用文字'
   },
   disabled: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
+    description: '是否禁用'
   },
   loading: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
+    description: '是否讀取中'
   },
   size: {
     type: String as PropType<Size>,
-    default: ''
+    default: '',
+    description: '大小'
   },
   width: {
     type: [String, Number] as PropType<string | number>,
-    default: ''
+    default: '',
+    description: '寬度'
   }
 })
 

@@ -10,11 +10,17 @@ export interface Props {
   visible?: boolean | null
   placement?: Placement
   trigger?: Trigger
+  popperClass?: string
+  showArrow?: boolean
+  offset?: number
 }
 const props = withDefaults(defineProps<Props>(), {
   visible: null,
   placement: 'bottom',
-  trigger: 'hover'
+  trigger: 'hover',
+  popperClass: '',
+  showArrow: true,
+  offset: 0
 })
 
 const emit = defineEmits<{
@@ -50,6 +56,9 @@ const tempValue = customRef((track, trigger) => {
       v-model:visible="tempValue"
       :placement="props.placement"
       :trigger="props.trigger"
+      :popper-class="props.popperClass"
+      :show-arrow="props.showArrow"
+      :offset="props.offset"
       effect="light"
     >
       <template #default>

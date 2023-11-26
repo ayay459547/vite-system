@@ -22,14 +22,18 @@
 </template>
 ```
 ## Element UI Plus
-https://element-plus.org/en-US/component/tooltip.html
+[https://element-plus.org/en-US/component/tooltip.html]
+(https://element-plus.org/zh-US/component/tooltip.html)
 
 ### Attributes ( props )
-| 屬姓名       | 說明       | 类型    | 默認值   |
-| ----------- | ---------- | ------- | ------- |
-| visible     | 是否顯示    | boolean | false   |
-| placement   | 出現位置    | enum    | 'bottom' |
-| trigger     | 切換方式    | enum    | 'click'  |
+| 屬姓名       | 說明           | 类型    | 默認值   |
+| ----------- | -------------- | ------- | ------- |
+| visible     | 是否顯示        | boolean | false   |
+| placement   | 出現位置        | enum    | 'bottom' |
+| trigger     | 切換方式        | enum    | 'click'  |
+| popperClass | 自訂樣式        | string  | ''       |
+| showArrow   | 是否顯示箭頭     | boolean | true    |
+| offset      | 出現位置的偏移量 | number   | 0      |
 
 ### Slots
 | 插槽名     | 說明          |

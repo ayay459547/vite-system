@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+// @ts-ignore
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
 import {
   CustomInput,

@@ -49,7 +49,8 @@ const onInput = (value: string) => {
 </template>
 ```
 ## Element UI Plus
-https://element-plus.org/en-US/component/input.html
+[https://element-plus.org/en-US/component/input.html]
+(https://element-plus.org/en-US/component/input.html)
 
 ### Attributes ( props )
 | 屬姓名           | 說明                       | 类型    | 默認值    | 是否必填 |

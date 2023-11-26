@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+// @ts-ignore
 import markdown from '@/components/feature/CustomDraggable/CustomDraggable.md?raw'
 import {
   CustomDivider,

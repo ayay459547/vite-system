@@ -8,7 +8,7 @@ import {
 } from '@/components'
 
 import type { TableParams } from '@/components'
-
+// @ts-ignore
 import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
 
 import { getTableSetting } from '@/lib/lib_columns'
