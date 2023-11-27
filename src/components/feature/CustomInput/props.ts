@@ -191,6 +191,15 @@ export const elSelect = {
     required: false,
     default: false,
     description: '是否可依照輸入文字建立選項'
+  },
+  defaultFirstOption: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: `
+      是否在輸入框按下Enter時 選擇第一個符合項目
+      需配合 filterable 或 remote 使用
+    `
   }
 }
 

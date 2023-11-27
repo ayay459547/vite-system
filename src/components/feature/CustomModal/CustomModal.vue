@@ -16,8 +16,8 @@ import { CustomButton, CustomIcon } from '@/components'
 import { useBoundingClientRect, getUuid } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 
-export type WidthSize = 'fill' | 'large'| 'default'| 'small'
-export type HeightSize = 'fill' | 'large'| 'default'| 'small'
+export type WidthSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
+export type HeightSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
 export type ModelValue = boolean
 export type XPosition = 'start' | 'center' | 'end'
 export type YPosition = 'top' | 'center' | 'bottom'
@@ -139,7 +139,7 @@ const openModal = () => {
       resetMove()
       isFinishInit.value = true
     }
-  }, 300)
+  }, 400)
 }
 
 const closeModal = () => {
@@ -239,14 +239,15 @@ const resetRect = () => {
 }
 
 const resetMove = async () => {
+  wrapperStyle.value = 'transition-duration: 0.2s;'
+  await nextTick()
+
   const { x: centerX, y: centerY } = centerRect
 
   const limitRect = {
     x: window.innerWidth / 2 - centerX,
     y: window.innerHeight / 2 - centerY
   }
-
-  wrapperStyle.value = 'transition-duration: 0.2s;'
 
   await nextTick()
 
@@ -609,6 +610,15 @@ onUnmounted(() => {
           width: 85%;
         }
       }
+      &-extraSmall {
+        width: 450px;
+        @media (max-width: 992px) {
+          width: 65%;
+        }
+        @media (max-width: 576px) {
+          width: 85%;
+        }
+      }
     }
     &.height {
       &-fill {
@@ -623,10 +633,14 @@ onUnmounted(() => {
       &-small {
         height: 500px;
       }
+      &-extraSmall {
+        height: 400px;
+      }
 
       &-large,
       &-default,
-      &-small {
+      &-small,
+      &-extraSmall {
         @media (max-height: 576px) {
           height: 90%;
         }

@@ -62,6 +62,7 @@ const modalIsShow = ref(false)
       v-model="modalIsShow"
       :modal="false"
       draggable
+      width-size="extraSmall"
     >
       <h3>測試 CustomModal 拖拉 draggable</h3>
     </CustomModal>

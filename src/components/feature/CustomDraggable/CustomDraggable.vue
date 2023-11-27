@@ -270,5 +270,4 @@ const listValue = computed({
     }
   }
 }
-
 </style>

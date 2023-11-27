@@ -123,5 +123,4 @@ const hasSlot = (prop: string): boolean => {
   width: 100%;
   height: 100%;
 }
-
 </style>

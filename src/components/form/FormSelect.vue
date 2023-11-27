@@ -75,6 +75,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  defaultFirstOption: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: FocusEvent) => void>,
@@ -98,7 +102,8 @@ const bindAttributes = computed(() => {
     collapseTags: props.multiple,
     collapseTagsTooltip: props.multiple,
     filterable: props.filterable,
-    allowCreate: props.allowCreate
+    allowCreate: props.allowCreate,
+    defaultFirstOption: props.defaultFirstOption
   }
 })
 

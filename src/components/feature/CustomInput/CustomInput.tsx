@@ -172,6 +172,7 @@ const CustomInput = defineComponent({
         collapseTagsTooltip: props.multiple,
         filterable: props.filterable,
         allowCreate: props.allowCreate,
+        defaultFirstOption: props.defaultFirstOption,
         // datePicker
         format: props.format,
         valueFormat: props.valueFormat,
