@@ -3,10 +3,10 @@ import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 import type {
+  Sort,
   SpanMethod,
   RowClassName,
   RowStyle,
@@ -28,48 +28,63 @@ const hasSlot = (prop: string): boolean => {
 const props = defineProps({
   renderKey: {
     type: Number as PropType<number>,
-    required: true,
+    required: false,
+    default: 0,
     description: '重新渲染用的key'
   },
   showData: {
     type: Array as PropType<Array<any>>,
-    required: true,
+    required: false,
+    default: () => {
+      return []
+    },
     description: '顯示資料'
   },
-  tableDataCount: {
-    type: Number as PropType<number>,
-    required: true,
-    description: '總資料筆數 計算虛擬渲染用'
-  },
+  // tableDataCount: {
+  //   type: Number as PropType<number>,
+  //   required: false,
+  //   description: '總資料筆數 計算虛擬渲染用'
+  // },
   showColumns: {
     type: Array as PropType<Array<any>>,
-    required: true,
+    required: false,
+    default: () => {
+      return []
+    },
     description: '顯示欄位'
   },
   sort: {
     type: Object as PropType<Sort>,
-    required: true,
+    required: false,
+    default: () => {
+      return {
+        key: null,
+        order: null
+      }
+    },
     description: '資料存在 children 時 預設是否展開'
   },
   showNo: {
     type: Boolean as PropType<boolean>,
-    required: true,
-    description: '重新渲染用的key'
+    required: false,
+    default: false,
+    description: '是否顯示編號'
   },
   // element ui
   rowKey: {
     type: String as PropType<string>,
-    required: true,
+    required: false,
+    default: 'id',
     description: '每行資料的key 預設是id'
   },
   tableSize: {
     type: String as PropType<TableSize>,
-    required: true,
+    required: false,
     description: '表格大小'
   },
   defaultExpandAll: {
     type: Boolean as PropType<boolean>,
-    required: true,
+    required: false,
     description: '資料存在 children 時 預設是否展開'
   },
   spanMethod: {

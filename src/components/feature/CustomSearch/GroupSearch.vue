@@ -18,7 +18,7 @@ const props = defineProps({
   },
   size: {
     type: [String, Number] as PropType<string | number>,
-    default: 300
+    default: 400
   }
 })
 

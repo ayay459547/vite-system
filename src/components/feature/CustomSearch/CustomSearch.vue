@@ -7,8 +7,8 @@ import {
   CustomBadge
 } from '@/components'
 import type { InputType, Options } from '@/components'
-import { computed, type PropType } from 'vue'
-import { isEmpty } from '@/lib/lib_utils'
+import { computed, nextTick, type PropType } from 'vue'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 type ModelValue = any
 const props = defineProps({
@@ -148,10 +148,22 @@ const bindAttributes = computed(() => {
   }
 })
 
+const scopedId = getUuid()
+
+defineExpose({
+  async validate () {
+    await nextTick()
+    return { valid: true }
+  },
+  getDom () {
+    return document.querySelector(`.__search__${scopedId}`)
+  }
+})
+
 </script>
 
 <template>
-  <div class="search">
+  <div class="search" :class="`__search__${scopedId}`">
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="search-title">
@@ -159,7 +171,7 @@ const bindAttributes = computed(() => {
 
         <CustomPopover
           :width="250"
-          trigger="hover"
+          trigger="click"
           placement="top"
         >
           <div>

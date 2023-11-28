@@ -80,60 +80,65 @@ const submit = () => {
         />
       </template>
 
-      <CustomDraggable
-        v-model="tempValue"
-        item-key="key"
-        class="group-container column-list"
-        :handle="`.sorting-move`"
-        :style="{
+      <div>
+        <div :style="{
           maxHeight: props.settingHeight,
           overflow: 'auto'
-        }"
-      >
-        <template #item="{ element }">
-          <div class="column-item">
-            <CustomInput
-              :model-value="element.order"
-              @update:model-value="setSortingValue($event, element.key)"
-              :label="element.label"
-              type="radio"
-              :options="[
-                { label: $t('ascending'), value: 'ascending' },
-                { label: $t('none'), value: 'none' },
-                { label: $t('descending'), value: 'descending' }
-              ]"
-            />
+        }">
+          <CustomDraggable
+            v-model="tempValue"
+            item-key="key"
+            class="group-container column-list"
+            :handle="`.sorting-move`"
+            :style="{
+              maxHeight: props.settingHeight,
+              overflow: 'auto'
+            }"
+          >
+            <template #item="{ element }">
+              <div class="column-item" :class="element.order !== 'none' ? 'is-active' : ''">
+                <CustomInput
+                  :model-value="element.order"
+                  @update:model-value="setSortingValue($event, element.key)"
+                  :label="element.label"
+                  type="radio"
+                  :options="[
+                    { label: $t('ascending'), value: 'ascending' },
+                    { label: $t('none'), value: 'none' },
+                    { label: $t('descending'), value: 'descending' }
+                  ]"
+                />
 
-            <CustomButton
-              type="info"
-              icon-name="bars"
-              text
-              class="sorting-move"
-            />
-          </div>
-        </template>
+                <CustomButton
+                  type="info"
+                  icon-name="bars"
+                  text
+                  class="sorting-move"
+                />
+              </div>
+            </template>
+          </CustomDraggable>
+        </div>
 
-        <template #footer>
-          <div class="column-reset">
-            <CustomButton
-              :label="$t('returnDefault')"
-              type="info"
-              plain
-              icon-name="repeat"
-              @click="resetSorting"
-            />
+        <div class="column-reset">
+          <CustomButton
+            :label="$t('returnDefault')"
+            type="info"
+            plain
+            icon-name="repeat"
+            @click="resetSorting"
+          />
 
-            <CustomButton
-              :label="$t('confirm')"
-              type="success"
-              plain
-              icon-name="check"
-              icon-move="scale"
-              @click="submit"
-            />
-          </div>
-        </template>
-      </CustomDraggable>
+          <CustomButton
+            :label="$t('confirm')"
+            type="success"
+            plain
+            icon-name="check"
+            icon-move="scale"
+            @click="submit"
+          />
+        </div>
+      </div>
     </CustomPopover>
   </div>
 </template>
@@ -169,6 +174,12 @@ const submit = () => {
     width: 100%;
     &:hover {
       background-color: #f5f7fa;
+    }
+
+    opacity: 0.3;
+    transition-duration: 0.3s;
+    &.is-active {
+      opacity: 1;
     }
   }
 

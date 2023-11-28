@@ -122,6 +122,8 @@ export type {
 } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
+export { default as TableMain } from './feature/CustomTable/TableMain.vue'
+
 export type {
   ListItem,
   ListType,

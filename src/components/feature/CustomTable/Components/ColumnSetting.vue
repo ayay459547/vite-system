@@ -191,54 +191,56 @@ onBeforeMount(async () => {
         />
       </template>
 
-      <CustomDraggable
-        v-model="columnList"
-        @start="drag = true"
-        @end="onDragend"
-        item-key="key"
-        class="column-list"
-        :handle="`.setting-move`"
-        :style="{
+      <div>
+        <div :style="{
           maxHeight: props.settingHeight,
           overflow: 'auto'
-        }"
-      >
-        <template #item="{ element }">
-          <div v-if="!element.isOperations" class="column-item">
-            <div class="flex-row i-ga-xs">
-              <div>
-                <CustomInput
-                  v-model="element.isShow"
-                  type="checkbox"
-                  hidden-label
-                  @change="updateSetting(true)"
+        }">
+          <CustomDraggable
+            v-model="columnList"
+            @start="drag = true"
+            @end="onDragend"
+            item-key="key"
+            class="column-list"
+            :handle="`.setting-move`"
+            :style="{
+            }"
+          >
+            <template #item="{ element }">
+              <div v-if="!element.isOperations" class="column-item">
+                <div class="flex-row i-ga-xs">
+                  <div>
+                    <CustomInput
+                      v-model="element.isShow"
+                      type="checkbox"
+                      hidden-label
+                      @change="updateSetting(true)"
+                    />
+                  </div>
+                  <div class="text">{{ element.label }}</div>
+                </div>
+
+                <CustomButton
+                  type="info"
+                  icon-name="bars"
+                  text
+                  class="setting-move"
                 />
               </div>
-              <div class="text">{{ element.label }}</div>
-            </div>
+            </template>
+          </CustomDraggable>
+        </div>
 
-            <CustomButton
-              type="info"
-              icon-name="bars"
-              text
-              class="setting-move"
-            />
-          </div>
-        </template>
-
-        <template #footer>
-          <div class="column-reset">
-            <CustomButton
-              :label="$t('returnDefault')"
-              type="info"
-              plain
-              icon-name="repeat"
-              @click="resetSetting"
-            />
-          </div>
-        </template>
-      </CustomDraggable>
-
+        <div class="column-reset">
+          <CustomButton
+            :label="$t('returnDefault')"
+            type="info"
+            plain
+            icon-name="repeat"
+            @click="resetSetting"
+          />
+        </div>
+      </div>
     </CustomPopover>
   </div>
 </template>
