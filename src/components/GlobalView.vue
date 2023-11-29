@@ -11,7 +11,7 @@ import {
   useSlots
 } from 'vue'
 
-import { swal, notification, isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { swal, notification, message, isEmpty, scrollToEl } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 
 // layout
@@ -304,6 +304,7 @@ provide<Hook>('hook', () => {
     },
     swal,
     notification,
+    message,
     permission: (permissionTotal = null) => {
       if (!isEmpty(permissionTotal)) return getPermission(permissionTotal)
 

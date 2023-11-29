@@ -44,6 +44,42 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/TestPage/TestChart3.vue')
       },
       {
+        name: 'test-chart4',
+        title: '測試4',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-chart4',
+        icon: 'chart-simple',
+        component: () => import('@/views/TestPage/TestChart4.vue')
+      },
+      {
+        name: 'test-chart5',
+        title: '測試5',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-chart5',
+        icon: 'chart-line',
+        component: () => import('@/views/TestPage/TestChart5.vue')
+      },
+      {
+        name: 'test-chart6',
+        title: '測試6',
+        meta: {
+          keepAlive: false,
+          status: 'completed'
+        },
+        systemType: ['development', 'test'],
+        path: '/test-chart6',
+        icon: 'square-poll-vertical',
+        component: () => import('@/views/TestPage/TestChart6.vue')
+      },
+      {
         name: 'test-excel',
         title: '測試Excel',
         meta: {

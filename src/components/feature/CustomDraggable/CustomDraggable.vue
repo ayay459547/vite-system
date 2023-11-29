@@ -134,8 +134,8 @@ const emit = defineEmits([
   'update:modelValue'
 ])
 
-// const onUpdate = ($event: any) => emit('update', $event)
-// const onSort = ($event: any) => emit('sort', $event)
+const onUpdate = ($event: any) => emit('update', $event)
+const onSort = ($event: any) => emit('sort', $event)
 // const onFilter = ($event: any) => emit('filter', $event)
 const onStart = ($event: any) => emit('start', $event)
 const onEnd = ($event: any) => emit('end', $event)
@@ -203,6 +203,8 @@ const listValue = computed({
       @unchoose="onUnchoose"
       @clone="onClone"
       @change="onChange"
+      @update="onUpdate"
+      @sort="onSort"
     >
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>

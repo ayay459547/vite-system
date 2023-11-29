@@ -7,7 +7,8 @@ import {
   CustomPopover,
   CustomButton,
   CustomDraggable,
-  CustomInput
+  CustomInput,
+  CustomBadge
 } from '@/components'
 
 const props = defineProps({
@@ -35,6 +36,19 @@ const tempValue = computed({
   set: (value: Sorting[]) => {
     emit('update:modelValue', value)
   }
+})
+
+const activeIndexMap = computed(() => {
+  let index = 1
+  return props.modelValue.reduce((res, curr) => {
+    if (curr.order !== 'none') {
+      res[curr.key] = index
+      index++
+    } else {
+      res[curr.key] = -1
+    }
+    return res
+  }, {})
 })
 
 const setSortingValue = (order: Order, key: string) => {
@@ -109,12 +123,17 @@ const submit = () => {
                   ]"
                 />
 
-                <CustomButton
-                  type="info"
-                  icon-name="bars"
-                  text
-                  class="sorting-move"
-                />
+                <div class="column-item-move">
+                  <CustomBadge :value="activeIndexMap[element.key]" :hidden="activeIndexMap[element.key] <= 0">
+                    <CustomButton
+                      type="info"
+                      icon-name="right-left"
+                      text
+                      class="sorting-move"
+                      style="transform: rotateZ(90deg);"
+                    />
+                  </CustomBadge>
+                </div>
               </div>
             </template>
           </CustomDraggable>
@@ -178,6 +197,10 @@ const submit = () => {
 
     opacity: 0.3;
     transition-duration: 0.3s;
+    font-weight: 600 !important;
+    &-move {
+      width: 80px;
+    }
     &.is-active {
       opacity: 1;
     }

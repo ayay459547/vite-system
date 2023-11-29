@@ -14,8 +14,15 @@ import { getI18nMessages } from '@/i18n'
 
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
-import type { NotificationOptions, NotificationOptionsTyped, NotificationHandle } from 'element-plus'
-import { ElNotification } from 'element-plus'
+import {
+  type NotificationOptions,
+  type NotificationOptionsTyped,
+  type NotificationHandle,
+  ElNotification,
+  type MessageOptions,
+  type MessageHandler,
+  ElMessage
+} from 'element-plus'
 
 import { v4 as uuidv4 } from 'uuid'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
@@ -221,6 +228,21 @@ export const notification = (options: Partial<NotificationOptions>): Notificatio
   } as Partial<NotificationOptionsTyped>
 
   return ElNotification({
+    ...defaultOPtions,
+    ...options
+  })
+}
+
+export const message = (options: MessageOptions): MessageHandler => {
+  const defaultOPtions = {
+    // 'success' | 'warning' | 'info' | 'error' | ''
+    type: 'info',
+    icon: '',
+    message: '',
+    showClose: true
+  } as Partial<MessageOptions>
+
+  return ElMessage({
     ...defaultOPtions,
     ...options
   })

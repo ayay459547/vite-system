@@ -450,7 +450,8 @@ const routes: Array<RouterTree> = [
             title: '選單3-3-4',
             systemType: ['new'],
             path: '/nav3-3-4',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: () => import('@/views/Nav3-3-4/Nav3-3-4.vue'),
+            icon: 'folder-tree'
           }
         ]
       }
