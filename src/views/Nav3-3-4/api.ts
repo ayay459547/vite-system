@@ -50,14 +50,28 @@ export type RowData = {
 }
 
 export type TableData = {
+  id: string
   dateInterval: string
+
   machine: string
   process: string
   productGroup: string
   custProduct: string
   product: string
   reportRestrictedGroup: string
-  compareResults: Array<CompareResult>
+  // compareResults: Array<CompareResult>
+
+  restrictionCategoryName?: string
+  restrictionResourceName?: string
+  restrictionCompareReportsLength?: number
+
+  restrictionName?: string
+  restrictionValue?: string
+  matchingType?: string
+  inputValue?: string
+  compareDetailInsufficient?: string
+  compareDetailExtra?: string
+  discrepancy?: string
 
   version?: string
   showCorrectCompare?: string
@@ -106,7 +120,7 @@ const restrictionCompareReportOrder = [
 ]
 
 // table
-export const getData = async (params: any): Promise<TableData[]> => {
+export const getData = async (params: any): Promise<RowData[]> => {
   const {
     dateOfPlan = [],
     dateVersion = '',
@@ -131,41 +145,7 @@ export const getData = async (params: any): Promise<TableData[]> => {
   const { data, status, msg } = resData
 
   if (status === 'success') {
-    const res = [] as TableData[]
-
-    (data as RowData[]).forEach(row => {
-      const { relatingObjects = [] } = row
-
-      relatingObjects.forEach(relatingObject => {
-        const { dateOfPlan, objectDetails = [] } = relatingObject
-
-        objectDetails.forEach(objectDetail => {
-          const {
-            machineId,
-            productId,
-            processId,
-            limit2CertainTypeOfObj,
-            compareResults = []
-          } = objectDetail
-
-           // 塞入資料
-           res.push({
-            dateInterval: dateOfPlan,
-            machine: machineId,
-            process: processId,
-            productGroup: limit2CertainTypeOfObj.productGroup,
-            custProduct: limit2CertainTypeOfObj.custProduct,
-            product: productId,
-            reportRestrictedGroup: limit2CertainTypeOfObj.resourceScheduleRestrictedGroup,
-            compareResults
-          })
-
-        })
-      })
-
-    })
-
-    return res
+    return data
   } else {
     swal({
       icon: 'error',

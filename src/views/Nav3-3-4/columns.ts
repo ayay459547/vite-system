@@ -11,10 +11,10 @@ export const columnSetting = {
   },
   dateInterval: {
     label: '日期',
-    table: {
-      width: 150,
-      sortable: false
-    },
+    // table: {
+    //   width: 150,
+    //   sortable: false
+    // },
     search: {
       type: 'select',
       default: [],

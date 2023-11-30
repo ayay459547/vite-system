@@ -118,7 +118,8 @@ export type {
   PageChange,
   TableParams,
   LazyLoadingStatus,
-  TableSize
+  TableSize,
+  SpanMethod
 } from './feature/CustomTable/CustomTable.vue'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import { ref, reactive, onMounted, nextTick, computed, inject } from 'vue'
+import { shallowRef, ref, reactive, onMounted, nextTick, computed, inject } from 'vue'
 import {
   type TableData,
   type Search,
@@ -13,16 +13,18 @@ import {
   type DraggableChange,
   CustomDraggable,
   CustomTabs,
+  type SpanMethod,
   TableMain,
   CustomIcon,
   CustomSearch
 } from '@/components'
 
-import { isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils'
 import { columnSetting } from './columns'
 import { getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
 
 import dayjs from '@/lib/lib_day'
+import { Table } from 'element-plus'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
@@ -44,8 +46,17 @@ const dateTabs = ref([
 const isOpen = ref(true)
 
 const options = reactive({
+  // search
   version: [],
-  dateInterval: []
+  dateInterval: [],
+
+  // filter
+  machine: [],
+  process: [],
+  productGroup: [],
+  custProduct: [],
+  product: [],
+  reportRestrictedGroup: []
 })
 
 const getDateIntervalOptions = () => {
@@ -73,45 +84,79 @@ const sortList = ref([
   { id: 'productGroup', value: '產品族' },
   { id: 'reportRestrictedGroup', value: 'Device Group' }
 ])
-const sortMap = ref({
+const sortMap = {
   machine: 0,
   custProduct: 1,
   process: 2,
   product: 3,
   productGroup: 4,
   reportRestrictedGroup: 5,
+
   length: 6
+}
+/**
+ * 欄位資料 prop: { uuid: rowspan }
+ *
+ * 跨欄用資料 示意圖
+ *        c1  c2  c3  c4
+ * uuid1   6   4   3   1
+ * uuid2   0   0   0   1
+ * uuid3   0   0   0   1
+ * uuid4   0   0   1   1
+ * uuid5   0   2   1   1
+ * uuid6   0   0   1   1
+ */
+const spanMethodMap = reactive({
+  machine: {},
+  custProduct: {},
+  process: {},
+  product: {},
+  productGroup: {},
+  reportRestrictedGroup: {},
+
+  restrictionCategoryName: {},
+  restrictionResourceName: {}
 })
-const onSortChange = async (draggable: DraggableChange) => {
-  await nextTick()
-  const { moved } = draggable
+// 欄位資料 prop: uuid
+const spanMethodPoint = {
+  machine: '',
+  custProduct: '',
+  process: '',
+  product: '',
+  productGroup: '',
+  reportRestrictedGroup: '',
+  restrictionCategoryName: '',
+  restrictionResourceName: ''
+}
 
-  if (!isEmpty(moved)) {
-    sortList.value.forEach((element, elementIndex) => {
-      sortMap.value[element.id] = elementIndex
-    })
+const rowSpanMethod: SpanMethod = (data) => {
+  // console.log(data)
+  const { row, column } = data
+  const { property = '' } = column
+  if (isEmpty(spanMethodMap[property])) return
 
-    await nextTick()
-    initShowData()
+  // const rowspan = spanMethodMap[property][row.id] ?? 1
+  return {
+    rowspan: 1,
+    colspan: 1
   }
 }
 
 // table
-const tableData = ref<TableData[]>([])
-const showData = ref([])
+const resData = ref<Record<string, TableData[]>>({})
+const showData = shallowRef<TableData[]>([])
 
 // 資源警示
 const { tableColumns } = getSimpleTableSetting(columnSetting, 'table', '')
-const showColumns = ref([])
+const showColumns = shallowRef([])
 
-const initShowData = async () => {
-  isLoading.value = true
-
+const initShowColumns = async () => {
   await nextTick()
-  const _showColumns = new Array(sortMap.value.length)
+
+  const _showColumns = new Array(sortMap.length)
 
   tableColumns.forEach(column => {
-    const insertIndex = sortMap.value[column?.prop ?? '']
+    const insertIndex = sortMap[column?.prop ?? '']
     if (!isEmpty(insertIndex) && typeof insertIndex === 'number') {
       _showColumns.splice(insertIndex, 1, column)
     } else {
@@ -120,28 +165,203 @@ const initShowData = async () => {
   })
 
   showColumns.value = _showColumns.filter(column => !isEmpty(column))
+}
 
+const initShowData = async () => {
+  showData.value = []
+  await nextTick()
+
+  if (!isEmpty(resData.value[dateTab.value])) {
+    showData.value = resData.value[dateTab.value]
+  }
+
+  // 前8個欄位需要計算 rowspan
+  const columnLength = 8
+  const spanMethodColumns = showColumns.value.slice(0, columnLength)
+
+  // 依據上一筆資料 比對判斷是否切換 uuid
+  const isChangePoint = (_prevRow: TableData | {}, _row: TableData, _spanMethodColumns: any[]) => {
+    return _spanMethodColumns.every(_column => {
+      const { prop: _prop } = _column
+
+      return _prevRow[_prop] === _row[_prop]
+    })
+  }
+
+  let prevRow = {}
+
+  showData.value.forEach((row, rowIndex) => {
+    const {
+      id,
+      restrictionCompareReportsLength = 1
+    } = row
+
+    if (rowIndex > 0) {
+      // 上一筆資料
+      prevRow = showData.value[rowIndex - 1]
+    }
+
+    console.groupCollapsed('spanMethodColumns')
+    // 計算跨欄
+    for (let i = (columnLength - 1); i >= 0; i--) {
+      const column = spanMethodColumns[i]
+      const { prop } = column
+
+      if (isEmpty(spanMethodMap[prop])) continue
+
+      // 跨欄用欄位要存在 && 還未設置 uuid
+      if (isEmpty(spanMethodMap[prop][id])) {
+        spanMethodMap[prop][id] = 0
+      }
+
+      console.log(`${prop} => `, spanMethodColumns.slice(0, i + 1))
+
+      if (isEmpty(prevRow) || isChangePoint(prevRow, row, spanMethodColumns.slice(0, i + 1))) {
+        spanMethodPoint[prop] = id
+      }
+
+      const insetUuid = spanMethodPoint[prop]
+      spanMethodMap[prop][insetUuid] += restrictionCompareReportsLength
+    }
+    console.groupEnd()
+
+  })
+}
+
+const initShowTable = async () => {
+  isLoading.value = true
+
+  await nextTick()
+  setTimeout(() => {
+    initShowColumns()
+  }, 0)
+
+  await nextTick()
+  setTimeout(() => {
+    initShowData()
+  }, 100)
+
+  await nextTick()
   setTimeout(() => {
     isLoading.value = false
   }, 300)
 }
 
-const initData = async () => {
+const onSortChange = async (draggable: DraggableChange) => {
   isLoading.value = true
-  const resData = await getData(getSearch(false))
-  tableData.value = resData
 
   await nextTick()
-  setTimeout(() => {
-    isLoading.value = false
-  }, 500)
+  const { moved } = draggable
+
+  if (!isEmpty(moved)) {
+    setTimeout(() => {
+      sortList.value.forEach((element, elementIndex) => {
+        sortMap[element.id] = elementIndex
+      })
+
+      initShowTable()
+    }, 200)
+  }
+}
+
+const initData = async () => {
+  const _resData = await getData(getSearch(false))
+  _resData.forEach(row => {
+    const { relatingObjects = [] } = row
+
+    relatingObjects.forEach(relatingObject => {
+      const { dateOfPlan, objectDetails = [] } = relatingObject
+
+      // 依照日期切割資料
+      if (isEmpty(resData.value[dateOfPlan]) && !Array.isArray(resData.value[dateOfPlan])) {
+        resData.value[dateOfPlan] = []
+      }
+
+      // 有排序
+      objectDetails.forEach(objectDetail => {
+        const {
+          machineId,
+          productId,
+          processId,
+          limit2CertainTypeOfObj,
+          compareResults = []
+        } = objectDetail
+
+        const { productGroup, custProduct, resourceScheduleRestrictedGroup } = limit2CertainTypeOfObj
+
+        // 無排序
+        compareResults.forEach(compareResult => {
+          const { restrictionCategoryName, restrictionResources = [] } = compareResult
+
+          restrictionResources.forEach(restrictionResource => {
+            const { restrictionResourceName, restrictionCompareReports } = restrictionResource
+            const restrictionCompareReportsLength = restrictionCompareReports.length
+
+            const _data = {
+              id: getUuid(`${dateOfPlan}-${machineId}-${processId}-${productGroup}-${custProduct}-${productId}-${resourceScheduleRestrictedGroup}`),
+              dateInterval: dateOfPlan,
+              machine: machineId,
+              process: processId,
+              productGroup: productGroup,
+              custProduct: custProduct,
+              product: productId,
+              reportRestrictedGroup: resourceScheduleRestrictedGroup,
+
+              restrictionCategoryName,
+              restrictionResourceName,
+              restrictionCompareReportsLength,
+
+              restrictionName: '',
+              restrictionValue: '',
+              matchingType: '',
+              inputValue: '',
+              compareDetailInsufficient: '',
+              compareDetailExtra: '',
+              discrepancy: ''
+            }
+            // 塞入資料
+            if (isEmpty(restrictionCompareReports)) {
+              resData.value[dateOfPlan].push({ ..._data })
+            } else {
+              restrictionCompareReports.forEach(restrictionCompareReport => {
+                const {
+                  restrictionName,
+                  restrictionValue,
+                  matchingType,
+                  inputValue,
+                  compareDetailInsufficient,
+                  compareDetailExtra,
+                  discrepancy
+                } = restrictionCompareReport
+
+                // 塞入資料
+                resData.value[dateOfPlan].push({
+                ..._data,
+
+                  restrictionName,
+                  restrictionValue,
+                  matchingType,
+                  inputValue,
+                  compareDetailInsufficient,
+                  compareDetailExtra,
+                  discrepancy
+                })
+              })
+            }
+          })
+        })
+
+      })
+    })
+  })
 }
 
 const init = async () => {
   options.version = await getVersionOptions()
   options.dateInterval = getDateIntervalOptions()
 
-  initShowData()
+  await nextTick()
+  initShowTable()
 }
 
 // search
@@ -167,22 +387,34 @@ const isSubmitDisabled = computed(() => {
 
 const initTabs = async () => {
   await nextTick()
+  dateTabs.value.splice(0)
+
   search.dateInterval.forEach((date, dateIndex) => {
     if (dateIndex === 0) {
       dateTab.value = date
     }
 
-    dateTabs.value.push({
-      label: date,
-      key: date
-    })
+    dateTabs.value.push({ label: date, key: date })
   })
+
+  // 測試用
+  dateTabs.value.unshift(...[
+    { label: '20231128', key: '20231128' },
+    { label: '20231129', key: '20231129' }
+  ])
+  dateTab.value = '20231128'
 }
 
 const filterSearch = async () => {
   await validateForm().then(async () => {
+    isLoading.value = true
+    await nextTick()
+
     initTabs()
-    initData()
+    await initData()
+
+    await nextTick()
+    initShowTable()
 
   }).catch(errorList => {
     console.log(errorList)
@@ -203,6 +435,18 @@ onMounted(async () => {
   }, 300)
 })
 
+const isShowChange = async () => {
+  isLoading.value = true
+
+  await nextTick()
+  isOpen.value = !isOpen.value
+
+  await nextTick()
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
+}
+
 </script>
 
 <template>
@@ -214,7 +458,7 @@ onMounted(async () => {
         class="feature-btn"
         :class="isOpen ? 'is-open': 'is-close'"
         circle
-        @click="isOpen = !isOpen"
+        @click="isShowChange"
       />
 
       <CustomTabs v-model="tab" :list="tabs" />
@@ -277,11 +521,12 @@ onMounted(async () => {
     </div>
 
     <div class="page-table">
-      <CustomTabs v-model="dateTab" :list="dateTabs" />
+      <CustomTabs v-model="dateTab" :list="dateTabs" @change="initShowTable"/>
 
       <TableMain
-        :show-data="tableData"
+        :show-data="showData"
         :show-columns="showColumns"
+        :span-method="rowSpanMethod"
       >
         <template #header-all="{ label }">
           <label>{{ label }}</label>
@@ -302,6 +547,7 @@ onMounted(async () => {
             v-model="filter[prop]"
             v-model:active="activeFilter[prop]"
             v-bind="filterColumn[prop]"
+            :options="options[prop]"
             search
           />
         </template>
