@@ -183,7 +183,7 @@ export const columnSetting = {
   discrepancy: {
     label: '數量計算後多寡',
     table: {
-      width: 200,
+      minWidth: 200,
       sortable: false
     }
   }

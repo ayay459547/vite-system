@@ -130,16 +130,19 @@ const spanMethodPoint = {
 }
 
 const rowSpanMethod: SpanMethod = (data) => {
-  // console.log(data)
-  const { row, column } = data
-  const { property = '' } = column
-  if (isEmpty(spanMethodMap[property])) return
-
-  // const rowspan = spanMethodMap[property][row.id] ?? 1
   return {
     rowspan: 1,
     colspan: 1
   }
+  // const { row, column } = data
+  // const { property = '' } = column
+  // if (isEmpty(spanMethodMap[property])) return
+
+  // const rowspan = spanMethodMap[property][row.id] ?? 1
+  // return {
+  //   rowspan,
+  //   colspan: 1
+  // }
 }
 
 // table
@@ -181,19 +184,38 @@ const initShowData = async () => {
 
   // 依據上一筆資料 比對判斷是否切換 uuid
   const isChangePoint = (_prevRow: TableData | {}, _row: TableData, _spanMethodColumns: any[]) => {
-    return _spanMethodColumns.every(_column => {
+    return _spanMethodColumns.some(_column => {
       const { prop: _prop } = _column
 
-      return _prevRow[_prop] === _row[_prop]
+      return _prevRow[_prop] !== _row[_prop]
     })
   }
 
-  let prevRow = {}
+  let prevRow = null
+  // 清空欄位計算資料
+  spanMethodMap.machine = {}
+  spanMethodMap.custProduct = {}
+  spanMethodMap.process = {}
+  spanMethodMap.product = {}
+  spanMethodMap.productGroup = {}
+  spanMethodMap.reportRestrictedGroup = {}
+  spanMethodMap.restrictionCategoryName = {}
+  spanMethodMap.restrictionResourceName = {}
+
+  // 清空指針位置
+  spanMethodPoint.machine = ''
+  spanMethodPoint.custProduct = ''
+  spanMethodPoint.process = ''
+  spanMethodPoint.product = ''
+  spanMethodPoint.productGroup = ''
+  spanMethodPoint.reportRestrictedGroup = ''
+  spanMethodPoint.restrictionCategoryName = ''
+  spanMethodPoint.restrictionResourceName = ''
 
   showData.value.forEach((row, rowIndex) => {
     const {
       id,
-      restrictionCompareReportsLength = 1
+      restrictionCompareReportsLength = 0
     } = row
 
     if (rowIndex > 0) {
@@ -201,29 +223,25 @@ const initShowData = async () => {
       prevRow = showData.value[rowIndex - 1]
     }
 
-    console.groupCollapsed('spanMethodColumns')
     // 計算跨欄
     for (let i = (columnLength - 1); i >= 0; i--) {
       const column = spanMethodColumns[i]
       const { prop } = column
 
-      if (isEmpty(spanMethodMap[prop])) continue
+      if ([undefined, null].includes(spanMethodMap[prop])) continue
 
       // 跨欄用欄位要存在 && 還未設置 uuid
       if (isEmpty(spanMethodMap[prop][id])) {
         spanMethodMap[prop][id] = 0
       }
 
-      console.log(`${prop} => `, spanMethodColumns.slice(0, i + 1))
-
-      if (isEmpty(prevRow) || isChangePoint(prevRow, row, spanMethodColumns.slice(0, i + 1))) {
+      if (prevRow === null || isChangePoint(prevRow, row, spanMethodColumns.slice(0, i + 1))) {
         spanMethodPoint[prop] = id
       }
 
       const insetUuid = spanMethodPoint[prop]
       spanMethodMap[prop][insetUuid] += restrictionCompareReportsLength
     }
-    console.groupEnd()
 
   })
 }
@@ -234,17 +252,17 @@ const initShowTable = async () => {
   await nextTick()
   setTimeout(() => {
     initShowColumns()
-  }, 0)
-
-  await nextTick()
-  setTimeout(() => {
-    initShowData()
   }, 100)
 
   await nextTick()
   setTimeout(() => {
-    isLoading.value = false
+    initShowData()
   }, 300)
+
+  await nextTick()
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
 }
 
 const onSortChange = async (draggable: DraggableChange) => {
