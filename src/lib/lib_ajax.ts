@@ -27,7 +27,7 @@ const fakeApi = <ResData>(config: AxiosRequestConfig, options: AjaxOptions<ResDa
   })
 }
 
-const timeout = 1000 * 60 * 5
+const timeout = 1000 * 60 * 30
 const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): PromiseLike<ResData> => {
   const instance = axios.create({
     baseURL: baseUrl,

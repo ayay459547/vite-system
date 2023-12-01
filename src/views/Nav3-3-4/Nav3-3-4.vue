@@ -52,11 +52,32 @@ const options = reactive({
 
   // filter
   machine: [],
-  process: [],
-  productGroup: [],
   custProduct: [],
+  process: [],
   product: [],
+  productGroup: [],
   reportRestrictedGroup: []
+})
+
+// search
+const {
+  columns: searchColumn,
+  forms: search,
+  reset: resetForm,
+  getActiveForms: getSearch,
+  validate: validateForm
+} = getFormSetting<Search>(columnSetting, 'search')
+
+// filter
+const {
+  columns: filterColumn,
+  forms: filter,
+  activeForms: activeFilter,
+  getActiveForms: getFilter
+} = getFormSetting<TableData>(columnSetting, 'filter')
+
+const isSubmitDisabled = computed(() => {
+  return isEmpty(search.version) || isEmpty(search.dateInterval)
 })
 
 const getDateIntervalOptions = () => {
@@ -76,14 +97,16 @@ const getDateIntervalOptions = () => {
   return _options
 }
 
-const sortList = ref([
-  { id: 'machine', value: '機台' },
-  { id: 'custProduct', value: '客戶產品編號' },
-  { id: 'process', value: '製程' },
-  { id: 'product', value: '產品型號' },
-  { id: 'productGroup', value: '產品族' },
-  { id: 'reportRestrictedGroup', value: 'Device Group' }
-])
+// 前六個欄位
+const propList = [
+  { prop: 'machine', value: '機台' },
+  { prop: 'custProduct', value: '客戶產品編號' },
+  { prop: 'process', value: '製程' },
+  { prop: 'product', value: '產品型號' },
+  { prop: 'productGroup', value: '產品族' },
+  { prop: 'reportRestrictedGroup', value: 'Device Group' }
+]
+const sortList = ref([])
 const sortMap = {
   machine: 0,
   custProduct: 1,
@@ -115,7 +138,9 @@ const spanMethodMap = reactive({
   reportRestrictedGroup: {},
 
   restrictionCategoryName: {},
-  restrictionResourceName: {}
+  restrictionResourceName: {},
+
+  restrictionName: {}
 })
 // 欄位資料 prop: uuid
 const spanMethodPoint = {
@@ -126,23 +151,22 @@ const spanMethodPoint = {
   productGroup: '',
   reportRestrictedGroup: '',
   restrictionCategoryName: '',
-  restrictionResourceName: ''
+  restrictionResourceName: '',
+
+  restrictionName: ''
 }
 
 const rowSpanMethod: SpanMethod = (data) => {
+  // console.log(data)
+  const { row, column } = data
+  const { property = '' } = column
+  if (isEmpty(spanMethodMap[property])) return
+
+  const rowspan = spanMethodMap[property][row.id] ?? 1
   return {
-    rowspan: 1,
+    rowspan,
     colspan: 1
   }
-  // const { row, column } = data
-  // const { property = '' } = column
-  // if (isEmpty(spanMethodMap[property])) return
-
-  // const rowspan = spanMethodMap[property][row.id] ?? 1
-  // return {
-  //   rowspan,
-  //   colspan: 1
-  // }
 }
 
 // table
@@ -171,12 +195,8 @@ const initShowColumns = async () => {
 }
 
 const initShowData = async () => {
-  showData.value = []
+  let _showData = []
   await nextTick()
-
-  if (!isEmpty(resData.value[dateTab.value])) {
-    showData.value = resData.value[dateTab.value]
-  }
 
   // 前8個欄位需要計算 rowspan
   const columnLength = 8
@@ -191,59 +211,91 @@ const initShowData = async () => {
     })
   }
 
-  let prevRow = null
+  let prevRow = {}
+
+  // 針對前六個欄位
+  propList.forEach(propItem => {
+    const { prop } = propItem
+    spanMethodMap[prop] = {}
+
+    spanMethodPoint[prop] = ''
+
+    options[prop].splice(0)
+  })
   // 清空欄位計算資料
-  spanMethodMap.machine = {}
-  spanMethodMap.custProduct = {}
-  spanMethodMap.process = {}
-  spanMethodMap.product = {}
-  spanMethodMap.productGroup = {}
-  spanMethodMap.reportRestrictedGroup = {}
   spanMethodMap.restrictionCategoryName = {}
   spanMethodMap.restrictionResourceName = {}
 
+  spanMethodMap.restrictionName = {}
   // 清空指針位置
-  spanMethodPoint.machine = ''
-  spanMethodPoint.custProduct = ''
-  spanMethodPoint.process = ''
-  spanMethodPoint.product = ''
-  spanMethodPoint.productGroup = ''
-  spanMethodPoint.reportRestrictedGroup = ''
   spanMethodPoint.restrictionCategoryName = ''
   spanMethodPoint.restrictionResourceName = ''
 
-  showData.value.forEach((row, rowIndex) => {
-    const {
-      id,
-      restrictionCompareReportsLength = 0
-    } = row
+  spanMethodPoint.restrictionName = ''
 
-    if (rowIndex > 0) {
-      // 上一筆資料
-      prevRow = showData.value[rowIndex - 1]
-    }
+  const filterSet = new Set()
+  const filter = getFilter(false)
 
-    // 計算跨欄
-    for (let i = (columnLength - 1); i >= 0; i--) {
-      const column = spanMethodColumns[i]
-      const { prop } = column
+  if (!isEmpty(resData.value[dateTab.value])) {
+    _showData = resData.value[dateTab.value].reduce((res, row) => {
+      const {
+        id
+        // restrictionCompareReportsLength = 0
+      } = row
 
-      if ([undefined, null].includes(spanMethodMap[prop])) continue
+      // 是否顯示
+      let isShow = true
 
-      // 跨欄用欄位要存在 && 還未設置 uuid
-      if (isEmpty(spanMethodMap[prop][id])) {
-        spanMethodMap[prop][id] = 0
+      // 計算跨欄
+      for (let i = (columnLength - 1); i >= 0; i--) {
+        const column = spanMethodColumns[i]
+        const { prop } = column
+
+        if ([undefined, null].includes(spanMethodMap[prop])) continue
+
+        // 跨欄用欄位要存在 && 還未設置 uuid
+        if (isEmpty(spanMethodMap[prop][id])) {
+          spanMethodMap[prop][id] = 0
+        }
+
+        if (isEmpty(prevRow) || isChangePoint(prevRow, row, spanMethodColumns.slice(0, i + 1))) {
+          spanMethodPoint[prop] = id
+
+          // 設定過濾選項
+          if (!filterSet.has(row[prop]) && Array.isArray(options[prop])) {
+            filterSet.add(row[prop])
+
+            options[prop].push({
+              label: row[prop],
+              value: row[prop]
+            })
+          }
+        }
+
+        // 有過濾資料 && 不包含
+        if (!isEmpty(filter[prop]) && !filter[prop].includes(row[prop])) {
+          isShow = false
+          spanMethodPoint[prop] = id
+        }
+
+        const insetUuid = spanMethodPoint[prop]
+        spanMethodMap[prop][insetUuid] += 1
+
+        // 觀察用
+        spanMethodMap['restrictionName'][id] = 1
       }
 
-      if (prevRow === null || isChangePoint(prevRow, row, spanMethodColumns.slice(0, i + 1))) {
-        spanMethodPoint[prop] = id
+      if (isShow) {
+        res.push(row)
+        // 上一筆資料
+        prevRow = row
       }
 
-      const insetUuid = spanMethodPoint[prop]
-      spanMethodMap[prop][insetUuid] += restrictionCompareReportsLength
-    }
+      return res
+    }, [])
+  }
 
-  })
+  showData.value = _showData
 }
 
 const initShowTable = async () => {
@@ -252,17 +304,17 @@ const initShowTable = async () => {
   await nextTick()
   setTimeout(() => {
     initShowColumns()
-  }, 100)
+  }, 0)
 
   await nextTick()
   setTimeout(() => {
     initShowData()
-  }, 300)
+  }, 100)
 
   await nextTick()
   setTimeout(() => {
     isLoading.value = false
-  }, 500)
+  }, 300)
 }
 
 const onSortChange = async (draggable: DraggableChange) => {
@@ -282,6 +334,7 @@ const onSortChange = async (draggable: DraggableChange) => {
   }
 }
 
+// 初始化顯示用資料
 const initData = async () => {
   const _resData = await getData(getSearch(false))
   _resData.forEach(row => {
@@ -354,8 +407,9 @@ const initData = async () => {
 
                 // 塞入資料
                 resData.value[dateOfPlan].push({
-                ..._data,
+                  ..._data,
 
+                  id: getUuid(`${dateOfPlan}-${machineId}-${processId}-${productGroup}-${custProduct}-${productId}-${resourceScheduleRestrictedGroup}`),
                   restrictionName,
                   restrictionValue,
                   matchingType,
@@ -378,30 +432,15 @@ const init = async () => {
   options.version = await getVersionOptions()
   options.dateInterval = getDateIntervalOptions()
 
+  sortList.value.splice(0)
   await nextTick()
   initShowTable()
+
+  propList.forEach(propItem => {
+    const { prop, value } = propItem
+    sortList.value.push({ id: prop, value })
+  })
 }
-
-// search
-const {
-  columns: searchColumn,
-  forms: search,
-  reset: resetForm,
-  getActiveForms: getSearch,
-  validate: validateForm
-} = getFormSetting<Search>(columnSetting, 'search')
-
-// filter
-const {
-  columns: filterColumn,
-  forms: filter,
-  activeForms: activeFilter
-  // getActiveForms: getFilter
-} = getFormSetting<TableData>(columnSetting, 'filter')
-
-const isSubmitDisabled = computed(() => {
-  return isEmpty(search.version) || isEmpty(search.dateInterval)
-})
 
 const initTabs = async () => {
   await nextTick()
@@ -542,6 +581,7 @@ const isShowChange = async () => {
       <CustomTabs v-model="dateTab" :list="dateTabs" @change="initShowTable"/>
 
       <TableMain
+        class="page-table"
         :show-data="showData"
         :show-columns="showColumns"
         :span-method="rowSpanMethod"
@@ -561,13 +601,34 @@ const isShowChange = async () => {
           :key="key"
           #[`header-${key}`]="{ prop }"
         >
-          <CustomSearch
-            v-model="filter[prop]"
-            v-model:active="activeFilter[prop]"
-            v-bind="filterColumn[prop]"
-            :options="options[prop]"
-            search
-          />
+          <div class="i-py-xxs">
+            <CustomSearch
+              v-model="filter[prop]"
+              v-model:active="activeFilter[prop]"
+              v-bind="filterColumn[prop]"
+              :options="options[prop]"
+              search
+              @blur="initShowTable"
+            />
+          </div>
+        </template>
+
+        <template
+          v-for="key in [
+            'machine',
+            'process',
+            'productGroup',
+            'custProduct',
+            'product',
+            'reportRestrictedGroup',
+            'restrictionCategoryName',
+            'restrictionResourceName',
+            'restrictionName'
+          ]"
+          :key="key"
+          #[`column-${key}`]="{ row, prop }"
+        >
+          <div>{{ `${row[prop]}(${spanMethodMap[prop][row.id]})` }}</div>
         </template>
       </TableMain>
     </div>
@@ -578,6 +639,13 @@ const isShowChange = async () => {
 $feature-width: 270px;
 $bg-color: #ecf5ff;
 
+:deep(.page-table) {
+  .cell {
+    position: sticky;
+    bottom: 30px;
+    top: 30px
+  }
+}
 .page {
   &-wrapper {
     width: 100%;

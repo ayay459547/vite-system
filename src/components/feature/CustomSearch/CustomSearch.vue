@@ -7,7 +7,7 @@ import {
   CustomBadge
 } from '@/components'
 import type { InputType, Options } from '@/components'
-import { computed, nextTick, type PropType } from 'vue'
+import { computed, nextTick, ref, type PropType } from 'vue'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 type ModelValue = any
@@ -104,7 +104,10 @@ const emit = defineEmits([
   'update:modelValue',
   'update:active',
   'change',
-  'clear'
+  'blur',
+  'clear',
+  'open',
+  'close'
 ])
 
 const inpuValue = computed({
@@ -125,6 +128,16 @@ const isActive = computed({
     emit('update:active', value)
   }
 })
+
+const isVisible = ref(false)
+const onVisibleClick = (_isVisible: boolean) => {
+  if (_isVisible) {
+    emit('open')
+  } else {
+    emit('close')
+  }
+  isVisible.value = _isVisible
+}
 
 const isDot = computed(() => {
   return !isEmpty(inpuValue.value) && isActive.value
@@ -170,8 +183,8 @@ defineExpose({
         <label>{{ props.label }}</label>
 
         <CustomPopover
-          :width="250"
-          trigger="click"
+          :visible="isVisible"
+          :width="350"
           placement="top"
         >
           <div>
@@ -185,10 +198,11 @@ defineExpose({
               v-bind="bindAttributes"
               @clear="emit('clear')"
               @change="emit('change', inpuValue)"
+              @blur="emit('blur')"
             />
           </div>
           <template #reference>
-            <div>
+            <div @click="onVisibleClick(!isVisible)">
               <CustomBadge v-if="isDot" is-dot>
                 <CustomButton
                   icon-name="magnifying-glass"
@@ -219,6 +233,7 @@ defineExpose({
         v-bind="bindAttributes"
         @clear="emit('clear')"
         @change="emit('change', inpuValue)"
+        @blur="emit('blur')"
       />
     </template>
   </div>

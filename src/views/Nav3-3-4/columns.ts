@@ -49,7 +49,7 @@ export const columnSetting = {
     }
   },
   custProduct: {
-    label: '客戶產品編號',
+    label: '客戶產品',
     table: {
       width: 200,
       sortable: false
@@ -93,7 +93,7 @@ export const columnSetting = {
     }
   },
   productGroup: {
-    label: '產品族',
+    label: '產品類',
     table: {
       width: 200,
       sortable: false
@@ -108,7 +108,7 @@ export const columnSetting = {
     }
   },
   reportRestrictedGroup: {
-    label: 'Device Group',
+    label: '裝置類',
     table: {
       width: 200,
       sortable: false
@@ -131,7 +131,7 @@ export const columnSetting = {
     }
   },
   restrictionResourceName: {
-    label: '配置資源/實體資源',
+    label: '配置資源',
     table: {
       width: 250,
       sortable: false
