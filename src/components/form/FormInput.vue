@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, ref } from 'vue'
+import { computed, useSlots, ref, onMounted } from 'vue'
 import { ElInput } from 'element-plus'
-import { isEmpty, notification, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, round, hasOwnProperty } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 
@@ -15,9 +15,22 @@ const props = defineProps({
     type: String as PropType<string>,
     default: ''
   },
+  // 數字
   onlyNumber: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  round: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
+  },
+  max: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
+  },
+  min: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
   },
   // element ui plus
   clearable: {
@@ -69,43 +82,61 @@ const emit = defineEmits([
   'click'
 ])
 
+let lastValue: any = ''
 const onEvent = {
   focus: (e: FocusEvent): void => emit('focus', e),
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => emit('blur', e),
   change: (value: string | number): void => {
     let _value = value
-    // 檢查數字
-    const regexp = /^(-?\d+|\d+)(\.?\d+|d*)$/g
-    if (
-      !isEmpty(_value) &&
-      props.onlyNumber &&
-      typeof _value === 'string' &&
-      !regexp.test(_value)
-    ) {
-      _value = ''
-      notification({
-        type: 'warning',
-        title: `${value} 不為數字`,
-        duration: 3000
-      })
+
+    // 數字
+    if (props.onlyNumber) {
+      // 轉化數字
+      if (typeof _value === 'string') {
+        _value = Number.parseFloat(_value)
+
+        // 不是數字 給最後一次的值
+        if (Number.isNaN(_value)) {
+          _value = lastValue
+        }
+      }
+
+      if (typeof _value === 'number') {
+        // 取小數點到第幾位
+        if (!isEmpty(props.round)) {
+          _value = round(_value, props.round)
+        }
+
+        // 最大值
+        if (!isEmpty(props.max) && _value > props.max) {
+          _value = props.max
+        }
+        // 最小值
+        if (!isEmpty(props.min) && _value < props.min) {
+          _value = props.min
+        }
+      }
     }
+
+    // 去前後空白
+    if (typeof _value === 'string') {
+      _value = _value.replace(/^(\s+)|(\s+)$/g, '')
+    }
+
     emit('change', _value)
+    if (lastValue !== _value) {
+      lastValue = _value
+    }
   },
   input: (value: string | number): void => {
     emit('input', value)
-
-    setTimeout(() => {
-      let _value = value
-      // 去前後空白
-      if (typeof _value === 'string') {
-        _value = _value.replace(/^(\s+)|(\s+)$/g, '')
-      }
-
-      emit('update:modelValue', _value)
-    }, 0)
   }
 }
+
+onMounted(() => {
+  lastValue = props.modelValue
+})
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'

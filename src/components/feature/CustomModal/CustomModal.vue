@@ -119,7 +119,7 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
-const openModal = () => {
+const openModal = async () => {
   wrapperIsShow.value = true
 
   if (props.draggable) {
@@ -129,17 +129,22 @@ const openModal = () => {
 
   setTimeout(() => {
     containerIsShow.value = true
-  }, 100)
+  }, 10)
 
   // 等過場動畫結束
-  setTimeout(async () => {
-    await nextTick()
-    if (props.draggable) {
+  await nextTick()
+  if (props.draggable) {
+    setTimeout(() => {
       resetRect()
-      resetMove()
-      isFinishInit.value = true
-    }
-  }, 400)
+    }, 400)
+
+    setTimeout(async () => {
+        resetMove()
+
+        await nextTick()
+        isFinishInit.value = true
+    }, 500)
+  }
 }
 
 const closeModal = () => {

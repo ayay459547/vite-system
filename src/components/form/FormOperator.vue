@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, customRef, useSlots } from 'vue'
+import { computed, customRef, useSlots, onMounted } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, round, hasOwnProperty } from '@/lib/lib_utils'
 import type { Options } from '@/components'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
@@ -18,9 +18,22 @@ const props = defineProps({
     type: String as PropType<string>,
     default: ''
   },
+  // 數字
   onlyNumber: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  round: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
+  },
+  max: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
+  },
+  min: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
   },
   // element ui plus
   clearable: {
@@ -94,36 +107,71 @@ const selectValue = computed({
 const inputValue = computed({
   get: () => props.modelValue[1],
   set: (value: OperatorValue) => {
-    let _value = value
-    // 去前後空白
-    if (typeof _value === 'string') {
-      _value = _value.replace(/^(\s+)|(\s+)$/g, '')
-    }
-    // 轉數字
-    if (props.onlyNumber && typeof _value === 'string') {
-      const regexp = /[\D]/g
-      _value = _value.replace(regexp, '')
-    }
-
     tempValue.value = [
       props.modelValue[0],
-      _value
+      value
     ]
   }
 })
 
+let lastValue: any = ''
 const onChange = async (value: any, type: string) => {
-  const emitValue = [...props.modelValue]
+  const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
+
+  let emitValue = null
   switch (type) {
     case 'select':
-      emitValue[0] = value
+      emitValue = [value, _inputValue]
       break
-    case 'input':
-      emitValue[1] = value
+    case 'input': {
+        let _value = value
+        // 數字
+        if (props.onlyNumber) {
+          // 轉化數字
+          if (typeof _value === 'string') {
+            _value = Number.parseFloat(_value)
+
+            // 不是數字 給最後一次的值
+            if (Number.isNaN(_value)) {
+              _value = lastValue
+            }
+          }
+
+          if (typeof _value === 'number') {
+            // 取小數點到第幾位
+            if (!isEmpty(props.round)) {
+              _value = round(_value, props.round)
+            }
+
+            // 最大值
+            if (!isEmpty(props.max) && _value > props.max) {
+              _value = props.max
+            }
+            // 最小值
+            if (!isEmpty(props.min) && _value < props.min) {
+              _value = props.min
+            }
+          }
+        }
+
+        // 去前後空白
+        if (typeof _value === 'string') {
+          _value = _value.replace(/^(\s+)|(\s+)$/g, '')
+        }
+
+        emitValue = [_selectValue, _value]
+      }
       break
   }
+
+  console.log('emitValue => ', emitValue)
+  tempValue.value = emitValue
   emit('change', emitValue)
 }
+
+onMounted(() => {
+  lastValue = props.modelValue[1]
+})
 
 // slot
 const slots = useSlots()

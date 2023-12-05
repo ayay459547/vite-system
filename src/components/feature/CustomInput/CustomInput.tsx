@@ -423,6 +423,9 @@ const CustomInput = defineComponent({
               { ...bindAttributes.value }
               type={props.type}
               onlyNumber={props.onlyNumber}
+              round={props.round}
+              max={props.max}
+              min={props.min}
               errorMessage={errorMessage.value}
               // v-on 接收事件
               onFocus={ (e: any) => onEvent.value.onFocus(e) }
@@ -454,6 +457,9 @@ const CustomInput = defineComponent({
                 { ...bindAttributes.value }
                 type={props.type}
                 onlyNumber={props.onlyNumber}
+                round={props.round}
+                max={props.max}
+                min={props.min}
                 errorMessage={errorMessage.value}
                 // v-on 接收事件
                 onFocus={ (e: any) => onEvent.value.onFocus(e) }
@@ -615,6 +621,9 @@ const CustomInput = defineComponent({
               { ...bindAttributes.value }
               options={props.options}
               onlyNumber={props.onlyNumber}
+              round={props.round}
+              max={props.max}
+              min={props.min}
               errorMessage={errorMessage.value}
               // v-on 接收事件
               onClear={ () => onEvent.value.onClear() }

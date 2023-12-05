@@ -74,6 +74,33 @@ export const custom = {
     default: false,
     description: '是否只能輸入數字'
   },
+  round: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      取小數點到第幾位
+    `
+  },
+  max: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      最大值
+    `
+  },
+  min: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      最小值
+    `
+  },
   required: {
     type: Boolean as PropType<boolean>,
     required: false,
