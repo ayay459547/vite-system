@@ -6,9 +6,13 @@ import {
   CustomButton,
   CustomBadge
 } from '@/components'
+
 import type { InputType, Options } from '@/components'
-import { computed, nextTick, ref, type PropType } from 'vue'
+import { type PropType, computed, nextTick } from 'vue'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
+
+import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
+import { storeToRefs } from 'pinia'
 
 type ModelValue = any
 const props = defineProps({
@@ -23,6 +27,12 @@ const props = defineProps({
     description: `是否啟用
       是: 拿到顯示的值
       否: 拿到 null `
+  },
+  width: {
+    type: [String, Number] as PropType<string | number>,
+    required: false,
+    default: 300,
+    description: '寬度'
   },
   search: {
     type: Boolean as PropType<boolean>,
@@ -97,6 +107,39 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: 'YYYY-MM-DD'
+  },
+  onlyNumber: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否只能輸入數字'
+  },
+  round: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      取小數點到第幾位
+    `
+  },
+  max: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      最大值
+    `
+  },
+  min: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      最小值
+    `
   }
 })
 
@@ -118,18 +161,54 @@ const inpuValue = computed({
     emit('update:modelValue', value)
   }
 })
+const onInputChange = (inpuValue: ModelValue) => {
+  onVisibleClick(false)
+  emit('change', inpuValue)
+}
 
 const isActive = computed({
   get () {
     return props.active
   },
   set (value: boolean) {
+    onVisibleClick(false)
     emit('change', inpuValue.value)
     emit('update:active', value)
   }
 })
 
-const isVisible = ref(false)
+const scopedId = `__search__${getUuid()}`
+
+const customSearchStore = useCustomSearchStore()
+const { activeScopedId } = storeToRefs(customSearchStore)
+
+const resizeEvent = () => {
+  onVisibleClick(false)
+}
+const openListenerSize = () => {
+  window.addEventListener('resize', resizeEvent, { once: true })
+}
+
+const isVisible = computed({
+  get () {
+    const _isVisible = scopedId === activeScopedId.value
+    if (_isVisible) {
+      openListenerSize()
+    } else {
+      window.removeEventListener('resize', resizeEvent )
+    }
+
+    return _isVisible
+  },
+  set (v: boolean) {
+    if (v) {
+      customSearchStore.setActiveScopedId(scopedId)
+    } else {
+      customSearchStore.clearActiveScopedId()
+    }
+  }
+})
+
 const onVisibleClick = (_isVisible: boolean) => {
   if (_isVisible) {
     emit('open')
@@ -157,11 +236,13 @@ const bindAttributes = computed(() => {
     format: props.format,
     valueFormat: props.valueFormat,
     disabled: !isActive.value,
-    hiddenLabel: true
+    hiddenLabel: true,
+    onlyNumber: props.onlyNumber,
+    round: props.round,
+    max: props.max,
+    min: props.min
   }
 })
-
-const scopedId = getUuid()
 
 defineExpose({
   async validate () {
@@ -169,14 +250,14 @@ defineExpose({
     return { valid: true }
   },
   getDom () {
-    return document.querySelector(`.__search__${scopedId}`)
+    return document.querySelector(`.${scopedId}`)
   }
 })
 
 </script>
 
 <template>
-  <div class="search" :class="`__search__${scopedId}`">
+  <div class="search" :class="`${scopedId}`">
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="search-title">
@@ -184,7 +265,7 @@ defineExpose({
 
         <CustomPopover
           :visible="isVisible"
-          :width="350"
+          :width="props.width"
           placement="top"
         >
           <div>
@@ -197,8 +278,8 @@ defineExpose({
               v-model="inpuValue"
               v-bind="bindAttributes"
               @clear="emit('clear')"
-              @change="emit('change', inpuValue)"
               @blur="emit('blur')"
+              @change="onInputChange"
             />
           </div>
           <template #reference>
@@ -232,8 +313,8 @@ defineExpose({
         v-model="inpuValue"
         v-bind="bindAttributes"
         @clear="emit('clear')"
-        @change="emit('change', inpuValue)"
         @blur="emit('blur')"
+        @change="onInputChange"
       />
     </template>
   </div>

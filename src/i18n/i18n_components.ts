@@ -161,5 +161,11 @@ export default {
     zhTw: '文件',
     zhCn: '文件',
     en: 'File'
+  },
+  // CustomModal
+  closeAll: {
+    zhTw: '全部關閉',
+    zhCn: '全部关闭',
+    en: 'Close All'
   }
 } as LangMap

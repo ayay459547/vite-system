@@ -12,9 +12,13 @@ import {
   reactive,
   nextTick
 } from 'vue'
-import { CustomButton, CustomIcon } from '@/components'
+
+import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
 import { useBoundingClientRect, getUuid } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
+
+import { useCustomModalStore } from '@/stores/stores_CustomModal'
+import { storeToRefs } from 'pinia'
 
 export type WidthSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
 export type HeightSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
@@ -110,14 +114,41 @@ const emit = defineEmits([
   'submit'
 ])
 
-const scopedId = getUuid()
-const wrapperIsShow = ref(false)
-const containerIsShow = ref(false)
+const scopedId = `__modal__${getUuid()}`
 
 const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
+
+const minModalIndex = 2005
+
+// 正在使用中的 modal 會被至頂
+// 如果有多個 modal 可以一次關閉全部
+const customModalStore = useCustomModalStore()
+const { modalIndexMap, modalCount, modalMax } = storeToRefs(customModalStore)
+const modalCurrentIndex = computed(() => {
+  const tempIndex = modalIndexMap?.value[scopedId] ?? 0
+  return tempIndex + minModalIndex
+})
+const setModalIndex = () => {
+  customModalStore.setModalIndex(scopedId)
+}
+const removeModalIndex = () => {
+  customModalStore.removeModalIndex(scopedId)
+}
+
+const isCloseAllModal = computed(() => {
+  if (tempValue.value && modalMax.value <= 0) {
+    close()
+  }
+
+  return modalCount.value > 1
+})
+
+
+const wrapperIsShow = ref(false)
+const containerIsShow = ref(false)
 
 const openModal = async () => {
   wrapperIsShow.value = true
@@ -139,10 +170,10 @@ const openModal = async () => {
     }, 400)
 
     setTimeout(async () => {
-        resetMove()
+      resetMove()
 
-        await nextTick()
-        isFinishInit.value = true
+      await nextTick()
+      isFinishInit.value = true
     }, 500)
   }
 }
@@ -414,6 +445,7 @@ const mouseupEvent = () => {
   }, 1000)
 }
 
+// 新增拖拉用事件
 const addEvent = ($event: MouseEvent) => {
   if (!props.draggable) return
   resetRect()
@@ -446,10 +478,19 @@ onMounted(() => {
   scope.run(() => {
     watch(tempValue, (newValue) => {
       if (newValue) {
-        openModal()
+        setModalIndex()
+
+        setTimeout(() => {
+          openModal()
+        }, 0)
+
       } else {
+        removeModalIndex()
         removeEvent()
-        closeModal()
+
+        setTimeout(() => {
+          closeModal()
+        }, 0)
       }
     })
   })
@@ -465,8 +506,14 @@ onUnmounted(() => {
   <div
     v-show="wrapperIsShow"
     class="modal-mask"
-    :class="containerIsShow ? 'is-show': 'is-close'"
-    :style="props.modal ? 'display: block;' : 'display: contents;'"
+    :class="[
+      `${scopedId}`,
+      containerIsShow ? 'is-show': 'is-close'
+    ]"
+    :style="`
+      ${props.modal ? 'display: block;' : 'display: contents;'}
+      z-index: ${modalCurrentIndex};
+    `"
   >
     <div
       class="modal-wrapper"
@@ -478,7 +525,9 @@ onUnmounted(() => {
         transform: translateX(${transform.x}) translateY(${transform.y});
         ${wrapperStyle};
         ${bindStyle};
+        z-index: ${modalCurrentIndex};
       `"
+      @mousedown="setModalIndex"
       v-click-outside="clickOutside"
     >
       <Transition name="modal">
@@ -486,7 +535,6 @@ onUnmounted(() => {
           ref="containerRef"
           v-show="containerIsShow"
           class="modal-container"
-          :class="`__modal__${scopedId}`"
         >
           <div class="modal-header">
             <div
@@ -504,7 +552,29 @@ onUnmounted(() => {
               <h3>{{ props.title }}</h3>
             </slot>
 
+            <!-- 關閉全部 -->
+            <CustomTooltip
+              v-show="isCloseAllModal"
+              trigger="hover"
+              placement="top"
+            >
+              <CustomButton
+                icon-name="close"
+                text
+                @click="close"
+              />
+              <template #content>
+                <CustomButton
+                  :label="i18nTranslate('closeAll')"
+                  type="danger"
+                  icon-name="close"
+                  @click="customModalStore.clearModal"
+                />
+              </template>
+            </CustomTooltip>
+            <!-- 關閉單個 -->
             <CustomButton
+              v-show="!isCloseAllModal"
               icon-name="close"
               text
               @click="close"
@@ -564,7 +634,6 @@ onUnmounted(() => {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: $modal-index;
     left: 0;
     top: 0;
     transform: none;
@@ -580,7 +649,6 @@ onUnmounted(() => {
 
   &-wrapper {
     position: fixed;
-    z-index: $modal-index;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);

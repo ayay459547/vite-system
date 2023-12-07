@@ -58,11 +58,11 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
-const scopedId = getUuid()
+const scopedId = `__tabs__${getUuid()}`
 const scrollToCurrentTab = (currentTab: string) => {
   if (!props.move) return
 
-  const el = document.querySelector(`.__tabs__${scopedId} .__tab_${currentTab}`)
+  const el = document.querySelector(`.${scopedId} .__tab_${currentTab}`)
   if (el) {
     setTimeout(() => {
       scrollToEl(el, {
@@ -171,11 +171,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="wrapRef" class="tabs-wrapper" :class="{ 'is-background': props.background }">
+  <div
+    ref="wrapRef"
+    class="tabs-wrapper"
+    :class="[
+      { 'is-background': props.background },
+      `${scopedId}`
+    ]">
     <div class="tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>
     </div>
-    <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }" :class="`__tabs__${scopedId}`">
+    <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }">
       <div ref="listRef" class="tabs-list" :class="{ 'is-background': props.background }">
         <div
           v-for="element in props.list"

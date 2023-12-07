@@ -10,6 +10,8 @@ import { ref} from 'vue'
 const isShow = ref(false)
 
 const modalIsShow = ref(false)
+const modalIsShow2 = ref(false)
+const modalIsShow3 = ref(false)
 
 </script>
 
@@ -19,53 +21,108 @@ const modalIsShow = ref(false)
 
     <CustomDivider />
 
-    <CustomButton
-      type="success"
-      label="打開 Dialog"
-      class="i-my-sm"
-      @click="isShow = true"
-    />
+    <div class="flex-row i-ga-md">
+      <CustomButton
+        type="success"
+        label="打開 Dialog"
+        class="i-my-sm"
+        @click="isShow = true"
+      />
 
-    <CustomButton
-      type="warning"
-      label="關閉 Dialog"
-      class="i-my-sm"
-      @click="isShow = false"
-    />
+      <CustomButton
+        type="warning"
+        label="關閉 Dialog"
+        class="i-my-sm"
+        @click="isShow = false"
+      />
 
-    <CustomDialog
-      v-model="isShow"
-      draggable
-      modal
-    >
-      <h3>測試 CustomDialog</h3>
-    </CustomDialog>
+      <CustomDialog
+        v-model="isShow"
+        draggable
+        modal
+      >
+        <h3>測試 CustomDialog</h3>
+      </CustomDialog>
+    </div>
 
 
     <CustomDivider />
 
-    <CustomButton
-      type="primary"
-      label="打開 Modal"
-      class="i-my-sm"
-      @click="modalIsShow = true"
-    />
+    <div class="flex-row i-ga-md">
+      <CustomButton
+        type="primary"
+        label="打開 Modal"
+        class="i-my-sm"
+        @click="modalIsShow = true"
+      />
 
-    <CustomButton
-      type="warning"
-      label="關閉 Modal"
-      class="i-my-sm"
-      @click="modalIsShow = false"
-    />
+      <CustomButton
+        type="warning"
+        label="關閉 Modal"
+        class="i-my-sm"
+        @click="modalIsShow = false"
+      />
 
-    <CustomModal
-      v-model="modalIsShow"
-      :modal="false"
-      draggable
-      width-size="extraSmall"
-    >
-      <h3>測試 CustomModal 拖拉 draggable</h3>
-    </CustomModal>
+      <CustomModal
+        v-model="modalIsShow"
+        :modal="false"
+        draggable
+      >
+        <h3>測試 CustomModal 拖拉 draggable</h3>
+      </CustomModal>
+    </div>
+
+    <div class="flex-row i-ga-md">
+      <CustomButton
+        type="primary"
+        label="打開 Modal2"
+        class="i-my-sm"
+        @click="modalIsShow2 = true"
+      />
+
+      <CustomButton
+        type="warning"
+        label="關閉 Modal2"
+        class="i-my-sm"
+        @click="modalIsShow2 = false"
+      />
+
+      <CustomModal
+        v-model="modalIsShow2"
+        :modal="false"
+        draggable
+        width-size="small"
+        height-size="small"
+      >
+        <h3>測試 CustomModal2 拖拉 draggable</h3>
+      </CustomModal>
+    </div>
+
+    <div class="flex-row i-ga-md">
+      <CustomButton
+        type="primary"
+        label="打開 Modal3"
+        class="i-my-sm"
+        @click="modalIsShow3 = true"
+      />
+
+      <CustomButton
+        type="warning"
+        label="關閉 Modal3"
+        class="i-my-sm"
+        @click="modalIsShow3 = false"
+      />
+
+      <CustomModal
+        v-model="modalIsShow3"
+        :modal="false"
+        draggable
+        width-size="extraSmall"
+        height-size="extraSmall"
+      >
+        <h3>測試 CustomModal3 拖拉 draggable</h3>
+      </CustomModal>
+    </div>
   </div>
 </template>
 

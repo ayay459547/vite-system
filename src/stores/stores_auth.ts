@@ -1,8 +1,8 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { shallowRef, computed, shallowReactive } from 'vue'
-import type { AuthData, PermissionData } from './stores_api'
-import { getAuthData, getRoutesPermission } from './stores_api'
+import type { AuthData, PermissionData } from './api'
+import { getAuthData, getRoutesPermission } from './api'
 import { permission } from '@/lib/lib_permission'
 
 import { getRouterLeafLayer } from '@/lib/lib_routes'
