@@ -15,14 +15,14 @@ import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'
 import { columnSetting } from './columns'
 
-import message from './i18n'
+import i18nMessage from './i18n'
 
 import DetailModal from './Components/DetailModal.vue'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
 
-const { i18nTranslate: pageTranslate } = usePageI18n(message)
+const { i18nTranslate: pageTranslate } = usePageI18n(i18nMessage)
 
 // table
 const tableData = ref<TableData[]>([])

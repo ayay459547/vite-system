@@ -12,7 +12,7 @@ import {
   CustomSearch
 } from '@/components'
 
-import message from './i18n'
+import i18nMessage from './i18n'
 
 import { deepClone, usePageI18n } from '@/lib/lib_utils'
 import { getTableSetting, getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
@@ -31,7 +31,7 @@ import { getPermission } from '@/lib/lib_permission'
 
 const hook: Hook = inject('hook')
 const { swal, loading, eventList } = hook()
-const { i18nTranslate } = usePageI18n(message)
+const { i18nTranslate } = usePageI18n(i18nMessage)
 
 // 權限
 const routesStore = useRoutesStore()

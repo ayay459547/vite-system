@@ -22,12 +22,12 @@ import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
 
-import message from './i18n'
+import i18nMessage from './i18n'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()
 
-const { i18nTranslate: pageTranslate } = usePageI18n(message)
+const { i18nTranslate: pageTranslate } = usePageI18n(i18nMessage)
 
 // 權限
 const routesStore = useRoutesStore()

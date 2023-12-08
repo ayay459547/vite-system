@@ -90,11 +90,13 @@ const {
         <CustomInput
           v-model="form.account"
           v-bind="formColumn.account"
+          @keyup.enter="login"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
         </CustomInput>
+
         <CustomInput
           v-model="form.passowrd"
           v-bind="formColumn.passowrd"
