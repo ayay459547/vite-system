@@ -604,7 +604,7 @@ export const copyText = async (text: string): Promise<string> => {
 
 /**
  * @author Caleb
- * @param {Array} data 陣列資料
+ * @param {Array} list 陣列資料
  * @returns {Array} 反轉後 陣列資料
  */
 export const reverse = (list: Array<any>): Array<any> => {

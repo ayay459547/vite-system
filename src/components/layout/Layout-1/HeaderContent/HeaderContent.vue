@@ -7,7 +7,7 @@ import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 // import MenuLang from '@/components/layout/Menu/MenuLang.vue'
 
-import type { AuthData } from '@/stores/stores_api'
+import type { AuthData } from '@/stores/api'
 
 // slot
 const slots = useSlots()

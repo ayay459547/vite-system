@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
-import type { AuthData } from '@/stores/stores_api'
+import type { AuthData } from '@/stores/api'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { inject } from 'vue'
 

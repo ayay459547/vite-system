@@ -3,8 +3,11 @@ import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import type { ElTable as ElTableType } from 'element-plus'
-import { ElTable, ElTableColumn } from 'element-plus'
+import {
+  type ElTable as ElTableType,
+  ElTable,
+  ElTableColumn
+} from 'element-plus'
 import type {
   Sort,
   SpanMethod,
@@ -231,7 +234,9 @@ onMounted(async () => {
   }
 })
 onUnmounted(() => {
-  RO.disconnect()
+  if (RO) {
+    RO.disconnect()
+  }
 
   if (IO) {
     IO.disconnect()

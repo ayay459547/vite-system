@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/stores/stores_api'
+import type { AuthData } from '@/stores/api'
 
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'

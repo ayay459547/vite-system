@@ -4,7 +4,7 @@ import SubMenu from './SubMenu.vue'
 
 import type { Navigation } from '@/declare/routes'
 import { isEmpty } from '@/lib/lib_utils'
-import type { AuthData } from '@/stores/stores_api'
+import type { AuthData } from '@/stores/api'
 import { ref, shallowRef, nextTick } from 'vue'
 
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'

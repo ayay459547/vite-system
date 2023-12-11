@@ -284,6 +284,20 @@ const routes: Array<RouterTree> = [
             path: '/nav1-4-3',
             component: () => import('@/views/Nav1-4-3/Nav1-4-3.vue'),
             icon: 'chart-column'
+          },
+          {
+            name: 'nav1-4-4',
+            title: '虛擬表格測試',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-4-4',
+            component: () => import('@/views/Nav1-4-4/Nav1-4-4.vue'),
+            icon: 'table-list'
           }
         ]
       }

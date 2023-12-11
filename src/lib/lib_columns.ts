@@ -341,9 +341,11 @@ export interface TableColumnsItem {
   key: string
   prop: string
   slotKey: string
+  width: number
   sortable: boolean | 'custom'
   isOperations: boolean
   label: string
+  title: string
 }
 /**
  * @author Caleb
@@ -397,6 +399,8 @@ export const getTableSetting = (
         prop: childkey,
         slotKey: childkey,
         label: child?.label ?? '',
+        title: child?.label ?? '',
+        width: 150,
         sortable: child?.isOperations ? false : 'custom',
         ...child
       })
@@ -412,6 +416,7 @@ export const getTableSetting = (
       sortable: false,
       isOperations: false,
       label: column?.label ?? '',
+      title: column?.label ?? '',
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
@@ -590,23 +595,25 @@ export const getTableSetting = (
 
 export interface SimpleTableSetting {
   title: string
-  tableColumns: Record<string, any>,
+  tableColumns: any[],
   downloadExcel: (tableData: Record<string, any>[]) => void
 }
 export interface SimpleTableColumnsItem {
   key: string
   prop: string
   slotKey: string
+  width: number
   sortable: boolean | 'custom'
   label: string
+  title: string
 }
 /**
  * @author Caleb
- * @description 取的 Columns 設定 SimpleTable用的資料
+ * @description 取的 Columns 設定 SimpleTable + TableV2 用的資料
  *              slot prop 預設是 key
  * @param {Ojbect} columns
  * @param {String} type 取得 columnSetting 中的類型
- * @param {Object} options 設定用的參數
+ * @param {String} title 設定用的參數
  * @returns {Ojbect}
  */
 export const getSimpleTableSetting = (
@@ -621,8 +628,10 @@ export const getSimpleTableSetting = (
       key,
       prop: key,
       slotKey: key,
+      width: 150,
       sortable: 'custom',
       label: column?.label ?? '',
+      title: column?.label ?? '',
       ...column[type]
     }
   }

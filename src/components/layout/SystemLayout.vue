@@ -8,7 +8,7 @@ import Preferences from '@/components/layout/Preferences/UserPreferences.vue'
 import { CustomModal } from '@/components'
 
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/stores/stores_api'
+import type { AuthData } from '@/stores/api'
 
 import { useLayoutStore } from '@/stores/stores_layout'
 import { storeToRefs } from 'pinia'

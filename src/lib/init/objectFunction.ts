@@ -35,24 +35,24 @@ const objectFunction = {
     }
     return resObj
   },
-  $some (callback: Function, thisArg: any) {
-    thisArg = thisArg || window
-    for (const key in this) {
-      if (this.hasOwnProperty(key) && callback.call(thisArg, this[key], key, this)) {
-        return true
-      }
-    }
-    return false
-  },
-  $every (callback: Function, thisArg: any) {
-    thisArg = thisArg || window
-    for (const key in this) {
-      if (this.hasOwnProperty(key) && !callback.call(thisArg, this[key], key, this)) {
-        return false
-      }
-    }
-    return true
-  },
+  // $some (callback: Function, thisArg: any) {
+  //   thisArg = thisArg || window
+  //   for (const key in this) {
+  //     if (this.hasOwnProperty(key) && callback.call(thisArg, this[key], key, this)) {
+  //       return true
+  //     }
+  //   }
+  //   return false
+  // },
+  // $every (callback: Function, thisArg: any) {
+  //   thisArg = thisArg || window
+  //   for (const key in this) {
+  //     if (this.hasOwnProperty(key) && !callback.call(thisArg, this[key], key, this)) {
+  //       return false
+  //     }
+  //   }
+  //   return true
+  // },
   $reduce (callback: Function, temp: any, thisArg: any) {
     thisArg = thisArg || window
     for (const key in this) {

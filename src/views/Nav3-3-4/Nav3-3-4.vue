@@ -24,7 +24,7 @@ import { columnSetting } from './columns'
 import { getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
 
 import dayjs from '@/lib/lib_day'
-import { Table } from 'element-plus'
+// import { Table } from 'element-plus'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
