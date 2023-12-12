@@ -199,6 +199,28 @@ export const round = (num: number, n: number = 2): number => {
 
 /**
  * @author Caleb
+ * @description 數字取無條件捨去到第n位
+ * @param {Number} num 要無條件捨去的數字
+ * @param {Number} n 取小數點到第n位
+ * @returns {Number}
+ */
+export const floor = (num: number, n: number = 2): number => {
+  return +(Math.floor((num + `e+${n}`) as unknown as number)  + `e-${n}`)
+}
+
+/**
+ * @author Caleb
+ * @description 數字取無條件進位到第n位
+ * @param {Number} num 要無條件進位的數字
+ * @param {Number} n 取小數點到第n位
+ * @returns {Number}
+ */
+export const ceil = (num: number, n: number = 2): number => {
+  return +(Math.ceil((num + `e+${n}`) as unknown as number)  + `e-${n}`)
+}
+
+/**
+ * @author Caleb
  * @description Swal 互動式彈窗
  * @param {Object} options 自訂選項
  * @returns {Promise}

@@ -31,7 +31,13 @@ export const useCustomModalStore = defineStore('customModal', () => {
     if (isEmpty(modalIndexMap[scopedId])) {
       modalCount.value++
     }
-    modalIndexMap[scopedId] = ++modalMax.value
+    // 只有一個 modal 不用往上疊
+    if (modalCount.value === 1) {
+      modalMax.value = 1
+      modalIndexMap[scopedId] = modalMax.value
+    } else {
+      modalIndexMap[scopedId] = ++modalMax.value
+    }
   }
 
   const removeModalIndex = (scopedId: string) => {

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, useSlots, ref, onMounted } from 'vue'
 import { ElInput } from 'element-plus'
-import { isEmpty, round, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, round, floor, ceil, hasOwnProperty } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 
@@ -21,6 +21,14 @@ const props = defineProps({
     default: false
   },
   round: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
+  },
+  floor: {
+    type: [Number, null] as PropType<number | null>,
+    default: null
+  },
+  ceil: {
     type: [Number, null] as PropType<number | null>,
     default: null
   },
@@ -103,9 +111,17 @@ const onEvent = {
       }
 
       if (typeof _value === 'number') {
-        // 取小數點到第幾位
+        // 四捨五入
         if (!isEmpty(props.round)) {
           _value = round(_value, props.round)
+        }
+        // 無條件捨去
+        if (!isEmpty(props.floor)) {
+          _value = floor(_value, props.floor)
+        }
+        // 無條件進位
+        if (!isEmpty(props.ceil)) {
+          _value = ceil(_value, props.ceil)
         }
 
         // 最大值

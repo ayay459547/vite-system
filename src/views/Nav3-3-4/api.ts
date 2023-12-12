@@ -31,7 +31,7 @@ type CompareResult = {
   }>
 }
 
-export type RowData = {
+export type ResponseData = {
   relatingObjects: Array<{
     dateOfPlan: string
     objectDetails: Array<{
@@ -120,13 +120,13 @@ const restrictionCompareReportOrder = [
 ]
 
 // table
-export const getData = async (params: any): Promise<RowData[]> => {
+export const getData = async (params: any): Promise<ResponseData[]> => {
   const {
     dateOfPlan = [],
     dateVersion = '',
     showCorrectCompare = false
   } = params
-  const resData = await ajax<Api<RowData[]>>({
+  const resData = await ajax<Api<ResponseData[]>>({
     url: '/maintainResourceCompareResult/retrieveByFilter',
     method: 'post',
     data: {

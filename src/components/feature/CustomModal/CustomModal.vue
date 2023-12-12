@@ -27,13 +27,18 @@ export type XPosition = 'start' | 'center' | 'end'
 export type YPosition = 'top' | 'center' | 'bottom'
 
 const hook: Hook = inject('hook')
-const { i18nTranslate } = hook()
+const { i18nTranslate, loading } = hook()
 
 const props = defineProps({
   modelValue: {
     type: Boolean as PropType<ModelValue>,
     default: false,
     description: 'v-model 綁定是否顯示'
+  },
+  loading: {
+    type: Boolean as PropType<ModelValue>,
+    default: false,
+    description: 'loading 遮罩'
   },
   title: {
     type: String as PropType<string>,
@@ -113,6 +118,12 @@ const emit = defineEmits([
   'cancel',
   'submit'
 ])
+
+const isLoading = computed(() => {
+  const _isLoading = props.loading
+  loading(_isLoading, '')
+  return _isLoading
+})
 
 const scopedId = `__modal__${getUuid()}`
 
@@ -532,8 +543,8 @@ onUnmounted(() => {
     >
       <Transition name="modal">
         <div
-          ref="containerRef"
           v-show="containerIsShow"
+          ref="containerRef"
           class="modal-container"
         >
           <div class="modal-header">
@@ -582,9 +593,11 @@ onUnmounted(() => {
           </div>
 
           <div class="modal-body">
-            <div v-if="tempValue" style="width: 100%; height: 100%">
-              <slot>Body</slot>
-            </div>
+            <KeepAlive>
+              <div v-show="tempValue && !isLoading" style="width: 100%; height: 100%">
+                <slot :key="scopedId">Body</slot>
+              </div>
+            </KeepAlive>
           </div>
 
           <div v-if="!props.hiddenFooter" class="modal-footer">

@@ -80,7 +80,25 @@ export const custom = {
     default: null,
     description: `
       onlyNumber 必須為 true
-      取小數點到第幾位
+      四捨五入 取小數點到第幾位
+    `
+  },
+  floor: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      無條件捨去 取小數點到第幾位
+    `
+  },
+  ceil: {
+    type: [Number, null] as PropType<number | null>,
+    required: false,
+    default: null,
+    description: `
+      onlyNumber 必須為 true
+      無條件進位 取小數點到第幾位
     `
   },
   max: {
