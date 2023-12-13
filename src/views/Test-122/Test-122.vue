@@ -45,7 +45,7 @@ const {
   columns: filterColumn,
   forms: filter,
   activeForms: activeFilter,
-  reset,
+  reset: resetFilter,
   getActiveForms
 } = getFormSetting<TableData>(columnSetting, 'filter')
 
@@ -200,7 +200,7 @@ onMounted(() => {
         <GroupSearch
           :columns="filterColumn"
           class="grid-row"
-          @reset="reset"
+          @reset="resetFilter"
           @submit="throttleInit()"
         >
           <template #search-all="{ prop, column }">

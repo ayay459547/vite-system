@@ -333,7 +333,7 @@ export interface TableSetting {
   downloadExcel: (tableData: Record<string, any>[]) => void
   resetScroll: (tableRef?: TableRef) => void
   toggleSelection: (rows: any[], tableRef?: TableRef) => void
-  getParams: (tableRef?: TableRef) => TableParams
+  getParams: (tableRef?: TableRef) => TableParams | null
   setParams: (params: TableParams, tableRef?: TableRef) => void
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }

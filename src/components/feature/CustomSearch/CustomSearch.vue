@@ -2,6 +2,7 @@
 import {
   CustomSwitch,
   CustomInput,
+  type PopoverPlacement,
   CustomPopover,
   CustomButton,
   CustomBadge
@@ -33,6 +34,12 @@ const props = defineProps({
     required: false,
     default: 300,
     description: '寬度'
+  },
+  placement: {
+    type: String as PropType<PopoverPlacement>,
+    required: false,
+    default: 'top',
+    description: '出現位置'
   },
   search: {
     type: Boolean as PropType<boolean>,
@@ -219,7 +226,38 @@ const onVisibleClick = (_isVisible: boolean) => {
 }
 
 const isDot = computed(() => {
-  return !isEmpty(inpuValue.value) && isActive.value
+  if (!isActive.value || isEmpty(inpuValue.value)) return false
+
+  switch (props.type) {
+    case 'text':
+    case 'textarea':
+    case 'password':
+    case 'autocomplete':
+    case 'select':
+    case 'year':
+    case 'month':
+    case 'date':
+    case 'dates':
+    case 'datetime':
+    case 'week':
+    case 'datetimerange':
+    case 'daterange':
+    case 'monthrange':
+    case 'time':
+    case 'timerange':
+    case 'checkbox':
+    case 'radio':
+      return !isEmpty(inpuValue.value)
+    case 'operator': {
+      return (
+        Array.isArray(inpuValue.value) &&
+        !isEmpty(inpuValue.value[0]) &&
+        !isEmpty(inpuValue.value[1])
+      )
+    }
+    default:
+      return false
+  }
 })
 
 const bindAttributes = computed(() => {
@@ -266,7 +304,7 @@ defineExpose({
         <CustomPopover
           :visible="isVisible"
           :width="props.width"
-          placement="top"
+          :placement="props.placement"
         >
           <div>
             <div class="search-title">
