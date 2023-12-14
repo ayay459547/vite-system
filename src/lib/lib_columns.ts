@@ -341,7 +341,8 @@ export interface TableColumnsItem {
   key: string
   prop: string
   slotKey: string
-  width: number
+  width?: number
+  minWidth?: number
   sortable: boolean | 'custom'
   isOperations: boolean
   label: string
@@ -400,7 +401,7 @@ export const getTableSetting = (
         slotKey: childkey,
         label: child?.label ?? '',
         title: child?.label ?? '',
-        width: 150,
+        minWidth: 150,
         sortable: child?.isOperations ? false : 'custom',
         ...child
       })
@@ -602,7 +603,8 @@ export interface SimpleTableColumnsItem {
   key: string
   prop: string
   slotKey: string
-  width: number
+  width?: number
+  minWidth?: number
   sortable: boolean | 'custom'
   label: string
   title: string
@@ -628,7 +630,7 @@ export const getSimpleTableSetting = (
       key,
       prop: key,
       slotKey: key,
-      width: 150,
+      minWidth: 150,
       sortable: 'custom',
       label: column?.label ?? '',
       title: column?.label ?? '',

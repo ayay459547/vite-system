@@ -19,11 +19,19 @@ onMounted(() => {
 
 <template>
   <div class="markdown-wrapper">
-    <v-md-preview :text="props.text"></v-md-preview>
+    <v-md-preview class="markdown-container" :text="props.text"></v-md-preview>
   </div>
 </template>
 
 <style lang="scss" scoped>
+:deep(.markdown-container) {
+  &.v-md-editor-preview {
+    .vuepress-markdown-body {
+      padding: 0 !important;
+    }
+  }
+}
+
 .markdown {
   &-wrapper {
     width: 100%;

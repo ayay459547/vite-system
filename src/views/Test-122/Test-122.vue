@@ -228,7 +228,7 @@ onMounted(() => {
       :title="i18nTranslate('create')"
       @submit="onCreateSubmit"
     >
-      <CreateModal ref="createRef"/>
+      <CreateModal ref="createRef" />
     </CustomModal>
 
     <CustomTable

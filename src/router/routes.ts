@@ -4,6 +4,9 @@ import descriptionRoutes from './description'
 import developmentRoutes from './development'
 import { getInjectRoutes } from './setting'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const EmptyView = () => import('@/views/Common/EmptyView.vue')
+
 const routes: Array<RouterTree> = [
   {
     name: 'nav1',
@@ -163,7 +166,7 @@ const routes: Array<RouterTree> = [
             systemType: ['new'],
             path: '/nav1-2-1',
             icon: 'info',
-            component: () => import('@/views/Common/EmptyView.vue')
+            component: EmptyView
           },
           {
             name: 'nav1-2-2',
