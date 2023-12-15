@@ -16,6 +16,7 @@ export type ListItem = {
 }
 export type ListType = Array<ListItem>
 export type ModelValue = string | number | null
+export type TabPosition = 'left' | 'right'
 
 const props = defineProps({
   modelValue: {
@@ -44,6 +45,14 @@ const props = defineProps({
     description: `
       如果 tabs 可能過多會用到
       值發生變化時自動 移動到對應的值`
+  },
+  tabPosition: {
+    type: String as PropType<TabPosition>,
+    default: 'left',
+    description: `位置
+      left: flex-start (左邊)
+      right: flex-end (右邊)
+    `
   }
 })
 
@@ -181,7 +190,17 @@ onUnmounted(() => {
     <div class="tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>
     </div>
-    <div ref="conRef" class="tabs-container" :style="{ width: conWidth + 'px' }">
+    <div
+      ref="conRef"
+      :class="[
+        'tabs-container',
+        {
+          left: props.tabPosition === 'left',
+          right: props.tabPosition === 'right'
+        }
+      ]"
+      :style="{ width: conWidth + 'px' }"
+    >
       <div ref="listRef" class="tabs-list" :class="{ 'is-background': props.background }">
         <div
           v-for="element in props.list"
@@ -261,6 +280,13 @@ $is-background: #f5f7fa;
     display: flex;
     align-items: center;
     will-change: width;
+
+    &.left {
+      justify-content: flex-start;
+    }
+    &.right {
+      justify-content: flex-end;
+    }
   }
   &-list {
     display: flex;

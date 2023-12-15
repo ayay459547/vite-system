@@ -443,7 +443,7 @@ export const getTableSetting = (
       title,
       {
         properties: {
-          tabColor: { argb: '3D8BFF' },
+          tabColor: { argb: 'FFFFFF' },
           defaultRowHeight: 20
         }
       }
@@ -494,7 +494,7 @@ export const getTableSetting = (
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
       })
-      link.download = '測試的試算表.xlsx'
+      link.download = `${title ?? ''}.xlsx`
       link.href = URL.createObjectURL(blobData)
       link.click()
     })

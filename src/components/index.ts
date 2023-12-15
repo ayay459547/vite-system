@@ -130,7 +130,8 @@ export { default as CustomTableV2 } from './feature/CustomTableV2/CustomTableV2.
 export type {
   ListItem,
   ListType,
-  ModelValue as TabsModelValue
+  ModelValue as TabsModelValue,
+  TabPosition
 } from './feature/CustomTabs/CustomTabs.vue'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 
