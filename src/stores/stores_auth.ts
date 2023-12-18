@@ -26,17 +26,22 @@ export const useAuthStore = defineStore('auth', () => {
 	 * token 會帶動使用者資料
 	 */
 	const getToken = (): Token | null => {
-		const token = getCookie('token')
-		if (['', null, undefined].includes(token)) return null
+		const _token = getCookie('token')
+		if (['', null, undefined].includes(_token)) return null
 
-		return aesDecrypt(token, privateKey)
+		const temp = aesDecrypt(_token, privateKey)
+		if (['', null, undefined].includes(temp)) return null
+
+		const userData = JSON.parse(temp)
+		return userData
 	}
 	const setToken = (userId: number) => {
-		const _token = {
+		const temp = {
 			uuid: `${getUuid()}`,
 			date: new Date(),
 			userId
 		}
+		const _token = JSON.stringify(temp)
 
 		setCookie(
 			'token',

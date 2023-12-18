@@ -15,6 +15,8 @@ export default defineConfig({
   server: {
     port: 4040,
     host: '0.0.0.0',
+    open: true,
+    cors: true,
     // https://cn.vitejs.dev/config/server-options.html#server-proxy
     proxy: {
       '/api': {

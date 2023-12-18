@@ -490,13 +490,13 @@ export const getTableSetting = (
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
     // 異步的等待他處理完之後，創建url與連結，觸發下載
     workbook.xlsx.writeBuffer().then((content) => {
-      const link = document.createElement('a')
+      const a = document.createElement('a')
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
       })
-      link.download = `${title ?? ''}.xlsx`
-      link.href = URL.createObjectURL(blobData)
-      link.click()
+      a.download = `${title ?? ''}.xlsx`
+      a.href = URL.createObjectURL(blobData)
+      a.click()
     })
   }
 
@@ -652,7 +652,7 @@ export const getSimpleTableSetting = (
       title,
       {
         properties: {
-          tabColor: { argb: '3D8BFF' },
+          tabColor: { argb: 'FFFFFF' },
           defaultRowHeight: 20
         }
       }
@@ -696,13 +696,13 @@ export const getSimpleTableSetting = (
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
     // 異步的等待他處理完之後，創建url與連結，觸發下載
     workbook.xlsx.writeBuffer().then((content) => {
-      const link = document.createElement('a')
+      const a = document.createElement('a')
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
       })
-      link.download = '測試的試算表.xlsx'
-      link.href = URL.createObjectURL(blobData)
-      link.click()
+      a.download = `${title ?? ''}.xlsx`
+      a.href = URL.createObjectURL(blobData)
+      a.click()
     })
 
   }

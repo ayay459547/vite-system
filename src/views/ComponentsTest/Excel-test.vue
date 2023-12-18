@@ -136,7 +136,7 @@ const tableData2 = [
 ]
 
 const downloadWord = () => {
-  downloadStaticFile('下載word測試.docx')
+  downloadStaticFile('/file', '下載word測試.docx')
 }
 
 const tooltipPlacement: TooltipTrigger = 'click'

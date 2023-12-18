@@ -238,7 +238,7 @@ export type ExcelOptions = {
  * @author Caleb
  * @description 依據資料下載 Excel
  * @param {Array} matrix 矩陣資料
- * @param {String} fileName 名稱
+ * @param {String} options 其他設定
  */
 export const downloadExcel = (matrix: Array<(string | number)[]>, options: ExcelOptions): void => {
   const aoa = matrix

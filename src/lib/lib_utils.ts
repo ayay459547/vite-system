@@ -395,15 +395,34 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
 
 /**
  * @author Caleb
+ * @description 點擊連結 下載檔案
+ * @param {String} path 路徑
+ */
+export const downloadFile = (path: string, fileName: string) => {
+  const a = document.createElement('a')
+
+  a.href = `${path}`
+  a.setAttribute('target', '_blank')
+  a.setAttribute('download', `${fileName}`)
+
+  a.style.display = 'none'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
+/**
+ * @author Caleb
  * @description 下載靜態檔案 檔案放在 pubic/static 下
  * @param {String} path 路徑 + 檔案名
  */
-export const downloadStaticFile = (path: string) => {
+export const downloadStaticFile = (path: string, fileName: string) => {
   const a = document.createElement('a')
 
-  a.href = `/static/file/${path}`
+  a.href = `/static${path}/${fileName}`
+  a.setAttribute('target', '_blank')
+  a.setAttribute('download', `${fileName}`)
 
-  a.download = `${path}`
   a.style.display = 'none'
   document.body.appendChild(a)
   a.click()
@@ -423,13 +442,12 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
 /**
  * @author Caleb
  * @description 使用 AES 加密資料
- * @param {*} value 資料
+ * @param {*} str 要加密的字串
  * @param {String} key 加密用的key
  * @returns {String} 回傳的值
  */
-export const aesEncrypt = (value: any, key: string): string => {
-  const data = JSON.stringify(value)
-  const encJson = cryptoJS.AES.encrypt(data, key).toString()
+export const aesEncrypt = (str: any, key: string): string => {
+  const encJson = cryptoJS.AES.encrypt(str, key).toString()
   const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
   return encData
 }
@@ -437,18 +455,16 @@ export const aesEncrypt = (value: any, key: string): string => {
 /**
  * @author Caleb
  * @description 使用 AES 解密資料
- * @param {String} value 加密後的字串
+ * @param {String} str 加密後的字串
  * @param {String} key 加密用的key
  * @returns {*} 回傳的值
  */
-export const aesDecrypt = (value: string, key: string): any => {
+export const aesDecrypt = (str: string, key: string): string => {
   try {
-    const decData = cryptoJS.enc.Base64.parse(value).toString(cryptoJS.enc.Utf8)
+    const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
     const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
-    if (isEmpty(decJson)) return decJson
 
-    return JSON.parse(decJson)
-
+    return decJson
   } catch (error) {
     console.log(error)
 

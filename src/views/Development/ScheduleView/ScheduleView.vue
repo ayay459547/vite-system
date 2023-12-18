@@ -57,7 +57,7 @@ const {
 } = getSimpleTableSetting(columnSetting, 'table')
 
 const downloadWord = () => {
-  downloadStaticFile('下載word測試.docx')
+  downloadStaticFile('/file', '下載word測試.docx')
 }
 
 </script>
