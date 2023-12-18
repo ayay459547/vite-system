@@ -9,8 +9,9 @@ $color-list: (
   'white': #ffffff,
   'gray': #bcbcbc,
   'yellow': #ffee55,
+  'orange': #eeb155,
   'green': #a0ff8a,
-  'purple': #c49cdd,
+  'purple': #b458ee,
 
   'empty': #ffffff00
 );
@@ -34,6 +35,11 @@ $color-list: (
     &:hover{
       background-color: lighten($color, 20%) !important;
     }
+  }
+
+  div[class*="border-"],
+  div[class*="card-"] {
+    border-radius: 6px;
   }
 
   .border-#{$type} {

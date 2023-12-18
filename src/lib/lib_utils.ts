@@ -457,7 +457,7 @@ export const aesEncrypt = (str: any, key: string): string => {
  * @description 使用 AES 解密資料
  * @param {String} str 加密後的字串
  * @param {String} key 加密用的key
- * @returns {*} 回傳的值
+ * @returns {String} 回傳的值
  */
 export const aesDecrypt = (str: string, key: string): string => {
   try {

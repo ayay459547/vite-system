@@ -13,10 +13,12 @@ $size-list: (
     padding: $value !important;
   }
   .i-px-#{$size} {
-    padding: 0 $value !important;
+    padding-left: $value !important;
+    padding-right: $value !important;
   }
   .i-py-#{$size} {
-    padding: $value 0 !important;
+    padding-top: $value !important;
+    padding-bottom: $value !important;
   }
   .i-pt-#{$size} {
     padding-top: $value !important;
@@ -35,10 +37,12 @@ $size-list: (
     margin: $value !important;
   }
   .i-mx-#{$size} {
-    margin: 0 $value !important;
+    margin-left: $value !important;
+    margin-right: $value !important;
   }
   .i-my-#{$size} {
-    margin: $value 0 !important;
+    margin-top: $value !important;
+    margin-bottom: $value !important;
   }
   .i-mt-#{$size} {
     margin-top: $value !important;
