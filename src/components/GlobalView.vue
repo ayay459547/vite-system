@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import {
+  type Ref,
   ref,
   shallowReactive,
   computed,
@@ -27,6 +27,7 @@ import { ElConfigProvider } from 'element-plus'
 import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
+import { setToken, clearToken, updateToken } from '@/lib/lib_cookie'
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { useEnvStore } from '@/stores/stores_env'
@@ -85,7 +86,7 @@ const localeStore = useLocaleStore()
 const locale = computed(() => localeStore.locale)
 
 const authStore = useAuthStore()
-const { setToken, clearToken, initSystemData } = authStore
+const { initSystemData } = authStore
 const { authData, routesPermission } = storeToRefs(authStore)
 
 const routesStore = useRoutesStore()
@@ -125,6 +126,7 @@ const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   setTimeout(() => {
     pageScrollTop()
     setWebTitle()
+    updateToken()
   }, 0)
 }
 // 做節流 因為畫面更新 為觸發多次

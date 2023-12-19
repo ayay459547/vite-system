@@ -16,6 +16,7 @@ import { getColumnSetting } from '@/lib/lib_idb'
 import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
 export interface FormSetting<T> {
+  refMap: Record<string, any>
   defaultValue: T
   columns: Record<string, any>
   forms: T
@@ -23,6 +24,7 @@ export interface FormSetting<T> {
   reset: () => void
   getActiveForms: (showEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
+  handleReset: () => void
 }
 
 export interface InputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
@@ -99,6 +101,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
   }
 
   return {
+    refMap,
     defaultValue: defaultValue as T,
     columns: resColumns,
     forms: resForms as T,
@@ -167,20 +170,30 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
           resolve(successList)
         }
       })
+    },
+    handleReset: () => {
+      resForms.$forEach((value: any, key: string) => {
+        if (typeof refMap[key]?.handleReset === 'function') {
+          console.log(`${key} => handleReset`)
+          refMap[key].handleReset()
+        }
+      })
     }
   }
 }
 
 export interface FormListSetting<T> {
+  refMap: Record<string, any>
   defaultValue: T
   columns: Record<string, any>
-  forms: Array<T>
+  forms: Ref<Array<T>>
   reset: () => void
   validate: () => Promise<Array<any>>
   add: () => void
-  remove: () => void
+  remove: (rowIndex: number) => void
+  clear: () => void
 }
-export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []) => {
+export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []): FormListSetting<T> => {
   const resColumns = {}
   const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
@@ -230,6 +243,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
   formList.value.push(..._initData)
 
   return {
+    refMap,
     defaultValue: defaultValue as T,
     columns: resColumns as Record<string, any>,
     forms: formList as Ref<Array<T>>,

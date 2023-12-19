@@ -6,7 +6,8 @@ import {
   computed,
   ref,
   renderSlot,
-  nextTick
+  nextTick,
+  onMounted
 } from 'vue'
 
 import {
@@ -81,6 +82,9 @@ const CustomInput = defineComponent({
     // })
 
     const validateCount = ref(0)
+    onMounted(() => {
+      validateCount.value = 0
+    })
     // 驗證
     const validateField = (veeValue: ModelValue) => {
       // 一開始不驗證
@@ -257,7 +261,10 @@ const CustomInput = defineComponent({
     expose({
       key: props.validateKey,
       value: inputValue.value,
-      handleReset,
+      handleReset: () => {
+        validateCount.value = 0
+        handleReset()
+      },
       validate,
       setvalidateKey (validateKey: string) {
         _domValidateKey.value = validateKey

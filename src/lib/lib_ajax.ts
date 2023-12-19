@@ -4,6 +4,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import { ElMessage } from 'element-plus'
 import { hasOwnProperty, isEmpty } from '@/lib/lib_utils'
+import { updateToken } from '@/lib/lib_cookie'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
 const connectApi = (import.meta as any).env.VITE_API_CONNECT_API
@@ -71,6 +72,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
 /**
  * @author Caleb
  * @description 抓後端資料用
+ *              送api 更新 token
  * @param {Object} config 設定
  *              url: api網址
  *              method: get | post | put | delete
@@ -94,6 +96,8 @@ export const ajax = <ResData>(
     delay = 0,
     callback = null
   } = options
+
+  updateToken()
 
   switch (connectApi) {
     case 'true':

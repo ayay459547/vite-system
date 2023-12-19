@@ -7,51 +7,9 @@ import { permission } from '@/lib/lib_permission'
 
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
-
-import { setCookie, getCookie, removeCookie } from '@/lib/lib_cookie'
-
-// token
-import { getUuid, aesEncrypt, aesDecrypt } from '@/lib/lib_utils'
-
-interface Token {
-	uid: string
-	date: Date
-	userId: number
-}
-const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
+import { getToken, setToken, clearToken } from '@/lib/lib_cookie'
 
 export const useAuthStore = defineStore('auth', () => {
-	/**
-	 * token 相關
-	 * token 會帶動使用者資料
-	 */
-	const getToken = (): Token | null => {
-		const _token = getCookie('token')
-		if (['', null, undefined].includes(_token)) return null
-
-		const temp = aesDecrypt(_token, privateKey)
-		if (['', null, undefined].includes(temp)) return null
-
-		const userData = JSON.parse(temp)
-		return userData
-	}
-	const setToken = (userId: number) => {
-		const temp = {
-			uuid: `${getUuid()}`,
-			date: new Date(),
-			userId
-		}
-		const _token = JSON.stringify(temp)
-
-		setCookie(
-			'token',
-			aesEncrypt(_token, privateKey)
-		)
-	}
-	const clearToken = () => {
-		removeCookie('token')
-	}
-
 	// 登入狀態 看使用者資料
 	const isLogin = computed(() => {
 		return authData.value.id > 0
@@ -170,8 +128,6 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
   return {
-		setToken,   // 登入用
-		clearToken, // 登出用
 		isLogin,    // 路由確認用
 
 		authData,
