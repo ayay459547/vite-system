@@ -50,7 +50,7 @@ export const setToken = (userId: number) => {
   setCookie(
     'token',
     aesEncrypt(_token, privateKey),
-    { expires: 30 / 24 * 60 * 60 }
+    { expires: (30 * 60) / (24 * 60 * 60) }
   )
 }
 
