@@ -7,6 +7,7 @@ import {
   watch,
   inject,
   effectScope,
+  onBeforeMount,
   onMounted,
   onUnmounted,
   reactive,
@@ -27,7 +28,7 @@ export type XPosition = 'start' | 'center' | 'end'
 export type YPosition = 'top' | 'center' | 'bottom'
 
 const hook: Hook = inject('hook')
-const { i18nTranslate, loading } = hook()
+const { i18nTranslate } = hook()
 
 const props = defineProps({
   modelValue: {
@@ -119,12 +120,6 @@ const emit = defineEmits([
   'submit'
 ])
 
-const isLoading = computed(() => {
-  const _isLoading = props.loading
-  loading(_isLoading, '')
-  return _isLoading
-})
-
 const scopedId = `__modal__${getUuid()}`
 
 const tempValue: WritableComputedRef<ModelValue> = computed({
@@ -137,7 +132,7 @@ const minModalIndex = 2005
 // 正在使用中的 modal 會被至頂
 // 如果有多個 modal 可以一次關閉全部
 const customModalStore = useCustomModalStore()
-const { modalIndexMap, modalCount, modalMax } = storeToRefs(customModalStore)
+const { modalIndexMap, modalCount } = storeToRefs(customModalStore)
 const modalCurrentIndex = computed(() => {
   const tempIndex = modalIndexMap?.value[scopedId] ?? 0
   return tempIndex + minModalIndex
@@ -150,11 +145,11 @@ const removeModalIndex = () => {
 }
 
 const isCloseAllModal = computed(() => {
-  if (tempValue.value && modalMax.value <= 0) {
+  if (tempValue.value && modalCount.value <= 0) {
     close()
   }
 
-  return modalCount.value > 1
+  return modalCount.value >= 2
 })
 
 
@@ -198,7 +193,8 @@ const closeModal = () => {
   }, 200)
 }
 
-const close = () => {
+const close = async () => {
+  await nextTick()
   if (props.autoClose) {
     tempValue.value = false
   }
@@ -485,6 +481,13 @@ const clickOutside = () => {
   }
 }
 
+onBeforeMount(() => {
+  // 如果一開始 綁定的值是 true 先設定 index
+  if (props.modelValue) {
+    setModalIndex()
+  }
+})
+
 onMounted(() => {
   scope.run(() => {
     watch(tempValue, (newValue) => {
@@ -503,6 +506,9 @@ onMounted(() => {
           closeModal()
         }, 0)
       }
+    }, {
+      deep: false,
+      immediate: true
     })
   })
 })
@@ -546,6 +552,7 @@ onUnmounted(() => {
           v-show="containerIsShow"
           ref="containerRef"
           class="modal-container"
+          v-loading="props.loading"
         >
           <div class="modal-header">
             <div
@@ -594,7 +601,7 @@ onUnmounted(() => {
 
           <div class="modal-body">
             <KeepAlive>
-              <div v-if="tempValue && !isLoading" style="width: 100%; height: 100%">
+              <div v-if="tempValue && !props.loading" style="width: 100%; height: 100%">
                 <slot :key="scopedId">Body</slot>
               </div>
             </KeepAlive>

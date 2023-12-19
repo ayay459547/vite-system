@@ -54,8 +54,8 @@ const tableData = ref<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {
-  title: '機台資訊呈現',
-  version: '1.0.3',
+  title: '資訊顯示測試',
+  version: '1.0.5',
   settingKey: 'fund-12',
   sorting: true
 }
@@ -131,7 +131,7 @@ const openPopover = (e: MouseEvent, rowData: TableData) => {
 const remove = (rowData: TableData) => {
   swal({
     icon: 'warning',
-    title: `確定刪除 ${rowData.machineNo}`
+    title: `確定刪除 ${rowData.no}`
   }).then(async (result) => {
 
     if (result.isConfirmed) {
@@ -236,7 +236,7 @@ onMounted(() => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
-      :title="i18nTranslate('machineInfo')"
+      :title="i18nTranslate('info')"
       @excel="download"
       @show-change="throttleInit"
     >
@@ -257,7 +257,7 @@ onMounted(() => {
 
       <template #row-expand="{ row }">
         <div class="i-pa-md">
-          <h3 class="i-mb-md">{{ i18nTranslate('machineParameter') }}</h3>
+          <h3 class="i-mb-md">{{ i18nTranslate('parameter') }}</h3>
           <SimpleTable
             :table-data="row?.children ?? []"
             :table-columns="childColumns"

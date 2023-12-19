@@ -5,13 +5,31 @@ import {
   CustomDialog,
   CustomModal
 } from '@/components'
-import { ref} from 'vue'
+import { ref, onMounted } from 'vue'
 
 const isShow = ref(false)
 
-const modalIsShow = ref(false)
+const modalIsShow = ref(true)
 const modalIsShow2 = ref(false)
 const modalIsShow3 = ref(false)
+
+const isLoading = ref(false)
+
+onMounted(() => {
+  isLoading.value = true
+
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1500)
+
+  setTimeout(() => {
+    isLoading.value = true
+  }, 5000)
+
+  setTimeout(() => {
+    isLoading.value = false
+  }, 10000)
+})
 
 </script>
 
@@ -67,6 +85,7 @@ const modalIsShow3 = ref(false)
         v-model="modalIsShow"
         :modal="false"
         draggable
+        :loading="isLoading"
       >
         <h3>測試 CustomModal 拖拉 draggable</h3>
       </CustomModal>

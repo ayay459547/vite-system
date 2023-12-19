@@ -9,9 +9,9 @@ import type {
 import type { ValidateType } from './lib_validate'
 import { reactive, shallowReactive, ref } from 'vue'
 
-import type { Column as ExcelColumn} from 'exceljs'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import ExcelJs from 'exceljs'
+import type { Column as ExcelColumn} from 'exceljs'
 import { getColumnSetting } from '@/lib/lib_idb'
 import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
@@ -402,7 +402,11 @@ export const getTableSetting = (
         label: child?.label ?? '',
         title: child?.label ?? '',
         minWidth: 150,
-        sortable: child?.isOperations ? false : 'custom',
+        // element ui 單排用
+        sortable: child?.isOperations ?? false,
+        // 專案用 多排
+        sorting: child?.sorting ?? true, // 是否顯示排序
+        order: child?.sorting ?? 'none', // ascending | descending | none
         ...child
       })
     })
@@ -413,11 +417,15 @@ export const getTableSetting = (
       key,
       prop: key,
       slotKey: key,
-      // sortable: column[type]?.isOperations ? false : 'custom',
-      sortable: false,
       isOperations: false,
       label: column?.label ?? '',
       title: column?.label ?? '',
+      minWidth: 150,
+      // element ui 單排用
+      sortable: column?.isOperations ?? false,
+      // 專案用 多排
+      sorting: column?.sorting ?? true, // 是否顯示排序
+      order: column?.order ?? 'none', // ascending | descending | none
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
@@ -605,7 +613,6 @@ export interface SimpleTableColumnsItem {
   slotKey: string
   width?: number
   minWidth?: number
-  sortable: boolean | 'custom'
   label: string
   title: string
 }
@@ -631,7 +638,6 @@ export const getSimpleTableSetting = (
       prop: key,
       slotKey: key,
       minWidth: 150,
-      sortable: 'custom',
       label: column?.label ?? '',
       title: column?.label ?? '',
       ...column[type]

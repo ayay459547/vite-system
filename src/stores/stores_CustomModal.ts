@@ -8,13 +8,6 @@ export const useCustomModalStore = defineStore('customModal', () => {
   const count = ref(0)
   const modalMax = ref(0)
 
-  const clearModal = () => {
-    for (const scopedId in modalIndexMap) {
-      delete modalIndexMap[scopedId]
-    }
-    modalMax.value = 0
-  }
-
   const modalCount = computed({
     get () {
       if (count.value <= 0) {
@@ -27,10 +20,20 @@ export const useCustomModalStore = defineStore('customModal', () => {
     }
   })
 
+  const clearModal = () => {
+    for (const scopedId in modalIndexMap) {
+      delete modalIndexMap[scopedId]
+    }
+    modalMax.value = 0
+    modalCount.value = 0
+  }
+
   const setModalIndex = (scopedId: string) => {
     if (isEmpty(modalIndexMap[scopedId])) {
       modalCount.value++
     }
+    // 最上面 不用加 index
+    if (modalIndexMap[scopedId] >= modalMax.value) return
     // 只有一個 modal 不用往上疊
     if (modalCount.value === 1) {
       modalMax.value = 1

@@ -5,10 +5,10 @@ import { fakeTableData } from './fakeData'
 
 export type TableData = {
   id?: number
-  machineNo: string
-  machineName: string
-  machineLocation: string
-  machineStatusRemarks: string
+  no: string
+  name: string
+  location: string
+  statusRemarks: string
   leadTime: string
   productionCapacity: string
   groupName: string
@@ -24,10 +24,10 @@ export type ChildData = {
 
 const filterFakeData = (filter: any, rowData: TableData) => {
   const filterKeyList = [
-    'machineNo',
-    'machineName',
-    'machineLocation',
-    'machineStatusRemarks',
+    'no',
+    'name',
+    'location',
+    'statusRemarks',
     'leadTime',
     'productionCapacity',
     'groupName'
@@ -81,10 +81,10 @@ const sortFakeData = (sortingList: any[], filterData: TableData[]): TableData[] 
 // api
 export const getData = async (params: any) => {
   const {
-    machineNo = '',
-    machineName = '',
-    machineLocation = '',
-    machineStatusRemarks = '',
+    no = '',
+    name = '',
+    location = '',
+    statusRemarks = '',
     leadTime = '',
     productionCapacity = '',
     groupName = '',
@@ -93,10 +93,10 @@ export const getData = async (params: any) => {
   } = params
 
   const filter = {
-    machineNo,
-    machineName,
-    machineLocation,
-    machineStatusRemarks,
+    no,
+    name,
+    location,
+    statusRemarks,
     leadTime,
     productionCapacity,
     groupName
@@ -133,20 +133,20 @@ export const getData = async (params: any) => {
 
 export const getDataCount = async (params: any) => {
   const {
-    machineNo = '',
-    machineName = '',
-    machineLocation = '',
-    machineStatusRemarks = '',
+    no = '',
+    name = '',
+    location = '',
+    statusRemarks = '',
     leadTime = '',
     productionCapacity = '',
     groupName = ''
   } = params
 
   const filter = {
-    machineNo,
-    machineName,
-    machineLocation,
-    machineStatusRemarks,
+    no,
+    name,
+    location,
+    statusRemarks,
     leadTime,
     productionCapacity,
     groupName

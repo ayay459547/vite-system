@@ -1,33 +1,33 @@
 export default {
-  machineInfo: {
-    zhTw: '機台資訊呈現',
-    zhCn: '机台资讯呈现',
-    en: 'Machine Info'
+  info: {
+    zhTw: '資訊呈現',
+    zhCn: '资讯呈现',
+    en: 'Info'
   },
-  machineParameter: {
-    zhTw: '機台參數',
-    zhCn: '机台参数',
-    en: 'Machine Parameter'
+  parameter: {
+    zhTw: '參數',
+    zhCn: '参数',
+    en: 'Parameter'
   },
-  machineNo: {
-    zhTw: '機台編號',
-    zhCn: '机台编号',
-    en: 'Machine No.'
+  no: {
+    zhTw: '編號',
+    zhCn: '编号',
+    en: 'No.'
   },
-  machineName: {
-    zhTw: '機台名稱',
-    zhCn: '机台名称',
-    en: 'Machine Name'
+  name: {
+    zhTw: '名稱',
+    zhCn: '名称',
+    en: 'Name'
   },
-  machineLocation: {
-    zhTw: '機台區域',
-    zhCn: '机台区域',
-    en: 'Machine Location'
+  location: {
+    zhTw: '區域',
+    zhCn: '区域',
+    en: 'Location'
   },
-  machineStatusRemarks: {
-    zhTw: '機器狀態備註',
-    zhCn: '机器状态备注',
-    en: 'Machine Status Remarks'
+  statusRemarks: {
+    zhTw: '狀態備註',
+    zhCn: '状态备注',
+    en: 'Status Remarks'
   },
   leadTime: {
     zhTw: '交貨時間',

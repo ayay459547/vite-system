@@ -311,7 +311,7 @@ const initSortingList = () => {
   sortingList.value = props.tableColumns.reduce((res, column) => {
     const _isOperations = (column?.isOperations ?? false)
 
-    if (!_isOperations) {
+    if (!_isOperations && (column?.sorting ?? true)) {
       res.push({
         label: column.label,
         key: column.key,
@@ -710,7 +710,7 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
             </slot>
           </div>
           <ColumnSorting
-            v-if="props.sorting"
+            v-if="props.sorting && (scope.column?.sorting ?? true)"
             v-model="sortingList"
             :column="scope.column"
             :prop="scope.prop"

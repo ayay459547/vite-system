@@ -1,8 +1,10 @@
 export const columnSetting = {
-  machineNo: {
-    label: '機台編號',
+  no: {
+    label: '編號',
     table: {
-      width: 200
+      width: 200,
+      sorting: true,
+      order: 'ascending'
     },
     form: {
       default: null,
@@ -13,10 +15,12 @@ export const columnSetting = {
       default: null
     }
   },
-  machineName: {
-    label: '機台名稱',
+  name: {
+    label: '名稱',
     table: {
-      width: 200
+      width: 200,
+      sorting: true,
+      order: 'descending'
     },
     form: {
       default: null,
@@ -27,10 +31,11 @@ export const columnSetting = {
       default: null
     }
   },
-  machineLocation: {
-    label: '機台區域',
+  location: {
+    label: '區域',
     table: {
-      width: 200
+      width: 200,
+      sorting: false
     },
     form: {
       default: null,
@@ -41,8 +46,8 @@ export const columnSetting = {
       default: null
     }
   },
-  machineStatusRemarks: {
-    label: '機台狀態註記',
+  statusRemarks: {
+    label: '狀態註記',
     table: {
       minWidth: 200
     },
@@ -56,13 +61,13 @@ export const columnSetting = {
     }
   },
   leadTime: {
-    label: '機台換線前置時間',
+    label: '換線前置時間',
     table: {
       minWidth: 200
     },
     form: {
       default: null,
-      validate: ['number'],
+      validate: [],
       required: true
     },
     filter: {
@@ -142,7 +147,7 @@ export const childColumnSetting = {
     }
   },
   machineTime: {
-    label: '機台時間',
+    label: '時間',
     table: {
       width: 180
     }

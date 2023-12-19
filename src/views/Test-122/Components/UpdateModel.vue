@@ -29,19 +29,19 @@ const props = defineProps({
 
 onMounted(() => {
   const {
-    machineNo = null,
-    machineName = null,
-    machineLocation = null,
-    machineStatusRemarks = null,
+    no = null,
+    name = null,
+    location = null,
+    statusRemarks = null,
     leadTime = null,
     productionCapacity = null,
     groupName = null
   } = props.data
 
-  form.machineNo = machineNo
-  form.machineName = machineName
-  form.machineLocation = machineLocation
-  form.machineStatusRemarks = machineStatusRemarks
+  form.no = no
+  form.name = name
+  form.location = location
+  form.statusRemarks = statusRemarks
   form.leadTime = leadTime
   form.productionCapacity = productionCapacity
   form.groupName = groupName
@@ -73,26 +73,26 @@ defineExpose({
   <div class="update grid-row">
     <CustomInput
       class="grid-col-xs-24 grid-col-md-12 grid-col-lg-8"
-      v-model="form.machineNo"
-      v-bind="formColumn.machineNo"
+      v-model="form.no"
+      v-bind="formColumn.no"
     />
 
     <CustomInput
       class="grid-col-xs-24 grid-col-md-12 grid-col-lg-8"
-      v-model="form.machineName"
-      v-bind="formColumn.machineName"
+      v-model="form.name"
+      v-bind="formColumn.name"
     />
 
     <CustomInput
       class="grid-col-xs-24 grid-col-md-12 grid-col-lg-8"
-      v-model="form.machineLocation"
-      v-bind="formColumn.machineLocation"
+      v-model="form.location"
+      v-bind="formColumn.location"
     />
 
     <CustomInput
       class="grid-col-xs-24 grid-col-md-12 grid-col-lg-8"
-      v-model="form.machineStatusRemarks"
-      v-bind="formColumn.machineStatusRemarks"
+      v-model="form.statusRemarks"
+      v-bind="formColumn.statusRemarks"
     />
 
     <CustomInput
