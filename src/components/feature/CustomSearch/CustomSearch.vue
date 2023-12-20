@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {
   CustomSwitch,
+  // type InputType,
+  // type Options,
   CustomInput,
   type PopoverPlacement,
   CustomPopover,
@@ -8,9 +10,20 @@ import {
   CustomBadge
 } from '@/components'
 
-import type { InputType, Options } from '@/components'
-import { type PropType, computed, nextTick } from 'vue'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import {
+  custom,
+  elCommon,
+  elInput,
+  elSelect,
+  elDatePicker,
+  elTimePicker,
+  elCheckbox,
+  elRadio,
+  elAutocomplete
+} from '@/components/feature/CustomInput/props'
+
+import { type PropType, computed, nextTick, useSlots } from 'vue'
+import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import { storeToRefs } from 'pinia'
@@ -47,107 +60,16 @@ const props = defineProps({
     default: false,
     description: '是否只顯示搜尋按鈕'
   },
-  type: {
-    type: String as PropType<InputType>,
-    default: 'text',
-    description: '輸入框類型'
-  },
-  label: {
-    type: String as PropType<string>,
-    default: '',
-    description: '文字'
-  },
-  options: {
-    type: Array as PropType<Options>,
-    default () {
-      return []
-    },
-    description: '選項'
-  },
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否顯示清除按鈕'
-  },
-  remote: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '選項是否來自函數'
-  },
-  remoteMethod: {
-    type: Function as PropType<Function>,
-    required: false,
-    description: '函數取的選項'
-  },
-  multiple: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否多選'
-  },
-  multipleLimit: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 0,
-    description: '多選限制最多幾個'
-  },
-  maxCollapseTags: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 1,
-    description: '多選顯示標籤數量'
-  },
-  filterable: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否可輸入文字過濾'
-  },
-  format: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'YYYY-MM-DD'
-  },
-  valueFormat: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'YYYY-MM-DD'
-  },
-  onlyNumber: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否只能輸入數字'
-  },
-  round: {
-    type: [Number, null] as PropType<number | null>,
-    required: false,
-    default: null,
-    description: `
-      onlyNumber 必須為 true
-      取小數點到第幾位
-    `
-  },
-  max: {
-    type: [Number, null] as PropType<number | null>,
-    required: false,
-    default: null,
-    description: `
-      onlyNumber 必須為 true
-      最大值
-    `
-  },
-  min: {
-    type: [Number, null] as PropType<number | null>,
-    required: false,
-    default: null,
-    description: `
-      onlyNumber 必須為 true
-      最小值
-    `
-  }
+  // 輸入框的 props
+  ...custom,
+  ...elCommon,
+  ...elInput,
+  ...elSelect,
+  ...elDatePicker,
+  ...elTimePicker,
+  ...elCheckbox,
+  ...elRadio,
+  ...elAutocomplete
 })
 
 const emit = defineEmits([
@@ -262,24 +184,65 @@ const isDot = computed(() => {
 
 const bindAttributes = computed(() => {
   return {
+    // 專案客製化屬性
     type: props.type,
     options: props.options,
+    onlyNumber: props.onlyNumber,
+    round: props.round,
+    max: props.max,
+    min: props.min,
+    isValidate: props.isValidate,
+    validateKey: props.validateKey,
+    hiddenErrorMessage: props.hiddenErrorMessage,
+    required: props.required,
+    validate: props.validate,
+    text: props.text,
+
+    label: '',
+    hiddenLabel: true,
+    // element ui plus 相關屬性直接綁定
     clearable: props.clearable,
+    disabled: props.disabled,
+    rows: props.rows,
+    showPassword: props.showPassword,
+    loading: props.loading,
+    // select
     remote: props.remote,
     remoteMethod: props.remoteMethod,
     multiple: props.multiple,
     multipleLimit: props.multipleLimit,
     maxCollapseTags: props.maxCollapseTags,
+    collapseTags: props.multiple,
+    collapseTagsTooltip: props.multiple,
     filterable: props.filterable,
+    allowCreate: props.allowCreate,
+    defaultFirstOption: props.defaultFirstOption,
+    // datePicker
     format: props.format,
     valueFormat: props.valueFormat,
-    disabled: !isActive.value,
-    hiddenLabel: true,
-    onlyNumber: props.onlyNumber,
-    round: props.round,
-    max: props.max,
-    min: props.min
+    shortcuts: props.shortcuts,
+    // timePicker
+    isRange: props.isRange,
+    rangeSeparator: props.rangeSeparator,
+    // autocomplete
+    valueKey: props.valueKey,
+    fitInputWidth: props.fitInputWidth,
+    fetchSuggestions: props.fetchSuggestions
   }
+})
+
+// slot
+const slots = useSlots()
+const slotList = computed(() => {
+  return [
+    'prepend', 'append',
+    'prefix', 'suffix',
+    'header', 'footer', 'empty',
+    'default', 'range-separator',
+    'option'
+  ].filter(slotName => {
+    return hasOwnProperty.call(slots, slotName)
+  })
 })
 
 defineExpose({
@@ -288,14 +251,14 @@ defineExpose({
     return { valid: true }
   },
   getDom () {
-    return document.querySelector(`.${scopedId}`)
+    return document.querySelector(`.__search__${scopedId}`)
   }
 })
 
 </script>
 
 <template>
-  <div class="search" :class="`${scopedId}`">
+  <div class="search" :class="`__search__${scopedId}`">
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="search-title">
@@ -318,7 +281,15 @@ defineExpose({
               @clear="emit('clear')"
               @blur="emit('blur')"
               @change="onInputChange"
-            />
+            >
+              <template
+                v-for="slotName in slotList"
+                :key="slotName"
+                #[slotName]
+              >
+                <slot :name="slotName"></slot>
+              </template>
+            </CustomInput>
           </div>
           <template #reference>
             <div @click="onVisibleClick(!isVisible)">
@@ -353,7 +324,15 @@ defineExpose({
         @clear="emit('clear')"
         @blur="emit('blur')"
         @change="onInputChange"
-      />
+      >
+        <template
+          v-for="slotName in slotList"
+          :key="slotName"
+          #[slotName]
+        >
+          <slot :name="slotName"></slot>
+        </template>
+      </CustomInput>
     </template>
   </div>
 </template>

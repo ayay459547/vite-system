@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie'
 import { getUuid, aesEncrypt, aesDecrypt } from '@/lib/lib_utils'
-import debounce from '@/lib/lib_debounce'
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
@@ -50,7 +49,7 @@ export const setToken = (userId: number) => {
   setCookie(
     'token',
     aesEncrypt(_token, privateKey),
-    { expires: (30 * 60) / (24 * 60 * 60) }
+    { expires: 30 / (24 * 60) }
   )
 }
 

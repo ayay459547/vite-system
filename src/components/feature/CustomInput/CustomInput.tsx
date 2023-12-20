@@ -403,7 +403,7 @@ const CustomInput = defineComponent({
      * @param slotList 插槽名稱列表
      * @returns 要渲染的插槽
      */
-    const getTemplate = (slotList: string[] = []) => {
+    const getSlot = (slotList: string[] = []) => {
       const res = {}
       slotList.forEach(slotName => {
         if (!isEmpty(slots[slotName])) {
@@ -444,7 +444,7 @@ const CustomInput = defineComponent({
               onInput={ (e: any) => onEvent.value.onInput(e) }
             >
               {{
-                ...getTemplate([
+                ...getSlot([
                   'prepend',
                   'append',
                   'prefix',
@@ -480,7 +480,7 @@ const CustomInput = defineComponent({
                 onInput={ (e: any) => onEvent.value.onInput(e) }
               >
                 {{
-                  ...getTemplate([
+                  ...getSlot([
                     'prepend',
                     'append',
                     'prefix',
@@ -511,7 +511,7 @@ const CustomInput = defineComponent({
               onRemove-tag={ (e: any) => onEvent.value.onRemoveTag(e) }
               onVisible-change={ (e: boolean) => onEvent.value.onVisibleChange(e) }
             >
-              {{ ...getTemplate(['prefix', 'empty']) }}
+              {{ ...getSlot(['header', 'footer', 'prefix', 'empty']) }}
             </FormSelect>
           )
         case 'year':
@@ -539,7 +539,7 @@ const CustomInput = defineComponent({
               onBlur={ (e: any) => onEvent.value.onBlur(e) }
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
-              {{ ...getTemplate(['default', 'range-separator']) }}
+              {{ ...getSlot(['default', 'range-separator']) }}
             </FormDatePicker>
           )
         case 'time':
@@ -575,7 +575,7 @@ const CustomInput = defineComponent({
               errorMessage={errorMessage.value}
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
-              {{ ...getTemplate(['default', 'option']) }}
+              {{ ...getSlot(['default', 'option']) }}
             </FormCheckbox>
           )
         case 'radio':
@@ -591,7 +591,7 @@ const CustomInput = defineComponent({
               errorMessage={errorMessage.value}
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
-              {{ ...getTemplate(['option']) }}
+              {{ ...getSlot(['option']) }}
             </FormRadio>
           )
         case 'autocomplete':
@@ -609,7 +609,7 @@ const CustomInput = defineComponent({
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
               {{
-                ...getTemplate([
+                ...getSlot([
                   'prepend',
                   'append',
                   'prefix',
@@ -641,7 +641,7 @@ const CustomInput = defineComponent({
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
               {{
-                ...getTemplate([
+                ...getSlot([
                   // 'prepend',
                   'append',
                   'prefix',

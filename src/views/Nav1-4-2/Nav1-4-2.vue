@@ -4,14 +4,15 @@ import { scrollToEl } from '@/lib/lib_utils'
 import {
   CustomIcon,
   CustomButton,
-  CustomInput
+  CustomInput,
+  CustomSearch
 } from '@/components'
 
-import FormInput from './form/FormInput.vue'
-import FormSelect from './form/FormSelect.vue'
-import FormDatePicker from './form/FormDatePicker.vue'
-import FormCheckbox from './form/FormCheckbox.vue'
-import FormRadio from './form/FormRadio.vue'
+// import FormInput from './form/FormInput.vue'
+// import FormSelect from './form/FormSelect.vue'
+// import FormDatePicker from './form/FormDatePicker.vue'
+// import FormCheckbox from './form/FormCheckbox.vue'
+// import FormRadio from './form/FormRadio.vue'
 
 import { ref, onMounted } from 'vue'
 
@@ -209,6 +210,12 @@ onMounted(() => {
           v-model="form.select"
           v-bind="formColumn.select"
         >
+          <template #header>
+            <div>header slot</div>
+          </template>
+          <template #footer>
+            <div>footer slot</div>
+          </template>
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
@@ -235,65 +242,25 @@ onMounted(() => {
         />
       </div>
 
-      <!-- 原來架構 -->
       <div class="input-form">
-        <!-- <FormInput
+        <CustomSearch
           v-model="form.name"
           v-bind="formColumn.name"
         >
           <template #prefix>
             <CustomIcon name="user"/>
           </template>
-        </FormInput>
+        </CustomSearch>
 
-        <FormInput
-          v-model="form.age"
-          v-bind="formColumn.age"
-        >
-          <template #prefix>
-            <CustomIcon name="user"/>
-          </template>
-        </FormInput>
-
-        <FormInput
+        <CustomSearch
           v-model="form.passowrd"
           v-bind="formColumn.passowrd"
         />
 
-        <FormInput
+        <CustomSearch
           v-model="form.phone"
           v-bind="formColumn.phone"
         />
-
-        <FormInput
-          v-model="form.ps"
-          v-bind="formColumn.ps"
-        />
-
-        <FormSelect
-          v-model="form.select"
-          v-bind="formColumn.select"
-        />
-
-        <FormDatePicker
-          v-model="form.date"
-          v-bind="formColumn.date"
-        />
-
-        <FormDatePicker
-          v-model="form.daterange"
-          v-bind="formColumn.daterange"
-        />
-
-        <FormCheckbox
-          v-model="form.checkbox"
-          v-bind="formColumn.checkbox"
-        />
-
-        <FormRadio
-          v-model="form.radio"
-          v-bind="formColumn.radio"
-        /> -->
       </div>
     </div>
 
@@ -322,7 +289,7 @@ onMounted(() => {
   &-container {
     display: flex;
     width: 100%;
-    gap: 8px;
+    gap: 32px;
   }
 
   &-simple,

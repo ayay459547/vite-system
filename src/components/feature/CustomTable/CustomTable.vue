@@ -307,6 +307,17 @@ const sortingList = ref<Sorting[]>([])
 const emitSortingList = computed(() => {
   return sortingList.value.filter(item => item.order !== 'none')
 })
+const activeSort = () => {
+  sortingList.value.sort((a, b) => {
+    if (
+      ['ascending', 'descending'].includes(a.order) &&
+      b.order === 'none'
+    ) {
+      return -1
+    }
+    return 1
+  })
+}
 const initSortingList = () => {
   sortingList.value = props.tableColumns.reduce((res, column) => {
     const _isOperations = (column?.isOperations ?? false)
@@ -320,8 +331,11 @@ const initSortingList = () => {
     }
     return res
   }, [])
+
+  activeSort()
 }
 const onSortingChange = () => {
+  activeSort()
   emit('sorting-change', getProxyData(emitSortingList.value))
 
   onShowChange({

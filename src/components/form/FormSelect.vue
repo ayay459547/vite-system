@@ -180,6 +180,12 @@ defineExpose({
           :value="item.value"
         />
       </slot>
+      <template v-if="hasSlot('header')" #header>
+        <slot name="header"></slot>
+      </template>
+      <template v-if="hasSlot('footer')" #footer>
+        <slot name="footer"></slot>
+      </template>
       <template v-if="hasSlot('prefix')" #prefix>
         <slot name="prefix"></slot>
       </template>
