@@ -580,10 +580,35 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
   tableWidth.value = width
   tableHeight.value = height
 }
+
+const isPrependShow = ref(false)
 </script>
 
 <template>
   <div v-loading="loading" class="table-wrapper">
+    <template v-if="hasSlot('prepend')">
+      <div class="table-prepend">
+        <Transition name="fixed">
+          <div v-show="isPrependShow" class="table-prepend-content">
+            <slot name="prepend"></slot>
+          </div>
+        </Transition>
+
+        <CustomButton
+          :icon-name="isPrependShow ? 'xmark' : 'angles-down'"
+          type="primary"
+          class="table-prepend-btn"
+          :class="{
+            'is-open': isPrependShow,
+            'is-close': !isPrependShow,
+          }"
+          circle
+          plain
+          @click="isPrependShow = !isPrependShow"
+        />
+      </div>
+    </template>
+
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
         <CustomPopover
@@ -762,19 +787,47 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
 </template>
 
 <style lang="scss" scoped>
+$border-style: 1px solid #ebeef5;
 .table {
   &-wrapper {
     width: 100%;
     height: 100%;
-    border: 1px solid #ebeef5;
+    border: $border-style;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     .header-slot {
       width: calc(100% - 24px);
       padding-right: 8px;;
       display: inline-block;
+    }
+  }
+
+  &-prepend {
+    height: fit-content;
+    border: $border-style;
+    border-radius: 6px 6px 0 0;
+    position: relative;
+    background-color: lighten($system-bg-color, 53%);
+
+    &-content {
+      width: 100%;
+      height: 100%;
+      padding: 6px;
+    }
+    &-btn {
+      position: absolute;
+      top: 0;
+      left: 60%;
+      transition-duration: 0.2s;
+      &.is-open {
+        transform: translateY(-50%) rotateZ(180deg);
+      }
+      &.is-close {
+        transform: translateY(-50%) rotateZ(0deg);
+      }
     }
   }
 

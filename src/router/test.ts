@@ -8,88 +8,96 @@ const testRoutes: RouterTree[] = [
     icon: 'vial',
     leaves: [
       {
-        name: 'test-chart1',
-        title: '測試1',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-chart1',
-        icon: 'chart-pie',
-        component: () => import('@/views/TestPage/TestChart1.vue')
-      },
-      {
-        name: 'test-chart2',
-        title: '測試2',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-chart2',
-        icon: 'satellite-dish',
-        component: () => import('@/views/TestPage/TestChart2.vue')
-      },
-      {
-        name: 'test-chart3',
-        title: '測試3',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-chart3',
-        icon: 'chart-column',
-        component: () => import('@/views/TestPage/TestChart3.vue')
-      },
-      {
-        name: 'test-chart4',
-        title: '測試4',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-chart4',
-        icon: 'chart-simple',
-        component: () => import('@/views/TestPage/TestChart4.vue')
-      },
-      {
-        name: 'test-chart5',
-        title: '測試5',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-chart5',
-        icon: 'chart-line',
-        component: () => import('@/views/TestPage/TestChart5.vue')
-      },
-      {
-        name: 'test-chart6',
-        title: '測試6',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-chart6',
-        icon: 'square-poll-vertical',
-        component: () => import('@/views/TestPage/TestChart6.vue')
-      },
-      {
-        name: 'test-excel',
-        title: '測試Excel',
-        meta: {
-          keepAlive: false,
-          status: 'completed'
-        },
-        systemType: ['development', 'test'],
-        path: '/test-excel',
-        icon: 'file-arrow-down',
-        component: () => import('@/views/TestPage/TestExcel.vue')
+        name: 'test-caleb',
+        title: 'Caleb',
+        systemType: ['new'],
+        icon: 'paw',
+        leaves: [
+          {
+            name: 'test-chart1',
+            title: '測試1',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-chart1',
+            icon: 'chart-pie',
+            component: () => import('@/views/TestPage/TestChart1.vue')
+          },
+          {
+            name: 'test-chart2',
+            title: '測試2',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-chart2',
+            icon: 'satellite-dish',
+            component: () => import('@/views/TestPage/TestChart2.vue')
+          },
+          {
+            name: 'test-chart3',
+            title: '測試3',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-chart3',
+            icon: 'chart-column',
+            component: () => import('@/views/TestPage/TestChart3.vue')
+          },
+          {
+            name: 'test-chart4',
+            title: '測試4',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-chart4',
+            icon: 'chart-simple',
+            component: () => import('@/views/TestPage/TestChart4.vue')
+          },
+          {
+            name: 'test-chart5',
+            title: '測試5',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-chart5',
+            icon: 'chart-line',
+            component: () => import('@/views/TestPage/TestChart5.vue')
+          },
+          {
+            name: 'test-chart6',
+            title: '測試6',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-chart6',
+            icon: 'square-poll-vertical',
+            component: () => import('@/views/TestPage/TestChart6.vue')
+          },
+          {
+            name: 'test-excel',
+            title: '測試Excel',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-excel',
+            icon: 'file-arrow-down',
+            component: () => import('@/views/TestPage/TestExcel.vue')
+          }
+        ]
       }
     ]
   },

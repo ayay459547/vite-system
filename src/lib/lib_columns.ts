@@ -189,7 +189,7 @@ export interface FormListSetting<T> {
   forms: Ref<Array<T>>
   reset: () => void
   validate: () => Promise<Array<any>>
-  add: () => void
+  add: (value?: any) => void
   remove: (rowIndex: number) => void
   clear: () => void
 }
@@ -383,10 +383,11 @@ export const getTableSetting = (
     sort?: {
       key: null | string,
       order: null | 'ascending' | 'descending'
-    },
+    }
     sorting?: boolean
-    hiddenExcel?: boolean,
+    hiddenExcel?: boolean
     tableSize?: TableSize
+    showType?: 'custom' | 'auto'
   }
 ): TableSetting => {
   const {

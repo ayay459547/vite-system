@@ -186,42 +186,6 @@ onMounted(() => {
 
 <template>
   <div v-loading="isLoading" class="page">
-    <div class="flex-row i-ga-md content-between">
-      <CustomButton
-        type="primary"
-        :label="i18nTranslate('create')"
-        icon-name="plus"
-        icon-move="scale"
-        :disabled="!userPermission.create"
-        @click="modal.create = true"
-      />
-
-      <div class="flex-row i-ga-md">
-        <GroupSearch
-          :columns="filterColumn"
-          class="grid-row"
-          @reset="resetFilter"
-          @submit="throttleInit()"
-        >
-          <template #search-all="{ prop, column }">
-            <CustomSearch
-              class="grid-col-xs-6"
-              v-model="filter[prop]"
-              v-model:active="activeFilter[prop]"
-              v-bind="column"
-            />
-          </template>
-        </GroupSearch>
-
-        <CustomButton
-          :label="i18nTranslate('refrush')"
-          icon-name="rotate"
-          icon-move="rotate"
-          @click="throttleInit()"
-        />
-      </div>
-    </div>
-
     <CustomModal
       v-model="modal.create"
       width-size="large"
@@ -240,6 +204,44 @@ onMounted(() => {
       @excel="download"
       @show-change="throttleInit"
     >
+      <template #prepend>
+        <div class="flex-row i-ga-xs content-between">
+          <CustomButton
+            type="primary"
+            :label="i18nTranslate('create')"
+            icon-name="plus"
+            icon-move="scale"
+            :disabled="!userPermission.create"
+            @click="modal.create = true"
+          />
+
+          <div class="flex-row i-ga-xs">
+            <GroupSearch
+              :columns="filterColumn"
+              class="grid-row"
+              @reset="resetFilter"
+              @submit="throttleInit()"
+            >
+              <template #search-all="{ prop, column }">
+                <CustomSearch
+                  class="grid-col-xs-6"
+                  v-model="filter[prop]"
+                  v-model:active="activeFilter[prop]"
+                  v-bind="column"
+                />
+              </template>
+            </GroupSearch>
+
+            <CustomButton
+              :label="i18nTranslate('refrush')"
+              icon-name="rotate"
+              icon-move="rotate"
+              @click="throttleInit()"
+            />
+          </div>
+        </div>
+      </template>
+
       <template #header-all="{ prop }">
         <CustomSearch
           v-model="filter[prop]"

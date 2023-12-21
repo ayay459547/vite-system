@@ -39,7 +39,7 @@ onMounted(() => {
 
     <CustomDivider />
 
-    <div class="flex-row i-ga-md">
+    <div class="flex-row i-ga-xs">
       <CustomButton
         type="success"
         label="打開 Dialog"
@@ -66,7 +66,7 @@ onMounted(() => {
 
     <CustomDivider />
 
-    <div class="flex-row i-ga-md">
+    <div class="flex-row i-ga-xs">
       <CustomButton
         type="primary"
         label="打開 Modal"
@@ -91,7 +91,7 @@ onMounted(() => {
       </CustomModal>
     </div>
 
-    <div class="flex-row i-ga-md">
+    <div class="flex-row i-ga-xs">
       <CustomButton
         type="primary"
         label="打開 Modal2"
@@ -117,7 +117,7 @@ onMounted(() => {
       </CustomModal>
     </div>
 
-    <div class="flex-row i-ga-md">
+    <div class="flex-row i-ga-xs">
       <CustomButton
         type="primary"
         label="打開 Modal3"
