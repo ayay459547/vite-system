@@ -79,7 +79,7 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="group-wrapper">
+  <div class="__group-wrapper">
     <CustomPopover
       v-model:visible="visible"
       :width="props.settingWidth + 120"
@@ -102,7 +102,7 @@ const submit = () => {
           <CustomDraggable
             v-model="tempValue"
             item-key="key"
-            class="group-container column-list"
+            class="__group-container __column-list"
             :handle="`.sorting-move`"
             :style="{
               maxHeight: props.settingHeight,
@@ -110,7 +110,7 @@ const submit = () => {
             }"
           >
             <template #item="{ element }">
-              <div class="column-item" :class="element.order !== 'none' ? 'is-active' : ''">
+              <div class="__column-item" :class="element.order !== 'none' ? 'is-active' : ''">
                 <CustomInput
                   :model-value="element.order"
                   @update:model-value="setSortingValue($event, element.key)"
@@ -123,7 +123,7 @@ const submit = () => {
                   ]"
                 />
 
-                <div class="column-item-move">
+                <div class="__column-item-move">
                   <CustomBadge :value="activeIndexMap[element.key]" :hidden="activeIndexMap[element.key] <= 0">
                     <CustomButton
                       type="info"
@@ -139,7 +139,7 @@ const submit = () => {
           </CustomDraggable>
         </div>
 
-        <div class="column-reset">
+        <div class="__column-reset">
           <CustomButton
             :label="$t('returnDefault')"
             type="info"
@@ -163,7 +163,7 @@ const submit = () => {
 </template>
 
 <style lang="scss" scoped>
-.group {
+.__group {
   &-wrapper {
     width: fit-content;
     height: fit-content;
@@ -175,7 +175,7 @@ const submit = () => {
   }
 }
 
-.column {
+.__column {
   &-list {
     display: flex;
     flex-direction: column;

@@ -45,11 +45,11 @@ export const setToken = (userId: number) => {
   }
   const _token = JSON.stringify(temp)
 
-  // 設定 30 分鐘
+  // 設定 60 分鐘
   setCookie(
     'token',
     aesEncrypt(_token, privateKey),
-    { expires: 30 / (24 * 60) }
+    { expires: 60 / (24 * 60) }
   )
 }
 

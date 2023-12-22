@@ -8,7 +8,7 @@ import { CustomIcon, CustomInput } from '@/components'
 import { loginSystem } from './api'
 
 const hook: Hook = inject('hook')
-const { i18nTranslate, swal } = hook()
+const { i18nTranslate } = hook()
 
 const emit = defineEmits(['login'])
 
@@ -27,13 +27,6 @@ const login = () => {
     }
   }).catch(() => {
     isLoading.value = false
-
-    swal({
-      icon: 'warning',
-      title: '登入錯誤',
-      text: '登入資料狀態有誤，請連絡相關人員',
-      showCancelButton: false
-    })
   })
 
 }

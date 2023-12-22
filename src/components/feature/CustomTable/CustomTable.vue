@@ -11,7 +11,7 @@ import {
 import type { TableColumnCtx } from 'element-plus'
 import { ElPagination } from 'element-plus'
 
-import { tipLog, isEmpty, getProxyData } from '@/lib/lib_utils'
+import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
@@ -397,7 +397,7 @@ const showData = computed(() => {
     return props.tableData
   } else {
     const start = (currentPage.value - 1) * pageSize.value
-    const end = pageSize.value
+    const end = start + pageSize.value
 
     return (props.tableData as Array<any>).slice(start, end)
   }
@@ -581,35 +581,55 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
   tableHeight.value = height
 }
 
-const isPrependShow = ref(false)
+const _prependIsOpen = ref(false)
+const prependIsOpen = computed<boolean>({
+  get () {
+    return _prependIsOpen.value
+  },
+  set (value) {
+    localStorage.setItem('prependIsOpen', `${value}`)
+    _prependIsOpen.value = value
+  }
+})
+onMounted(() => {
+  const _prependIsOpen = localStorage.getItem('prependIsOpen')
+  prependIsOpen.value = _prependIsOpen === 'true'
+})
+
+const scopedId = getUuid('__i-table__')
+
 </script>
 
 <template>
-  <div v-loading="loading" class="table-wrapper">
+  <div
+    v-loading="loading"
+    class="__table-wrapper"
+    :class="scopedId"
+  >
     <template v-if="hasSlot('prepend')">
-      <div class="table-prepend">
+      <div class="__table-prepend">
         <Transition name="fixed">
-          <div v-show="isPrependShow" class="table-prepend-content">
+          <div v-show="prependIsOpen" class="__table-prepend-content">
             <slot name="prepend"></slot>
           </div>
         </Transition>
 
         <CustomButton
-          :icon-name="isPrependShow ? 'xmark' : 'angles-down'"
+          :icon-name="prependIsOpen ? 'xmark' : 'angles-down'"
           type="primary"
-          class="table-prepend-btn"
+          class="__table-prepend-btn"
           :class="{
-            'is-open': isPrependShow,
-            'is-close': !isPrependShow,
+            'is-open': prependIsOpen,
+            'is-close': !prependIsOpen,
           }"
           circle
           plain
-          @click="isPrependShow = !isPrependShow"
+          @click="prependIsOpen = !prependIsOpen"
         />
       </div>
     </template>
 
-    <div class="table-setting grid-row">
+    <div class="__table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
         <CustomPopover
           v-if="!props.hiddenExcel"
@@ -626,12 +646,12 @@ const isPrependShow = ref(false)
             />
           </template>
 
-          <div class="excel-list">
-            <div class="excel-item" @click="excel('all')">
+          <div class="__excel-list">
+            <div class="__excel-item" @click="excel('all')">
               <CustomIcon name="table-list" class="icon"/>
               <div class="text">{{ $t('allData') }}</div>
             </div>
-            <div class="excel-item" @click="excel('page')">
+            <div class="__excel-item" @click="excel('page')">
               <CustomIcon type="far" name="file-lines" class="icon"/>
               <div class="text">{{ $t('pageData') }}</div>
             </div>
@@ -695,7 +715,7 @@ const isPrependShow = ref(false)
       </div>
     </div>
 
-    <div class="table-container">
+    <div class="__table-container">
       <TableMain
         v-if="isRender"
         ref="tableMainRef"
@@ -743,7 +763,7 @@ const isPrependShow = ref(false)
           :key="slotKey"
           #[getHeaderSlot(slotKey)]="scope"
         >
-          <div class="table-sorting-column">
+          <div class="__table-sorting-column">
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
               <label>{{ scope.label }}</label>
             </slot>
@@ -767,9 +787,9 @@ const isPrependShow = ref(false)
       </TableMain>
     </div>
 
-    <div v-if="!props.lazyLoading" class="table-pagination">
-      <div class="table-pagination-left"></div>
-      <div class="table-pagination-center">
+    <div v-if="!props.lazyLoading" class="__table-pagination">
+      <div class="__table-pagination-left"></div>
+      <div class="__table-pagination-center">
         <ElPagination
           background
           layout="prev, pager, next"
@@ -779,7 +799,7 @@ const isPrependShow = ref(false)
           @update:current-page="onPageChange"
         />
       </div>
-      <div class="table-pagination-right">
+      <div class="__table-pagination-right">
         <span>{{ `${$t('total')}：${props.tableDataCount}` }}</span>
       </div>
     </div>
@@ -788,7 +808,7 @@ const isPrependShow = ref(false)
 
 <style lang="scss" scoped>
 $border-style: 1px solid #ebeef5;
-.table {
+.__table {
   &-wrapper {
     width: 100%;
     height: 100%;
@@ -932,7 +952,7 @@ $border-style: 1px solid #ebeef5;
   }
 }
 
-.excel {
+.__excel {
   &-list {
     display: flex;
     flex-direction: column;

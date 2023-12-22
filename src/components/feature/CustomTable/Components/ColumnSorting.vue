@@ -110,16 +110,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="isShow" class="sort-wrapper" @click="onSortClick('')">
+  <div v-if="isShow" class="__sort-wrapper" @click="onSortClick('')">
     <CustomBadge :value="columnValue.index" :hidden="columnValue.order === 'none'">
-      <div class="sort-container">
+      <div class="__sort-container">
         <i
-          class="sort-asc"
+          class="__sort-asc"
           :class="{ 'is-active': columnValue.order === 'ascending' }"
           @click.stop="onAscClick"
         ></i>
         <i
-          class="sort-desc"
+          class="__sort-desc"
           :class="{ 'is-active': columnValue.order === 'descending' }"
           @click.stop="onDescClick"
         ></i>
@@ -129,7 +129,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.sort {
+.__sort {
   &-wrapper {
     padding: 8px 4px 0 0;
     display: inline-block;

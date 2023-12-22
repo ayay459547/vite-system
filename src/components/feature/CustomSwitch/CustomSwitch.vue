@@ -55,7 +55,7 @@ const onSwitchChange = (val: boolean) => {
   emit('change', val)
 }
 
-const scopedId = getUuid('__i-__switch__')
+const scopedId = getUuid('__i-switch__')
 
 </script>
 

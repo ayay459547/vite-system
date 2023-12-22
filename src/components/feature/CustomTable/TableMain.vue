@@ -281,8 +281,8 @@ const svg = `
 </script>
 
 <template>
-  <div ref="tableMainRef" class="table-main-wrapper">
-    <div class="table-main-container">
+  <div ref="tableMainRef" class="__table-main-wrapper">
+    <div class="__table-main-container">
       <ElTable
         ref="elTableRef"
         stripe
@@ -572,7 +572,7 @@ const svg = `
 </template>
 
 <style lang="scss" scoped>
-:deep(.table-main-container) {
+:deep(.__table-main-container) {
   .el-table {
     // 修 table 寬度自適應
     position: absolute;
@@ -655,6 +655,9 @@ const svg = `
       .el-table__row .el-table__cell {
         background-color: inherit;
         transition: background-color 0.1s ease-out;
+        & > .cell {
+          content-visibility: auto;
+        }
       }
     }
 
@@ -683,7 +686,7 @@ const svg = `
   }
 }
 
-.table-main {
+.__table-main {
   &-wrapper {
     width: 100%;
     height: 100%;

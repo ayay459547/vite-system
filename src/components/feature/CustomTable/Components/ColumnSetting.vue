@@ -176,7 +176,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="column-setting">
+  <div class="__column-setting">
     <CustomPopover
       placement="bottom-start"
       :width="props.settingWidth"
@@ -201,13 +201,13 @@ onBeforeMount(async () => {
             @start="drag = true"
             @end="onDragend"
             item-key="key"
-            class="column-list"
+            class="__column-list"
             :handle="`.setting-move`"
             :style="{
             }"
           >
             <template #item="{ element }">
-              <div v-if="!element.isOperations" class="column-item">
+              <div v-if="!element.isOperations" class="__column-item">
                 <div class="flex-row i-ga-xs">
                   <div>
                     <CustomInput
@@ -231,7 +231,7 @@ onBeforeMount(async () => {
           </CustomDraggable>
         </div>
 
-        <div class="column-reset">
+        <div class="__column-reset">
           <CustomButton
             :label="$t('returnDefault')"
             type="info"
@@ -246,7 +246,7 @@ onBeforeMount(async () => {
 </template>
 
 <style lang="scss" scoped>
-.column {
+.__column {
   &-setting {
     width: fit-content;
     height: fit-content;
