@@ -2,7 +2,14 @@
 import type { PropType } from 'vue'
 import { computed, useSlots, ref, onMounted } from 'vue'
 import { ElInput } from 'element-plus'
-import { isEmpty, round, floor, ceil, hasOwnProperty } from '@/lib/lib_utils'
+import {
+  isEmpty,
+  round,
+  floor,
+  ceil,
+  hasOwnProperty,
+  getUuid
+} from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 
@@ -166,10 +173,12 @@ const inputValue = computed({
   }
 })
 
+const scopedId = getUuid('__i-input__')
+
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 const elInputRef = ref()
@@ -189,11 +198,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="i-input">
+  <div class="__i-input__" :class="scopedId">
     <ElInput
       ref="elInputRef"
       v-model="inputValue"
-      class="i-input"
+      class="__i-input__"
       :placeholder="$t('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
@@ -220,7 +229,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-input) {
+:deep(.__i-input__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -238,7 +247,7 @@ defineExpose({
   }
 }
 
-.i-input {
+.__i-input__ {
   width: 100%;
   height: 100%;
 }

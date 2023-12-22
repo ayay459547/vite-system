@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { getUuid } from '@/lib/lib_utils'
 
 export type IconType = 'fas' | 'far' | 'fab'
 export type IconSize = 'large' | 'default' | 'small'
@@ -26,19 +27,26 @@ const getIcon = computed(() => {
   if (props.icon.length > 0) return props.icon
   return [props.type, props.name]
 })
+
+const scopedId = getUuid('__i-icon__')
+
 </script>
 
 <template>
   <div
-    class="icon-container"
-    :class="`size-${props.size} ${props.iconClass}`"
+    :class="[
+      '__icon-container',
+      `size-${props.size}`,
+      `${props.iconClass}`,
+      scopedId
+    ]"
   >
     <font-awesome-icon :icon="getIcon" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.icon-container {
+.__icon-container {
   width: fit-content;
   height: fit-content;
   &.size-large {

@@ -67,7 +67,7 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
-const scopedId = `__tabs__${getUuid()}`
+const scopedId = getUuid('__tabs__')
 const scrollToCurrentTab = (currentTab: string) => {
   if (!props.move) return
 
@@ -182,18 +182,18 @@ onUnmounted(() => {
 <template>
   <div
     ref="wrapRef"
-    class="tabs-wrapper"
+    class="__tabs-wrapper"
     :class="[
       { 'is-background': props.background },
       `${scopedId}`
     ]">
-    <div class="tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
+    <div class="__tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>
     </div>
     <div
       ref="conRef"
       :class="[
-        'tabs-container',
+        '__tabs-container',
         {
           left: props.tabPosition === 'left',
           right: props.tabPosition === 'right'
@@ -201,10 +201,10 @@ onUnmounted(() => {
       ]"
       :style="{ width: conWidth + 'px' }"
     >
-      <div ref="listRef" class="tabs-list" :class="{ 'is-background': props.background }">
+      <div ref="listRef" class="__tabs-list" :class="{ 'is-background': props.background }">
         <div
           v-for="element in props.list"
-          class="tabs-item"
+          class="__tabs-item"
           :class="[
             {
               'is-active': props.modelValue === element.key,
@@ -221,14 +221,14 @@ onUnmounted(() => {
           <template v-if="props.remove">
             <CustomIcon
               name="xmark"
-              class="tabs-item-remove"
+              class="__tabs-item-remove"
               @click="removeTab(element.key, element.label, element.value)"
             />
           </template>
         </div>
       </div>
     </div>
-    <div class="tabs-right-arrow" :class="{ 'is-show': arrowIsShow }" @click="decreaseScroll">
+    <div class="__tabs-right-arrow" :class="{ 'is-show': arrowIsShow }" @click="decreaseScroll">
       <CustomIcon name="chevron-right"/>
     </div>
   </div>
@@ -240,7 +240,7 @@ onUnmounted(() => {
   height: 0;
 }
 $is-background: #f5f7fa;
-.tabs {
+.__tabs {
   &-wrapper {
     width: 100%;
     height: 40px;

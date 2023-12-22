@@ -81,7 +81,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
 
   const defaultValue = {}
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty.call(column, type)) {
+    if(hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
 
@@ -232,7 +232,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
 
   const defaultValue = {}
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty.call(column, type)) {
+    if(hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
 
@@ -447,7 +447,7 @@ export const getTableSetting = (
   }
   const resColumns = []
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty.call(column, type)) {
+    if(hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       if (temp.children ?? false) {
         delete temp.children
@@ -480,7 +480,7 @@ export const getTableSetting = (
     settingColumns.forEach((tempColumn: ColumnItem) => {
       let _columnWidth = 100
       // 設定欄位
-      if (hasOwnProperty.call(columns, tempColumn.key)) {
+      if (hasOwnProperty(columns, tempColumn.key)) {
         const _currentColumn = columns[tempColumn.key][type] ?? null
 
         if (_currentColumn) {
@@ -660,7 +660,7 @@ export const getSimpleTableSetting = (
   }
   const resColumns = []
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty.call(column, type)) {
+    if(hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns.push(temp)
     }
@@ -684,7 +684,7 @@ export const getSimpleTableSetting = (
     resColumns.forEach((tempColumn: ColumnItem) => {
       let _columnWidth = 100
       // 設定欄位
-      if (hasOwnProperty.call(columns, tempColumn.key)) {
+      if (hasOwnProperty(columns, tempColumn.key)) {
         const _currentColumn = columns[tempColumn.key][type] ?? null
 
         if (_currentColumn) {

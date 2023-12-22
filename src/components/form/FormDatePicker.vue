@@ -9,7 +9,7 @@ import {
 } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 const { t } = useI18n()
 
 type BaseValue = string | null
@@ -97,7 +97,7 @@ const inputValue = computed({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 // event
@@ -114,6 +114,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('touchstart', e => e.preventDefault())
 })
+
+const scopedId = getUuid('__i-date-picker__')
 
 const elDatePickerRef = ref()
 defineExpose({
@@ -132,11 +134,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="i-date-picker">
+  <div class="__i-date-picker__" :class="scopedId">
     <ElDatePicker
       ref="elDatePickerRef"
       v-model="inputValue"
-      class="i-date-picker"
+      class="__i-date-picker__"
       :placeholder="$t('pleaseSelect')"
       :start-placeholder="t('startTime')"
       :end-placeholder="t('endTime')"
@@ -156,7 +158,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-date-picker) {
+:deep(.__i-date-picker__) {
   &.el-date-editor {
     width: 100% !important;
     max-height: 32px !important;
@@ -184,7 +186,7 @@ defineExpose({
   }
 }
 
-.i-date-picker {
+.__i-date-picker__ {
   width: 100%;
   height: 100%;
 }

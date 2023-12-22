@@ -1,30 +1,32 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import type { Hook } from '@/declare/hook'
+import { inject, ref } from 'vue'
 import { getFormSetting } from '@/lib/lib_columns'
+import { isEmpty } from '@/lib/lib_utils'
 
 import { CustomIcon, CustomInput } from '@/components'
 import { loginSystem } from './api'
 
 const hook: Hook = inject('hook')
-const { i18nTranslate, loading, swal } = hook()
+const { i18nTranslate, swal } = hook()
 
 const emit = defineEmits(['login'])
 
-const login = () => {
-  loading(true, '登入中')
+const isLoading = ref(false)
 
+const login = () => {
   validateForm().then(async () => {
     const { account, passowrd } = form
-    const { data: userId } = await loginSystem(account, passowrd)
+    isLoading.value = true
+    const userId = await loginSystem(account, passowrd)
 
-    if (userId > 0) {
+    if (!isEmpty(userId)) {
       emit('login', userId)
     } else {
-      loading(false)
+      isLoading.value = false
     }
   }).catch(() => {
-    loading(false)
+    isLoading.value = false
 
     swal({
       icon: 'warning',
@@ -41,7 +43,7 @@ const columnSetting = {
     label: '帳號',
     fitler: {
       type: 'text',
-      default: 'admin',
+      default: '',
       required: true
     }
   },
@@ -49,7 +51,7 @@ const columnSetting = {
     label: '密碼',
     fitler: {
       type: 'password',
-      default: '123',
+      default: '',
       required: true
     }
   }
@@ -66,10 +68,28 @@ const {
   validate: validateForm
 } = getFormSetting<Form>(columnSetting, 'fitler')
 
+const svg = `
+  <path class="path" d="
+    M 30 15
+    L 28 17
+    M 25.61 25.61
+    A 15 15, 0, 0, 1, 15 30
+    A 15 15, 0, 1, 1, 27.99 7.5
+    L 15 15
+  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+`
+
 </script>
 
 <template>
-  <div class="login-wrapper">
+  <div
+    v-loading="isLoading"
+    element-loading-text="Loading..."
+    :element-loading-spinner="svg"
+    element-loading-svg-view-box="-10, -10, 50, 50"
+    element-loading-background="rgba(122, 122, 122, 0.8)"
+    class="login-wrapper"
+  >
     <img
       class="login-img-lg"
       src="@/assets/images/common/login-lg.svg"

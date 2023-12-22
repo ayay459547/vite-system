@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Hook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
-import { ref, inject, useSlots } from 'vue'
-import type { PropType } from 'vue'
+import { type PropType, ref, inject, useSlots } from 'vue'
+import { getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({
   columns: {
@@ -18,7 +18,7 @@ const props = defineProps({
   },
   size: {
     type: [String, Number] as PropType<string | number>,
-    default: 400
+    default: 360
   }
 })
 
@@ -50,10 +50,12 @@ defineExpose({
   }
 })
 
+const scopedId = getUuid('__i-group-search__')
+
 </script>
 
 <template>
-  <div class="group-search">
+  <div class="__group-search" :class="scopedId">
     <CustomButton
       :label="i18nTranslate('filter')"
       icon-name="filter"
@@ -67,7 +69,7 @@ defineExpose({
       direction="ttb"
     >
       <template #header>
-        <div class="group-header">
+        <div class="__group-header">
           <label>{{ i18nTranslate('search') }}</label>
         </div>
       </template>
@@ -99,7 +101,7 @@ defineExpose({
       </template>
 
       <template #footer>
-        <div class="group-footer">
+        <div class="__group-footer">
           <CustomButton
             icon-name='chevron-left'
             icon-move='translate'
@@ -127,7 +129,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.group {
+.__group {
   &-search {
     width: fit-content;
     height: fit-content;

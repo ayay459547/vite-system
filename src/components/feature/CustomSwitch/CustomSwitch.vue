@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { computed } from 'vue'
+import { type PropType, computed } from 'vue'
 import { ElSwitch } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 export type Size = '' | 'large'| 'default'| 'small'
 export type ModelValue = boolean
@@ -9,43 +9,35 @@ export type ModelValue = boolean
 const props = defineProps({
   modelValue: {
     type: Boolean as PropType<ModelValue>,
-    required: true,
-    description: 'v-model 綁定是否顯示'
+    required: true
   },
   style: {
     type: String as PropType<string>,
-    default: '',
-    description: '樣式'
+    default: ''
   },
   activeText: {
     type: String as PropType<string>,
-    default: '',
-    description: '啟用文字'
+    default: ''
   },
   inactiveText: {
     type: String as PropType<string>,
-    default: '',
-    description: '不啟用文字'
+    default: ''
   },
   disabled: {
     type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否禁用'
+    default: false
   },
   loading: {
     type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否讀取中'
+    default: false
   },
   size: {
     type: String as PropType<Size>,
-    default: '',
-    description: '大小'
+    default: ''
   },
   width: {
     type: [String, Number] as PropType<string | number>,
-    default: '',
-    description: '寬度'
+    default: ''
   }
 })
 
@@ -63,13 +55,15 @@ const onSwitchChange = (val: boolean) => {
   emit('change', val)
 }
 
+const scopedId = getUuid('__i-__switch__')
+
 </script>
 
 <template>
-  <div class="switch-wrapper">
+  <div class="__switch-wrapper" :class="scopedId">
     <ElSwitch
       v-model="tempValue"
-      class="i-switch"
+      class="__i-switch"
       :style="props.style"
       :active-text="props.activeText"
       :inactive-text="props.inactiveText"
@@ -84,14 +78,14 @@ const onSwitchChange = (val: boolean) => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-switch) {
+:deep(.__i-switch) {
   .el-switch__input {
     span[aria-hidden] {
       font-weight: 600;
     }
   }
 }
-.switch {
+.__switch {
   &-wrapper {
     width: fit-content;
     height: fit-content;

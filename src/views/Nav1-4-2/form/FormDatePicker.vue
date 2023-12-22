@@ -170,7 +170,7 @@ defineExpose({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 onMounted(() => {

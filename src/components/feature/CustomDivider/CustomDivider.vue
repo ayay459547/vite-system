@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
+import { type PropType, useSlots } from 'vue'
 import { ElDivider } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 export type DividerDirection = 'horizontal' | 'vertical'
 
@@ -38,10 +38,12 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+const scopedId = getUuid('__i-divider__')
+
 </script>
 
 <template>
-  <div class="divider-wrapper">
+  <div class="__divider-wrapper" :class="scopedId">
     <ElDivider
       :direction="props.direction"
       :border-style="props.borderStyle"
@@ -55,7 +57,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.divider {
+.__divider {
   &-wrapper {
     width: 100%;
     height: fit-content;

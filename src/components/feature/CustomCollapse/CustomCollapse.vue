@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import {
+  type PropType,
   type WritableComputedRef,
   useSlots,
   computed
 } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { CustomEmpty } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 export type ModelValue = string | string[]
 
@@ -58,10 +59,12 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+const scopedId = getUuid('__i-collapse__')
+
 </script>
 
 <template>
-  <div class="collapse">
+  <div class="__collapse" :class="scopedId">
     <ElCollapse
       v-model="tempValue"
       :accordion="props.accordion"
@@ -77,12 +80,12 @@ const hasSlot = (prop: string): boolean => {
         >
           <template v-if="hasSlot(`${item.value}-title`)" #title>
             <slot :name="`${item.value}-title`" v-bind="item">
-              <label class="collapse-title">{{ item.label }}</label>
+              <label class="__collapse-title">{{ item.label }}</label>
             </slot>
           </template>
           <template v-else #title>
             <slot name="title" v-bind="item">
-              <label class="collapse-title">{{ item.label }}</label>
+              <label class="__collapse-title">{{ item.label }}</label>
             </slot>
           </template>
 
@@ -106,7 +109,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.collapse {
+.__collapse {
   width: 100%;
   height: fit-content;
 

@@ -2,7 +2,7 @@
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 import type { PropType } from 'vue'
 import { h } from 'vue'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export default {
   props: {
@@ -38,6 +38,8 @@ export default {
   },
   // emits: [],
   setup (props) {
+    const scopedId = getUuid('__i-qrcode__')
+
     const qrProps = ({
       text: props.text,
       bgSrc: props.bgSrc,
@@ -47,7 +49,7 @@ export default {
     const SimpleQRcode = () => h(
       'div',
       {
-        class: '__qrcode',
+        class: `__i-qrcode__ ${scopedId}`,
         style: {
           minWith: props.width,
           minHieght: props.hieght
@@ -65,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss">
-.__qrcode {
+.__i-qrcode__ {
   width: fit-content;
   height: fit-content;
 }

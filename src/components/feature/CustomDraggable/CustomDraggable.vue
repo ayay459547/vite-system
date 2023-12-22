@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable'
-import { computed, useSlots } from 'vue'
-import type { PropType } from 'vue'
-import { isEmpty } from '@/lib/lib_utils'
+import { type PropType, computed, useSlots } from 'vue'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()
@@ -173,10 +172,12 @@ const listValue = computed({
   }
 })
 
+const scopedId = getUuid('__i-draggable__')
+
 </script>
 
 <template>
-  <div class="draggable-wrapper">
+  <div class="__draggable-wrapper" :class="scopedId">
     <Draggable
       v-model="listValue"
       :handle="props.handle"
@@ -187,7 +188,7 @@ const listValue = computed({
       :tag="props.tag"
       :disabled="false"
       :animation="200"
-      class="list-group"
+      class="__list-group"
       :class="`flex-${props.direction} ${props.class}`"
       :ghost-class="ghostClass"
       :style="{
@@ -213,7 +214,7 @@ const listValue = computed({
       <template #item="{ element, index }">
         <li
           :class="[
-            `__draggable list-group-item ${props.rowClass}`,
+            `__draggable __list-group-item ${props.rowClass}`,
             props.stripe ? 'stripe' : ''
           ]"
           :style="props.rowStyle"
@@ -234,7 +235,7 @@ const listValue = computed({
 </template>
 
 <style lang="scss" scoped>
-.draggable {
+.__draggable {
   &-wrapper {
     display: contents;
 
@@ -250,7 +251,7 @@ const listValue = computed({
   background: #c8ebfb;
 }
 
-.list-group {
+.__list-group {
   // width: 100%;
   // height: 100%;
 

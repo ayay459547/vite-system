@@ -106,7 +106,7 @@ const isActive = computed({
   }
 })
 
-const scopedId = `__search__${getUuid()}`
+const scopedId = getUuid('__search__')
 
 const customSearchStore = useCustomSearchStore()
 const { activeScopedId } = storeToRefs(customSearchStore)
@@ -241,7 +241,7 @@ const slotList = computed(() => {
     'default', 'range-separator',
     'option'
   ].filter(slotName => {
-    return hasOwnProperty.call(slots, slotName)
+    return hasOwnProperty(slots, slotName)
   })
 })
 
@@ -251,17 +251,17 @@ defineExpose({
     return { valid: true }
   },
   getDom () {
-    return document.querySelector(`.__search__${scopedId}`)
+    return document.querySelector(`.${scopedId}`)
   }
 })
 
 </script>
 
 <template>
-  <div class="search" :class="`__search__${scopedId}`">
+  <div class="__search" :class="`${scopedId}`">
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
-      <div class="search-title">
+      <div class="__search-title">
         <label>{{ props.label }}</label>
 
         <CustomPopover
@@ -270,7 +270,7 @@ defineExpose({
           :placement="props.placement"
         >
           <div>
-            <div class="search-title">
+            <div class="__search-title">
               <label>{{ props.label }}</label>
               <CustomSwitch v-model="isActive" />
             </div>
@@ -313,7 +313,7 @@ defineExpose({
     </template>
     <!-- 直接全部顯示 -->
     <template v-else>
-      <div class="search-title">
+      <div class="__search-title">
         <label>{{ props.label }}</label>
         <CustomSwitch v-model="isActive" />
       </div>
@@ -338,7 +338,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.search {
+.__search {
   width: 100%;
   min-width: fit-content;
   height: fit-content;

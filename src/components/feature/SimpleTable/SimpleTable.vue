@@ -1,6 +1,7 @@
 <script lang="ts">
 import { h } from 'vue'
 import { CustomDraggable } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
   let temp = null
@@ -181,6 +182,9 @@ const headerNode = (slots: Record<string, any>, column: Array<any>) => {
   })
 }
 
+
+const scopedId = getUuid('__i-simple-table__')
+
 const bodyNode = (
   slots: Record<string, any>,
   column: Array<any>,
@@ -291,7 +295,8 @@ const SimpleTable = (props: Props, context: any) => {
       'div',
       {
         class: [
-          '__data-table-wrapper'
+          '__data-table-wrapper',
+          scopedId
         ]
         // style: { ...tableStyle }
       },

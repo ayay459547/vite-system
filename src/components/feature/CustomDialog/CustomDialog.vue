@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { computed, useSlots } from 'vue'
+import { type PropType, computed, useSlots } from 'vue'
 import { ElDialog } from 'element-plus'
-import { hasOwnProperty } from '@/lib/lib_utils'
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
 export type ModelValue = boolean
 
@@ -71,13 +70,15 @@ const tempValue = computed<ModelValue>({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
+
+const scopedId = getUuid('__i-dialog__')
 
 </script>
 
 <template>
-  <div class="dialog-wrapper">
+  <div class="__dialog-wrapper" :class="scopedId">
     <ElDialog
       v-model="tempValue"
       :title="props.title"
@@ -104,7 +105,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.dialog {
+.__dialog {
   &-wrapper {
     width: fit-content;
     height: fit-content;

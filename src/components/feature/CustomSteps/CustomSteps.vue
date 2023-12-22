@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
+import { type PropType, useSlots } from 'vue'
 import { ElSteps, ElStep } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 export type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success'
 
@@ -54,10 +54,12 @@ const props = defineProps({
   }
 })
 
+const scopedId = getUuid('__i-steps__')
+
 </script>
 
 <template>
-  <div class="container">
+  <div class="__steps" :class="scopedId">
     <ElSteps
       :space="props.space"
       :direction="props.direction"
@@ -89,7 +91,7 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
-.container {
+.__steps {
   width: 100%;
   height: fit-content;
 }

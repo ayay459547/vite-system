@@ -33,7 +33,7 @@ const setLevel2Router = (level2Router: Navigation): void => {
   level2List.value = leaves
 
   leaves.forEach(leaf => {
-    if(!Object.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
+    if(!Object.prototype.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
       level2OpenMap.value[leaf.name] = true
     }
   })
@@ -56,7 +56,7 @@ defineExpose({
       <template v-for="level1Item in props.level1List" :key="level1Item.name">
         <!-- 有子路由 -->
         <div
-          v-if="Object.hasOwnProperty.call(level1Item, 'leaves')"
+          v-if="Object.prototype.hasOwnProperty.call(level1Item, 'leaves')"
           class="nav-item"
           @click="setLevel2Router(level1Item)"
         >

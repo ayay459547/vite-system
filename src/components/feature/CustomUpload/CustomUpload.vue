@@ -194,6 +194,7 @@ const initFilesData = async (target: FileList) => {
 
   await nextTick()
   setTimeout(() => {
+    console.log(files.value)
     emit('file', files.value, targetList)
     isLoading.value = false
   }, 500)
@@ -327,14 +328,21 @@ defineExpose({
   }
 })
 
+
+const scopedId = getUuid('__i-upload__')
+
 </script>
 
 <template>
-  <div v-loading="isLoading" class="upload-wrapper">
+  <div
+    v-loading="isLoading"
+    class="__upload-wrapper"
+    :class="scopedId"
+  >
     <div
       ref="drag"
-      class="upload-container"
-      :class="[{'upload-active': active}]"
+      class="__upload-container"
+      :class="[{'__upload-active': active}]"
     >
       <div v-if="isEmpty(files)">
         <CustomEmpty :image-size="60">
@@ -346,7 +354,7 @@ defineExpose({
           </template>
         </CustomEmpty>
       </div>
-      <div v-else class="upload-file">
+      <div v-else class="__upload-file">
         <FilesView
           :files="files"
           :multiple="props.multiple"
@@ -366,7 +374,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.upload {
+.__upload {
   &-wrapper {
     width: 100%;
     height: fit-content;

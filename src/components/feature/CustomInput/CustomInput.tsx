@@ -22,7 +22,7 @@ import {
   // @ts-ignore
 } from '@/components'
 import styles from './CustomInput.module.scss'
-import { isEmpty, tipLog } from '@/lib/lib_utils'
+import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 // @ts-ignore
 import type { ModelValue } from './props'
@@ -258,6 +258,9 @@ const CustomInput = defineComponent({
     const datePickerRef = ref()
     const timePickerRef = ref()
     const autocompleteRef = ref()
+
+    const scopedId = getUuid('__i-group-input__')
+
     expose({
       key: props.validateKey,
       value: inputValue.value,
@@ -270,7 +273,8 @@ const CustomInput = defineComponent({
         _domValidateKey.value = validateKey
       },
       getDom () {
-        return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
+        // return document.querySelector(`[class*="__input-${domValidateKey.value}"]`)
+        return document.querySelector(`[class*="__input-${scopedId}"]`)
       },
       focus () {
         switch (props.type) {
@@ -671,18 +675,19 @@ const CustomInput = defineComponent({
     return () => (
       <div
         class={[
-          styles['input-container'],
-          `input-${domValidateKey.value}-${validateRes.value}`,
-          styles[`input-${props.direction}`]
+          styles['__input-container'],
+          `__input-${domValidateKey.value}-${validateRes.value}`,
+          `__input-${scopedId}`,
+          styles[`__input-${props.direction}`]
         ]}
       >
         {
           !props.hiddenLabel && (
-            <label class={styles['input-label']}>
+            <label class={styles['__input-label']}>
               {
                 props.isValidate && props.required && <span class={[
-                  styles['input-required'],
-                  styles['input-prefix']
+                  styles['__input-required'],
+                  styles['__input-prefix']
                 ]}>*</span>
               }
               <span>{ props.label }</span>
@@ -691,14 +696,14 @@ const CustomInput = defineComponent({
         }
 
 
-        <div class={styles['input-main']}>
+        <div class={styles['__input-main']}>
           {
             props.text ?
             <div class="i-pt-sm">{ getTextValue.value }</div> :
             renderInput()
           }
           {
-            props.isValidate && <span class={styles['input-error']}>{ i18nErrorMessage.value }</span>
+            props.isValidate && <span class={styles['__input-error']}>{ i18nErrorMessage.value }</span>
           }
         </div>
       </div>

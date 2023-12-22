@@ -6,7 +6,7 @@ import { defineComponent, inject, computed, ref } from 'vue'
 import type { PopoverPlacement } from '@/components'
 import { CustomButton, CustomPopover } from '@/components'
 import styles from './SimpleFilter.module.scss'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 const SimpleFilter = defineComponent({
   name: 'SimpleFilter',
@@ -35,6 +35,7 @@ const SimpleFilter = defineComponent({
   setup (props, { slots, emit, expose }) {
     const hook: Hook = inject('hook')
     const { i18nTranslate } = hook()
+    const scopedId = getUuid('__i-simple-filter__')
 
     const columnList = computed(() => {
       return (props.columns as any).$reduce((res, curr) => {
@@ -73,7 +74,7 @@ const SimpleFilter = defineComponent({
     })
 
     return () => (
-      <div class={styles['simple-filter']}>
+      <div class={`${styles['__i-simple-filter__']} ${scopedId}`}>
         <CustomPopover
           visible={isVisible.value}
           placement={props.placement}

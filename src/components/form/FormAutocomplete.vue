@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, useSlots, ref } from 'vue'
 import { ElAutocomplete } from 'element-plus'
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 export type FetchSuggestions = (queryString: string, callback: (data: any) => void) => void
@@ -78,7 +78,7 @@ const inputValue = computed({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 const elAutocompleteRef = ref()
@@ -95,14 +95,16 @@ defineExpose({
   }
 })
 
+const scopedId = getUuid('__i-autocomplete__')
+
 </script>
 
 <template>
-  <div class="i-input">
+  <div class="__i-autocomplete__" :class="scopedId">
     <ElAutocomplete
       ref="elAutocompleteRef"
       v-model="inputValue"
-      class="i-input"
+      class="__i-autocomplete__"
       :placeholder="$t('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
@@ -133,7 +135,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-input) {
+:deep(.__i-autocomplete__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -155,7 +157,7 @@ defineExpose({
   }
 }
 
-.i-input {
+.__i-autocomplete__ {
   width: 100%;
   height: 100%;
 }

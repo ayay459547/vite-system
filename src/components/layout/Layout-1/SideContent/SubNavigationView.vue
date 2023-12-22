@@ -70,7 +70,7 @@ export default defineComponent({
     <nav class="nav-list">
       <template v-for="routerItem in $props.level2List" :key="routerItem.name">
           <!-- 有子路由 -->
-          <template v-if="Object.hasOwnProperty.call(routerItem, 'leaves')">
+          <template v-if="Object.prototype.hasOwnProperty.call(routerItem, 'leaves')">
             <div class="nav-item" @click="changeOpen(routerItem.name)">
               <div
                 class="nav-item-left"

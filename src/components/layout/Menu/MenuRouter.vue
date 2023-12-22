@@ -36,7 +36,7 @@ const openRouterList = (e: MouseEvent) => {
       label: getRouteTitle(level1Item),
       active: level1Item.name === props.currentRouteName.level1,
       event: () => {
-        if (hasOwnProperty.call(level1Item, 'leaves')) {
+        if (hasOwnProperty(level1Item, 'leaves')) {
           emit('setLevel2Router', level1Item)
         } else {
           emit('setLevel2Router', level1Item)

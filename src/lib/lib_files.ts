@@ -203,7 +203,7 @@ export const readExcel = async (file: File): Promise<any> => {
 
       const excel = []
       for (const sheet in workbook.Sheets) {
-        if (hasOwnProperty.call(workbook.Sheets, sheet)) {
+        if (hasOwnProperty(workbook.Sheets, sheet)) {
           // 利用 sheet_to_json 方法將 excel 轉成 json 數據
           const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
 

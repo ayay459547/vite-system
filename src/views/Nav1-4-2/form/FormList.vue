@@ -18,7 +18,7 @@ import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils'
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 const getSlot = (slotKey: string, type: ('header' | 'column')): string => {

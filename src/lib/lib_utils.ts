@@ -32,8 +32,17 @@ import throttle from '@/lib/lib_throttle'
 // import Utf8 from 'crypto-js/enc-utf8'
 import cryptoJS from 'crypto-js'
 
-// 使用加上 .call => hasOwnProperty.call(obj, key)
-export const hasOwnProperty = Object.prototype.hasOwnProperty
+/**
+ * @author Caleb
+ * @description 判斷 Object 是否存在屬性
+ *              不包含原型鏈上的屬性
+ * @param {Object} obj 物件
+ * @param {String} key 屬性
+ * @returns {Boolean}
+ */
+export const hasOwnProperty = (obj: any, key: string): boolean => {
+  return Object.prototype.hasOwnProperty.call(obj, key)
+}
 
 /**
  * @author Caleb
@@ -65,7 +74,7 @@ export const isSet = (value: any): boolean => {
       return false
     case 'Object':
       for (const key in value) {
-        if (hasOwnProperty.call(value, key)) return true
+        if (hasOwnProperty(value, key)) return true
       }
       return false
     case 'Number':
@@ -93,7 +102,7 @@ export const isEmpty = (value: any): boolean => {
       return true
     case 'Object':
       for (const key in value) {
-        if (hasOwnProperty.call(value, key)) return false
+        if (hasOwnProperty(value, key)) return false
       }
       return true
     case 'Number':
@@ -125,7 +134,7 @@ export const getUuid = (text?: string): string => {
  */
 export const hasSlot = (prop: string): boolean => {
   const slots = useSlots()
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 const mode = (import.meta as any).env.MODE
@@ -301,7 +310,7 @@ export const deepClone = (targetElement: any, origin: any): any => {
   }
 
   for (const prop in origin) {
-    if (hasOwnProperty.call(origin, prop)) {
+    if (hasOwnProperty(origin, prop)) {
       switch (toStr.call(target[prop])) {
         case '[object Array]':
         case '[object Object]':

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export type Options = Array<{
   label: string
@@ -65,6 +65,8 @@ const inputValue = computed({
   }
 })
 
+const scopedId = getUuid('__i-radio__')
+
 const getStyle = (isSelected: boolean, color?: string) => {
   if (!isSelected) return {}
 
@@ -76,11 +78,11 @@ const getStyle = (isSelected: boolean, color?: string) => {
 </script>
 
 <template>
-  <div class="i-radio">
+  <div class="__i-radio__" :class="scopedId">
     <ElRadioGroup
       v-model="inputValue"
       size="large"
-      class="i-radio"
+      class="__i-radio__"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
@@ -109,13 +111,13 @@ const getStyle = (isSelected: boolean, color?: string) => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-radio) {
+:deep(.__i-radio__) {
   &.validate-error .el-radio__inner {
     border: 1px solid $danger;
     background-color: lighten($danger, 20%);
   }
 }
-.i-radio {
+.__i-radio__ {
   width: 100%;
   height: fit-content;
 }

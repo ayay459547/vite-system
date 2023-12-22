@@ -51,7 +51,7 @@ export default defineComponent({
   methods: {
     // 判斷是否有子路由
     hasLeaves (route: Navigation) {
-      return Object.hasOwnProperty.call(route, 'leaves')
+      return Object.prototype.hasOwnProperty.call(route, 'leaves')
     },
     // 取的總數計算高度
     getLength (routes: Navigation[]) {

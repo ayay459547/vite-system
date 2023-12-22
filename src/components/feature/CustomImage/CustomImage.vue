@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
+import { type PropType, useSlots } from 'vue'
 import { ElImage } from 'element-plus'
-import { hasOwnProperty } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type ImageFit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 export type ImageLoading = 'eager' | 'lazy'
@@ -84,13 +83,15 @@ const onEvent = {
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
+
+const scopedId = getUuid('__i-image__')
 
 </script>
 
 <template>
-  <div class="image">
+  <div class="__image" :class="scopedId">
     <ElImage
       style="width: 100%; height: 100%;"
       :src="props.src"
@@ -119,7 +120,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.image {
+.__image {
   width: 100%;
   height: 100%;
 }

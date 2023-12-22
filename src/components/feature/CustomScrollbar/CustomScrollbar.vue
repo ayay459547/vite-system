@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import type { PropType, Ref } from 'vue'
-import { useSlots, ref } from 'vue'
+import {
+  type PropType,
+  type Ref,
+  type CSSProperties,
+  useSlots,
+  ref
+} from 'vue'
 import { ElScrollbar } from 'element-plus'
-import { hasOwnProperty } from '@/lib/lib_utils'
-import type { CSSProperties } from 'vue'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type AriaOrientation = 'horizontal' | 'vertical'
 export type OnScrollParams = { scrollLeft: number, scrollTop: number }
@@ -107,7 +111,7 @@ const onScroll = ($event: OnScrollParams) => {
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 // exposes
@@ -143,7 +147,6 @@ const wrapRef: WrapRef = () => {
   }
 }
 
-
 defineExpose({
   handleScroll,
   scrollTo,
@@ -153,10 +156,12 @@ defineExpose({
   wrapRef
 })
 
+const scopedId = getUuid('__i-scroll-bar__')
+
 </script>
 
 <template>
-  <div class="scroll-bar">
+  <div class="__scroll-bar" :class="scopedId">
     <ElScrollbar
       ref="elScrollbarRef"
       :height="props.height"
@@ -183,7 +188,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.scroll-bar {
+.__scroll-bar {
   width: fit-content;
   height: fit-content;
   display: contents;

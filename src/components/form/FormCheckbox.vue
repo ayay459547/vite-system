@@ -4,7 +4,7 @@ import { computed } from 'vue'
 
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export type ModelValue = CheckboxValueType | CheckboxGroupValueType | any
 
@@ -86,14 +86,16 @@ const getStyle = (isChecked: boolean, color?: string) => {
   return { color }
 }
 
+const scopedId = getUuid('__i-checkbox__')
+
 </script>
 
 <template>
-  <div class="i-checkbox">
+  <div class="__i-checkbox__" :class="scopedId">
     <template v-if="Array.isArray(inputValue)">
       <ElCheckboxGroup
         v-model="inputValue"
-        class="i-checkbox"
+        class="__i-checkbox__"
         :class="[`validate-${validateRes}`]"
         :validate-event="false"
         v-bind="bindAttributes"
@@ -123,7 +125,7 @@ const getStyle = (isChecked: boolean, color?: string) => {
     <template v-else>
       <ElCheckbox
         v-model="inputValue"
-        class="i-checkbox"
+        class="__i-checkbox__"
         :class="[`validate-${validateRes}`]"
         size="large"
         :validate-event="false"
@@ -139,13 +141,13 @@ const getStyle = (isChecked: boolean, color?: string) => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-checkbox) {
+:deep(.__i-checkbox__) {
   &.validate-error .el-checkbox__inner {
     border: 1px solid $danger;
     background-color: lighten($danger, 20%);
   }
 }
-.i-checkbox {
+.__i-checkbox__ {
   width: 100%;
   height: fit-content;
 }

@@ -1,10 +1,7 @@
-import type { RouterTree } from '@/declare/routes'
-import type { Navigation } from '@/declare/routes'
+import type { RouterTree, Navigation } from '@/declare/routes'
 import { isEmpty } from '@/lib/lib_utils'
 import type { IconType } from '@/components'
-import { routerTypeIcon } from '@/router/setting'
-import type { RouterType } from '@/router/setting'
-
+import { type RouterType, routerTypeIcon } from '@/router/setting'
 import { useI18n } from 'vue-i18n'
 
 /**
@@ -37,12 +34,12 @@ export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], 
       if (getLevel.includes(currLevel)) {
         const pushItem = { ...routerItem }
         // 去掉子路由
-        if (!hasLeaves && Object.hasOwnProperty.call(pushItem, 'leaves')) {
+        if (!hasLeaves && Object.prototype.hasOwnProperty.call(pushItem, 'leaves')) {
           delete pushItem.leaves
         }
         res.push(pushItem)
       }
-      if (Object.hasOwnProperty.call(routerItem, 'leaves')) {
+      if (Object.prototype.hasOwnProperty.call(routerItem, 'leaves')) {
         nextLeaves.push(...routerItem.leaves)
       }
     })
@@ -90,10 +87,10 @@ export const refactorRoutes = <T>(
 
       if (isShow) {
         // 不可自訂 leaves
-        if (Object.hasOwnProperty.call(currentNode, 'leaves')) {
+        if (Object.prototype.hasOwnProperty.call(currentNode, 'leaves')) {
           delete (currentNode as any).leaves
         }
-        if (Object.hasOwnProperty.call(route, 'leaves')) {
+        if (Object.prototype.hasOwnProperty.call(route, 'leaves')) {
           const len = res.push({
             ...currentNode,
             leaves: []

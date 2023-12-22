@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
-import type { PropType } from 'vue'
+import { type PropType, computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 export type DrawerDirection = 'rtl' | 'ltr' | 'ttb' | 'btt'
 
@@ -75,13 +75,15 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+const scopedId = getUuid('__i-drawer__')
+
 </script>
 
 <template>
-  <div class="drawer-wrapper">
+  <div class="__drawer-wrapper" :class="scopedId">
     <ElDrawer
       v-model="tempValue"
-      class="drawer-container card-info"
+      class="__drawer-container card-info"
       :direction="props.direction"
       :title="props.title"
       :destroy-on-close="props.destroyOnClose"
@@ -112,7 +114,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.drawer-container) {
+:deep(.__drawer-container) {
   &.el-drawer {
     .el-drawer__header {
       margin-bottom: 0;
@@ -120,7 +122,7 @@ const hasSlot = (prop: string): boolean => {
   }
 }
 
-.drawer {
+.__drawer {
   &-wrapper {
     width: fit-content;
     height: fit-content;

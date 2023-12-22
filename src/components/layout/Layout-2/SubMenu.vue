@@ -53,7 +53,7 @@ defineExpose({
         <template v-for="routerItem in props.level2List" :key="routerItem.name">
            <!-- 有子路由 -->
           <div
-            v-if="Object.hasOwnProperty.call(routerItem, 'leaves')"
+            v-if="Object.prototype.hasOwnProperty.call(routerItem, 'leaves')"
             class="menu-item"
             :class="{ active: props.currentRouteName.level2 === routerItem.name }"
             @click="setLevel3Router(routerItem)"

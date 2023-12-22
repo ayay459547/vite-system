@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
+import { type PropType, useSlots } from 'vue'
 import { ElButton } from 'element-plus'
-
-import type { IconType } from '@/components'
-import { CustomIcon } from '@/components'
+import { type IconType, CustomIcon } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
 export type ButtonSize = 'large'| 'default'| 'small'
@@ -138,11 +136,13 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+const scopedId = getUuid('__i-button__')
+
 </script>
 
 <template>
-  <div class="button-wrapper">
-    <div class="button-container" :class="`size-${ElSize[props.size]}`">
+  <div class="__button-wrapper" :class="scopedId">
+    <div class="__button-container" :class="`size-${ElSize[props.size]}`">
       <ElButton
         :type="ElType[props.type]"
         :text="props.text"
@@ -169,7 +169,7 @@ const hasSlot = (prop: string): boolean => {
         <template v-if="props.label.length > 0 || hasSlot('default')" #default>
           <slot>
             <span
-              class="button-label"
+              class="__button-label"
               :class="`size-${ElSize[props.size]}`"
               :style="{ color: props.textColor }"
             >
@@ -183,7 +183,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.button-container) {
+:deep(.__button-container) {
   &.size {
     &-large {
       .el-button {
@@ -205,7 +205,7 @@ const hasSlot = (prop: string): boolean => {
     }
   }
 }
-.button {
+.__button {
   &-wrapper,
   &-container {
     width: fit-content;

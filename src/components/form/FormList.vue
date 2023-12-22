@@ -18,7 +18,7 @@ import { scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
@@ -101,7 +101,7 @@ const tempValue = computed({
 const tableColumns = ref()
 const showTableColumns = ref()
 
-const scopedId = getUuid()
+const scopedId = getUuid('__form-list__')
 const add = () => {
   if (tempValue.value.length >= props.max) {
     return swal({
@@ -114,7 +114,7 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector(`.__form-list__${scopedId} .list-group-item:last-child`)
+    const newEl = document.querySelector(`.${scopedId} .list-group-item:last-child`)
     if (newEl) scrollToEl(newEl)
   })
 }
@@ -169,7 +169,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="form-container hover-card-info" :class="`__form-list__${scopedId}`">
+  <div class="__form-list__ form-container hover-card-info" :class="scopedId">
     <div class="form-label">
       <span>{{ props.label }}</span>
     </div>
@@ -248,24 +248,26 @@ onBeforeMount(() => {
 </template>
 
 <style lang="scss" scoped>
-.form {
-  &-container {
-    width: 100%;
-    height: 100%;
+.__form-list__ {
+  &.form {
+    &-container {
+      width: 100%;
+      height: 100%;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 8px;
-    transition-duration: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 8px;
+      transition-duration: 0.3s;
 
-    position: sticky;
-    left: 0;
-  }
+      position: sticky;
+      left: 0;
+    }
 
-  &-label {
-    width: 100%;
+    &-label {
+      width: 100%;
+    }
   }
 }
 </style>

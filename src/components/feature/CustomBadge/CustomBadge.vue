@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
+import { type PropType, useSlots } from 'vue'
 import { ElBadge } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 export type BadgeType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
@@ -44,10 +44,12 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+const scopedId = getUuid('__i-badge__')
+
 </script>
 
 <template>
-  <div class="divider-wrapper">
+  <div class="badge-wrapper" :class="scopedId">
     <ElBadge
       :value="props.value"
       :max="props.max"
@@ -63,7 +65,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.divider {
+.badge {
   &-wrapper {
     width: 100%;
     height: fit-content;

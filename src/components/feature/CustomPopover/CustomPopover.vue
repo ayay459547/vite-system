@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { customRef, ref } from 'vue'
 import { ElPopover } from 'element-plus'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
 export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
@@ -52,10 +52,12 @@ const tempValue = customRef((track, trigger) => {
   }
 })
 
+const scopedId = getUuid('__i-popover__')
+
 </script>
 
 <template>
-  <div class="popover-container">
+  <div class="__popover-container" :class="scopedId">
     <ElPopover
       v-model:visible="tempValue"
       :placement="props.placement"
@@ -77,7 +79,7 @@ const tempValue = customRef((track, trigger) => {
 </template>
 
 <style lang="scss" scoped>
-.popover {
+.__popover {
   &-container {
     width: fit-content;
     height: fit-content;

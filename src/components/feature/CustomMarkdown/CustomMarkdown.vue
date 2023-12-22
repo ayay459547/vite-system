@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { onMounted } from 'vue'
+import { type PropType, onMounted } from 'vue'
+import { getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({
   text: {
@@ -15,16 +15,18 @@ onMounted(() => {
   console.log(props.text)
 })
 
+const scopedId = getUuid('__i-markdown__')
+
 </script>
 
 <template>
-  <div class="markdown-wrapper">
-    <v-md-preview class="markdown-container" :text="props.text"></v-md-preview>
+  <div class="__markdown-wrapper" :class="scopedId">
+    <v-md-preview class="__markdown-container" :text="props.text"></v-md-preview>
   </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.markdown-container) {
+:deep(.__markdown-container) {
   &.v-md-editor-preview {
     .vuepress-markdown-body {
       padding: 0 !important;
@@ -32,7 +34,7 @@ onMounted(() => {
   }
 }
 
-.markdown {
+.__markdown {
   &-wrapper {
     width: 100%;
     height: 100%;

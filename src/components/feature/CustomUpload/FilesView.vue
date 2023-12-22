@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
+// import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import type { FilesInfo } from './CustomUpload.vue'
 import { CustomIcon, CustomImage, CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
+
+// const hook: Hook = inject('hook')
+// const { i18nTranslate, swal, eventList } = hook()
 
 const props = defineProps({
   multiple: {
@@ -23,8 +26,7 @@ const props = defineProps({
 
 const emit = defineEmits(['remove'])
 
-const hook: Hook = inject('hook')
-const { i18nTranslate, swal, loading, eventList } = hook()
+const scopedId = getUuid('__i-file__')
 
 const previewSrcList = computed(() => {
   return props.files.map(item => {
@@ -51,16 +53,16 @@ const getIcon = (fileType: string) => {
 </script>
 
 <template>
-  <div class="file">
+  <div class="__i-file" :class="scopedId">
     <template v-if="!isEmpty(props.files)">
       <!-- 多張圖片 -->
-      <div class="file-multiple">
+      <div class="__i-file-multiple">
         <div
           v-for="(file, fileIndex) in props.files"
           :key="file.uuid"
-          class="file-sigle"
+          class="__i-file-sigle"
         >
-          <div class="file-icon">
+          <div class="__file-icon">
             <CustomImage
               v-if="file.fileType === 'image' && !isEmpty(file.src)"
               :src="file.src"
@@ -76,7 +78,7 @@ const getIcon = (fileType: string) => {
             />
           </div>
 
-          <div class="file-info">
+          <div class="__i-file-info">
             <div class="info-text">{{ file.name }}</div>
             <div class="info-size">{{ file.fileSize }}</div>
           </div>
@@ -101,7 +103,7 @@ const getIcon = (fileType: string) => {
   }
 }
 
-.file {
+.__i-file {
   width: 100%;
   height: 100%;
   min-height: fit-content;

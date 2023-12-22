@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ElTag } from 'element-plus'
-
-import type { IconType } from '@/components'
-import { CustomIcon } from '@/components'
+import { type IconType, CustomIcon } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 export type TagType = 'default' | 'success' | 'info' | 'warning' | 'danger'
 export type TagSize = 'large'| 'default'| 'small'
@@ -97,11 +96,13 @@ const onClick = ($event: Event) => {
   emit('click', $event)
 }
 
+const scopedId = getUuid('__i-tag__')
+
 </script>
 
 <template>
-  <div class="tag-wrapper">
-    <div class="tag-container" :class="`size-${ElSize[props.size]}`">
+  <div class="__tag-wrapper" :class="scopedId">
+    <div class="__tag-container" :class="`size-${ElSize[props.size]}`">
       <ElTag
         :type="ElType[props.type]"
         :hit="props.hit"
@@ -113,7 +114,7 @@ const onClick = ($event: Event) => {
       >
         <template v-if="props.label.length > 0" #default>
           <div
-            class="tag-group"
+            class="__tag-group"
             :class="`size-${ElSize[props.size]}`"
           >
             <CustomIcon
@@ -124,7 +125,7 @@ const onClick = ($event: Event) => {
               :type="FontIconType[props.iconType]"
               :name="props.iconName"
             />
-            <span class="tag-label">{{ props.label }}</span>
+            <span class="__tag-label">{{ props.label }}</span>
           </div>
         </template>
       </ElTag>
@@ -133,7 +134,7 @@ const onClick = ($event: Event) => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.tag-container) {
+:deep(.__tag-container) {
   &.size {
     &-large {
       .el-tag {
@@ -155,7 +156,7 @@ const onClick = ($event: Event) => {
     }
   }
 }
-.tag {
+.__tag {
   &-wrapper,
   &-container {
     width: fit-content;

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, customRef, useSlots, onMounted } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
-import { isEmpty, round, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, round, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import type { Options } from '@/components'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
@@ -169,6 +169,9 @@ const onChange = async (value: any, type: string) => {
   emit('change', emitValue)
 }
 
+
+const scopedId = getUuid('__i-operator__')
+
 onMounted(() => {
   lastValue = props.modelValue[1]
 })
@@ -176,16 +179,20 @@ onMounted(() => {
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 </script>
 
 <template>
-  <div class="i-input" @click.stop>
+  <div
+    class="__i-operator__"
+    :class="scopedId"
+    @click.stop
+  >
     <ElInput
       v-model="inputValue"
-      class="i-input"
+      class="__i-operator__"
       :placeholder="$t('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
@@ -195,7 +202,7 @@ const hasSlot = (prop: string): boolean => {
     >
       <!-- 輸入框用 -->
       <template #prepend>
-        <div class="i-select">
+        <div class="__i-select__">
           <ElSelect
             v-model="selectValue"
             :placeholder="$t('pleaseSelect')"
@@ -240,7 +247,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-input) {
+:deep(.i-operator) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -268,13 +275,13 @@ const hasSlot = (prop: string): boolean => {
   }
 }
 
-.i {
-  &-input {
+.__i {
+  &-operator__ {
     width: 100%;
     height: 100%;
   }
 
-  &-select {
+  &-select__ {
     width: 100%;
     max-width: 100px;
   }

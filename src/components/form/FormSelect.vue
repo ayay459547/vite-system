@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, useSlots, ref } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
 
@@ -138,10 +138,13 @@ const inputValue = computed({
   }
 })
 
+
+const scopedId = getUuid('__i-select__')
+
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
 
 const elSelectRef = ref()
@@ -161,11 +164,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="i-select">
+  <div class="__i-select__" :class="scopedId">
     <ElSelect
       ref="elSelectRef"
       v-model="inputValue"
-      class="i-select"
+      class="__i-select__"
       :placeholder="$t('pleaseSelect')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
@@ -175,7 +178,7 @@ defineExpose({
       <slot>
         <ElOption
           v-for="item in props.options"
-          :key="`${item.value}`"
+          :key="`__${item.value}__`"
           :label="item.label"
           :value="item.value"
         />
@@ -197,7 +200,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-select) {
+:deep(.__i-select__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -214,7 +217,7 @@ defineExpose({
     background-color: lighten($danger, 20%);
   }
 }
-.i-select {
+.__i-select__ {
   width: 100%;
   height: 100%;
 }

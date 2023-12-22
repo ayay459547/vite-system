@@ -13,6 +13,7 @@ import {
   type TableV2Instance,
   ElTableV2
 } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({
   renderKey: {
@@ -128,11 +129,17 @@ defineExpose({
   resetScroll
 })
 
+const scopedId = getUuid('__i-table-v2__')
+
 </script>
 
 <template>
-  <div ref="tableV2Ref" class="table-v2-wrapper">
-    <div class="table-v2-container">
+  <div
+    ref="tableV2Ref"
+    class="__table-v2-wrapper"
+    :class="scopedId"
+  >
+    <div class="__table-v2-container">
       <ElTableV2
         :key="props.renderKey"
         ref="elTableV2Ref"
@@ -264,7 +271,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.table-v2-container) {
+:deep(.__table-v2-container) {
   .el-table-v2__table {
     .el-table-v2__header .el-table-v2__header-cell {
       background-color: lighten($system-bg-color, 60%);
@@ -280,7 +287,7 @@ defineExpose({
   }
 }
 
-.table-v2 {
+.__table-v2 {
   &-wrapper {
     width: 100%;
     height: 100%;

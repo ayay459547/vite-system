@@ -10,7 +10,7 @@ import {
 } from 'vue'
 import { ElTimePicker } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 import type { Dayjs } from 'dayjs'
 
@@ -186,7 +186,10 @@ onBeforeUnmount(() => {
   window.removeEventListener('touchstart', e => e.preventDefault())
 })
 
+const scopedId = `__i-time-picker__${getUuid()}`
+
 const elTimePickerRef = ref()
+
 defineExpose({
   focus: (): void => {
     if (elTimePickerRef.value) {
@@ -204,11 +207,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="i-time-picker">
+  <div class="__i-time-picker__" :class="scopedId">
     <ElTimePicker
       ref="elTimePickerRef"
       v-model="_inputValue"
-      class="i-time-picker"
+      class="__i-time-picker__"
       :placeholder="$t('pleaseSelect')"
       :start-placeholder="t('startTime')"
       :end-placeholder="t('endTime')"
@@ -221,7 +224,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-time-picker) {
+:deep(.__i-time-picker__) {
   &.el-date-editor {
     width: 100% !important;
     max-height: 32px !important;
@@ -249,7 +252,7 @@ defineExpose({
   }
 }
 
-.i-time-picker {
+.__i-time-picker__ {
   width: 100%;
   height: 100%;
 }

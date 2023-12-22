@@ -120,7 +120,7 @@ const emit = defineEmits([
   'submit'
 ])
 
-const scopedId = `__modal__${getUuid()}`
+const scopedId = getUuid('__modal__')
 
 const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
@@ -520,131 +520,133 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    v-show="wrapperIsShow"
-    class="modal-mask"
-    :class="[
-      `${scopedId}`,
-      containerIsShow ? 'is-show': 'is-close'
-    ]"
-    :style="`
-      ${props.modal ? 'display: block;' : 'display: contents;'}
-      z-index: ${modalCurrentIndex};
-    `"
-  >
+  <Teleport to="body">
     <div
-      class="modal-wrapper"
+      v-show="wrapperIsShow"
       :class="[
-        `width-${props.widthSize}`,
-        `height-${props.heightSize}`
+        'modal-mask',
+        `${scopedId}`,
+        containerIsShow ? 'is-show': 'is-close'
       ]"
       :style="`
-        transform: translateX(${transform.x}) translateY(${transform.y});
-        ${wrapperStyle};
-        ${bindStyle};
+        ${props.modal ? 'display: block;' : 'display: contents;'}
         z-index: ${modalCurrentIndex};
       `"
-      @mousedown="setModalIndex"
-      v-click-outside="clickOutside"
     >
-      <Transition name="modal">
-        <div
-          v-show="containerIsShow"
-          ref="containerRef"
-          class="modal-container"
-          v-loading="props.loading"
-        >
-          <div class="modal-header">
-            <div
-              v-if="props.draggable"
-              class="modal-draggable"
-              @mousedown="addEvent"
-            >
-              <CustomIcon name="up-down-left-right"/>
-              <slot name="header">
+      <div
+        class="modal-wrapper"
+        :class="[
+          `width-${props.widthSize}`,
+          `height-${props.heightSize}`
+        ]"
+        :style="`
+          transform: translateX(${transform.x}) translateY(${transform.y});
+          ${wrapperStyle};
+          ${bindStyle};
+          z-index: ${modalCurrentIndex};
+        `"
+        @mousedown="setModalIndex"
+        v-click-outside="clickOutside"
+      >
+        <Transition name="modal">
+          <div
+            v-show="containerIsShow"
+            ref="containerRef"
+            class="modal-container"
+            v-loading="props.loading"
+          >
+            <div class="modal-header">
+              <div
+                v-if="props.draggable"
+                class="modal-draggable"
+                @mousedown="addEvent"
+              >
+                <CustomIcon name="up-down-left-right"/>
+                <slot name="header">
+                  <h3>{{ props.title }}</h3>
+                </slot>
+              </div>
+
+              <slot v-else name="header">
                 <h3>{{ props.title }}</h3>
               </slot>
-            </div>
 
-            <slot v-else name="header">
-              <h3>{{ props.title }}</h3>
-            </slot>
-
-            <!-- 關閉全部 -->
-            <CustomTooltip
-              v-show="isCloseAllModal"
-              trigger="hover"
-              placement="top"
-            >
+              <!-- 關閉全部 -->
+              <CustomTooltip
+                v-show="isCloseAllModal"
+                trigger="hover"
+                placement="top"
+              >
+                <CustomButton
+                  icon-name="close"
+                  text
+                  @click="close"
+                />
+                <template #content>
+                  <CustomButton
+                    :label="i18nTranslate('closeAll')"
+                    type="danger"
+                    icon-name="close"
+                    @click="customModalStore.clearModal"
+                  />
+                </template>
+              </CustomTooltip>
+              <!-- 關閉單個 -->
               <CustomButton
+                v-show="!isCloseAllModal"
                 icon-name="close"
                 text
                 @click="close"
               />
-              <template #content>
-                <CustomButton
-                  :label="i18nTranslate('closeAll')"
-                  type="danger"
-                  icon-name="close"
-                  @click="customModalStore.clearModal"
-                />
-              </template>
-            </CustomTooltip>
-            <!-- 關閉單個 -->
-            <CustomButton
-              v-show="!isCloseAllModal"
-              icon-name="close"
-              text
-              @click="close"
-            />
-          </div>
+            </div>
 
-          <div class="modal-body">
-            <KeepAlive>
-              <div v-if="tempValue && !props.loading" style="width: 100%; height: 100%">
-                <slot :key="scopedId">Body</slot>
-              </div>
-            </KeepAlive>
-          </div>
+            <div class="modal-body">
+              <KeepAlive>
+                <div v-if="tempValue && !props.loading" style="width: 100%; height: 100%">
+                  <slot :key="scopedId">Body</slot>
+                </div>
+              </KeepAlive>
+            </div>
 
-          <div v-if="!props.hiddenFooter" class="modal-footer">
-            <slot name="footer">
+            <div v-if="!props.hiddenFooter" class="modal-footer">
+              <slot name="footer">
+                <div
+                  v-if="props.draggable"
+                  class="modal-footer-draggable"
+                  @mousedown="addEvent"
+                ></div>
+
+                <div class="modal-footer-btn">
+                  <CustomButton
+                    v-if="!props.hiddenCancel"
+                    :label="i18nTranslate('cancel')"
+                    icon-name="angle-left"
+                    icon-move="translate"
+                    @click="cancel"
+                  />
+                  <CustomButton
+                    v-if="!props.hiddenSubmit"
+                    type="success"
+                    :label="i18nTranslate('confirm')"
+                    icon-name="check"
+                    icon-move="scale"
+                    @click="submit"
+                  />
+                </div>
+              </slot>
+            </div>
+            <div v-else class="modal-footer-hidden">
               <div
                 v-if="props.draggable"
                 class="modal-footer-draggable"
                 @mousedown="addEvent"
               ></div>
-
-              <div class="modal-footer-btn">
-                <CustomButton
-                  v-if="!props.hiddenCancel"
-                  :label="i18nTranslate('cancel')"
-                  icon-name="angle-left"
-                  icon-move="translate"
-                  @click="cancel"
-                />
-                <CustomButton
-                  v-if="!props.hiddenSubmit"
-                  type="success"
-                  :label="i18nTranslate('confirm')"
-                  icon-name="check"
-                  icon-move="scale"
-                  @click="submit"
-                />
-              </div>
-            </slot>
+            </div>
           </div>
-          <div v-else class="modal-footer-hidden">
-            <div
-              v-if="props.draggable"
-              class="modal-footer-draggable"
-              @mousedown="addEvent"
-            ></div>
-          </div>
-        </div>
-      </Transition>
+        </Transition>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>

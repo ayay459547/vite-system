@@ -223,7 +223,7 @@ export class iWebScoket {
     this.isReConnect = false
     this.sendMessageCount = 0
 
-    if (hasOwnProperty.call(window, 'WebSocket')) {
+    if (hasOwnProperty(window, 'WebSocket')) {
       this.init(config)
     } else {
       ElMessage({

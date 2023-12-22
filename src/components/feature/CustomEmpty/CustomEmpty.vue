@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
+import { type PropType, useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
-import { hasOwnProperty } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({
   image: {
@@ -27,14 +26,17 @@ const props = defineProps({
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty.call(slots, prop)
+  return hasOwnProperty(slots, prop)
 }
+
+const scopedId = getUuid('__i-empty__')
+
 </script>
 
 <template>
-  <div class="empty-wrapper">
+  <div class="__empty-wrapper" :class="scopedId">
     <ElEmpty
-      class="empty-container"
+      class="__empty-container"
       :image="props.image"
       :description="props.description"
       :image-size="props.imageSize"
@@ -53,12 +55,12 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.empty-container) {
+:deep(.__empty-container) {
   &.el-empty {
     padding: 12px 0;
   }
 }
-.empty {
+.__empty {
   &-wrapper {
     width: 100%;
     height: 100%;

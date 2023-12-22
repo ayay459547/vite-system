@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { useSlots } from 'vue'
-import { ElTimeline, ElTimelineItem } from 'element-plus'
-import type { TimelineItemProps } from 'element-plus'
+import { type PropType, useSlots } from 'vue'
+import { type TimelineItemProps, ElTimeline, ElTimelineItem } from 'element-plus'
+import { getUuid } from '@/lib/lib_utils'
 
 export type Size = 'large'| 'default'| 'small'
 export type Placement = 'top'| 'bottom'
@@ -33,10 +32,12 @@ const props = defineProps({
   }
 })
 
+const scopedId = getUuid('__i-time-line__')
+
 </script>
 
 <template>
-  <div class="container">
+  <div class="__i-time-line" :class="scopedId">
     <ElTimeline>
       <ElTimelineItem
         v-for="(option, optionIndex) in props.options"
@@ -56,7 +57,7 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
-.container {
+.__i-time-line {
   width: fit-content;
   height: fit-content;
 }
