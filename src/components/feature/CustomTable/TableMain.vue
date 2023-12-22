@@ -3,11 +3,8 @@ import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import {
-  type ElTable as ElTableType,
-  ElTable,
-  ElTableColumn
-} from 'element-plus'
+import type { ElTable as ElTableType } from 'element-plus'
+import { ElTable, ElTableColumn } from 'element-plus'
 import type {
   Sort,
   SpanMethod,
@@ -592,6 +589,10 @@ const svg = `
           & > th {
              background-color: inherit;
           }
+        }
+
+        th.el-table__cell {
+          user-select: auto;
         }
       }
       .cell {
