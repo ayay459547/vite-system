@@ -313,10 +313,10 @@ provide<Hook>('hook', () => {
       const { permission = 0 } = currentNavigation.value
       return getPermission(permission)
     },
-    getEnv: () => {
+    env: () => {
       return envStore
     },
-    getAuth: () => {
+    auth: () => {
       return authData.value
     }
   }

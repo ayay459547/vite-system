@@ -12,7 +12,7 @@ import { useAuthStore } from '@/stores/stores_auth'
 
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
-import { permission, hasPermission } from '@/lib/lib_permission'
+import { permission, hasPermission, defaultPermission } from '@/lib/lib_permission'
 
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
@@ -148,7 +148,7 @@ router.beforeEach(
       } else if (
         from.name &&
         !baseRoutesName.includes(to.name as string) &&
-        !hasPermission(toNavigation ?? 0, permission.read)
+        !hasPermission(toNavigation ?? defaultPermission, permission.read)
       ) {
         next({ name: 'noPermissions' })
       // 如果再未登入時有 想進的頁面 會優先進入

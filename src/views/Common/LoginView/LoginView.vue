@@ -36,7 +36,7 @@ const columnSetting = {
     label: '帳號',
     fitler: {
       type: 'text',
-      default: '',
+      default: 'admin',
       required: true
     }
   },
@@ -44,7 +44,7 @@ const columnSetting = {
     label: '密碼',
     fitler: {
       type: 'password',
-      default: '',
+      default: '123',
       required: true
     }
   }

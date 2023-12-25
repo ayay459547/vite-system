@@ -2,8 +2,9 @@
 import { defineStore } from 'pinia'
 import { shallowRef, computed, shallowReactive } from 'vue'
 import type { AuthData, PermissionData } from './api'
-import { getAuthData, getRoutesPermission } from './api'
+import { getAuthData } from './api'
 import { permission } from '@/lib/lib_permission'
+import { isEmpty } from '@/lib/lib_utils'
 
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
@@ -21,7 +22,8 @@ export const useAuthStore = defineStore('auth', () => {
 	 */
 	const authData = shallowRef<AuthData>({
 		id: null,
-		name: null
+		roleName: null,
+		roleFunction: []
 	})
 	const setAuthData = (auth: AuthData) => {
 		authData.value = auth
@@ -29,7 +31,8 @@ export const useAuthStore = defineStore('auth', () => {
 	const clearAuthData = () => {
 		authData.value = {
 			id: null,
-			name: null
+			roleName: null,
+			roleFunction: []
 		}
 	}
 
@@ -37,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 確認狀態 目前是前端做
 	 * 有可能串後端 api
 	 */
-	const checkAuthStatus = async (): Promise<number> => {
+	const checkAuthStatus = async (): Promise<number | null> => {
 		return await new Promise((resolve) => {
 			const token = getToken()
 
@@ -52,7 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
 				clearToken()
 
 				setTimeout(() => {
-					resolve(0)
+					resolve(null)
 				}, 1000)
 			}
 		})
@@ -67,27 +70,37 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const setRoutesPermission = async (permissionList: PermissionData[]) => {
 		permissionList.forEach(permissionItem => {
+			const {
+				readPermissions,
+				createPermissions,
+				updatePermissions,
+				deletePermissions,
+				executePermissions,
+				pk
+			} = permissionItem
+
+			const { functionID } = pk
 			/**
 			 * 依據 api 取得的路由權限
 			 * 設定 權限的總和
 			 */
 			let _permission = 0
-			if (permissionItem.readPermissions) {
+			if (readPermissions) {
 				_permission += permission.read
 			}
-			if (permissionItem.createPermissions) {
+			if (createPermissions) {
 				_permission += permission.create
 			}
-			if (permissionItem.updatePermissions) {
+			if (updatePermissions) {
 				_permission += permission.update
 			}
-			if (permissionItem.deletePermissions) {
+			if (deletePermissions) {
 				_permission += permission.delete
 			}
-			if (permissionItem.executePermissions) {
+			if (executePermissions) {
 				_permission += permission.execute
 			}
-			routesPermission.set(permissionItem.routerName, _permission)
+			routesPermission.set(functionID, _permission)
 		})
 
 	}
@@ -109,15 +122,12 @@ export const useAuthStore = defineStore('auth', () => {
 
 		const userId = await checkAuthStatus()
 
-		if (userId > 0) {
-			const [
-				{ data: authData },
-				{ data: permissionList }
-			] = await Promise.all([
-				// 使用 token 初始化使用者資料
-				getAuthData(userId),
-				getRoutesPermission(userId)
-			])
+		if (!isEmpty(userId)) {
+			// 使用 token 初始化使用者資料
+			const authData = await getAuthData(userId)
+			const {
+				roleFunction: permissionList
+			} = authData
 
 			setAuthData(authData)
 			setRoutesPermission(permissionList)

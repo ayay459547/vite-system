@@ -13,7 +13,7 @@ const { permission, loading } = hook()
 onMounted(() => {
   loading(true, 'test')
 
-  const mission = permission(9)
+  const mission = permission()
 
   console.log('mission => ', mission)
 

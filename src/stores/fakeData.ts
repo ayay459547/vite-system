@@ -1,17 +1,16 @@
 import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
-export const fakeUserData = {
-  id: 1,
-  name: 'USER'
-}
-
 export const fakePermissionData = [
   {
     autoGeneratingId: false,
     createDate: '2023-04-21 18:18:48.814',
     lastUpdateTimestamp: '2023-04-21 18:18:48.814',
-    routerName: 'nav-1-1-1',
+    // routerName: 'nav-1-1-1',
+    pk: {
+      functionID: 'nav-1-1-1',
+      roleID: 1
+    },
 
     readPermissions: true,
     createPermissions: true,
@@ -23,7 +22,11 @@ export const fakePermissionData = [
     autoGeneratingId: false,
     createDate: '2023-04-21 18:18:48.814',
     lastUpdateTimestamp: '2023-04-21 18:18:48.814',
-    routerName: 'nav-1-1-2',
+    // routerName: 'nav-1-1-2',
+    pk: {
+      functionID: 'nav-1-1-2',
+      roleID: 1
+    },
 
     readPermissions: true,
     createPermissions: true,
@@ -35,7 +38,11 @@ export const fakePermissionData = [
     autoGeneratingId: false,
     createDate: '2023-04-21 18:18:48.814',
     lastUpdateTimestamp: '2023-04-21 18:18:48.814',
-    routerName: 'nav-1-1-3',
+    // routerName: 'nav-1-1-3',
+    pk: {
+      functionID: 'nav-1-1-3',
+      roleID: 1
+    },
 
     readPermissions: true,
     createPermissions: true,
@@ -46,7 +53,7 @@ export const fakePermissionData = [
 ]
 
 export const allPermissionData = refactorRoutes(leafNode => {
-  const hiddenRoutes = ['nav1-2-1', 'nav1-1-3']
+  const hiddenRoutes = ['nav-1-2-1', 'nav-1-1-3']
   if (hiddenRoutes.includes(leafNode.name)) {
     return {
       refactorNode: {
@@ -54,6 +61,10 @@ export const allPermissionData = refactorRoutes(leafNode => {
         createDate: '2023-04-21 18:18:48.814',
         lastUpdateTimestamp: '2023-04-21 18:18:48.814',
         routerName: leafNode.name,
+        pk: {
+          functionID: leafNode.name,
+          roleID: 1
+        },
 
         readPermissions: false,
         createPermissions: false,
@@ -70,6 +81,10 @@ export const allPermissionData = refactorRoutes(leafNode => {
       createDate: '2023-04-21 18:18:48.814',
       lastUpdateTimestamp: '2023-04-21 18:18:48.814',
       routerName: leafNode.name,
+      pk: {
+        functionID: leafNode.name,
+        roleID: 1
+      },
 
       readPermissions: true,
       createPermissions: true,
@@ -80,3 +95,10 @@ export const allPermissionData = refactorRoutes(leafNode => {
     isShow: true
   }
 }, getRouterLeafLayer(routes, [1, 2, 3], false))
+
+export const fakeUserData = {
+  id: 1,
+  name: 'aat',
+  roleName: 'aat',
+  roleFunction: allPermissionData
+}

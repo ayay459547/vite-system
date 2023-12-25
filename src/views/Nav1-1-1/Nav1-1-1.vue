@@ -154,7 +154,7 @@ const init = async (props?: any) => {
 
   const [resData, resDataCount ] = await Promise.all([ getData(apiParam), getDataCount() ])
 
-  tableData.value = deepClone([], resData)
+  tableData.value = resData
   tableDataCount.value = resDataCount
 
   isLoading.value = false

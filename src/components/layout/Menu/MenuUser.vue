@@ -51,14 +51,14 @@ const openUserEffect = (e: MouseEvent) => {
     <div class="user-container" @click="openUserEffect">
       <div class="user-md">
         <CustomIcon name="user" class="icon"/>
-        <span>{{ props.authData.name }}</span>
+        <span>{{ props.authData.roleName }}</span>
       </div>
       <div class="user-xs">
         <CustomTooltip>
           <CustomIcon name="user"/>
 
           <template #content>
-            <span>{{ props.authData.name }}</span>
+            <span>{{ props.authData.roleName }}</span>
           </template>
         </CustomTooltip>
       </div>

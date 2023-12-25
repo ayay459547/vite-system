@@ -171,7 +171,7 @@ const init = async () => {
     })
   ])
 
-  tableData.value = deepClone([], resData)
+  tableData.value = resData
   tableDataCount.value = resDataCount
 
   isLoading.value = false
