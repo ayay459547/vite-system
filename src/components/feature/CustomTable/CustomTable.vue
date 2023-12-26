@@ -593,7 +593,12 @@ const prependIsOpen = computed<boolean>({
 })
 onMounted(() => {
   const _prependIsOpen = localStorage.getItem('prependIsOpen')
-  prependIsOpen.value = _prependIsOpen === 'true'
+  if (isEmpty(_prependIsOpen)) {
+    localStorage.setItem('prependIsOpen', 'true')
+    prependIsOpen.value = true
+  } else {
+    prependIsOpen.value = _prependIsOpen === 'true'
+  }
 })
 
 const scopedId = getUuid('__i-table__')

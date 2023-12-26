@@ -703,7 +703,7 @@ const CustomInput = defineComponent({
             renderInput()
           }
           {
-            props.isValidate && <span class={styles['__input-error']}>{ i18nErrorMessage.value }</span>
+            props.isValidate && !props.hiddenErrorMessage && <span class={styles['__input-error']}>{ i18nErrorMessage.value }</span>
           }
         </div>
       </div>

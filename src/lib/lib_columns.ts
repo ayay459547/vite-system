@@ -21,7 +21,7 @@ export interface FormSetting<T> {
   columns: Record<string, any>
   forms: T
   activeForms: Record<string, boolean>
-  reset: () => void
+  reset: (defaultValue: Partial<T>) => void
   getActiveForms: (showEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
   handleReset: () => void
@@ -106,9 +106,13 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     columns: resColumns,
     forms: resForms as T,
     activeForms: resActiveForms,
-    reset: () => {
+    reset: (defaultValue: Partial<T>) => {
       resForms.$forEach((value: any, key: string) => {
         resForms[key] = resColumns[key]?.default ?? null
+        if (!isEmpty(defaultValue[key])) {
+          resForms[key] = defaultValue[key]
+        }
+
         resActiveForms[key] = true
 
         if (typeof refMap[key]?.handleReset === 'function') {
@@ -297,7 +301,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
         throw new Error(errors)
       })
 
-      return new Promise((resolve, reject) => {
+      return new Promise<any[]>((resolve, reject) => {
         if (errorList.length > 0) {
           reject(errorList)
         } else {

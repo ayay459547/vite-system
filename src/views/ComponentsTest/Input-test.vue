@@ -135,9 +135,13 @@ const submit = () => {
     console.log('vee success => ', successList)
   }).catch(errorList => {
     console.log('vee error => ', errorList)
-    console.log(errorList)
-    const el = errorList[0].getDom()
-    scrollToEl(el)
+    const error = errorList.find(errorItem => {
+      return errorItem.el !== null
+    })
+    if (error) {
+      const el = error.getDom()
+      scrollToEl(el)
+    }
   })
 }
 

@@ -21,8 +21,13 @@ defineExpose({
 
       return { data, status }
     }).catch(errorList => {
-      const el = errorList[0].getDom()
-      scrollToEl(el)
+      const error = errorList.find(errorItem => {
+        return errorItem.el !== null
+      })
+      if (error) {
+        const el = error.getDom()
+        scrollToEl(el)
+      }
 
       return { data: null, status: 'error' }
     })
