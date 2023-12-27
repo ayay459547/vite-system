@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import {
-  CustomTable,
-  CustomInput,
-  CustomIcon
-} from '@/components'
-import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { ref, onMounted, nextTick } from 'vue'
+
+import { CustomTable, CustomInput, CustomIcon } from '@/components'
+import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
@@ -17,7 +14,7 @@ const tableDataCount = ref(0)
 
 const tableOptions = {
   title: '功能列表',
-  version: '1.0.4',
+  version: '1.0.6',
   settingKey: 'feature-list'
 }
 const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -25,8 +22,8 @@ const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting
 const download = () => {
   downloadExcel(tableData.value.map(item => {
     return {
-      ...item,
-      status: columnSetting.status.getValue(item.status)
+      ...item
+      // status: columnSetting.status.getValue(item.status)
     }
   }))
 }
@@ -59,7 +56,7 @@ const init = async () => {
 
   setTimeout(() => {
     isLoading.value = false
-  }, 500)
+  }, 300)
 }
 
 onMounted(() => {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { onMounted, inject } from 'vue'
+
 import type { Hook } from '@/declare/hook'
-import { inject } from 'vue'
 import { getFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
-import { onMounted } from 'vue'
 
 import type { TableData } from '../api'
 import { updateData } from '../api'

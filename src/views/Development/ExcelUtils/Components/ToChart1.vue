@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from 'vue'
-import {
-  CustomButton,
-  CustomUpload,
-  CustomCharts,
-  CustomInput
-} from '@/components'
+
+import { CustomButton, CustomUpload, CustomCharts, CustomInput } from '@/components'
 import { isEmpty, downloadStaticFile, swal } from '@/lib/lib_utils'
 
 const barData = reactive({
@@ -51,7 +47,9 @@ const excelToBar = () => {
   files.forEach((file) => {
     if (!isEmpty(file.excel)) {
       const _data = file.excel
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { map, matrix } = _data
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [ column, type = [], value = [] ] = matrix
 
       barData.type = type

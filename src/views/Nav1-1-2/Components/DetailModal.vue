@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { isEmpty } from '@/lib/lib_utils'
-import { getData } from './api'
-
 import {
   ElDescriptions,
   ElDescriptionsItem,
@@ -10,6 +7,10 @@ import {
   ElSteps,
   ElStep
 } from 'element-plus'
+
+import { isEmpty } from '@/lib/lib_utils'
+
+import { getData } from './api'
 
 const props = defineProps({
   data: {

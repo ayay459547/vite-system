@@ -2,8 +2,7 @@ export const columnSetting = {
   keyword: {
     label: '翻譯key值',
     table: {
-      minWidth: 200,
-      sortable: 'custom'
+      minWidth: 200
     },
     filter: {
       isValidate: false,
@@ -13,8 +12,7 @@ export const columnSetting = {
   zhTw: {
     label: '繁體中文',
     table: {
-      minWidth: 200,
-      sortable: 'custom'
+      minWidth: 200
     },
     filter: {
       isValidate: false,
@@ -24,8 +22,7 @@ export const columnSetting = {
   zhCn: {
     label: '簡體中文',
     table: {
-      minWidth: 200,
-      sortable: 'custom'
+      minWidth: 200
     },
     filter: {
       isValidate: false,
@@ -35,8 +32,7 @@ export const columnSetting = {
   en: {
     label: '英文',
     table: {
-      minWidth: 200,
-      sortable: 'custom'
+      minWidth: 200
     },
     filter: {
       isValidate: false,

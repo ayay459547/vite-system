@@ -1,28 +1,21 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
 import { ref, inject, reactive, onMounted, computed } from 'vue'
-import {
-  CustomButton,
-  CustomTable,
-  CustomModal,
-  CustomIcon
-} from '@/components'
+import { storeToRefs } from 'pinia'
 
-import { deepClone, usePageI18n } from '@/lib/lib_utils'
+import type { Hook } from '@/declare/hook'
+import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
+import { usePageI18n } from '@/lib/lib_utils'
 import { getTableSetting } from '@/lib/lib_columns'
+import { useRoutesStore } from '@/stores/stores_routes'
+import { getPermission } from '@/lib/lib_permission'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData, deleteData } from './api'
 import { columnSetting } from './columns'
+import i18nMessage from './i18n'
 
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModal from './Components/UpdateModal.vue'
-
-import { storeToRefs } from 'pinia'
-import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission'
-
-import i18nMessage from './i18n'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()

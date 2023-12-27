@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import {
-  ElRow,
-  ElCol,
-  ElStatistic,
-  ElCalendar
-} from 'element-plus'
 import { ref } from 'vue'
+import { ElRow, ElCol, ElStatistic, ElCalendar } from 'element-plus'
+
 import { CustomIcon } from '@/components'
 
 const value = ref(new Date())

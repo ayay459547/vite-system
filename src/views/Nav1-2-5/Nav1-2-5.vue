@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { SimpleQRcode, CustomSwitch } from '@/components'
-import vueQr from 'vue-qr/src/packages/vue-qr.vue'
-import { datetimeFormat } from '@/lib/lib_day'
 import { onMounted, ref } from 'vue'
+import vueQr from 'vue-qr/src/packages/vue-qr.vue'
+
+import { SimpleQRcode, CustomSwitch } from '@/components'
+import { datetimeFormat } from '@/lib/lib_day'
 
 const url = 'https://www.npmjs.com/package/vue-qr'
 const img = 'https://raw.githubusercontent.com/Binaryify/vue-qr/master/src/assets/result1.png'

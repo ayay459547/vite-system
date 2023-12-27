@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CustomCharts } from '@/components'
 import { onMounted, ref } from 'vue'
+
+import { CustomCharts } from '@/components'
 
 const options = () => {
   return {

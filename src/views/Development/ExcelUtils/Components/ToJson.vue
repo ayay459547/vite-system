@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import {
-  CustomMarkdown,
-  CustomButton,
-  CustomUpload
-} from '@/components'
+
+import { CustomMarkdown, CustomButton, CustomUpload } from '@/components'
 import { isEmpty, downloadStaticFile, swal } from '@/lib/lib_utils'
 
 const textData = ref('')

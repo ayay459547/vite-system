@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { diff } from '@/lib/lib_diff'
 import { onMounted } from 'vue'
+
+import { diff } from '@/lib/lib_diff'
 
 const list1 = [
   { id: 1, no: 'no-1', name: 'name-1' },

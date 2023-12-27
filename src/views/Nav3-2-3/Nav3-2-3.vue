@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CustomDraggable } from '@/components'
 import { ref } from 'vue'
+
+import { CustomDraggable } from '@/components'
 
 const options = [
   { id: 1, name: 'test1' },

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CustomUpload, CustomDivider } from '@/components'
 import { onMounted } from 'vue'
 
+import { CustomUpload, CustomDivider } from '@/components'
 
 onMounted(() => {
   console.log(123)

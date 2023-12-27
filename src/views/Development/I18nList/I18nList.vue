@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { ref, onMounted, nextTick } from 'vue'
+
 import { CustomTable, CustomInput } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
-import { ref, onMounted, nextTick } from 'vue'
+
 import { columnSetting } from './columns'
-import type { TableData } from './api'
-import { getData, getDataCount } from './api'
+import { type TableData, getData, getDataCount } from './api'
 
 const tableData = ref<TableData[]>([])
 const tableDataCount = ref(0)
@@ -43,7 +44,7 @@ const init = async () => {
 
   setTimeout(() => {
     isLoading.value = false
-  }, 500)
+  }, 300)
 }
 
 onMounted(() => {
@@ -82,7 +83,7 @@ onMounted(() => {
   &-test {
     width: 100%;
     height: 100%;
-    padding: 16px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
   }

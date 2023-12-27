@@ -11,11 +11,14 @@ import {
   render,
   nextTick
 } from 'vue'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import type { Sort } from './CustomTable.vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
+
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import { CustomButton } from '@/components'
+
+import type { Sort } from './CustomTable.vue'
 import type {
   SpanMethod,
   RowClassName,
@@ -24,7 +27,6 @@ import type {
   CellStyle,
   LazyLoadingStatus
 } from './CustomTable.vue'
-import { CustomButton } from '@/components'
 
 // slot
 const slots = useSlots()

@@ -1,41 +1,74 @@
 <script setup lang="ts">
-import {
-  CustomTimeLine,
-  CustomIcon,
-  SimpleTable,
-  CustomButton
-} from '@/components'
+import { CustomTimeLine, CustomIcon, SimpleTable, CustomButton } from '@/components'
+import { getSimpleTableSetting } from '@/lib/lib_columns'
+import { isEmpty, downloadStaticFile } from '@/lib/lib_utils'
 
 import { columnSetting } from './columns'
-import { getSimpleTableSetting } from '@/lib/lib_columns'
-
-import { isEmpty, downloadStaticFile } from '@/lib/lib_utils'
 
 const options = [
   {
     timestamp: '8/10 ~ 8/17',
-    label: '選單1',
+    label: '排程參數設定 (1) + 排程結果預覽',
     size: 'large',
     placement: 'top',
     type: 'success',
     list: [
-      { title: '選單1-1-1', path: 'nav1-1-1' },
-      { title: '選單1-1-2', path: 'nav1-1-2' },
-      { title: '選單1-1-3', path: 'nav1-1-3' },
-      { title: '選單1-1-4', path: 'nav1-1-4' }
+      { title: '一貫機連續生產規則管理', path: 'fund-1427' },
+      { title: '併批工單排程順序管理', path: 'fund-1429' },
+      { title: '工單預覽', path: 'auto-31-SG' },
+      { title: '生產細部排程預覽', path: 'auto-32-SG' }
     ],
     ps: '多行編輯組件：加上拖拉更動順序功能，新增時間線組件'
   },
   {
     timestamp: '8/18 ~ 8/24',
-    label: '選單2',
+    label: '看板 + 看板管理',
     size: 'large',
     placement: 'top',
     type: 'primary',
     list: [
-      { title: '選單2', path: 'nav2' }
+      { title: '生產流程看板', path: 'apspub-11' },
+      { title: '生產定義看板', path: 'apspub-31' }
     ],
     ps: 'modal 組件：新增全屏屬性'
+  },
+  {
+    timestamp: '8/25 ~ 8/30',
+    label: '排程參數設定 (2)',
+    size: 'large',
+    placement: 'top',
+    type: '',
+    list: [
+      { title: '併批製程識別設定', path: 'fund-1431' },
+      { title: '機台限制參數延伸元資料設定', path: 'fund-1432' },
+      { title: '客戶型號權值繼承', path: 'fund-1605' },
+      { title: '貨批派機條件設定', path: 'fund-1606' },
+      { title: '製程機台區間束線設定', path: 'fund-1607' }
+    ],
+    ps: ''
+  },
+  {
+    timestamp: '8/31 ~ 9/12',
+    label: '機台分配',
+    size: 'large',
+    placement: 'top',
+    type: '',
+    list: [
+      { title: '機台分配管理', path: 'fund-1604' }
+    ],
+    ps: ''
+  },
+  {
+    timestamp: '9/13 ~ 9/15',
+    label: '排程作業',
+    size: 'large',
+    placement: 'top',
+    type: '',
+    list: [
+      { title: '訂單資訊', path: 'auto-112' },
+      { title: '參數設定及排程', path: 'auto-13' }
+    ],
+    ps: 'table組件：新增勾選功能'
   },
   {
     timestamp: '9/18 ~ 9/22',
@@ -44,9 +77,8 @@ const options = [
     placement: 'top',
     type: '',
     list: [
-      { title: '選單3-1-1', path: 'nav3-1-1' },
-      { title: '選單3-1-2', path: 'nav3-1-2' },
-      { title: '選單3-1-3', path: 'nav3-1-3' }
+      { title: '甘特圖預覽', path: 'auto-33' },
+      { title: '資源排程甘特圖', path: 'optimiz-31' }
     ],
     ps: '新增甘特圖組件'
   }
@@ -57,7 +89,7 @@ const {
 } = getSimpleTableSetting(columnSetting, 'table')
 
 const downloadWord = () => {
-  downloadStaticFile('/file', '下載word測試.docx')
+  downloadStaticFile('/file', 'iPASP更版進度.docx')
 }
 
 </script>
@@ -65,7 +97,7 @@ const downloadWord = () => {
 <template>
   <div class="page">
     <CustomButton
-      label="下載word"
+      label="下載進度表"
       type="info"
       plain
       icon-name="file-word"

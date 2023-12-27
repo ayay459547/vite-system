@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CustomTimeLine, CustomButton } from '@/components'
 import { ElCard } from 'element-plus'
+
+import { CustomTimeLine, CustomButton } from '@/components'
 
 const options = [
   {

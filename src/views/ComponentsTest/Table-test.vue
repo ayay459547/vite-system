@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import {
-  CustomTable,
-  CustomInput,
-  CustomButton
-} from '@/components'
-import { getTableSetting } from '@/lib/lib_columns'
 import { ref, reactive } from 'vue'
+
+import { CustomTable, CustomInput, CustomButton } from '@/components'
+import { getTableSetting } from '@/lib/lib_columns'
 
 const columnSetting = {
   date: {

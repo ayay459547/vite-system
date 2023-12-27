@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
 import {
   ref,
@@ -11,6 +10,7 @@ import {
   computed
 } from 'vue'
 
+import type { Hook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
 import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils'

@@ -4,14 +4,13 @@ import { ref, computed } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomBadge/CustomBadge.md?raw'
 import {
+  type BadgeType,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomBadge,
   CustomButton
 } from '@/components'
-
-import type { BadgeType } from '@/components'
 
 const typeOptions = [
   { label: 'primary', value: 'primary' },

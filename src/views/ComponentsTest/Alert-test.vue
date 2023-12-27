@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
-import type { Hook } from '@/declare/hook'
 import Swal from 'sweetalert2'
-import {
-  CustomButton,
-  CustomTooltip,
-  CustomPopover
-} from '@/components'
+
+import type { Hook } from '@/declare/hook'
+import { CustomButton, CustomTooltip, CustomPopover } from '@/components'
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')

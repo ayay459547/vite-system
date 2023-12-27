@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import { SimpleTable, CustomInput, CustomIcon } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
-import { ref } from 'vue'
 
 const columnSetting = {
   date: {

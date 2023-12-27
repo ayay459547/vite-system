@@ -1,3 +1,5 @@
+import type { LangMap } from '@/i18n'
+
 export default {
   testTable: {
     zhTw: '測試表單',
@@ -9,4 +11,4 @@ export default {
     zhCn: '清单列表',
     en: 'Todo List'
   }
-}
+} as LangMap

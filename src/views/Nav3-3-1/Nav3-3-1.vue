@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CustomCollapse, CustomDivider } from '@/components'
 import { ref } from 'vue'
+
+import { CustomCollapse, CustomDivider } from '@/components'
 
 const active1 = ref(['options1', 'options2'])
 

@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
 import { shallowRef, ref, reactive, onMounted, nextTick, computed, inject } from 'vue'
+
+import type { Hook } from '@/declare/hook'
+
 import {
-  type TableData,
-  type Search,
-  getVersionOptions,
-  getData
-} from './api'
-import {
-  CustomInput,
-  CustomButton,
   type DraggableChange,
   CustomDraggable,
-  CustomTabs,
   type SpanMethod,
   TableMain,
+  CustomInput,
+  CustomButton,
+  CustomTabs,
   CustomIcon,
   CustomSearch
 } from '@/components'
-
 import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils'
-import { columnSetting } from './columns'
 import { getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
-
 import dayjs from '@/lib/lib_day'
-// import { Table } from 'element-plus'
+
+import type { TableData, Search } from './api'
+import { getVersionOptions, getData } from './api'
+import { columnSetting } from './columns'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()

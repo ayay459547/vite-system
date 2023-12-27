@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import {
-  CustomInput,
-  CustomButton
-} from '@/components'
+import { ref, onBeforeMount, reactive } from 'vue'
+
+import { CustomInput, CustomButton } from '@/components'
+import { getTableSetting } from '@/lib/lib_columns'
+
 // 手寫 lazy-loading 虛擬列表
 import CustomTable from './Components/CustomTable.vue'
-import { getTableSetting } from '@/lib/lib_columns'
-import { ref, onBeforeMount, reactive } from 'vue'
 
 const columnSetting = {
   no: {

@@ -3,19 +3,8 @@
 import { ref, computed } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomButton/CustomButton.md?raw'
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown,
-  CustomButton
-} from '@/components'
-
-import type {
-  ButtonType,
-  ButtonSize,
-  ButtonMove,
-  ButtonIconType
-} from '@/components'
+import type { ButtonType, ButtonSize, ButtonMove, ButtonIconType } from '@/components'
+import { CustomInput, CustomDivider, CustomMarkdown, CustomButton } from '@/components'
 
 const sizeOptions = [
   { label: 'large', value: 'large' },

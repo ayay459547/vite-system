@@ -1,9 +1,9 @@
 <script lang="ts">
+import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+
 import GlobalView from '@/components/GlobalView.vue'
 import { useEnvStore } from '@/stores/stores_env'
-import { defineComponent } from 'vue'
-// import { CustomIcon } from '@/components'
-import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'AppView',

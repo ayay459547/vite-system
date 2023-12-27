@@ -3,17 +3,8 @@
 import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown
-} from '@/components'
-
-import type {
-  DividerDirection,
-  DividerBorderStyle,
-  DividerContentPosition
-} from '@/components'
+import type { DividerDirection, DividerBorderStyle, DividerContentPosition } from '@/components'
+import { CustomInput, CustomDivider, CustomMarkdown } from '@/components'
 
 const directionOptions = [
   { label: 'horizontal', value: 'horizontal' },

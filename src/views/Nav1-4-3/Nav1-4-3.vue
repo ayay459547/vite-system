@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CustomCharts } from '@/components'
 import { onMounted, ref } from 'vue'
-import { getUuid } from '@/lib/lib_utils'
+
+import { CustomCharts } from '@/components'
 
 const options = () => {
   return {

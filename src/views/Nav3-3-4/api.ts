@@ -2,6 +2,7 @@ import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils'
 import type { Options } from '@/components'
+
 import { fakeTableData } from './fakeData'
 
 export type Params = {
@@ -109,15 +110,15 @@ export const getVersionOptions = async (): Promise<Options> => {
   }
 }
 
-const restrictionCompareReportOrder = [
-  'restrictionName', // 比對類別
-  'restrictionValue', // 設定基準
-  'matchingType', // 比對方式
-  'inputValue', // 實際配置
-  'compareDetailInsufficient', // 缺少配置
-  'compareDetailExtra', // 多餘配置
-  'discrepancy' // 數量計算後多寡
-]
+// const restrictionCompareReportOrder = [
+//   'restrictionName', // 比對類別
+//   'restrictionValue', // 設定基準
+//   'matchingType', // 比對方式
+//   'inputValue', // 實際配置
+//   'compareDetailInsufficient', // 缺少配置
+//   'compareDetailExtra', // 多餘配置
+//   'discrepancy' // 數量計算後多寡
+// ]
 
 // table
 export const getData = async (params: any): Promise<ResponseData[]> => {

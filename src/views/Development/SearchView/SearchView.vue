@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-import { computed, provide, inject } from 'vue'
-import type { Hook } from '@/declare/hook'
+import { type ComputedRef, computed, provide, inject } from 'vue'
 
+import type { Hook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getFormSetting } from '@/lib/lib_columns'
-
 import { CustomInput, CustomIcon, CustomButton } from '@/components'
-import FeatureTree from './FeatureTree.vue'
-
 import { scrollToEl } from '@/lib/lib_utils'
 import debounce from '@/lib/lib_debounce'
+
+import FeatureTree from './FeatureTree.vue'
 
 const routesStore = useRoutesStore()
 

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import type { Hook } from '@/declare/hook'
 import { useI18n } from 'vue-i18n'
+
+import type { Hook } from '@/declare/hook'
 import { CustomTabs } from '@/components'
 import { usePageI18n } from '@/lib/lib_utils'
+
 const { t: testT } = useI18n()
 
 const { i18nTranslate: pageTranslate } = usePageI18n({

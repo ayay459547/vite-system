@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
 import { ref, reactive, inject, onMounted, nextTick } from 'vue'
-import {
-  CustomButton,
-  CustomTable,
-  CustomInput,
-  CustomModal
-} from '@/components'
 
-import { deepClone, usePageI18n } from '@/lib/lib_utils'
+import type { Hook } from '@/declare/hook'
+import { CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
+import { usePageI18n } from '@/lib/lib_utils'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'
 import { columnSetting } from './columns'
-
 import i18nMessage from './i18n'
 
 import DetailModal from './Components/DetailModal.vue'

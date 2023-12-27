@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import {
-  useSlots,
-  ref,
-  onMounted,
-  onUnmounted,
-  computed
-} from 'vue'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import type { Sort } from './CustomTable.vue'
+import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
+
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import { CustomButton } from '@/components'
+
 import type {
   SpanMethod,
   RowClassName,
@@ -20,7 +16,7 @@ import type {
   CellStyle,
   LazyLoadingStatus
 } from './CustomTable.vue'
-import { CustomButton } from '@/components'
+import type { Sort } from './CustomTable.vue'
 
 // slot
 const slots = useSlots()

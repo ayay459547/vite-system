@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
 import { inject, ref } from 'vue'
+
+import type { Hook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
-
 import { CustomIcon, CustomInput } from '@/components'
+
 import { loginSystem } from './api'
 
 const hook: Hook = inject('hook')
@@ -36,7 +37,7 @@ const columnSetting = {
     label: '帳號',
     fitler: {
       type: 'text',
-      default: 'admin',
+      default: 'aat',
       required: true
     }
   },
@@ -44,7 +45,7 @@ const columnSetting = {
     label: '密碼',
     fitler: {
       type: 'password',
-      default: '123',
+      default: '12345678',
       required: true
     }
   }

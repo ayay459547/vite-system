@@ -4,14 +4,13 @@ import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
 import {
+  type DrawerDirection,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomButton,
   CustomDrawer
 } from '@/components'
-
-import type { DrawerDirection } from '@/components'
 
 const directionOptions = [
   { label: 'rtl', value: 'rtl' },

@@ -1,3 +1,5 @@
+import type { LangMap } from '@/i18n'
+
 export default {
   info: {
     zhTw: '資訊呈現',
@@ -49,4 +51,4 @@ export default {
     zhCn: '操作',
     en: 'Operate'
   }
-}
+} as LangMap

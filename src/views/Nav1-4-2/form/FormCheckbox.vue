@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { computed, ref } from 'vue'
+import { type PropType, computed, ref } from 'vue'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import { useField } from 'vee-validate'
+
 import { isEmpty } from '@/lib/lib_utils'
 
 type ModelValue = Array<string | number | null>

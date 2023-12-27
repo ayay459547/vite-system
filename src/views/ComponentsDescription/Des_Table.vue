@@ -1,19 +1,11 @@
 
 <script setup lang="ts">
-import {
-  CustomDivider,
-  CustomMarkdown,
-  CustomTable,
-  CustomButton
-} from '@/components'
-
-import type { TableParams } from '@/components'
+import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
-
+import type { TableParams } from '@/components'
+import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components'
 import { getTableSetting } from '@/lib/lib_columns'
-
-import { ref } from 'vue'
 
 const columnSetting = {
   name: {

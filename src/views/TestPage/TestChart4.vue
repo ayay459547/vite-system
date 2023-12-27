@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CustomCharts } from '@/components'
 import { onMounted, ref } from 'vue'
+
+import { CustomCharts } from '@/components'
 
 const colors = ['#5470C6', '#91CC75', '#EE6666']
 

@@ -1,20 +1,15 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
 import { getFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
-import {
-  CustomIcon,
-  CustomButton,
-  CustomInput,
-  CustomSearch
-} from '@/components'
+import { CustomIcon, CustomButton, CustomInput, CustomSearch } from '@/components'
 
 // import FormInput from './form/FormInput.vue'
 // import FormSelect from './form/FormSelect.vue'
 // import FormDatePicker from './form/FormDatePicker.vue'
 // import FormCheckbox from './form/FormCheckbox.vue'
 // import FormRadio from './form/FormRadio.vue'
-
-import { ref, onMounted } from 'vue'
 
 const columnSetting = {
   age: {

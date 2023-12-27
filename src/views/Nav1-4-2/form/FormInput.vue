@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { computed, useSlots, ref, nextTick } from 'vue'
 import { ElInput } from 'element-plus'
 import { useField } from 'vee-validate'
+
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'

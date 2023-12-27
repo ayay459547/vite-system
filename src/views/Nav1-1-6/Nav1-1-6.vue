@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
 import { CustomScrollbar, CustomButton } from '@/components'
 import { useBoundingClientRect } from '@/lib/lib_utils'
-import { ref, onMounted } from 'vue'
 
 const resizeRef = ref()
 

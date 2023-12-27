@@ -1,6 +1,7 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { isEmpty, swal, deepClone, reverse } from '@/lib/lib_utils'
+
 import { fakeTableData } from './fakeData'
 
 export type TableData = {

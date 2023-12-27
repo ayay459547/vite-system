@@ -1,5 +1,8 @@
 
-import { langMap } from '@/i18n'
+import {
+  // properties,
+  langMap
+} from '@/i18n'
 import { cutTableData, isEmpty } from '@/lib/lib_utils'
 
 export type TableData = {
@@ -20,12 +23,28 @@ const langData = [] as TableData[]
 
   langData.push({ keyword: key, zhTw, zhCn, en })
 })
+// console.log(properties)
+// properties.then(langProperties => {
+//   if (!isEmpty(langProperties)) {
+//     (langProperties as any).$forEach((lang: {
+//       zhTw: string
+//       zhCn: string
+//       en: string
+//     }, key: string) => {
+//       const { zhTw, zhCn, en } = lang
+
+//       langData.push({ keyword: key, zhTw, zhCn, en })
+//     })
+
+//   }
+// })
 
 export const getData = (params: any) => {
   const {
     keyword, zhTw, zhCn, en,
     sort = {}, page, size
   } = params
+  console.log(langData)
 
   const { key: sortKey, order: sortType} = sort
 

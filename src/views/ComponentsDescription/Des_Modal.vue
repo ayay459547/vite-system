@@ -3,17 +3,13 @@
 import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomModal/CustomModal.md?raw'
+import type { WidthSize, HeightSize } from '@/components'
 import {
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomModal,
   CustomButton
-} from '@/components'
-
-import type {
-  WidthSize,
-  HeightSize
 } from '@/components'
 
 const widthOptions = [

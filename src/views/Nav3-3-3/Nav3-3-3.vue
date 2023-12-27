@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ElTree } from 'element-plus'
-import { CustomTree, CustomDivider, CustomButton } from '@/components'
 import { ref } from 'vue'
+import { ElTree } from 'element-plus'
+
+import { CustomTree, CustomDivider, CustomButton } from '@/components'
 
 interface Tree {
   id: number

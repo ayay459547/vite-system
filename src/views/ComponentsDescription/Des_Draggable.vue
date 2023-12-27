@@ -2,12 +2,7 @@
 import { ref, onMounted } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomDraggable/CustomDraggable.md?raw'
-import {
-  CustomDivider,
-  CustomMarkdown,
-  CustomButton,
-  CustomDraggable
-} from '@/components'
+import { CustomDivider, CustomMarkdown, CustomButton, CustomDraggable } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
 const list1Default = [

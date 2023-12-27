@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import {
-  CustomButton,
-  CustomDivider,
-  CustomDialog,
-  CustomModal
-} from '@/components'
 import { ref, onMounted } from 'vue'
+
+import { CustomButton, CustomDivider, CustomDialog, CustomModal } from '@/components'
 
 const isShow = ref(false)
 

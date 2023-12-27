@@ -1,6 +1,7 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils'
+
 import { fakeData } from './fakeData'
 
 export type Params = {

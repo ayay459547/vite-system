@@ -4,14 +4,13 @@ import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomImage/CustomImage.md?raw'
 import {
+  type ImageFit,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomIcon,
   CustomImage
 } from '@/components'
-
-import type { ImageFit } from '@/components'
 
 const fitOptions = [
   { label: 'cover', value: 'cover' },

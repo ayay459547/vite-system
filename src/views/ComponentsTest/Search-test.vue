@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import {
-  CustomSearch,
-  CustomDrawer,
-  CustomButton,
-  GroupSearch
-} from '@/components'
 import { ref } from 'vue'
+
+import { CustomSearch, CustomDrawer, CustomButton, GroupSearch } from '@/components'
 import { getFormSetting } from '@/lib/lib_columns'
 
 type Form = {
@@ -144,3 +140,4 @@ const get = () => {
   gap: 32px;
 }
 </style>
+

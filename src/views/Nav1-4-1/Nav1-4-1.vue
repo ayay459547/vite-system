@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { GanttChart } from '@/components'
 
-
 </script>
 
 <template>

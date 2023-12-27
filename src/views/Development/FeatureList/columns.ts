@@ -43,20 +43,20 @@ export const columnSetting = {
       }
     }
   },
-  startDate: {
-    label: '預計開始日',
-    table: {
-      width: 130,
-      sortable: 'custom'
-    }
-  },
-  completedDate: {
-    label: '預計完成日',
-    table: {
-      width: 130,
-      sortable: 'custom'
-    }
-  },
+  // startDate: {
+  //   label: '預計開始日',
+  //   table: {
+  //     width: 130,
+  //     sortable: 'custom'
+  //   }
+  // },
+  // completedDate: {
+  //   label: '預計完成日',
+  //   table: {
+  //     width: 130,
+  //     sortable: 'custom'
+  //   }
+  // },
   title: {
     label: '名稱',
     table: {

@@ -3,12 +3,7 @@
 import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomCollapse/CustomCollapse.md?raw'
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown,
-  CustomCollapse
-} from '@/components'
+import { CustomInput, CustomDivider, CustomMarkdown, CustomCollapse } from '@/components'
 
 const value = ref()
 

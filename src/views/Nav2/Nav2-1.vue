@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import { CustomInput, CustomDivider, CustomEmpty } from '@/components'
+
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
 

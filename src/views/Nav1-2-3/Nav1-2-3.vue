@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { FormList, CustomInput } from '@/components'
-import { columnSetting } from './columns'
-import { getFormListSetting } from '@/lib/lib_columns'
 import { reactive } from 'vue'
+
+import { FormList, CustomInput } from '@/components'
+import { getFormListSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
+
+import { columnSetting } from './columns'
 
 const testData = reactive<Form[]>([
   { name: 'Tom', date: '', age: '12', address: 'address1' },

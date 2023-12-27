@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import {
-  CustomTimeLine,
-  CustomTag,
-  CustomDivider,
-  CustomInput
-} from '@/components'
-import { ElCard } from 'element-plus'
 import { ref } from 'vue'
+import { ElCard } from 'element-plus'
+
+import { CustomTimeLine, CustomTag, CustomDivider, CustomInput } from '@/components'
 
 const options = [
   {
