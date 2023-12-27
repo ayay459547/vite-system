@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
 import { type PropType, onMounted } from 'vue'
+
 import { getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({

@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import {
-  type PropType,
-  type Ref,
-  type CSSProperties,
-  useSlots,
-  ref
-} from 'vue'
+import type { PropType, Ref, CSSProperties } from 'vue'
+import { useSlots, ref } from 'vue'
 import { ElScrollbar } from 'element-plus'
+
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type AriaOrientation = 'horizontal' | 'vertical'

@@ -2,8 +2,9 @@
 import type { PropType } from 'vue'
 import { computed, customRef, useSlots, onMounted } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
-import { isEmpty, round, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+
 import type { Options } from '@/components'
+import { isEmpty, round, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
 export type OperatorValue = string | number | null

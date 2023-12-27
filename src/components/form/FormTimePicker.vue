@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import {
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  ref,
-  watch,
-  effectScope
-} from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, watch, effectScope } from 'vue'
 import { ElTimePicker } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import type { Dayjs } from 'dayjs'
+
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
-import type { Dayjs } from 'dayjs'
 
 const { t } = useI18n()
 
@@ -186,7 +180,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('touchstart', e => e.preventDefault())
 })
 
-const scopedId = `__i-time-picker__${getUuid()}`
+const scopedId = getUuid('__i-time-picker__')
 
 const elTimePickerRef = ref()
 

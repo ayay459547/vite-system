@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ElTag } from 'element-plus'
+
 import { type IconType, CustomIcon } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 

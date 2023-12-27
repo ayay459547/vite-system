@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
+
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({

@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+
 import type { ValidateType } from '@/lib/lib_validate'
 import type {
   Shortcuts,

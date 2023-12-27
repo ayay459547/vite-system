@@ -1,7 +1,8 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { fakeUserData, allPermissionData } from './fakeData'
 import { swal } from '@/lib/lib_utils'
+
+import { fakeUserData, allPermissionData } from './fakeData'
 
 export type PermissionData = {
   autoGeneratingId: boolean

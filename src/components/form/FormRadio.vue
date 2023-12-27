@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { computed } from 'vue'
+import { type PropType, computed } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
+
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export type Options = Array<{

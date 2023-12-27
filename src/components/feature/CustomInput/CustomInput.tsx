@@ -1,15 +1,8 @@
+import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
+import { useField } from 'vee-validate'
+
 // @ts-ignore
 import type { Hook } from '@/declare/hook'
-import {
-  defineComponent,
-  inject,
-  computed,
-  ref,
-  renderSlot,
-  nextTick,
-  onMounted
-} from 'vue'
-
 import {
   FormInput,
   FormSelect,
@@ -21,9 +14,12 @@ import {
   FormOperator
   // @ts-ignore
 } from '@/components'
-import styles from './CustomInput.module.scss'
 import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
+// @ts-ignore
+import type { VeeRes, ValidateType } from '@/lib/lib_validate'
+import validateFun from '@/lib/lib_validate'
+
 // @ts-ignore
 import type { ModelValue } from './props'
 import {
@@ -37,11 +33,7 @@ import {
   elRadio,
   elAutocomplete
 } from './props'
-
-// @ts-ignore
-import type { VeeRes, ValidateType } from '@/lib/lib_validate'
-import validateFun from '@/lib/lib_validate'
-import { useField } from 'vee-validate'
+import styles from './CustomInput.module.scss'
 
 const CustomInput = defineComponent({
   name: 'CustomInput',

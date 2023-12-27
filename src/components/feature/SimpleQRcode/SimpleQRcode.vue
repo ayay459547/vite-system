@@ -1,7 +1,7 @@
 <script lang="ts">
+import { type PropType, h } from 'vue'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
-import type { PropType } from 'vue'
-import { h } from 'vue'
+
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export default {

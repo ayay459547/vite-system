@@ -1,8 +1,9 @@
-import type { AxiosRequestConfig } from 'axios'
-import type { AjaxOptions } from '@/declare/ajax'
 import axios from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 import Swal from 'sweetalert2'
 import { ElMessage } from 'element-plus'
+
+import type { AjaxOptions } from '@/declare/ajax'
 import { hasOwnProperty, isEmpty } from '@/lib/lib_utils'
 import { updateToken } from '@/lib/lib_cookie'
 

@@ -3,11 +3,11 @@ import type { WritableComputedRef } from 'vue'
 import { computed, nextTick, ref } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import SideContent from './SideContent/SideContent.vue'
 import type { AuthData } from '@/stores/api'
-import HeaderContent from './HeaderContent/HeaderContent.vue'
-
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+
+import SideContent from './SideContent/SideContent.vue'
+import HeaderContent from './HeaderContent/HeaderContent.vue'
 
 const props = defineProps<{
   isOpen: boolean

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useSlots } from 'vue'
 import { ElSteps, ElStep } from 'element-plus'
+
 import { getUuid } from '@/lib/lib_utils'
 
 export type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success'

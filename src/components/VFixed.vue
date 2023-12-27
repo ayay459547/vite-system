@@ -167,5 +167,4 @@ export default defineComponent({
     @extend %flex-center;
   }
 }
-
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useSlots } from 'vue'
 import { ElImage } from 'element-plus'
+
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type ImageFit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'

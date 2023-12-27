@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Navigation } from '@/declare/routes'
 import { onMounted, shallowRef, ref } from 'vue'
+
+import type { Navigation } from '@/declare/routes'
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { routesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
-
-import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const { getRouteIcon, getRouteTitle } = routesHook()
 

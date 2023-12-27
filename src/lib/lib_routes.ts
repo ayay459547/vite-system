@@ -1,8 +1,9 @@
+import { useI18n } from 'vue-i18n'
+
 import type { RouterTree, Navigation } from '@/declare/routes'
-import { isEmpty } from '@/lib/lib_utils'
 import type { IconType } from '@/components'
 import { type RouterType, routerTypeIcon } from '@/router/setting'
-import { useI18n } from 'vue-i18n'
+import { isEmpty } from '@/lib/lib_utils'
 
 /**
  * @author Caleb

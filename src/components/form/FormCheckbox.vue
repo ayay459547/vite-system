@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed } from 'vue'
-
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
+
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export type ModelValue = CheckboxValueType | CheckboxGroupValueType | any

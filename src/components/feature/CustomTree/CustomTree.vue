@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ElTree } from 'element-plus'
 import { type PropType, useSlots, ref } from 'vue'
-import { getUuid } from '@/lib/lib_utils'
+import { ElTree } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
+
+import { getUuid } from '@/lib/lib_utils'
 
 export interface TreeNodeData {
   [key: string]: any

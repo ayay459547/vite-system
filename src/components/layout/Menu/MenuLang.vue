@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { Hook, EventItem } from '@/declare/hook'
 import { computed, inject } from 'vue'
+
+import type { Hook, EventItem } from '@/declare/hook'
 import { options as langOptions } from '@/i18n'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { useLocaleStore } from '@/stores/stores_locale'
 
 const hook: Hook = inject('hook')
 const { eventList, i18nTranslate } = hook()
-
 
 const localeStore = useLocaleStore()
 

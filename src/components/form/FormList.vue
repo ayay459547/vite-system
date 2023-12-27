@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
 import type { PropType } from 'vue'
-import {
-  ref,
-  reactive,
-  inject,
-  onBeforeMount,
-  nextTick,
-  useSlots,
-  computed
-} from 'vue'
+import { ref, reactive, inject, onBeforeMount, nextTick, useSlots, computed } from 'vue'
 
+import type { Hook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
 import { scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'

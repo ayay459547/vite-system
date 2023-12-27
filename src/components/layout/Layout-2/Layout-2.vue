@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import MenuContent from './MenuContent.vue'
-import SubMenu from './SubMenu.vue'
-
-import type { Navigation } from '@/declare/routes'
-import { isEmpty } from '@/lib/lib_utils'
-import type { AuthData } from '@/stores/api'
 import { ref, shallowRef, nextTick } from 'vue'
 
+import type { Navigation } from '@/declare/routes'
+import type { AuthData } from '@/stores/api'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import { isEmpty } from '@/lib/lib_utils'
+
+import MenuContent from './MenuContent.vue'
+import SubMenu from './SubMenu.vue'
 
 const props = defineProps<{
   isShow: boolean

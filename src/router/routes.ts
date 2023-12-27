@@ -1,4 +1,5 @@
 import type { RouterTree } from '@/declare/routes'
+
 import testRoutes from './test'
 import descriptionRoutes from './description'
 import developmentRoutes from './development'

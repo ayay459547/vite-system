@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useSlots } from 'vue'
 import { ElDivider } from 'element-plus'
+
 import { getUuid } from '@/lib/lib_utils'
 
 export type DividerDirection = 'horizontal' | 'vertical'

@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/stores/api'
-
+import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'
 import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
-
-import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 const props = defineProps<{
   showRoutes: Navigation[]

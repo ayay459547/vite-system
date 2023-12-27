@@ -1,6 +1,7 @@
 import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
-import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 import type { NotificationProps, NotificationHandle, MessageOptions, MessageHandler } from 'element-plus'
+
+import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 import type { Permission } from '@/lib/lib_permission'
 
 export declare interface EventItem {
@@ -42,7 +43,7 @@ export declare namespace HookList {
 
   type message = (options: Partial<MessageOptions>) => MessageHandler
 
-  type permission = (permissionTotal?: number | null) => Permission
+  type permission = (permissionTotal?: string | null) => Permission
 
   type env = () => Record<string, any>
 

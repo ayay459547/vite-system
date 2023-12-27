@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
+
 import { getUuid } from '@/lib/lib_utils'
 
 export type DrawerDirection = 'rtl' | 'ltr' | 'ttb' | 'btt'

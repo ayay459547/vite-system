@@ -3,21 +3,11 @@ import type { PropType } from 'vue'
 import { ref, onBeforeMount } from 'vue'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
-import type { PropsTableColumn } from '../CustomTable.vue'
-import {
-  CustomButton,
-  CustomPopover,
-  CustomInput,
-  CustomDraggable
-} from '@/components'
-
-import {
-  getColumnSetting,
-  setColumnSetting,
-  delColumnSetting
-} from '@/lib/lib_idb'
-
+import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
+import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
+
+import type { PropsTableColumn } from '../CustomTable.vue'
 
 const props = defineProps({
   columns: {

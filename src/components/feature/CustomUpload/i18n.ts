@@ -1,3 +1,5 @@
+import type { LangMap } from '@/i18n'
+
 export default {
   image: {
     zhTw: '圖片',
@@ -19,4 +21,4 @@ export default {
     zhCn: '档案',
     en: 'File'
   }
-}
+} as LangMap

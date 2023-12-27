@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import {
-  type PropType,
-  type WritableComputedRef,
-  useSlots,
-  computed
-} from 'vue'
+import type { PropType, WritableComputedRef } from 'vue'
+import { useSlots, computed } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
+
 import { CustomEmpty } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 

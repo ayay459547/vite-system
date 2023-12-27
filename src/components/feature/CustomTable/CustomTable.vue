@@ -1,21 +1,10 @@
 <script setup lang="ts">
-import {
-  useSlots,
-  ref,
-  shallowRef,
-  shallowReactive,
-  computed,
-  onMounted
-} from 'vue'
-
-import type { TableColumnCtx } from 'element-plus'
-import { ElPagination } from 'element-plus'
-
-import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
+import { useSlots, ref, shallowRef, shallowReactive, computed, onMounted } from 'vue'
+import { type TableColumnCtx, ElPagination } from 'element-plus'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
-
+import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
 import ColumnSetting from './Components/ColumnSetting.vue'

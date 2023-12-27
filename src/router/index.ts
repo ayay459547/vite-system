@@ -1,15 +1,10 @@
-import type {
-  RouteRecordRaw,
-  RouteLocationNormalized,
-  NavigationGuardNext
-} from 'vue-router'
-import { createRouter, createWebHistory } from 'vue-router'
 import type { ComputedRef } from 'vue'
 import { shallowRef, computed } from 'vue'
-
+import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { useAuthStore } from '@/stores/stores_auth'
 
+import { useAuthStore } from '@/stores/stores_auth'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 import { permission, hasPermission, defaultPermission } from '@/lib/lib_permission'
@@ -68,6 +63,10 @@ const resRoutes: ComputedRef<RouteRecordRaw[]> = computed(() => {
 const baseRoutes: Array<RouteRecordRaw> = [
   {
     path: '',
+    redirect: { name: 'home' }
+  },
+  {
+    path: '/ipassweb',
     redirect: { name: 'home' }
   },
   {

@@ -4,7 +4,6 @@ import { ref, shallowRef, onMounted } from 'vue'
 
 import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
-
 import throttle from '@/lib/lib_throttle'
 
 type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'

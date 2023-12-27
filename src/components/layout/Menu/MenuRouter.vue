@@ -1,14 +1,13 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { useRouter } from 'vue-router'
+
 import type { Hook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomTooltip } from '@/components'
-import { inject } from 'vue'
-
-import { hasOwnProperty } from '@/lib/lib_utils'
-import { useRouter } from 'vue-router'
-import { routesHook } from '@/lib/lib_routes'
-
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import { CustomIcon, CustomTooltip } from '@/components'
+import { hasOwnProperty } from '@/lib/lib_utils'
+import { routesHook } from '@/lib/lib_routes'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate, eventList } = hook()

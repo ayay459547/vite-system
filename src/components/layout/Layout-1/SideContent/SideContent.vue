@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { Navigation } from '@/declare/routes'
-import NavigationView from './NavigationView.vue'
-import { CustomIcon } from '@/components'
 import { computed, ref, nextTick } from 'vue'
 
+import type { Navigation } from '@/declare/routes'
+import { CustomIcon } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+
+import NavigationView from './NavigationView.vue'
 
 const props = defineProps<{
   isOpen: boolean
@@ -178,5 +179,4 @@ defineExpose({
     overflow: hidden;
   }
 }
-
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable'
 import { type PropType, computed, useSlots } from 'vue'
+import Draggable from 'vuedraggable'
+
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 // slot

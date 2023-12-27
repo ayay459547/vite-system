@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useSlots } from 'vue'
 import { ElBadge } from 'element-plus'
+
 import { getUuid } from '@/lib/lib_utils'
 
 export type BadgeType = 'primary' | 'success' | 'warning' | 'danger' | 'info'

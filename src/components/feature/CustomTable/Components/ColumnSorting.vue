@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref, customRef, computed } from 'vue'
 import type { PropType } from 'vue'
-import { CustomBadge } from '@/components'
+import { onMounted, ref, customRef, computed } from 'vue'
+
 import type { Sorting, Order } from '@/components'
+import { CustomBadge } from '@/components'
 
 const props = defineProps({
   modelValue: {
@@ -169,5 +170,4 @@ onMounted(() => {
     }
   }
 }
-
 </style>

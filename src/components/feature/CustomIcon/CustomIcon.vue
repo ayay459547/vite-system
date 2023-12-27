@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { getUuid } from '@/lib/lib_utils'
 
 export type IconType = 'fas' | 'far' | 'fab'

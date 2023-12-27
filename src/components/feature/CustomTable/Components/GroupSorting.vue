@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import type { PropType } from 'vue'
-import type { Sorting, Order } from '../CustomTable.vue'
+import { computed, ref } from 'vue'
 
 import {
   CustomPopover,
@@ -10,6 +9,8 @@ import {
   CustomInput,
   CustomBadge
 } from '@/components'
+
+import type { Sorting, Order } from '../CustomTable.vue'
 
 const props = defineProps({
   modelValue: {

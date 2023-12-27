@@ -1,15 +1,6 @@
 <script setup lang="ts">
-import {
-  type Ref,
-  ref,
-  shallowReactive,
-  computed,
-  provide,
-  onMounted,
-  onBeforeMount,
-  nextTick,
-  useSlots
-} from 'vue'
+import type { Ref } from 'vue'
+import { ref, shallowReactive, computed, provide, onMounted, onBeforeMount, nextTick, useSlots } from 'vue'
 
 import { swal, notification, message, isEmpty, scrollToEl } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
@@ -307,8 +298,22 @@ provide<Hook>('hook', () => {
     swal,
     notification,
     message,
-    permission: (permissionTotal = null) => {
-      if (!isEmpty(permissionTotal)) return getPermission(permissionTotal)
+    permission: (routeName = null) => {
+      if (!isEmpty(routeName)) {
+        const permissionTotal = routesPermission.value.get(routeName)
+
+        if (typeof permissionTotal === 'number') {
+          return getPermission(permissionTotal)
+        } else {
+          return {
+            read: false,
+            create: false,
+            update: false,
+            delete: false,
+            execute: false
+          }
+        }
+      }
 
       const { permission = 0 } = currentNavigation.value
       return getPermission(permission)

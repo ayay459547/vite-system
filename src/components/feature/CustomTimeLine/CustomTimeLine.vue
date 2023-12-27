@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useSlots } from 'vue'
 import { type TimelineItemProps, ElTimeline, ElTimelineItem } from 'element-plus'
+
 import { getUuid } from '@/lib/lib_utils'
 
 export type Size = 'large'| 'default'| 'small'

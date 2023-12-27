@@ -5,7 +5,6 @@ import { ref, computed, onMounted, onUnmounted, watch, effectScope } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-
 import { CustomIcon } from '@/components'
 import { scrollToEl, getUuid } from '@/lib/lib_utils'
 

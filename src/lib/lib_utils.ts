@@ -1,36 +1,29 @@
+import type { Ref } from 'vue'
+import { useSlots, customRef, reactive, onMounted, onUnmounted, isRef } from 'vue'
+
 import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
-import {
-  useSlots,
-  customRef,
-  reactive,
-  onMounted,
-  onUnmounted,
-  isRef
-} from 'vue'
-import type { Ref } from 'vue'
-import type { LangMap } from '@/i18n'
-import { getI18nMessages } from '@/i18n'
-
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
-import {
-  type NotificationOptions,
-  type NotificationOptionsTyped,
-  type NotificationHandle,
-  ElNotification,
-  type MessageOptions,
-  type MessageHandler,
-  ElMessage
-} from 'element-plus'
 
-import { v4 as uuidv4 } from 'uuid'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
+import type {
+  NotificationOptions,
+  NotificationOptionsTyped,
+  NotificationHandle,
+  MessageOptions,
+  MessageHandler
+} from 'element-plus'
+import { ElNotification, ElMessage } from 'element-plus'
 
 // import AES from 'crypto-js/aes'
 // import Utf8 from 'crypto-js/enc-utf8'
 import cryptoJS from 'crypto-js'
+import { v4 as uuidv4 } from 'uuid'
+
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import type { LangMap } from '@/i18n'
+import { getI18nMessages } from '@/i18n'
 
 /**
  * @author Caleb

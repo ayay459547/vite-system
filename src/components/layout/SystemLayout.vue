@@ -1,19 +1,16 @@
 <script setup lang="ts">
+import { computed, ref, reactive, onMounted, inject, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
+
 import type { Hook } from '@/declare/hook'
+import type { Navigation } from '@/declare/routes'
+import type { AuthData } from '@/stores/api'
+import { CustomModal } from '@/components'
+import { useLayoutStore } from '@/stores/stores_layout'
 
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
 import Preferences from '@/components/layout/Preferences/UserPreferences.vue'
-
-import { CustomModal } from '@/components'
-
-import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/stores/api'
-
-import { useLayoutStore } from '@/stores/stores_layout'
-import { storeToRefs } from 'pinia'
-
-import { computed, ref, reactive, onMounted, inject, nextTick } from 'vue'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
@@ -133,6 +130,7 @@ const onChangeLayout = () => {
       <CustomModal
         v-model="modal.preferences"
         hidden-footer
+        draggable
         click-outside
       >
         <template #header>

@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import {
-  type PropType,
-  ref,
-  useSlots,
-  onMounted,
-  onUnmounted
-} from 'vue'
+import type { PropType } from 'vue'
+import { ref, useSlots, onMounted, onUnmounted } from 'vue'
+import type { ElTableV2 as ElTableV2Type, TableV2Instance } from 'element-plus'
+import { ElTableV2 } from 'element-plus'
+
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import {
-  type ElTableV2 as ElTableV2Type,
-  type TableV2Instance,
-  ElTableV2
-} from 'element-plus'
 import { getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({

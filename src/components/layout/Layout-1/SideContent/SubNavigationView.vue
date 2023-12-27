@@ -1,10 +1,10 @@
 <script lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
 import { defineComponent, computed } from 'vue'
+
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
 import { routesHook } from '@/lib/lib_routes'
-
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 export default defineComponent({

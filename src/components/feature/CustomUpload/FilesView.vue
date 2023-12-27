@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { type PropType, computed } from 'vue'
+
 // import type { Hook } from '@/declare/hook'
-import type { PropType } from 'vue'
-import { computed } from 'vue'
-import type { FilesInfo } from './CustomUpload.vue'
 import { CustomIcon, CustomImage, CustomButton } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
+
+import type { FilesInfo } from './CustomUpload.vue'
 
 // const hook: Hook = inject('hook')
 // const { i18nTranslate, swal, eventList } = hook()
@@ -156,5 +157,4 @@ const getIcon = (fileType: string) => {
     white-space: nowrap;
   }
 }
-
 </style>

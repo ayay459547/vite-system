@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { type PropType, ref, inject, useSlots } from 'vue'
+
 import type { Hook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
-import { type PropType, ref, inject, useSlots } from 'vue'
 import { getUuid } from '@/lib/lib_utils'
 
 const props = defineProps({

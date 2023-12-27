@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted } from 'vue'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
+
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import { CustomButton } from '@/components'
+import { isEmpty } from '@/lib/lib_utils'
+
 import type {
   Sort,
   SpanMethod,
@@ -16,8 +20,6 @@ import type {
   LazyLoadingStatus,
   TableSize
 } from './CustomTable.vue'
-import { CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()

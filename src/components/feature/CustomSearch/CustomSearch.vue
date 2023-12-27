@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { type PropType, computed, nextTick, useSlots } from 'vue'
+import { storeToRefs } from 'pinia'
+
+import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import {
-  CustomSwitch,
-  // type InputType,
-  // type Options,
-  CustomInput,
   type PopoverPlacement,
   CustomPopover,
+  CustomSwitch,
+  CustomInput,
   CustomButton,
   CustomBadge
 } from '@/components'
-
 import {
   custom,
   elCommon,
@@ -21,12 +22,7 @@ import {
   elRadio,
   elAutocomplete
 } from '@/components/feature/CustomInput/props'
-
-import { type PropType, computed, nextTick, useSlots } from 'vue'
 import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
-
-import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
-import { storeToRefs } from 'pinia'
 
 type ModelValue = any
 const props = defineProps({
@@ -106,7 +102,7 @@ const isActive = computed({
   }
 })
 
-const scopedId = getUuid('__search__')
+const scopedId = getUuid('__i-search__')
 
 const customSearchStore = useCustomSearchStore()
 const { activeScopedId } = storeToRefs(customSearchStore)

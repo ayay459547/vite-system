@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+
 import type { Hook } from '@/declare/hook'
 import type { AuthData } from '@/stores/api'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { inject } from 'vue'
 
 const hook: Hook = inject('hook')
 const { eventList, i18nTranslate } = hook()

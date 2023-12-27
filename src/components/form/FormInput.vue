@@ -2,14 +2,8 @@
 import type { PropType } from 'vue'
 import { computed, useSlots, ref, onMounted } from 'vue'
 import { ElInput } from 'element-plus'
-import {
-  isEmpty,
-  round,
-  floor,
-  ceil,
-  hasOwnProperty,
-  getUuid
-} from '@/lib/lib_utils'
+
+import { isEmpty, round, floor, ceil, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 

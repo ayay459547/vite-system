@@ -1,31 +1,13 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
-import {
-  ref,
-  // unref,
-  onMounted,
-  onBeforeUnmount,
-  nextTick,
-  inject
-} from 'vue'
 import type { PropType } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
+
+import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
-import {
-  getFileType,
-  byteConvert,
-  readImage,
-  readExcel
-} from '@/lib/lib_files'
-import {
-  isEmpty,
-  getUuid,
-  deepClone,
-  getProxyData,
-  usePageI18n
-} from '@/lib/lib_utils'
+import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
+import { isEmpty, getUuid, deepClone, getProxyData, usePageI18n } from '@/lib/lib_utils'
 
 import FilesView from './FilesView.vue'
-
 import i18nMessage from './i18n'
 
 export type FileType = '' | 'image' | 'excel' | 'word' | 'powerpoint' | 'zip'

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue'
+
 import type { Navigation } from '@/declare/routes'
-import SubNavigationView from './SubNavigationView.vue'
 import { routesHook } from '@/lib/lib_routes'
 import { CustomIcon } from '@/components'
-
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+
+import SubNavigationView from './SubNavigationView.vue'
 
 const props = defineProps<{
   level1List: Navigation[]

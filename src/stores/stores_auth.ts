@@ -1,14 +1,14 @@
-// import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { shallowRef, computed, shallowReactive } from 'vue'
-import type { AuthData, PermissionData } from './api'
-import { getAuthData } from './api'
+
 import { permission } from '@/lib/lib_permission'
 import { isEmpty } from '@/lib/lib_utils'
-
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { getToken, setToken, clearToken } from '@/lib/lib_cookie'
+
+import type { AuthData, PermissionData } from './api'
+import { getAuthData } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
 	// 登入狀態 看使用者資料

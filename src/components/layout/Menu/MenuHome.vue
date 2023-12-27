@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { useRouter } from 'vue-router'
+
 import type { Hook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { useRouter } from 'vue-router'
-import { inject } from 'vue'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()

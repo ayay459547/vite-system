@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
+import { type ComputedRef, computed } from 'vue'
+
 import { CustomIcon, CustomTooltip } from '@/components'
 
 type TextAlign = 'start' | 'end'

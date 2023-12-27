@@ -1,5 +1,6 @@
 <script lang="ts">
 import { h } from 'vue'
+
 import { CustomDraggable } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
