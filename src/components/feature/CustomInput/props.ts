@@ -124,7 +124,10 @@ export const custom = {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,
-    description: '是否必填'
+    description: `
+      isValidate 必須為 true
+      是否必填
+    `
   },
   validate: {
     type: [Array, String, null] as PropType<ValidateType[] | ValidateType>,

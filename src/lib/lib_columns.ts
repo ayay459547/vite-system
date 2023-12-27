@@ -173,7 +173,6 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     handleReset: () => {
       resForms.$forEach((value: any, key: string) => {
         if (typeof refMap[key]?.handleReset === 'function') {
-          console.log(`${key} => handleReset`)
           refMap[key].handleReset()
         }
       })
