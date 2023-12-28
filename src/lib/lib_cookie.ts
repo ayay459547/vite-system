@@ -64,7 +64,5 @@ export const updateToken = () => {
   if (token !== null) {
     const { userId } = token
     setToken(userId)
-  }else {
-    clearToken()
   }
 }
