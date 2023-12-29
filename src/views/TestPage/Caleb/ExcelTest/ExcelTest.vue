@@ -1,10 +1,19 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
 import { CustomButton } from '@/components'
 
-const download1 = () => {
-  console.log('download1')
-}
+import testExcelData from './test.xlsx?sheetjs'
+import {
+  download1,
+  download2,
+  excleDownload1,
+  excleDownload2
+} from './download.ts'
 
+onMounted(() => {
+  console.log('testExcelData => ', testExcelData)
+})
 </script>
 
 <template>
@@ -12,10 +21,31 @@ const download1 = () => {
     ExcelTest
 
     <CustomButton
-      label="簡易下載"
+      label="官方範例"
       icon-name="ticket"
       type="primary"
       @click="download1"
+    />
+
+    <CustomButton
+      label="簡易下載"
+      icon-name="bomb"
+      type="primary"
+      @click="download2"
+    />
+
+    <CustomButton
+      label="下載1"
+      icon-name="bomb"
+      type="primary"
+      @click="excleDownload1"
+    />
+
+    <CustomButton
+      label="下載2"
+      icon-name="bomb"
+      type="primary"
+      @click="excleDownload2"
     />
   </div>
 </template>

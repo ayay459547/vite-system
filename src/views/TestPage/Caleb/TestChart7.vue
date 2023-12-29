@@ -3,7 +3,7 @@ import { onMounted, ref, inject } from 'vue'
 
 import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomCharts } from '@/components'
-import { downloadExcel } from '@/lib/lib_files'
+import { downloadMatrix } from '@/lib/lib_files'
 
 // import { storeToRefs } from 'pinia'
 // import { useRoutesStore } from '@/stores/stores_routes'
@@ -118,7 +118,7 @@ const merge = [
 const download = () => {
   console.log('download')
 
-  downloadExcel(matrix, {
+  downloadMatrix(matrix, {
     name: '測試',
     merge
   })

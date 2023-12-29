@@ -32,6 +32,11 @@ declare module '*raw' {
   export default markdown
 }
 
+declare module '*sheetjs' {
+  const excel: any
+  export default excel
+}
+
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'

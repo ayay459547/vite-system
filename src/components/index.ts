@@ -115,6 +115,8 @@ export type {
   Order,
   Sort,
   Sorting,
+  SortingList,
+  SortingMap,
   PageChange,
   TableParams,
   LazyLoadingStatus,

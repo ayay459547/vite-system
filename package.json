@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "development": "npx vite --force --mode development",
-    "production": "npx vite --mode production",
-    "dev": "vite --force",
+    "dev": "npx vite --force --mode development",
+    "pro": "npx vite --mode production",
+    "start": "vite --force",
     "staging": "npx vite --mode staging",
     "build": "run-p type-check build-only",
     "build-only": "vite build",
@@ -48,7 +48,7 @@
     "vue-qr": "^4.0.9",
     "vue-router": "^4.1.6",
     "vuedraggable": "^4.1.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

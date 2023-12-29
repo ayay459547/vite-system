@@ -17,21 +17,27 @@ export interface PageChange {
   (page: number, pageSize: number, ...payload: any[]): void
 }
 
-export type Order = null | 'ascending' | 'descending' | 'none'
+export type Order = null | 'ascending' | 'descending' | 'none' | 'Asc' | 'Desc'
 export interface Sort {
   key: null | string
   order: null | 'ascending' | 'descending'
 }
+// 資料處理的格式
 export interface Sorting {
   label?: string
   key?: null | string
   order?: Order
 }
+export type SortingList = Sorting[]
+// 送 api 的格式
+export type SortingMap = Record<string, Order>
+
 export interface TableParams {
   page?: number
   size?: number
   sort?: Sort
-  sortingList?: Sorting[]
+  sortingList?: SortingList
+  sortingMap?: SortingMap
 }
 export type TableSize = '' | 'large' | 'default' | 'small'
 
@@ -292,10 +298,25 @@ const onSortChange = (props: {
   })
 }
 // 多欄排序
-const sortingList = ref<Sorting[]>([])
-const emitSortingList = computed(() => {
-  return sortingList.value.filter(item => item.order !== 'none')
+const sortingList = ref<SortingList>([])
+const emitSortingData = computed<SortingMap>(() => {
+  // return sortingList.value.filter(item => item.order !== 'none')
+
+  return sortingList.value.reduce<SortingMap>((res, curr) => {
+    const { key, order } = curr
+    switch (order) {
+      case 'ascending':
+        res[key] = 'Asc'
+        break
+      case 'descending':
+        res[key] = 'Desc'
+        break
+    }
+
+    return res as SortingMap
+  }, {})
 })
+
 const activeSort = () => {
   sortingList.value.sort((a, b) => {
     if (
@@ -325,7 +346,7 @@ const initSortingList = () => {
 }
 const onSortingChange = () => {
   activeSort()
-  emit('sorting-change', getProxyData(emitSortingList.value))
+  emit('sorting-change', getProxyData(emitSortingData.value))
 
   onShowChange({
     page: currentPage.value,
@@ -377,7 +398,8 @@ const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
     page,
     size: pageSize,
     sort: getProxyData(sort),
-    sortingList: getProxyData(emitSortingList.value)
+    sortingList: getProxyData(sortingList.value),
+    sortingMap: getProxyData(emitSortingData.value)
   })
 }
 // 顯示資料
@@ -475,7 +497,8 @@ defineExpose({
       page: currentPage.value,
       size: pageSize.value,
       sort: getProxyData(currentSort.value),
-      sortingList: getProxyData(emitSortingList.value)
+      sortingList: getProxyData(sortingList.value),
+      sortingMap: getProxyData(emitSortingData.value)
     }
   },
   setTableParams: (params: {

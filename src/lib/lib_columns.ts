@@ -1,8 +1,7 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
 import { reactive, shallowReactive, ref } from 'vue'
-import ExcelJs from 'exceljs'
-import type { Column as ExcelColumn} from 'exceljs'
 
+import { type ExcelColumn, ExcelJs } from '@/lib/lib_files'
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'

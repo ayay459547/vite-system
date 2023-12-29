@@ -1,4 +1,18 @@
-import * as XLSX from 'xlsx/xlsx.mjs'
+// https://docs.sheetjs.com/docs/demos/frontend/bundler/vitejs
+// import * as XLSX from 'xlsx/xlsx.mjs'
+// import XLSX from 'xlsx'
+import type {
+  WorkSheet,
+  WorkBook,
+  SheetAOAOpts,
+  WritingOptions,
+  Range
+} from 'xlsx'
+import { writeFile, read, utils } from 'xlsx'
+export { default as XLSX } from 'xlsx'
+
+export type { Column as ExcelColumn } from 'exceljs'
+export { default as ExcelJs } from 'exceljs'
 
 import { isEmpty, tipLog, round, hasOwnProperty } from '@/lib/lib_utils'
 
@@ -199,15 +213,16 @@ export const readExcel = async (file: File): Promise<any> => {
     reader.onload = (event) => {
       const result = event.target.result
 
-      const workbook = XLSX.read(result, { type: 'binary' })
+      const workbook = read(result, { type: 'binary' })
 
       const excel = []
       for (const sheet in workbook.Sheets) {
         if (hasOwnProperty(workbook.Sheets, sheet)) {
           // 利用 sheet_to_json 方法將 excel 轉成 json 數據
-          const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+          const excelData = utils.sheet_to_json(workbook.Sheets[sheet])
 
           excel.push({
+            data: excelData,
             map: excelDataToMap(excelData),
             matrix: excelDataToMatrix(excelData)
           })
@@ -219,20 +234,11 @@ export const readExcel = async (file: File): Promise<any> => {
   })
 }
 
-/**
- * s: start
- * e: end
- *
- * r: row
- * c: column
- */
-type ExcelMerge = {
-  s: { r: number, c: number }
-  e: { r: number, c: number }
-}
+type ExcelAoa = (string | number)[][]
+
 export type ExcelOptions = {
   name: string
-  merge: Array<ExcelMerge>
+  merge: Array<Range>
 }
 /**
  * @author Caleb
@@ -240,18 +246,120 @@ export type ExcelOptions = {
  * @param {Array} matrix 矩陣資料
  * @param {String} options 其他設定
  */
-export const downloadExcel = (matrix: Array<(string | number)[]>, options: ExcelOptions): void => {
+export const downloadMatrix = (matrix: Array<(string | number)[]>, options: ExcelOptions): void => {
   const aoa = matrix
 
   const { name = '', merge = [] } = options
 
-  const ws = XLSX.utils.aoa_to_sheet(aoa)
+  const workSheet = utils.aoa_to_sheet(aoa)
   if (!isEmpty(merge)) {
-    ws['!merges'] = merge
+    workSheet['!merges'] = merge
   }
 
   /* create workbook and export */
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, `${name}`)
-  XLSX.writeFile(wb, `${name}.xlsx`)
+  const workBook = utils.book_new()
+  utils.book_append_sheet(workBook, workSheet, `${name}`)
+  writeFile(workBook, `${name}.xlsx`)
+}
+
+/**
+ * @author Caleb
+ * @description 新建工作表
+ * @param aoa 矩陣資料
+ * @param options 設定
+ * @returns 工作表
+ */
+export const createSheet = (aoa: ExcelAoa, options?: SheetAOAOpts) => {
+  const workSheet = utils.aoa_to_sheet(aoa, {
+    ...options
+  })
+  return workSheet
+}
+
+/**
+ * @author Caleb
+ * @description 工作表中新增資料
+ * @param ws 工作表
+ * @param aoa 矩陣資料
+ * @param origin 新增資料位置 ex: A2
+ * @param options 設定
+ */
+export const sheetAddAoa = (ws: WorkSheet, aoa: ExcelAoa, origin: string, options?: SheetAOAOpts) => {
+  const regexp = /^[A-Z]+[0-9]+$/
+  if (!regexp.test(origin)) {
+    tipLog('參數格式錯事', [
+      `${origin}`,
+      'origin 範例 A1',
+      '^[A-Z]+[0-9]+$'
+    ])
+
+  } else {
+    utils.sheet_add_aoa(ws, aoa, {
+      origin,
+      ...options
+    })
+  }
+}
+
+/**
+ * @author Caleb
+ * @description 工作表中新增合併欄位資訊
+ * @param ws 工作表
+ * @param rangeList 合併區間列表
+ */
+export const setMerges = (ws: WorkSheet, rangeList: string[]) => {
+  const regexp = /^[A-Z]+[0-9]+:[A-Z]+[0-9]+$/
+
+  const merges = []
+  rangeList.forEach(range => {
+    if (!regexp.test(range)) {
+      tipLog('參數格式錯事', [
+        `${range}`,
+        'range 範例 A1:A2',
+        '^[A-Z]+[0-9]+:[A-Z]+[0-9]+$'
+      ])
+
+    } else {
+      const merge = utils.decode_range(range)
+      merges.push(merge)
+    }
+  })
+  ws['!merges'] = merges
+}
+
+/**
+ * @author Caleb
+ * @description 新建工作簿
+ * @param ws 工作表
+ * @param wsname 分頁名稱
+ * @returns 工作簿
+ */
+export const newWorkBook = (ws?: WorkSheet, wsname?: string) => {
+  const workBook = utils.book_new(ws, wsname)
+  return workBook
+}
+
+/**
+ * @author Caleb
+ * @description 新增工作表 到 工作簿中
+ * @param wb 工作簿
+ * @param ws 工作表
+ * @param name 頁名稱
+ */
+export const bookAppendSheet = (wb: WorkBook, ws: WorkSheet, name: string) => {
+  utils.book_append_sheet(wb, ws, `${name}`)
+}
+
+/**
+ * @author Caleb
+ * @description 下載 Excel
+ * @param wb 工作簿
+ * @param ws 工作表
+ * @param options 設定
+ */
+export const downloadExcel = (wb: WorkBook, filename: string, options?: WritingOptions) => {
+  console.log(options)
+  writeFile(wb, filename, {
+    ...options
+  })
 }
