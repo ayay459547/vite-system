@@ -36,20 +36,6 @@ const routes: Array<RouterTree> = [
             component: () => import('@/views/Test-122/Test-122.vue')
           },
           {
-            name: 'diff-test',
-            title: 'diff演算法測試',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-11',
-              completedDate: '2023-11'
-            },
-            systemType: ['new'],
-            path: '/diff-test',
-            icon: ['fab', 'react'],
-            component: () => import('@/views/DiffTest.vue')
-          },
-          {
             name: 'nav1-1-1',
             title: '測試表格',
             meta: {

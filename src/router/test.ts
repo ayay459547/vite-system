@@ -14,90 +14,116 @@ const testRoutes: RouterTree[] = [
         icon: 'paw',
         leaves: [
           {
-            name: 'test-chart1',
+            name: 'test-Caleb-excel',
+            title: 'Excel',
+            meta: {
+              keepAlive: false,
+              status: 'completed'
+            },
+            systemType: ['development', 'test'],
+            path: '/test-Caleb-chart1',
+            icon: 'file-excel',
+            component: () => import('@/views/TestPage/Caleb/ExcelTest/ExcelTest.vue')
+          },
+          {
+            name: 'test-Caleb-chart1',
             title: '測試1',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-chart1',
+            path: '/test-Caleb-chart1',
             icon: 'chart-pie',
-            component: () => import('@/views/TestPage/TestChart1.vue')
+            component: () => import('@/views/TestPage/Caleb/TestChart1.vue')
           },
           {
-            name: 'test-chart2',
+            name: 'test-Caleb-chart2',
             title: '測試2',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-chart2',
+            path: '/test-Caleb-chart2',
             icon: 'satellite-dish',
-            component: () => import('@/views/TestPage/TestChart2.vue')
+            component: () => import('@/views/TestPage/Caleb/TestChart2.vue')
           },
           {
-            name: 'test-chart3',
+            name: 'test-Caleb-chart3',
             title: '測試3',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-chart3',
+            path: '/test-Caleb-chart3',
             icon: 'chart-column',
-            component: () => import('@/views/TestPage/TestChart3.vue')
+            component: () => import('@/views/TestPage/Caleb/TestChart3.vue')
           },
           {
-            name: 'test-chart4',
+            name: 'test-Caleb-chart4',
             title: '測試4',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-chart4',
+            path: '/test-Caleb-chart4',
             icon: 'chart-simple',
-            component: () => import('@/views/TestPage/TestChart4.vue')
+            component: () => import('@/views/TestPage/Caleb/TestChart4.vue')
           },
           {
-            name: 'test-chart5',
+            name: 'test-Caleb-chart5',
             title: '測試5',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-chart5',
+            path: '/test-Caleb-chart5',
             icon: 'chart-line',
-            component: () => import('@/views/TestPage/TestChart5.vue')
+            component: () => import('@/views/TestPage/Caleb/TestChart5.vue')
           },
           {
-            name: 'test-chart6',
+            name: 'test-Caleb-chart6',
             title: '測試6',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-chart6',
+            path: '/test-Caleb-chart6',
             icon: 'square-poll-vertical',
-            component: () => import('@/views/TestPage/TestChart6.vue')
+            component: () => import('@/views/TestPage/Caleb/TestChart6.vue')
           },
           {
-            name: 'test-excel',
-            title: '測試Excel',
+            name: 'test-Caleb-chart7',
+            title: '測試7',
             meta: {
               keepAlive: false,
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-excel',
-            icon: 'file-arrow-down',
-            component: () => import('@/views/TestPage/TestExcel.vue')
+            path: '/test-Caleb-chart7',
+            icon: 'tornado',
+            component: () => import('@/views/TestPage/Caleb/TestChart7.vue')
           }
         ]
+      },
+      {
+        name: 'diff-test',
+        title: 'diff演算法測試',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2023-11',
+          completedDate: '2023-11'
+        },
+        systemType: ['new'],
+        path: '/diff-test',
+        icon: ['fab', 'react'],
+        component: () => import('@/views/TestPage/DiffTest.vue')
       }
     ]
   },
