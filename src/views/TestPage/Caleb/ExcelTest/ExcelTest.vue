@@ -3,13 +3,15 @@ import { onMounted } from 'vue'
 
 import { CustomButton } from '@/components'
 
+// @ts-ignore
 import testExcelData from './test.xlsx?sheetjs'
 import {
   download1,
   download2,
   excleDownload1,
-  excleDownload2
-} from './download.ts'
+  excleDownload2,
+  excleDownload3
+} from './download'
 
 onMounted(() => {
   console.log('testExcelData => ', testExcelData)
@@ -46,6 +48,13 @@ onMounted(() => {
       icon-name="bomb"
       type="primary"
       @click="excleDownload2"
+    />
+
+    <CustomButton
+      label="下載3"
+      icon-name="bomb"
+      type="primary"
+      @click="excleDownload3"
     />
   </div>
 </template>

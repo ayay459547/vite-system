@@ -1,20 +1,18 @@
 // https://docs.sheetjs.com/docs/demos/frontend/bundler/vitejs
 // import * as XLSX from 'xlsx/xlsx.mjs'
 // import XLSX from 'xlsx'
-import type {
-  WorkSheet,
-  WorkBook,
-  SheetAOAOpts,
-  WritingOptions,
-  Range
-} from 'xlsx'
+import type { Range } from 'xlsx'
 import { writeFile, read, utils } from 'xlsx'
 export { default as XLSX } from 'xlsx'
 
+import type { WorkbookProperties, CalculationProperties } from 'exceljs'
+import ExcelJs from 'exceljs'
 export type { Column as ExcelColumn } from 'exceljs'
 export { default as ExcelJs } from 'exceljs'
 
 import { isEmpty, tipLog, round, hasOwnProperty } from '@/lib/lib_utils'
+
+const systemType = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 
 /**
  * @author Caleb
@@ -234,8 +232,6 @@ export const readExcel = async (file: File): Promise<any> => {
   })
 }
 
-type ExcelAoa = (string | number)[][]
-
 export type ExcelOptions = {
   name: string
   merge: Array<Range>
@@ -262,104 +258,60 @@ export const downloadMatrix = (matrix: Array<(string | number)[]>, options: Exce
   writeFile(workBook, `${name}.xlsx`)
 }
 
-/**
- * @author Caleb
- * @description 新建工作表
- * @param aoa 矩陣資料
- * @param options 設定
- * @returns 工作表
- */
-export const createSheet = (aoa: ExcelAoa, options?: SheetAOAOpts) => {
-  const workSheet = utils.aoa_to_sheet(aoa, {
-    ...options
-  })
-  return workSheet
+export const regexp = /^[A-Z]+[0-9]+$/
+
+export type WorkbookOptions = {
+  title?: string
+  category?: string
+  company?: string
+  creator?: string
+  description?: string
+  keywords?: string
+  lastModifiedBy?: string
+  manager?: string
+  subject?: string
+
+  created?: Date
+	modified?: Date
+	lastPrinted?: Date
+
+  properties?: WorkbookProperties
+  calcProperties?: CalculationProperties
 }
 
-/**
- * @author Caleb
- * @description 工作表中新增資料
- * @param ws 工作表
- * @param aoa 矩陣資料
- * @param origin 新增資料位置 ex: A2
- * @param options 設定
- */
-export const sheetAddAoa = (ws: WorkSheet, aoa: ExcelAoa, origin: string, options?: SheetAOAOpts) => {
-  const regexp = /^[A-Z]+[0-9]+$/
-  if (!regexp.test(origin)) {
-    tipLog('參數格式錯事', [
-      `${origin}`,
-      'origin 範例 A1',
-      '^[A-Z]+[0-9]+$'
-    ])
+// https://github.com/exceljs/exceljs/blob/master/README_zh.md
+export const createWorkbook = (options?: WorkbookOptions) => {
+  const  {
+    title = systemType,
+    category = systemType,
+    description = systemType,
+    keywords = systemType,
+    company = '',
+    subject = '',
+    creator = '',
+    lastModifiedBy = '',
+    manager = '',
 
-  } else {
-    utils.sheet_add_aoa(ws, aoa, {
-      origin,
-      ...options
-    })
-  }
-}
+    modified = new Date(),
+    created = new Date()
+    // lastPrinted = new Date()
+  } = options ?? {}
 
-/**
- * @author Caleb
- * @description 工作表中新增合併欄位資訊
- * @param ws 工作表
- * @param rangeList 合併區間列表
- */
-export const setMerges = (ws: WorkSheet, rangeList: string[]) => {
-  const regexp = /^[A-Z]+[0-9]+:[A-Z]+[0-9]+$/
+  const workbook = new ExcelJs.Workbook()
 
-  const merges = []
-  rangeList.forEach(range => {
-    if (!regexp.test(range)) {
-      tipLog('參數格式錯事', [
-        `${range}`,
-        'range 範例 A1:A2',
-        '^[A-Z]+[0-9]+:[A-Z]+[0-9]+$'
-      ])
+  workbook.title = title
+  workbook.category = category
+  workbook.description = description
+  workbook.keywords = keywords
+  workbook.company = company
+  workbook.subject = subject
+  workbook.creator = creator
+  workbook.lastModifiedBy = lastModifiedBy
+  workbook.manager = manager
 
-    } else {
-      const merge = utils.decode_range(range)
-      merges.push(merge)
-    }
-  })
-  ws['!merges'] = merges
-}
+  workbook.created = created
+  workbook.modified = modified
+  // workbook.lastPrinted = lastPrinted
 
-/**
- * @author Caleb
- * @description 新建工作簿
- * @param ws 工作表
- * @param wsname 分頁名稱
- * @returns 工作簿
- */
-export const newWorkBook = (ws?: WorkSheet, wsname?: string) => {
-  const workBook = utils.book_new(ws, wsname)
-  return workBook
-}
-
-/**
- * @author Caleb
- * @description 新增工作表 到 工作簿中
- * @param wb 工作簿
- * @param ws 工作表
- * @param name 頁名稱
- */
-export const bookAppendSheet = (wb: WorkBook, ws: WorkSheet, name: string) => {
-  utils.book_append_sheet(wb, ws, `${name}`)
-}
-
-/**
- * @author Caleb
- * @description 下載 Excel
- * @param wb 工作簿
- * @param ws 工作表
- * @param options 設定
- */
-export const downloadExcel = (wb: WorkBook, filename: string, options?: WritingOptions) => {
-  console.log(options)
-  writeFile(wb, filename, {
-    ...options
-  })
+  return workbook
 }

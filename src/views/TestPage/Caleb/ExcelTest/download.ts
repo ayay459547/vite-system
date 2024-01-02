@@ -1,19 +1,8 @@
-import {
-  XLSX,
-  downloadMatrix,
-  createSheet,
-  sheetAddAoa,
-  setMerges,
-  newWorkBook,
-  bookAppendSheet,
-  downloadExcel
-  // ExcelJs
-} from '@/lib/lib_files'
-import { deepClone } from '@/lib/lib_utils'
+import { XLSX, downloadMatrix, ExcelJs } from '@/lib/lib_files'
+
+import type { Workbook } from 'exceljs'
 
 export const download1 = () => {
-  console.log('download1')
-
   const ws = XLSX.utils.aoa_to_sheet([[]])
 
   /* First row */
@@ -51,8 +40,6 @@ export const download1 = () => {
 }
 
 export const download2 = () => {
-  console.log('download2')
-
   const matrix = [
     ['key1', 'key2', 'key3', 'key4'],
     [11, 22, 33, 44],
@@ -65,62 +52,283 @@ export const download2 = () => {
   })
 }
 
-export const excleDownload1 = () => {
-  const wordSheet = createSheet([
-    ['A1', 'B1', 'C2', 'D1', 'E1'],
-    ['A2', 'B2', 'C2', 'D2', 'E2'],
-    ['A3', 'B3', 'C3', 'D3', 'E3'],
-    ['A4', 'B4', 'C4', 'D4', 'E4'],
-    ['A5', 'B5', 'C5', 'D5', 'E5'],
-    ['A6', 'B6', 'C6', 'D6', 'E6']
-  ])
-
-  wordSheet['!cols'] = [
-    { hidden: false, wpx: 120 },
-    { hidden: false, wpx: 120 },
-    { hidden: true, wpx: 120 },
-    { hidden: false, wpx: 120 },
-    { hidden: false, wpx: 120 }
-  ]
-
-  // style 無法使用 要付費版版
-  wordSheet['A1'] = {
-    t: 's',
-    v: 'A11111',
-    s: {
-      fill: {
-        fgColor: { rgb: '337ECC' }
-      },
-      font: {
-        color: { rgb: 'D9ECFF' },
-        blod: true,
-        italic: true,
-        vertAlign: true
-      }
-    }
-  }
-  console.log(wordSheet)
-
-  setMerges(wordSheet, ['A3:C3', 'B5:C6'])
-  const workBook = newWorkBook(wordSheet, '分頁1')
-
-  const wordSheet2 = deepClone({}, wordSheet)
-
-  sheetAddAoa(
-    wordSheet2,
-    [
-      ['更新資料1', '更新資料2', '更新資料3'],
-      ['更新資料4', '更新資料5', '更新資料6']
-    ],
-    'D3'
-  )
-  bookAppendSheet(workBook, wordSheet2, '分頁2')
-
-  downloadExcel(workBook, '下載1.xlsx', {
-    cellStyles: true
+const download = (workbook: Workbook) => {
+  // download
+  workbook.xlsx.writeBuffer().then((content) => {
+    const a = document.createElement('a')
+    const blobData = new Blob([content], {
+      type: 'application/vnd.ms-excel;charset=utf-8;'
+    })
+    a.download = 'test.xlsx'
+    a.href = URL.createObjectURL(blobData)
+    a.click()
   })
 }
 
+export const excleDownload1 = () => {
+  const workbook = new ExcelJs.Workbook()
+
+  workbook.category = 'category'
+  workbook.company = 'company'
+  workbook.creator = 'creator'
+  workbook.description = 'description'
+  workbook.keywords = 'keywords'
+  workbook.lastModifiedBy = 'lastModifiedBy'
+  workbook.manager = 'manager'
+  workbook.subject = 'subject'
+  workbook.title = 'title'
+
+  const worksheet = workbook.addWorksheet('test1-excel')
+
+  worksheet.getRow(1).values = ['column1', 'column2', '', '', 'column5']
+  worksheet.getRow(2).values = ['value1', 'value2', '', '', 'value5']
+  worksheet.getRow(4).values = ['value6', 'value4', '', '', 'value8']
+
+  worksheet.getCell(2, 2).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: {
+      argb: 'd9ecff'
+    }
+  }
+
+  worksheet.mergeCells('B3:B4')
+  worksheet.mergeCells('A1:A2')
+
+  download(workbook)
+}
+
 export const excleDownload2 = () => {
-  console.log('下載2')
+  const workbook = new ExcelJs.Workbook()
+
+  const worksheet = workbook.addWorksheet('test2-excel')
+
+  worksheet.columns = [
+    {
+      key: 'column1',
+      width: 15,
+      style: {
+        font: {
+          color: { argb: '337ecc' },
+          italic: true
+        },
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'ecf5ff' }
+        },
+        border: {
+          top: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          left: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          bottom: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          right: {
+            style: 'thin',
+            color: { argb: '303133' }
+          }
+        }
+      }
+    },
+    {
+      key: 'column2',
+      width: 15,
+      style: {
+        font: {
+          color: { argb: '529b2e' }
+        },
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'f0f9eb' }
+        },
+        border: {
+          top: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          left: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          bottom: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          right: {
+            style: 'thin',
+            color: { argb: '303133' }
+          }
+        }
+      }
+    },
+    {
+      key: 'column3',
+      width: 15,
+      style: {
+        font: {
+          color: { argb: 'b88230' }
+        },
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'fdf6ec' }
+        },
+        border: {
+          top: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          left: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          bottom: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          right: {
+            style: 'thin',
+            color: { argb: '303133' }
+          }
+        }
+      }
+    },
+    {
+      key: 'column4',
+      width: 15,
+      style: {
+        font: {
+          color: { argb: 'c45656' }
+        },
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'fef0f0' }
+        },
+        border: {
+          top: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          left: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          bottom: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          right: {
+            style: 'thin',
+            color: { argb: '303133' }
+          }
+        }
+      }
+    },
+    {
+      key: 'column5',
+      width: 15,
+      style: {
+        font: {
+          color: { argb: '73767a' }
+        },
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'f4f4f5' }
+        },
+        border: {
+          top: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          left: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          bottom: {
+            style: 'thin',
+            color: { argb: '303133' }
+          },
+          right: {
+            style: 'thin',
+            color: { argb: '303133' }
+          }
+        }
+      }
+    }
+  ]
+
+  worksheet.views = [
+    { showGridLines: false },
+    { state: 'frozen', xSplit: 0, ySplit: 1 }
+  ]
+
+  worksheet.addRows([
+    {
+      column1: 'value1-row1',
+      column2: 'value2-row1',
+      column3: 'value3-row1',
+      column4: 'value4-row1',
+      column5: 'value5-row1'
+    },
+    {
+      column1: 'value1-row2',
+      column2: 'value2-row2',
+      column3: 'value3-row2',
+      column4: 'value4-row2',
+      column5: 'value5-row2'
+    },
+    {
+      column1: 'value1-row3',
+      column2: 'value2-row3',
+      column3: 'value3-row3',
+      column4: 'value4-row3',
+      column5: 'value5-row3'
+    }
+  ])
+
+  worksheet.mergeCells('A2:B3')
+
+  download(workbook)
+}
+
+export const excleDownload3 = () => {
+  const workbook = new ExcelJs.Workbook()
+
+  const sheet = workbook.addWorksheet('工作表範例1')
+
+  sheet.addTable({
+    name: 'table名稱',
+    ref: 'B2',
+    headerRow: true,
+    totalsRow: true,
+    columns: [
+      { name: '名字', filterButton: true },
+      { name: '年齡', filterButton: true },
+      { name: '電話', filterButton: true },
+      { name: '年資', filterButton: true, totalsRowFunction: 'sum' }
+    ],
+    style: {
+      // theme: 'TableStyleDark3',
+      showRowStripes: true
+    },
+    rows: [
+      ['小明', 56, '0987654321', 22],
+      ['小美', 23, '0912345678', 5],
+      ['小智', 32, '0912345678', 10]
+    ]
+  })
+
+  sheet.mergeCells('C6:D6')
+
+  download(workbook)
 }

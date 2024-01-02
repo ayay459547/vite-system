@@ -1,7 +1,8 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
 import { reactive, shallowReactive, ref } from 'vue'
 
-import { type ExcelColumn, ExcelJs } from '@/lib/lib_files'
+import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
+import { createWorkbook } from '@/lib/lib_files'
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'
@@ -15,7 +16,7 @@ export interface FormSetting<T> {
   columns: Record<string, any>
   forms: T
   activeForms: Record<string, boolean>
-  reset: (defaultValue?: Partial<T>) => void
+  reset: (defaultValue?: Partial<T> | any) => void
   getActiveForms: (showEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
   handleReset: () => void
@@ -100,7 +101,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     columns: resColumns,
     forms: resForms as T,
     activeForms: resActiveForms,
-    reset: (defaultValue?: Partial<T>) => {
+    reset: (defaultValue?: Partial<T> | any) => {
       resForms.$forEach((value: any, key: string) => {
         resForms[key] = resColumns[key]?.default ?? null
         if (!isEmpty(defaultValue[key])) {
@@ -457,15 +458,23 @@ export const getTableSetting = (
   })
 
   // 依據表單 及傳入資料 下載 excel
-  const downloadExcel = async (tableData: Record<string, any>[]) => {
-    const workbook = new ExcelJs.Workbook() // 創建試算表檔案
+  const downloadExcel = async (tableData: Record<string, any>[], options?: WorkbookOptions) => {
+    const workbook = createWorkbook({ ...options })
+
     const worksheet = workbook.addWorksheet(
       title,
       {
         properties: {
           tabColor: { argb: 'FFFFFF' },
-          defaultRowHeight: 20
-        }
+          defaultRowHeight: 20,
+          showGridLines: true,
+          outlineLevelCol: 0,
+          outlineLevelRow: 0,
+          dyDescent: 55
+        },
+        views: [
+          { state: 'frozen', xSplit: 0, ySplit: 1 }
+        ]
       }
     ) //在檔案中新增工作表 參數放自訂名稱
 
@@ -503,9 +512,10 @@ export const getTableSetting = (
     })
     worksheet.columns = excelColumns
 
-    tableData.forEach((rowData: any) => {
-      worksheet.addRow(rowData)
-    })
+    // tableData.forEach((rowData: any) => {
+    //   worksheet.addRow(rowData)
+    // })
+    worksheet.addRows(tableData)
 
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
     // 異步的等待他處理完之後，創建url與連結，觸發下載
@@ -664,14 +674,19 @@ export const getSimpleTableSetting = (
   })
 
   // 依據表單 及傳入資料 下載 excel
-  const downloadExcel = async (tableData: Record<string, any>[]) => {
-    const workbook = new ExcelJs.Workbook() // 創建試算表檔案
+  const downloadExcel = async (tableData: Record<string, any>[], options?: WorkbookOptions) => {
+    const workbook = createWorkbook({ ...options })
+
     const worksheet = workbook.addWorksheet(
       title,
       {
         properties: {
           tabColor: { argb: 'FFFFFF' },
-          defaultRowHeight: 20
+          defaultRowHeight: 20,
+          showGridLines: true,
+          outlineLevelCol: 0,
+          outlineLevelRow: 0,
+          dyDescent: 55
         }
       }
     ) //在檔案中新增工作表 參數放自訂名稱
