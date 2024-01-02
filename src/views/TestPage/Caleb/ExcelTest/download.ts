@@ -52,7 +52,7 @@ export const download2 = () => {
   })
 }
 
-const download = (workbook: Workbook) => {
+const downloadWorkbook = (workbook: Workbook) => {
   // download
   workbook.xlsx.writeBuffer().then((content) => {
     const a = document.createElement('a')
@@ -84,7 +84,7 @@ export const excleDownload1 = () => {
   worksheet.getRow(2).values = ['value1', 'value2', '', '', 'value5']
   worksheet.getRow(4).values = ['value6', 'value4', '', '', 'value8']
 
-  worksheet.getCell(2, 2).fill = {
+  worksheet.getCell('A4').fill = {
     type: 'pattern',
     pattern: 'solid',
     fgColor: {
@@ -95,7 +95,7 @@ export const excleDownload1 = () => {
   worksheet.mergeCells('B3:B4')
   worksheet.mergeCells('A1:A2')
 
-  download(workbook)
+  downloadWorkbook(workbook)
 }
 
 export const excleDownload2 = () => {
@@ -298,7 +298,7 @@ export const excleDownload2 = () => {
 
   worksheet.mergeCells('A2:B3')
 
-  download(workbook)
+  downloadWorkbook(workbook)
 }
 
 export const excleDownload3 = () => {
@@ -310,12 +310,12 @@ export const excleDownload3 = () => {
     name: 'table名稱',
     ref: 'B2',
     headerRow: true,
-    totalsRow: true,
+    totalsRow: false,
     columns: [
-      { name: '名字', filterButton: true },
-      { name: '年齡', filterButton: true },
-      { name: '電話', filterButton: true },
-      { name: '年資', filterButton: true, totalsRowFunction: 'sum' }
+      { name: '名字', filterButton: false },
+      { name: '年齡', filterButton: false },
+      { name: '電話', filterButton: false },
+      { name: '年資', filterButton: false, totalsRowFunction: 'sum' }
     ],
     style: {
       // theme: 'TableStyleDark3',
@@ -328,7 +328,7 @@ export const excleDownload3 = () => {
     ]
   })
 
-  sheet.mergeCells('C6:D6')
+  // sheet.mergeCells('C6:D6')
 
-  download(workbook)
+  downloadWorkbook(workbook)
 }

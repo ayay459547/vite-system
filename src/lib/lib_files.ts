@@ -5,7 +5,7 @@ import type { Range } from 'xlsx'
 import { writeFile, read, utils } from 'xlsx'
 export { default as XLSX } from 'xlsx'
 
-import type { WorkbookProperties, CalculationProperties } from 'exceljs'
+import type { WorkbookProperties, CalculationProperties, Workbook } from 'exceljs'
 import ExcelJs from 'exceljs'
 export type { Column as ExcelColumn } from 'exceljs'
 export { default as ExcelJs } from 'exceljs'
@@ -314,4 +314,17 @@ export const createWorkbook = (options?: WorkbookOptions) => {
   // workbook.lastPrinted = lastPrinted
 
   return workbook
+}
+
+export const downloadWorkbook = (workbook: Workbook, filename: string) => {
+  // download
+  workbook.xlsx.writeBuffer().then((content) => {
+    const a = document.createElement('a')
+    const blobData = new Blob([content], {
+      type: 'application/vnd.ms-excel;charset=utf-8;'
+    })
+    a.download = `${filename}.xlsx`
+    a.href = URL.createObjectURL(blobData)
+    a.click()
+  })
 }
