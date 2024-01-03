@@ -104,7 +104,11 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
     reset: (defaultValue?: Partial<T> | any) => {
       resForms.$forEach((value: any, key: string) => {
         resForms[key] = resColumns[key]?.default ?? null
-        if (!isEmpty(defaultValue[key])) {
+        if (
+          !isEmpty(defaultValue) &&
+          hasOwnProperty(defaultValue, key) &&
+          !isEmpty(defaultValue[key])
+        ) {
           resForms[key] = defaultValue[key]
         }
 
@@ -385,7 +389,7 @@ export const getTableSetting = (
     sorting?: boolean
     hiddenExcel?: boolean
     tableSize?: TableSize
-    showType?: 'custom' | 'auto'
+    showType?: string | 'custom' | 'auto'
   }
 ): TableSetting => {
   const {
@@ -485,9 +489,16 @@ export const getTableSetting = (
 
     settingColumns.forEach((tempColumn: ColumnItem) => {
       let _columnWidth = 100
+      const {
+        key: columnKey = '',
+        label: columnLabel = '',
+        isShow = false,
+        isOperations = false
+      } = tempColumn
+
       // 設定欄位
-      if (hasOwnProperty(columns, tempColumn.key)) {
-        const _currentColumn = columns[tempColumn.key][type] ?? null
+      if (hasOwnProperty(columns, columnKey) && !isOperations) {
+        const _currentColumn = columns[columnKey][type] ?? null
 
         if (_currentColumn) {
           const width = _currentColumn?.width ?? 0
@@ -496,16 +507,16 @@ export const getTableSetting = (
 
           const align = _currentColumn?.align ?? 'left'
           excelColumns.push({
-            header: tempColumn.label,
-            key: tempColumn.key,
-            hidden: !tempColumn.isShow || tempColumn.isOperations,
+            header: columnLabel,
+            key: columnKey,
+            hidden: !isShow,
             style: {
               alignment: {
                 horizontal: align,
                 vertical: 'middle'
               }
             },
-            width: Math.round(_columnWidth / 10)
+            width: Math.round(_columnWidth / 8)
           })
         }
       }
