@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, computed, nextTick, useSlots } from 'vue'
+import { type PropType, computed, ref, nextTick, useSlots } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
@@ -71,11 +71,16 @@ const props = defineProps({
 const emit = defineEmits([
   'update:modelValue',
   'update:active',
-  'change',
-  'blur',
-  'clear',
   'open',
-  'close'
+  'close',
+  'focus',
+  'clear',
+  'blur',
+  'change',
+  'input',
+  'remove-tag',
+  'visible-change',
+  'select'
 ])
 
 const inpuValue = computed({
@@ -86,10 +91,10 @@ const inpuValue = computed({
     emit('update:modelValue', value)
   }
 })
-const onInputChange = (inpuValue: ModelValue) => {
-  onVisibleClick(false)
-  emit('change', inpuValue)
-}
+// const onInputChange = (inpuValue: ModelValue) => {
+//   onVisibleClick(false)
+//   emit('change', inpuValue)
+// }
 
 const isActive = computed({
   get () {
@@ -114,6 +119,9 @@ const openListenerSize = () => {
   window.addEventListener('resize', resizeEvent, { once: true })
 }
 
+const iconSearchRef = ref()
+const searchRef = ref()
+
 const isVisible = computed({
   get () {
     const _isVisible = scopedId === activeScopedId.value
@@ -125,9 +133,16 @@ const isVisible = computed({
 
     return _isVisible
   },
-  set (v: boolean) {
+  async set (v: boolean) {
     if (v) {
       customSearchStore.setActiveScopedId(scopedId)
+
+      await nextTick()
+      if (props.search) {
+        iconSearchRef?.value.focus()
+      } else {
+        searchRef?.value.focus()
+      }
     } else {
       customSearchStore.clearActiveScopedId()
     }
@@ -135,11 +150,7 @@ const isVisible = computed({
 })
 
 const onVisibleClick = (_isVisible: boolean) => {
-  if (_isVisible) {
-    emit('open')
-  } else {
-    emit('close')
-  }
+  emit(_isVisible ? 'open' : 'close')
   isVisible.value = _isVisible
 }
 
@@ -227,6 +238,20 @@ const bindAttributes = computed(() => {
   }
 })
 
+const onEvent = {
+  focus: (e: FocusEvent): void => emit('focus', e),
+  clear: (): void => emit('clear'),
+  blur: (e: FocusEvent): void => {
+    emit('blur', e)
+    onVisibleClick(false)
+  },
+  change: (value: string | number): void => emit('change', value),
+  input: (value: string | number): void => emit('input', value),
+  'remove-tag': (value: string | number): void => emit('remove-tag', value),
+  'visible-change': (value: string | number): void => emit('visible-change', value),
+  select: (value: string | number): void => emit('select', value)
+}
+
 // slot
 const slots = useSlots()
 const slotList = computed(() => {
@@ -272,11 +297,10 @@ defineExpose({
             </div>
 
             <CustomInput
+              ref="iconSearchRef"
               v-model="inpuValue"
               v-bind="bindAttributes"
-              @clear="emit('clear')"
-              @blur="emit('blur')"
-              @change="onInputChange"
+              v-on="onEvent"
             >
               <template
                 v-for="slotName in slotList"
@@ -315,11 +339,10 @@ defineExpose({
       </div>
 
       <CustomInput
+        ref="searchRef"
         v-model="inpuValue"
         v-bind="bindAttributes"
-        @clear="emit('clear')"
-        @blur="emit('blur')"
-        @change="onInputChange"
+        v-on="onEvent"
       >
         <template
           v-for="slotName in slotList"

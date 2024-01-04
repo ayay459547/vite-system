@@ -55,11 +55,13 @@ const bindAttributes = computed(() => {
 const emit = defineEmits([
   'update:modelValue',
   'select',
+  'blur',
   'change'
 ])
 
 const onEvent = {
   select: (item: ModelValue): void => emit('select', item),
+  blur: (e: FocusEvent): void => emit('blur', e),
   change: (value: string | number): void => emit('change', value)
 }
 

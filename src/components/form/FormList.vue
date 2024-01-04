@@ -106,7 +106,7 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector(`.${scopedId} .list-group-item:last-child`)
+    const newEl = document.querySelector(`.${scopedId} .__list-group-item:last-child`)
     if (newEl) scrollToEl(newEl)
   })
 }

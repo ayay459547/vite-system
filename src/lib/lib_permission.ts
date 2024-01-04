@@ -22,7 +22,13 @@ export const defaultPermission = (mode === 'development') ? (
   permission.update +
   permission.delete +
   permission.execute
-) : 0
+) : (
+  permission.read +
+  permission.create +
+  permission.update +
+  permission.delete +
+  permission.execute
+)
 
 export const totlaPermission = (
   permission.read +
