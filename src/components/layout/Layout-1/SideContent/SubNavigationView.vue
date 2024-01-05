@@ -107,7 +107,8 @@ export default defineComponent({
                   :class="{ active: $props.currentRouteName.level3 === leaf.name }"
                   @click="navigate"
                 >
-                  <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" />
+                  <div class="item-empty"></div>
+                  <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
                   <span class="item-title">{{ getRouteTitle(leaf) }}</span>
                 </div>
 
@@ -150,7 +151,7 @@ export default defineComponent({
 
   &-title {
     border-radius: 6px;
-    padding: 12px 26px;
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     gap: 28px;
@@ -234,6 +235,10 @@ export default defineComponent({
         width: 30px;
         height: 30px;
         @extend %flex-center;
+      }
+
+      .item-empty {
+        height: 30px;
       }
     }
   }

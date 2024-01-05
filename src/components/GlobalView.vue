@@ -139,7 +139,7 @@ const setWebTitle = () => {
 
 // 換頁時 scrollbar 移動到最上面
 const pageScrollTop = () => {
- const el = document.querySelector('.layout-scroll-top')
+ const el = document.querySelector('.__layout-scroll-top__')
  if (el) {
    scrollToEl(el, { behavior: 'auto' })
  }
@@ -376,7 +376,7 @@ provide<Hook>('hook', () => {
           </template>
 
           <div v-loading="isLoading" class="layout-mask">
-            <div class="layout-scroll-top"></div>
+            <div class="__layout-scroll-top__"></div>
             <RouterView v-slot="{ Component, route }">
               <component
                 v-if="route.name === 'login'"

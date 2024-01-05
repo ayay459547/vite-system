@@ -98,7 +98,7 @@ export const allPermissionData = refactorRoutes(leafNode => {
 
 export const fakeUserData = {
   id: 1,
-  name: 'aat',
-  roleName: 'aat',
+  name: 'admin',
+  roleName: 'admin',
   roleFunction: allPermissionData
 }

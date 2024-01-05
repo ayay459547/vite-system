@@ -37,7 +37,7 @@ const columnSetting = {
     label: '帳號',
     fitler: {
       type: 'text',
-      default: 'aat',
+      default: 'admin',
       required: true
     }
   },
@@ -45,7 +45,7 @@ const columnSetting = {
     label: '密碼',
     fitler: {
       type: 'password',
-      default: '12345678',
+      default: 'admin',
       required: true
     }
   }
@@ -81,7 +81,7 @@ const svg = `
     element-loading-text="Loading..."
     :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50"
-    element-loading-background="rgba(122, 122, 122, 0.8)"
+    element-loading-background="rgba(236, 245, 255, 0.8)"
     class="login-wrapper"
   >
     <img
@@ -99,7 +99,10 @@ const svg = `
           alt="login"
         />
 
-        <h1>登入</h1>
+        <div class="login-logo">
+          <img src="@/assets/images/Vue-logo.png" alt="vue" />
+          <!-- <h1>{{ i18nTranslate('login') }}</h1> -->
+        </div>
 
         <CustomInput
           v-model="form.account"
@@ -231,6 +234,10 @@ const svg = `
       width: 50%;
       visibility: visible;
     }
+
+    @media (max-height: 800px) {
+      visibility: hidden;
+    }
   }
 
   &-form {
@@ -240,7 +247,7 @@ const svg = `
     flex-direction: column;
     align-items: center;
     background-color: #d9ecff;
-    padding: 64px;
+    padding: 36px;
     gap: 28px;
     position: absolute;
     top: 3px;
@@ -248,12 +255,32 @@ const svg = `
     z-index: 1;
 
     @media (max-width: 992px) {
-      padding: 56px;
-    }
-    @media (max-width: 576px) {
-      padding: 48px;
+      padding: 24px 36px;
     }
   }
+
+  &-logo {
+    width: 160px;
+    display: block;
+
+    @media (max-width: 992px) {
+      width: 120px;
+    }
+
+    @media (max-width: 576px) {
+      width: 100px;
+    }
+
+    @media (max-height: 600px) {
+      display: none;
+    }
+
+    & > img {
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
   &-button {
     width: 100%;
     padding: 16px;

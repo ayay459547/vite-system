@@ -855,6 +855,7 @@ $border-style: 1px solid #ebeef5;
       padding: 6px;
     }
     &-btn {
+      z-index: 1;
       position: absolute;
       top: 0;
       right: 0;
