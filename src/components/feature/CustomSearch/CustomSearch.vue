@@ -239,7 +239,9 @@ const bindAttributes = computed(() => {
 })
 
 const onEvent = {
-  focus: (e: FocusEvent): void => emit('focus', e),
+  focus: (e: FocusEvent): void => {
+    emit('focus', e)
+  },
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => {
     emit('blur', e)

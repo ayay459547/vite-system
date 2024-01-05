@@ -267,7 +267,7 @@ const scopedId = getUuid('__i-table-v2__')
 :deep(.__table-v2-container) {
   .el-table-v2__table {
     .el-table-v2__header .el-table-v2__header-cell {
-      background-color: lighten($system-bg-color, 60%);
+      background-color: lighten($system-bg-color, 48%);
       border-right: 1px solid #ebeef5;
       color: #535353;
     }

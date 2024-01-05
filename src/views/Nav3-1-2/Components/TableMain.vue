@@ -524,7 +524,7 @@ const svg = `
       border-collapse: separate;
       height: 100%;
       thead {
-        background-color: lighten($system-bg-color, 60%);
+        background-color: lighten($system-bg-color, 48%);
         & > tr {
            background-color: inherit;
 

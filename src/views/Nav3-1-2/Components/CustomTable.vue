@@ -616,7 +616,7 @@ const slotKeyList = computed(() => {
 
   &-setting {
     height: fit-content;
-    background-color: lighten($system-bg-color, 55%);
+    background-color: lighten($system-bg-color, 40%);
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;

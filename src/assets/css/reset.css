@@ -1,13 +1,16 @@
 #app,
 h1, h2, h3, h4, h5, h6,
-ul, li {
+ul, li,
+a, div, nav, main, label, span {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 /* 將監聽事件 標示為被動 會報錯 */
-* {
+div, label,
+h1, h2, h3, h4, h5, h6,
+ul, li, span, nav {
   touch-action: none;
   /* touch-action: pan-y; */
   font-family: 'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',Arial,sans-serif;
@@ -25,10 +28,6 @@ label > span {
 
 a {
   text-decoration: none;
-}
-
-a, div, nav, main, label, span {
-  box-sizing: border-box;
 }
 
 ul, li {

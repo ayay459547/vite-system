@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, customRef, useSlots, onMounted } from 'vue'
+import { computed, customRef, useSlots, ref, onMounted, nextTick } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
 import type { Options } from '@/components'
@@ -74,8 +74,34 @@ const bindAttributes = computed(() => {
 const emit = defineEmits([
   'update:modelValue',
   'clear',
+  'focus',
+  'blur',
+  'input',
   'change'
 ])
+
+const isFocus = ref(false)
+
+const onEvent = {
+  focus: (e: FocusEvent): void => {
+    isFocus.value = true
+    emit('focus', e)
+  },
+  clear: (): void => emit('clear'),
+  blur: (e: FocusEvent): void => {
+    isFocus.value = false
+
+    setTimeout(async () => {
+      await nextTick()
+      if (!isFocus.value) {
+        emit('blur', e)
+      }
+    }, 0)
+  },
+  input: (value: string | number): void => {
+    emit('input', value)
+  }
+}
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
@@ -165,7 +191,6 @@ const onChange = async (value: any, type: string) => {
       break
   }
 
-  console.log('emitValue => ', emitValue)
   tempValue.value = emitValue
   emit('change', emitValue)
 }
@@ -183,6 +208,20 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
+const elInputRef = ref()
+defineExpose({
+  focus: (): void => {
+    if (elInputRef.value) {
+      elInputRef.value.focus()
+    }
+  },
+  blur: (): void => {
+    if (elInputRef.value) {
+      elInputRef.value.blur()
+    }
+  }
+})
+
 </script>
 
 <template>
@@ -192,13 +231,14 @@ const hasSlot = (prop: string): boolean => {
     @click.stop
   >
     <ElInput
+      ref="elInputRef"
       v-model="inputValue"
       class="__i-operator__"
       :placeholder="$t('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
-      @clear="emit('clear')"
+      v-on="onEvent"
       @change="onChange($event, 'input')"
     >
       <!-- 輸入框用 -->
@@ -210,7 +250,7 @@ const hasSlot = (prop: string): boolean => {
             :validate-event="false"
             :options="props.options"
             v-bind="bindAttributes"
-            @clear="emit('clear')"
+            v-on="onEvent"
             @change="onChange($event, 'select')"
           >
             <ElOption

@@ -185,7 +185,11 @@ const scopedId = getUuid('__i-button__')
 
 <style lang="scss" scoped>
 :deep(.__button-container) {
+  .el-button {
+    align-items: flex-start;
+  }
   &.size {
+
     &-large {
       .el-button {
         height: 36px;
@@ -242,8 +246,7 @@ const scopedId = getUuid('__i-button__')
 
   &-label {
     display: inline-block;
-    padding-top: 2px;
-    transform: translateY(-1px);
+    transform: translateY(1px);
 
     &.size-large {
       font-size: 1.3em;

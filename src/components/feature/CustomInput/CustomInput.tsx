@@ -250,6 +250,7 @@ const CustomInput = defineComponent({
     const datePickerRef = ref()
     const timePickerRef = ref()
     const autocompleteRef = ref()
+    const operatorRef = ref()
 
     const scopedId = getUuid('__i-group-input__')
 
@@ -296,6 +297,9 @@ const CustomInput = defineComponent({
           case 'autocomplete':
             autocompleteRef.value.focus()
             break
+          case 'operator':
+            operatorRef.value.focus()
+            break
         }
       },
       blur () {
@@ -325,6 +329,9 @@ const CustomInput = defineComponent({
             break
           case 'autocomplete':
             autocompleteRef.value.blur()
+            break
+          case 'operator':
+            operatorRef.value.blur()
             break
         }
       }
@@ -620,6 +627,7 @@ const CustomInput = defineComponent({
         case 'operator':
           return (
             <FormOperator
+              ref={operatorRef}
               modelValue={inputValue.value}
               onUpdate:modelValue={
                 ($event: any) => (inputValue.value = $event)
@@ -633,8 +641,11 @@ const CustomInput = defineComponent({
               min={props.min}
               errorMessage={errorMessage.value}
               // v-on 接收事件
+              onFocus={ (e: any) => onEvent.value.onFocus(e) }
               onClear={ () => onEvent.value.onClear() }
+              onBlur={ (e: any) => onEvent.value.onBlur(e) }
               onChange={ (e: any) => onEvent.value.onChange(e) }
+              onInput={ (e: any) => onEvent.value.onInput(e) }
             >
               {{
                 ...getSlot([

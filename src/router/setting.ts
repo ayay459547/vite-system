@@ -36,6 +36,7 @@ export const developmentInjectType: Array<RouterType> = [
  * production
  */
 export const productionInjectType: Array<RouterType> = [
+  'new',
   'system'
   // 'completed'
 ]

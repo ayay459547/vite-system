@@ -847,7 +847,7 @@ $border-style: 1px solid #ebeef5;
     border: $border-style;
     border-radius: 6px 6px 0 0;
     position: relative;
-    background-color: lighten($system-bg-color, 53%);
+    background-color: lighten($system-bg-color, 33%);
 
     &-content {
       width: 100%;
@@ -857,20 +857,20 @@ $border-style: 1px solid #ebeef5;
     &-btn {
       position: absolute;
       top: 0;
-      left: 60%;
+      right: 0;
       transition-duration: 0.2s;
       &.is-open {
-        transform: translateY(-50%) rotateZ(180deg);
+        transform: translateY(-40%) translateX(40%) rotateZ(180deg);
       }
       &.is-close {
-        transform: translateY(-50%) rotateZ(0deg);
+        transform: translateY(-40%) translateX(40%) rotateZ(0deg);
       }
     }
   }
 
   &-setting {
     height: fit-content;
-    background-color: lighten($system-bg-color, 55%);
+    background-color: lighten($system-bg-color, 40%);
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;

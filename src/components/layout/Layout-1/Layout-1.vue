@@ -180,7 +180,7 @@ defineExpose({
     display: flex;
     flex-direction: column;
     overflow: auto;
-    background-color: lighten($system-bg-color, 60%);
+    background-color: lighten($system-bg-color, 48%);
   }
   &-header {
     width: 100%;
