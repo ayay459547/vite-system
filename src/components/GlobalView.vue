@@ -33,6 +33,7 @@ import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useI18n } from 'vue-i18n'
+import { initTranslateSrcFile } from '@/i18n/i18n_excel'
 
 import { getPermission } from '@/lib/lib_permission'
 
@@ -221,6 +222,8 @@ const initNavigationRoutes = async () => {
 
 onBeforeMount(async () => {
   await initNavigationRoutes()
+  initTranslateSrcFile()
+
   await nextTick()
   loading(true, '系統初始化')
 
@@ -272,7 +275,6 @@ const historyIsOpen = ref(false)
 const changeHistory = (v: boolean) => historyIsOpen.value = v
 
 onMounted(() => {
-  loading(true, '系統初始化')
   const _historyIsOpen = localStorage.getItem('historyIsOpen')
   historyIsOpen.value = _historyIsOpen === 'true'
 })

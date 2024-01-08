@@ -3,7 +3,11 @@
 // import XLSX from 'xlsx'
 import type { Range } from 'xlsx'
 import { writeFile, read, utils } from 'xlsx'
-export { default as XLSX } from 'xlsx'
+export {
+  default as XLSX,
+  read,
+  utils
+} from 'xlsx'
 
 import type { WorkbookProperties, CalculationProperties, Workbook } from 'exceljs'
 import ExcelJs from 'exceljs'
@@ -327,4 +331,26 @@ export const downloadWorkbook = (workbook: Workbook, filename: string) => {
     a.href = URL.createObjectURL(blobData)
     a.click()
   })
+}
+
+export const base64ToExcel = (fileName: string, base64Str: string) => {
+  const raw = window.atob(base64Str)
+  const len = raw.length
+  const uInt8Array = new Uint8Array(len)
+  for (let i = 0; i < len; i++) {
+    uInt8Array[i] = raw.charCodeAt(i)
+  }
+
+  const a = document.createElement('a')
+  const blob = new Blob([uInt8Array], {
+    type: 'application/vnd.ms-excel'
+  })
+
+  a.style.display = 'none'
+  a.href = URL.createObjectURL(blob)
+  a.setAttribute('download', fileName)
+
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
 }

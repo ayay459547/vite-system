@@ -15,7 +15,10 @@ const emit = defineEmits(['login'])
 
 const isLoading = ref(false)
 
-const login = () => {
+const login = ($event: MouseEvent | KeyboardEvent) => {
+  // 移除 form 原有事件處理
+  $event.preventDefault()
+
   validateForm().then(async () => {
     const { account, passowrd } = form
     isLoading.value = true
@@ -29,7 +32,6 @@ const login = () => {
   }).catch(() => {
     isLoading.value = false
   })
-
 }
 
 const columnSetting = {
@@ -44,9 +46,10 @@ const columnSetting = {
   passowrd: {
     label: '密碼',
     fitler: {
-      type: 'password',
       default: 'admin',
-      required: true
+      showPassword: true,
+      required: true,
+      placeholder: ''
     }
   }
 }
@@ -114,16 +117,16 @@ const svg = `
           </template>
         </CustomInput>
 
-        <CustomInput
-          v-model="form.passowrd"
-          v-bind="formColumn.passowrd"
-          show-password
-          @keyup.enter="login"
-        >
-          <template #prefix>
-            <CustomIcon name="unlock-keyhole"/>
-          </template>
-        </CustomInput>
+        <form style="display: contents;" @submit="login">
+          <CustomInput
+            v-model="form.passowrd"
+            v-bind="formColumn.passowrd"
+          >
+            <template #prefix>
+              <CustomIcon name="unlock-keyhole"/>
+            </template>
+          </CustomInput>
+        </form>
 
         <button class="login-button" @click="login">{{ i18nTranslate('login') }}</button>
       </div>
@@ -260,7 +263,7 @@ const svg = `
   }
 
   &-logo {
-    width: 160px;
+    width: 140px;
     display: block;
 
     @media (max-width: 992px) {

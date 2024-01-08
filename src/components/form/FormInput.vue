@@ -68,7 +68,8 @@ const props = defineProps({
   onClear: Function as PropType<() => void>,
   onBlur: Function as PropType<(e: FocusEvent) => void>,
   onChange: Function as PropType<(value: string | number) => void>,
-  onInput: Function as PropType<(value: string | number) => void>
+  onInput: Function as PropType<(value: string | number) => void>,
+  onKeyup: Function as PropType<(e: KeyboardEvent) => void>
 })
 
 const bindAttributes = computed(() => {
@@ -148,6 +149,10 @@ const onEvent = {
   },
   input: (value: string | number): void => {
     emit('input', value)
+  },
+  click: (e: MouseEvent): void => {
+    emit('click', e)
+    e.stopPropagation()
   }
 }
 
@@ -202,7 +207,6 @@ defineExpose({
       :validate-event="false"
       v-bind="bindAttributes"
       v-on="onEvent"
-      @click.stop
     >
       <!-- 輸入框用 -->
       <template v-if="hasSlot('prepend')" #prepend>

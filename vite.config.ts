@@ -18,6 +18,15 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    { // this plugin handles ?b64 tags
+      name: 'vite-b64-plugin',
+      transform (code, id) {
+        if(!id.match(/\?b64$/)) return
+        const path = id.replace(/\?b64/, '')
+        const b64 = readFileSync(path, 'base64')
+        return `export default '${b64}'`
+      }
+    },
     { // this plugin handles ?sheetjs tags
       name: 'vite-sheet',
       transform (code, id) {

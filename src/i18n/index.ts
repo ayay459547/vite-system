@@ -1,4 +1,5 @@
 import { createI18n } from 'vue-i18n'
+
 import views from './i18n_views'
 import components from './i18n_components'
 import layout from './i18n_layout'
