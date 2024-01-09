@@ -48,10 +48,10 @@ export default defineComponent({
       context.emit('click', params)
     }, 200)
 
-    const scopedId = getUuid()
+    const scopedId = getUuid('charts')
     const init = () => {
       const chartDom = document.getElementsByClassName(`${props.domKey}-charts__${scopedId}`)[0]
-      if (isEmpty(props.options)) return
+      if (isEmpty(props.options) || isEmpty(chartDom)) return
 
       if (isEmpty(myChart)) {
         myChart = echarts.init(chartDom as HTMLElement)

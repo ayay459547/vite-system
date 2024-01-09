@@ -449,8 +449,12 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
  * @returns {String} 回傳的值
  */
 export const aesEncrypt = (str: any, key: string): string => {
-  const encJson = cryptoJS.AES.encrypt(str, key).toString()
-  const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
+  // const encJson = cryptoJS.AES.encrypt(str, key).toString()
+  // const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
+  // return encData
+
+  const utf8data = cryptoJS.enc.Utf8.parse(str)
+  const encData = cryptoJS.AES.encrypt(utf8data, key)
   return encData
 }
 
@@ -463,10 +467,14 @@ export const aesEncrypt = (str: any, key: string): string => {
  */
 export const aesDecrypt = (str: string, key: string): string => {
   try {
-    const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
-    const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
+    // const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
+    // const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
+    // return decJson
 
-    return decJson
+    const decrypted = cryptoJS.AES.decrypt(str, key)
+    const decryptedData = cryptoJS.enc.Utf8.stringify(decrypted)
+    return decryptedData
+
   } catch (error) {
     console.log(error)
 

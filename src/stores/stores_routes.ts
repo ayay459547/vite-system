@@ -131,7 +131,8 @@ export const useRoutesStore = defineStore('routes', () => {
       const {
         path: leafNodePath = '',
         name: leafNodeName = '',
-        title: leafNodeTitle = ''
+        title: leafNodeTitle = '',
+        permission: leafNodePermission
       } = leafNode
 
       const nextNode: Navigation = {
@@ -151,12 +152,17 @@ export const useRoutesStore = defineStore('routes', () => {
        * 設定 是否顯示
        * 設定 權限的總和
        *
-       * api 沒有 給預設權限
+       * 給權限順序
+       * 1. 後端資料
+       * 2. 路由設定
+       * 3. 系統預設
        */
       const routerPermission = routesPermission.get(leafNodeName)
 
       if (typeof routerPermission === 'number') {
         nextNode.permission = routerPermission
+      } else if (typeof leafNodePermission === 'number') {
+        nextNode.permission = leafNodePermission
       } else {
         nextNode.permission = defaultPermission
       }

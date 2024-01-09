@@ -11,25 +11,6 @@ export const permission = {
   execute: 1 << 4
 }
 
-/**
- * 預設權限
- * 開發: 給全部
- * 打包: 0
- */
-export const defaultPermission = (mode === 'development') ? (
-  permission.read +
-  permission.create +
-  permission.update +
-  permission.delete +
-  permission.execute
-) : (
-  permission.read +
-  permission.create +
-  permission.update +
-  permission.delete +
-  permission.execute
-)
-
 export const totlaPermission = (
   permission.read +
   permission.create +
@@ -37,6 +18,13 @@ export const totlaPermission = (
   permission.delete +
   permission.execute
 )
+
+/**
+ * 預設權限
+ * 開發: 給全部
+ * 打包: 0
+ */
+export const defaultPermission = (mode === 'development') ? totlaPermission : 0
 
 export type Permission = {
   read: boolean

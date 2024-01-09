@@ -1,27 +1,11 @@
 // @ts-ignore
 import i18n from './i18n.xlsx?b64'
 import { read, utils } from '@/lib/lib_files'
-import type { LangMap } from '@/i18n'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 
-interface I18n {
-  Key: string
-  zhTW?: string
-  zhCN?: string
-  en?: string
-}
-
-interface ModuleType extends I18n {
-  system?: string
-  test?: string
-  view?: string
-}
-
-type ModuleLangMap = {
-  system: LangMap
-  test: LangMap
-  view: LangMap
-}
+import type { ModuleType, ModuleLangMap } from './i18n_setting'
+import { defaultModuleLangMap, scopeList } from './i18n_setting'
 
 export const initTranslateSrcFile = () => {
   const wb = read(i18n)
@@ -30,23 +14,33 @@ export const initTranslateSrcFile = () => {
 
   if (isEmpty(moduleList)) return {}
 
-  const scopeList = ['system', 'test', 'view']
-
   const moduleLangMap = moduleList.reduce<ModuleLangMap>((moduleLangMap, moduleItem) => {
-    const { Key, en, zhTW, zhCN } = moduleItem
+    const { Key, en, zh_TW, zh_CN } = moduleItem
 
-    scopeList.forEach(scopeKey => {
-      if (hasOwnProperty(moduleItem, scopeKey)) {
-        moduleLangMap[scopeKey][Key] = { en, zhTW, zhCN }
+    scopeList.forEach(scopeItem => {
+      const { scopeKey, version } = scopeItem
+
+      if (hasOwnProperty(moduleItem, `${scopeKey}`)) {
+        moduleLangMap[scopeKey][Key] = {
+          en,
+          zhTW: zh_TW,
+          zhCN: zh_CN
+        }
       }
+
+      // 紀錄版本
+      getI18nInfo(scopeKey).then(info => {
+        if (
+          isEmpty(info) ||
+          info.version !== version
+        ) {
+          setI18nInfo(scopeKey, { scopeKey, version })
+        }
+      })
     })
 
     return moduleLangMap
-  }, {
-    system: {},
-    test: {},
-    view: {}
-  })
+  }, defaultModuleLangMap)
 
   console.log(moduleLangMap)
   return moduleLangMap

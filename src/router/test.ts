@@ -21,7 +21,7 @@ const testRoutes: RouterTree[] = [
               status: 'completed'
             },
             systemType: ['development', 'test'],
-            path: '/test-Caleb-chart1',
+            path: '/test-Caleb-excel',
             icon: 'file-excel',
             component: () => import('@/views/TestPage/Caleb/ExcelTest/ExcelTest.vue')
           },

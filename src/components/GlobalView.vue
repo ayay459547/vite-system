@@ -110,16 +110,18 @@ const currentRouteName = computed<string>(() => {
 const changeTime = 560
 const onRouteChange = (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
-  setModalView(currentRoute)
   setNavigationData(currentRoute)
 
-  setLoading(currentRoute)
+  setTimeout(() => {
+    setModalView(currentRoute)
+    setLoading(currentRoute)
+  }, 0)
 
   setTimeout(() => {
     pageScrollTop()
     setWebTitle()
     updateToken()
-  }, 0)
+  }, 50)
 }
 // 做節流 因為畫面更新 為觸發多次
 const throttleOnRouteChange = throttle(onRouteChange, changeTime) as typeof onRouteChange

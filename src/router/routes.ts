@@ -1,4 +1,5 @@
 import type { RouterTree } from '@/declare/routes'
+import { totlaPermission } from '@/lib/lib_permission'
 
 import testRoutes from './test'
 import descriptionRoutes from './description'
@@ -14,12 +15,14 @@ const routes: Array<RouterTree> = [
     title: '選單1',
     systemType: ['new'],
     icon: 'cloud',
+    permission: totlaPermission,
     leaves: [
       {
         name: 'nav1-1',
         title: '選單1-1',
         systemType: ['new'],
         icon: 'wand-magic-sparkles',
+        permission: totlaPermission,
         leaves: [
           {
             name: 'nav-test-new',
@@ -140,6 +143,7 @@ const routes: Array<RouterTree> = [
         title: '選單1-2',
         systemType: ['new'],
         icon: 'lemon',
+        permission: totlaPermission,
         leaves: [
           {
             name: 'nav1-2-1',
@@ -225,13 +229,15 @@ const routes: Array<RouterTree> = [
         systemType: ['new'],
         path: '/nav1-3',
         component: () => import('@/views/Nav1-3/Nav1-3.vue'),
-        icon: 'file-arrow-up'
+        icon: 'file-arrow-up',
+        permission: totlaPermission
       },
       {
         name: 'nav1-4',
         title: '選單1-4',
         systemType: ['new'],
         icon: 'mug-hot',
+        permission: totlaPermission,
         leaves: [
           {
             name: 'nav1-4-1',
@@ -245,7 +251,8 @@ const routes: Array<RouterTree> = [
             systemType: ['new'],
             path: '/nav1-4-1',
             component: () => import('@/views/Nav1-4-1/Nav1-4-1.vue'),
-            icon: 'chart-gantt'
+            icon: 'chart-gantt',
+            permission: totlaPermission
           },
           {
             name: 'nav1-4-2',
@@ -304,6 +311,7 @@ const routes: Array<RouterTree> = [
     },
     systemType: ['new'],
     icon: 'shield-halved',
+    permission: totlaPermission,
     path: '/nav2',
     component: () => import('@/views/Nav2/Nav2-1.vue')
   },
@@ -312,6 +320,7 @@ const routes: Array<RouterTree> = [
     title: '選單3',
     systemType: ['new'],
     icon: 'cloud',
+    permission: totlaPermission,
     leaves: [
       {
         name: 'nav3-1',

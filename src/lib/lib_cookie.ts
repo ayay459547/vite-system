@@ -46,11 +46,14 @@ export const setToken = (userId: number) => {
   }
   const _token = JSON.stringify(temp)
 
-  // 設定 60 分鐘
+  // 設定 30 分鐘
+  const minutes = 30
+  const time = new Date(new Date().getTime() + minutes * 60 * 1000)
+
   setCookie(
     'token',
     aesEncrypt(_token, privateKey),
-    { expires: 60 / (24 * 60) }
+    { expires: time }
   )
 }
 
@@ -58,11 +61,15 @@ export const clearToken = () => {
   removeCookie('token')
 }
 
+/**
+ * 更新token(登入)狀態
+ * 更新時機：換路由、送api
+ */
 export const updateToken = () => {
   const token = getToken()
 
   if (token !== null) {
-    const { userId } = token
+    const { userId = -1 } = token
     setToken(userId)
   }
 }

@@ -55,3 +55,20 @@ export async function clearHistoryNavigation () {
 export async function keysHistoryNavigation () {
   return await keys('historyNavigation')
 }
+
+// 翻譯檔
+export async function getI18nInfo (key: string) {
+  return await get('i18nInfo', key)
+}
+export async function setI18nInfo (key: string, val: any) {
+  return await set('i18nInfo', key, val)
+}
+export async function delI18nInfo (key: string) {
+  return await del('i18nInfo', key)
+}
+export async function clearI18nInfo () {
+  return await clear('i18nInfo')
+}
+export async function keysI18nInfo () {
+  return await keys('i18nInfo')
+}

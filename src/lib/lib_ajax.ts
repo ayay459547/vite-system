@@ -70,6 +70,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
   return instance(config)
 }
 
+let timeoutId: NodeJS.Timeout | null
 /**
  * @author Caleb
  * @description 抓後端資料用
@@ -98,7 +99,14 @@ export const ajax = <ResData>(
     callback = null
   } = options
 
-  updateToken()
+  /**
+   * 有傳送資料 token 更新時間
+   * 更新至少間隔1分鐘
+   */
+  if (timeoutId) { clearInterval(timeoutId) }
+  timeoutId = setTimeout(() => {
+    updateToken()
+  }, 60 * 1000)
 
   switch (connectApi) {
     case 'true':

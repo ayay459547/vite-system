@@ -16,7 +16,8 @@ if (isChange) {
   deleteDB(system)
 }
 
-const idbVersion = 1
+// Table版本 > DB版本 => 加入新表
+const idbVersion = 2
 /**
  * 管理新增加的 store
  * 已存在的 store 不用創建
@@ -32,6 +33,10 @@ const storeVersion = [
   {
     storeName: 'historyNavigation',
     newVersion: 1
+  },
+  {
+    storeName: 'i18nInfo',
+    newVersion: 2
   }
 ]
 
