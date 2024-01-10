@@ -32,7 +32,8 @@ import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
-import { useParentI18n } from '@/i18n/i18n_excel'
+import { useGlobalI18n } from '@/i18n/i18n_excel'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { getPermission } from '@/lib/lib_permission'
 
@@ -99,38 +100,42 @@ const currentRouteName = computed<string>(() => {
   return currentNavigation.value?.name ?? ''
 })
 
+// 翻譯檔
+const { initModuleLangMap, setModuleType, i18nTest, i18nTranslate } = useGlobalI18n()
+
+onMounted(() => {
+  initModuleLangMap()
+  setModuleType(defaultModuleType)
+})
+
 // 路由更換時執行
 const changeTime = 560
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
   setNavigationData(currentRoute)
 
+  setTimeout(() => {
+    setWebInfo()
+  }, 0)
+
   await nextTick()
 
   setTimeout(() => {
     setModalView(currentRoute)
     setLoading(currentRoute)
-  }, 0)
+  }, 5)
 
   setTimeout(() => {
     pageScrollTop()
-    setWebTitle()
     updateToken()
   }, 50)
 }
 // 做節流 因為畫面更新 為觸發多次
 const throttleOnRouteChange = throttle(onRouteChange, changeTime) as typeof onRouteChange
 
-// 翻譯檔
-const { initModuleLangMap, setModuleType, i18nTest, i18nTranslate } = useParentI18n()
-
-onMounted(() => {
-  initModuleLangMap()
-  setModuleType('system')
-})
-
-// 設置 網頁 title
-const setWebTitle = () => {
+// 設定 網頁 title
+// 設定 使用中的翻譯檔模組
+const setWebInfo = () => {
   const currentTitle = ((currentNavigation) => {
     if (currentNavigation) {
       const { name, title } = currentNavigation
@@ -142,8 +147,9 @@ const setWebTitle = () => {
     }
     return envStore.system
   })(currentNavigation.value)
-
   document.title = currentTitle
+
+  setModuleType(currentNavigation?.value?.i18nModule ?? defaultModuleType)
 }
 
 // 換頁時 scrollbar 移動到最上面
@@ -228,18 +234,22 @@ const initNavigationRoutes = async () => {
   }, 100)
 }
 
-onBeforeMount(async () => {
-  await initNavigationRoutes()
-  await nextTick()
-  loading(true, '系統初始化')
-
+onBeforeMount(() => {
+  initNavigationRoutes()
+})
+onMounted(() => {
   setTimeout(() => {
-    loading(false, 'loading')
-  }, 500)
+    loading(true, '系統初始化')
+  }, 0)
+
   // 給 800 毫秒 確保路由跳轉完成後 才執行
   setTimeout(() => {
     systemLayoutRef.value.init()
   }, 800)
+
+  setTimeout(() => {
+    loading(false, 'loading')
+  }, 850)
 })
 
 // 路由切換
@@ -355,7 +365,7 @@ provide<Hook>('hook', () => {
       :auth-data="authData"
       :breadcrumb-title="breadcrumbTitle"
       @logout="logout"
-      @change-locale="setWebTitle"
+      @change-locale="setWebInfo"
       @history-change="historyChange"
     >
       <template #logo="{ isShow }">
@@ -402,12 +412,14 @@ provide<Hook>('hook', () => {
                     v-if="route?.meta?.keepAlive ?? false"
                     :key="route.name"
                     :is="Component"
+                    @init-system="initNavigationRoutes"
                   />
                 </KeepAlive>
                 <component
                   v-if="!(route?.meta?.keepAlive ?? false)"
                   :key="route.name"
                   :is="Component"
+                  @init-system="initNavigationRoutes"
                 />
               </template>
               <!-- 更換路由執行 -->

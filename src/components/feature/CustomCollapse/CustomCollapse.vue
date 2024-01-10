@@ -1,47 +1,24 @@
 <script setup lang="ts">
-import type { PropType, WritableComputedRef } from 'vue'
 import { useSlots, computed } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 
 import { CustomEmpty } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
 
-export type ModelValue = string | string[]
+import {
+  type ModelValue,
+  version,
+  scopedId,
+  props as collapseProps
+} from './CustomCollapseInfo'
 
-export type Options = {
-  lable: string
-  value: string
-  disabled?: boolean
-} & any
-
-const props = defineProps({
-  modelValue: {
-    type: [Array, String] as PropType<ModelValue>,
-    default: '',
-    description: `v-model 綁定是否顯示
-      一般模式 值為陣列: 可展開多個
-      手風琴模式 值為字串: 只能展開一個
-    `
-  },
-  accordion: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否為手風琴模式'
-  },
-  options: {
-    type: Array as PropType<Options[]>,
-    default () {
-      return []
-    }
-  }
-})
+const props = defineProps(collapseProps)
 
 const emit = defineEmits([
   'update:modelValue',
   'change'
 ])
 
-const tempValue: WritableComputedRef<ModelValue> = computed({
+const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
@@ -50,18 +27,15 @@ const onChange = (active: ModelValue) => {
   emit('change', active)
 }
 
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const scopedId = getUuid('__i-collapse__')
-
 </script>
 
 <template>
-  <div class="__collapse" :class="scopedId">
+  <div :class="`CustomCollapse_${version} ${scopedId}`" class="__collapse-wrapper">
     <ElCollapse
       v-model="tempValue"
       :accordion="props.accordion"
@@ -107,8 +81,10 @@ const scopedId = getUuid('__i-collapse__')
 
 <style lang="scss" scoped>
 .__collapse {
-  width: 100%;
-  height: fit-content;
+  &-wrapper {
+    width: 100%;
+    height: fit-content;
+  }
 
   &-title {
     font-size: 1.2em;

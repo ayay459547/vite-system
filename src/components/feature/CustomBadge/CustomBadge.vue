@@ -1,56 +1,24 @@
 <script setup lang="ts">
-import { type PropType, useSlots } from 'vue'
+import { useSlots } from 'vue'
 import { ElBadge } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import {
+  version,
+  scopedId,
+  props as badgeProps
+} from './CustomBadgeInfo'
 
-export type BadgeType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+const props = defineProps({ ...badgeProps })
 
-const props = defineProps({
-  value: {
-    type: [String, Number] as PropType<string | number>,
-    required: false,
-    default: '',
-    description: '顯示的值'
-  },
-  max: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 99,
-    description: '最大值'
-  },
-  isDot: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否顯示小圓點'
-  },
-  hidden: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否隱藏標記'
-  },
-  type: {
-    type: String as PropType<BadgeType>,
-    required: false,
-    default: 'primary',
-    description: '類型'
-  }
-})
-
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const scopedId = getUuid('__i-badge__')
-
 </script>
 
 <template>
-  <div class="badge-wrapper" :class="scopedId">
+  <div :class="`CustomBadge_${version} ${scopedId}`" class="__badge-wrapper">
     <ElBadge
       :value="props.value"
       :max="props.max"
@@ -66,7 +34,7 @@ const scopedId = getUuid('__i-badge__')
 </template>
 
 <style lang="scss" scoped>
-.badge {
+.__badge {
   &-wrapper {
     width: 100%;
     height: fit-content;

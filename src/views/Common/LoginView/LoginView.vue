@@ -20,9 +20,9 @@ const login = ($event: MouseEvent | KeyboardEvent) => {
   $event.preventDefault()
 
   validateForm().then(async () => {
-    const { account, passowrd } = form
+    const { account, password } = form
     isLoading.value = true
-    const userId = await loginSystem(account, passowrd)
+    const userId = await loginSystem(account, password)
 
     if (!isEmpty(userId)) {
       emit('login', userId)
@@ -43,7 +43,7 @@ const columnSetting = {
       required: true
     }
   },
-  passowrd: {
+  password: {
     label: '密碼',
     fitler: {
       default: 'admin',
@@ -56,7 +56,7 @@ const columnSetting = {
 
 interface Form {
   account: string
-  passowrd: string
+  password: string
 }
 
 const {
@@ -119,8 +119,8 @@ const svg = `
 
         <form style="display: contents;" @submit="login">
           <CustomInput
-            v-model="form.passowrd"
-            v-bind="formColumn.passowrd"
+            v-model="form.password"
+            v-bind="formColumn.password"
           >
             <template #prefix>
               <CustomIcon name="unlock-keyhole"/>

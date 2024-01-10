@@ -55,7 +55,7 @@ export const initTranslateSrcFile = () => {
 export type I18nTranslate = ComposerTranslation
 export type I18nTest = (key: string) => boolean
 
-export type ParentI18n = Partial<Composer & {
+export type GlobalI18n = Partial<Composer & {
   initModuleLangMap: () => void
   i18nTranslate: I18nTranslate
   i18nTest: I18nTest
@@ -66,7 +66,7 @@ export type ParentI18n = Partial<Composer & {
  * @description 針對各模組 設定翻譯
  * @returns {Object} 翻譯工具
  */
-export const useParentI18n = (): ParentI18n => {
+export const useGlobalI18n = (): GlobalI18n => {
   const moduleType = ref('')
   const i18nMap = shallowRef<Record<string, any>>(defaultModuleLangMap)
 

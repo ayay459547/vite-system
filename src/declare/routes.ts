@@ -1,12 +1,13 @@
 import type { IconType } from '@/components'
 import type { RouterType } from '@/router/setting'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 
 interface Meta {
-  // 顯示時，決定是否放在 <KeepAlive></KeepAlive> 中
+  // 是否放在 <KeepAlive></KeepAlive> 中
   keepAlive: boolean
 
   // 檢驗進度用
-  status?: 'completed' | 'inProgress' | 'new'
+  status?: 'completed' | 'inProgress' | 'new' | string
   startDate?: string
   completedDate?: string
 }
@@ -24,11 +25,14 @@ interface BaseTree {
   permission?: number
 }
 interface RootTree extends BaseTree {
-  leaves?: RouterTree[]     // 子路由設定
+  leaves?: RouterTree[]       // 子路由設定
 }
 interface LeafTree extends BaseTree {
-  path?: string             // 網址
-  component?: () => void    // 頁面組件
+  path?: string               // 網址
+  component?: () => void |any // 頁面組件
+
+  // i18n Excel檔案(i18n.xlsx) 對應的模組
+  i18nModule?: ScopeKey
 }
 /**
  * 路由樹設定 類型

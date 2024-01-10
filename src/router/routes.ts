@@ -469,6 +469,31 @@ const routes: Array<RouterTree> = [
         ]
       }
     ]
+  },
+  {
+    name: 'nav4',
+    title: '選單4',
+    systemType: ['new'],
+    icon: 'language',
+    permission: totlaPermission,
+    leaves: [
+      {
+        name: 'nav4-1',
+        title: 'system翻譯',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2024-01',
+          completedDate: '2024-01'
+        },
+        systemType: ['new'],
+        icon: 's',
+        permission: totlaPermission,
+        path: '/nav4-1',
+        i18nModule: 'system',
+        component: () => import('@/views/Nav4-1/Nav4-1.vue')
+      }
+    ]
   }
 ]
 

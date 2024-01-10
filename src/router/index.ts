@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
 import { useAuthStore } from '@/stores/stores_auth'
+import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 import { permission, hasPermission, defaultPermission } from '@/lib/lib_permission'
@@ -134,10 +135,32 @@ router.beforeEach(
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
+    // 使用者
     const authStore = useAuthStore()
     const { isLogin, routesPermission } = storeToRefs(authStore)
 
-    const toNavigation = routesPermission.value.get(to.name as string)
+    // 路由
+    const routesStore = useRoutesStore()
+    const { navigationMap } = storeToRefs(routesStore)
+
+    const userPermission = routesPermission.value.get(to.name as string)
+    const navigationInfo = navigationMap.value.get(to.name as string)
+
+    /**
+     * 權限順序
+     * 1. 後端資料
+     * 2. 路由設定
+     * 3. 系統預設
+     */
+    const toNavigation = (() => {
+      if (typeof userPermission === 'number') {
+        return userPermission
+      } else if (typeof navigationInfo?.permission === 'number') {
+        return navigationInfo?.permission
+      } else {
+        return defaultPermission
+      }
+    })()
 
     if (isLogin.value) {
       // 已經登入 如果要進登入頁 自動跳回首頁
@@ -147,9 +170,10 @@ router.beforeEach(
       } else if (
         from.name &&
         !baseRoutesName.includes(to.name as string) &&
-        !hasPermission(toNavigation ?? defaultPermission, permission.read)
+        !hasPermission(toNavigation, permission.read)
       ) {
         next({ name: 'noPermissions' })
+
       // 如果再未登入時有 想進的頁面 會優先進入
       } else if (tempTo.value) {
         const temp = tempTo.value

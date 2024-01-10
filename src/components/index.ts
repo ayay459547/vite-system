@@ -12,17 +12,17 @@ export type {
   ButtonSize,
   ButtonMove,
   ButtonIconType
-} from './feature/CustomButton/CustomButton.vue'
+} from './feature/CustomButton/CustomButtonInfo'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
 export type {
   ModelValue as CollapseModelValue
-} from './feature/CustomCollapse/CustomCollapse.vue'
+} from './feature/CustomCollapse/CustomCollapseInfo'
 export { default as CustomCollapse } from './feature/CustomCollapse/CustomCollapse.vue'
 
 export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue'
 
-export type { BadgeType } from './feature/CustomBadge/CustomBadge.vue'
+export type { BadgeType } from './feature/CustomBadge/CustomBadgeInfo'
 export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
 
 export type {
