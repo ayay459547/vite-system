@@ -4,11 +4,11 @@ import { useI18n } from 'vue-i18n'
 
 import type { Hook } from '@/declare/hook'
 import { CustomTabs } from '@/components'
-import { usePageI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_utils'
 
 const { t: testT } = useI18n()
 
-const { i18nTranslate: pageTranslate } = usePageI18n({
+const { i18nTranslate: pageTranslate } = useLocalI18n({
   search123: {
     zhTw: '搜尋ZhTw',
     zhCn: '搜尋ZhCn',

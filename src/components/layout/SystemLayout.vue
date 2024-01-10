@@ -29,7 +29,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'changeHistory', value: boolean): void
+  (e: 'historyChange', value: boolean): void
 }>()
 
 const layoutStore = useLayoutStore()
@@ -78,7 +78,7 @@ const layoutAttr = computed(() => {
 
 const layoutEvent = {
   logout: () => emit('logout'),
-  changeHistory: ($event: boolean) => emit('changeHistory', $event),
+  historyChange: ($event: boolean) => emit('historyChange', $event),
   preferences: () => {
     modal.preferences = true
   }
@@ -113,7 +113,7 @@ defineExpose({
     await nextTick()
 
     navIsOpen.value = false
-    emit('changeHistory', false)
+    emit('historyChange', false)
   },
   init
 })

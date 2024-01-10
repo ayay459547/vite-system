@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'changeHistory', value: boolean): void
+  (e: 'historyChange', value: boolean): void
   (e: 'preferences'): void
 }>()
 
@@ -37,7 +37,7 @@ const openUserEffect = (e: MouseEvent) => {
       event: () => {
         const value = !props.historyIsOpen
         localStorage.setItem('historyIsOpen', `${value}`)
-        emit('changeHistory', value)
+        emit('historyChange', value)
       }
     }
   ], {

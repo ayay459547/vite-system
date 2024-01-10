@@ -19,22 +19,22 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'changeHistory', value: boolean): void
+  (e: 'historyChange', value: boolean): void
   (e: 'preferences'): void
   (e: 'setLevel2Router', level2List: Navigation): void
-  (e: 'changeRouter'): void
+  (e: 'routerChange'): void
 }>()
 
-const onChangeHistory = ($event: boolean) => {
-  emit('changeHistory', $event)
+const onHistoryChange = ($event: boolean) => {
+  emit('historyChange', $event)
 }
 
 const setLevel2Router = (level2Router: Navigation) => {
   emit('setLevel2Router', level2Router)
 }
 
-const onChangeRouter = () => {
-  emit('changeRouter')
+const onRouterChange = () => {
+  emit('routerChange')
 }
 
 </script>
@@ -60,13 +60,13 @@ const onChangeRouter = () => {
 
     <div class="menu-right">
       <div class="menu-right-effect">
-        <MenuHome @change-router="onChangeRouter"/>
+        <MenuHome @router-change="onRouterChange"/>
       </div>
       <div class="menu-right-effect">
         <MenuUser
           :auth-data="props.authData"
           :history-is-open="props.historyIsOpen"
-          @change-history="onChangeHistory"
+          @history-change="onHistoryChange"
           @logout="emit('logout')"
           @preferences="emit('preferences')"
         />

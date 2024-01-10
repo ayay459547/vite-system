@@ -358,7 +358,7 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
 export type I18nTranslate = ComposerTranslation
 export type I18nTest = (key: string) => boolean
 
-export type PageI18n = Partial<Composer & {
+export type LocalI18n = Partial<Composer & {
   i18nTranslate: I18nTranslate,
   i18nTest: I18nTest
 }>
@@ -368,15 +368,16 @@ export type PageI18n = Partial<Composer & {
  * @param {Object} langMap 設定key 對應的語言顯示的資料
  * @returns {Object} 翻譯工具
  */
-export const usePageI18n = (langMap: LangMap): PageI18n => {
-  const pageI18n = useI18n({
+export const useLocalI18n = (langMap: LangMap): LocalI18n => {
+  const localI18n = useI18n({
+    useScope: 'local',
     messages: getI18nMessages(langMap)
   }) as Partial<Composer>
 
   return {
-    ...pageI18n,
-    i18nTranslate: pageI18n.t,
-    i18nTest: pageI18n.te
+    ...localI18n,
+    i18nTranslate: localI18n.t,
+    i18nTest: localI18n.te
   }
 }
 

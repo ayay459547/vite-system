@@ -32,8 +32,7 @@ import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
-import { useI18n } from 'vue-i18n'
-import { initTranslateSrcFile } from '@/i18n/i18n_excel'
+import { useParentI18n } from '@/i18n/i18n_excel'
 
 import { getPermission } from '@/lib/lib_permission'
 
@@ -44,12 +43,6 @@ const hasSlot = (prop: string): boolean => {
 }
 
 // hook
-const {
-  t: i18nT,
-  // locale: i18nLocale,
-  te: i18nTe // 測試 key 是否存在
-} = useI18n()
-
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
 const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
 
@@ -108,9 +101,11 @@ const currentRouteName = computed<string>(() => {
 
 // 路由更換時執行
 const changeTime = 560
-const onRouteChange = (currentRoute: RouteLocationNormalized) => {
+const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
   setNavigationData(currentRoute)
+
+  await nextTick()
 
   setTimeout(() => {
     setModalView(currentRoute)
@@ -126,12 +121,23 @@ const onRouteChange = (currentRoute: RouteLocationNormalized) => {
 // 做節流 因為畫面更新 為觸發多次
 const throttleOnRouteChange = throttle(onRouteChange, changeTime) as typeof onRouteChange
 
+// 翻譯檔
+const { initModuleLangMap, setModuleType, i18nTest, i18nTranslate } = useParentI18n()
+
+onMounted(() => {
+  initModuleLangMap()
+  setModuleType('system')
+})
+
 // 設置 網頁 title
 const setWebTitle = () => {
   const currentTitle = ((currentNavigation) => {
     if (currentNavigation) {
       const { name, title } = currentNavigation
-      if (i18nTe(name)) return i18nT(name)
+
+      if (i18nTest(name)) {
+        return i18nTranslate(name)
+      }
       if (title ?? false) return title
     }
     return envStore.system
@@ -224,8 +230,6 @@ const initNavigationRoutes = async () => {
 
 onBeforeMount(async () => {
   await initNavigationRoutes()
-  initTranslateSrcFile()
-
   await nextTick()
   loading(true, '系統初始化')
 
@@ -239,7 +243,7 @@ onBeforeMount(async () => {
 })
 
 // 路由切換
-const onChangeRouter = async () => {
+const onRouterChange = async () => {
   await nextTick()
 
   setTimeout(() => {
@@ -274,7 +278,7 @@ const login = async (userId: number) => {
 
 // 歷史路由
 const historyIsOpen = ref(false)
-const changeHistory = (v: boolean) => historyIsOpen.value = v
+const historyChange = (v: boolean) => historyIsOpen.value = v
 
 onMounted(() => {
   const _historyIsOpen = localStorage.getItem('historyIsOpen')
@@ -285,8 +289,12 @@ onMounted(() => {
 provide<Hook>('hook', () => {
   return {
     loading,
-    i18nTranslate: (key) => `${i18nT(key)}`,
-    i18nTest: (key) => i18nTe(key),
+    i18nTranslate: (key) => {
+      return `${i18nTranslate(key)}`
+    },
+    i18nTest: (key) => {
+      return i18nTest(key)
+    },
     eventList: (click, eventList, options) => {
       const { clientX, clientY } = click
 
@@ -348,7 +356,7 @@ provide<Hook>('hook', () => {
       :breadcrumb-title="breadcrumbTitle"
       @logout="logout"
       @change-locale="setWebTitle"
-      @change-history="changeHistory"
+      @history-change="historyChange"
     >
       <template #logo="{ isShow }">
         <slot name="logo" :is-show="isShow"></slot>
@@ -375,7 +383,7 @@ provide<Hook>('hook', () => {
               v-if="isShow"
               :history-navigation="historyNavigation"
               :current-navigation="currentNavigation"
-              @change-router="onChangeRouter"
+              @router-change="onRouterChange"
             />
           </template>
 

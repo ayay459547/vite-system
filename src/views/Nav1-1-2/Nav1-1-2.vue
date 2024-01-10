@@ -3,7 +3,7 @@ import { ref, reactive, inject, onMounted, nextTick } from 'vue'
 
 import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
-import { usePageI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
@@ -16,7 +16,7 @@ import DetailModal from './Components/DetailModal.vue'
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
 
-const { i18nTranslate: pageTranslate } = usePageI18n(i18nMessage)
+const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
 
 // table
 const tableData = ref<TableData[]>([])
@@ -24,7 +24,8 @@ const tableDataCount = ref(0)
 
 const {
   columns: filterColumns,
-  forms: filter
+  forms: filter,
+  getActiveForms: getFilter
 } = getFormSetting(columnSetting, 'filter')
 
 const tableOptions = {
@@ -45,7 +46,7 @@ const download = async ({ type }) => {
   let excelData: any[] = []
   const apiParam = {
     ...getParams(tableRef.value) as any
-  }.$filter(item => item !== null)
+  }
 
   switch (type) {
     case 'all':
@@ -69,13 +70,13 @@ const init = async (props?: any) => {
   if (typeof props === 'object') {
     apiParam = {
       ...props,
-      ...filter as any
-    }.$filter(item => item !== null)
+      ...getFilter(false)
+    }
   } else {
     apiParam = {
       ...getParams(tableRef.value),
-      ...filter as any
-    }.$filter(item => item !== null)
+      ...getFilter(false)
+    }
   }
 
   if (props === 'input') {

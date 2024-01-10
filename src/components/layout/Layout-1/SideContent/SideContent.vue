@@ -131,6 +131,7 @@ defineExpose({
       display: block;
     }
 
+    &:hover,
     &.is-open {
       box-shadow: 1px 0px 20px 0px #707070;
       @include navOpen();

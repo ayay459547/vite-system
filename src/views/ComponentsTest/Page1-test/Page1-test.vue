@@ -8,7 +8,7 @@ import {
   CustomIcon
 } from '@/components'
 
-import { deepClone, usePageI18n } from '@/lib/lib_utils'
+import { deepClone, useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
@@ -27,7 +27,7 @@ import i18nMessage from './i18n'
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()
 
-const { i18nTranslate: pageTranslate } = usePageI18n(i18nMessage)
+const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
 
 // 權限
 const routesStore = useRoutesStore()

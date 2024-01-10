@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 
 import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
-import { usePageI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
@@ -20,7 +20,7 @@ import UpdateModal from './Components/UpdateModal.vue'
 const hook: Hook = inject('hook')
 const { i18nTranslate, swal, loading, eventList } = hook()
 
-const { i18nTranslate: pageTranslate } = usePageI18n(i18nMessage)
+const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
 
 // 權限
 const routesStore = useRoutesStore()

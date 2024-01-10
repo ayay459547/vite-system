@@ -23,12 +23,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'changeHistory', value: boolean): void
+  (e: 'historyChange', value: boolean): void
   (e: 'preferences'): void
 }>()
 
-const onChangeHistory = (v: boolean) => {
-  emit('changeHistory', v)
+const onHistoryChange = (v: boolean) => {
+  emit('historyChange', v)
 }
 
 // 第二層路由
@@ -67,7 +67,7 @@ const init = async () => {
 }
 
 // 回首頁
-const onChangeRouter = async () => {
+const onRouterChange = async () => {
   await nextTick()
   level2List.value = []
   subMenuRef.value.clearLevel3List()
@@ -89,11 +89,11 @@ defineExpose({
         :history-is-open="props.historyIsOpen"
         :auth-data="props.authData"
         :breadcrumb-title="props.breadcrumbTitle"
-        @change-history="onChangeHistory"
+        @history-change="onHistoryChange"
         @logout="emit('logout')"
         @preferences="emit('preferences')"
         @set-level2-router="setLevel2Router"
-        @change-router="onChangeRouter"
+        @router-change="onRouterChange"
       >
         <template #logo>
           <slot name="logo"></slot>

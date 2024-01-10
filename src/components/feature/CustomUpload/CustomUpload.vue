@@ -5,7 +5,7 @@ import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
-import { isEmpty, getUuid, deepClone, getProxyData, usePageI18n } from '@/lib/lib_utils'
+import { isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/lib_utils'
 
 import FilesView from './FilesView.vue'
 import i18nMessage from './i18n'
@@ -82,7 +82,7 @@ const fileTypeMap = {
 
 const hook: Hook = inject('hook')
 const { swal } = hook()
-const { i18nTranslate } = usePageI18n(i18nMessage)
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const drag = ref(null)
 const active = ref(false)

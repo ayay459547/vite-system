@@ -21,10 +21,12 @@ export type ModuleLangMap = {
   view: LangMap
 }
 
+export type ScopeKey = keyof ModuleLangMap
+
 export const scopeList = [
-  { scopeKey: 'system', version: '1.0.1' },
-  { scopeKey: 'test', version: '1.0.0' },
-  { scopeKey: 'view', version: '1.0.0' }
+  { scopeKey: 'system', label: '系統', version: '1.0.2' },
+  { scopeKey: 'test', label: '測試', version: '1.0.1' },
+  { scopeKey: 'view', label: '頁面', version: '1.0.1' }
 ]
 
 export const defaultModuleLangMap = {

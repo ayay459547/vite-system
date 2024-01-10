@@ -12,7 +12,7 @@ import {
   GroupSearch,
   CustomSearch
 } from '@/components'
-import { usePageI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting, getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -28,7 +28,7 @@ import UpdateModel from './Components/UpdateModel.vue'
 
 const hook: Hook = inject('hook')
 const { swal, loading, eventList } = hook()
-const { i18nTranslate } = usePageI18n(i18nMessage)
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 // 權限
 const routesStore = useRoutesStore()

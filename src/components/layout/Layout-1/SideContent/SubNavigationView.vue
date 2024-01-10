@@ -151,7 +151,7 @@ export default defineComponent({
 
   &-title {
     border-radius: 6px;
-    padding: 12px 20px;
+    padding: 12px 22px;
     display: flex;
     align-items: center;
     gap: 28px;

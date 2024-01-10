@@ -44,15 +44,15 @@ const objectFunction = {
   //   }
   //   return false
   // },
-  // $every (callback: Function, thisArg: any) {
-  //   thisArg = thisArg || window
-  //   for (const key in this) {
-  //     if (this.hasOwnProperty(key) && !callback.call(thisArg, this[key], key, this)) {
-  //       return false
-  //     }
-  //   }
-  //   return true
-  // },
+  $every (callback: Function, thisArg: any) {
+    thisArg = thisArg || window
+    for (const key in this) {
+      if (this.hasOwnProperty(key) && !callback.call(thisArg, this[key], key, this)) {
+        return false
+      }
+    }
+    return true
+  },
   $reduce (callback: Function, temp: any, thisArg: any) {
     thisArg = thisArg || window
     for (const key in this) {
