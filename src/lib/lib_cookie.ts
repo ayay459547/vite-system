@@ -32,19 +32,26 @@ export const getToken = (): Token | null => {
   if (['', null, undefined].includes(_token)) return null
 
   const temp = aesDecrypt(_token, privateKey)
-  if (['', null, undefined].includes(temp)) return null
+  // if (['', null, undefined].includes(temp)) return null
 
-  const userData = JSON.parse(temp)
+  // const userData = JSON.parse(temp)
+
+  const userData = {
+    uid: '',
+    date: new Date(),
+    userId: Number.parseInt(temp)
+  }
   return userData
 }
 
 export const setToken = (userId: number) => {
-  const temp = {
-    uuid: `${getUuid()}`,
-    date: new Date(),
-    userId
-  }
-  const _token = JSON.stringify(temp)
+  // const temp = {
+  //   uuid: `${getUuid()}`,
+  //   date: new Date(),
+  //   userId
+  // }
+  // const _token = JSON.stringify(temp)
+  const _token = userId
 
   // 設定 30 分鐘
   const minutes = 30

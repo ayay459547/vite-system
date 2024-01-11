@@ -108,6 +108,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@import '../Layout-1.scss';
+
 .nav {
   &-container {
     width: 100%;

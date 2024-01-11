@@ -57,8 +57,8 @@ export const props = {
   },
   showArrow: {
     type: Boolean as PropType<Props.ShowArrow>,
-    required: true,
-    default: null,
+    required: false,
+    default: false,
     description: '是否顯示箭頭'
   },
   offset: {

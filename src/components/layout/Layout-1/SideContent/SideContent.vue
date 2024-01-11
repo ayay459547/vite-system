@@ -90,6 +90,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@import '../Layout-1.scss';
+
 @mixin navOpen () {
   min-width: $nav-lg-width;
   transition-delay: 0.2s;

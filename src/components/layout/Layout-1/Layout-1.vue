@@ -118,6 +118,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@import './Layout-1.scss';
+
 .layout {
   &-wrapper {
     width: 100vw;

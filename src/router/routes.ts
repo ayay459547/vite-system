@@ -492,6 +492,38 @@ const routes: Array<RouterTree> = [
         path: '/nav4-1',
         i18nModule: 'system',
         component: () => import('@/views/Nav4-1/Nav4-1.vue')
+      },
+      {
+        name: 'nav4-2',
+        title: 'test翻譯',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2024-01',
+          completedDate: '2024-01'
+        },
+        systemType: ['new'],
+        icon: 't',
+        permission: totlaPermission,
+        path: '/nav4-2',
+        i18nModule: 'test',
+        component: () => import('@/views/Nav4-2/Nav4-2.vue')
+      },
+      {
+        name: 'nav4-3',
+        title: 'view翻譯',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2024-01',
+          completedDate: '2024-01'
+        },
+        systemType: ['new'],
+        icon: 'v',
+        permission: totlaPermission,
+        path: '/nav4-3',
+        i18nModule: 'view',
+        component: () => import('@/views/Nav4-3/Nav4-3.vue')
       }
     ]
   }
