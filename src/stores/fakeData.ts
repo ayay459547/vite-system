@@ -100,5 +100,8 @@ export const fakeUserData = {
   id: 1,
   name: 'admin',
   roleName: 'admin',
-  roleFunction: allPermissionData
+  roleFunction: allPermissionData,
+  groups: [
+    { id: 1, fullName: 'admin' }
+  ]
 }

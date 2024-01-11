@@ -3,7 +3,7 @@ import type { WritableComputedRef } from 'vue'
 import { computed, nextTick, ref } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/stores/api'
+import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import SideContent from './SideContent/SideContent.vue'

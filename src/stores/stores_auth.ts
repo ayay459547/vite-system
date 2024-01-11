@@ -6,8 +6,8 @@ import { isEmpty } from '@/lib/lib_utils'
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { getToken, setToken, clearToken } from '@/lib/lib_cookie'
+import type { AuthData, PermissionData } from '@/declare/hook'
 
-import type { AuthData, PermissionData } from './api'
 import { getAuthData } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -23,7 +23,8 @@ export const useAuthStore = defineStore('auth', () => {
 	const authData = shallowRef<AuthData>({
 		id: null,
 		roleName: null,
-		roleFunction: []
+		roleFunction: [],
+		groups: []
 	})
 	const setAuthData = (auth: AuthData) => {
 		authData.value = auth
@@ -32,7 +33,8 @@ export const useAuthStore = defineStore('auth', () => {
 		authData.value = {
 			id: null,
 			roleName: null,
-			roleFunction: []
+			roleFunction: [],
+			groups: []
 		}
 	}
 

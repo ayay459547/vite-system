@@ -2,7 +2,7 @@
 import { inject } from 'vue'
 
 import type { Hook } from '@/declare/hook'
-import type { AuthData } from '@/stores/api'
+import type { AuthData } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 
 const hook: Hook = inject('hook')

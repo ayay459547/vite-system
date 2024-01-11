@@ -29,7 +29,7 @@ export type {
   DividerDirection,
   DividerBorderStyle,
   DividerContentPosition
-} from './feature/CustomDivider/CustomDivider.vue'
+} from './feature/CustomDivider/CustomDividerInfo'
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
 export type {

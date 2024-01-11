@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 
 import type { Hook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/stores/api'
+import type { AuthData } from '@/declare/hook'
 import { CustomModal } from '@/components'
 import { useLayoutStore } from '@/stores/stores_layout'
 

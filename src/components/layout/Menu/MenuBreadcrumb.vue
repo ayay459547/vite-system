@@ -46,13 +46,13 @@ const breadcrumbSpan = computed<string>(() => {
 <template>
   <div class="breadcrumb-container">
     <div class="breadcrumb-lg" :class="props.textAlign">
-      <CustomIcon name="location-crosshairs" class="icon" icon-class="text-warning"/>
+      <CustomIcon name="location-dot" class="icon" icon-class="text-danger"/>
       <div class="text ellipsis">{{ breadcrumbSpan }}</div>
     </div>
 
     <div class="breadcrumb-xs">
       <CustomTooltip placement="right">
-        <CustomIcon name="location-crosshairs" icon-class="text-warning"/>
+        <CustomIcon name="location-dot" icon-class="text-danger"/>
 
         <template #content>
           <div class="breadcrumb-text">{{ breadcrumbSpan }}</div>

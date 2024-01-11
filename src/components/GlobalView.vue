@@ -214,6 +214,12 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
   }
 }
 
+const initSystem = async () => {
+  await initSystemData()
+
+  setNavigationRoutes(routesPermission.value)
+}
+
 /**
  * 初始化系統使用者 + 權限
  * 用權限 設置路由選項
@@ -412,14 +418,14 @@ provide<Hook>('hook', () => {
                     v-if="route?.meta?.keepAlive ?? false"
                     :key="route.name"
                     :is="Component"
-                    @init-system="initNavigationRoutes"
+                    @init-system="initSystem"
                   />
                 </KeepAlive>
                 <component
                   v-if="!(route?.meta?.keepAlive ?? false)"
                   :key="route.name"
                   :is="Component"
-                  @init-system="initNavigationRoutes"
+                  @init-system="initSystem"
                 />
               </template>
               <!-- 更換路由執行 -->

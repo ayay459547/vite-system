@@ -114,7 +114,7 @@ defineExpose({
     height: 100%;
     display: flex;
     flex-wrap: nowrap;
-    transition-duration: 0.35s;
+    transition-duration: 0.3s;
     &.is-open {
       transform: translateX(-$nav-lg-width);
 

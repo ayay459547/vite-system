@@ -4,6 +4,35 @@ import type { NotificationProps, NotificationHandle, MessageOptions, MessageHand
 import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
 import type { Permission } from '@/lib/lib_permission'
 
+export declare interface PermissionData {
+  autoGeneratingId: boolean
+  createDate: string
+  lastUpdateTimestamp: string
+  routerName: string
+  pk: {
+    functionID: string
+    roleID: number
+  }
+
+  readPermissions: boolean
+  createPermissions: boolean
+  updatePermissions: boolean
+  deletePermissions: boolean
+  executePermissions: boolean
+}
+
+export declare interface Group {
+  id: number
+  fullName?: string
+}
+
+export declare interface AuthData {
+  id?: number
+  roleName?: string
+  roleFunction: Array<PermissionData>
+  groups?: Array<Group>
+}
+
 export declare interface EventItem {
   icon: [IconType, string] | []
   label: string
@@ -47,7 +76,7 @@ export declare namespace HookList {
 
   type env = () => Record<string, any>
 
-  type auth = () => Record<string, any>
+  type auth = () => AuthData
 }
 
 export declare type Hook = () => {

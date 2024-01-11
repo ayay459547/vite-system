@@ -2,7 +2,7 @@
 import { ref, shallowRef, nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/stores/api'
+import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { isEmpty } from '@/lib/lib_utils'
 
