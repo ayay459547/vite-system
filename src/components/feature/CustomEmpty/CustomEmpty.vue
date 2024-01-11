@@ -1,41 +1,26 @@
 <script setup lang="ts">
-import { type PropType, useSlots } from 'vue'
+import { useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
-const props = defineProps({
-  image: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '圖片的 url'
-  },
-  imageSize: {
-    type: Number as PropType<number>,
-    required: false,
-    description: '圖片 寬度 width'
-  },
-  description: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '文字訊息'
-  }
-})
+import {
+  version,
+  scopedId,
+  props as emptyProps
+} from './CustomEmptyInfo'
 
-// slot
+const props = defineProps(emptyProps)
+
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const scopedId = getUuid('__i-empty__')
-
 </script>
 
 <template>
-  <div class="__empty-wrapper" :class="scopedId">
+  <div :class="`CustomEmpty_${version} ${scopedId}`" class="__empty-wrapper">
     <ElEmpty
       class="__empty-container"
       :image="props.image"

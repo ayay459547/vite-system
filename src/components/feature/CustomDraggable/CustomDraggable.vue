@@ -1,123 +1,22 @@
 <script setup lang="ts">
-import { type PropType, computed, useSlots } from 'vue'
+import { computed, useSlots } from 'vue'
 import Draggable from 'vuedraggable'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 
-// slot
+import type { DraggableChange } from './CustomDraggableInfo'
+import {
+  version,
+  scopedId,
+  props as draggableProps
+} from './CustomDraggableInfo'
+
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const props = defineProps({
-  modelValue: {
-    type: Array as PropType<any[]>,
-    required: true,
-    description: '綁定資料列表'
-  },
-  itemKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'id',
-    description: '每筆資料的key'
-  },
-  handle: {
-    type: String as PropType<string>,
-    required: false,
-    default: '.__draggable',
-    description: '指定可拖拉的元素(css選擇器)'
-  },
-  width: {
-    type: String as PropType<string>,
-    required: false,
-    default: '100%',
-    description: '列表寬度'
-  },
-  height: {
-    type: String as PropType<string>,
-    required: false,
-    default: '100%',
-    description: '列表高度'
-  },
-  stripe: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '列表高度'
-  },
-  class: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '外層class'
-  },
-  style: {
-    type: Object as PropType<Record<string, string>>,
-    required: false,
-    default () {
-      return {}
-    },
-    description: '外層style 類型為object 不能使用string'
-  },
-  rowClass: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '資料列class'
-  },
-  rowStyle: {
-    type: Object as PropType<Record<string, string>>,
-    required: false,
-    default () {
-      return {}
-    },
-    description: '資料列style 類型為object 不能使用string'
-  },
-  tag: {
-    type: String as PropType<string>,
-    required: false,
-    // default: 'TransitionGroup'
-    default: 'ul',
-    description: '外層html標籤'
-  },
-  clone: {
-    type: Function as PropType<Function>,
-    required: false,
-    default: (original: any) => {
-      return original
-    },
-    description: '自訂拷貝方式'
-  },
-  move: {
-    type: [Function, undefined] as PropType<Function | undefined>,
-    required: false,
-    default: undefined,
-    description: '移動後的回調函數'
-  },
-  // componentData: {
-  //   type: [Object, null] as PropType<Record<any, any> | null>,
-  //   required: false,
-  //   default: null
-  // },
-  ghostClass: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '移動中的class'
-  },
-  direction: {
-    type: String as PropType<'column' | 'row'>,
-    default: 'column',
-    description: '方向'
-  },
-  group: {
-    type: [String, Object] as PropType<any>,
-    required: false,
-    default: 'name',
-    description: '資料列class'
-  }
-})
+const props = defineProps(draggableProps)
 
 const emit = defineEmits([
   'start',
@@ -144,22 +43,6 @@ const onRemove = ($event: any) => emit('remove', $event)
 const onChoose = ($event: any) => emit('choose', $event)
 const onUnchoose = ($event: any) => emit('unchoose', $event)
 const onClone = ($event: any) => emit('clone', $event)
-
-export type DraggableChange = {
-  added?: {
-    newIndex: number
-    element: Record<string, any>
-  }
-  removed?: {
-    oldIndex: number
-    element: Record<string, any>
-  }
-  moved?: {
-    newIndex: number
-    oldIndex: number
-    element: Record<string, any>
-  }
-}
 const onChange = ($event: DraggableChange) => emit('change', $event)
 
 const listValue = computed({
@@ -173,12 +56,10 @@ const listValue = computed({
   }
 })
 
-const scopedId = getUuid('__i-draggable__')
-
 </script>
 
 <template>
-  <div class="__draggable-wrapper" :class="scopedId">
+  <div :class="`CustomDraggable_${version} ${scopedId}`" class="__draggable-wrapper">
     <Draggable
       v-model="listValue"
       :handle="props.handle"

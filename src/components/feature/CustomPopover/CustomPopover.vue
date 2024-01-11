@@ -2,31 +2,15 @@
 import { customRef, ref } from 'vue'
 import { ElPopover } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 
-export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
-export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
+import {
+  version,
+  scopedId,
+  props as popoverProps
+} from './CustomPopoverInfo'
 
-export interface Props {
-  visible?: boolean | null
-  width?: number | string
-  title?: string
-  placement?: Placement
-  trigger?: Trigger
-  popperStyle?: string
-  showArrow?: boolean
-  offset?: number
-}
-const props = withDefaults(defineProps<Props>(), {
-  visible: null,
-  width: 150,
-  title: '',
-  placement: 'bottom',
-  trigger: 'click',
-  popperStyle: '',
-  showArrow: true,
-  offset: 0
-})
+const props = defineProps(popoverProps)
 
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void
@@ -53,12 +37,10 @@ const tempValue = customRef((track, trigger) => {
   }
 })
 
-const scopedId = getUuid('__i-popover__')
-
 </script>
 
 <template>
-  <div class="__popover-container" :class="scopedId">
+  <div :class="`CustomPopover_${version} ${scopedId}`" class="__popover-container">
     <ElPopover
       v-model:visible="tempValue"
       :placement="props.placement"

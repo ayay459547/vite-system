@@ -1,105 +1,25 @@
 <script setup lang="ts">
-import type { WritableComputedRef, PropType } from 'vue'
 import { ref, computed, watch, inject, effectScope, onBeforeMount, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
-import { useBoundingClientRect, getUuid } from '@/lib/lib_utils'
+import { useBoundingClientRect } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
 
-export type WidthSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
-export type HeightSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
-export type ModelValue = boolean
-export type XPosition = 'start' | 'center' | 'end'
-export type YPosition = 'top' | 'center' | 'bottom'
+import type { ModelValue } from './CustomModalInfo'
+import {
+  version,
+  scopedId,
+  props as modalProps,
+  minModalIndex
+} from './CustomModalInfo'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
 
-const props = defineProps({
-  modelValue: {
-    type: Boolean as PropType<ModelValue>,
-    default: false,
-    description: 'v-model 綁定是否顯示'
-  },
-  loading: {
-    type: Boolean as PropType<ModelValue>,
-    default: false,
-    description: 'loading 遮罩'
-  },
-  title: {
-    type: String as PropType<string>,
-    default: '',
-    description: '標題'
-  },
-  clickOutside: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '點擊外面是否會關閉'
-  },
-  width: {
-    type: String as PropType<string>,
-    default: '',
-    description: 'style width'
-  },
-  height: {
-    type: String as PropType<string>,
-    default: '',
-    description: 'style height'
-  },
-  widthSize: {
-    type: String as PropType<WidthSize>,
-    default: 'default',
-    description: '寬度尺寸類型'
-  },
-  heightSize: {
-    type: String as PropType<HeightSize>,
-    default: 'default',
-    description: '高度尺寸類型'
-  },
-  modal: {
-    type: Boolean as PropType<boolean>,
-    default: true,
-    description: '是否需要遮罩'
-  },
-  autoClose: {
-    type: Boolean as PropType<boolean>,
-    default: true,
-    description: '是否點擊x 或 取消 自動關閉'
-  },
-  draggable: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否可拖拉'
-  },
-  xPosition: {
-    type: String as PropType<XPosition>,
-    default: 'center',
-    description: '拖拉預設X軸位置'
-  },
-  yPosition: {
-    type: String as PropType<YPosition>,
-    default: 'center',
-    description: '拖拉預設Y軸位置'
-  },
-  hiddenFooter: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否隱藏footer'
-  },
-  hiddenSubmit: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否隱藏 確認按鈕'
-  },
-  hiddenCancel: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否隱藏 取消按鈕'
-  }
-})
+const props = defineProps(modalProps)
 
 const emit = defineEmits([
   'update:modelValue',
@@ -108,14 +28,10 @@ const emit = defineEmits([
   'submit'
 ])
 
-const scopedId = getUuid('__modal__')
-
-const tempValue: WritableComputedRef<ModelValue> = computed({
+const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
-
-const minModalIndex = 2005
 
 // 正在使用中的 modal 會被至頂
 // 如果有多個 modal 可以一次關閉全部
@@ -139,7 +55,6 @@ const isCloseAllModal = computed(() => {
 
   return modalCount.value >= 2
 })
-
 
 const wrapperIsShow = ref(false)
 const containerIsShow = ref(false)
@@ -513,7 +428,7 @@ onUnmounted(() => {
       v-show="wrapperIsShow"
       :class="[
         'modal-mask',
-        `${scopedId}`,
+        `CustomModal_${version} ${scopedId}`,
         containerIsShow ? 'is-show': 'is-close'
       ]"
       :style="`

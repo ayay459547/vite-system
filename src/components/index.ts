@@ -34,20 +34,20 @@ export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.
 
 export type {
   DraggableChange
-} from './feature/CustomDraggable/CustomDraggable.vue'
+} from './feature/CustomDraggable/CustomDraggableInfo'
 export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
 
 export type {
   DrawerDirection
-} from './feature/CustomDrawer/CustomDrawer.vue'
+} from './feature/CustomDrawer/CustomDrawerInfo'
 export { default as CustomDrawer } from './feature/CustomDrawer/CustomDrawer.vue'
 
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
-export type { ImageFit } from './feature/CustomImage/CustomImage.vue'
+export type { ImageFit } from './feature/CustomImage/CustomImageInfo'
 export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
 
-export type { IconType, IconSize } from './feature/CustomIcon/CustomIcon.vue'
+export type { IconType, IconSize } from './feature/CustomIcon/CustomIconInfo'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
 export type {
@@ -55,7 +55,7 @@ export type {
   Option,
   Options,
   InputType
-} from './feature/CustomInput/props'
+} from './feature/CustomInput/CustomInputInfo'
 // @ts-ignore
 export { default as CustomInput } from './feature/CustomInput/CustomInput.tsx'
 
@@ -67,7 +67,7 @@ export type {
   ModelValue as ModalModelValue,
   XPosition,
   YPosition
-} from './feature/CustomModal/CustomModal.vue'
+} from './feature/CustomModal/CustomModalInfo'
 export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 
 export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
@@ -75,7 +75,7 @@ export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue
 export type {
   Placement as PopoverPlacement,
   Trigger as PopoverTrigger
-} from './feature/CustomPopover/CustomPopover.vue'
+} from './feature/CustomPopover/CustomPopoverInfo'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
 
 export type {
@@ -87,7 +87,7 @@ export type {
   SetScrollLeft,
   Update,
   WrapRef
-} from './feature/CustomScrollbar/CustomScrollbar.vue'
+} from './feature/CustomScrollbar/CustomScrollbarInfo'
 export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
 // 搜尋用組件

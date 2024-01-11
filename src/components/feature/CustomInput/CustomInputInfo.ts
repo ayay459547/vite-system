@@ -1,12 +1,12 @@
 import type { PropType } from 'vue'
 
 import type { ValidateType } from '@/lib/lib_validate'
-import type {
-  Shortcuts,
-  DatePickerType,
-  TimePickerType,
-  FetchSuggestions
-} from '@/components'
+import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
+
+export const version = '1.0.0'
+
+export const scopedId = getUuid('__i-group-input__')
 
 export type ModelValue = any | null | undefined
 export type InputType = (
@@ -23,7 +23,7 @@ export type Option = {
 }
 export type Options = Array<Option>
 
-export const custom = {
+const custom = {
   modelValue: {
     type: [Array, String, Number, Boolean, null, undefined] as PropType<ModelValue>,
     required: true,
@@ -43,7 +43,7 @@ export const custom = {
     default: '',
     description: `
       驗證用的 key 值
-      會以 class 綁定在 dom `
+      會以 class 綁定在 dom`
   },
   direction: {
     type: String as PropType<'column' | 'row'>,
@@ -81,8 +81,7 @@ export const custom = {
     default: null,
     description: `
       onlyNumber 必須為 true
-      四捨五入 取小數點到第幾位
-    `
+      四捨五入 取小數點到第幾位`
   },
   floor: {
     type: [Number, null] as PropType<number | null>,
@@ -90,8 +89,7 @@ export const custom = {
     default: null,
     description: `
       onlyNumber 必須為 true
-      無條件捨去 取小數點到第幾位
-    `
+      無條件捨去 取小數點到第幾位`
   },
   ceil: {
     type: [Number, null] as PropType<number | null>,
@@ -99,8 +97,7 @@ export const custom = {
     default: null,
     description: `
       onlyNumber 必須為 true
-      無條件進位 取小數點到第幾位
-    `
+      無條件進位 取小數點到第幾位`
   },
   max: {
     type: [Number, null] as PropType<number | null>,
@@ -108,8 +105,7 @@ export const custom = {
     default: null,
     description: `
       onlyNumber 必須為 true
-      最大值
-    `
+      最大值`
   },
   min: {
     type: [Number, null] as PropType<number | null>,
@@ -117,8 +113,7 @@ export const custom = {
     default: null,
     description: `
       onlyNumber 必須為 true
-      最小值
-    `
+      最小值`
   },
   required: {
     type: Boolean as PropType<boolean>,
@@ -126,8 +121,7 @@ export const custom = {
     default: false,
     description: `
       isValidate 必須為 true
-      是否必填
-    `
+      是否必填`
   },
   validate: {
     type: [Array, String, null] as PropType<ValidateType[] | ValidateType>,
@@ -136,7 +130,7 @@ export const custom = {
     description: `
       驗證同時符合 多個條件 :validate="[keyword, keyword, keyword ......]"
       驗證符合一個條件 validate="keyword"
-      參考檔案: lib_validate.ts `
+      參考檔案: lib_validate.ts`
   },
   text: {
     type: Boolean as PropType<boolean>,
@@ -147,7 +141,7 @@ export const custom = {
 }
 
 // element ui plus
-export const elCommon = {
+const elCommon = {
   type: {
     type: String as PropType<InputType>,
     required: false,
@@ -176,7 +170,7 @@ export const elCommon = {
   }
 }
 
-export const elInput = {
+const elInput = {
   rows: {
     type: Number as PropType<number>,
     required: false,
@@ -188,12 +182,13 @@ export const elInput = {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,
-    description: `切換是否顯示密碼的按鈕
-      type="password" 才有效果 `
+    description: `
+      切換是否顯示密碼的按鈕
+      type="password" 才有效果`
   }
 }
 
-export const elSelect = {
+const elSelect = {
   loading: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -247,12 +242,11 @@ export const elSelect = {
     default: false,
     description: `
       是否在輸入框按下Enter時 選擇第一個符合項目
-      需配合 filterable 或 remote 使用
-    `
+      需配合 filterable 或 remote 使用`
   }
 }
 
-export const elDatePicker = {
+const elDatePicker = {
   format: {
     type: String as PropType<string>,
     required: false,
@@ -269,7 +263,7 @@ export const elDatePicker = {
   }
 }
 
-export const elTimePicker = {
+const elTimePicker = {
   // format: {
   //   type: String as PropType<string>,
   //   required: false,
@@ -288,7 +282,7 @@ export const elTimePicker = {
   }
 }
 
-export const elCheckbox = {
+const elCheckbox = {
   indeterminate: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -297,9 +291,9 @@ export const elCheckbox = {
   }
 }
 
-export const elRadio = {}
+const elRadio = {}
 
-export const elAutocomplete = {
+const elAutocomplete = {
   valueKey: {
     type: String as PropType<string>,
     required: false,
@@ -314,4 +308,16 @@ export const elAutocomplete = {
     type: Function as PropType<FetchSuggestions>,
     required: false
   }
+}
+
+export const props = {
+  ...custom,
+  ...elCommon,
+  ...elInput,
+  ...elSelect,
+  ...elDatePicker,
+  ...elTimePicker,
+  ...elCheckbox,
+  ...elRadio,
+  ...elAutocomplete
 }

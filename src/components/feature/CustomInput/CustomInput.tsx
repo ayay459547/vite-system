@@ -14,40 +14,25 @@ import {
   FormOperator
   // @ts-ignore
 } from '@/components'
-import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
+import { isEmpty, tipLog } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 // @ts-ignore
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 
 // @ts-ignore
-import type { ModelValue } from './props'
+import type { ModelValue } from './CustomInputInfo'
 import {
-  custom,
-  elCommon,
-  elInput,
-  elSelect,
-  elDatePicker,
-  elTimePicker,
-  elCheckbox,
-  elRadio,
-  elAutocomplete
-} from './props'
+  version,
+  scopedId,
+  props as inputProps
+} from './CustomInputInfo'
+
 import styles from './CustomInput.module.scss'
 
 const CustomInput = defineComponent({
   name: 'CustomInput',
-  props: {
-    ...custom,
-    ...elCommon,
-    ...elInput,
-    ...elSelect,
-    ...elDatePicker,
-    ...elTimePicker,
-    ...elCheckbox,
-    ...elRadio,
-    ...elAutocomplete
-  },
+  props: inputProps,
   emits: [
     'update:modelValue',
     'click',
@@ -251,8 +236,6 @@ const CustomInput = defineComponent({
     const timePickerRef = ref()
     const autocompleteRef = ref()
     const operatorRef = ref()
-
-    const scopedId = getUuid('__i-group-input__')
 
     expose({
       key: props.validateKey,
@@ -678,6 +661,7 @@ const CustomInput = defineComponent({
     return () => (
       <div
         class={[
+          `CustomInput_${version}`,
           styles['__input-container'],
           `__input-${domValidateKey.value}-${validateRes.value}`,
           `__input-${scopedId}`,

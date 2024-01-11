@@ -1,7 +1,7 @@
 import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
 import type { NotificationProps, NotificationHandle, MessageOptions, MessageHandler } from 'element-plus'
 
-import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
+import type { IconType } from '@/components/feature/CustomIcon/CustomIconInfo'
 import type { Permission } from '@/lib/lib_permission'
 
 export declare interface PermissionData {

@@ -1,27 +1,26 @@
 
 <script setup lang="ts">
-import { type PropType, onMounted } from 'vue'
+import { onMounted } from 'vue'
+import { tipLog } from '@/lib/lib_utils'
 
-import { getUuid } from '@/lib/lib_utils'
+import {
+  version,
+  scopedId,
+  props as markdownProps
+} from './CustomMarkdownInfo'
 
-const props = defineProps({
-  text: {
-    type: String as PropType<string>,
-    default: '',
-    description: 'markdown 內容'
-  }
-})
+const props = defineProps(markdownProps)
 
 onMounted(() => {
-  console.log(props.text)
+  tipLog('Markdown 內容', [
+    props.text
+  ])
 })
-
-const scopedId = getUuid('__i-markdown__')
 
 </script>
 
 <template>
-  <div class="__markdown-wrapper" :class="scopedId">
+  <div :class="`CustomMarkdown_${version} ${scopedId}`" class="__markdown-wrapper">
     <v-md-preview class="__markdown-container" :text="props.text"></v-md-preview>
   </div>
 </template>

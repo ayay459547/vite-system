@@ -11,17 +11,7 @@ import {
   CustomButton,
   CustomBadge
 } from '@/components'
-import {
-  custom,
-  elCommon,
-  elInput,
-  elSelect,
-  elDatePicker,
-  elTimePicker,
-  elCheckbox,
-  elRadio,
-  elAutocomplete
-} from '@/components/feature/CustomInput/props'
+import { props as inputProps } from '@/components/feature/CustomInput/CustomInputInfo'
 import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
 type ModelValue = any
@@ -34,9 +24,10 @@ const props = defineProps({
   active: {
     type: Boolean as PropType<boolean>,
     default: true,
-    description: `是否啟用
+    description: `
+      是否啟用
       是: 拿到顯示的值
-      否: 拿到 null `
+      否: 拿到 null`
   },
   width: {
     type: [String, Number] as PropType<string | number>,
@@ -57,15 +48,7 @@ const props = defineProps({
     description: '是否只顯示搜尋按鈕'
   },
   // 輸入框的 props
-  ...custom,
-  ...elCommon,
-  ...elInput,
-  ...elSelect,
-  ...elDatePicker,
-  ...elTimePicker,
-  ...elCheckbox,
-  ...elRadio,
-  ...elAutocomplete
+  ...inputProps
 })
 
 const emit = defineEmits([

@@ -2,6 +2,7 @@
 import { type ComputedRef, computed } from 'vue'
 
 import { CustomIcon, CustomTooltip } from '@/components'
+import { copyText } from '@/lib/lib_utils'
 
 type TextAlign = 'start' | 'end'
 
@@ -41,10 +42,14 @@ const breadcrumbSpan = computed<string>(() => {
   }, '')
 })
 
+const onBreadcrumbClick = () => {
+  copyText(breadcrumbSpan.value)
+}
+
 </script>
 
 <template>
-  <div class="breadcrumb-container">
+  <div class="breadcrumb-container" @click="onBreadcrumbClick">
     <div class="breadcrumb-lg" :class="props.textAlign">
       <CustomIcon name="location-dot" class="icon" icon-class="text-danger"/>
       <div class="text ellipsis">{{ breadcrumbSpan }}</div>
@@ -67,6 +72,7 @@ const breadcrumbSpan = computed<string>(() => {
   &-container {
     width: 100%;
     height: fit-content;
+    cursor: pointer;
   }
   &-text {
     padding: 8px;

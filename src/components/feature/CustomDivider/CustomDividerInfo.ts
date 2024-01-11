@@ -17,14 +17,16 @@ export const props = {
     type: String as PropType<DividerDirection>,
     required: false,
     default: 'horizontal',
-    description: `horizontal: 橫線
-    vertical: 直線`
+    description: `
+      horizontal: 橫線
+      vertical: 直線`
   },
   borderStyle: {
     type: String as PropType<DividerBorderStyle>,
     required: false,
     default: 'solid',
-    description: `線的類型
+    description: `
+      線的類型
       css border 的 style`
   },
   contentPosition: {

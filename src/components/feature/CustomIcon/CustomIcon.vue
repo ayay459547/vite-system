@@ -1,45 +1,28 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getUuid } from '@/lib/lib_utils'
+import {
+  version,
+  scopedId,
+  props as iconProps
+} from './CustomIconInfo'
 
-export type IconType = 'fas' | 'far' | 'fab'
-export type IconSize = 'large' | 'default' | 'small'
-
-/**
- * icon 和 type, name 選一種給
- */
-export interface Props {
-  icon?: [IconType, string] | []
-  type?: IconType
-  name?: string
-  size?: IconSize
-  iconClass?: string
-}
-const props = withDefaults(defineProps<Props>(), {
-  icon: () => [],
-  type: 'fas',
-  name: 'circle-question',
-  size: 'default',
-  iconClass: ''
-})
+const props = defineProps(iconProps)
 
 const getIcon = computed(() => {
   if (props.icon.length > 0) return props.icon
   return [props.type, props.name]
 })
 
-const scopedId = getUuid('__i-icon__')
-
 </script>
 
 <template>
   <div
     :class="[
+      `CustomIcon_${version} ${scopedId}`,
       '__icon-container',
       `size-${props.size}`,
-      `${props.iconClass}`,
-      scopedId
+      `${props.iconClass}`
     ]"
   >
     <font-awesome-icon :icon="getIcon" />
