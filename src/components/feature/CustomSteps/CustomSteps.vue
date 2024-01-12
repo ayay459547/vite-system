@@ -1,66 +1,24 @@
 <script setup lang="ts">
-import { type PropType, useSlots } from 'vue'
+import { useSlots } from 'vue'
 import { ElSteps, ElStep } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import {
+  version,
+  scopedId,
+  props as stopsProps
+} from './CustomStepsInfo'
 
-export type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success'
+const props = defineProps(stopsProps)
 
-export type Options = {
-  lable?: string
-  description?: string
-  status?: StatusType | ''
-} & any
-
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const props = defineProps({
-  space: {
-    type: [String, Number] as PropType<string | number>,
-    default: ''
-  },
-  direction: {
-    type: String as PropType<'vertical' | 'horizontal'>,
-    default: 'horizontal'
-  },
-  active: {
-    type: Number as PropType<number>,
-    default: 0
-  },
-  processStatus: {
-    type: String as PropType<StatusType>,
-    default: 'process'
-  },
-  finishStatus: {
-    type: String as PropType<StatusType>,
-    default: 'finish'
-  },
-  alignCenter: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  simple: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  options: {
-    type: Array as PropType<Options[]>,
-    default () {
-      return []
-    }
-  }
-})
-
-const scopedId = getUuid('__i-steps__')
-
 </script>
 
 <template>
-  <div class="__steps" :class="scopedId">
+  <div :class="`CustomSteps_${version} ${scopedId}`" class="__steps-wrapper">
     <ElSteps
       :space="props.space"
       :direction="props.direction"
@@ -93,7 +51,9 @@ const scopedId = getUuid('__i-steps__')
 
 <style lang="scss" scoped>
 .__steps {
-  width: 100%;
-  height: fit-content;
+  &-wrapper {
+    width: 100%;
+    height: fit-content;
+  }
 }
 </style>

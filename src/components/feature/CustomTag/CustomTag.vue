@@ -1,108 +1,28 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { ElTag } from 'element-plus'
 
-import { type IconType, CustomIcon } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { CustomIcon } from '@/components'
 
-export type TagType = 'default' | 'success' | 'info' | 'warning' | 'danger'
-export type TagSize = 'large'| 'default'| 'small'
-export type TagEffect = 'dark' | 'light' | 'plain'
+import {
+  version,
+  scopedId,
+  ElType,
+  ElSize,
+  FontIconType,
+  props as tagProps
+} from './CustomTagInfo'
 
-enum ElType {
-  default = '',
-  success = 'success',
-  info = 'info',
-  warning = 'warning',
-  danger = 'danger'
-}
-
-enum ElSize {
-  large = 'large',
-  default = 'default',
-  small = 'small'
-}
-
-enum FontIconType {
-  fas = 'fas',
-  far = 'far',
-  fab = 'fab'
-}
-
-const props = defineProps({
-  label: {
-    type: String as PropType<string>,
-    required: false,
-    default: ''
-  },
-  type: {
-    type: String as PropType<TagType>,
-    required: false,
-    default: 'default'
-  },
-  closable: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  disableTransitions: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  hit: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  color: {
-    type: String as PropType<string |  undefined>,
-    required: false,
-    default: undefined
-  },
-  size: {
-    type: String as PropType<TagSize>,
-    required: false,
-    default: 'default'
-  },
-  effect: {
-    type: String as PropType<TagEffect>,
-    required: false,
-    default: 'light'
-  },
-  round: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  iconType: {
-    type: String as PropType<IconType>,
-    required: false,
-    default: 'fas'
-  },
-  iconName: {
-    type: String as PropType<string>,
-    required: false,
-    default: ''
-  },
-  iconMove: {
-    type: String as PropType<'none' | 'translate'| 'rotate' | 'scale'>,
-    required: false,
-    default: 'none'
-  }
-})
+const props = defineProps(tagProps)
 
 const emit = defineEmits(['click'])
 const onClick = ($event: Event) => {
   emit('click', $event)
 }
 
-const scopedId = getUuid('__i-tag__')
-
 </script>
 
 <template>
-  <div class="__tag-wrapper" :class="scopedId">
+  <div :class="`CustomTag_${version} ${scopedId}`" class="__tag-wrapper">
     <div class="__tag-container" :class="`size-${ElSize[props.size]}`">
       <ElTag
         :type="ElType[props.type]"

@@ -1,46 +1,15 @@
 <script setup lang="ts">
-import { type PropType, computed } from 'vue'
+import { computed } from 'vue'
 import { ElSwitch } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import type { ModelValue } from './CustomSwitchInfo'
+import {
+  version,
+  scopedId,
+  props as switchProps
+} from './CustomSwitchInfo'
 
-export type Size = '' | 'large'| 'default'| 'small'
-export type ModelValue = boolean
-
-const props = defineProps({
-  modelValue: {
-    type: Boolean as PropType<ModelValue>,
-    required: true
-  },
-  style: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  activeText: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  inactiveText: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  loading: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  size: {
-    type: String as PropType<Size>,
-    default: ''
-  },
-  width: {
-    type: [String, Number] as PropType<string | number>,
-    default: ''
-  }
-})
+const props = defineProps(switchProps)
 
 const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
@@ -52,16 +21,14 @@ const emit = defineEmits([
   'change'
 ])
 
-const onSwitchChange = (val: boolean) => {
-  emit('change', val)
+const onSwitchChange = (value: boolean) => {
+  emit('change', value)
 }
-
-const scopedId = getUuid('__i-switch__')
 
 </script>
 
 <template>
-  <div class="__switch-wrapper" :class="scopedId">
+  <div :class="`CustomSwitch_${version} ${scopedId}`" class="__switch-wrapper">
     <ElSwitch
       v-model="tempValue"
       class="__i-switch"

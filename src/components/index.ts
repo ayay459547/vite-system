@@ -100,7 +100,7 @@ export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'
 export type {
   Size as SwitchSize,
   ModelValue as SwitchModelValue
-} from './feature/CustomSwitch/CustomSwitch.vue'
+} from './feature/CustomSwitch/CustomSwitchInfo'
 export { default as CustomSwitch } from './feature/CustomSwitch/CustomSwitch.vue'
 
 import type { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
@@ -141,7 +141,7 @@ export type {
   TagType,
   TagSize,
   TagEffect
-} from './feature/CustomTag/CustomTag.vue'
+} from './feature/CustomTag/CustomTagInfo'
 export { default as CustomTag } from './feature/CustomTag/CustomTag.vue'
 
 export type {
