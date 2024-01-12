@@ -27,7 +27,10 @@ export const initTranslateSrcFile = () => {
       const { scopeKey, label, version } = scopeItem
 
       if (hasOwnProperty(moduleItem, `${scopeKey}`)) {
-        resModuleLangMap[scopeKey][Key] = {
+        const i18nKey = `__${scopeKey}-${Key}`
+
+        // 切割 模組用翻譯
+        resModuleLangMap[scopeKey][i18nKey] = {
           en,
           zhTw: zh_TW,
           zhCn: zh_CN
@@ -93,21 +96,24 @@ export const useGlobalI18n = (): GlobalI18n => {
   }
 
   const i18nTranslate = (key: string) => {
-    // 有對應模組
-    if (hasOwnProperty(i18nMap.value, moduleType.value)) {
-      return i18nMap.value[moduleType.value].t(key)
-    }
     // 沒有對應模組
-    return key
+    if (!hasOwnProperty(i18nMap.value, moduleType.value)) return key
+
+    // 有對應模組
+    const i18nKey = `__${moduleType.value}-${key}`
+    if (i18nMap.value[moduleType.value].te(i18nKey)) {
+      return i18nMap.value[moduleType.value].t(i18nKey)
+    }
+    return i18nMap.value[moduleType.value].t(key)
   }
 
   const i18nTest = (key: string) => {
-    // 有對應模組
-    if (hasOwnProperty(i18nMap.value, moduleType.value)) {
-      return i18nMap.value[moduleType.value].te(key)
-    }
     // 沒有對應模組
-    return false
+    if (!hasOwnProperty(i18nMap.value, moduleType.value)) return false
+
+    // 有對應模組
+    const i18nKey = `__${moduleType.value}-${key}`
+    return i18nMap.value[moduleType.value].te(i18nKey)
   }
 
   return {

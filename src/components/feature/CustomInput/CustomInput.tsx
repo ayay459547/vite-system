@@ -191,7 +191,7 @@ const CustomInput = defineComponent({
           emit('change', value)
           handleChange(value, true)
         },
-        onInput: (value: string | number): void => {
+        onInput: (value: any): void => {
           emit('input', value)
           handleChange(value, true)
         },
@@ -210,7 +210,7 @@ const CustomInput = defineComponent({
       if ([null, undefined, ''].includes(errorMessage.value)) {
         return {
           ..._event,
-          onInput: (value: string | number): void => {
+          onInput: (value: any): void => {
             emit('input', value)
             handleChange(value, false)
           }

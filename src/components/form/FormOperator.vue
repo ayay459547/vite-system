@@ -10,6 +10,9 @@ export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string |
 export type OperatorValue = string | number | null
 export type ModelValue = [OperatorOptions, OperatorValue]
 
+
+const scopedId = getUuid('__i-operator__')
+
 const props = defineProps({
   modelValue: {
     type: Array as unknown as PropType<ModelValue>,
@@ -82,6 +85,13 @@ const emit = defineEmits([
 
 const isFocus = ref(false)
 
+
+let lastValue: any = ''
+
+onMounted(() => {
+  lastValue = props.modelValue[1]
+})
+
 const onEvent = {
   focus: (e: FocusEvent): void => {
     isFocus.value = true
@@ -98,8 +108,71 @@ const onEvent = {
       }
     }, 0)
   },
-  input: (value: string | number): void => {
-    emit('input', value)
+  input: (value: string | number, type: string): void => {
+    const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
+
+    let emitValue = null
+    switch (type) {
+      case 'select':
+        emitValue = [value, _inputValue]
+      break
+      case 'input':
+        emitValue = [_selectValue, value]
+      break
+    }
+    emit('input', emitValue)
+  },
+  change: (value: any, type: string) => {
+    const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
+
+    let emitValue = null
+    switch (type) {
+      case 'select':
+        emitValue = [value, _inputValue]
+      break
+      case 'input': {
+        let _value = value
+        // 數字
+        if (props.onlyNumber) {
+          // 轉化數字
+          if (typeof _value === 'string') {
+            _value = Number.parseFloat(_value)
+
+            // 不是數字 給最後一次的值
+            if (Number.isNaN(_value)) {
+              _value = lastValue
+            }
+          }
+
+          if (typeof _value === 'number') {
+            // 取小數點到第幾位
+            if (!isEmpty(props.round)) {
+              _value = round(_value, props.round)
+            }
+
+            // 最大值
+            if (!isEmpty(props.max) && _value > props.max) {
+              _value = props.max
+            }
+            // 最小值
+            if (!isEmpty(props.min) && _value < props.min) {
+              _value = props.min
+            }
+          }
+        }
+
+        // 去前後空白
+        if (typeof _value === 'string') {
+          _value = _value.replace(/^(\s+)|(\s+)$/g, '')
+        }
+
+        emitValue = [_selectValue, _value]
+      }
+      break
+    }
+
+    tempValue.value = emitValue
+    emit('change', emitValue)
   }
 }
 
@@ -141,67 +214,6 @@ const inputValue = computed({
   }
 })
 
-let lastValue: any = ''
-const onChange = async (value: any, type: string) => {
-  const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
-
-  let emitValue = null
-  switch (type) {
-    case 'select':
-      emitValue = [value, _inputValue]
-      break
-    case 'input': {
-        let _value = value
-        // 數字
-        if (props.onlyNumber) {
-          // 轉化數字
-          if (typeof _value === 'string') {
-            _value = Number.parseFloat(_value)
-
-            // 不是數字 給最後一次的值
-            if (Number.isNaN(_value)) {
-              _value = lastValue
-            }
-          }
-
-          if (typeof _value === 'number') {
-            // 取小數點到第幾位
-            if (!isEmpty(props.round)) {
-              _value = round(_value, props.round)
-            }
-
-            // 最大值
-            if (!isEmpty(props.max) && _value > props.max) {
-              _value = props.max
-            }
-            // 最小值
-            if (!isEmpty(props.min) && _value < props.min) {
-              _value = props.min
-            }
-          }
-        }
-
-        // 去前後空白
-        if (typeof _value === 'string') {
-          _value = _value.replace(/^(\s+)|(\s+)$/g, '')
-        }
-
-        emitValue = [_selectValue, _value]
-      }
-      break
-  }
-
-  tempValue.value = emitValue
-  emit('change', emitValue)
-}
-
-
-const scopedId = getUuid('__i-operator__')
-
-onMounted(() => {
-  lastValue = props.modelValue[1]
-})
-
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -239,7 +251,8 @@ defineExpose({
       :validate-event="false"
       v-bind="bindAttributes"
       v-on="onEvent"
-      @change="onChange($event, 'input')"
+      @input="onEvent.input($event, 'input')"
+      @change="onEvent.change($event, 'input')"
     >
       <!-- 輸入框用 -->
       <template #prepend>
@@ -251,7 +264,8 @@ defineExpose({
             :options="props.options"
             v-bind="bindAttributes"
             v-on="onEvent"
-            @change="onChange($event, 'select')"
+            @input="onEvent.input($event, 'select')"
+            @change="onEvent.change($event, 'select')"
           >
             <ElOption
               v-for="item in props.options"

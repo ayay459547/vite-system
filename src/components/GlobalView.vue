@@ -109,26 +109,26 @@ onMounted(() => {
 })
 
 // 路由更換時執行
-const changeTime = 560
+const changeTime = 320
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
   setNavigationData(currentRoute)
 
+  await nextTick()
+
   setTimeout(() => {
     setWebInfo()
-  }, 0)
-
-  await nextTick()
+  }, 30)
 
   setTimeout(() => {
     setModalView(currentRoute)
     setLoading(currentRoute)
-  }, 5)
+  }, 50)
 
   setTimeout(() => {
     pageScrollTop()
     updateToken()
-  }, 50)
+  }, 100)
 }
 // 做節流 因為畫面更新 為觸發多次
 const throttleOnRouteChange = throttle(onRouteChange, changeTime) as typeof onRouteChange
