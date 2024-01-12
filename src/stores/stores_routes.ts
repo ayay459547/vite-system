@@ -126,13 +126,62 @@ export const useRoutesStore = defineStore('routes', () => {
   const navigationMap: ShallowRef<Map<string, Navigation>> = shallowRef(new Map())
 
   // 設置 選單用資料 + 搜尋用 map
-  const setNavigationRoutes = (routesPermission: Map<string, any>) => {
+  const setNavigationRoutes = (routesPermission: Map<string, number>) => {
+    // 已經設定過的權限
+    const permissionMap = new Map<string, number>()
+
+    /**
+     * 後端資料
+     * 1. 後端資料
+     * 2. 取得子路由最大權限
+     */
+    const _getLeavesPermission = (route: Navigation): number | null => {
+      if (permissionMap.has(route.name)) return permissionMap.get(route.name)
+      if (routesPermission.has(route.name)) return routesPermission.get(route.name)
+
+      if (Array.isArray(route?.leaves)) {
+        const _leavesPermission = route.leaves.reduce<number | null>((res, curr) => {
+          // 或閘取最大權限
+          res = (res ?? 0) | (_getLeavesPermission(curr) ?? 0)
+
+          return res
+        }, null)
+
+        return _leavesPermission
+      }
+
+      return null
+    }
+
+    /**
+     * 給權限順序
+     * 1. 後端資料
+     * 2. 路由設定
+     * 3. 系統預設
+     */
+    const _getRouterPermission = (route: Navigation, nodeName: string): number => {
+      if (!permissionMap.has(nodeName)) {
+
+        const nodePermission = [
+          // 依據後端權限資料 算出最大值
+          _getLeavesPermission(route),
+          // 路由設定
+          route.permission,
+          // 系統預設
+          defaultPermission
+        ].find(_permission => typeof _permission === 'number')
+
+        permissionMap.set(nodeName, nodePermission)
+      }
+
+      return permissionMap.get(nodeName)
+    }
+
     navigationRoutes.value = refactorRoutes<Navigation>((leafNode, parentsNode) => {
       const {
         path: leafNodePath = '',
         name: leafNodeName = '',
-        title: leafNodeTitle = '',
-        permission: leafNodePermission
+        title: leafNodeTitle = ''
       } = leafNode
 
       const nextNode: Navigation = {
@@ -151,21 +200,9 @@ export const useRoutesStore = defineStore('routes', () => {
        * 依據 路由權限
        * 設定 是否顯示
        * 設定 權限的總和
-       *
-       * 給權限順序
-       * 1. 後端資料
-       * 2. 路由設定
-       * 3. 系統預設
        */
-      const routerPermission = routesPermission.get(leafNodeName)
-
-      if (typeof routerPermission === 'number') {
-        nextNode.permission = routerPermission
-      } else if (typeof leafNodePermission === 'number') {
-        nextNode.permission = leafNodePermission
-      } else {
-        nextNode.permission = defaultPermission
-      }
+      const routerPermission = _getRouterPermission(leafNode, leafNodeName)
+      nextNode.permission = routerPermission
 
       /**
        * 設置搜尋用 map

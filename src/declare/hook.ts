@@ -4,6 +4,21 @@ import type { NotificationProps, NotificationHandle, MessageOptions, MessageHand
 import type { IconType } from '@/components/feature/CustomIcon/CustomIconInfo'
 import type { Permission } from '@/lib/lib_permission'
 
+export declare interface User {
+  id?: number
+  loginName?: string
+  fullName?: string
+  enabled?: boolean
+
+  password?: string
+}
+
+export declare interface Role {
+  id?: number
+  roleName?: string
+  description?: string
+}
+
 export declare interface PermissionData {
   autoGeneratingId: boolean
   createDate: string
@@ -27,9 +42,9 @@ export declare interface Group {
 }
 
 export declare interface AuthData {
-  id?: number
-  roleName?: string
-  roleFunction: Array<PermissionData>
+  user?: User
+  role?: Role
+  roleFunction?: Array<PermissionData>
   groups?: Array<Group>
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 
 import type { Hook } from '@/declare/hook'
 import type { AuthData } from '@/declare/hook'
@@ -45,6 +45,10 @@ const openUserEffect = (e: MouseEvent) => {
   })
 }
 
+const userName = computed(() => {
+  return props.authData?.user?.loginName ?? ''
+})
+
 </script>
 
 <template>
@@ -52,14 +56,14 @@ const openUserEffect = (e: MouseEvent) => {
     <div class="user-container" @click="openUserEffect">
       <div class="user-md">
         <CustomIcon name="user" class="icon"/>
-        <span>{{ props.authData.roleName }}</span>
+        <span>{{ userName }}</span>
       </div>
       <div class="user-xs">
         <CustomTooltip>
           <CustomIcon name="user"/>
 
           <template #content>
-            <span>{{ props.authData.roleName }}</span>
+            <span>{{ userName }}</span>
           </template>
         </CustomTooltip>
       </div>

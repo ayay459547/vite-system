@@ -97,9 +97,18 @@ export const allPermissionData = refactorRoutes(leafNode => {
 }, getRouterLeafLayer(routes, [1, 2, 3], false))
 
 export const fakeUserData = {
-  id: 1,
-  name: 'admin',
-  roleName: 'admin',
+  user: {
+    id: 1,
+    loginName: 'admin',
+    fullName: 'admin',
+    enabled: true,
+    password: ''
+  },
+  role: {
+    id: 1,
+    name: 'admin',
+    description: 'administrator'
+  },
   roleFunction: allPermissionData,
   groups: [
     { id: 1, fullName: 'admin' }

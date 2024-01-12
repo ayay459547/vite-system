@@ -1,25 +1,9 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils'
+import type { AuthData, PermissionData } from '@/declare/hook'
 
 import { fakeUserData, allPermissionData } from './fakeData'
-
-export type PermissionData = {
-  autoGeneratingId: boolean
-  createDate: string
-  lastUpdateTimestamp: string
-  routerName: string
-  pk: {
-    functionID: string
-    roleID: number
-  }
-
-  readPermissions: boolean
-  createPermissions: boolean
-  updatePermissions: boolean
-  deletePermissions: boolean
-  executePermissions: boolean
-}
 
 export const getRoutesPermission = async (userId: number) => {
   const resData = await ajax<Api<PermissionData[]>>({
@@ -46,16 +30,30 @@ export const getRoutesPermission = async (userId: number) => {
   return resData
 }
 
-export type AuthData = {
-  id?: number
-  roleName?: string
-  roleFunction: Array<PermissionData>
+export const defaultAuthData = {
+  user: {
+    id: null,
+    loginName: null,
+    fullName: null,
+    enabled: false,
+    password: null
+  },
+  role: {
+    id: null,
+    roleName: null,
+    description: null
+  },
+  roleFunction: [],
+  groups: [
+    { id: null, fullName: null }
+  ]
 }
 
 export const getAuthData = async (token: number): Promise<AuthData> => {
   const resData = await ajax<Api<AuthData>>({
     baseURL: '/rest-common',
-    url: '/role/getRole',
+    // url: '/role/getRole',
+    url: '/role/getRoleByUserId',
     method: 'get',
     params: {
       id: token
@@ -79,10 +77,6 @@ export const getAuthData = async (token: number): Promise<AuthData> => {
       text: msg ?? '請聯絡資訊人員',
       showCancelButton: false
     })
-    return {
-      id: null,
-      roleName: null,
-      roleFunction: []
-    }
+    return defaultAuthData
   }
 }

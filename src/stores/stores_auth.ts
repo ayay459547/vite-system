@@ -8,34 +8,24 @@ import routes from '@/router/routes'
 import { getToken, setToken, clearToken } from '@/lib/lib_cookie'
 import type { AuthData, PermissionData } from '@/declare/hook'
 
-import { getAuthData } from './api'
+import { defaultAuthData, getAuthData } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
 	// 登入狀態 看使用者資料
 	const isLogin = computed(() => {
-		return !isEmpty(authData.value?.id)
+		return !isEmpty(authData.value?.user?.id)
 	})
 
 	/**
 	 * 使用者資料相關
 	 * 使用者資料會帶動權限
 	 */
-	const authData = shallowRef<AuthData>({
-		id: null,
-		roleName: null,
-		roleFunction: [],
-		groups: []
-	})
+	const authData = shallowRef<AuthData>(defaultAuthData)
 	const setAuthData = (auth: AuthData) => {
 		authData.value = auth
 	}
 	const clearAuthData = () => {
-		authData.value = {
-			id: null,
-			roleName: null,
-			roleFunction: [],
-			groups: []
-		}
+		authData.value = defaultAuthData
 	}
 
 	/**
@@ -68,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 路由權限
 	 * key(string): permissions(number)
 	 */
-	const routesPermission = shallowReactive(new Map())
+	const routesPermission = shallowReactive(new Map<string, number>())
 
 	const setRoutesPermission = async (permissionList: PermissionData[]) => {
 		permissionList.forEach(permissionItem => {
@@ -129,9 +119,11 @@ export const useAuthStore = defineStore('auth', () => {
 			const authData = await getAuthData(userId)
 
 			const {
-				id: authId,
+				user,
 				roleFunction: permissionList
 			} = authData
+
+			const authId = user.id
 
 			setAuthData(authData)
 			setRoutesPermission(permissionList)
