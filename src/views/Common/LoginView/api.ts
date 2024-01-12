@@ -35,6 +35,6 @@ export const loginSystem = async (account: string, password: string): Promise<To
       text: errorMsg ?? '請聯絡資訊人員',
       showCancelButton: false
     })
-    return ''
+    return null
   }
 }

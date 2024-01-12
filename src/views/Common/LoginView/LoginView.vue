@@ -26,9 +26,9 @@ const login = ($event: MouseEvent | KeyboardEvent) => {
 
     if (!isEmpty(userId)) {
       emit('login', userId)
-    } else {
-      isLoading.value = false
     }
+
+    isLoading.value = false
   }).catch(() => {
     isLoading.value = false
   })

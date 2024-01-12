@@ -1,5 +1,5 @@
 import type { RouterTree } from '@/declare/routes'
-import type { IconType } from '@/components/feature/CustomIcon/CustomIcon.vue'
+import type { IconType } from '@/components/feature/CustomIcon/CustomIconInfo'
 import { refactorRoutes } from '@/lib/lib_routes'
 
 const mode = (import.meta as any).env.MODE

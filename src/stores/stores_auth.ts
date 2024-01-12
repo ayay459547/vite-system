@@ -13,7 +13,7 @@ import { getAuthData } from './api'
 export const useAuthStore = defineStore('auth', () => {
 	// 登入狀態 看使用者資料
 	const isLogin = computed(() => {
-		return authData.value.id > 0
+		return !isEmpty(authData.value?.id)
 	})
 
 	/**
@@ -127,12 +127,19 @@ export const useAuthStore = defineStore('auth', () => {
 		if (!isEmpty(userId)) {
 			// 使用 token 初始化使用者資料
 			const authData = await getAuthData(userId)
+
 			const {
+				id: authId,
 				roleFunction: permissionList
 			} = authData
 
 			setAuthData(authData)
 			setRoutesPermission(permissionList)
+
+			// 後端取使用者失敗
+			if (isEmpty(authId)) {
+				clearToken()
+			}
 		} else {
 			clearAuthData()
 			clearRoutesPermission()
