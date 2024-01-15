@@ -149,12 +149,12 @@ export { default as CustomTag } from './feature/CustomTag/CustomTag.vue'
 export type {
   Placement as TooltipPlacement,
   Trigger as TooltipTrigger
-} from './feature/CustomTooltip/CustomTooltip.vue'
+} from './feature/CustomTooltip/CustomTooltipInfo'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
 
 export type {
   TreeOptionProps
-} from './feature/CustomTree/CustomTree.vue'
+} from './feature/CustomTree/CustomTreeInfo'
 export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
 
 export type {
@@ -162,7 +162,7 @@ export type {
   Placement as TimeLinePlacement,
   TimeType,
   Options as TimeLineOptions
-} from './feature/CustomTimeLine/CustomTimeLine.vue'
+} from './feature/CustomTimeLine/CustomTimeLineInfo'
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
 // @ts-ignore
