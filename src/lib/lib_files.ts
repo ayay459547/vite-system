@@ -11,7 +11,7 @@ export {
 
 import type { WorkbookProperties, CalculationProperties, Workbook } from 'exceljs'
 import ExcelJs from 'exceljs'
-export type { Column as ExcelColumn } from 'exceljs'
+export type { Workbook, Worksheet, Column as ExcelColumn } from 'exceljs'
 export { default as ExcelJs } from 'exceljs'
 
 import { isEmpty, tipLog, round, hasOwnProperty } from '@/lib/lib_utils'

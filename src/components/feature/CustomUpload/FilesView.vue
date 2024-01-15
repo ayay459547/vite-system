@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
 
-// import type { Hook } from '@/declare/hook'
 import { CustomIcon, CustomImage, CustomButton } from '@/components'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 
-import type { FilesInfo } from './CustomUpload.vue'
-
-// const hook: Hook = inject('hook')
-// const { i18nTranslate, swal, eventList } = hook()
+import type { FilesInfo } from './CustomUploadInfo'
 
 const props = defineProps({
   multiple: {
@@ -26,8 +22,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['remove'])
-
-const scopedId = getUuid('__i-file__')
 
 const previewSrcList = computed(() => {
   return props.files.map(item => {
@@ -54,7 +48,7 @@ const getIcon = (fileType: string) => {
 </script>
 
 <template>
-  <div class="__i-file" :class="scopedId">
+  <div class="__i-file">
     <template v-if="!isEmpty(props.files)">
       <!-- 多張圖片 -->
       <div class="__i-file-multiple">

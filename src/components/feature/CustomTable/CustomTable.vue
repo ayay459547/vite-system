@@ -204,7 +204,7 @@ const isRender = ref(false)
 
 // 點擊 excel
 const excelIsShow = ref(false)
-const excel = (type: 'all' | 'page') => {
+const onExcelClick = (type: 'all' | 'page') => {
   emit('excel', {
     type,
     tableColumns: props.tableColumns,
@@ -664,11 +664,11 @@ const scopedId = getUuid('__i-table__')
           </template>
 
           <div class="__excel-list">
-            <div class="__excel-item" @click="excel('all')">
+            <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon"/>
               <div class="text">{{ $t('allData') }}</div>
             </div>
-            <div class="__excel-item" @click="excel('page')">
+            <div class="__excel-item" @click="onExcelClick('page')">
               <CustomIcon type="far" name="file-lines" class="icon"/>
               <div class="text">{{ $t('pageData') }}</div>
             </div>

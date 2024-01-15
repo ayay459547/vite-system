@@ -1,44 +1,24 @@
 <script setup lang="ts">
-import { type PropType, useSlots } from 'vue'
-import { type TimelineItemProps, ElTimeline, ElTimelineItem } from 'element-plus'
+import { useSlots } from 'vue'
+import { ElTimeline, ElTimelineItem } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import {
+  version,
+  scopedId,
+  props as timeLineProps
+} from './CustomTimeLineInfo'
 
-export type Size = 'large'| 'default'| 'small'
-export type Placement = 'top'| 'bottom'
-export type TimeType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
+const props = defineProps(timeLineProps)
 
-export type Options = TimelineItemProps & {
-  label?: string
-  timestamp?: string
-  type?: TimeType
-  color?: string
-  size?: Size
-  hollow?: boolean
-  placement?: Placement
-} & any
-
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const props = defineProps({
-  options: {
-    type: Array as PropType<Options[]>,
-    default () {
-      return []
-    }
-  }
-})
-
-const scopedId = getUuid('__i-time-line__')
-
 </script>
 
 <template>
-  <div class="__i-time-line" :class="scopedId">
+  <div :class="`CustomTimeLine_${version} ${scopedId}`" class="__i-time-line-wrapper">
     <ElTimeline>
       <ElTimelineItem
         v-for="(option, optionIndex) in props.options"
@@ -59,7 +39,9 @@ const scopedId = getUuid('__i-time-line__')
 
 <style lang="scss" scoped>
 .__i-time-line {
-  width: fit-content;
-  height: fit-content;
+  &-wrapper {
+    width: fit-content;
+    height: fit-content;
+  }
 }
 </style>

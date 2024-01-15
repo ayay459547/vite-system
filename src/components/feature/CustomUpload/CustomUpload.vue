@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 
 import type { Hook } from '@/declare/hook'
@@ -7,78 +6,20 @@ import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
 import { isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/lib_utils'
 
+import type { Info, FilesInfo, FileType } from './CustomUploadInfo'
+import {
+  version,
+  scopedId,
+  props as uploadProps,
+  fileTypeMap
+} from './CustomUploadInfo'
+
 import FilesView from './FilesView.vue'
 import i18nMessage from './i18n'
 
-export type FileType = '' | 'image' | 'excel' | 'word' | 'powerpoint' | 'zip'
-
-interface Info {
-  src?: string
-  fileSize?: string
-  fileType?: string
-  fileTarget?: File
-  excel?: any[]
-  properties?: any
-}
-export interface FileInfo extends Partial<File>, Info {
-  uuid: string
-}
-export type FilesInfo = Array<FileInfo>
-
-const props = defineProps({
-  type: {
-    type: String as PropType<FileType>,
-    required: false,
-    default: '',
-    description: '上傳類型'
-  },
-  overwrite: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否再上傳清空原來的檔案'
-  },
-  multiple: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否可上傳多個檔案'
-  },
-  limitCount: {
-    type: [Number, null] as PropType<number | null>,
-    required: false,
-    default: null,
-    description: '限制檔案數量'
-  },
-  limitType: {
-    type: [Array, String] as PropType<FileType[] | FileType>,
-    required: false,
-    default: null,
-    description: '限制檔案類型'
-  }
-})
+const props = defineProps(uploadProps)
 
 const emit = defineEmits(['file'])
-
-const fileTypeMap = {
-  image: ['image/png', 'image/jpeg'],
-  word: [
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  ],
-  excel: [
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  ],
-  powerpoint: [
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-  ],
-  zip: [
-    '',
-    'application/x-zip-compressed'
-  ],
-  json: [
-    'application/json'
-  ]
-}
 
 const hook: Hook = inject('hook')
 const { swal } = hook()
@@ -310,16 +251,13 @@ defineExpose({
   }
 })
 
-
-const scopedId = getUuid('__i-upload__')
-
 </script>
 
 <template>
   <div
     v-loading="isLoading"
     class="__upload-wrapper"
-    :class="scopedId"
+    :class="`CustomUpload_${version} ${scopedId}`"
   >
     <div
       ref="drag"

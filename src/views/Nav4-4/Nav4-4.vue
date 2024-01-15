@@ -10,21 +10,10 @@ const { i18nTranslate, permission } = hook()
 
 const userPermission = ref<Permission>(getPermission(defaultPermission))
 
-const testList = [
-  'any',
-  'leaveBlankIfNull',
-  'system',
-  'test',
-  'view',
-  'excelSystem',
-  'excelTest',
-  'excelView'
-]
-
 onMounted(() => {
-  userPermission.value = permission('nav4-1')
+  userPermission.value = permission('nav4-4')
 
-  console.log(`${i18nTranslate('nav4-1')} => `, userPermission.value)
+  console.log(`${i18nTranslate('nav4-4')} => `, userPermission.value)
 })
 
 </script>

@@ -2,27 +2,15 @@
 import { customRef, ref } from 'vue'
 import { ElTooltip } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 
-export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
-export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
+import {
+  version,
+  scopedId,
+  props as tooltipProps
+} from './CustomTooltipInfo'
 
-export interface Props {
-  visible?: boolean | null
-  placement?: Placement
-  trigger?: Trigger
-  popperClass?: string
-  showArrow?: boolean
-  offset?: number
-}
-const props = withDefaults(defineProps<Props>(), {
-  visible: null,
-  placement: 'bottom',
-  trigger: 'hover',
-  popperClass: '',
-  showArrow: true,
-  offset: 0
-})
+const props = defineProps(tooltipProps)
 
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void
@@ -49,13 +37,10 @@ const tempValue = customRef((track, trigger) => {
   }
 })
 
-
-const scopedId = getUuid('__i-popover__')
-
 </script>
 
 <template>
-  <div class="__popover-container" :class="scopedId">
+  <div :class="`CustomTooltip_${version} ${scopedId}`" class="__popover-wrapper">
     <ElTooltip
       v-model:visible="tempValue"
       :placement="props.placement"
@@ -77,7 +62,7 @@ const scopedId = getUuid('__i-popover__')
 
 <style lang="scss" scoped>
 .__popover {
-  &-container {
+  &-wrapper {
     width: fit-content;
     height: fit-content;
   }
