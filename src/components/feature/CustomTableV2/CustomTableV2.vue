@@ -1,74 +1,18 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { ref, useSlots, onMounted, onUnmounted } from 'vue'
 import type { ElTableV2 as ElTableV2Type, TableV2Instance } from 'element-plus'
 import { ElTableV2 } from 'element-plus'
 
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
-import { getUuid } from '@/lib/lib_utils'
 
-const props = defineProps({
-  renderKey: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 0,
-    description: '重新渲染用的key'
-  },
-  // element ui
-  rowKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'id',
-    description: '每行資料的key 預設是id'
-  },
-  data: {
-    type: Array as PropType<Array<any>>,
-    required: false,
-    default: () => {
-      return []
-    },
-    description: '顯示資料'
-  },
-  columns: {
-    type: Array as PropType<Array<any>>,
-    required: false,
-    default: () => {
-      return []
-    },
-    description: '顯示欄位'
-  },
-  rowHeight: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 50,
-    description: 'Row 高度'
-  },
-  headerHeight: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 50,
-    description: 'Header 高度'
-  },
-  footerHeight: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 0,
-    description: 'Footer 高度'
-  },
-  cache: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 12,
-    description: '預先加載資料行數'
-  },
-  fixed: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: true,
-    description: '寬度欄位是否固定 還是自適應'
-  }
-})
+import {
+  version,
+  scopedId,
+  props as tableV2Props
+} from './CustomTableV2Info'
+
+const props = defineProps(tableV2Props)
 
 const emit = defineEmits([
   // 更新 table 大小
@@ -122,15 +66,13 @@ defineExpose({
   resetScroll
 })
 
-const scopedId = getUuid('__i-table-v2__')
-
 </script>
 
 <template>
   <div
     ref="tableV2Ref"
     class="__table-v2-wrapper"
-    :class="scopedId"
+    :class="`CustomTableV2_${version} ${scopedId}`"
   >
     <div class="__table-v2-container">
       <ElTableV2

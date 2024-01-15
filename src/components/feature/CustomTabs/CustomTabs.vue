@@ -1,59 +1,21 @@
 <script setup lang="ts">
-import type { Ref, PropType, WritableComputedRef } from 'vue'
+import type { Ref, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted, watch, effectScope } from 'vue'
 
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 import { CustomIcon } from '@/components'
-import { scrollToEl, getUuid } from '@/lib/lib_utils'
+import { scrollToEl } from '@/lib/lib_utils'
 
-export type ListItem = {
-  key: string | number
-  label: string
-  value?: any
-}
-export type ListType = Array<ListItem>
-export type ModelValue = string | number | null
-export type TabPosition = 'left' | 'right'
+import type { ModelValue, ListItem } from './CustomTabsInfo'
+import {
+  version,
+  scopedId,
+  props as tabsProps
+} from './CustomTabsInfo'
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Number, null] as PropType<ModelValue>,
-    required: true,
-    description: 'v-model'
-  },
-  list: {
-    type: Array as PropType<ListType>,
-    required: true,
-    description: 'tabs 列表'
-  },
-  remove: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '是否可刪除'
-  },
-  background: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: '加上背景色'
-  },
-  move: {
-    type: Boolean as PropType<boolean>,
-    default: false,
-    description: `
-      如果 tabs 可能過多會用到
-      值發生變化時自動 移動到對應的值`
-  },
-  tabPosition: {
-    type: String as PropType<TabPosition>,
-    default: 'left',
-    description: `位置
-      left: flex-start (左邊)
-      right: flex-end (右邊)
-    `
-  }
-})
+const props = defineProps(tabsProps)
 
 const emit = defineEmits([
   'update:modelValue',
@@ -66,7 +28,6 @@ const tempValue: WritableComputedRef<ModelValue> = computed({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
-const scopedId = getUuid('__tabs__')
 const scrollToCurrentTab = (currentTab: string) => {
   if (!props.move) return
 
@@ -184,7 +145,7 @@ onUnmounted(() => {
     class="__tabs-wrapper"
     :class="[
       { 'is-background': props.background },
-      `${scopedId}`
+      `CustomTabs_${version} ${scopedId}`
     ]">
     <div class="__tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>

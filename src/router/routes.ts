@@ -524,6 +524,22 @@ const routes: Array<RouterTree> = [
         path: '/nav4-3',
         i18nModule: 'view',
         component: () => import('@/views/Nav4-3/Nav4-3.vue')
+      },
+      {
+        name: 'nav4-4',
+        title: '浮水印',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2024-01',
+          completedDate: '2024-01'
+        },
+        systemType: ['new'],
+        icon: 'water',
+        permission: totlaPermission,
+        path: '/nav4-4',
+        i18nModule: 'view',
+        component: () => import('@/views/Nav4-4/Nav4-4.vue')
       }
     ]
   }

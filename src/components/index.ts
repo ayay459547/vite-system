@@ -72,6 +72,8 @@ export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 
 export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
 
+export { default as CustomWatermark } from './feature/CustomWatermark/CustomWatermark.vue'
+
 export type {
   Placement as PopoverPlacement,
   Trigger as PopoverTrigger
@@ -134,7 +136,7 @@ export type {
   ListType,
   ModelValue as TabsModelValue,
   TabPosition
-} from './feature/CustomTabs/CustomTabs.vue'
+} from './feature/CustomTabs/CustomTabsInfo'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 
 export type {
