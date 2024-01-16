@@ -141,8 +141,11 @@ export const useRoutesStore = defineStore('routes', () => {
 
       if (Array.isArray(route?.leaves)) {
         const _leavesPermission = route.leaves.reduce<number | null>((res, curr) => {
-          // 或閘取最大權限
-          res = (res ?? 0) | (_getLeavesPermission(curr) ?? 0)
+          const _temp = _getLeavesPermission(curr)
+          if (typeof _temp === 'number') {
+            // 或閘取最大權限
+            res = (res ?? 0) | _temp
+          }
 
           return res
         }, null)

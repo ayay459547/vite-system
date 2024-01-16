@@ -343,7 +343,7 @@ provide<Hook>('hook', () => {
         }
       }
 
-      const { permission = 0 } = currentNavigation.value
+      const { permission = 0 } = currentNavigation?.value ?? {}
       return getPermission(permission)
     },
     env: () => {
