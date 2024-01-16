@@ -198,7 +198,7 @@ onBeforeMount(async () => {
           >
             <template #item="{ element }">
               <div v-if="!element.isOperations" class="__column-item">
-                <div class="flex-row i-ga-xs">
+                <div class="__column-item-left">
                   <div>
                     <CustomInput
                       v-model="element.isShow"
@@ -210,12 +210,14 @@ onBeforeMount(async () => {
                   <div class="text">{{ element.label }}</div>
                 </div>
 
-                <CustomButton
-                  type="info"
-                  icon-name="bars"
-                  text
-                  class="setting-move"
-                />
+                <div class="__column-item-right">
+                  <CustomButton
+                    type="info"
+                    icon-name="bars"
+                    text
+                    class="setting-move"
+                  />
+                </div>
               </div>
             </template>
           </CustomDraggable>
@@ -257,10 +259,22 @@ onBeforeMount(async () => {
     padding-left: 16px;
     width: 100%;
 
+    &-left {
+      width: calc(100% - 48px);
+      display: flex;
+      gap: 8px
+    }
+    &-right {
+      width: 48px;
+    }
     .text {
       width: 100%;
       height: 40px;
       line-height: 40px;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     &:hover {
       background-color: #f5f7fa;

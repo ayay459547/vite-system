@@ -3,12 +3,15 @@ import { useSlots, ref } from 'vue'
 import { ElTree } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import type { CheckNode } from './CustomTreeInfo'
 import {
   version,
-  scopedId,
   props as treeProps
 } from './CustomTreeInfo'
+
+const scopedId = getUuid('__i-tree__')
 
 const props = defineProps(treeProps)
 

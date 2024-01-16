@@ -167,11 +167,11 @@ const setModalView = async (currentRoute: RouteLocationNormalized) => {
   const isModal = currentRoute?.query?.isModal ?? false
 
   if (isModal === 'true') {
-    isShow.value = false
+    layoutIsShow.value = false
     await nextTick()
 
     systemLayoutRef.value?.setModalView()
-    isShow.value = true
+    layoutIsShow.value = true
   }
 }
 
@@ -224,9 +224,9 @@ const initSystem = async () => {
  * 初始化系統使用者 + 權限
  * 用權限 設置路由選項
  */
-const isShow = ref(false)
+const layoutIsShow = ref(false)
 const initNavigationRoutes = async () => {
-  isShow.value = false
+  layoutIsShow.value = false
 
   await initSystemData()
 
@@ -236,8 +236,8 @@ const initNavigationRoutes = async () => {
   await nextTick()
 
   setTimeout(() => {
-    isShow.value = true
-  }, 100)
+    layoutIsShow.value = true
+  }, 400)
 }
 
 onBeforeMount(() => {
@@ -248,14 +248,14 @@ onMounted(() => {
     loading(true, '系統初始化')
   }, 0)
 
-  // 給 800 毫秒 確保路由跳轉完成後 才執行
+  // 給 900 毫秒 確保路由跳轉完成後 才執行
   setTimeout(() => {
     systemLayoutRef.value.init()
-  }, 800)
+  }, 900)
 
   setTimeout(() => {
     loading(false, 'loading')
-  }, 850)
+  }, 1300)
 })
 
 // 路由切換
@@ -362,7 +362,7 @@ provide<Hook>('hook', () => {
     <!-- layout -->
     <SystemLayout
       ref="systemLayoutRef"
-      :is-show="isShow"
+      :is-show="layoutIsShow"
       :show-routes="navigationRoutes"
       :current-navigation="currentNavigation"
       :current-route-name="currentRouteName"

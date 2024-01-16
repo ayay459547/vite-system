@@ -3,13 +3,15 @@ import { useSlots, computed } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 
 import { CustomEmpty } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 import {
   type ModelValue,
   version,
-  scopedId,
   props as collapseProps
 } from './CustomCollapseInfo'
+
+const scopedId = getUuid('__i-collapse__')
 
 const props = defineProps(collapseProps)
 

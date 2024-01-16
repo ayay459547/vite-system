@@ -4,20 +4,21 @@ import { storeToRefs } from 'pinia'
 
 import type { Hook } from '@/declare/hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
-import { useBoundingClientRect } from '@/lib/lib_utils'
+import { useBoundingClientRect, getUuid } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
 
 import type { ModelValue } from './CustomModalInfo'
 import {
   version,
-  scopedId,
   props as modalProps,
   minModalIndex
 } from './CustomModalInfo'
 
 const hook: Hook = inject('hook')
 const { i18nTranslate } = hook()
+
+const scopedId = getUuid('__i-modal__')
 
 const props = defineProps(modalProps)
 

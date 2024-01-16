@@ -1,41 +1,16 @@
 <script lang="ts">
-import { type PropType, h } from 'vue'
+import { h } from 'vue'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
+import {
+  version,
+  props as qrCodeProps
+} from './SimpleQRcodeInfo'
+
 export default {
-  props: {
-    text: {
-      type: String as PropType<string>,
-      required: true,
-      description: 'text'
-    },
-    width: {
-      type: String as PropType<string>,
-      required: false,
-      default: '200px',
-      description: 'style width'
-    },
-    hieght: {
-      type: String as PropType<string>,
-      required: false,
-      default: '200px',
-      description: 'style hieght'
-    },
-    bgSrc: {
-      type: String as PropType<string>,
-      required: false,
-      default: null,
-      description: '背景圖片 src'
-    },
-    logoSrc: {
-      type: String as PropType<string>,
-      required: false,
-      default: null,
-      description: '中心logo src'
-    }
-  },
+  props: qrCodeProps,
   // emits: [],
   setup (props) {
     const scopedId = getUuid('__i-qrcode__')
@@ -44,12 +19,16 @@ export default {
       text: props.text,
       bgSrc: props.bgSrc,
       logoSrc: props.logoSrc
-    } as any).$filter(prop => !isEmpty(prop))
+    } as any).$filter((prop: any) => !isEmpty(prop))
 
     const SimpleQRcode = () => h(
       'div',
       {
-        class: `__i-qrcode__ ${scopedId}`,
+        class: [
+          '__qrcode-wrapper',
+          `SimpleQRcode_${version}`,
+          `${scopedId}`
+        ],
         style: {
           minWith: props.width,
           minHieght: props.hieght
@@ -67,8 +46,10 @@ export default {
 </script>
 
 <style lang="scss">
-.__i-qrcode__ {
-  width: fit-content;
-  height: fit-content;
+.__qrcode {
+  &-wrapper {
+    width: fit-content;
+    height: fit-content;
+  }
 }
 </style>

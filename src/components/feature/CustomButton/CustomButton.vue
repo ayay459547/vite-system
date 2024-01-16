@@ -3,15 +3,17 @@ import { useSlots } from 'vue'
 import { ElButton } from 'element-plus'
 
 import { CustomIcon } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 import {
   ElType,
   ElSize,
   FontIconType,
   version,
-  scopedId,
   props as buttonProps
 } from './CustomButtonInfo'
+
+const scopedId = getUuid('__i-button__')
 
 const props = defineProps(buttonProps)
 

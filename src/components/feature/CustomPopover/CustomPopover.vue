@@ -2,13 +2,14 @@
 import { customRef, ref } from 'vue'
 import { ElPopover } from 'element-plus'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import {
   version,
-  scopedId,
   props as popoverProps
 } from './CustomPopoverInfo'
+
+const scopedId = getUuid('__i-popover__')
 
 const props = defineProps(popoverProps)
 

@@ -2,11 +2,14 @@
 import { useSlots } from 'vue'
 import { ElTimeline, ElTimelineItem } from 'element-plus'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import {
   version,
-  scopedId,
   props as timeLineProps
 } from './CustomTimeLineInfo'
+
+const scopedId = getUuid('__i-time-line__')
 
 const props = defineProps(timeLineProps)
 
@@ -18,7 +21,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomTimeLine_${version} ${scopedId}`" class="__i-time-line-wrapper">
+  <div :class="`CustomTimeLine_${version} ${scopedId}`" class="__time-line-wrapper">
     <ElTimeline>
       <ElTimelineItem
         v-for="(option, optionIndex) in props.options"
@@ -38,7 +41,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__i-time-line {
+.__time-line {
   &-wrapper {
     width: fit-content;
     height: fit-content;

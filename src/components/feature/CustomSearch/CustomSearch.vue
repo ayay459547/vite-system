@@ -1,55 +1,26 @@
 <script setup lang="ts">
-import { type PropType, computed, ref, nextTick, useSlots } from 'vue'
+import { computed, ref, nextTick, useSlots } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import {
-  type PopoverPlacement,
   CustomPopover,
   CustomSwitch,
   CustomInput,
   CustomButton,
   CustomBadge
 } from '@/components'
-import { props as inputProps } from '@/components/feature/CustomInput/CustomInputInfo'
 import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
-type ModelValue = any
-const props = defineProps({
-  modelValue: {
-    type: [Array, String, Number, Boolean, null, undefined] as PropType<ModelValue>,
-    default: false,
-    description: '綁定值 v-model="..." '
-  },
-  active: {
-    type: Boolean as PropType<boolean>,
-    default: true,
-    description: `
-      是否啟用
-      是: 拿到顯示的值
-      否: 拿到 null`
-  },
-  width: {
-    type: [String, Number] as PropType<string | number>,
-    required: false,
-    default: 300,
-    description: '寬度'
-  },
-  placement: {
-    type: String as PropType<PopoverPlacement>,
-    required: false,
-    default: 'top',
-    description: '出現位置'
-  },
-  search: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否只顯示搜尋按鈕'
-  },
-  // 輸入框的 props
-  ...inputProps
-})
+import type { ModelValue } from './CustomSearchInfo'
+import {
+  version,
+  props as searchProps
+} from './CustomSearchInfo'
+
+const scopedId = getUuid('__i-search__')
+
+const props = defineProps(searchProps)
 
 const emit = defineEmits([
   'update:modelValue',
@@ -89,8 +60,6 @@ const isActive = computed({
     emit('update:active', value)
   }
 })
-
-const scopedId = getUuid('__i-search__')
 
 const customSearchStore = useCustomSearchStore()
 const { activeScopedId } = storeToRefs(customSearchStore)
@@ -264,7 +233,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="__search" :class="`${scopedId}`">
+  <div :class="`CustomSearch_${version} ${scopedId}`" class="__search-wrapper">
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="__search-title">
@@ -343,9 +312,11 @@ defineExpose({
 
 <style lang="scss" scoped>
 .__search {
-  width: 100%;
-  min-width: fit-content;
-  height: fit-content;
+  &-wrapper {
+    width: 100%;
+    min-width: fit-content;
+    height: fit-content;
+  }
 
   &-title {
     display: flex;

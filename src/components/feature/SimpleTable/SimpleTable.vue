@@ -4,6 +4,12 @@ import { h } from 'vue'
 import { CustomDraggable } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
+import type { Props } from './SimpleTableInfo'
+import {
+  version,
+  props as simpleTableProps
+} from './SimpleTableInfo'
+
 function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
   let temp = null
   if (isHeader) {
@@ -183,7 +189,6 @@ const headerNode = (slots: Record<string, any>, column: Array<any>) => {
   })
 }
 
-
 const scopedId = getUuid('__i-simple-table__')
 
 const bodyNode = (
@@ -234,7 +239,7 @@ const bodyNode = (
         itemKey
       },
       {
-        item: (scope) => {
+        item: (scope: any) => {
           const { element: rowData, index: rowIndex } = scope
           return columnNode(slots, column, {
             ...rowData,
@@ -255,16 +260,6 @@ const bodyNode = (
       })
     )
   }
-}
-
-export interface Props {
-  modelValue?: Array<any> | any
-  isDraggable?: boolean | any
-  handle?: string | any
-  itemKey?: string | any
-
-  tableData?: Array<any> | any
-  tableColumns?: Array<any> | any
 }
 
 const SimpleTable = (props: Props, context: any) => {
@@ -297,7 +292,8 @@ const SimpleTable = (props: Props, context: any) => {
       {
         class: [
           '__data-table-wrapper',
-          scopedId
+          `SimpleTable_${version}`,
+          `${scopedId}`
         ]
         // style: { ...tableStyle }
       },
@@ -339,40 +335,7 @@ const SimpleTable = (props: Props, context: any) => {
   }, slots)
 }
 
-SimpleTable.props = {
-  // row 可拖拉 table
-  modelValue: {
-    type: Array,
-    default () {
-      return []
-    }
-  },
-  isDraggable: {
-    type: Boolean,
-    default: false
-  },
-  handle: {
-    type: String,
-    default: '.__draggable'
-  },
-  itemKey: {
-    type: String,
-    default: 'key'
-  },
-  // 一般 table
-  tableData: {
-    type: Array,
-    default () {
-      return []
-    }
-  },
-  tableColumns: {
-    type: Array,
-    default () {
-      return []
-    }
-  }
-}
+SimpleTable.props = simpleTableProps
 
 SimpleTable.emits = [
   'update:modelValue'

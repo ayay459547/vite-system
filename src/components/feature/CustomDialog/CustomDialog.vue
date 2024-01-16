@@ -2,14 +2,15 @@
 import { computed, useSlots } from 'vue'
 import { ElDialog } from 'element-plus'
 
-import { hasOwnProperty } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 import {
   type ModelValue,
   version,
-  scopedId,
   props as dialogProps
 } from './CustomDialogInfo'
+
+const scopedId = getUuid('__i-dialog__')
 
 const props = defineProps(dialogProps)
 

@@ -10,7 +10,7 @@ import {
   CustomBadge
 } from '@/components'
 
-import type { Sorting, Order } from '../CustomTable.vue'
+import type { Sorting, Order } from '../CustomTableInfo'
 
 const props = defineProps({
   modelValue: {
@@ -112,19 +112,21 @@ const submit = () => {
           >
             <template #item="{ element }">
               <div class="__column-item" :class="element.order !== 'none' ? 'is-active' : ''">
-                <CustomInput
-                  :model-value="element.order"
-                  @update:model-value="setSortingValue($event, element.key)"
-                  :label="element.label"
-                  type="radio"
-                  :options="[
-                    { label: $t('ascending'), value: 'ascending' },
-                    { label: $t('none'), value: 'none' },
-                    { label: $t('descending'), value: 'descending' }
-                  ]"
-                />
+                <div class="__column-item-left">
+                  <CustomInput
+                    :model-value="element.order"
+                    @update:model-value="setSortingValue($event, element.key)"
+                    :label="element.label"
+                    type="radio"
+                    :options="[
+                      { label: $t('ascending'), value: 'ascending' },
+                      { label: $t('none'), value: 'none' },
+                      { label: $t('descending'), value: 'descending' }
+                    ]"
+                  />
+                </div>
 
-                <div class="__column-item-move">
+                <div class="__column-item-right">
                   <CustomBadge :value="activeIndexMap[element.key]" :hidden="activeIndexMap[element.key] <= 0">
                     <CustomButton
                       type="info"
@@ -199,7 +201,11 @@ const submit = () => {
     opacity: 0.3;
     transition-duration: 0.3s;
     font-weight: 600 !important;
-    &-move {
+    &-left {
+      width: 100%;
+      overflow: hidden;
+    }
+    &-right {
       width: 80px;
     }
     &.is-active {

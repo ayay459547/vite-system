@@ -5,12 +5,14 @@ import { ElTableV2 } from 'element-plus'
 
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
+import { getUuid } from '@/lib/lib_utils'
 
 import {
   version,
-  scopedId,
   props as tableV2Props
 } from './CustomTableV2Info'
+
+const scopedId = getUuid('__i-table-v2__')
 
 const props = defineProps(tableV2Props)
 
@@ -19,7 +21,6 @@ const emit = defineEmits([
   'update-size'
 ])
 
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]

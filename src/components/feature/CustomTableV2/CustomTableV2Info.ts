@@ -1,10 +1,6 @@
 import type { PropType } from 'vue'
 
-import { getUuid } from '@/lib/lib_utils'
-
 export const version = '1.0.0'
-
-export const scopedId = getUuid('__i-table-v2__')
 
 export const props = {
   renderKey: {

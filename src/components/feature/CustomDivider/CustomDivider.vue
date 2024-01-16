@@ -2,11 +2,14 @@
 import { useSlots } from 'vue'
 import { ElDivider } from 'element-plus'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import {
   version,
-  scopedId,
   props as dividerProps
 } from './CustomDividerInfo'
+
+const scopedId = getUuid('__i-divider__')
 
 const props = defineProps(dividerProps)
 

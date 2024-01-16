@@ -6,14 +6,15 @@ import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 import { CustomIcon } from '@/components'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl, getUuid } from '@/lib/lib_utils'
 
 import type { ModelValue, ListItem } from './CustomTabsInfo'
 import {
   version,
-  scopedId,
   props as tabsProps
 } from './CustomTabsInfo'
+
+const scopedId = getUuid('__i-tabs__')
 
 const props = defineProps(tabsProps)
 

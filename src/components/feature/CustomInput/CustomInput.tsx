@@ -14,7 +14,7 @@ import {
   FormOperator
   // @ts-ignore
 } from '@/components'
-import { isEmpty, tipLog } from '@/lib/lib_utils'
+import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 // @ts-ignore
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
@@ -24,7 +24,6 @@ import validateFun from '@/lib/lib_validate'
 import type { ModelValue } from './CustomInputInfo'
 import {
   version,
-  scopedId,
   props as inputProps
 } from './CustomInputInfo'
 
@@ -48,6 +47,8 @@ const CustomInput = defineComponent({
     'select'
   ],
   setup (props, { slots, emit, expose }) {
+    const scopedId = getUuid('__i-group-input__')
+
     const hook: Hook = inject('hook')
     const { i18nTranslate, i18nTest } = hook()
 

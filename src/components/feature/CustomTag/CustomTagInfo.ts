@@ -1,11 +1,8 @@
 import type { PropType } from 'vue'
 
-import { getUuid } from '@/lib/lib_utils'
 import type { IconType } from '@/components'
 
 export const version = '1.0.0'
-
-export const scopedId = getUuid('__i-tag__')
 
 export type TagType = 'default' | 'success' | 'info' | 'warning' | 'danger'
 export type TagSize = 'large'| 'default'| 'small'

@@ -1,11 +1,8 @@
 import type { PropType } from 'vue'
 
 import type { IconType } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
 
 export const version = '1.0.0'
-
-export const scopedId = getUuid('__i-button__')
 
 export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
 export type ButtonSize = 'large'| 'default'| 'small'

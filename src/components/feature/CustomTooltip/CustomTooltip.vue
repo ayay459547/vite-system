@@ -2,13 +2,14 @@
 import { customRef, ref } from 'vue'
 import { ElTooltip } from 'element-plus'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import {
   version,
-  scopedId,
   props as tooltipProps
 } from './CustomTooltipInfo'
+
+const scopedId = getUuid('__i-tooltip__')
 
 const props = defineProps(tooltipProps)
 

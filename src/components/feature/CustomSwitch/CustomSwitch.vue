@@ -2,12 +2,15 @@
 import { computed } from 'vue'
 import { ElSwitch } from 'element-plus'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import type { ModelValue } from './CustomSwitchInfo'
 import {
   version,
-  scopedId,
   props as switchProps
 } from './CustomSwitchInfo'
+
+const scopedId = getUuid('__i-switch__')
 
 const props = defineProps(switchProps)
 

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import {
   version,
-  scopedId,
   props as iconProps
 } from './CustomIconInfo'
+
+const scopedId = getUuid('__i-icon__')
 
 const props = defineProps(iconProps)
 

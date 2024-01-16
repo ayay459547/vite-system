@@ -2,11 +2,8 @@ import type { PropType } from 'vue'
 
 import type { ValidateType } from '@/lib/lib_validate'
 import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
 
 export const version = '1.0.0'
-
-export const scopedId = getUuid('__i-group-input__')
 
 export type ModelValue = any | null | undefined
 export type InputType = (

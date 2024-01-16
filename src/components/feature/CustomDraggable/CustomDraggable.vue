@@ -2,12 +2,11 @@
 import { computed, useSlots } from 'vue'
 import Draggable from 'vuedraggable'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import type { DraggableChange } from './CustomDraggableInfo'
 import {
   version,
-  scopedId,
   props as draggableProps
 } from './CustomDraggableInfo'
 
@@ -15,6 +14,8 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
+
+const scopedId = getUuid('__i-draggable__')
 
 const props = defineProps(draggableProps)
 

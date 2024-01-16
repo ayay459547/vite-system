@@ -9,13 +9,14 @@ import { isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/l
 import type { Info, FilesInfo, FileType } from './CustomUploadInfo'
 import {
   version,
-  scopedId,
   props as uploadProps,
   fileTypeMap
 } from './CustomUploadInfo'
 
 import FilesView from './FilesView.vue'
 import i18nMessage from './i18n'
+
+const scopedId = getUuid('__i-upload__')
 
 const props = defineProps(uploadProps)
 

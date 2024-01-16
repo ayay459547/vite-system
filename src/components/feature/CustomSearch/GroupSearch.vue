@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { type PropType, ref, inject, useSlots } from 'vue'
+import { ref, inject, useSlots } from 'vue'
 
 import type { Hook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-const props = defineProps({
-  columns: {
-    type: Object as PropType<Record<string, Record<string, any>>>,
-    default: () => {
-      return {}
-    },
-    required: false
-  },
-  class: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  size: {
-    type: [String, Number] as PropType<string | number>,
-    default: 360
-  }
-})
+import {
+  version,
+  props as groupSearchProps
+} from './GroupSearchInfo'
+
+const scopedId = getUuid('__i-group-search__')
+
+const props = defineProps(groupSearchProps)
 
 const isShow = ref(false)
 
@@ -51,12 +42,10 @@ defineExpose({
   }
 })
 
-const scopedId = getUuid('__i-group-search__')
-
 </script>
 
 <template>
-  <div class="__group-search" :class="scopedId">
+  <div :class="`GroupSearch_${version} ${scopedId}`" class="__group-search">
     <CustomButton
       :label="i18nTranslate('filter')"
       icon-name="filter"

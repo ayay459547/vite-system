@@ -2,13 +2,14 @@
 import { useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
 
-import { hasOwnProperty } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 import {
   version,
-  scopedId,
   props as emptyProps
 } from './CustomEmptyInfo'
+
+const scopedId = getUuid('__i-empty__')
 
 const props = defineProps(emptyProps)
 

@@ -1,13 +1,15 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { tipLog } from '@/lib/lib_utils'
+
+import { tipLog, getUuid } from '@/lib/lib_utils'
 
 import {
   version,
-  scopedId,
   props as markdownProps
 } from './CustomMarkdownInfo'
+
+const scopedId = getUuid('__i-markdown__')
 
 const props = defineProps(markdownProps)
 

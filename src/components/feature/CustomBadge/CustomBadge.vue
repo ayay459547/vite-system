@@ -2,11 +2,14 @@
 import { useSlots } from 'vue'
 import { ElBadge } from 'element-plus'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import {
   version,
-  scopedId,
   props as badgeProps
 } from './CustomBadgeInfo'
+
+const scopedId = getUuid('__i-badge__')
 
 const props = defineProps({ ...badgeProps })
 

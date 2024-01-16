@@ -2,15 +2,17 @@
 import { ElTag } from 'element-plus'
 
 import { CustomIcon } from '@/components'
+import { getUuid } from '@/lib/lib_utils'
 
 import {
   version,
-  scopedId,
   ElType,
   ElSize,
   FontIconType,
   props as tagProps
 } from './CustomTagInfo'
+
+const scopedId = getUuid('__i-tag__')
 
 const props = defineProps(tagProps)
 

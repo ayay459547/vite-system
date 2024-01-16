@@ -2,11 +2,14 @@
 import { computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
 
+import { getUuid } from '@/lib/lib_utils'
+
 import {
   version,
-  scopedId,
   props as drawerProps
 } from './CustomDrawerInfo'
+
+const scopedId = getUuid('__i-drawer__')
 
 const props = defineProps(drawerProps)
 

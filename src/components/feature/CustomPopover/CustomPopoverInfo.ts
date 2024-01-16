@@ -1,10 +1,6 @@
 import type { PropType } from 'vue'
 
-import { getUuid } from '@/lib/lib_utils'
-
 export const version = '1.0.0'
-
-export const scopedId = getUuid('__i-popover__')
 
 export type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
 export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'

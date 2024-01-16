@@ -1,42 +1,26 @@
-// @ts-ignore
-import type { PropType } from 'vue'
 import { defineComponent, inject, computed, ref } from 'vue'
 // @ts-ignore
 import type { Hook } from '@/declare/hook'
 // @ts-ignore
-import type { PopoverPlacement } from '@/components'
 import { CustomButton, CustomPopover } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import styles from './SimpleFilter.module.scss'
 
+import {
+  version,
+  props as simpleFilterProps
+  // @ts-ignore
+} from './SimpleFilterInfo'
+
 const SimpleFilter = defineComponent({
   name: 'SimpleFilter',
-  props: {
-    columns: {
-      type: Object as PropType<Record<string, any>>,
-      default: () => {
-        return {}
-      },
-      required: false
-    },
-    width: {
-      type: [String, Number] as PropType<string | number>,
-      default: '55vw'
-    },
-    class: {
-      type: String as PropType<string>,
-      default: ''
-    },
-    placement: {
-      type: String as PropType<PopoverPlacement>,
-      default: 'bottom-start'
-    }
-  },
+  props: simpleFilterProps,
   emits: ['reset', 'submit'],
   setup (props, { slots, emit, expose }) {
     const hook: Hook = inject('hook')
     const { i18nTranslate } = hook()
+
     const scopedId = getUuid('__i-simple-filter__')
 
     const columnList = computed(() => {
@@ -76,7 +60,11 @@ const SimpleFilter = defineComponent({
     })
 
     return () => (
-      <div class={`${styles['__i-simple-filter__']} ${scopedId}`}>
+      <div class={[
+        `SimpleFilter_${version}`,
+        `${scopedId}`,
+        styles['__i-simple-filter__']
+      ]}>
         <CustomPopover
           visible={isVisible.value}
           placement={props.placement}
