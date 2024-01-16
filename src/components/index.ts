@@ -105,7 +105,7 @@ export type {
 } from './feature/CustomSwitch/CustomSwitchInfo'
 export { default as CustomSwitch } from './feature/CustomSwitch/CustomSwitch.vue'
 
-import type { TableParams, PageChange } from './feature/CustomTable/CustomTable.vue'
+import type { TableParams, PageChange } from './feature/CustomTable/CustomTableInfo'
 export declare interface CustomTableExpose {
   pageChange: PageChange
   getTableParams: () => TableParams
@@ -124,7 +124,7 @@ export type {
   LazyLoadingStatus,
   TableSize,
   SpanMethod
-} from './feature/CustomTable/CustomTable.vue'
+} from './feature/CustomTable/CustomTableInfo'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 export { default as TableMain } from './feature/CustomTable/TableMain.vue'
@@ -166,7 +166,7 @@ export type {
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
 // @ts-ignore
-export { default as SimpleFilter } from '@/components/feature/SimpleFilter/SimpleFilter.tsx'
+export { default as SimpleFilter } from './feature/SimpleFilter/SimpleFilter.tsx'
 
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 
