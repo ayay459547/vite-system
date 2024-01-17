@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
 import { isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/lib_utils'
@@ -22,7 +22,7 @@ const props = defineProps(uploadProps)
 
 const emit = defineEmits(['file'])
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { swal } = hook()
 const { i18nTranslate } = useLocalI18n(i18nMessage)
 

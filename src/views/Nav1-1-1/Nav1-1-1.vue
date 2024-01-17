@@ -2,7 +2,7 @@
 import { ref, inject, reactive, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting } from '@/lib/lib_columns'
@@ -17,7 +17,7 @@ import i18nMessage from './i18n'
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModal from './Components/UpdateModal.vue'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate, swal, loading, eventList } = hook()
 
 const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)

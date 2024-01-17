@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { ref, inject, reactive, onActivated, computed } from 'vue'
 import {
   CustomButton,
@@ -24,7 +24,7 @@ import { getPermission } from '@/lib/lib_permission'
 
 import i18nMessage from './i18n'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate, swal, loading, eventList } = hook()
 
 const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)

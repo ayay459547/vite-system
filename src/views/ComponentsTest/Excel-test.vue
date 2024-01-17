@@ -2,7 +2,7 @@
 import { inject, ref } from 'vue'
 import ExcelJs from 'exceljs'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { getTableSetting } from '@/lib/lib_columns'
 import type { IconType, ButtonSize, TooltipTrigger } from '@/components'
 import {
@@ -16,7 +16,7 @@ import {
 } from '@/components'
 import { downloadStaticFile } from '@/lib/lib_utils'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { loading } = hook()
 
 function onClick () {

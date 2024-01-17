@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, inject, onMounted, nextTick } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
@@ -13,7 +13,7 @@ import i18nMessage from './i18n'
 
 import DetailModal from './Components/DetailModal.vue'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)

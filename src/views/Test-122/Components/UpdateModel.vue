@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, inject } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
@@ -10,7 +10,7 @@ import type { TableData } from '../api'
 import { updateData } from '../api'
 import { columnSetting } from '../columns'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { loading } = hook()
 
 const {

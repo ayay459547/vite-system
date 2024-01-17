@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, ref, reactive, onMounted, nextTick, computed, inject } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 
 import {
   type DraggableChange,
@@ -22,7 +22,7 @@ import type { TableData, Search } from './api'
 import { getVersionOptions, getData } from './api'
 import { columnSetting } from './columns'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const isLoading = ref(true)

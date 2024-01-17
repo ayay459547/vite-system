@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import { useSlots, customRef, reactive, onMounted, onUnmounted, isRef } from 'vue'
+import { useSlots } from 'vue'
 
 import type { Composer, ComposerTranslation } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
@@ -20,8 +19,6 @@ import { ElNotification, ElMessage } from 'element-plus'
 import cryptoJS from 'crypto-js'
 import { v4 as uuidv4 } from 'uuid'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
@@ -480,135 +477,6 @@ export const aesDecrypt = (str: string, key: string): string => {
     console.log(error)
 
     return null
-  }
-}
-
-/**
- * @author Caleb
- * @description ref debounce
- * @param {*} value 資料
- * @returns {*}
- */
-export function useDebouncedRef (value: any): Ref<any> {
-  let timeout: any
-
-  return customRef((track, trigger) => {
-    return {
-      get () {
-        track()
-        return value
-      },
-      set (newValue) {
-        clearTimeout(timeout)
-        timeout = setTimeout(() => {
-          value = newValue
-          trigger()
-        }, 200)
-      }
-    }
-  })
-}
-
-export type BoundingClientRect = {
-  target: Element | null
-  width: number
-  height: number
-  bottom: number
-  top: number
-  left: number
-  right: number
-  x: number
-  y: number
-}
-export type updateContentRect = () => BoundingClientRect
-/**
- * @author Caleb
- * @description 給 Dom元素 自動監聽大小變化
- *              需在 setup 中執行
- * @param {*} dom Dom元素
- * @param {*} callback Dom元素變化時執行
- * @returns {Object} 大小
- */
-export function useBoundingClientRect (
-  dom: Ref<Element |  null> | Element,
-  callback?: (contentRect: BoundingClientRect) => void
-): {
-  contentRect: BoundingClientRect
-  updateContentRect: updateContentRect
-} {
-  const defaultContentRect = {
-    target: null,
-    width: 0,
-    height: 0,
-    bottom: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    x: 0,
-    y: 0
-  }
-  const contentRect = reactive({
-    ...defaultContentRect
-  })
-
-  const updateContentRect = () => {
-    const target = isRef(dom) ? dom.value : dom
-    if (isEmpty(target)) return defaultContentRect
-
-    const boundingClientRect = target.getBoundingClientRect()
-
-    const {
-      width = 0,
-      height = 0,
-      bottom = 0,
-      top = 0,
-      left = 0,
-      right = 0,
-      x = 0,
-      y = 0
-    } = boundingClientRect ?? {}
-
-    contentRect.target = target ?? null
-    contentRect.width = width
-    contentRect.height = height
-    contentRect.bottom = bottom
-    contentRect.top = top
-    contentRect.left = left
-    contentRect.right = right
-    contentRect.x = x
-    contentRect.y = y
-
-    if (typeof callback === 'function') {
-      callback(contentRect)
-    }
-    return contentRect
-  }
-
-  const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-    entries.forEach(() => {
-      updateContentRect()
-    })
-  }, 100) as ResizeObserverCallback
-
-  const RO = new ResizeObserver(ROcallback)
-
-  onMounted(() => {
-    if (isRef(dom) && !isEmpty(dom.value)) {
-      RO.observe(dom.value)
-    } else if (!isRef(dom) && !isEmpty(dom)) {
-      RO.observe(dom)
-    }
-  })
-
-  onUnmounted(() => {
-    if (RO) {
-      RO.disconnect()
-    }
-  })
-
-  return {
-    contentRect: contentRect,
-    updateContentRect
   }
 }
 

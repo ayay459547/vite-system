@@ -60,23 +60,25 @@ defineExpose<Expose>({
 </script>
 
 <template>
-  <Transition name="fade">
-    <div v-show="isOpen" class="loader-wrapper">
-      <div class="loader-container">
-          <div class="loader-circle"></div>
-          <div class="loader-circle"></div>
-          <div class="loader-circle"></div>
-          <div class="loader-shadow"></div>
-          <div class="loader-shadow"></div>
-          <div class="loader-shadow"></div>
-          <div class="loader-loading">{{ massage }}</div>
+  <Teleport to="body">
+    <Transition name="fade">
+      <div v-show="isOpen" class="loader-wrapper">
+        <div class="loader-container">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-shadow"></div>
+            <div class="loader-shadow"></div>
+            <div class="loader-shadow"></div>
+            <div class="loader-loading">{{ massage }}</div>
+        </div>
+        <div
+          class="loader-bar"
+          :style="`width: calc(${barPercentage}% - 2px)`"
+        ></div>
       </div>
-      <div
-        class="loader-bar"
-        :style="`width: calc(${barPercentage}% - 2px)`"
-      ></div>
-    </div>
-  </Transition>
+    </Transition>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>

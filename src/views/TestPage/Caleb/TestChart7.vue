@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, inject } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomCharts } from '@/components'
 import { downloadMatrix } from '@/lib/lib_files'
 
@@ -9,7 +9,7 @@ import { downloadMatrix } from '@/lib/lib_files'
 // import { useRoutesStore } from '@/stores/stores_routes'
 // import { getPermission } from '@/lib/lib_permission'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { permission, loading } = hook()
 
 onMounted(() => {

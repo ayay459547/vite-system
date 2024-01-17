@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomButton } from '@/components'
 import type { ButtonType } from '@/components'
 import { inject, ref, onMounted } from 'vue'
@@ -11,7 +11,7 @@ import { storeToRefs } from 'pinia'
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 // 語言

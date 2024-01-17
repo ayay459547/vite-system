@@ -2,7 +2,7 @@
 import { computed, ref, reactive, onMounted, inject, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import { CustomModal } from '@/components'
@@ -12,7 +12,7 @@ import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
 import Preferences from '@/components/layout/Preferences/UserPreferences.vue'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const props = defineProps<{

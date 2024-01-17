@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 
 import { CustomScrollbar, CustomButton } from '@/components'
-import { useBoundingClientRect } from '@/lib/lib_utils'
+import { useBoundingClientRect } from '@/lib/lib_hook'
 
 const resizeRef = ref()
 

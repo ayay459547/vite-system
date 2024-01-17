@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { reactive, ref } from 'vue'
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { inject, nextTick } from 'vue'
 import throttle from '@/lib/lib_throttle'
 import { getType, getUuid } from '@/lib/lib_utils'
@@ -34,7 +34,7 @@ export type TypeItem = {
   color: string
 }
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const props = defineProps({

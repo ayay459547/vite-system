@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
 import { CustomIcon, CustomInput } from '@/components'
 
 import { loginSystem } from './api'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const emit = defineEmits(['login'])

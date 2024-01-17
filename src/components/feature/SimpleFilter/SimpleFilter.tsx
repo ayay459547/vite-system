@@ -1,6 +1,6 @@
 import { defineComponent, inject, computed, ref } from 'vue'
 // @ts-ignore
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 // @ts-ignore
 import { CustomButton, CustomPopover } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
@@ -18,7 +18,7 @@ const SimpleFilter = defineComponent({
   props: simpleFilterProps,
   emits: ['reset', 'submit'],
   setup (props, { slots, emit, expose }) {
-    const hook: Hook = inject('hook')
+    const hook: UseHook = inject('useHook')
     const { i18nTranslate } = hook()
 
     const scopedId = getUuid('__i-simple-filter__')

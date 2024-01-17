@@ -28,7 +28,7 @@ import type { RouteRecordName, RouteLocationNormalized } from 'vue-router'
 import { useRouter } from 'vue-router'
 
 // hook
-import type { Hook, HookList, CustomPopoverQueue } from '@/declare/hook'
+import type { UseHook, UseHookList, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
@@ -51,7 +51,7 @@ const queueId = ref(0)
 const customPopoverQueue: CustomPopoverQueue[] = shallowReactive([])
 const deleteCustomPopoverQueue = () => customPopoverQueue.pop()
 
-const loading: HookList.loading = (isOpen, message) => {
+const loading: UseHookList.loading = (isOpen, message) => {
   if (!customLoader.value) return
 
   if (isOpen) {
@@ -302,7 +302,7 @@ onMounted(() => {
 })
 
 // 向下傳送常用工具
-provide<Hook>('hook', () => {
+provide<UseHook>('useHook', () => {
   return {
     loading,
     i18nTranslate: (key) => {

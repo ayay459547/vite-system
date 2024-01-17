@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, reactive, inject, onBeforeMount, nextTick, useSlots, computed } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
 import { scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'
@@ -33,7 +33,7 @@ const getColumnSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'column')
 }
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate, swal } = hook()
 
 const props = defineProps({

@@ -214,6 +214,8 @@ export default defineComponent({
       align-items: center;
       gap: 22px;
       flex: 1;
+      width: 100%;
+
       &.active {
         color: $warning;
       }
@@ -226,6 +228,7 @@ export default defineComponent({
 
         overflow: hidden;
         white-space: nowrap;
+        text-overflow: ellipsis;
 
         @media (max-width: 768px) {
           font-size: 1.2em;

@@ -2,7 +2,7 @@ import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted
 import { useField } from 'vee-validate'
 
 // @ts-ignore
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
   FormSelect,
@@ -49,7 +49,7 @@ const CustomInput = defineComponent({
   setup (props, { slots, emit, expose }) {
     const scopedId = getUuid('__i-group-input__')
 
-    const hook: Hook = inject('hook')
+    const hook: UseHook = inject('useHook')
     const { i18nTranslate, i18nTest } = hook()
 
     // const inputValue = computed({

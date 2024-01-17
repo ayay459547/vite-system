@@ -2,13 +2,13 @@
 import { ref, inject } from 'vue'
 import Swal from 'sweetalert2'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomTooltip, CustomPopover } from '@/components'
 
 const value = ref<string>('')
 const valuePhone = ref<string>('')
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { eventList, swal } = hook()
 
 const openPopover = (e: MouseEvent) => {

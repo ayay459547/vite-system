@@ -2,10 +2,10 @@
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const router = useRouter()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject, useSlots } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
@@ -16,7 +16,7 @@ const props = defineProps(groupSearchProps)
 
 const isShow = ref(false)
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const emit = defineEmits(['reset', 'submit'])

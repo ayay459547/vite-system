@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed, provide, inject } from 'vue'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getFormSetting } from '@/lib/lib_columns'
@@ -37,7 +37,7 @@ const {
 
 provide('search', form)
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const scorllFrist = () => {

@@ -68,7 +68,7 @@ export declare interface CustomPopoverQueue {
   options?: EventOptions
 }
 
-export declare namespace HookList {
+export declare namespace UseHookList {
   type loading = (isOpen: boolean, message?: string) => void
 
   type i18nTranslate = (key: string) => string
@@ -94,17 +94,17 @@ export declare namespace HookList {
   type auth = () => AuthData
 }
 
-export declare type Hook = () => {
-  loading: HookList.loading
-  i18nTranslate: HookList.i18nTranslate
-  i18nTest: HookList.i18nTest
-  eventList: HookList.eventList
-  swal: HookList.swal
-  notification: HookList.notification
-  message: HookList.message
-  permission: HookList.permission
-  env: HookList.env
-  auth: HookList.auth
+export declare type UseHook = () => {
+  loading: UseHookList.loading
+  i18nTranslate: UseHookList.i18nTranslate
+  i18nTest: UseHookList.i18nTest
+  eventList: UseHookList.eventList
+  swal: UseHookList.swal
+  notification: UseHookList.notification
+  message: UseHookList.message
+  permission: UseHookList.permission
+  env: UseHookList.env
+  auth: UseHookList.auth
 }
 
 export declare type SwalResult = {

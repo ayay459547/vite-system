@@ -2,9 +2,10 @@
 import { ref, computed, watch, inject, effectScope, onBeforeMount, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { Hook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
-import { useBoundingClientRect, getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils'
+import { useBoundingClientRect } from '@/lib/lib_hook'
 import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
 
@@ -15,7 +16,7 @@ import {
   minModalIndex
 } from './CustomModalInfo'
 
-const hook: Hook = inject('hook')
+const hook: UseHook = inject('useHook')
 const { i18nTranslate } = hook()
 
 const scopedId = getUuid('__i-modal__')
