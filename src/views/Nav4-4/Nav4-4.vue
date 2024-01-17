@@ -13,8 +13,16 @@ const userPermission = ref<Permission>(getPermission(defaultPermission))
 
 const [count, setCount] = useState(100)
 
-useEffect((newValue) => {
-  console.log('update => ', newValue)
+useEffect((newValue, oldValue) => {
+  console.table({
+    newValue,
+    oldValue
+  })
+
+  return () => {
+    console.log('onUnmounted 777')
+  }
+
 }, [count])
 
 const testUseState = () => {

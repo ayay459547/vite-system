@@ -10,7 +10,7 @@ import {
   watch
 } from 'vue'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 
@@ -143,6 +143,17 @@ export function useDebouncedRef (value: any): Ref<any> {
   })
 }
 
+// https://react.dev/reference/react/hooks
+
+/**
+ * @author Caleb
+ * @description 類似 react useId
+ * @returns {String} 隨機Id
+ */
+export function useId (): string {
+  return getUuid()
+}
+
 /**
  * @author Caleb
  * @description 類似 react useState
@@ -177,27 +188,44 @@ export function useState<T> (defaultValue: T): [Readonly<Ref<DeepReadonly<T>>>, 
   return [readData, setData]
 }
 
+export type OnUnmountedCallback = () => void
+export type OnMountedCallback<T> = (newValue?: T, oldValue?: T) => OnUnmountedCallback | void
 /**
  * @author Caleb
  * @description 類似 react useEffect
  * @param callback 回調函數
+ *                 (變更後, 變更前) => onUnmounted
  * @param watchValue 監聽資料
  */
-export function useEffect<T> (callback: (newValue: T) => void, watchValue: any): void {
+export function useEffect<T> (callback: OnMountedCallback<T>, watchValue: any): void {
   const scope = effectScope()
+  let isWatch = false
+  let onUnmountedCallback = null
 
   onMounted(() => {
-    scope.run(() => {
-      watch(watchValue, (newValue) => {
-        callback(newValue)
-      }, {
-        deep: true,
-        immediate: true
+    isWatch = !isEmpty(watchValue)
+
+    if (isWatch) {
+      scope.run(() => {
+        watch(watchValue, (newValue, oldValue) => {
+          onUnmountedCallback = callback(newValue, oldValue)
+        }, {
+          deep: true,
+          immediate: true
+        })
       })
-    })
+    } else {
+      onUnmountedCallback = callback()
+    }
   })
 
   onUnmounted(() => {
-    scope.stop()
+    if (typeof onUnmountedCallback === 'function') {
+      onUnmountedCallback()
+    }
+
+    if (isWatch) {
+      scope.stop()
+    }
   })
 }
