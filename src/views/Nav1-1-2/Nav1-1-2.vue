@@ -2,7 +2,7 @@
 import { ref, reactive, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
+import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 
@@ -143,7 +143,11 @@ const onUserIdClick = (rowData: any) => {
           v-model="filter[prop]"
           v-bind="filterColumns[prop]"
           @change="init('input')"
-        />
+        >
+          <template #suffix>
+            <CustomIcon name="search"/>
+          </template>
+        </CustomInput>
       </template>
       <template #header-completed="{ prop }">
         <CustomInput

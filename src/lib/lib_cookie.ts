@@ -1,6 +1,10 @@
 import Cookies from 'js-cookie'
 
-import { getUuid, aesEncrypt, aesDecrypt } from '@/lib/lib_utils'
+import {
+  // getUuid,
+  aesEncrypt,
+  aesDecrypt
+} from '@/lib/lib_utils'
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
@@ -53,8 +57,8 @@ export const setToken = (userId: number) => {
   // const _token = JSON.stringify(temp)
   const _token = userId
 
-  // 設定 30 分鐘
-  const minutes = 30
+  // 設定 60 分鐘
+  const minutes = 60
   const time = new Date(new Date().getTime() + minutes * 60 * 1000)
 
   setCookie(

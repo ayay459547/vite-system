@@ -55,7 +55,7 @@ type OpenPopover = (
 const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
   if (visible.value) return
   left.value = clientX
-  top.value = clientY
+  top.value = clientY + 10
 
   if (eventList) {
     callbackList.value = eventList
@@ -112,53 +112,51 @@ defineExpose<Expose>({
 </script>
 
 <template>
-  <Teleport to="body">
-    <div
-      class="popover-container"
-      :style="{
-        left: left + 'px',
-        top: top + 'px'
-      }"
+  <div
+    class="popover-container"
+    :style="{
+      left: left + 'px',
+      top: top + 'px'
+    }"
+  >
+    <CustomPopover
+      :visible="visible"
+      :placement="placement"
+      :width="popoverWidth"
+      popper-style="padding: 0;"
     >
-      <CustomPopover
-        :visible="visible"
-        :placement="placement"
-        :width="popoverWidth"
-        popper-style="padding: 0;"
-      >
-        <ul v-if="callbackList.length > 0" class="popover-list">
-          <li
-            v-for="(callbackItem, callbackIndex) in callbackList"
-            class="popover-item"
-            :key="callbackIndex"
-            :class="{
-              disabled: callbackItem.disabled,
-              active: callbackItem.active
-            }"
-            @click="callEvent(callbackItem.event, callbackItem.disabled)"
-          >
-            <div style="width: fit-content">
-              <font-awesome-icon
-                v-if="callbackItem.icon.length > 0"
-                :icon="callbackItem.icon"
-                style="width: 24px;"
-              />
-            </div>
-            <span>{{ callbackItem.label }}</span>
-          </li>
-        </ul>
-        <div v-else>empty</div>
+      <ul v-if="callbackList.length > 0" class="popover-list">
+        <li
+          v-for="(callbackItem, callbackIndex) in callbackList"
+          class="popover-item"
+          :key="callbackIndex"
+          :class="{
+            disabled: callbackItem.disabled,
+            active: callbackItem.active
+          }"
+          @click="callEvent(callbackItem.event, callbackItem.disabled)"
+        >
+          <div style="width: fit-content">
+            <font-awesome-icon
+              v-if="callbackItem.icon.length > 0"
+              :icon="callbackItem.icon"
+              style="width: 24px;"
+            />
+          </div>
+          <span>{{ callbackItem.label }}</span>
+        </li>
+      </ul>
+      <div v-else>empty</div>
 
-        <template #reference>
-          <div
-            v-click-outside="deletePopover"
-            class="popover-test"
-            @click="visible = !visible"
-          ></div>
-        </template>
-      </CustomPopover>
-    </div>
-  </Teleport>
+      <template #reference>
+        <div
+          v-click-outside="deletePopover"
+          class="popover-test"
+          @click="visible = !visible"
+        ></div>
+      </template>
+    </CustomPopover>
+  </div>
 </template>
 
 <style lang="scss" scoped>

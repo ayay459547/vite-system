@@ -180,11 +180,33 @@ export class iWebScoket {
 
   // 是否重新連接
   isReConnect: boolean
+  // 是否錯誤 會觸發1分鐘後重新連接
+  isError: boolean
+  // 是否關閉 close 將不再重新連接
+  isClose: boolean
   // 送出訊息次數
   sendMessageCount: number
 
   // 計時器
   timer: NodeJS.Timeout | null
+
+  /**
+   * 重新連接
+   */
+  #reconnect (delay: number) {
+    if (this.isReConnect) return
+
+    if (this.socket.readyState === 1 || this.socket.readyState === 0) {
+      this.isReConnect = false
+      this.isError = false
+    } else {
+      this.isReConnect = true
+      console.log(`reconnect ( ${this.connectUrl} ) after ${delay} second`)
+      this.timer = setTimeout(() => {
+        this.init(this.config)
+      }, delay)
+    }
+  }
 
   // 預設事件
   #onopen (onopen: Function | undefined) {
@@ -204,8 +226,15 @@ export class iWebScoket {
     }
 
     this.isReConnect = false
-    // 關閉連接時會 自動重新連接
-    this.reconnect()
+    if (!this.isClose) {
+      // 發生錯誤時 1分鐘後 自動重新連接
+      // 手動關閉 1秒後 自動重新連接
+      if (this.isError) {
+        this.#reconnect(60000)
+      } else {
+        this.#reconnect(1000)
+      }
+    }
   }
   #onerror (onerror: Function | undefined) {
     if (!isEmpty(onerror)) {
@@ -213,8 +242,7 @@ export class iWebScoket {
     } else {
       console.log(`connect ( ${this.connectUrl} ) error`)
     }
-
-    this.isReConnect = false
+    this.isError = true
   }
   #onmessage (msg: MessageEvent) {
     console.log(`get ( ${this.connectUrl} ) message`, msg)
@@ -230,6 +258,8 @@ export class iWebScoket {
     this.config = config
 
     this.isReConnect = false
+    this.isError = false
+    this.isClose = false
     this.sendMessageCount = 0
 
     if (hasOwnProperty(window, 'WebSocket')) {
@@ -264,6 +294,9 @@ export class iWebScoket {
 
       throw new Error('url參數為空')
     }
+    this.isReConnect = false
+    this.isError = false
+    this.isClose = false
 
     this.connectUrl = `${this.baseWs}${this.baseUrl}${this.url}`
     this.socket = new WebSocket(this.connectUrl)
@@ -313,27 +346,21 @@ export class iWebScoket {
   }
 
   /**
-   * 關閉 WebSocket
+   * 重連 WebSocket
+   * 手動關閉 會在1秒後重新連接
    */
-  close () {
+  reconnect () {
     clearTimeout(this.timer)
     this.socket.close()
   }
 
   /**
-   * 重新連接
+   * 關閉 WebSocket
+   * 手動關閉
    */
-  reconnect () {
-    if (this.isReConnect) return
-
-    if (this.socket.readyState === 1 || this.socket.readyState === 0) {
-      this.isReConnect = false
-    } else {
-      console.log(`reconnect ( ${this.connectUrl} )`)
-      this.isReConnect = true
-      this.timer = setTimeout(() => {
-        this.init(this.config)
-      }, 60000)
-    }
+  close () {
+    this.isClose = true
+    clearTimeout(this.timer)
+    this.socket.close()
   }
 }

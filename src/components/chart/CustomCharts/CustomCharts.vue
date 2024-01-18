@@ -53,12 +53,19 @@ export default defineComponent({
       const chartDom = document.getElementsByClassName(`${props.domKey}-charts__${scopedId}`)[0]
       if (isEmpty(props.options) || isEmpty(chartDom)) return
 
-      if (isEmpty(myChart)) {
+      if (
+        isEmpty(myChart) &&
+        chartDom.clientWidth > 0 &&
+        chartDom.clientHeight > 0
+      ) {
         myChart = echarts.init(chartDom as HTMLElement)
       }
 
       const _options = props.options()
-      if (!isEmpty(_options)) {
+      if (
+        !isEmpty(myChart) &&
+        !isEmpty(_options)
+      ) {
         myChart.clear()
         myChart.setOption(_options, true)
 

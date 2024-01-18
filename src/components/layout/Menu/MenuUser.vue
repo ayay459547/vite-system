@@ -22,11 +22,6 @@ const emit = defineEmits<{
 const openUserEffect = (e: MouseEvent) => {
   eventList(e, [
     {
-      icon: ['fas', 'right-from-bracket'],
-      label: i18nTranslate('logout'),
-      event: () => emit('logout')
-    },
-    {
       icon: ['fas', 'gear'],
       label: i18nTranslate('preferences'),
       event: () => emit('preferences')
@@ -39,6 +34,11 @@ const openUserEffect = (e: MouseEvent) => {
         localStorage.setItem('historyIsOpen', `${value}`)
         emit('historyChange', value)
       }
+    },
+    {
+      icon: ['fas', 'right-from-bracket'],
+      label: i18nTranslate('logout'),
+      event: () => emit('logout')
     }
   ], {
     width: 180

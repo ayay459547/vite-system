@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
-import MenuHome from '@/components/layout/Menu/MenuHome.vue'
+// import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 import type { AuthData } from '@/declare/hook'
 // import MenuLang from '@/components/layout/Menu/MenuLang.vue'
@@ -42,9 +42,9 @@ const tempIsOpen = computed<boolean>({
   }
 })
 
-const onRouterChange = () => {
-  emit('routerChange')
-}
+// const onRouterChange = () => {
+//   emit('routerChange')
+// }
 
 </script>
 
@@ -62,9 +62,9 @@ const onRouterChange = () => {
         <slot name="header-right"></slot>
       </div>
 
-      <div class="header-right-effect">
+      <!-- <div class="header-right-effect">
         <MenuHome @router-change="onRouterChange"/>
-      </div>
+      </div> -->
       <div class="header-right-effect">
         <MenuUser
           :auth-data="props.authData"
