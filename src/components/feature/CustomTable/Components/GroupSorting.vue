@@ -198,7 +198,7 @@ const submit = () => {
       background-color: #f5f7fa;
     }
 
-    opacity: 0.3;
+    opacity: 0.5;
     transition-duration: 0.3s;
     font-weight: 600 !important;
     &-left {

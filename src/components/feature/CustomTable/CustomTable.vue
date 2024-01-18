@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useSlots, ref, shallowRef, shallowReactive, computed, onMounted } from 'vue'
-import { type TableColumnCtx, ElPagination } from 'element-plus'
+import { ElPagination } from 'element-plus'
 
-import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
@@ -12,173 +11,21 @@ import ColumnSorting from './Components/ColumnSorting.vue'
 import GroupSorting from './Components/GroupSorting.vue'
 import TableMain from './TableMain.vue'
 
-export interface PropsTableColumn extends Record<string, any>, TableColumnsItem {}
-export interface PageChange {
-  (page: number, pageSize: number, ...payload: any[]): void
-}
+import type {
+  Sort,
+  PageChange,
+  SortingList,
+  SortingMap,
+  TableParams
+} from './CustomTableInfo'
+import {
+  version,
+  props as tableProps
+} from './CustomTableInfo'
 
-export type Order = null | 'ascending' | 'descending' | 'none' | 'Asc' | 'Desc'
-export interface Sort {
-  key: null | string
-  order: null | 'ascending' | 'descending'
-}
-// 資料處理的格式
-export interface Sorting {
-  label?: string
-  key?: null | string
-  order?: Order
-}
-export type SortingList = Sorting[]
-// 送 api 的格式
-export type SortingMap = Record<string, Order>
+const scopedId = getUuid('__i-table__')
 
-export interface TableParams {
-  page?: number
-  size?: number
-  sort?: Sort
-  sortingList?: SortingList
-  sortingMap?: SortingMap
-}
-export type TableSize = '' | 'large' | 'default' | 'small'
-
-export type SpanMethod = (
-  (data: {
-    row: any,
-    column: TableColumnCtx<any>,
-    rowIndex: number,
-    columnIndex: number
-  }, ...payload: any[]) => number[] | { rowspan: number, colspan: number } | void
-) | null
-
-type RowCallback<T> = (
-  (data: {
-    row: any,
-    rowIndex: number
-  }, ...payload: any[]) => T
-) | null
-export type RowClassName = RowCallback<string>
-export type RowStyle = RowCallback<Record<string, any>>
-
-type CellCallback<T> = (
-  (data: {
-    row: any,
-    column: TableColumnCtx<any>,
-    rowIndex: number,
-    columnIndex: number
-  }, ...payload: any[]) => T
-) | null
-export type CellClassName = CellCallback<string>
-export type CellStyle = CellCallback<Record<string, any>>
-export type Load = (row, treeNode, resolve) => void | null
-
-export type LazyLoadingStatus = 'loadMore' | 'loading' | 'noMore'
-
-export interface Props extends Record<string, any> {
-  /**
-   * table 標題
-   */
-  title?: string
-
-  /**
-   * 欄位設定相關
-   * version: 欄位設定 版本
-   *     如果版本更換 會重置欄位設定
-   * settingKey:
-   *     欄位設定 在 indexedDB 上的 key
-   *     建議參考路由 避免重複使用 key
-   * settingWidth: 欄位設定框寬度
-   */
-  version: string
-  settingKey: string
-  settingWidth?: number
-  /**
-   * 表單資料相關
-   * tableColumns: 表單欄位顯示用設定
-   * tableData: 表單資料
-   * rowKey: 每行資料的key 預設是id
-   * defaultExpandAll: 資料存在 children 時 預設是否展開
-   * spanMethod: 資料跨欄
-   * rowClassName: 自訂 rowClass
-   * rowStyle: 自訂 rowStyle
-   * cellClassName: 自訂 columnClass
-   * cellStyle: 自訂 columnStyle
-   */
-  tableColumns: PropsTableColumn[]
-  tableData: any[]
-  tableDataCount?: number
-  rowKey?: string
-  tableSize?: TableSize
-  defaultExpandAll?: boolean
-  spanMethod?: SpanMethod
-  rowClassName?: RowClassName
-  rowStyle?: RowStyle
-  cellClassName?: CellClassName
-  cellStyle?: CellStyle
-  lazy?: boolean
-  load?: Load
-  treeProps?: any
-  /**
-   * 表單顯示相關
-   * page 當前分頁
-   * pageSize 顯示筆數
-   * tableDataCount 資料總筆數 計算頁數用
-   * sort: 單欄位排序
-   * showType:
-   *    custom 依據api切資料
-   *    auto 依據 page 和 pageSize 切資料
-   * hiddenExcel: 是否隱藏下載Excel
-   * showNo: 是否顯示編號
-   * sorting: 是否有多欄位排序
-   * selection: 是否有checkbox
-   */
-  page?: number
-  pageSize?: number
-  sort?: Sort
-  showType?: 'custom' | 'auto'
-  hiddenExcel?: boolean
-  showNo?: boolean
-  sorting?: boolean
-  selection?: boolean
-  /**
-   * 資料懶加載
-   * lazyLoading: 是否啟用
-   * lazyLoadingStatus: 狀態
-   */
-  lazyLoading?: boolean
-  lazyLoadingStatus?: LazyLoadingStatus
-}
-
-const props: Props = withDefaults(defineProps<Props>(), {
-  title: '',
-  version: '',
-  settingKey: '',
-  settingWidth: 250,
-  tableColumns: () => [],
-  tableData: () => [],
-  tableDataCount: 0,
-  rowKey: 'id',
-  tableSize: '',
-  defaultExpandAll: false,
-  spanMethod: null,
-  rowClassName: null,
-  lazy: false,
-  treeProps: {
-    hasChildren: 'hasChildren',
-    children: 'children'
-  },
-  page: 1,
-  pageSize: 100,
-  sort: () => {
-    return { key: null, order: null }
-  },
-  showType: 'custom',
-  hiddenExcel: false,
-  showNo: false,
-  sorting: false,
-  selection: false,
-  lazyLoading: false,
-  lazyLoadingStatus: 'noMore'
-})
+const props = defineProps(tableProps)
 
 const emit = defineEmits([
   'header-click',
@@ -613,15 +460,13 @@ onMounted(() => {
   }
 })
 
-const scopedId = getUuid('__i-table__')
-
 </script>
 
 <template>
   <div
     v-loading="loading"
     class="__table-wrapper"
-    :class="scopedId"
+    :class="`CustomTable_${version} ${scopedId}`"
   >
     <template v-if="hasSlot('prepend')">
       <div class="__table-prepend">

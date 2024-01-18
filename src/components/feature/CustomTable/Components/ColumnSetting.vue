@@ -7,7 +7,7 @@ import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/com
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
-import type { PropsTableColumn } from '../CustomTable.vue'
+import type { PropsTableColumn } from '../CustomTableInfo'
 
 const props = defineProps({
   columns: {

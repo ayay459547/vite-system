@@ -254,7 +254,7 @@ export const props = {
   lazyLoadingStatus: {
     type: String as PropType<LazyLoadingStatus>,
     required: false,
-    default: false,
+    default: 'noMore',
     description: '狀態'
   }
 }

@@ -19,7 +19,7 @@ import type {
   Load,
   LazyLoadingStatus,
   TableSize
-} from './CustomTable.vue'
+} from './CustomTableInfo'
 
 // slot
 const slots = useSlots()
