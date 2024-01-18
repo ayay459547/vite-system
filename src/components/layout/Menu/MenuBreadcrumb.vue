@@ -18,18 +18,12 @@ type Breadcrumb = {
 const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
   return props.breadcrumbTitle.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
     if (crumbIndex === 0){
-      res.push({
-        type: 'text',
-        name: crumb
-      })
+      res.push({ type: 'text', name: crumb })
     } else {
-      res.push({
-        type: 'icon',
-        name: ' / '
-      }, {
-        type: 'text',
-        name: crumb
-      })
+      res.push(
+        { type: 'icon', name: ' / '},
+        { type: 'text', name: crumb }
+      )
     }
 
     return res
@@ -49,18 +43,28 @@ const onBreadcrumbClick = () => {
 </script>
 
 <template>
-  <div class="breadcrumb-container" @click="onBreadcrumbClick">
+  <div class="breadcrumb-container">
     <div class="breadcrumb-lg" :class="props.textAlign">
-      <CustomIcon name="location-dot" class="icon" icon-class="text-danger"/>
-      <div class="text ellipsis">{{ breadcrumbSpan }}</div>
+      <CustomIcon
+        name="location-dot"
+        class="icon"
+        icon-class="text-danger"
+        @click="onBreadcrumbClick"
+      />
+      <div class="text ellipsis" @click="onBreadcrumbClick">{{ breadcrumbSpan }}</div>
     </div>
 
     <div class="breadcrumb-xs">
       <CustomTooltip placement="right">
-        <CustomIcon name="location-dot" icon-class="text-danger"/>
+        <CustomIcon
+          name="location-dot"
+          class="breadcrumb-icon"
+          icon-class="text-danger"
+          @click="onBreadcrumbClick"
+        />
 
         <template #content>
-          <div class="breadcrumb-text">{{ breadcrumbSpan }}</div>
+          <div class="breadcrumb-text" @click="onBreadcrumbClick">{{ breadcrumbSpan }}</div>
         </template>
       </CustomTooltip>
     </div>
@@ -72,6 +76,10 @@ const onBreadcrumbClick = () => {
   &-container {
     width: 100%;
     height: fit-content;
+  }
+
+  &-icon,
+  &-text {
     cursor: pointer;
   }
   &-text {
@@ -90,6 +98,7 @@ const onBreadcrumbClick = () => {
       .icon,
       .text {
         position: absolute;
+        cursor: pointer;
       }
       .text {
         max-width: 100%;
@@ -104,6 +113,10 @@ const onBreadcrumbClick = () => {
     }
 
     &.end {
+      .icon,
+      .text {
+        cursor: pointer;
+      }
       .text {
         max-width: 100%;
         width: fit-content;

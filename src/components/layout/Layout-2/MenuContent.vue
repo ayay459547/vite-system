@@ -4,7 +4,7 @@ import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'
-import MenuHome from '@/components/layout/Menu/MenuHome.vue'
+// import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 
 const props = defineProps<{
@@ -33,9 +33,9 @@ const setLevel2Router = (level2Router: Navigation) => {
   emit('setLevel2Router', level2Router)
 }
 
-const onRouterChange = () => {
-  emit('routerChange')
-}
+// const onRouterChange = () => {
+//   emit('routerChange')
+// }
 
 </script>
 
@@ -59,9 +59,9 @@ const onRouterChange = () => {
     </div>
 
     <div class="menu-right">
-      <div class="menu-right-effect">
+      <!-- <div class="menu-right-effect">
         <MenuHome @router-change="onRouterChange"/>
-      </div>
+      </div> -->
       <div class="menu-right-effect">
         <MenuUser
           :auth-data="props.authData"

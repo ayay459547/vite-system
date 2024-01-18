@@ -87,7 +87,7 @@ export default defineComponent({
 
 <template>
   <div class="charts-container" ref="charts">
-    <div class="charts-main" :class="`${domKey}-charts__${scopedId}`">Charts</div>
+    <div class="charts-main" :class="`${domKey}-charts__${scopedId}`"></div>
   </div>
 </template>
 
