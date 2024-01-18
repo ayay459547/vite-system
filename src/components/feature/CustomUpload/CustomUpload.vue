@@ -22,8 +22,8 @@ const props = defineProps(uploadProps)
 
 const emit = defineEmits(['file'])
 
-const hook: UseHook = inject('useHook')
-const { swal } = hook()
+const useHook: UseHook = inject('useHook')
+const { swal } = useHook()
 const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const drag = ref(null)

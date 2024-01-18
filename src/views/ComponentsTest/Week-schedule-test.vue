@@ -4,8 +4,8 @@ import { inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { WeekSchedule } from '@/components'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const typeList = [
   {

@@ -12,8 +12,8 @@ import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
 import Preferences from '@/components/layout/Preferences/UserPreferences.vue'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const props = defineProps<{
   isShow: boolean

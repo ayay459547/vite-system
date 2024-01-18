@@ -6,8 +6,8 @@ import type { UseHook } from '@/declare/hook'
 import { CustomWatermark } from '@/components'
 import { useState, useEffect } from '@/lib/lib_hook'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate, permission } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, permission } = useHook()
 
 const userPermission = ref<Permission>(getPermission(defaultPermission))
 

@@ -6,8 +6,8 @@ import { options as langOptions } from '@/i18n'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { useLocaleStore } from '@/stores/stores_locale'
 
-const hook: UseHook = inject('useHook')
-const { eventList, i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { eventList, i18nTranslate } = useHook()
 
 const localeStore = useLocaleStore()
 

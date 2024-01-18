@@ -13,8 +13,8 @@ import i18nMessage from './i18n'
 
 import DetailModal from './Components/DetailModal.vue'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
 

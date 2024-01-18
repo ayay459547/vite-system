@@ -8,8 +8,8 @@ import { CustomIcon, CustomInput } from '@/components'
 
 import { loginSystem } from './api'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const emit = defineEmits(['login'])
 

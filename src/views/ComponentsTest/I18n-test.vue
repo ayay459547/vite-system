@@ -16,8 +16,8 @@ const { i18nTranslate: pageTranslate } = useLocalI18n({
   }
 })
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const tab = ref('tab1')
 const options = [

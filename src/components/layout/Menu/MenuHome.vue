@@ -5,8 +5,8 @@ import { useRouter } from 'vue-router'
 import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const router = useRouter()
 

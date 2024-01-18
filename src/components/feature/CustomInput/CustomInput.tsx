@@ -49,8 +49,8 @@ const CustomInput = defineComponent({
   setup (props, { slots, emit, expose }) {
     const scopedId = getUuid('__i-group-input__')
 
-    const hook: UseHook = inject('useHook')
-    const { i18nTranslate, i18nTest } = hook()
+    const useHook: UseHook = inject('useHook')
+    const { i18nTranslate, i18nTest } = useHook()
 
     // const inputValue = computed({
     //   get: () => props.modelValue,

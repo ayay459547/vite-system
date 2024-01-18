@@ -16,8 +16,8 @@ const props = defineProps(groupSearchProps)
 
 const isShow = ref(false)
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const emit = defineEmits(['reset', 'submit'])
 

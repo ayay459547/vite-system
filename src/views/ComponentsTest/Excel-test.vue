@@ -16,8 +16,8 @@ import {
 } from '@/components'
 import { downloadStaticFile } from '@/lib/lib_utils'
 
-const hook: UseHook = inject('useHook')
-const { loading } = hook()
+const useHook: UseHook = inject('useHook')
+const { loading } = useHook()
 
 function onClick () {
   const workbook = new ExcelJs.Workbook() // 創建試算表檔案

@@ -10,8 +10,8 @@ import type { TableData } from '../api'
 import { createData } from '../api'
 import { columnSetting } from '../columns'
 
-const hook: UseHook = inject('useHook')
-const { loading } = hook()
+const useHook: UseHook = inject('useHook')
+const { loading } = useHook()
 
 const {
   columns: formColumn,

@@ -26,8 +26,8 @@ import { columnSetting, childColumnSetting } from './columns'
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModel from './Components/UpdateModel.vue'
 
-const hook: UseHook = inject('useHook')
-const { swal, loading, eventList } = hook()
+const useHook: UseHook = inject('useHook')
+const { swal, loading, eventList } = useHook()
 const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 // 權限

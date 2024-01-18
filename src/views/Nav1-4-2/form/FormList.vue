@@ -41,8 +41,8 @@ const getColumnSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'column')
 }
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate, swal } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, swal } = useHook()
 
 const props = defineProps({
   modelValue: {

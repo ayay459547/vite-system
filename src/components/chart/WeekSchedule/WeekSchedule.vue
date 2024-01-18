@@ -34,8 +34,8 @@ export type TypeItem = {
   color: string
 }
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const props = defineProps({
   typeList: {

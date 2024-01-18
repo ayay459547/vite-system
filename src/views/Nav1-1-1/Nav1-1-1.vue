@@ -17,8 +17,8 @@ import i18nMessage from './i18n'
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModal from './Components/UpdateModal.vue'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate, swal, loading, eventList } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, swal, loading, eventList } = useHook()
 
 const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
 

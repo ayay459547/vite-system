@@ -16,8 +16,8 @@ import {
   minModalIndex
 } from './CustomModalInfo'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const scopedId = getUuid('__i-modal__')
 

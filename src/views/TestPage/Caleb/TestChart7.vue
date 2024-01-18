@@ -9,8 +9,8 @@ import { downloadMatrix } from '@/lib/lib_files'
 // import { useRoutesStore } from '@/stores/stores_routes'
 // import { getPermission } from '@/lib/lib_permission'
 
-const hook: UseHook = inject('useHook')
-const { permission, loading } = hook()
+const useHook: UseHook = inject('useHook')
+const { permission, loading } = useHook()
 
 onMounted(() => {
   loading(true, 'test')

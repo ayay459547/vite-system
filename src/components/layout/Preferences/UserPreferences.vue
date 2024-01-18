@@ -11,8 +11,8 @@ import { storeToRefs } from 'pinia'
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 // 語言
 const localeStore = useLocaleStore()

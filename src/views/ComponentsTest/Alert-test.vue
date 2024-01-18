@@ -8,8 +8,8 @@ import { CustomButton, CustomTooltip, CustomPopover } from '@/components'
 const value = ref<string>('')
 const valuePhone = ref<string>('')
 
-const hook: UseHook = inject('useHook')
-const { eventList, swal } = hook()
+const useHook: UseHook = inject('useHook')
+const { eventList, swal } = useHook()
 
 const openPopover = (e: MouseEvent) => {
   eventList(e, [

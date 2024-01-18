@@ -9,8 +9,8 @@ import { CustomIcon, CustomTooltip } from '@/components'
 import { hasOwnProperty } from '@/lib/lib_utils'
 import { routesHook } from '@/lib/lib_routes'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate, eventList } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, eventList } = useHook()
 const { getRouteIcon, getRouteTitle } = routesHook()
 
 const props = defineProps<{

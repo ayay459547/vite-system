@@ -18,8 +18,8 @@ const SimpleFilter = defineComponent({
   props: simpleFilterProps,
   emits: ['reset', 'submit'],
   setup (props, { slots, emit, expose }) {
-    const hook: UseHook = inject('useHook')
-    const { i18nTranslate } = hook()
+    const useHook: UseHook = inject('useHook')
+    const { i18nTranslate } = useHook()
 
     const scopedId = getUuid('__i-simple-filter__')
 

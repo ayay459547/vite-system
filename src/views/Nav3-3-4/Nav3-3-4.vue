@@ -22,8 +22,8 @@ import type { TableData, Search } from './api'
 import { getVersionOptions, getData } from './api'
 import { columnSetting } from './columns'
 
-const hook: UseHook = inject('useHook')
-const { i18nTranslate } = hook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook()
 
 const isLoading = ref(true)
 
