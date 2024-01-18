@@ -5,7 +5,7 @@ import { ref, onBeforeMount } from 'vue'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
-import { isEmpty, getProxyData } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, copyText } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from '../CustomTableInfo'
 
@@ -207,7 +207,7 @@ onBeforeMount(async () => {
                       @change="updateSetting(true)"
                     />
                   </div>
-                  <div class="text">{{ element.label }}</div>
+                  <div class="text" @click.stop="copyText(element.label)">{{ element.label }}</div>
                 </div>
 
                 <div class="__column-item-right">
@@ -275,6 +275,7 @@ onBeforeMount(async () => {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      cursor: pointer;
     }
     &:hover {
       background-color: #f5f7fa;

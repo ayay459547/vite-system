@@ -341,7 +341,7 @@ export interface TableSetting {
     sort?: Sort
     // 多欄位用的 sorting (爆改版)
     sorting?: boolean
-    tableColumns: Record<string, any>
+    tableColumns: any[]
     tableSize?: TableSize
     hiddenExcel: boolean
     // 其他 table 的 props
@@ -412,6 +412,7 @@ export const getTableSetting = (
     const resChildren = []
 
     columns.$forEach((child: Record<string, any>, childkey: string) => {
+      const _isOperations = child?.isOperations ?? false
       resChildren.push({
         key: childkey,
         prop: childkey,
@@ -420,9 +421,9 @@ export const getTableSetting = (
         title: child?.label ?? '',
         minWidth: 150,
         // element ui 單排用
-        sortable: child?.isOperations ?? false,
+        sortable: !_isOperations,
         // 專案用 多排
-        sorting: child?.sorting ?? true, // 是否顯示排序
+        sorting: !_isOperations ? (child?.sorting ?? true) : false, // 是否顯示排序
         order: child?.sorting ?? 'none', // ascending | descending | none
         ...child
       })
@@ -430,19 +431,21 @@ export const getTableSetting = (
     return resChildren
   }
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+    const _isOperations = column?.isOperations ?? false
     return {
       key,
       prop: key,
       slotKey: key,
-      isOperations: false,
+      isOperations: _isOperations,
       label: column?.label ?? '',
       title: column?.label ?? '',
       minWidth: 150,
       // element ui 單排用
-      sortable: column?.isOperations ?? false,
+      sortable: !_isOperations ? (column?.sortable ?? false) : false,
       // 專案用 多排
-      sorting: column?.sorting ?? true, // 是否顯示排序
-      order: column?.order ?? 'none', // ascending | descending | none
+      sorting: !_isOperations ? (column?.sorting ?? true) : false, // 是否顯示排序
+      // 專案用 多排 預設值
+      order: column?.order ?? 'none',   // ascending | descending | none
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }

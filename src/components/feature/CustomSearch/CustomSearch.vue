@@ -101,9 +101,13 @@ const isVisible = computed({
   }
 })
 
-const onVisibleClick = (_isVisible: boolean) => {
-  emit(_isVisible ? 'open' : 'close')
-  isVisible.value = _isVisible
+const onVisibleClick = async (_isVisible: boolean) => {
+  await nextTick()
+
+  setTimeout(() => {
+    emit(_isVisible ? 'open' : 'close')
+    isVisible.value = _isVisible
+  }, 150)
 }
 
 const isDot = computed(() => {
