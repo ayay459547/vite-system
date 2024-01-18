@@ -356,13 +356,13 @@ export interface TableSetting {
 export interface TableColumnsItem {
   key: string
   prop: string
-  slotKey: string
+  slotKey?: string
+  label: string
   width?: number
   minWidth?: number
-  sortable: boolean | 'custom'
-  isOperations: boolean
-  label: string
-  title: string
+  sortable?: boolean | 'custom'
+  isOperations?: boolean
+  title?: string
 }
 /**
  * @author Caleb

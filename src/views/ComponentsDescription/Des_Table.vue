@@ -3,7 +3,7 @@
 import { ref } from 'vue'
 // @ts-ignore
 import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
-import type { TableParams } from '@/components'
+import type { TableParams, PropsTableColumn } from '@/components'
 import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components'
 import { getTableSetting } from '@/lib/lib_columns'
 
@@ -78,11 +78,12 @@ const onTableChange = (params: TableParams) => {
 }
 
 const checkTable = ref()
-const tableColumns1 = [
-  { key: 'name', label: '名稱', sortable: 'coutom', prop: 'name', width: 150 },
-  { key: 'age', label: '年齡', sortable: 'coutom', prop: 'age', width: 120 },
-  { key: 'address', label: '地址', sortable: 'coutom', prop: 'address', minWidth: 200 }
+const tableColumns1: PropsTableColumn[] = [
+  { key: 'name', label: '名稱', sortable: 'custom', prop: 'name', width: 150 },
+  { key: 'age', label: '年齡', sortable: 'custom', prop: 'age', width: 120 },
+  { key: 'address', label: '地址', sortable: 'custom', prop: 'address', minWidth: 200 }
 ]
+
 const tableData1 = [
   { id: 1, name: 'Bret', age: 13, address: 'Apt. 556, Kulas Light, Gwenborough' },
   { id: 2, name: 'Antonette', age: 22, address: 'Suite 879, Victor Plains, Wisokyburgh' },
@@ -91,6 +92,7 @@ const tableData1 = [
   { id: 5, name: 'Kamren', age: 56, address: 'Suite 351, Skiles Walks, Roscoeview' },
   { id: 6, name: 'Maxime_Nienow', age: 72, address: 'Suite 729, Ellsworth Summit, Aliyaview' }
 ]
+
 const onRandomClick = () => {
   if (checkTable.value) {
     const newList = tableData1.filter(() => {

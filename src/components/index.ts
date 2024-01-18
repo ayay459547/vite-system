@@ -123,7 +123,9 @@ export type {
   TableParams,
   LazyLoadingStatus,
   TableSize,
-  SpanMethod
+  SpanMethod,
+  PropsTableColumn,
+  ShowType
 } from './feature/CustomTable/CustomTableInfo'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
