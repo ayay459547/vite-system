@@ -35,7 +35,7 @@ import HookPopover from '@/components/hook/HookPopover.vue'
 import { useGlobalI18n } from '@/i18n/i18n_excel'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { getPermission } from '@/lib/lib_permission'
+import { getPermission, defaultPermission } from '@/lib/lib_permission'
 
 // slot
 const slots = useSlots()
@@ -328,19 +328,16 @@ provide<UseHook>('useHook', () => {
     message,
     permission: (routeName = null) => {
       if (!isEmpty(routeName)) {
-        const permissionTotal = routesPermission.value.get(routeName)
+        // 與路由守衛相同邏輯
+        const userPermission = navigationMap.value.get(routeName)
 
-        if (typeof permissionTotal === 'number') {
-          return getPermission(permissionTotal)
-        } else {
-          return {
-            read: false,
-            create: false,
-            update: false,
-            delete: false,
-            execute: false
-          }
-        }
+        const toNavigation = [
+          userPermission?.permission,
+          defaultPermission,
+          0
+        ].find(_permission => typeof _permission === 'number')
+
+        return getPermission(toNavigation)
       }
 
       const { permission = 0 } = currentNavigation?.value ?? {}

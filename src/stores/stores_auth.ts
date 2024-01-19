@@ -54,8 +54,8 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	/**
-	 * 使用者 id 取的資料
-	 * 路由權限
+	 * 依照使用者 id
+	 * 取得權限資料
 	 * key(string): permissions(number)
 	 */
 	const routesPermission = shallowReactive(new Map<string, number>())

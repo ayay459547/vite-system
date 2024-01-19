@@ -30,7 +30,6 @@ const onSubmitClick = () => {
   isShow.value = false
 }
 
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]

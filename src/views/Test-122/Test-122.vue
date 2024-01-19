@@ -54,7 +54,7 @@ const tableOptions = {
   title: '資訊顯示測試',
   version: '1.0.5',
   settingKey: 'fund-12',
-  sorting: true
+  isSorting: true
 }
 const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
 

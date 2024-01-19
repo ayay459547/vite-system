@@ -10,6 +10,12 @@ import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_u
 
 import type { ValidateType } from './lib_validate'
 
+export interface ColumnTypeSetting<T, K extends string> {
+  [key: string]: {
+    [keyType in K | 'label']: T | string
+  }
+}
+
 export interface FormSetting<T> {
   refMap: Record<string, any>
   defaultValue: T
@@ -336,11 +342,11 @@ export interface TableSetting {
     params: TableParams
     page?: number
     pageSize?: number
-    // 單一欄位的 sorting (原版)
+    // 單一欄位的 isSorting (原版)
     // 暫時不用 先保留功能
     sort?: Sort
-    // 多欄位用的 sorting (爆改版)
-    sorting?: boolean
+    // 多欄位用的 isSorting (爆改版)
+    isSorting?: boolean
     tableColumns: any[]
     tableSize?: TableSize
     hiddenExcel: boolean
@@ -354,12 +360,14 @@ export interface TableSetting {
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }
 export interface TableColumnsItem {
-  key: string
-  prop: string
+  key?: string
+  prop?: string
   slotKey?: string
-  label: string
+  label?: string
   width?: number
   minWidth?: number
+  align?: 'left' | 'center' | 'right'
+  isSorting?: boolean
   sortable?: boolean | 'custom'
   isOperations?: boolean
   title?: string
@@ -386,7 +394,7 @@ export const getTableSetting = (
       key: null | string,
       order: null | 'ascending' | 'descending'
     }
-    sorting?: boolean
+    isSorting?: boolean
     hiddenExcel?: boolean
     tableSize?: TableSize
     showType?: string | 'custom' | 'auto'
@@ -402,7 +410,7 @@ export const getTableSetting = (
       key: null,
       order: null
     },
-    sorting = false,
+    isSorting = false,
     hiddenExcel = false,
     tableSize = ''
   } = options
@@ -423,8 +431,8 @@ export const getTableSetting = (
         // element ui 單排用
         sortable: !_isOperations,
         // 專案用 多排
-        sorting: !_isOperations ? (child?.sorting ?? true) : false, // 是否顯示排序
-        order: child?.sorting ?? 'none', // ascending | descending | none
+        isSorting: !_isOperations ? (child?.isSorting ?? true) : false, // 是否顯示排序
+        order: child?.isSorting ?? 'none', // ascending | descending | none
         ...child
       })
     })
@@ -443,7 +451,7 @@ export const getTableSetting = (
       // element ui 單排用
       sortable: !_isOperations ? (column?.sortable ?? false) : false,
       // 專案用 多排
-      sorting: !_isOperations ? (column?.sorting ?? true) : false, // 是否顯示排序
+      isSorting: !_isOperations ? (column?.isSorting ?? true) : false, // 是否顯示排序
       // 專案用 多排 預設值
       order: column?.order ?? 'none',   // ascending | descending | none
       columns: getChildrenData(column[type]?.children ?? {}),
@@ -568,7 +576,7 @@ export const getTableSetting = (
       page: tableParams.page,
       pageSize: tableParams.size,
       sort: tableParams.sort,
-      sorting,
+      isSorting,
       tableColumns: resColumns,
       tableSize,
       hiddenExcel

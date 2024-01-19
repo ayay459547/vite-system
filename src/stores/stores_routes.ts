@@ -123,6 +123,12 @@ export const useRoutesStore = defineStore('routes', () => {
 
   // Navigation 三層選單 + 歷史選單 用
   const navigationRoutes: ShallowRef<Navigation[]> = shallowRef([])
+
+  /**
+   * 路由資料
+   * 權限用
+   * key(route): value
+   */
   const navigationMap: ShallowRef<Map<string, Navigation>> = shallowRef(new Map())
 
   // 設置 選單用資料 + 搜尋用 map

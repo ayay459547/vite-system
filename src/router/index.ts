@@ -137,30 +137,27 @@ router.beforeEach(
   ) => {
     // 使用者
     const authStore = useAuthStore()
-    const { isLogin, routesPermission } = storeToRefs(authStore)
+    const { isLogin } = storeToRefs(authStore)
 
     // 路由
     const routesStore = useRoutesStore()
     const { navigationMap } = storeToRefs(routesStore)
 
-    const userPermission = routesPermission.value.get(to.name as string)
-    const navigationInfo = navigationMap.value.get(to.name as string)
+    const userPermission = navigationMap.value.get(to.name as string)
 
     /**
      * 權限順序
      * 1. 後端資料
      * 2. 路由設定
      * 3. 系統預設
+     * 4. 0 (無權限)
      */
-    const toNavigation = (() => {
-      if (typeof userPermission === 'number') {
-        return userPermission
-      } else if (typeof navigationInfo?.permission === 'number') {
-        return navigationInfo?.permission
-      } else {
-        return defaultPermission
-      }
-    })()
+    const toNavigation = [
+      userPermission?.permission,
+      defaultPermission,
+      0
+    ].find(_permission => typeof _permission === 'number')
+
 
     if (isLogin.value) {
       // 已經登入 如果要進登入頁 自動跳回首頁

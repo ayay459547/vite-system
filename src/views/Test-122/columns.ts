@@ -3,7 +3,7 @@ export const columnSetting = {
     label: '編號',
     table: {
       width: 200,
-      sorting: true,
+      isSorting: true,
       order: 'ascending'
     },
     form: {
@@ -19,7 +19,7 @@ export const columnSetting = {
     label: '名稱',
     table: {
       width: 200,
-      sorting: true,
+      isSorting: true,
       order: 'descending'
     },
     form: {
@@ -35,7 +35,7 @@ export const columnSetting = {
     label: '區域',
     table: {
       width: 200,
-      sorting: false
+      isSorting: false
     },
     form: {
       default: null,

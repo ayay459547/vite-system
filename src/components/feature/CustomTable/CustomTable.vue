@@ -179,7 +179,7 @@ const initSortingList = () => {
   sortingList.value = props.tableColumns.reduce((res, column) => {
     const _isOperations = (column?.isOperations ?? false)
 
-    if (!_isOperations && (column?.sorting ?? true)) {
+    if (!_isOperations && (column?.isSorting ?? true)) {
       res.push({
         label: column.label,
         key: column.key,
@@ -399,7 +399,7 @@ const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
       // 有多欄位排序時 給 header-all
       // 預設欄位加入 sorting 組件
-      if (hasSlot('header-all') || props.sorting) return 'header-all'
+      if (hasSlot('header-all') || props.isSorting) return 'header-all'
       break
     case 'column':
       if (hasSlot(`column-${slotKey}`)) return `column-${slotKey}`
@@ -567,7 +567,7 @@ onMounted(() => {
         </div>
 
         <GroupSorting
-          v-if="props.sorting"
+          v-if="props.isSorting"
           v-model="sortingList"
           :setting-width="props.settingWidth"
           :setting-height="`${tableHeight - 40}px`"
@@ -631,7 +631,7 @@ onMounted(() => {
             </slot>
           </div>
           <ColumnSorting
-            v-if="props.sorting && (scope.column?.sorting ?? true)"
+            v-if="props.isSorting && (scope.column?.isSorting ?? true)"
             v-model="sortingList"
             :column="scope.column"
             :prop="scope.prop"

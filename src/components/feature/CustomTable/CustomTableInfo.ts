@@ -232,7 +232,7 @@ export const props = {
     default: false,
     description: '是否顯示編號'
   },
-  sorting: {
+  isSorting: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,

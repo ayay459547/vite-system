@@ -25,7 +25,7 @@ const tableOptions = {
   title: '表格組件(使用 getTableSetting)',
   version: '1.0.0',
   settingKey: 'description-table-1',
-  sorting: true
+  isSorting: true
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
 
