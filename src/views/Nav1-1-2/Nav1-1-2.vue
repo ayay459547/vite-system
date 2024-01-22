@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, inject, onMounted, nextTick } from 'vue'
+import { ref, shallowRef, reactive, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
@@ -19,7 +19,7 @@ const { i18nTranslate } = useHook()
 const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
 
 // table
-const tableData = ref<TableData[]>([])
+const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const {

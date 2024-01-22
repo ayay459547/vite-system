@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { UseHook } from '@/declare/hook'
-import { ref, inject, reactive, onActivated, computed } from 'vue'
+import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
 import {
   CustomButton,
   CustomTable,
@@ -37,7 +37,7 @@ const userPermission = computed(() => {
 })
 
 // table
-const tableData = ref<TableData[]>([])
+const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {

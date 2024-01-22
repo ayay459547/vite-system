@@ -24,7 +24,7 @@ import { useRoutesStore } from '@/stores/stores_routes'
 import { useEnvStore } from '@/stores/stores_env'
 import { storeToRefs } from 'pinia'
 
-import type { RouteRecordName, RouteLocationNormalized } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 
 // hook
@@ -104,34 +104,33 @@ onMounted(() => {
   setModuleType(defaultModuleType)
 })
 
+const isLoading = ref(false)
 const componentIsShow = ref(true)
 
 // 路由更換時執行
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
+  isLoading.value = true
   componentIsShow.value = false
 
   setNavigationData(currentRoute)
 
   await nextTick()
+  updateToken()
 
   setTimeout(() => {
     setWebInfo()
-  }, 30)
-
-  setTimeout(() => {
     setModalView(currentRoute)
-    setLoading(currentRoute)
-  }, 50)
-
-  setTimeout(() => {
-    componentIsShow.value = true
   }, 80)
 
   setTimeout(() => {
+    componentIsShow.value = true
+  }, 160)
+
+  setTimeout(() => {
     pageScrollTop()
-    updateToken()
-  }, 100)
+    isLoading.value = false
+  }, 320)
 }
 // 做節流 因為畫面更新 為觸發多次
 const throttleOnRouteChange = throttle(onRouteChange, 80) as typeof onRouteChange
@@ -181,21 +180,6 @@ const setModalView = async (currentRoute: RouteLocationNormalized) => {
 
     systemLayoutRef.value?.setModalView()
     layoutIsShow.value = true
-  }
-}
-
-// 切換路由時 要有loading
-const isLoading = ref(false)
-const prevRoute = ref<RouteRecordName>('')
-const setLoading = (currentRoute: RouteLocationNormalized) => {
-  if (prevRoute.value !== currentRoute.name) {
-    isLoading.value = true
-
-    setTimeout(() => {
-      prevRoute.value = currentRoute.name
-
-      isLoading.value = false
-    }, 160)
   }
 }
 
@@ -255,7 +239,7 @@ onBeforeMount(() => {
 onMounted(() => {
   setTimeout(() => {
     loading(true, '系統初始化')
-  }, 0)
+  }, 80)
 
   // 給 800 毫秒 確保路由跳轉完成後 才執行
   setTimeout(() => {
@@ -264,7 +248,7 @@ onMounted(() => {
 
   setTimeout(() => {
     loading(false, 'loading')
-  }, 900)
+  }, 1200)
 })
 
 // 路由切換

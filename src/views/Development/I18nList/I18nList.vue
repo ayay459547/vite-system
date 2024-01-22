@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
 import { CustomTable, CustomInput } from '@/components'
 import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
@@ -7,7 +7,7 @@ import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
 import { columnSetting } from './columns'
 import { type TableData, getData, getDataCount } from './api'
 
-const tableData = ref<TableData[]>([])
+const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {

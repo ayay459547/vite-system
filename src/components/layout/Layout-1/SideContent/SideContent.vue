@@ -3,7 +3,7 @@ import { computed, ref, nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, scrollToEl } from '@/lib/lib_utils'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import NavigationView from './NavigationView.vue'
@@ -42,6 +42,14 @@ const init = async () => {
     navRef.value.setLevel2Router(currentLevel1)
   }
   navRef.value.setOpen(hasChild)
+
+  await nextTick()
+  setTimeout(() => {
+    const el = document.querySelector('.router-link-active')
+    if (el) {
+      scrollToEl(el)
+    }
+  }, 1200)
 }
 
 defineExpose({

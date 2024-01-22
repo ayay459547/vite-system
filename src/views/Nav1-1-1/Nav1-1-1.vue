@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, inject, reactive, onMounted, computed } from 'vue'
+import { ref, shallowRef, inject, reactive, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
@@ -30,7 +30,7 @@ const userPermission = computed(() => {
 })
 
 // table
-const tableData = ref<TableData[]>([])
+const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {

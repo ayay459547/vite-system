@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, inject, reactive, onMounted, computed, nextTick } from 'vue'
+import { ref, shallowRef, inject, reactive, onMounted, computed, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
@@ -47,7 +47,7 @@ const {
 } = getFormSetting<TableData>(columnSetting, 'filter')
 
 // table
-const tableData = ref<TableData[]>([])
+const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {
