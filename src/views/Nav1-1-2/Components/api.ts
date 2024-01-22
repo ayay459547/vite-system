@@ -40,7 +40,7 @@ export const getData = async (userId: number) => {
       userId
     }
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeData,
       status: 'success'

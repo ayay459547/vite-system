@@ -160,7 +160,7 @@ router.beforeEach(
 
     // 路由
     const routesStore = useRoutesStore()
-    const { currentNavigation, navigationMap } = storeToRefs(routesStore)
+    const { navigationMap } = storeToRefs(routesStore)
 
     const userPermission = navigationMap.value.get(to.name as string)
 
@@ -182,6 +182,11 @@ router.beforeEach(
       if (to.name === 'checkStatus') {
         next()
       } else {
+        // 未登入先將想去的頁面暫存
+        if (to.name !== 'home') {
+          tempTo.value = to
+        }
+
         next({ name: 'checkStatus' })
       }
     } else if (isLogin.value) {
@@ -211,11 +216,6 @@ router.beforeEach(
       if (to.name === 'login') {
         next()
       } else {
-        // 未登入先將想去的頁面暫存
-        if (to.name !== 'home') {
-          tempTo.value = to
-        }
-
         next({ name: 'login' })
       }
     }

@@ -16,7 +16,7 @@ export const loginSystem = async (account: string, password: string): Promise<To
       password
     }
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeTokenData,
       status: 'success'

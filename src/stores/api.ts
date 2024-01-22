@@ -13,7 +13,7 @@ export const getRoutesPermission = async (userId: number) => {
       id: userId
     }
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: allPermissionData,
       status: 'success'
@@ -59,7 +59,7 @@ export const getAuthData = async (token: number): Promise<AuthData> => {
       id: token
     }
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeUserData,
       status: 'success'

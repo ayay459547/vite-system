@@ -176,7 +176,7 @@ const activeSort = () => {
   })
 }
 const initSortingList = () => {
-  sortingList.value = props.tableColumns.reduce((res, column) => {
+  sortingList.value = props.tableColumns.reduce<SortingList>((res, column) => {
     const _isOperations = (column?.isOperations ?? false)
 
     if (!_isOperations && (column?.isSorting ?? true)) {

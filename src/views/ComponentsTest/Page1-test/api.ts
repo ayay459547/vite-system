@@ -67,7 +67,7 @@ export const getData = async () => {
     method: 'get',
     data: {}
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeTableData,
       status: 'success'
@@ -83,7 +83,7 @@ export const getDataCount = async () => {
     method: 'get',
     data: {}
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: 1000,
       status: 'success'
@@ -99,7 +99,7 @@ export const createData = async (postData: TableData) => {
     method: 'post',
     data: postData
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: 5,
       status: 'success'
@@ -115,7 +115,7 @@ export const updateData = async (postData: TableData) => {
     method: 'post',
     data: postData
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: 2,
       status: 'success'

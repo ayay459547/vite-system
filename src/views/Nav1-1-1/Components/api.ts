@@ -9,7 +9,7 @@ export const createData = async (postData: TableData) => {
     method: 'post',
     data: postData
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: 5,
       status: 'success'
@@ -44,7 +44,7 @@ export const updateData = async (postData: TableData) => {
     method: 'post',
     data: postData
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: 2,
       status: 'success'

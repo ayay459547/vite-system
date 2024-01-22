@@ -45,7 +45,7 @@ export const getExcelData = async (params: any) => {
       sort
     }
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeTableData,
       status: 'success'
@@ -117,7 +117,7 @@ export const getData = async (params: any) => {
       sort
     }
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeTableData,
       status: 'success'
@@ -194,7 +194,7 @@ export const getDataCount = async (params: any) => {
     method: 'get',
     data: {}
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeData.length,
       status: 'success'

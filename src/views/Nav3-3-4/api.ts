@@ -83,7 +83,7 @@ export const getVersionOptions = async (): Promise<Options> => {
     url: '/maintainResourceCompareResult/retrieveNewestVersionBySetting',
     method: 'get'
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: ['20231129_1'],
       status: 'success'
@@ -136,7 +136,7 @@ export const getData = async (params: any): Promise<ResponseData[]> => {
       showCorrectCompare
     } as Params
   }, {
-    getFakeData: true,
+    isFakeData: true,
     fakeData: {
       data: fakeTableData,
       status: 'success'

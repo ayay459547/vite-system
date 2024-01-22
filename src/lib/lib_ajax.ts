@@ -80,7 +80,7 @@ let timeoutId: NodeJS.Timeout | null
  *              method: get | post | put | delete
  *              data: 傳到後端資料
  * @param {Object} options
- *              getFakeData: 是否取的假資料
+ *              isFakeData: 是否取的假資料
  *              fakeData: 如果是取假資料 返回的資料
  *              status: 資料返回狀態
  *              callback: 自訂回傳假資料
@@ -92,7 +92,7 @@ export const ajax = <ResData>(
 ): PromiseLike<ResData> => {
 
   const {
-    getFakeData = false,
+    isFakeData = false,
     fakeData = null,
     isLog = false,
     delay = 0,
@@ -129,7 +129,7 @@ export const ajax = <ResData>(
         console.table(data)
         console.groupEnd()
       }
-      if (getFakeData) {
+      if (isFakeData) {
         return fakeApi<ResData>(config, { fakeData, delay, callback })
       } else {
         return axiosApi<ResData>(config, baseURL)

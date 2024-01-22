@@ -25,7 +25,7 @@ const getTodosData = async () => {
     method: 'get',
     data: {}
   }, {
-    getFakeData: false,
+    isFakeData: false,
     fakeData: [
       {
         'userId': 1,
@@ -53,7 +53,7 @@ const getTodosData2 = (todos) => {
     method: 'post',
     data: { todos }
   }, {
-    getFakeData: false,
+    isFakeData: false,
     fakeData: [
       {
         'userId': 1,

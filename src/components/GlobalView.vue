@@ -230,7 +230,7 @@ const initNavigationRoutes = async () => {
 
   setTimeout(() => {
     layoutIsShow.value = true
-  }, 400)
+  }, 240)
 }
 
 onBeforeMount(() => {
@@ -239,7 +239,7 @@ onBeforeMount(() => {
 onMounted(() => {
   setTimeout(() => {
     loading(true, '系統初始化')
-  }, 80)
+  }, 16)
 
   // 給 800 毫秒 確保路由跳轉完成後 才執行
   setTimeout(() => {

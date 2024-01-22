@@ -10,7 +10,7 @@ type ApiCommon<T> = {
 export type Api<T, O = {}> = ApiCommon<T> & Partial<O>
 
 export type AjaxOptions<T> = {
-  getFakeData?: boolean
+  isFakeData?: boolean
   fakeData?: T | null
   isLog?: boolean
   delay?: number
