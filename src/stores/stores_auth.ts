@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { shallowRef, computed, shallowReactive } from 'vue'
+import { ref, shallowRef, computed, shallowReactive } from 'vue'
 
 import { permission } from '@/lib/lib_permission'
 import { isEmpty } from '@/lib/lib_utils'
@@ -11,6 +11,9 @@ import type { AuthData, PermissionData } from '@/declare/hook'
 import { defaultAuthData, getAuthData } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
+	// 是否已確認登入狀態
+	const isCheckStatus = ref(false)
+
 	// 登入狀態 看使用者資料
 	const isLogin = computed(() => {
 		return !isEmpty(authData.value?.user?.id)
@@ -39,16 +42,10 @@ export const useAuthStore = defineStore('auth', () => {
 			if (token !== null) {
 				const { userId } = token
 				setToken(userId)
-
-				setTimeout(() => {
-					resolve(userId)
-				}, 1000)
+				resolve(userId)
 			} else {
 				clearToken()
-
-				setTimeout(() => {
-					resolve(null)
-				}, 1000)
+				resolve(null)
 			}
 		})
 	}
@@ -110,36 +107,39 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 初始化系統路由權限
 	 */
 	const initSystemData = async () => {
+		isCheckStatus.value = false
+
 		routesPermission.clear()
 
 		const userId = await checkAuthStatus()
 
+		let authId = null
+		let permissionList = []
+		let authData = null
+
 		if (!isEmpty(userId)) {
 			// 使用 token 初始化使用者資料
-			const authData = await getAuthData(userId)
+			const resData = await getAuthData(userId)
+			const { user, roleFunction } = resData
 
-			const {
-				user,
-				roleFunction: permissionList
-			} = authData
+			authId = user.id
+			permissionList = roleFunction
+			authData = resData
+		}
 
-			const authId = user.id
-
+		if (!isEmpty(authId)) {
 			setAuthData(authData)
 			setRoutesPermission(permissionList)
-
-			// 後端取使用者失敗
-			if (isEmpty(authId)) {
-				clearToken()
-			}
 		} else {
 			clearAuthData()
 			clearRoutesPermission()
 		}
+		isCheckStatus.value = true
 	}
 
   return {
-		isLogin,    // 路由確認用
+		isCheckStatus,
+		isLogin, // 路由確認用
 
 		authData,
 		routesPermission,

@@ -1,5 +1,4 @@
-import type { ComputedRef } from 'vue'
-import { shallowRef, computed } from 'vue'
+import { shallowRef } from 'vue'
 import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -12,7 +11,9 @@ import { permission, hasPermission, defaultPermission } from '@/lib/lib_permissi
 
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
+import CheckStatus from '@/views/Common/CheckStatus.vue'
 import NoPermissions from '@/views/Common/NoPermissions.vue'
+import EmptyView from '@/views/Common/EmptyView.vue'
 import Page_404 from '@/views/Common/Page_404.vue'
 
 // 網址前綴
@@ -57,9 +58,11 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
   return res
 }
 
-const resRoutes: ComputedRef<RouteRecordRaw[]> = computed(() => {
-  return treeToRoutes(routes)
-})
+// const resRoutes: ComputedRef<RouteRecordRaw[]> = computed(() => {
+//   return treeToRoutes(routes)
+// })
+
+const resRoutes = treeToRoutes(routes)
 
 const baseRoutes: Array<RouteRecordRaw> = [
   {
@@ -91,12 +94,28 @@ const baseRoutes: Array<RouteRecordRaw> = [
     component: LoginView
   },
   {
+    name: 'checkStatus',
+    meta: {
+      title: '確認登入狀態中'
+    },
+    path: `${systemUrl}/checkStatus`,
+    component: CheckStatus
+  },
+  {
     name: 'noPermissions',
     meta: {
       title: '無此權限'
     },
     path: `${systemUrl}/noPermissions`,
     component: NoPermissions
+  },
+  {
+    name: 'empty',
+    meta: {
+      title: '功能開發中'
+    },
+    path: `${systemUrl}/empty`,
+    component: EmptyView
   },
   {
     name: 'page404',
@@ -123,7 +142,7 @@ const baseRoutesName = baseRoutes.reduce((res, curr) => {
 
 const router = createRouter({
   history: createWebHistory((import.meta as any).env.BASE_URL),
-  routes: [...baseRoutes, ...resRoutes.value]
+  routes: [...baseRoutes, ...resRoutes]
 })
 
 // 暫存使用者想去的路由名稱
@@ -137,11 +156,11 @@ router.beforeEach(
   ) => {
     // 使用者
     const authStore = useAuthStore()
-    const { isLogin } = storeToRefs(authStore)
+    const { isLogin, isCheckStatus } = storeToRefs(authStore)
 
     // 路由
     const routesStore = useRoutesStore()
-    const { navigationMap } = storeToRefs(routesStore)
+    const { currentNavigation, navigationMap } = storeToRefs(routesStore)
 
     const userPermission = navigationMap.value.get(to.name as string)
 
@@ -158,8 +177,14 @@ router.beforeEach(
       0
     ].find(_permission => typeof _permission === 'number')
 
-
-    if (isLogin.value) {
+    // 尚未確認登入狀態
+    if (!isCheckStatus.value) {
+      if (to.name === 'checkStatus') {
+        next()
+      } else {
+        next({ name: 'checkStatus' })
+      }
+    } else if (isLogin.value) {
       // 已經登入 如果要進登入頁 自動跳回首頁
       if (to.name === 'login') {
         next({ name: 'home' })

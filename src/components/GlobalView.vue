@@ -25,7 +25,7 @@ import { useEnvStore } from '@/stores/stores_env'
 import { storeToRefs } from 'pinia'
 
 import type { RouteRecordName, RouteLocationNormalized } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 // hook
 import type { UseHook, UseHookList, CustomPopoverQueue } from '@/declare/hook'
@@ -96,10 +96,6 @@ const {
   historyNavigation
 } = storeToRefs(routesStore)
 
-const currentRouteName = computed<string>(() => {
-  return currentNavigation.value?.name ?? ''
-})
-
 // 翻譯檔
 const { initModuleLangMap, setModuleType, i18nTest, i18nTranslate } = useGlobalI18n()
 
@@ -108,10 +104,13 @@ onMounted(() => {
   setModuleType(defaultModuleType)
 })
 
+const componentIsShow = ref(true)
+
 // 路由更換時執行
-const changeTime = 320
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
+  componentIsShow.value = false
+
   setNavigationData(currentRoute)
 
   await nextTick()
@@ -126,12 +125,22 @@ const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   }, 50)
 
   setTimeout(() => {
+    componentIsShow.value = true
+  }, 80)
+
+  setTimeout(() => {
     pageScrollTop()
     updateToken()
   }, 100)
 }
 // 做節流 因為畫面更新 為觸發多次
-const throttleOnRouteChange = throttle(onRouteChange, changeTime) as typeof onRouteChange
+const throttleOnRouteChange = throttle(onRouteChange, 80) as typeof onRouteChange
+
+const route = useRoute()
+const routeName = computed<any>(() => {
+  throttleOnRouteChange(route)
+  return route?.name ?? ''
+})
 
 // 設定 網頁 title
 // 設定 使用中的翻譯檔模組
@@ -186,7 +195,7 @@ const setLoading = (currentRoute: RouteLocationNormalized) => {
       prevRoute.value = currentRoute.name
 
       isLoading.value = false
-    }, changeTime)
+    }, 160)
   }
 }
 
@@ -248,14 +257,14 @@ onMounted(() => {
     loading(true, '系統初始化')
   }, 0)
 
-  // 給 900 毫秒 確保路由跳轉完成後 才執行
+  // 給 800 毫秒 確保路由跳轉完成後 才執行
   setTimeout(() => {
     systemLayoutRef.value.init()
-  }, 900)
+  }, 800)
 
   setTimeout(() => {
     loading(false, 'loading')
-  }, 1300)
+  }, 900)
 })
 
 // 路由切換
@@ -362,7 +371,7 @@ provide<UseHook>('useHook', () => {
       :is-show="layoutIsShow"
       :show-routes="navigationRoutes"
       :current-navigation="currentNavigation"
-      :current-route-name="currentRouteName"
+      :current-route-name="routeName"
       :breadcrumbName="breadcrumbName"
       :history-is-open="historyIsOpen"
       :auth-data="authData"
@@ -404,7 +413,7 @@ provide<UseHook>('useHook', () => {
             <div class="__layout-scroll-top__"></div>
             <RouterView v-slot="{ Component, route }">
               <component
-                v-if="route.name === 'login'"
+                v-if="componentIsShow && route.name === 'login'"
                 :key="route.name"
                 :is="Component"
                 @login="login"
@@ -412,28 +421,30 @@ provide<UseHook>('useHook', () => {
               <template v-else>
                 <KeepAlive>
                   <component
-                    v-if="route?.meta?.keepAlive ?? false"
+                    v-if="componentIsShow && (route?.meta?.keepAlive ?? false)"
                     :key="route.name"
                     :is="Component"
                     @init-system="initSystem"
                   />
                 </KeepAlive>
                 <component
-                  v-if="!(route?.meta?.keepAlive ?? false)"
+                  v-if="componentIsShow && !(route?.meta?.keepAlive ?? false)"
                   :key="route.name"
                   :is="Component"
                   @init-system="initSystem"
                 />
               </template>
               <!-- 更換路由執行 -->
-              <div style="display: none;">{{ throttleOnRouteChange(route) }}</div>
+              <!-- <div style="display: none;">{{ throttleOnRouteChange(route) }}</div> -->
             </RouterView>
           </div>
         </PageContent>
       </template>
 
       <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
-      <div v-show="isLoading" class="is-disabled"></div>
+      <div v-show="isLoading" class="is-disabled">
+        <span class="hidden-text">{{ routeName }}</span>
+      </div>
     </SystemLayout>
 
     <!-- hook loading -->
@@ -464,5 +475,12 @@ provide<UseHook>('useHook', () => {
   &-scroll-top {
     width: 100%;
   }
+}
+
+.is-disabled {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
 }
 </style>
