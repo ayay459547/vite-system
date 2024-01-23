@@ -105,7 +105,7 @@ export const getData = async (params: any) => {
 
   const resData = await ajax<Api<TableData[]>>({
     url: '/page1/get',
-    method: 'get',
+    method: 'post',
     data: {}
   }, {
     isFakeData: true,
@@ -155,7 +155,7 @@ export const getDataCount = async (params: any) => {
 
   const resData = await ajax<Api<TableData[]>>({
     url: '/page1/get',
-    method: 'get',
+    method: 'post',
     data: {}
   }, {
     isFakeData: true,
