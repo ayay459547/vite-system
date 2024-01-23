@@ -23,7 +23,7 @@ export interface FormSetting<T> {
   forms: T
   activeForms: Record<string, boolean>
   reset: (defaultValue?: Partial<T> | any) => void
-  getActiveForms: (showEmpty: boolean) => Partial<T>
+  getActiveForms: (isShowEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
   handleReset: () => void
 }
@@ -125,9 +125,9 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
       })
     },
-    getActiveForms: (showEmpty: boolean = false) => {
+    getActiveForms: (isShowEmpty: boolean = false) => {
       return resForms.$filter((value: any, key: string) => {
-        if (showEmpty) {
+        if (isShowEmpty) {
           return resActiveForms[key]
         }
         return resActiveForms[key] && !isEmpty(value)
