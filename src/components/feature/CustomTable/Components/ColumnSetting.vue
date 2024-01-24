@@ -45,8 +45,12 @@ const emit = defineEmits(['change'])
 const columnList = ref<ColumnItem[]>([])
 
 const getcolumnList = async () => {
-  const getRes: SettingData = await getColumnSetting(props.settingKey)
-  return getRes.columns
+  try {
+    const getRes: SettingData = await getColumnSetting(props.settingKey)
+    return getRes.columns
+  } catch (e) {
+    return []
+  }
 }
 
 /**

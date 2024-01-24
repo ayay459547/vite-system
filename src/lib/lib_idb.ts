@@ -1,4 +1,4 @@
-import dbPromise, { storeVersion } from './init/init_idb'
+import dbPromise from './init/init_idb'
 import { isEmpty } from '@/lib/lib_utils'
 
 async function get (table: string, key: string) {
@@ -23,22 +23,36 @@ async function keys (table: string) {
   return (await dbPromise).getAllKeys(table)
 }
 
-// iDB版本
-export async function getIDBVersion (key: string) {
-  return await get('iDBVersion', key)
-}
-export async function setIDBVersion (key: string, val: any) {
-  return await set('iDBVersion', key, val)
-}
-export async function delIDBVersion (key: string) {
-  return await del('iDBVersion', key)
-}
-export async function clearIDBVersion () {
-  return await clear('iDBVersion')
-}
-export async function keysIDBVersion () {
-  return await keys('iDBVersion')
-}
+/**
+ * 有新增表時 idbVersion + 1
+ * Table版本 > DB版本 => 加入新表
+ */
+export const idbVersion = 1
+/**
+ * 管理新增加的 store
+ * 已存在的 store 不用創建
+ *
+ * storeName 資料表名稱
+ * newVersion 在什麼版本的 idbVersion 加入
+ */
+export const storeVersion = [
+  {
+    storeName: 'iDBVersion',
+    newVersion: 1
+  },
+  {
+    storeName: 'columnSetting',
+    newVersion: 1
+  },
+  {
+    storeName: 'historyNavigation',
+    newVersion: 1
+  },
+  {
+    storeName: 'i18nInfo',
+    newVersion: 1
+  }
+]
 
 // 紀錄版本
 export const checkInitIdb = async () => {
@@ -61,6 +75,23 @@ export const checkInitIdb = async () => {
   })
 
   return storeList
+}
+
+// iDB版本
+export async function getIDBVersion (key: string) {
+  return await get('iDBVersion', key)
+}
+export async function setIDBVersion (key: string, val: any) {
+  return await set('iDBVersion', key, val)
+}
+export async function delIDBVersion (key: string) {
+  return await del('iDBVersion', key)
+}
+export async function clearIDBVersion () {
+  return await clear('iDBVersion')
+}
+export async function keysIDBVersion () {
+  return await keys('iDBVersion')
 }
 
 // 表單欄位設定

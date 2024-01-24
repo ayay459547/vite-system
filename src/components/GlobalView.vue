@@ -226,17 +226,21 @@ const initNavigationRoutes = async () => {
 
   await initSystemData()
 
-  const storeList = await checkInitIdb()
-  console.table(storeList)
-
   setNavigationRoutes(routesPermission.value)
   router.push({ name: 'home' })
 
   await nextTick()
+  const storeList = await checkInitIdb()
+  console.table(storeList)
 
   setTimeout(() => {
     layoutIsShow.value = true
-  }, 240)
+  }, 120)
+
+  // 給 900 毫秒 確保路由跳轉完成後 才執行
+  setTimeout(() => {
+    systemLayoutRef.value.init()
+  }, 900)
 
   setTimeout(() => {
     loading(false, 'loading')
@@ -249,11 +253,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
   loading(true, '系統初始化')
-
-  // 給 800 毫秒 確保路由跳轉完成後 才執行
-  setTimeout(() => {
-    systemLayoutRef.value.init()
-  }, 800)
 })
 
 // 路由切換
@@ -267,27 +266,21 @@ const onRouterChange = async () => {
 
 // 登出
 const logout = async () => {
+  await nextTick()
   loading(true, '登出中')
   clearToken()
 
   await initNavigationRoutes()
   router.push({ name: 'login' })
-
-  setTimeout(() => {
-    loading(false)
-  }, 300)
 }
 // 登入
 const login = async (userId: number) => {
+  await nextTick()
   loading(true, '系統初始化')
   setToken(userId)
 
   await initNavigationRoutes()
   router.push({ name: 'home' })
-
-  setTimeout(() => {
-    loading(false)
-  }, 300)
 }
 
 // 歷史路由

@@ -1,5 +1,6 @@
 import { openDB, deleteDB } from 'idb'
 import checkSystemVersionDiff from './checkSystemVersion'
+import { idbVersion, storeVersion } from '@/lib/lib_idb'
 
 /**
  * indexedDB 刪除換新
@@ -15,34 +16,6 @@ if (isChange) {
 
   deleteDB(system)
 }
-
-// Table版本 > DB版本 => 加入新表
-const idbVersion = 5
-/**
- * 管理新增加的 store
- * 已存在的 store 不用創建
- *
- * storeName 資料表名稱
- * newVersion 在什麼版本加入
- */
-export const storeVersion = [
-  {
-    storeName: 'iDBVersion',
-    newVersion: 6
-  },
-  {
-    storeName: 'columnSetting',
-    newVersion: 6
-  },
-  {
-    storeName: 'historyNavigation',
-    newVersion: 6
-  },
-  {
-    storeName: 'i18nInfo',
-    newVersion: 6
-  }
-]
 
 const dbPromise = openDB(system, idbVersion, {
   upgrade (db, oldVersion) {
