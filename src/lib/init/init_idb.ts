@@ -17,7 +17,7 @@ if (isChange) {
 }
 
 // Table版本 > DB版本 => 加入新表
-const idbVersion = 2
+const idbVersion = 5
 /**
  * 管理新增加的 store
  * 已存在的 store 不用創建
@@ -25,18 +25,22 @@ const idbVersion = 2
  * storeName 資料表名稱
  * newVersion 在什麼版本加入
  */
-const storeVersion = [
+export const storeVersion = [
+  {
+    storeName: 'iDBVersion',
+    newVersion: 6
+  },
   {
     storeName: 'columnSetting',
-    newVersion: 1
+    newVersion: 6
   },
   {
     storeName: 'historyNavigation',
-    newVersion: 1
+    newVersion: 6
   },
   {
     storeName: 'i18nInfo',
-    newVersion: 2
+    newVersion: 6
   }
 ]
 

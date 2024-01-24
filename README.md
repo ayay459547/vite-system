@@ -13,19 +13,21 @@
 
 ### 安裝套件
 ```sh
-# Project Setup
 npm install
 ```
-### 運行環境 
+### 運行開發環境
 ```sh
-# Compile and Hot-Reload for Development
 npm run dev
+```
+### 運行上線環境
+```sh
+npm run pro
 ```
 ### 打包
 ```sh
-# Type-Check, Compile and Minify for Production
 npm run build
 ```
+
 ### 單元測試
 #### Run Unit Tests with [Vitest](https://vitest.dev/)
 

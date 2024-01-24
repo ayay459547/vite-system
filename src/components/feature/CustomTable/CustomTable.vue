@@ -387,18 +387,23 @@ defineExpose({
   }
 })
 
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
+/**
+ * slot 優先順序
+ * 1. header-{ slotKey }
+ * 2. header-all
+ *
+ * 1. column-{ slotKey }
+ * 2. column-all
+ */
 const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
-      // 有多欄位排序時 給 header-all
-      // 預設欄位加入 sorting 組件
       if (hasSlot('header-all') || props.isSorting) return 'header-all'
       break
     case 'column':

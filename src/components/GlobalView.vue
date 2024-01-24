@@ -27,6 +27,9 @@ import { storeToRefs } from 'pinia'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 
+// idb
+import { checkInitIdb } from '@/lib/lib_idb'
+
 // hook
 import type { UseHook, UseHookList, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
@@ -214,7 +217,7 @@ const initSystem = async () => {
 }
 
 /**
- * 初始化系統使用者 + 權限
+ * 初始化系統使用者 + 權限 + iDB
  * 用權限 設置路由選項
  */
 const layoutIsShow = ref(false)
@@ -222,6 +225,9 @@ const initNavigationRoutes = async () => {
   layoutIsShow.value = false
 
   await initSystemData()
+
+  const storeList = await checkInitIdb()
+  console.table(storeList)
 
   setNavigationRoutes(routesPermission.value)
   router.push({ name: 'home' })
@@ -231,24 +237,23 @@ const initNavigationRoutes = async () => {
   setTimeout(() => {
     layoutIsShow.value = true
   }, 240)
+
+  setTimeout(() => {
+    loading(false, 'loading')
+  }, 1200)
 }
 
 onBeforeMount(() => {
   initNavigationRoutes()
 })
+
 onMounted(() => {
-  setTimeout(() => {
-    loading(true, '系統初始化')
-  }, 16)
+  loading(true, '系統初始化')
 
   // 給 800 毫秒 確保路由跳轉完成後 才執行
   setTimeout(() => {
     systemLayoutRef.value.init()
   }, 800)
-
-  setTimeout(() => {
-    loading(false, 'loading')
-  }, 1200)
 })
 
 // 路由切換

@@ -1,4 +1,5 @@
-import dbPromise from './init/init_idb'
+import dbPromise, { storeVersion } from './init/init_idb'
+import { isEmpty } from '@/lib/lib_utils'
 
 async function get (table: string, key: string) {
   return (await dbPromise).get(table, key)
@@ -20,6 +21,46 @@ async function clear (table: string) {
 }
 async function keys (table: string) {
   return (await dbPromise).getAllKeys(table)
+}
+
+// iDB版本
+export async function getIDBVersion (key: string) {
+  return await get('iDBVersion', key)
+}
+export async function setIDBVersion (key: string, val: any) {
+  return await set('iDBVersion', key, val)
+}
+export async function delIDBVersion (key: string) {
+  return await del('iDBVersion', key)
+}
+export async function clearIDBVersion () {
+  return await clear('iDBVersion')
+}
+export async function keysIDBVersion () {
+  return await keys('iDBVersion')
+}
+
+// 紀錄版本
+export const checkInitIdb = async () => {
+  const storeList = await keysIDBVersion()
+
+  storeVersion.forEach(async store => {
+    const { storeName, newVersion } = store
+
+    getIDBVersion(storeName).then(info => {
+      if (
+        isEmpty(info) ||
+        info.newVersion !== newVersion
+      ) {
+        setIDBVersion(storeName, {
+          storeName,
+          newVersion
+        })
+      }
+    })
+  })
+
+  return storeList
 }
 
 // 表單欄位設定
