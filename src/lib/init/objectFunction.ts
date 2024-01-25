@@ -64,7 +64,7 @@ const objectFunction = {
   }
 }
 
-const injectObjectFunction = () => {
+function injectObjectFunction () {
   for (const key in objectFunction) {
     if (!Object.prototype[key]) {
       Object.defineProperty(Object.prototype, key, {
@@ -77,5 +77,3 @@ const injectObjectFunction = () => {
 }
 
 injectObjectFunction()
-
-export default objectFunction

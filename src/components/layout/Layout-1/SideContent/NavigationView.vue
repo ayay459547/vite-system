@@ -26,6 +26,7 @@ const changeMap = (name: string): void => {
   level2OpenMap.value[name] = !level2OpenMap.value[name]
 }
 
+// 第二層子路由預設全部打開
 const setLevel2Router = (level2Router: Navigation): void => {
   const { leaves } = level2Router
 
@@ -96,7 +97,7 @@ defineExpose({
 
     <div class="nav-list level2">
       <SubNavigationView
-        v-model:isOpen="level2IsOpen"
+        v-model:level2-is-open="level2IsOpen"
         :title="getRouteTitle(level2Nav)"
         :level2-list="level2List"
         :open-map="level2OpenMap"

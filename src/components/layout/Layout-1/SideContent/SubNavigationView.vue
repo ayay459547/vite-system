@@ -11,7 +11,7 @@ export default defineComponent({
   name: 'SubNavigationView',
   components: { CustomIcon },
   props: {
-    isOpen: {
+    level2IsOpen: {
       type: Boolean as PropType<boolean>,
       default: false
     },
@@ -32,13 +32,13 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:isOpen', 'changeMap'],
+  emits: ['update:level2IsOpen', 'changeMap'],
   setup (props, { emit }) {
     const { getRouteIcon, getRouteTitle } = routesHook()
 
     const tempIsOpen: WritableComputedRef<Boolean> = computed({
-      get: () => props.isOpen,
-      set: value => emit('update:isOpen', value)
+      get: () => props.level2IsOpen,
+      set: value => emit('update:level2IsOpen', value)
     })
 
     const onTitleClick = (): void => {

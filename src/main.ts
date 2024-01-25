@@ -1,21 +1,28 @@
-// polyfill
-import './lib/Polyfill/inject'
+// 去除 chrome 的touch事件警告
+import './lib/init/passiveEvents'
+
 // object 有類似 array 方法
 import './lib/init/objectFunction'
+
+// Polyfill
+import './lib/Polyfill/inject'
 
 /**
  * 初始化客戶瀏覽器端的資料
  *
  * idb
- * localStorage
  * cookie
+ * localStorage
  */
-import './lib/init/init_idb'
+import dbPromise from './lib/init/init_idb'
+dbPromise.then(idb => {
+  console.groupCollapsed('[init] indexedDB')
+  console.table(idb)
+  console.groupEnd()
+})
+
 import './lib/init/init_cookie'
 import './lib/init/init_localStorage'
-
-// chrome 性能優化 所產生的警告
-import './lib/init/passiveEvents'
 
 import { createApp } from 'vue'
 import App from './App.vue'

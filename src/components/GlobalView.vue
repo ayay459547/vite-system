@@ -230,8 +230,7 @@ const initNavigationRoutes = async () => {
   router.push({ name: 'home' })
 
   await nextTick()
-  const storeList = await checkInitIdb()
-  console.table(storeList)
+  await checkInitIdb()
 
   setTimeout(() => {
     layoutIsShow.value = true

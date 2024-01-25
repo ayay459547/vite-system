@@ -1,4 +1,3 @@
-// 去除 chrome 的touch事件警告
 // https://stackoverflow.com/questions/46094912/added-non-passive-event-listener-to-a-scroll-blocking-touchstart-event
 
 const passiveEvents = function () {
@@ -16,5 +15,3 @@ const passiveEvents = function () {
 }
 
 passiveEvents()
-
-export default passiveEvents

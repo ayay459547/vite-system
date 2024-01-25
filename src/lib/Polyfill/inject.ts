@@ -1,15 +1,24 @@
-import injectFill from './Array/injectFill'
-import injectIncludes from './Array/injectIncludes'
+import fill from './Array/fill'
+import includes from './Array/includes'
+import map from './Array/map'
 
-const injectFunction = {
-  fill: injectFill,
-  includes: injectIncludes
-}
+import entries from './Object/entries'
+import keys from './Object/keys'
+import values from './Object/values'
 
-for (const key in injectFunction) {
-  if (!Array.prototype[key]) {
-    injectFunction[key]()
+const injectList = [
+  // Array
+  fill,
+  includes,
+  map,
+  // Object
+  entries,
+  keys,
+  values
+]
+
+injectList.forEach(injectItem => {
+  if (typeof injectItem === 'function') {
+    injectItem()
   }
-}
-
-export default injectFunction
+})
