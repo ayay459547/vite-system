@@ -10,19 +10,13 @@ import './lib/Polyfill/inject'
 /**
  * 初始化客戶瀏覽器端的資料
  *
- * idb
  * cookie
  * localStorage
+ * idb
  */
-import dbPromise from './lib/init/init_idb'
-dbPromise.then(idb => {
-  console.groupCollapsed('[init] indexedDB')
-  console.table(idb)
-  console.groupEnd()
-})
-
 import './lib/init/init_cookie'
 import './lib/init/init_localStorage'
+import './lib/init/init_idb'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -40,7 +34,7 @@ import pluginDirective from '@/directive/pluginDirective'
 import i18n from '@/i18n'
 
 // 暗黑模式 尚未開發
-import 'element-plus/theme-chalk/dark/css-vars.css'
+// import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const app = createApp(App)
 

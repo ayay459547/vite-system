@@ -22,7 +22,7 @@ const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
 /**
  * @author Caleb
  * @description 用DFS的方式 將路由樹轉換成可使用路由
- * @param routes 路由樹
+ * @param {Array} routes 路由樹
  * @returns {Array} vue-router 指定格式
  */
 const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
@@ -156,7 +156,7 @@ router.beforeEach(
   ) => {
     // 使用者
     const authStore = useAuthStore()
-    const { isLogin, isCheckStatus } = storeToRefs(authStore)
+    const { isLogin, isCheckedStatus } = storeToRefs(authStore)
 
     // 路由
     const routesStore = useRoutesStore()
@@ -178,7 +178,7 @@ router.beforeEach(
     ].find(_permission => typeof _permission === 'number')
 
     // 尚未確認登入狀態
-    if (!isCheckStatus.value) {
+    if (!isCheckedStatus.value) {
       if (to.name === 'checkStatus') {
         next()
       } else {

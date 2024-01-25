@@ -6,10 +6,10 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/stores_auth'
 
 const authStore = useAuthStore()
-const { isCheckStatus } = storeToRefs(authStore)
+const { isCheckedStatus } = storeToRefs(authStore)
 
 const router = useRouter()
-watch(isCheckStatus, (isCheck: boolean) => {
+watch(isCheckedStatus, (isCheck: boolean) => {
   if (isCheck) {
     router.push({ name: 'home' })
   }

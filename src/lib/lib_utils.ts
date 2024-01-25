@@ -452,7 +452,7 @@ export const aesEncrypt = (str: any, key: string): string => {
   // return encData
 
   const utf8data = cryptoJS.enc.Utf8.parse(str)
-  const encData = cryptoJS.AES.encrypt(utf8data, key)
+  const encData = cryptoJS.AES.encrypt(utf8data, `__${key}__`)
   return encData
 }
 
@@ -469,7 +469,7 @@ export const aesDecrypt = (str: string, key: string): string => {
     // const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
     // return decJson
 
-    const decrypted = cryptoJS.AES.decrypt(str, key)
+    const decrypted = cryptoJS.AES.decrypt(str, `__${key}__`)
     const decryptedData = cryptoJS.enc.Utf8.stringify(decrypted)
     return decryptedData
 

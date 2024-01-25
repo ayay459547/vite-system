@@ -12,7 +12,7 @@ import { defaultAuthData, getAuthData } from './api'
 
 export const useAuthStore = defineStore('auth', () => {
 	// 是否已確認登入狀態
-	const isCheckStatus = ref(false)
+	const isCheckedStatus = ref(false)
 
 	// 登入狀態 看使用者資料
 	const isLogin = computed(() => {
@@ -107,7 +107,7 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 初始化系統路由權限
 	 */
 	const initSystemData = async () => {
-		isCheckStatus.value = false
+		isCheckedStatus.value = false
 
 		routesPermission.clear()
 
@@ -136,13 +136,14 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 
 		setTimeout(() => {
-			isCheckStatus.value = true
+			isCheckedStatus.value = true
 		}, 480)
 	}
 
   return {
-		isCheckStatus,
-		isLogin, // 路由確認用
+		// 路由確認用
+		isCheckedStatus,
+		isLogin,
 
 		authData,
 		routesPermission,

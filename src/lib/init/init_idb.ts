@@ -28,4 +28,10 @@ const dbPromise = openDB(system, idbVersion, {
   }
 })
 
+dbPromise.then(idb => {
+  console.groupCollapsed('[init] indexedDB')
+  console.table(idb)
+  console.groupEnd()
+})
+
 export default dbPromise
