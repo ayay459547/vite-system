@@ -146,7 +146,7 @@ const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18n
   return nav.title
 }
 
-export const routesHook = () => {
+export const useRoutesHook = () => {
   const {
     t: i18nTranslate,
     // locale: i18nLocale,

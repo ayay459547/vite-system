@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch, inject, effectScope, onBeforeMount, onMounted, onUnmounted, reactive, nextTick } from 'vue'
+import { ref, computed, watch, effectScope, onBeforeMount, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid, useLocalI18n } from '@/lib/lib_utils'
 import { useBoundingClientRect } from '@/lib/lib_hook'
 import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
@@ -15,9 +14,9 @@ import {
   props as modalProps,
   minModalIndex
 } from './CustomModalInfo'
+import i18nMessage from './i18n'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook()
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const scopedId = getUuid('__i-modal__')
 

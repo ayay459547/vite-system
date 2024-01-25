@@ -7,11 +7,11 @@ import type { Navigation } from '@/declare/routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { hasOwnProperty } from '@/lib/lib_utils'
-import { routesHook } from '@/lib/lib_routes'
+import { useRoutesHook } from '@/lib/lib_routes'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList } = useHook()
-const { getRouteIcon, getRouteTitle } = routesHook()
+const { getRouteIcon, getRouteTitle } = useRoutesHook()
 
 const props = defineProps<{
   showRoutes: Navigation[]

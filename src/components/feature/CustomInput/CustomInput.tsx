@@ -1,8 +1,6 @@
-import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
+import { defineComponent, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
 import { useField } from 'vee-validate'
 
-// @ts-ignore
-import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
   FormSelect,
@@ -14,7 +12,7 @@ import {
   FormOperator
   // @ts-ignore
 } from '@/components'
-import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
+import { isEmpty, tipLog, getUuid, useLocalI18n } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 // @ts-ignore
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
@@ -26,6 +24,8 @@ import {
   version,
   props as inputProps
 } from './CustomInputInfo'
+// @ts-ignore
+import i18nMessage from './i18n'
 
 import styles from './CustomInput.module.scss'
 
@@ -49,8 +49,7 @@ const CustomInput = defineComponent({
   setup (props, { slots, emit, expose }) {
     const scopedId = getUuid('__i-group-input__')
 
-    const useHook: UseHook = inject('useHook')
-    const { i18nTranslate, i18nTest } = useHook()
+    const { i18nTranslate, i18nTest } = useLocalI18n(i18nMessage)
 
     // const inputValue = computed({
     //   get: () => props.modelValue,
@@ -132,6 +131,8 @@ const CustomInput = defineComponent({
 
     const i18nErrorMessage = computed(() => {
       const keyword = errorMessage?.value ?? ''
+      console.log(keyword, ' => ', i18nTest(keyword))
+      console.log('pleaseInput', ' => ', i18nTest('pleaseInput'))
       if (i18nTest(keyword)) return i18nTranslate(keyword)
       return keyword
     })

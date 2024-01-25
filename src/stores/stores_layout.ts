@@ -10,7 +10,7 @@ export const useLayoutStore = defineStore('layout', () => {
 
   /**
    * 初始化語言
-   * 以 cookie 上的為主
+   * 以 localStorage 上的為主
    */
   const init = () => {
     const cookieLocale = localStorage.getItem('layout')

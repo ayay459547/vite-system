@@ -4,7 +4,7 @@ import { defineComponent, computed } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
-import { routesHook } from '@/lib/lib_routes'
+import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
   },
   emits: ['update:level2IsOpen', 'changeMap'],
   setup (props, { emit }) {
-    const { getRouteIcon, getRouteTitle } = routesHook()
+    const { getRouteIcon, getRouteTitle } = useRoutesHook()
 
     const tempIsOpen: WritableComputedRef<Boolean> = computed({
       get: () => props.level2IsOpen,

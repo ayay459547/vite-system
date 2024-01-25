@@ -2,7 +2,7 @@
 import { ref, shallowRef } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import { routesHook } from '@/lib/lib_routes'
+import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
@@ -13,7 +13,7 @@ const props = defineProps<{
   currentRouteName: CurrentRouteName
 }>()
 
-const { getRouteIcon, getRouteTitle } = routesHook()
+const { getRouteIcon, getRouteTitle } = useRoutesHook()
 
 // 第二層路由
 const level2IsOpen = ref<boolean>(false)
@@ -163,7 +163,8 @@ defineExpose({
     cursor: pointer;
 
     white-space: nowrap;
-    text-overflow: ellipsis;
+    overflow: hidden;
+    gap: 8px;
 
     &:hover {
       background-color: lighten($system-bg-color, 5%);
@@ -174,10 +175,12 @@ defineExpose({
     }
 
     &-left {
+      width: 100%;
       display: flex;
       align-items: center;
       gap: 24px;
       flex: 1;
+      overflow: hidden;
       &.active {
         color: $warning;
       }
@@ -185,6 +188,10 @@ defineExpose({
         font-size: 1.4em;
         transform: translateX(0);
         transition-duration: 0.3s;
+
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
 
         @media (max-width: 768px) {
           font-size: 1.3em;

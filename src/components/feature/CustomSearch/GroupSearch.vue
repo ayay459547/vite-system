@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, inject, useSlots } from 'vue'
+import { ref, useSlots } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid, useLocalI18n } from '@/lib/lib_utils'
 
 import {
   version,
   props as groupSearchProps
 } from './GroupSearchInfo'
+import i18nMessage from './i18n'
 
 const scopedId = getUuid('__i-group-search__')
 
@@ -16,8 +16,7 @@ const props = defineProps(groupSearchProps)
 
 const isShow = ref(false)
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook()
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const emit = defineEmits(['reset', 'submit'])
 

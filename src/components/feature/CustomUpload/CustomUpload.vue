@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
-import { isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/lib_utils'
+import { swal, isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/lib_utils'
 
 import type { Info, FilesInfo, FileType } from './CustomUploadInfo'
 import {
@@ -22,8 +21,6 @@ const props = defineProps(uploadProps)
 
 const emit = defineEmits(['file'])
 
-const useHook: UseHook = inject('useHook')
-const { swal } = useHook()
 const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const drag = ref(null)

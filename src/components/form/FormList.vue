@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, reactive, inject, onBeforeMount, nextTick, useSlots, computed } from 'vue'
+import { ref, reactive, onBeforeMount, nextTick, useSlots, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
-import { scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { useLocalI18n, swal, scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-// slot
+import i18nMessage from './i18n'
+
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
@@ -33,8 +33,7 @@ const getColumnSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'column')
 }
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate, swal } = useHook()
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const props = defineProps({
   modelValue: {

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, reactive, onMounted, inject, nextTick } from 'vue'
+import { computed, ref, reactive, onMounted, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import { CustomModal } from '@/components'
@@ -11,9 +10,6 @@ import { useLayoutStore } from '@/stores/stores_layout'
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
 import Preferences from '@/components/layout/Preferences/UserPreferences.vue'
-
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook()
 
 const props = defineProps<{
   isShow: boolean
@@ -134,7 +130,7 @@ const onChangeLayout = () => {
         click-outside
       >
         <template #header>
-          <label>{{ i18nTranslate('preferences') }}</label>
+          <label>{{ $t('preferences') }}</label>
         </template>
         <Preferences ref="preferencesRef" @change-layout="onChangeLayout"/>
       </CustomModal>

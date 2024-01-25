@@ -129,18 +129,13 @@ export default {
     zhCn: '降冪排列',
     en: 'Descending'
   },
-  // CustomInput
+  // FormInput
   pleaseInput: {
     zhTw: '請輸入',
     zhCn: '请输入',
     en: 'Please Input'
   },
-  required: {
-    zhTw: '必填',
-    zhCn: '必填',
-    en: 'Required'
-  },
-  // CustomSelect
+  // FormSelect
   pleaseSelect: {
     zhTw: '請選擇',
     zhCn: '请选择',

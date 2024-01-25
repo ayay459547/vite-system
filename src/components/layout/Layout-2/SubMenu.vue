@@ -3,11 +3,11 @@ import { onMounted, shallowRef, ref } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { routesHook } from '@/lib/lib_routes'
+import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 
-const { getRouteIcon, getRouteTitle } = routesHook()
+const { getRouteIcon, getRouteTitle } = useRoutesHook()
 
 const props = defineProps<{
   currentNavigation: Navigation
