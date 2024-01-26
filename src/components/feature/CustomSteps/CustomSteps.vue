@@ -34,7 +34,7 @@ const hasSlot = (prop: string): boolean => {
       <ElStep
         v-for="(option, optionIndex) in props.options"
         :key="optionIndex"
-        :title="option.lable"
+        :title="option.label"
         v-bind="option"
       >
         <template v-if="hasSlot('icon')" #icon>
@@ -45,7 +45,7 @@ const hasSlot = (prop: string): boolean => {
         </template>
 
         <template v-if="hasSlot('description')" #description>
-          <slot v-bind="option">{{ option?.lable ?? '' }}</slot>
+          <slot v-bind="option">{{ option?.label ?? '' }}</slot>
         </template>
       </ElStep>
     </ElSteps>

@@ -29,7 +29,7 @@ const onClick = ($event: Event) => {
       <ElTag
         :type="ElType[props.type]"
         :hit="props.hit"
-        :closable="props.closable"
+        :closable="props.closeable"
         :round="props.round"
         :color="props.color"
         :effect="props.effect"

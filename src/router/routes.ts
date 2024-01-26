@@ -7,7 +7,10 @@ import developmentRoutes from './development'
 import { getInjectRoutes } from './setting'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EmptyView = () => import('@/views/Common/EmptyView.vue')
+const InProgress = () => import('@/views/Common/InProgress.vue')
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const FixView = () => import('@/views/Common/FixView.vue')
 
 const routes: Array<RouterTree> = [
   {
@@ -78,7 +81,7 @@ const routes: Array<RouterTree> = [
             systemType: ['new'],
             path: '/nav1-1-3',
             icon: 'info',
-            component: () => import('@/views/Common/FixView.vue')
+            component: FixView
           },
           {
             name: 'nav1-1-4',
@@ -157,7 +160,7 @@ const routes: Array<RouterTree> = [
             systemType: ['new'],
             path: '/nav1-2-1',
             icon: 'info',
-            component: EmptyView
+            component: InProgress
           },
           {
             name: 'nav1-2-2',

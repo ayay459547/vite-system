@@ -502,7 +502,7 @@ onMounted(() => {
     <div class="__table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
         <CustomPopover
-          v-if="!props.hiddenExcel"
+          v-if="!props.isHiddenExcel"
           v-model:visible="excelIsShow"
           placement="bottom"
           :width="150"

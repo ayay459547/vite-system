@@ -5,7 +5,7 @@ export const version = '1.0.0'
 export type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success'
 
 export type Options = {
-  lable?: string
+  label?: string
   description?: string
   status?: StatusType | ''
 } & any

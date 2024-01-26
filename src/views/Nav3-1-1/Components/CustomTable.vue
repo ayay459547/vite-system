@@ -106,7 +106,7 @@ export interface Props extends Record<string, any> {
   pageSize?: number
   sort?: Sort
   showType?: 'custom' | 'auto'
-  hiddenExcel?: boolean
+  isHiddenExcel?: boolean
   /**
    * 資料懶加載
    * lazyLoading: 是否啟用
@@ -135,7 +135,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
     return { key: null, order: null }
   },
   showType: 'custom',
-  hiddenExcel: false,
+  isHiddenExcel: false,
   lazyLoading: false,
   lazyLoadingStatus: 'noMore'
 })
@@ -456,7 +456,7 @@ const slotKeyList = computed(() => {
     <div class="table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-8">
         <CustomPopover
-          v-if="!props.hiddenExcel"
+          v-if="!props.isHiddenExcel"
           v-model:visible="excelIsShow"
           placement="bottom"
           :width="150"

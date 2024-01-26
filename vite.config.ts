@@ -12,7 +12,8 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   base: './',
   build: {
-    outDir: 'demo'
+    outDir: 'demo',
+    sourcemap: true
   },
   assetsInclude: ['**/*.xlsx'], // xlsx file should be treated as assets
   plugins: [

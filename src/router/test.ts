@@ -27,7 +27,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart1',
-            title: '測試1',
+            title: '圖表測試1',
             meta: {
               keepAlive: false,
               status: 'completed'
@@ -39,7 +39,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart2',
-            title: '測試2',
+            title: '圖表測試2',
             meta: {
               keepAlive: false,
               status: 'completed'
@@ -51,7 +51,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart3',
-            title: '測試3',
+            title: '圖表測試3',
             meta: {
               keepAlive: false,
               status: 'completed'
@@ -63,7 +63,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart4',
-            title: '測試4',
+            title: '圖表測試4',
             meta: {
               keepAlive: false,
               status: 'completed'
@@ -75,7 +75,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart5',
-            title: '測試5',
+            title: '圖表測試5',
             meta: {
               keepAlive: false,
               status: 'completed'
@@ -87,7 +87,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart6',
-            title: '測試6',
+            title: '圖表測試6',
             meta: {
               keepAlive: false,
               status: 'completed'
@@ -99,7 +99,7 @@ const testRoutes: RouterTree[] = [
           },
           {
             name: 'test-Caleb-chart7',
-            title: '測試7',
+            title: '圖表測試7',
             meta: {
               keepAlive: false,
               status: 'completed'

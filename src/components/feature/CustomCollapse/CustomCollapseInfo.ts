@@ -5,7 +5,7 @@ export const version = '1.0.0'
 export type ModelValue = string | string[]
 
 export type Options = {
-  lable: string
+  label: string
   value: string
   disabled?: boolean
 } & any

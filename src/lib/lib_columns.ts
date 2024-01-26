@@ -349,7 +349,7 @@ export interface TableSetting {
     isSorting?: boolean
     tableColumns: any[]
     tableSize?: TableSize
-    hiddenExcel: boolean
+    isHiddenExcel: boolean
     // 其他 table 的 props
   } & Record<string, any>,
   downloadExcel: (tableData: Record<string, any>[]) => void
@@ -395,7 +395,7 @@ export const getTableSetting = (
       order: null | 'ascending' | 'descending'
     }
     isSorting?: boolean
-    hiddenExcel?: boolean
+    isHiddenExcel?: boolean
     tableSize?: TableSize
     showType?: string | 'custom' | 'auto'
   }
@@ -411,7 +411,7 @@ export const getTableSetting = (
       order: null
     },
     isSorting = false,
-    hiddenExcel = false,
+    isHiddenExcel = false,
     tableSize = ''
   } = options
 
@@ -579,7 +579,7 @@ export const getTableSetting = (
       isSorting,
       tableColumns: resColumns,
       tableSize,
-      hiddenExcel
+      isHiddenExcel
     },
     downloadExcel,
     resetScroll: (tableRef?: TableRef) => {

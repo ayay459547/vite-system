@@ -13,8 +13,9 @@ import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
 import CheckStatus from '@/views/Common/CheckStatus.vue'
 import NoPermissions from '@/views/Common/NoPermissions.vue'
-import EmptyView from '@/views/Common/EmptyView.vue'
+import InProgress from '@/views/Common/InProgress.vue'
 import Page_404 from '@/views/Common/Page_404.vue'
+import FixView from '@/views/Common/FixView.vue'
 
 // 網址前綴
 const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
@@ -110,12 +111,20 @@ const baseRoutes: Array<RouteRecordRaw> = [
     component: NoPermissions
   },
   {
-    name: 'empty',
+    name: 'inProgress',
     meta: {
       title: '功能開發中'
     },
-    path: `${systemUrl}/empty`,
-    component: EmptyView
+    path: `${systemUrl}/inProgress`,
+    component: InProgress
+  },
+  {
+    name: 'fix',
+    meta: {
+      title: '功能維護中'
+    },
+    path: `${systemUrl}/fix`,
+    component: FixView
   },
   {
     name: 'page404',

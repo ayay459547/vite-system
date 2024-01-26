@@ -220,7 +220,7 @@ export const props = {
       custom 依據api切資料
       auto 依據 page 和 pageSize 切資料`
   },
-  hiddenExcel: {
+  isHiddenExcel: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,

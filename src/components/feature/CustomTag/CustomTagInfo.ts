@@ -39,7 +39,7 @@ export const props = {
     required: false,
     default: 'default'
   },
-  closable: {
+  closeable: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false
