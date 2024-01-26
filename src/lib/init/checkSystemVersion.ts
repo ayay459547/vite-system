@@ -12,30 +12,15 @@ const checkSystemVersionDiff = () => {
   const localSystem = localStorage.getItem('system')
   const localVersion = localStorage.getItem('version')
 
-  if (
-    [null, undefined, ''].includes(localSystem) ||
-    [null, undefined, ''].includes(localVersion)
-  ) {
-    return {
-      isChange: true,
-      system,
-      systemVersion
-    }
-  }
-
-  if (
-    (localSystem !== system) ||
+  const isChange = [
+    [null, undefined, ''].includes(localSystem),
+    [null, undefined, ''].includes(localVersion),
+    (localSystem !== system),
     (localVersion !== systemVersion)
-  ) {
-    return {
-      isChange: true,
-      system,
-      systemVersion
-    }
-  }
+  ].some(isCheck => isCheck)
 
   return {
-    isChange: false,
+    isChange,
     system,
     systemVersion
   }

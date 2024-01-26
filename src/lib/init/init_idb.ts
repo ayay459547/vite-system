@@ -11,27 +11,35 @@ import { idbVersion, storeVersion } from '@/lib/lib_idb'
  */
 const { isChange, system } = checkSystemVersionDiff()
 
-if (isChange) {
-  console.log('init DB')
+const initDB = async () => {
+  console.log(system, ' => ', isChange)
 
-  deleteDB(system)
+  if (isChange) {
+    console.log('init DB')
+
+    await deleteDB(system)
+  }
+
+  const _dbPromise = openDB(system, idbVersion, {
+    upgrade (db, oldVersion) {
+      storeVersion.forEach(store => {
+        // 加入版本 > 原資料庫版本
+        if (store.newVersion > oldVersion) {
+          db.createObjectStore(store.storeName)
+        }
+      })
+    }
+  })
+
+  _dbPromise.then(idb => {
+    console.groupCollapsed('[init] indexedDB')
+    console.table(idb)
+    console.groupEnd()
+  })
+
+  return _dbPromise
 }
 
-const dbPromise = openDB(system, idbVersion, {
-  upgrade (db, oldVersion) {
-    storeVersion.forEach(store => {
-      // 加入版本 > 原資料庫版本
-      if (store.newVersion > oldVersion) {
-        db.createObjectStore(store.storeName)
-      }
-    })
-  }
-})
-
-dbPromise.then(idb => {
-  console.groupCollapsed('[init] indexedDB')
-  console.table(idb)
-  console.groupEnd()
-})
+const dbPromise = initDB()
 
 export default dbPromise

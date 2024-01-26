@@ -10,13 +10,13 @@ import './lib/Polyfill/inject'
 /**
  * 初始化客戶瀏覽器端的資料
  *
- * cookie
- * localStorage
  * idb
+ * cookie
+ * localStorage 必需最後
  */
+import './lib/init/init_idb'
 import './lib/init/init_cookie'
 import './lib/init/init_localStorage'
-import './lib/init/init_idb'
 
 import { createApp } from 'vue'
 import App from './App.vue'
