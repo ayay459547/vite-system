@@ -63,11 +63,11 @@ const layoutAttr = computed(() => {
     showRoutes: props.showRoutes,
     currentNavigation: props.currentNavigation,
 
-    breadcrumbName: props.breadcrumbName,
     currentRouteName: currentRouteName.value,
-
     historyIsOpen: props.historyIsOpen,
     authData: props.authData,
+
+    breadcrumbName: props.breadcrumbName,
     breadcrumbTitle: props.breadcrumbTitle
   }
 })

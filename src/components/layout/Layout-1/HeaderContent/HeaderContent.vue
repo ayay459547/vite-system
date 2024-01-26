@@ -19,6 +19,7 @@ const props = defineProps<{
   isOpen: boolean
   historyIsOpen: boolean
   authData: AuthData
+  breadcrumbName: string[]
   breadcrumbTitle: string[]
 }>()
 
@@ -53,7 +54,11 @@ const tempIsOpen = computed<boolean>({
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen" class="header-hamburger" />
       <slot name="header-left"></slot>
-      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" text-align="start"/>
+      <MenuBreadcrumb
+        :breadcrumb-name="props.breadcrumbName"
+        :breadcrumb-title="props.breadcrumbTitle"
+        text-align="start"
+      />
     </div>
 
     <div class="header-right">

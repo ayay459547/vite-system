@@ -18,6 +18,7 @@ const props = defineProps<{
 
   historyIsOpen: boolean
   authData: AuthData
+  breadcrumbName: string[]
   breadcrumbTitle: string[]
 }>()
 
@@ -88,6 +89,7 @@ defineExpose({
         :current-route-name="props.currentRouteName"
         :history-is-open="props.historyIsOpen"
         :auth-data="props.authData"
+        :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
         @history-change="onHistoryChange"
         @logout="emit('logout')"

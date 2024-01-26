@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import type { UseHook } from '@/declare/hook'
-import { CustomIcon, CustomButton } from '@/components'
+import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+
 import type { ButtonType } from '@/components'
-import { inject, ref, onMounted } from 'vue'
+import { CustomIcon, CustomButton } from '@/components'
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
 import { useLayoutStore } from '@/stores/stores_layout'
-import { storeToRefs } from 'pinia'
+import { useLocalI18n } from '@/lib/lib_utils'
 
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
+import i18nMessage from '../i18n'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook()
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 // 語言
 const localeStore = useLocaleStore()

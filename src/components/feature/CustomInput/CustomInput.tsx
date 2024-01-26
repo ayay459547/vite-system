@@ -131,8 +131,7 @@ const CustomInput = defineComponent({
 
     const i18nErrorMessage = computed(() => {
       const keyword = errorMessage?.value ?? ''
-      console.log(keyword, ' => ', i18nTest(keyword))
-      console.log('pleaseInput', ' => ', i18nTest('pleaseInput'))
+
       if (i18nTest(keyword)) return i18nTranslate(keyword)
       return keyword
     })

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
+import { useLocalI18n } from '@/lib/lib_utils'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook()
+import i18nMessage from '../i18n'
+
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const router = useRouter()
 

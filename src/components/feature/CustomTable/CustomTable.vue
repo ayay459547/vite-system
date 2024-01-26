@@ -6,8 +6,11 @@ import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
+// 欄位設定
 import ColumnSetting from './Components/ColumnSetting.vue'
+// 欄位排序
 import ColumnSorting from './Components/ColumnSorting.vue'
+// 群組排序
 import GroupSorting from './Components/GroupSorting.vue'
 import TableMain from './TableMain.vue'
 

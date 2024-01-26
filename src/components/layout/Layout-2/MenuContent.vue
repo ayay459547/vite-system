@@ -14,6 +14,7 @@ const props = defineProps<{
 
   historyIsOpen: boolean
   authData: AuthData
+  breadcrumbName: string[]
   breadcrumbTitle: string[]
 }>()
 
@@ -55,7 +56,10 @@ const setLevel2Router = (level2Router: Navigation) => {
     </div>
 
     <div class="menu-center">
-      <MenuBreadcrumb :breadcrumb-title="props.breadcrumbTitle" text-align="end"/>
+      <MenuBreadcrumb
+        :breadcrumb-name="props.breadcrumbName"
+        :breadcrumb-title="props.breadcrumbTitle"
+        text-align="end"/>
     </div>
 
     <div class="menu-right">

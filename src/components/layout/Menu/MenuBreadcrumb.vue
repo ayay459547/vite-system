@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from 'vue'
+import { type ComputedRef, computed, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { copyText } from '@/lib/lib_utils'
 
 type TextAlign = 'start' | 'end'
 
+const useHook: UseHook = inject('useHook')
+const { i18nTest, i18nTranslate } = useHook()
+
 const props = defineProps<{
+  breadcrumbName: string[]
   breadcrumbTitle: string[]
   textAlign: TextAlign
 }>()
@@ -16,13 +21,16 @@ type Breadcrumb = {
   name: string
 }
 const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
-  return props.breadcrumbTitle.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
+  return props.breadcrumbName.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
+    const name = i18nTest(crumb) ? i18nTranslate(crumb) : props.breadcrumbTitle[crumbIndex]
+
+
     if (crumbIndex === 0){
-      res.push({ type: 'text', name: crumb })
+      res.push({ type: 'text', name })
     } else {
       res.push(
         { type: 'icon', name: ' / '},
-        { type: 'text', name: crumb }
+        { type: 'text', name }
       )
     }
 

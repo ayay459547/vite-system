@@ -4,9 +4,14 @@ import { inject, computed } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { AuthData } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
+import { useLocalI18n } from '@/lib/lib_utils'
+
+import i18nMessage from '../i18n'
 
 const useHook: UseHook = inject('useHook')
-const { eventList, i18nTranslate } = useHook()
+const { eventList } = useHook()
+
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const props = defineProps<{
   historyIsOpen: boolean
