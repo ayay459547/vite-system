@@ -5,6 +5,7 @@ import type { UseHook } from '@/declare/hook'
 import type { AuthData } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
+import { getCookie } from '@/lib/lib_cookie'
 
 import i18nMessage from '../i18n'
 
@@ -54,21 +55,39 @@ const userName = computed(() => {
   return props.authData?.user?.loginName ?? ''
 })
 
+const loginTime = computed(() => {
+  const _loginTime = getCookie('loginTime') ?? ''
+  return _loginTime.split('_').join(' ')
+})
+
 </script>
 
 <template>
   <div class="user-wrapper">
     <div class="user-container" @click="openUserEffect">
       <div class="user-md">
-        <CustomIcon name="user" class="icon"/>
-        <span>{{ userName }}</span>
+        <CustomTooltip>
+          <div class="user-md">
+            <CustomIcon name="user" class="icon"/>
+            <span>{{ userName }}</span>
+          </div>
+
+          <template #content>
+            <div @click="openUserEffect">
+              <span>{{ loginTime }}</span>
+            </div>
+          </template>
+        </CustomTooltip>
       </div>
       <div class="user-xs">
         <CustomTooltip>
           <CustomIcon name="user"/>
 
           <template #content>
-            <span>{{ userName }}</span>
+            <div class="user-xs" @click="openUserEffect">
+              <span>{{ userName }}</span>
+              <span>{{ loginTime }}</span>
+            </div>
           </template>
         </CustomTooltip>
       </div>
@@ -94,8 +113,8 @@ const userName = computed(() => {
 
   &-md {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 8px;
   }
   &-xs {
     display: none;
@@ -106,7 +125,10 @@ const userName = computed(() => {
       display: none;
     }
     &-xs {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
   }
 }

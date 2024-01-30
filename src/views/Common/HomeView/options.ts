@@ -1,3 +1,5 @@
+const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
+
 export const textOptions = {
   graphic: {
     elements: [
@@ -6,24 +8,24 @@ export const textOptions = {
         left: 'center',
         top: 'center',
         style: {
-          text: 'HOME',
+          text: system,
           fontSize: 80,
           fontWeight: 'bold',
           lineDash: [0, 200],
           lineDashOffset: 0,
           fill: 'transparent',
-          stroke: '#000',
-          lineWidth: 1
+          stroke: '#49648d',
+          lineWidth: 3
         },
         keyframeAnimation: {
-          duration: 5000,
+          duration: 1000,
           loop: false,
           keyframes: [
             {
               percent: 0.7,
               style: {
                 fill: 'transparent',
-                lineDashOffset: 200,
+                lineDashOffset: 0,
                 lineDash: [200, 0]
               }
             },
@@ -33,7 +35,7 @@ export const textOptions = {
             },
             {
               percent: 1,
-              style: { fill: 'black' }
+              style: { fill: '#48648f' }
             }
           ]
         }

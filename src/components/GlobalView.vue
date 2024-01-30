@@ -18,7 +18,9 @@ import { ElConfigProvider } from 'element-plus'
 import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
-import { setToken, clearToken, updateToken } from '@/lib/lib_cookie'
+import { setCookie, removeCookie, setToken, clearToken, updateToken } from '@/lib/lib_cookie'
+import { datetimeFormat } from '@/lib/lib_day'
+
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { useEnvStore } from '@/stores/stores_env'
@@ -268,6 +270,7 @@ const logout = async () => {
   await nextTick()
   loading(true, '登出中')
   clearToken()
+  removeCookie('loginTime')
 
   await initNavigationRoutes()
   router.push({ name: 'login' })
@@ -276,7 +279,10 @@ const logout = async () => {
 const login = async (userId: number) => {
   await nextTick()
   loading(true, '系統初始化')
-  setToken(userId)
+
+  const loginTime = datetimeFormat(new Date(), 'YYYY-MM-DD_HH:mm:ss')
+  setCookie('loginTime', loginTime)
+  setToken(userId, loginTime)
 
   await initNavigationRoutes()
   router.push({ name: 'home' })
@@ -292,14 +298,16 @@ onMounted(() => {
 })
 
 // 向下傳送常用工具
-provide<UseHook>('useHook', () => {
+provide<UseHook>('useHook', (options) => {
+  const { i18nModule } = options ?? {}
+
   return {
     loading,
     i18nTranslate: (key) => {
-      return `${i18nTranslate(key)}`
+      return `${i18nTranslate(key, i18nModule)}`
     },
     i18nTest: (key) => {
-      return i18nTest(key)
+      return i18nTest(key, i18nModule)
     },
     eventList: (click, eventList, options) => {
       const { clientX, clientY } = click
@@ -320,14 +328,14 @@ provide<UseHook>('useHook', () => {
       if (!isEmpty(routeName)) {
         // 與路由守衛相同邏輯
         const userPermission = navigationMap.value.get(routeName)
-
-        const toNavigation = [
+        // pagePermission
+        const pagePermission = [
           userPermission?.permission,
           defaultPermission,
           0
         ].find(_permission => typeof _permission === 'number')
 
-        return getPermission(toNavigation)
+        return getPermission(pagePermission)
       }
 
       const { permission = 0 } = currentNavigation?.value ?? {}

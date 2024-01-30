@@ -5,7 +5,7 @@ import { permission } from '@/lib/lib_permission'
 import { isEmpty } from '@/lib/lib_utils'
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
-import { getToken, setToken, clearToken } from '@/lib/lib_cookie'
+import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
 import type { AuthData, PermissionData } from '@/declare/hook'
 
 import { defaultAuthData, getAuthData } from './api'
@@ -36,12 +36,14 @@ export const useAuthStore = defineStore('auth', () => {
 	 * 有可能串後端 api
 	 */
 	const checkAuthStatus = async (): Promise<number | null> => {
+		const loginTime = getCookie('loginTime')
+
 		return await new Promise((resolve) => {
-			const token = getToken()
+			const token = getToken(loginTime)
 
 			if (token !== null) {
 				const { userId } = token
-				setToken(userId)
+				setToken(userId, loginTime)
 				resolve(userId)
 			} else {
 				clearToken()

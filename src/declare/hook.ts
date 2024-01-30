@@ -3,6 +3,7 @@ import type { NotificationProps, NotificationHandle, MessageOptions, MessageHand
 
 import type { IconType } from '@/components/feature/CustomIcon/CustomIconInfo'
 import type { Permission } from '@/lib/lib_permission'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 
 export declare interface User {
   id?: number
@@ -94,7 +95,11 @@ export declare namespace UseHookList {
   type auth = () => AuthData
 }
 
-export declare type UseHook = () => {
+export declare type UseHookOptions = {
+  i18nModule: ScopeKey
+}
+
+export declare type UseHook = (options?: UseHookOptions) => {
   loading: UseHookList.loading
   i18nTranslate: UseHookList.i18nTranslate
   i18nTest: UseHookList.i18nTest

@@ -16,12 +16,12 @@ export interface ModuleType extends I18n {
 }
 
 export type ModuleLangMap = {
-  system: LangMap
-  test: LangMap
-  view: LangMap
+  system?: LangMap
+  test?: LangMap
+  view?: LangMap
 }
 
-export type ScopeKey = keyof ModuleLangMap
+export type ScopeKey = keyof ModuleLangMap | ''
 
 export const defaultModuleType = 'system'
 

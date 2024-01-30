@@ -311,7 +311,7 @@ defineExpose({
         <template v-if="props.lazyLoading" #append>
           <div
             v-show="props.lazyLoadingStatus === 'noMore'"
-            class="table-main-append"
+            class="__table-main-append"
             :style="`width: ${tableWidth}px;`"
           >
             無更多資料
@@ -319,21 +319,21 @@ defineExpose({
 
           <div
             v-show="props.lazyLoadingStatus === 'loading'"
-            class="table-main-append"
+            class="__table-main-append"
             :style="`width: ${tableWidth}px;`"
           >
             <div
               style="width: 100%; height: 50px;"
               v-loading="true"
-              element-loading-text="Loading..."
-              element-loading-background="rgba(236, 245, 255, 0.8)"
+              element-loading-text="LOADING..."
+              element-loading-background="rgba(255, 255, 255, 0.8)"
             ></div>
             <div style="width: 100%; height: 30px;"></div>
           </div>
 
           <div
             v-show="props.lazyLoadingStatus === 'loadMore'"
-            class="table-main-append"
+            class="__table-main-append"
             :style="`width: ${tableWidth}px;`"
           >
             <CustomButton
@@ -633,6 +633,7 @@ defineExpose({
       }
       .el-table__row,
       .el-table__row--striped {
+        content-visibility: auto;
         &:hover {
           transition-duration: 0.2s;
           background-color: var(--el-table-row-hover-bg-color);
@@ -683,6 +684,7 @@ defineExpose({
   }
   &-append {
     height: 80px;
+    min-height: 80px;
     padding: 12px;
     display: flex;
     flex-direction: column;

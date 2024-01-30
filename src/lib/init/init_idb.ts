@@ -12,8 +12,6 @@ import { idbVersion, storeVersion } from '@/lib/lib_idb'
 const { isChange, system } = checkSystemVersionDiff()
 
 const initDB = async () => {
-  console.log(system, ' => ', isChange)
-
   if (isChange) {
     console.log('init DB')
 

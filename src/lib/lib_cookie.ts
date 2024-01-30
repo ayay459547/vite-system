@@ -31,11 +31,11 @@ export interface Token {
 	userId: number
 }
 
-export const getToken = (): Token | null => {
+export const getToken = (loginTime?: string): Token | null => {
   const _token = getCookie('token')
   if (['', null, undefined].includes(_token)) return null
 
-  const temp = aesDecrypt(_token, privateKey)
+  const temp = aesDecrypt(_token, `${privateKey}:${loginTime ?? '0000-00-00_00:00:00'}`)
   // if (['', null, undefined].includes(temp)) return null
 
   // const userData = JSON.parse(temp)
@@ -48,7 +48,7 @@ export const getToken = (): Token | null => {
   return userData
 }
 
-export const setToken = (userId: number) => {
+export const setToken = (userId: number, loginTime?: string) => {
   // const temp = {
   //   uuid: `${getUuid()}`,
   //   date: new Date(),
@@ -63,7 +63,7 @@ export const setToken = (userId: number) => {
 
   setCookie(
     'token',
-    aesEncrypt(_token, privateKey),
+    aesEncrypt(_token, `${privateKey}:${loginTime ?? '0000-00-00_00:00:00'}`),
     { expires: time }
   )
 }
@@ -77,10 +77,11 @@ export const clearToken = () => {
  * 更新時機：換路由、送api
  */
 export const updateToken = () => {
-  const token = getToken()
+  const loginTime = getCookie('loginTime')
+  const token = getToken(loginTime)
 
   if (token !== null) {
     const { userId = -1 } = token
-    setToken(userId)
+    setToken(userId, loginTime)
   }
 }

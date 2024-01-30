@@ -1,5 +1,5 @@
 import { ref, shallowRef } from 'vue'
-import type { Composer, ComposerTranslation } from 'vue-i18n'
+import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
 import { read, utils } from '@/lib/lib_files'
@@ -55,8 +55,8 @@ export const initTranslateSrcFile = () => {
 }
 
 
-export type I18nTranslate = ComposerTranslation
-export type I18nTest = (key: string) => boolean
+export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
+export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
 
 export type GlobalI18n = Partial<Composer & {
   initModuleLangMap: () => void
@@ -77,15 +77,15 @@ export const useGlobalI18n = (): GlobalI18n => {
     const moduleLangMap = initTranslateSrcFile()
 
     const _i18nMap = {}
-    for (const moduleType in moduleLangMap) {
-      const messages = getI18nMessages(moduleLangMap[moduleType])
+    for (const _moduleType in moduleLangMap) {
+      const messages = getI18nMessages(moduleLangMap[_moduleType])
 
       const globalI18n = useI18n({
         useScope: 'global',
         messages
       }) as Partial<Composer>
 
-      _i18nMap[moduleType] = globalI18n
+      _i18nMap[_moduleType] = globalI18n
     }
 
     i18nMap.value = _i18nMap
@@ -95,25 +95,29 @@ export const useGlobalI18n = (): GlobalI18n => {
     moduleType.value = type
   }
 
-  const i18nTranslate = (key: string) => {
+  const i18nTranslate = (key: string, i18nModule?: string) => {
+    const _i18nModule = !isEmpty(i18nModule) ? i18nModule : moduleType.value
+
     // 沒有對應模組
-    if (!hasOwnProperty(i18nMap.value, moduleType.value)) return key
+    if (!hasOwnProperty(i18nMap.value, _i18nModule)) return key
 
     // 有對應模組
-    const i18nKey = `__${moduleType.value}-${key}`
-    if (i18nMap.value[moduleType.value].te(i18nKey)) {
-      return i18nMap.value[moduleType.value].t(i18nKey)
+    const i18nKey = `__${_i18nModule}-${key}`
+    if (i18nMap.value[_i18nModule].te(i18nKey)) {
+      return i18nMap.value[_i18nModule].t(i18nKey)
     }
-    return i18nMap.value[moduleType.value].t(key)
+    return i18nMap.value[_i18nModule].t(key)
   }
 
-  const i18nTest = (key: string) => {
+  const i18nTest = (key: string, i18nModule?: string) => {
+    const _i18nModule = !isEmpty(i18nModule) ? i18nModule : moduleType.value
+
     // 沒有對應模組
-    if (!hasOwnProperty(i18nMap.value, moduleType.value)) return false
+    if (!hasOwnProperty(i18nMap.value, _i18nModule)) return false
 
     // 有對應模組
-    const i18nKey = `__${moduleType.value}-${key}`
-    return i18nMap.value[moduleType.value].te(i18nKey)
+    const i18nKey = `__${_i18nModule}-${key}`
+    return i18nMap.value[_i18nModule].te(i18nKey)
   }
 
   return {

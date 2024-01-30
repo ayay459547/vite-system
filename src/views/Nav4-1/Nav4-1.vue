@@ -5,7 +5,7 @@ import { type Permission, getPermission, defaultPermission } from '@/lib/lib_per
 import type { UseHook } from '@/declare/hook'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, permission } = useHook()
+const { i18nTranslate, permission } = useHook({ i18nModule: 'system' })
 
 const userPermission = ref<Permission>(getPermission(defaultPermission))
 

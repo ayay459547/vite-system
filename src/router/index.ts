@@ -180,7 +180,7 @@ router.beforeEach(
      * 3. 系統預設
      * 4. 0 (無權限)
      */
-    const toNavigation = [
+    const pagePermission = [
       userPermission?.permission,
       defaultPermission,
       0
@@ -206,7 +206,7 @@ router.beforeEach(
       } else if (
         from.name &&
         !baseRoutesName.includes(to.name as string) &&
-        !hasPermission(toNavigation, permission.read)
+        !hasPermission(pagePermission, permission.read)
       ) {
         next({ name: 'noPermissions' })
 
