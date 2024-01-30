@@ -5,7 +5,7 @@ import { ref, onBeforeMount } from 'vue'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
-import { isEmpty, getProxyData, copyText } from '@/lib/lib_utils'
+import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from '../CustomTableInfo'
 
@@ -207,11 +207,12 @@ onBeforeMount(async () => {
                     <CustomInput
                       v-model="element.isShow"
                       type="checkbox"
+                      :label="element.label"
                       hidden-label
                       @change="updateSetting(true)"
                     />
                   </div>
-                  <div class="text" @click.stop="copyText(element.label)">{{ element.label }}</div>
+                  <!-- <div class="text" @click.stop="copyText(element.label)">{{ element.label }}</div> -->
                 </div>
 
                 <div class="__column-item-right">
@@ -266,7 +267,8 @@ onBeforeMount(async () => {
     &-left {
       width: calc(100% - 48px);
       display: flex;
-      gap: 8px
+      gap: 8px;
+      overflow: hidden;
     }
     &-right {
       width: 48px;

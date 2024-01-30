@@ -19,6 +19,7 @@ export const textOptions = {
         },
         keyframeAnimation: {
           duration: 1000,
+          delay: 600,
           loop: false,
           keyframes: [
             {
