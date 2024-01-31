@@ -3,8 +3,8 @@ export interface ResizeObserverCallback {
 }
 
 export type ThrottleOptions = {
-  noLeading?: boolean
-  noTrailing?: boolean
+  isNoLeading?: boolean
+  isNoTrailing?: boolean
 }
 /**
  * @author Caleb
@@ -12,8 +12,8 @@ export type ThrottleOptions = {
  * @param {Function} callback 回調函數
  * @param {Number} delay 延遲
  * @param {Object} options 選用設定
- *                 noLeading: 是否不執行第一次回調函數
- *                 noTrailing: 是否不執行setTimeout的回調函數
+ *                 isNoLeading: 是否不執行第一次回調函數
+ *                 isNoTrailing: 是否不執行setTimeout的回調函數
  * @returns {Object} 包含回調函數的Proxy
  */
 export const throttle = <T = Function>(callback: Function, delay: number, options: ThrottleOptions = {}): T => {
@@ -22,12 +22,12 @@ export const throttle = <T = Function>(callback: Function, delay: number, option
   let lastTime: number | null
 
   const defaultOptions: ThrottleOptions = {
-    noLeading: false,
-    noTrailing: false,
+    isNoLeading: false,
+    isNoTrailing: false,
     ...options
   }
-  let { noLeading } = defaultOptions
-  const { noTrailing } = defaultOptions
+  let { isNoLeading } = defaultOptions
+  const { isNoTrailing } = defaultOptions
 
   const scopeData = {
     clearLastTime () {
@@ -55,7 +55,7 @@ export const throttle = <T = Function>(callback: Function, delay: number, option
 
       // 如果不是第一次執行 && 現在時間 < 上次執行時先 + 延遲時間
       if (lastTime && now < lastTime + delay) {
-        if (noTrailing) return
+        if (isNoTrailing) return
 
         clearTimeout(timeoutId)
         timeoutId = setTimeout(() => {
@@ -63,8 +63,8 @@ export const throttle = <T = Function>(callback: Function, delay: number, option
           callback.call(thisArg, ...params)
         }, delay)
       } else {
-        if (noLeading) {
-          noLeading = false
+        if (isNoLeading) {
+          isNoLeading = false
         } else {
           lastTime = now
           callback.call(thisArg, ...params)

@@ -8,16 +8,16 @@ import { isEmpty } from '@/lib/lib_utils'
 /**
  * @author Caleb
  * @description 用BFS的方式 取的指定的階層的路由
- * @param routerList 路由
+ * @param routes 路由
  * @param level 想取的的階層
  * @param hasLeaves 是否包含子路由
  * @returns {Array} 返回路由
  */
-export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], hasLeaves = true): Array<RouterTree> => {
+export const getRouterLeafLayer = (routes: RouterTree[], level = [1, 2, 3], hasLeaves = true): Array<RouterTree> => {
   const res = []
 
   const _getRouterLeaf = (
-    routerList: RouterTree[] = [],
+    routes: RouterTree[] = [],
     res: RouterTree[] = [],
     options = {
       currLevel: 1,         // 目前階層
@@ -31,7 +31,7 @@ export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], 
 
     const nextLeaves = []
 
-    routerList.forEach(routerItem => {
+    routes.forEach(routerItem => {
       if (getLevel.includes(currLevel)) {
         const pushItem = { ...routerItem }
         // 去掉子路由
@@ -54,7 +54,7 @@ export const getRouterLeafLayer = (routerList: RouterTree[], level = [1, 2, 3], 
     }
   }
 
-  _getRouterLeaf(routerList, res, {
+  _getRouterLeaf(routes, res, {
     currLevel: 1,
     getLevel: level,
     hasLeaves

@@ -8,6 +8,12 @@ import {
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
+/**
+ * @description 設定 cookie
+ * @param key 鍵值
+ * @param value 值
+ * @param options 設定
+ */
 export const setCookie = (key: string, value: string, options?: Partial<Cookies.CookieAttributes>) => {
   const _options = { expires: 1 }
 
@@ -17,10 +23,19 @@ export const setCookie = (key: string, value: string, options?: Partial<Cookies.
   })
 }
 
+/**
+ * @description 取得 cookie
+ * @param key 鍵值
+ * @returns {String | undefined}
+ */
 export const getCookie = (key: string): string | undefined => {
   return Cookies.get(key)
 }
 
+/**
+ * @description 移除 cookie
+ * @param key 鍵值
+ */
 export const removeCookie = (key: string, options?: Partial<Cookies.CookieAttributes>) => {
   Cookies.remove(key, options)
 }

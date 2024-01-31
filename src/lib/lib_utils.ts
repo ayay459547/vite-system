@@ -37,11 +37,11 @@ export const hasOwnProperty = (obj: any, key: string): boolean => {
 /**
  * @author Caleb
  * @description 取的準確的資料類型
- * @param {*} any
+ * @param {*} value
  * @returns {String} 類型
  */
-export const getType = (any: any): string => {
-  const stringType = Object.prototype.toString.call(any)
+export const getType = (value: any): string => {
+  const stringType = Object.prototype.toString.call(value)
   const regexp = /[\s]{1}([A-Z|a-z]*)(?=\])/
   const res = stringType.match(regexp)
   return res[1]
@@ -135,7 +135,7 @@ const mode = (import.meta as any).env.MODE
  * @param {String} title 主要提示
  * @param {Array} messages 訊息列表
  */
-export const tipLog = (title: string = '', messages: string[] = []): void => {
+export const tipLog = (title: string = '', messages: string[] = []): string => {
   if (mode !== 'development') return mode
 
   const style = `
@@ -147,19 +147,21 @@ export const tipLog = (title: string = '', messages: string[] = []): void => {
     console.log('%c%s', style, message)
   })
   console.groupEnd()
+
+  return mode as string
 }
 
 export type LogType = 'info' | 'warn' | 'error' | 'table' | 'trace'
 /**
  * @author Caleb
- * @description 系統用顯示log 打包後不顯示
+ * @description 系統用顯示log
  * @param {*} value 任意值
  * @param {String} type log類型
  * @param {String} style 樣式
  * @returns {String} 系統mode
  */
 export const systemLog = (value: any, type: LogType = 'info', style: string = ''): string => {
-  if (mode === 'production') return 'production'
+  if (mode !== 'development') return mode
 
   switch (type) {
     case 'info':

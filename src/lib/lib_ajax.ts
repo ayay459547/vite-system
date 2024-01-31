@@ -73,7 +73,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
 let timeoutId: NodeJS.Timeout | null
 /**
  * @author Caleb
- * @description 抓後端資料用
+ * @description 對後端發送請求用
  *              送api 更新 token
  * @param {Object} config 設定
  *              url: api網址
@@ -157,13 +157,13 @@ export type WebSocketConfig = {
  *
  *   使用範例
  *   const ws = ref(null)
- *   ws.value = new iWebScoket({
+ *   ws.value = new IWebScoket({
  *     baseUrl: '127.0.0.1:8080',
  *     url: '/...'
  *   })
  *   ws.value.init()
  */
-export class iWebScoket {
+export class IWebScoket {
   // WebSocket
   socket: WebSocket | null
   // 設定

@@ -173,7 +173,7 @@ const init = async () => {
 
   isLoading.value = false
 }
-const throttleInit = throttle<typeof init>(init, 200, { noTrailing: true })
+const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
 
 onMounted(() => {
   throttleInit()

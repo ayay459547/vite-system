@@ -31,20 +31,21 @@ export interface FormSetting<T> {
 export interface InputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
 
 export interface FormColumnsItem {
-  ref: (el: InputRefItem) => void
-  key: string
-  validateKey: string
-  clearable: boolean
-  default: any
-  validate: ValidateType[] | ValidateType
-  required: boolean
-  resizable: boolean
-  showOverflowTooltip: boolean
-  label: string
+  ref?: (el: InputRefItem) => void
+  key?: string
+  validateKey?: string
+  clearable?: boolean
+  default?: any
+  validate?: ValidateType[] | ValidateType
+  required?: boolean
+  resizable?: boolean
+  showOverflowTooltip?: boolean
+  label?: string
 }
 /**
  * @author Caleb
- * @description 使用 Columns 設定
+ * @description 取得多欄輸入框用的參數
+ *              使用 Columns 設定
  *              輸入框資料 預設是 key
  * @param {Ojbect} columns
  * @param {String} type 取得 columnSetting 中的類型
@@ -201,6 +202,16 @@ export interface FormListSetting<T> {
   remove: (rowIndex: number) => void
   clear: () => void
 }
+/**
+ * @author Caleb
+ * @description 取得多欄多列輸入框用的參數
+ *              使用 Columns 設定
+ *              輸入框資料 預設是 key
+ * @param {Ojbect} columns
+ * @param {String} type 取得 columnSetting 中的類型
+ * @param {Array} initData 初始化資料
+ * @returns {Ojbect}
+ */
 export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []): FormListSetting<T> => {
   const resColumns = {}
   const refMap = shallowReactive<Record<string, any>>({})
@@ -332,6 +343,22 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
 
 export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
 
+export interface TableOptoins {
+  title: string
+  version: string
+  settingKey: string
+  page?: number
+  size?: number
+  sort?: {
+    key: null | string,
+    order: null | 'ascending' | 'descending'
+  }
+  isSorting?: boolean
+  isHiddenExcel?: boolean
+  tableSize?: TableSize
+  showType?: string | 'custom' | 'auto'
+}
+
 export interface TableSetting {
   tableRef: TableRef,
   tableSetting: {
@@ -342,7 +369,7 @@ export interface TableSetting {
     params: TableParams
     page?: number
     pageSize?: number
-    // 單一欄位的 isSorting (原版)
+    // 單一欄位的 sortable (原版)
     // 暫時不用 先保留功能
     sort?: Sort
     // 多欄位用的 isSorting (爆改版)
@@ -359,6 +386,7 @@ export interface TableSetting {
   setParams: (params: TableParams, tableRef?: TableRef) => void
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }
+
 export interface TableColumnsItem {
   key?: string
   prop?: string
@@ -367,11 +395,13 @@ export interface TableColumnsItem {
   width?: number
   minWidth?: number
   align?: 'left' | 'center' | 'right'
+  fixed?: 'left' | 'right'
   isSorting?: boolean
   sortable?: boolean | 'custom'
   isOperations?: boolean
   title?: string
 }
+
 /**
  * @author Caleb
  * @description 取的 Columns 設定 Table用的資料
@@ -384,21 +414,7 @@ export interface TableColumnsItem {
 export const getTableSetting = (
   columns: Record<string, any>,
   type: string,
-  options: {
-    title: string
-    version: string
-    settingKey: string
-    page?: number
-    size?: number
-    sort?: {
-      key: null | string,
-      order: null | 'ascending' | 'descending'
-    }
-    isSorting?: boolean
-    isHiddenExcel?: boolean
-    tableSize?: TableSize
-    showType?: string | 'custom' | 'auto'
-  }
+  options: TableOptoins
 ): TableSetting => {
   const {
     title,

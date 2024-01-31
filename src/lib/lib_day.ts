@@ -10,7 +10,7 @@ dayjs.extend(duration)
  * @param {String} format 想要的格式
  * @returns {String} 格式化後的時間
  */
-export const datetimeFormat = (value: string | Date, format: string = 'YYYY-MM-DD'): string => {
+export const datetimeFormat = (value: string | number | Date, format: string = 'YYYY-MM-DD'): string => {
   return dayjs(value).format(format)
 }
 
@@ -21,7 +21,7 @@ export const datetimeFormat = (value: string | Date, format: string = 'YYYY-MM-D
  * @param {String} value 日期
  * @returns {String} 格式化後的時間
  */
-export const formatISO8601 = (value: string): string => {
+export const formatISO8601 = (value: string | number | Date): string => {
   return dayjs(value).toISOString()
 }
 

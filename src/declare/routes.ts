@@ -20,6 +20,7 @@ interface BaseTree {
   icon?: string | [IconType, string]  // 第一層路由的圖示
   meta?: Meta                         // 額外其他參數
 
+  // 權限(2進制)
   // 如果後端沒有對應權限 給指定路由預設權限
   // 沒給指定路由就使用預設權限
   permission?: number
@@ -41,7 +42,6 @@ export declare interface RouterTree extends RootTree, LeafTree {}
 
 export declare interface Navigation extends RootTree, LeafTree {
   leaves?: Navigation[]             // 子路由
-  permission?: number               // 權限(2進制)
   breadcrumbName?: Array<string>    // 左側選單確認 是否 active 用
   breadcrumbTitle?: Array<string>   // header 麵包屑
 }
