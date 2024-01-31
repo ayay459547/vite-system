@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CustomTimeLine, CustomIcon, SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
-import { isEmpty, downloadStaticFile } from '@/lib/lib_utils'
+import { isEmpty, downloadFile } from '@/lib/lib_utils'
 
 import { columnSetting } from './columns'
 
@@ -88,10 +88,6 @@ const {
   tableColumns
 } = getSimpleTableSetting(columnSetting, 'table')
 
-const downloadWord = () => {
-  downloadStaticFile('/file', '下載word測試.docx')
-}
-
 </script>
 
 <template>
@@ -101,7 +97,7 @@ const downloadWord = () => {
       type="info"
       plain
       icon-name="file-word"
-      @click="downloadWord"
+      @click="downloadFile('/static/file', '下載word測試.docx')"
     />
 
     <h3 class="i-my-md">工作進度表</h3>

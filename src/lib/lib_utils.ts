@@ -241,6 +241,12 @@ export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
   return Swal.fire({ ...defaultOPtions })
 }
 
+/**
+ * @author Caleb
+ * @description https://element-plus.org/en-US/component/notification.html
+ * @param options options 自訂選項
+ * @returns {NotificationHandle}
+ */
 export const notification = (options: Partial<NotificationOptions>): NotificationHandle => {
   const defaultOPtions = {
     // 'success' | 'warning' | 'info' | 'error' | ''
@@ -256,6 +262,12 @@ export const notification = (options: Partial<NotificationOptions>): Notificatio
   })
 }
 
+/**
+ * @author Caleb
+ * @description https://element-plus.org/en-US/component/message.html
+ * @param options options 自訂選項
+ * @returns {MessageHandler}
+ */
 export const message = (options: MessageOptions): MessageHandler => {
   const defaultOPtions = {
     // 'success' | 'warning' | 'info' | 'error' | ''
@@ -278,7 +290,7 @@ export const message = (options: MessageOptions): MessageHandler => {
  * @param {Object | Array} origin 拷貝來源
  * @returns {Object} 拷貝完的物件
  */
-export const deepClone = (targetElement: any, origin: any): any => {
+export const deepClone = <T = any>(targetElement: any, origin: T): T => {
   const toStr = Object.prototype.toString
 
   const targetElementType = toStr.call(targetElement)
@@ -323,7 +335,7 @@ export const deepClone = (targetElement: any, origin: any): any => {
       }
     }
   }
-  return target
+  return target as T
 }
 
 /**
@@ -363,7 +375,7 @@ export type LocalI18n = Partial<Composer & {
 }>
 /**
  * @author Caleb
- * @description 針對各頁面 設定翻譯 不影響其他地方
+ * @description 針對區域 設定翻譯 不影響其他地方
  * @param {Object} langMap 設定key 對應的語言顯示的資料
  * @returns {Object} 翻譯工具
  */
@@ -400,28 +412,10 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
  * @description 點擊連結 下載檔案
  * @param {String} path 路徑
  */
-export const downloadFile = (path: string, fileName: string) => {
+export const downloadFile = (path: string, fileName: string): void => {
   const a = document.createElement('a')
 
   a.href = `${path}`
-  a.setAttribute('target', '_blank')
-  a.setAttribute('download', `${fileName}`)
-
-  a.style.display = 'none'
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-}
-
-/**
- * @author Caleb
- * @description 下載靜態檔案 檔案放在 pubic/static 下
- * @param {String} path 路徑 + 檔案名
- */
-export const downloadStaticFile = (path: string, fileName: string) => {
-  const a = document.createElement('a')
-
-  a.href = `/static${path}/${fileName}`
   a.setAttribute('target', '_blank')
   a.setAttribute('download', `${fileName}`)
 
@@ -444,11 +438,11 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
 /**
  * @author Caleb
  * @description 使用 AES 加密資料
- * @param {*} str 要加密的字串
+ * @param {String} str 要加密的字串
  * @param {String} key 加密用的key
  * @returns {String} 回傳的值
  */
-export const aesEncrypt = (str: any, key: string): string => {
+export const aesEncrypt = (str: string, key: string): string => {
   // const encJson = cryptoJS.AES.encrypt(str, key).toString()
   // const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
   // return encData
@@ -523,6 +517,7 @@ export const copyText = async (text: string): Promise<string> => {
 
 /**
  * @author Caleb
+ * @description 反轉陣列資料
  * @param {Array} list 陣列資料
  * @returns {Array} 反轉後 陣列資料
  */

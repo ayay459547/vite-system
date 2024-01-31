@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 
 import { CustomMarkdown, CustomButton, CustomUpload } from '@/components'
-import { isEmpty, downloadStaticFile, swal } from '@/lib/lib_utils'
+import { isEmpty, downloadFile, swal } from '@/lib/lib_utils'
 
 const textData = ref('')
 const jsonData = computed(() => {
@@ -41,7 +41,12 @@ const excelToJson = () => {
   <div class="container">
     <div class="flex-row content-between i-pb-sm">
       <label>Excel 轉 JSON</label>
-      <CustomButton label="下載使用範例" type="info" icon-name="download" @click="downloadStaticFile('/file', 'Excel轉JSON.xlsx')"/>
+      <CustomButton
+        label="下載使用範例"
+        type="info"
+        icon-name="download"
+        @click="downloadFile('/static/file', 'Excel轉JSON.xlsx')"
+      />
     </div>
 
     <div>

@@ -3,7 +3,6 @@ import { type ComputedRef, computed, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { copyText } from '@/lib/lib_utils'
 
 type TextAlign = 'start' | 'end'
 
@@ -44,10 +43,6 @@ const breadcrumbSpan = computed<string>(() => {
   }, '')
 })
 
-const onBreadcrumbClick = () => {
-  copyText(breadcrumbSpan.value)
-}
-
 </script>
 
 <template>
@@ -57,9 +52,8 @@ const onBreadcrumbClick = () => {
         name="location-dot"
         class="icon"
         icon-class="text-danger"
-        @click="onBreadcrumbClick"
       />
-      <div class="text ellipsis" @click="onBreadcrumbClick">{{ breadcrumbSpan }}</div>
+      <div class="text ellipsis">{{ breadcrumbSpan }}</div>
     </div>
 
     <div class="breadcrumb-xs">
@@ -68,11 +62,10 @@ const onBreadcrumbClick = () => {
           name="location-dot"
           class="breadcrumb-icon"
           icon-class="text-danger"
-          @click="onBreadcrumbClick"
         />
 
         <template #content>
-          <div class="breadcrumb-text" @click="onBreadcrumbClick">{{ breadcrumbSpan }}</div>
+          <div class="breadcrumb-text">{{ breadcrumbSpan }}</div>
         </template>
       </CustomTooltip>
     </div>
@@ -86,10 +79,6 @@ const onBreadcrumbClick = () => {
     height: fit-content;
   }
 
-  &-icon,
-  &-text {
-    cursor: pointer;
-  }
   &-text {
     padding: 8px;
     font-size: 1.5em;
@@ -106,13 +95,12 @@ const onBreadcrumbClick = () => {
       .icon,
       .text {
         position: absolute;
-        cursor: pointer;
       }
       .text {
         max-width: 100%;
         width: fit-content;
         // 文字超出 ellipsis
-        left: 36px;
+        left: 26px;
       }
     }
     &.end {
@@ -121,10 +109,6 @@ const onBreadcrumbClick = () => {
     }
 
     &.end {
-      .icon,
-      .text {
-        cursor: pointer;
-      }
       .text {
         max-width: 100%;
         width: fit-content;

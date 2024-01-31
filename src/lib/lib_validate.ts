@@ -5,20 +5,6 @@ export type VeeRes = {
 
 export type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
 
-export const validateValue = (validate: string[] | string, veeValue: string): boolean => {
-  // 多個驗證格式
-  if (Array.isArray(validate)) {
-    return validate.every(type => {
-      const { test } = validateFun[type](veeValue)
-      return test
-    })
-  // 單一驗證格式
-  } else {
-    const { test } = validateFun[validate](veeValue)
-    return test
-  }
-}
-
 const validateFun = {
   number: (value: string): VeeRes => {
     const regexp = /^(-?\d+|\d+)(\.?(\d+))*$/
@@ -51,6 +37,27 @@ const validateFun = {
       test: regexp.test(value),
       msg: '必需包含大小寫及數字，且超過8碼'
     }
+  }
+}
+
+/**
+ * @author Caleb
+ * @description 驗證資料
+ * @param {ValidateType} validate 待驗證類型
+ * @param {String} veeValue 需驗證資料
+ * @returns {Boolean}
+ */
+export const validateValue = (validate: ValidateType[] | ValidateType, veeValue: string): boolean => {
+  // 多個驗證格式
+  if (Array.isArray(validate)) {
+    return validate.every(type => {
+      const { test } = validateFun[type](veeValue)
+      return test
+    })
+  // 單一驗證格式
+  } else {
+    const { test } = validateFun[validate](veeValue)
+    return test
   }
 }
 

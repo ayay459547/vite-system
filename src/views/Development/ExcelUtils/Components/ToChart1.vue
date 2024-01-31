@@ -2,7 +2,7 @@
 import { onMounted, ref, reactive } from 'vue'
 
 import { CustomButton, CustomUpload, CustomCharts, CustomInput } from '@/components'
-import { isEmpty, downloadStaticFile, swal } from '@/lib/lib_utils'
+import { isEmpty, downloadFile, swal } from '@/lib/lib_utils'
 
 const barData = reactive({
   type: ['empty'],
@@ -84,7 +84,7 @@ onMounted(() => {
   <div v-loading="isLoading" class="page">
     <div class="flex-row content-between i-pb-sm">
       <label>Excel 轉 JSON</label>
-      <CustomButton label="下載使用範例" type="info" icon-name="download" @click="downloadStaticFile('/file', 'Excel轉柱狀圖.xlsx')"/>
+      <CustomButton label="下載使用範例" type="info" icon-name="download" @click="downloadFile('/static/file', 'Excel轉柱狀圖.xlsx')"/>
     </div>
 
     <div>
