@@ -8,6 +8,20 @@ const testRoutes: RouterTree[] = [
     icon: 'vial',
     leaves: [
       {
+        path: '/caleb-new-test-1',
+        name: 'caleb-new-test-1',
+        title: '新建測試1',
+        meta: {
+          keepAlive: false,
+          status: 'new',
+          startDate: '',
+          completedDate: ''
+        },
+        systemType: ['system'],
+        icon: 'arrow-down-up-across-line',
+        component: () => import('@/views/TestPage/NewTest1/NewTest1.vue')
+      },
+      {
         name: 'test-caleb',
         title: 'Caleb',
         systemType: ['new'],

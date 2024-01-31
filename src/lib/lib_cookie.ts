@@ -70,7 +70,7 @@ export const setToken = (userId: number, loginTime?: string) => {
   //   userId
   // }
   // const _token = JSON.stringify(temp)
-  const _token = userId
+  const _token = `${userId}`
 
   // 設定 60 分鐘
   const minutes = 60
