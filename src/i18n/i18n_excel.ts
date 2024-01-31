@@ -27,7 +27,7 @@ export const initTranslateSrcFile = () => {
       const { scopeKey, label, version } = scopeItem
 
       if (hasOwnProperty(moduleItem, `${scopeKey}`)) {
-        const i18nKey = `__${scopeKey}-${Key}`
+        const i18nKey = `__${scopeKey}__:${Key}`
 
         // 切割 模組用翻譯
         resModuleLangMap[scopeKey][i18nKey] = {
@@ -102,7 +102,7 @@ export const useGlobalI18n = (): GlobalI18n => {
     if (!hasOwnProperty(i18nMap.value, _i18nModule)) return key
 
     // 有對應模組
-    const i18nKey = `__${_i18nModule}-${key}`
+    const i18nKey = `__${_i18nModule}__:${key}`
     if (i18nMap.value[_i18nModule].te(i18nKey)) {
       return i18nMap.value[_i18nModule].t(i18nKey)
     }
