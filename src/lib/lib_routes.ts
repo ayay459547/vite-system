@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import type { RouterTree, Navigation } from '@/declare/routes'
 import type { IconType } from '@/components'
 import { type RouterType, routerTypeIcon } from '@/router/setting'
+import type { I18nTranslate, I18nTest } from '@/lib/lib_utils'
 import { isEmpty } from '@/lib/lib_utils'
 
 /**
@@ -146,11 +147,16 @@ const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18n
   return nav.title
 }
 
-export const useRoutesHook = () => {
+export const useRoutesHook = (params?: {
+  i18nTranslate?: I18nTranslate
+  i18nTest?: I18nTest
+}) => {
+  const { i18nTranslate, i18nTest } = params ?? {}
+
   const {
-    t: i18nTranslate,
+    t: _i18nTranslate,
     // locale: i18nLocale,
-    te: i18nTest // 測試 key 是否存在
+    te: _i18nTest // 測試 key 是否存在
   } = useI18n()
 
   return {
@@ -159,8 +165,8 @@ export const useRoutesHook = () => {
     getRouteIcon,
     getRouteTitle: (nav: Navigation | null | undefined): string => {
       return getRouteTitle(nav, {
-        i18nTranslate,
-        i18nTest
+        i18nTranslate: i18nTranslate ?? _i18nTranslate,
+        i18nTest: i18nTest ?? _i18nTest
       })
     }
   }

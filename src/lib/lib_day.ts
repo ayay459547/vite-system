@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+import { isEmpty } from '@/lib/lib_utils'
 // import uch from 'dayjs/plugin/utc'
 dayjs.extend(duration)
 
@@ -11,6 +12,7 @@ dayjs.extend(duration)
  * @returns {String} 格式化後的時間
  */
 export const datetimeFormat = (value: string | number | Date, format: string = 'YYYY-MM-DD'): string => {
+  if(isEmpty(value)) return ''
   return dayjs(value).format(format)
 }
 
@@ -22,6 +24,7 @@ export const datetimeFormat = (value: string | number | Date, format: string = '
  * @returns {String} 格式化後的時間
  */
 export const formatISO8601 = (value: string | number | Date): string => {
+  if(isEmpty(value)) return ''
   return dayjs(value).toISOString()
 }
 

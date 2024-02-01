@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { type PropType, ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { ButtonType } from '@/components'
@@ -14,6 +14,18 @@ import Layout2 from './Layout-2.vue'
 import i18nMessage from '../i18n'
 
 const { i18nTranslate } = useLocalI18n(i18nMessage)
+
+const props = defineProps({
+  historyIsOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  }
+})
+
+const emit = defineEmits([
+  'historyChange',
+  'changeLayout'
+])
 
 // 語言
 const localeStore = useLocaleStore()
@@ -37,6 +49,12 @@ const changeBrowserView = (view: string) => {
   }
 }
 
+// 標籤連結
+const tagLinkOptions = [
+  { label: 'show', value: true },
+  { label: 'hidden', value: false }
+]
+
 onMounted(() => {
   if (document.fullscreenElement) {
     browserView.value = 'fullScreen'
@@ -48,10 +66,6 @@ onMounted(() => {
 // 布局
 const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
-
-const emit = defineEmits<{
-  (e: 'changeLayout'): void
-}>()
 
 const getLayoutView = (layoutNumber: string) => {
   switch (layoutNumber){
@@ -106,6 +120,26 @@ const onClickLayout = (layoutValue: string) => {
             :type="((browserView === viewOption.value ? 'primary' : 'default') as ButtonType)"
             :label="i18nTranslate(viewOption.label)"
             @click="changeBrowserView(viewOption.value)"
+          />
+        </div>
+      </div>
+
+      <!-- 是否顯示標籤頁碼 -->
+      <div class="modal-item">
+        <div class="modal-label">
+          <div class="icon">
+            <CustomIcon type="fas" name="hashtag"/>
+          </div>
+          <label>{{ `${i18nTranslate('tagLink')}` }}</label>
+        </div>
+
+        <div class="modal-select">
+          <CustomButton
+            v-for="tagLinkOption in tagLinkOptions"
+            :key="tagLinkOption.label"
+            :type="((props.historyIsOpen === tagLinkOption.value ? 'primary' : 'default') as ButtonType)"
+            :label="i18nTranslate(tagLinkOption.label)"
+            @click="emit('historyChange', tagLinkOption.value)"
           />
         </div>
       </div>

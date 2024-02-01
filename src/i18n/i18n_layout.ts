@@ -16,10 +16,10 @@ export default {
     zhCn: '登出',
     en: 'Logout'
   },
-  preferences: {
+  preference: {
     zhTw: '偏好設定',
     zhCn: '偏好设定',
-    en: 'Preferences'
+    en: 'Preference'
   },
   language: {
     zhTw: '語言',

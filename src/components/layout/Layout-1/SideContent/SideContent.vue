@@ -64,34 +64,36 @@ defineExpose({
 </script>
 
 <template>
-  <div class="side-container" :class="tempIsOpen ? 'is-open': 'is-close'">
-    <div class="side-logo">
-      <div class="side-logo-navigate open">
-        <slot name="logo" :is-show="true"></slot>
-      </div>
-      <div class="side-logo-navigate close">
-        <slot name="logo" :is-show="false"></slot>
+  <div class="side-wrapper" :class="tempIsOpen ? 'is-open': 'is-close'">
+    <div class="side-container">
+      <div class="side-logo">
+        <div class="side-logo-navigate open">
+          <slot name="logo" :is-show="true"></slot>
+        </div>
+        <div class="side-logo-navigate close">
+          <slot name="logo" :is-show="false"></slot>
+        </div>
+
+        <div class="side-logo-close" @click="tempIsOpen = false">
+          <CustomIcon name="close"/>
+        </div>
       </div>
 
-      <div class="side-logo-close" @click="tempIsOpen = false">
-        <CustomIcon name="close"/>
+      <div class="side-nav">
+        <NavigationView
+          ref="navRef"
+          :level1-list="props.showRoutes"
+          :current-route-name="props.currentRouteName"
+        />
       </div>
-    </div>
 
-    <div class="side-nav">
-      <NavigationView
-        ref="navRef"
-        :level1-list="props.showRoutes"
-        :current-route-name="props.currentRouteName"
-      />
-    </div>
-
-    <div class="side-footer">
-      <div class="side-footer-navigate open">
-        <slot name="footer" :is-show="true"></slot>
-      </div>
-      <div class="side-footer-navigate close">
-        <slot name="footer" :is-show="false"></slot>
+      <div class="side-footer">
+        <div class="side-footer-navigate open">
+          <slot name="footer" :is-show="true"></slot>
+        </div>
+        <div class="side-footer-navigate close">
+          <slot name="footer" :is-show="false"></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -100,37 +102,20 @@ defineExpose({
 <style lang="scss" scoped>
 @import '../Layout-1.scss';
 
-@mixin navOpen () {
-  min-width: $nav-lg-width;
-  transition-delay: 0.2s;
-
-  @media (max-width: 768px) {
-    min-width: $nav-md-width;
-  }
-  .side-logo .open,
-  .side-footer .open {
-    display: block;
-  }
-  .side-logo .close,
-  .side-footer .close {
-    display: none;
-  }
-}
-
-.side {
-  &-container {
-    width: 100%;
+@mixin navStyle ($isOpen) {
+  @if ($isOpen) {
+    min-width: $nav-width - $nav-padding;
+    transition-delay: 0.2s;
+    .side-logo .open,
+    .side-footer .open {
+      display: block;
+    }
+    .side-logo .close,
+    .side-footer .close {
+      display: none;
+    }
+  } @else {
     min-width: $side-width;
-    height: 100%;
-    background-color: $system-bg-color;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    transition-duration: 0.3s;
-    will-change: min-width;
-    overflow: hidden;
-
     .side-logo .open,
     .side-footer .open {
       display: none;
@@ -140,18 +125,40 @@ defineExpose({
     .side-footer .close {
       display: block;
     }
+  }
+
+}
+
+.side {
+  &-wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: lighten($system-bg-color, 48%);
+    padding: $nav-padding 0 $nav-padding $nav-padding;
+    transition-duration: 0.3s;
+    will-change: min-width;
+    @include navStyle(false);
 
     &:hover,
     &.is-open {
-      box-shadow: 1px 0px 20px 0px #707070;
-      @include navOpen();
+      @include navStyle(true);
     }
+  }
 
-    @media (min-width: 992px) {
-      &:hover,
-      &.is-open {
-        @include navOpen();
-      }
+  &-container {
+    width: 100%;
+    height: 100%;
+    background-color: $system-bg-color;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    border-radius: 6px;
+    transition-duration: 0.3s;
+    transition-delay: 0.2s;
+    &:hover {
+      box-shadow: 1px 0px 20px 0px #707070;
     }
   }
 

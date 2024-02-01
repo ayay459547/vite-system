@@ -25,7 +25,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'historyChange', value: boolean): void
-  (e: 'preferences'): void
+  (e: 'preference'): void
 }>()
 
 const onHistoryChange = (v: boolean) => {
@@ -93,7 +93,7 @@ defineExpose({
         :breadcrumb-title="props.breadcrumbTitle"
         @history-change="onHistoryChange"
         @logout="emit('logout')"
-        @preferences="emit('preferences')"
+        @preference="emit('preference')"
         @set-level2-router="setLevel2Router"
         @router-change="onRouterChange"
       >

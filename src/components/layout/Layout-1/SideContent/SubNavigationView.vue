@@ -1,7 +1,8 @@
 <script lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
 import { useRoutesHook } from '@/lib/lib_routes'
@@ -34,7 +35,13 @@ export default defineComponent({
   },
   emits: ['update:level2IsOpen', 'changeMap'],
   setup (props, { emit }) {
-    const { getRouteIcon, getRouteTitle } = useRoutesHook()
+    const useHook: UseHook = inject('useHook')
+    const { i18nTest, i18nTranslate } = useHook()
+
+    const { getRouteIcon, getRouteTitle } = useRoutesHook({
+      i18nTranslate,
+      i18nTest
+    })
 
     const tempIsOpen: WritableComputedRef<Boolean> = computed({
       get: () => props.level2IsOpen,
@@ -163,10 +170,6 @@ export default defineComponent({
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;
-
-      @media (max-width: 768px) {
-        font-size: 1.3em;
-      }
     }
 
     &:hover {
@@ -229,10 +232,6 @@ export default defineComponent({
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-
-        @media (max-width: 768px) {
-          font-size: 1.2em;
-        }
       }
       .item-icon {
         width: 30px;

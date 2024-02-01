@@ -116,7 +116,7 @@ export const useGlobalI18n = (): GlobalI18n => {
     if (!hasOwnProperty(i18nMap.value, _i18nModule)) return false
 
     // 有對應模組
-    const i18nKey = `__${_i18nModule}-${key}`
+    const i18nKey = `__${_i18nModule}__:${key}`
     return i18nMap.value[_i18nModule].te(i18nKey)
   }
 

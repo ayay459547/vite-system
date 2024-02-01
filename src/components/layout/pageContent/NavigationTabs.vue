@@ -6,6 +6,11 @@ import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { ListType, ListItem } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
+import { useLocalI18n } from '@/lib/lib_utils'
+
+import i18nMessage from '../i18n'
+
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const {
   removeHistoryNavigation,
@@ -24,7 +29,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['routerChange'])
+const emit = defineEmits(['RouterChange'])
 
 const currentTab = computed(() => {
   return props.currentNavigation?.name ?? ''
@@ -60,8 +65,8 @@ const clearHistory = () => {
   }
 }
 
-const routerChange = (navigate: () => void) => {
-  emit('routerChange')
+const RouterChange = (navigate: () => void) => {
+  emit('RouterChange')
   navigate()
 }
 
@@ -84,14 +89,14 @@ const routerChange = (navigate: () => void) => {
           :class="{ 'is-active': currentTab === slotProps.key }"
           v-slot="{ navigate }"
         >
-          <span @click="routerChange(navigate)">{{ slotProps.label }}</span>
+          <span @click="RouterChange(navigate)">{{ slotProps.label }}</span>
         </RouterLink>
       </template>
     </CustomTabs>
 
     <div class="history-clear">
       <CustomButton
-        label="清除分頁"
+        :label="i18nTranslate('clear')"
         icon-name="broom"
         icon-move="rotate"
         @click="clearHistory"

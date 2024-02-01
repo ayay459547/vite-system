@@ -9,7 +9,7 @@ import { useLayoutStore } from '@/stores/stores_layout'
 
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
-import Preferences from '@/components/layout/Preferences/UserPreferences.vue'
+import UserPreference from '@/components/layout/Preference/UserPreference.vue'
 
 const props = defineProps<{
   isShow: boolean
@@ -75,15 +75,15 @@ const layoutAttr = computed(() => {
 const layoutEvent = {
   logout: () => emit('logout'),
   historyChange: ($event: boolean) => emit('historyChange', $event),
-  preferences: () => {
-    modal.preferences = true
+  preference: () => {
+    modal.preference = true
   }
 }
 
 // modal
 const preferencesRef = ref(null)
 const modal = reactive({
-  preferences: false
+  preference: false
 })
 
 const layout1Ref = ref()
@@ -118,21 +118,30 @@ const onChangeLayout = () => {
   init()
 }
 
+const onHistoryChange = ($event: boolean) => {
+  emit('historyChange', $event)
+}
+
 </script>
 
 <template>
   <div class="system-layout">
     <div class="user-modal">
       <CustomModal
-        v-model="modal.preferences"
+        v-model="modal.preference"
         hidden-footer
         draggable
         click-outside
       >
         <template #header>
-          <label>{{ $t('preferences') }}</label>
+          <label>{{ $t('preference') }}</label>
         </template>
-        <Preferences ref="preferencesRef" @change-layout="onChangeLayout"/>
+        <UserPreference
+          ref="preferencesRef"
+          :history-is-open="props.historyIsOpen"
+          @history-change="onHistoryChange"
+          @change-layout="onChangeLayout"
+        />
       </CustomModal>
     </div>
 

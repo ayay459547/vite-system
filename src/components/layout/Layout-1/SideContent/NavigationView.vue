@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
+import { ref, shallowRef, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon } from '@/components'
@@ -8,12 +9,18 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import SubNavigationView from './SubNavigationView.vue'
 
+const useHook: UseHook = inject('useHook')
+const { i18nTest, i18nTranslate } = useHook()
+
 const props = defineProps<{
   level1List: Navigation[]
   currentRouteName: CurrentRouteName
 }>()
 
-const { getRouteIcon, getRouteTitle } = useRoutesHook()
+const { getRouteIcon, getRouteTitle } = useRoutesHook({
+  i18nTranslate,
+  i18nTest
+})
 
 // 第二層路由
 const level2IsOpen = ref<boolean>(false)
@@ -119,11 +126,7 @@ defineExpose({
     flex-wrap: nowrap;
     transition-duration: 0.3s;
     &.is-open {
-      transform: translateX(-$nav-lg-width);
-
-      @media (max-width: 768px) {
-        transform: translateX(-$nav-md-width);
-      }
+      transform: translateX(-$nav-width + $nav-padding * 2);
     }
     &.is-close {
       transform: translateX(0px);
@@ -131,7 +134,7 @@ defineExpose({
   }
 
   &-list {
-    min-width: $nav-lg-width;
+    min-width: $nav-width - $nav-padding * 2;
     width: fit-content;
     display: flex;
     flex-direction: column;
@@ -140,10 +143,6 @@ defineExpose({
 
     &.level1 {
       overflow-y: auto;
-    }
-
-    @media (max-width: 768px) {
-      min-width: $nav-md-width;
     }
   }
 
@@ -192,20 +191,12 @@ defineExpose({
         width: 100%;
         text-overflow: ellipsis;
         overflow: hidden;
-
-        @media (max-width: 768px) {
-          font-size: 1.3em;
-        }
       }
       .item-icon {
         font-size: 1.3em;
         width: 30px;
         height: 30px;
         @extend %flex-center;
-
-        @media (max-width: 768px) {
-          font-size: 1.2em;
-        }
       }
     }
 

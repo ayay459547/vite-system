@@ -95,8 +95,9 @@ export const updateToken = () => {
   const loginTime = getCookie('loginTime')
   const token = getToken(loginTime)
 
-  if (token !== null) {
-    const { userId = -1 } = token
+  const { userId = -1 } = token ?? {}
+
+  if (!Number.isNaN(userId) && userId > 0) {
     setToken(userId, loginTime)
   }
 }

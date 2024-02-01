@@ -21,10 +21,10 @@ export default {
     zhCn: '登出',
     en: 'Logout'
   },
-  preferences: {
+  preference: {
     zhTw: '偏好設定',
     zhCn: '偏好设定',
-    en: 'Preferences'
+    en: 'Preference'
   },
   language: {
     zhTw: '語言',
@@ -46,10 +46,20 @@ export default {
     zhCn: '显示',
     en: 'Show'
   },
+  clear: {
+    zhTw: '清除',
+    zhCn: '清除',
+    en: 'Clear'
+  },
   pagination: {
     zhTw: '分頁',
     zhCn: '分页',
     en: 'Pagination'
+  },
+  tagLink: {
+    zhTw: '標籤連結',
+    zhCn: '标签链接',
+    en: 'TagLink'
   },
   browser: {
     zhTw: '瀏覽器',

@@ -425,6 +425,7 @@ export const downloadFile = (path: string, fileName: string): void => {
   a.remove()
 }
 
+
 /**
  * @author Caleb
  * @description 取得 Proxy 中的數據
@@ -443,13 +444,22 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
  * @returns {String} 回傳的值
  */
 export const aesEncrypt = (str: string, key: string): string => {
-  // const encJson = cryptoJS.AES.encrypt(str, key).toString()
-  // const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
+  const encJson = cryptoJS.AES.encrypt(str, `${key}`).toString()
+  const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
+  return encData
+
+  // const utf8data = cryptoJS.enc.Utf8.parse(str)
+  // const encData = cryptoJS.AES.encrypt(utf8data, `__${key}__`)
   // return encData
 
-  const utf8data = cryptoJS.enc.Utf8.parse(str)
-  const encData = cryptoJS.AES.encrypt(utf8data, `__${key}__`)
-  return encData
+  // const keyHex = cryptoJS.enc.Utf8.parse(`${key}`)
+  // const options = {
+  //   mode: cryptoJS.mode.ECB,
+  //   padding: cryptoJS.pad.Pkcs7
+  // }
+  // const encrypted = cryptoJS.AES.encrypt(str, keyHex, options)
+  // const encData = encrypted.ciphertext.toString()
+  // return encData
 }
 
 /**
@@ -461,14 +471,24 @@ export const aesEncrypt = (str: string, key: string): string => {
  */
 export const aesDecrypt = (str: string, key: string): string => {
   try {
-    // const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
-    // const decJson = cryptoJS.AES.decrypt(decData, key).toString(cryptoJS.enc.Utf8)
-    // return decJson
+    const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
+    const decJson = cryptoJS.AES.decrypt(decData, `${key}`).toString(cryptoJS.enc.Utf8)
+    return decJson
 
-    const decrypted = cryptoJS.AES.decrypt(str, `__${key}__`)
-    const decryptedData = cryptoJS.enc.Utf8.stringify(decrypted)
-    return decryptedData
+    // const decrypted = cryptoJS.AES.decrypt(str, `__${key}__`)
+    // const decryptedData = cryptoJS.enc.Utf8.stringify(decrypted)
+    // return decryptedData
 
+    // const data = cryptoJS.enc.Hex.parse(str)
+    // const keyHex = cryptoJS.enc.Utf8.parse(`${key}`)
+    // const options = {
+    //   mode: cryptoJS.mode.ECB,
+    //   padding: cryptoJS.pad.Pkcs7
+    // }
+    // const srcs = cryptoJS.enc.Base64.stringify(data)
+    // const words = cryptoJS.AES.decrypt(srcs, keyHex, options)
+    // const decryptedData = words.toString(cryptoJS.enc.Utf8).toString()
+    // return decryptedData
   } catch (error) {
     console.log(error)
 

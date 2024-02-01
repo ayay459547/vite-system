@@ -27,7 +27,7 @@ const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void
   (e: 'logout'): void
   (e: 'historyChange', value: boolean): void
-  (e: 'preferences'): void
+  (e: 'preference'): void
   (e: 'routerChange'): void
 }>()
 
@@ -76,7 +76,7 @@ const tempIsOpen = computed<boolean>({
           :history-is-open="props.historyIsOpen"
           @history-change="onHistoryChange"
           @logout="emit('logout')"
-          @preferences="emit('preferences')"
+          @preference="emit('preference')"
         />
       </div>
     </div>

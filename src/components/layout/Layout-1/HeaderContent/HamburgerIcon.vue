@@ -31,8 +31,8 @@ const changeOpen = (): void => {
 </template>
 
 <style lang="scss" scoped>
-$bar-width: 40px;
-$bar-height: 5px;
+$bar-width: 36px;
+$bar-height: 4px;
 
 @mixin bar-style($height, $width, $top) {
   display: block;

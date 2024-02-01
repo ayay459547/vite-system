@@ -15,31 +15,20 @@ const { eventList } = useHook()
 const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const props = defineProps<{
-  historyIsOpen: boolean
   authData: AuthData
 }>()
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'historyChange', value: boolean): void
-  (e: 'preferences'): void
+  (e: 'preference'): void
 }>()
 
 const openUserEffect = (e: MouseEvent) => {
   eventList(e, [
     {
       icon: ['fas', 'gear'],
-      label: i18nTranslate('preferences'),
-      event: () => emit('preferences')
-    },
-    {
-      icon: ['fas', props.historyIsOpen ? 'eye-slash' : 'history'],
-      label: `${props.historyIsOpen ? i18nTranslate('hidden') : i18nTranslate('show') }${i18nTranslate('pagination')}`,
-      event: () => {
-        const value = !props.historyIsOpen
-        localStorage.setItem('historyIsOpen', `${value}`)
-        emit('historyChange', value)
-      }
+      label: i18nTranslate('preference'),
+      event: () => emit('preference')
     },
     {
       icon: ['fas', 'right-from-bracket'],

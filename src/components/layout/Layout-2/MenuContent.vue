@@ -21,7 +21,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'historyChange', value: boolean): void
-  (e: 'preferences'): void
+  (e: 'preference'): void
   (e: 'setLevel2Router', level2List: Navigation): void
   (e: 'routerChange'): void
 }>()
@@ -72,7 +72,7 @@ const setLevel2Router = (level2Router: Navigation) => {
           :history-is-open="props.historyIsOpen"
           @history-change="onHistoryChange"
           @logout="emit('logout')"
-          @preferences="emit('preferences')"
+          @preference="emit('preference')"
         />
       </div>
     </div>

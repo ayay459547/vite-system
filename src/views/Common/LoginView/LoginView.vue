@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
 import { getFormSetting } from '@/lib/lib_columns'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, useLocalI18n } from '@/lib/lib_utils'
 import { CustomIcon, CustomInput } from '@/components'
 
 import { loginSystem } from './api'
+import i18nMessage from './i18n'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook()
-
+const { i18nTranslate } = useLocalI18n(i18nMessage)
 const emit = defineEmits(['login'])
 
 const isLoading = ref(false)
@@ -110,6 +108,7 @@ const svg = `
         <CustomInput
           v-model="form.account"
           v-bind="formColumn.account"
+          :label="i18nTranslate('account')"
           @keyup.enter="login"
         >
           <template #prefix>
@@ -121,6 +120,7 @@ const svg = `
           <CustomInput
             v-model="form.password"
             v-bind="formColumn.password"
+            :label="i18nTranslate('password')"
           >
             <template #prefix>
               <CustomIcon name="unlock-keyhole"/>

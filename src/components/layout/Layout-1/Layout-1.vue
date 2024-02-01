@@ -27,7 +27,7 @@ const emit = defineEmits<{
   (e: 'logout'): void
   (e: 'update:isOpen', value: boolean): void
   (e: 'historyChange', value: boolean): void
-  (e: 'preferences'): void
+  (e: 'preference'): void
 }>()
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
@@ -99,7 +99,7 @@ defineExpose({
           :breadcrumb-title="props.breadcrumbTitle"
           @history-change="onHistoryChange"
           @logout="emit('logout')"
-          @preferences="emit('preferences')"
+          @preference="emit('preference')"
           @router-change="onRouterChange"
         >
           <template #header-left>
@@ -148,10 +148,7 @@ defineExpose({
     // 至少要 992px 才可以定住選單
     @media (min-width: 992px) {
       &.is-open {
-        width: $nav-lg-width;
-        @media (max-width: 768px) {
-          width: $nav-md-width;
-        }
+        width: $nav-width;
       }
     }
   }
@@ -171,13 +168,8 @@ defineExpose({
     // 至少要 992px 才可以定住選單
     @media (min-width: 992px) {
       &.is-open {
-        width: calc(100% - $nav-lg-width);
-        left: $nav-lg-width;
-
-        @media (max-width: 768px) {
-          width: calc(100% - $nav-md-width);
-          left: $nav-md-width;
-        }
+        width: calc(100% - $nav-width);
+        left: $nav-width;
       }
     }
 
