@@ -100,5 +100,15 @@ export default {
     zhTw: '詳細資料',
     zhCn: '详细资料',
     en: 'Detail'
+  },
+  logout: {
+    zhTw: '登出',
+    zhCn: '登出',
+    en: 'Logout'
+  },
+  systemInitialization: {
+    zhTw: '系統初始化',
+    zhCn: '系统初始化',
+    en: 'System Initialization'
   }
 } as LangMap

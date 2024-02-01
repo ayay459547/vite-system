@@ -253,7 +253,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  loading(true, '系統初始化')
+  loading(true, i18nTranslate('systemInitialization'))
 })
 
 // 路由切換
@@ -268,7 +268,7 @@ const onRouterChange = async () => {
 // 登出
 const logout = async () => {
   await nextTick()
-  loading(true, '登出中')
+  loading(true, i18nTranslate('logout'))
   clearToken()
   removeCookie('loginTime')
 
@@ -278,7 +278,7 @@ const logout = async () => {
 // 登入
 const login = async (userId: number) => {
   await nextTick()
-  loading(true, '系統初始化')
+  loading(true, i18nTranslate('systemInitialization'))
 
   const loginTime = datetimeFormat(new Date(), 'YYYY-MM-DD_HH:mm:ss')
   setCookie('loginTime', loginTime)
