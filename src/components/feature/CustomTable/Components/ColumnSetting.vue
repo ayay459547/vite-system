@@ -47,7 +47,7 @@ const columnList = ref<ColumnItem[]>([])
 const getcolumnList = async () => {
   try {
     const getRes: SettingData = await getColumnSetting(props.settingKey)
-    return getRes.columns
+    return getRes?.columns ?? []
   } catch (e) {
     return []
   }

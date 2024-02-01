@@ -80,6 +80,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: FocusEvent) => void>,
@@ -91,7 +95,7 @@ const props = defineProps({
 })
 
 const bindAttributes = computed(() => {
-  return {
+  const attributes: any = {
     clearable: props.clearable,
     disabled: props.disabled,
     loading: props.loading,
@@ -106,6 +110,12 @@ const bindAttributes = computed(() => {
     allowCreate: props.allowCreate,
     defaultFirstOption: props.defaultFirstOption
   }
+
+  if (props.placeholder) {
+    attributes.placeholder = props.placeholder
+  }
+
+  return attributes
 })
 
 const emit = defineEmits([

@@ -81,7 +81,7 @@ const layoutEvent = {
 }
 
 // modal
-const preferencesRef = ref(null)
+const preferenceRef = ref(null)
 const modal = reactive({
   preference: false
 })
@@ -137,7 +137,7 @@ const onHistoryChange = ($event: boolean) => {
           <label>{{ $t('preference') }}</label>
         </template>
         <UserPreference
-          ref="preferencesRef"
+          ref="preferenceRef"
           :history-is-open="props.historyIsOpen"
           @history-change="onHistoryChange"
           @change-layout="onChangeLayout"

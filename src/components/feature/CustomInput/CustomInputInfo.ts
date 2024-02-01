@@ -157,6 +157,11 @@ const elCommon = {
     default: false,
     description: '是否禁止輸入'
   },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false,
+    description: '尚未填入時顯示文字'
+  },
   options: {
     type: Array as PropType<Option[]>,
     required: false,

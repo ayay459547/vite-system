@@ -62,24 +62,32 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: FocusEvent) => void>,
   onClear: Function as PropType<() => void>,
   onBlur: Function as PropType<(e: FocusEvent) => void>,
   onChange: Function as PropType<(value: string | number) => void>,
-  onInput: Function as PropType<(value: string | number) => void>,
-  onKeyup: Function as PropType<(e: KeyboardEvent) => void>
+  onInput: Function as PropType<(value: string | number) => void>
 })
 
 const bindAttributes = computed(() => {
-  return {
+  const attributes: any = {
     type: props.type,
     clearable: props.clearable,
     disabled: props.disabled,
     rows: props.rows,
     showPassword: props.showPassword
   }
+  if (props.placeholder) {
+    attributes.placeholder = props.placeholder
+  }
+
+  return attributes
 })
 
 const emit = defineEmits([

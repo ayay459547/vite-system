@@ -296,10 +296,12 @@ const initShowColumns = async () => {
   if (columnSetting.value) {
     await columnSetting.value.checkColumnSetting()
 
-    const tempColumnList = await columnSetting.value.getcolumnList() as ColumnItem[]
+    const tempColumnList = await (columnSetting.value?.getcolumnList() ?? []) as ColumnItem[]
 
     // 確認欄位 如果有變更 給予提示
-    checkTableColumns(tempColumnList)
+    if (!isEmpty(tempColumnList)) {
+      checkTableColumns(tempColumnList)
+    }
 
     const resColumns = tempColumnList.reduce((resColumn, tempColumn) => {
       if (tempColumn.isShow) {

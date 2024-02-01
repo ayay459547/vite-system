@@ -144,6 +144,7 @@ const CustomInput = defineComponent({
         rows: props.rows,
         showPassword: props.showPassword,
         loading: props.loading,
+        placeholder: props.placeholder,
         // select
         remote: props.remote,
         remoteMethod: props.remoteMethod,

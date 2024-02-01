@@ -76,17 +76,12 @@ export default defineComponent({
   }
 
   &-footer {
-    background-color: #e6e6e6;
-    color: #324157;
+    color: #ddd;
     padding: 8px 12px;
     border-radius: 6px;
     transition-duration: 0.3s;
     margin: 0 auto;
     width: fit-content;
-
-    &:hover {
-      color: #4d6488;
-    }
   }
 }
 
