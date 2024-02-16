@@ -71,7 +71,7 @@ const baseRoutes: Array<RouteRecordRaw> = [
     redirect: { name: 'home' }
   },
   {
-    path: '/ipassweb',
+    path: '/demo',
     redirect: { name: 'home' }
   },
   {

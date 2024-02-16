@@ -131,7 +131,7 @@ const options = () => {
               var seriesValue = (params.seriesData[0] || {}).value
               return (
                 params.value +
-                (seriesValue != null ? '\n' + echarts.format.addCommas(seriesValue) : '')
+                (seriesValue !== null ? '\n' + echarts.format.addCommas(seriesValue) : '')
               )
             }
           }
