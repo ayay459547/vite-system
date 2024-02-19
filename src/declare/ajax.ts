@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
+import type { Sort, SortingList, SortingMap } from '@/components'
 
 type ApiCommon<T> = {
   result?: T
@@ -15,4 +16,12 @@ export type AjaxOptions<T> = {
   isLog?: boolean
   delay?: number
   callback?: (config: AxiosRequestConfig, fakeData: T) => any | null
+}
+
+export declare interface TableParams {
+  page?: number
+  size?: number
+  sort?: Sort
+  sortingList?: SortingList
+  sortingMap?: SortingMap
 }
