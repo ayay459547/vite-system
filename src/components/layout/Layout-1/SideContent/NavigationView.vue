@@ -161,7 +161,6 @@ defineExpose({
     align-items: center;
     cursor: pointer;
 
-    white-space: nowrap;
     overflow: hidden;
     gap: 8px;
 
@@ -187,10 +186,7 @@ defineExpose({
         font-size: 1.4em;
         transform: translateX(0);
         transition-duration: 0.3s;
-
         width: 100%;
-        text-overflow: ellipsis;
-        overflow: hidden;
       }
       .item-icon {
         font-size: 1.3em;

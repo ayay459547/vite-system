@@ -123,7 +123,7 @@ const CustomInput = defineComponent({
       handleChange,      // 換值
       handleReset,       // 重置
       validate           // 驗證
-    } = useField<any>('field', validateField, {
+    } = useField<any>(props.validateKey, validateField, {
       // validateOnValueUpdate: true
       // initialValue: inputValue,
       // valueProp: inputValue

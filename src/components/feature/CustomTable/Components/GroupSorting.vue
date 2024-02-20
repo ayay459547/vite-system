@@ -115,6 +115,7 @@ const submit = () => {
                 <div class="__column-item-left">
                   <CustomInput
                     :model-value="element.order"
+                    :validate-key="`GroupSorting:${element.key}`"
                     @update:model-value="setSortingValue($event, element.key)"
                     :label="element.label"
                     type="radio"

@@ -37,10 +37,12 @@ const custom = {
   validateKey: {
     type: String as PropType<string>,
     required: false,
-    default: '',
+    default: 'field',
     description: `
       驗證用的 key 值
-      會以 class 綁定在 dom`
+      useField 綁定用
+      會以 class 綁定在 dom
+    `
   },
   direction: {
     type: String as PropType<'column' | 'row'>,

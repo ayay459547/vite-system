@@ -429,7 +429,7 @@ const slotKeyList = computed(() => {
   return showColumns.flatMap(column => {
     if (column.columns && column.columns.length > 0) {
       return [
-        ...column.columns.map(child => `${column.slotKey}-${child.slotKey}`),
+        ...column.columns.map((child: any) => `${column.slotKey}-${child.slotKey}`),
         column.slotKey
       ]
     }
@@ -544,7 +544,7 @@ onMounted(() => {
 
       <div class="setting-center grid-col-xs-24 grid-col-md-12 grid-col-xl-6">
         <slot name="setting-center">
-          <span class="setting-center-title">{{ props.title }}</span>
+          <span class="setting-center-title">{{ $t(props.title) }}</span>
         </slot>
       </div>
 
@@ -559,6 +559,7 @@ onMounted(() => {
           <CustomInput
             v-if="!props.lazyLoading"
             v-model="pageSize"
+            validate-key="CustomTable:pageSize"
             type="select"
             :label="$t('showCount')"
             :options="sizeOptions"
@@ -568,6 +569,7 @@ onMounted(() => {
           <CustomInput
             v-if="props.lazyLoading"
             v-model="pageSize"
+            validate-key="CustomTable:pageSize"
             type="select"
             :label="$t('loadCount')"
             :options="lazyLoadSizeOptions"

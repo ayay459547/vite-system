@@ -207,6 +207,7 @@ onBeforeMount(async () => {
                     <CustomInput
                       v-model="element.isShow"
                       type="checkbox"
+                      :validate-key="`ColumnSetting:${element.key}`"
                       :label="element.label"
                       hidden-label
                       @change="updateSetting(true)"
