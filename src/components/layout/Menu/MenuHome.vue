@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
+import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
 
-import i18nMessage from '../i18n'
-
-const { i18nTranslate } = useLocalI18n(i18nMessage)
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const router = useRouter()
 
@@ -14,24 +16,24 @@ const emit = defineEmits(['routerChange'])
 
 const toHome = () => {
   emit('routerChange')
-  router.push({ name: 'home' })
+  router.push({ name: 'locatehome' })
 }
 
 </script>
 
 <template>
-  <div class="home-conatiner" @click="toHome">
-    <div class="home-md">
-      <CustomIcon name="home" class="icon"/>
-      <span>{{ i18nTranslate('home') }}</span>
+  <div class="locatehome-conatiner" @click="toHome">
+    <div class="locatehome-md">
+      <CustomIcon name="locatehome" class="icon"/>
+      <span>{{ i18nTranslate('locatehome') }}</span>
     </div>
 
-    <div class="home-xs">
+    <div class="locatehome-xs">
       <CustomTooltip>
-        <CustomIcon name="home"/>
+        <CustomIcon name="locatehome"/>
 
         <template #content>
-          <span>{{ i18nTranslate('home') }}</span>
+          <span>{{ i18nTranslate('locatehome') }}</span>
         </template>
       </CustomTooltip>
     </div>
@@ -39,7 +41,7 @@ const toHome = () => {
 </template>
 
 <style lang="scss" scoped>
-.home {
+.locatehome {
   &-conatiner {
     width: fit-content;
     height: fit-content;

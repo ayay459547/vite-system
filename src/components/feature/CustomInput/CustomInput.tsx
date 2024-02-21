@@ -1,6 +1,8 @@
-import { defineComponent, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
+import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
 import { useField } from 'vee-validate'
 
+// @ts-ignore
+import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
   FormSelect,
@@ -12,7 +14,7 @@ import {
   FormOperator
   // @ts-ignore
 } from '@/components'
-import { isEmpty, tipLog, getUuid, useLocalI18n } from '@/lib/lib_utils'
+import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 // @ts-ignore
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
@@ -24,8 +26,6 @@ import {
   version,
   props as inputProps
 } from './CustomInputInfo'
-// @ts-ignore
-import i18nMessage from './i18n'
 
 import styles from './CustomInput.module.scss'
 
@@ -49,7 +49,10 @@ const CustomInput = defineComponent({
   setup (props, { slots, emit, expose }) {
     const scopedId = getUuid('__i-group-input__')
 
-    const { i18nTranslate, i18nTest } = useLocalI18n(i18nMessage)
+    const useHook: UseHook = inject('useHook')
+    const { i18nTranslate, i18nTest } = useHook({
+      i18nModule: 'system'
+    })
 
     // const inputValue = computed({
     //   get: () => props.modelValue,

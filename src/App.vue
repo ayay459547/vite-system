@@ -27,7 +27,7 @@ export default defineComponent({
   <div class="app-container">
     <GlobalView>
       <template #logo>
-        <div class="menu-logo" @click="router.push({ name: 'home' })">
+        <div class="menu-logo" @click="router.push({ name: 'locatehome' })">
           <img class="vue-img" src="@/assets/images/Vue-logo.png" alt="vue" />
           <h2 class="vue-text">Demo</h2>
         </div>

@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, onMounted, onBeforeUnmount, ref } from 'vue'
+import { computed, useSlots, onMounted, onBeforeUnmount, ref, inject } from 'vue'
 import { ElDatePicker } from 'element-plus'
-import { useI18n } from 'vue-i18n'
 
+import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-const { t } = useI18n()
-
-type BaseValue = string | null
-type ModelValue = BaseValue | [BaseValue, BaseValue]
-
 export type DatePickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
-
 export type Shortcuts = {
   text: string
   value: () => [number, number]
 }
+
+type BaseValue = string | null
+type ModelValue = BaseValue | [BaseValue, BaseValue]
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   modelValue: {
@@ -53,6 +55,10 @@ const props = defineProps({
     type: Array as PropType<Shortcuts[]>,
     required: false
   },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: FocusEvent) => void>,
@@ -61,7 +67,7 @@ const props = defineProps({
 })
 
 const bindAttributes = computed(() => {
-  return {
+  const attributes: any = {
     type: props.type,
     clearable: props.clearable,
     disabled: props.disabled,
@@ -69,6 +75,11 @@ const bindAttributes = computed(() => {
     valueFormat: props.valueFormat,
     shortcuts: props.shortcuts
   }
+  if (!isEmpty(props.placeholder)) {
+    attributes.placeholder = props.placeholder
+  }
+
+  return attributes
 })
 
 const emit = defineEmits([
@@ -135,9 +146,9 @@ defineExpose({
       ref="elDatePickerRef"
       v-model="inputValue"
       class="__i-date-picker__"
-      :placeholder="$t('pleaseSelect')"
-      :start-placeholder="t('startTime')"
-      :end-placeholder="t('endTime')"
+      :placeholder="i18nTranslate('pleaseSelect')"
+      :start-placeholder="i18nTranslate('startTime')"
+      :end-placeholder="i18nTranslate('endTime')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"

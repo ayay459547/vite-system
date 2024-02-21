@@ -4,15 +4,12 @@ import { inject, computed } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { AuthData } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
 import { getCookie } from '@/lib/lib_cookie'
 
-import i18nMessage from '../i18n'
-
 const useHook: UseHook = inject('useHook')
-const { eventList } = useHook()
-
-const { i18nTranslate } = useLocalI18n(i18nMessage)
+const { i18nTranslate, eventList } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps<{
   authData: AuthData

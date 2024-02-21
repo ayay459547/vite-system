@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, onMounted, onBeforeUnmount, ref, watch, effectScope } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, watch, effectScope, inject } from 'vue'
 import { ElTimePicker } from 'element-plus'
-import { useI18n } from 'vue-i18n'
 import type { Dayjs } from 'dayjs'
 
+import type { UseHook } from '@/declare/hook'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 
-const { t } = useI18n()
+export type TimePickerType = 'time' | 'timerange'
+export declare type GetDisabledHours = (role: string, comparingDate?: Dayjs) => number[]
+export declare type GetDisabledMinutes = (hour: number, role: string, comparingDate?: Dayjs) => number[]
+export declare type GetDisabledSeconds = (hour: number, minute: number, role: string, comparingDate?: Dayjs) => number[]
 
 type BaseValue = string | Date | null
 type ModelValue = BaseValue | [BaseValue, BaseValue]
 
-export type TimePickerType = 'time' | 'timerange'
 
-export declare type GetDisabledHours = (role: string, comparingDate?: Dayjs) => number[]
-export declare type GetDisabledMinutes = (hour: number, role: string, comparingDate?: Dayjs) => number[]
-export declare type GetDisabledSeconds = (hour: number, minute: number, role: string, comparingDate?: Dayjs) => number[]
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   modelValue: {
@@ -67,6 +70,10 @@ const props = defineProps({
     type: Function as PropType<GetDisabledSeconds>,
     default: () => []
   },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: FocusEvent) => void>,
@@ -75,7 +82,7 @@ const props = defineProps({
 })
 
 const bindAttributes = computed(() => {
-  return {
+  const attributes: any = {
     isRange: props.isRange || (props.type === 'timerange'),
     clearable: props.clearable,
     disabled: props.disabled,
@@ -85,6 +92,11 @@ const bindAttributes = computed(() => {
     disabledMinutes: props.disabledMinutes,
     disabledSeconds: props.disabledSeconds
   }
+  if (!isEmpty(props.placeholder)) {
+    attributes.placeholder = props.placeholder
+  }
+
+  return attributes
 })
 
 const emit = defineEmits([
@@ -206,9 +218,9 @@ defineExpose({
       ref="elTimePickerRef"
       v-model="_inputValue"
       class="__i-time-picker__"
-      :placeholder="$t('pleaseSelect')"
-      :start-placeholder="t('startTime')"
-      :end-placeholder="t('endTime')"
+      :placeholder="i18nTranslate('pleaseSelect')"
+      :start-placeholder="i18nTranslate('startTime')"
+      :end-placeholder="i18nTranslate('endTime')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"

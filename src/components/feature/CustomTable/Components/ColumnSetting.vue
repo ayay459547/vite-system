@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from '../CustomTableInfo'
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   columns: {
@@ -181,7 +187,7 @@ onBeforeMount(async () => {
         <CustomButton
           icon-name="list-check"
           class="i-mr-xs"
-          :label="$t('columnSetting')"
+          :label="i18nTranslate('columnSetting')"
         />
       </template>
 
@@ -231,7 +237,7 @@ onBeforeMount(async () => {
 
         <div class="__column-reset">
           <CustomButton
-            :label="$t('returnDefault')"
+            :label="i18nTranslate('reset')"
             type="info"
             plain
             icon-name="repeat"

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useSlots, ref, shallowRef, shallowReactive, computed, onMounted } from 'vue'
+import { useSlots, inject, ref, shallowRef, shallowReactive, computed, onMounted } from 'vue'
 import { ElPagination } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
@@ -25,6 +26,11 @@ import {
   version,
   props as tableProps
 } from './CustomTableInfo'
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const scopedId = getUuid('__i-table__')
 
@@ -59,8 +65,8 @@ const onExcelClick = (type: 'all' | 'page') => {
     type,
     tableColumns: props.tableColumns,
     tableData: props.tableData
-   })
-   excelIsShow.value = false
+  })
+  excelIsShow.value = false
 }
 
 // 每頁顯示筆數
@@ -521,11 +527,11 @@ onMounted(() => {
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon"/>
-              <div class="text">{{ $t('allData') }}</div>
+              <div class="text">{{ i18nTranslate('allData') }}</div>
             </div>
             <div class="__excel-item" @click="onExcelClick('page')">
               <CustomIcon type="far" name="file-lines" class="icon"/>
-              <div class="text">{{ $t('pageData') }}</div>
+              <div class="text">{{ i18nTranslate('pageData') }}</div>
             </div>
           </div>
         </CustomPopover>
@@ -544,7 +550,7 @@ onMounted(() => {
 
       <div class="setting-center grid-col-xs-24 grid-col-md-12 grid-col-xl-6">
         <slot name="setting-center">
-          <span class="setting-center-title">{{ $t(props.title) }}</span>
+          <span class="setting-center-title">{{ i18nTranslate(props.title) }}</span>
         </slot>
       </div>
 
@@ -552,7 +558,7 @@ onMounted(() => {
         <slot name="setting-right"></slot>
 
         <div v-if="props.lazyLoading">
-          <label>{{ `${$t('dataCount')}：${props.tableDataCount}` }}</label>
+          <label>{{ `${i18nTranslate('dataCount')}：${props.tableDataCount}` }}</label>
         </div>
 
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
@@ -561,7 +567,7 @@ onMounted(() => {
             v-model="pageSize"
             validate-key="CustomTable:pageSize"
             type="select"
-            :label="$t('showCount')"
+            :label="i18nTranslate('showCount')"
             :options="sizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -571,7 +577,7 @@ onMounted(() => {
             v-model="pageSize"
             validate-key="CustomTable:pageSize"
             type="select"
-            :label="$t('loadCount')"
+            :label="i18nTranslate('loadCount')"
             :options="lazyLoadSizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -674,7 +680,7 @@ onMounted(() => {
         />
       </div>
       <div class="__table-pagination-right">
-        <span>{{ `${$t('total')}：${props.tableDataCount}` }}</span>
+        <span>{{ `${i18nTranslate('totalAmount')}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>

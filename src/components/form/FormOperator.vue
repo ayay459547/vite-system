@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, customRef, useSlots, ref, onMounted, nextTick } from 'vue'
+import { computed, customRef, useSlots, ref, onMounted, nextTick, inject } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import type { Options } from '@/components'
 import { isEmpty, round, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
@@ -10,6 +11,10 @@ export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string |
 export type OperatorValue = string | number | null
 export type ModelValue = [OperatorOptions, OperatorValue]
 
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const scopedId = getUuid('__i-operator__')
 
@@ -58,6 +63,10 @@ const props = defineProps({
       ]
     }
   },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: any) => void>,
@@ -68,10 +77,15 @@ const props = defineProps({
 })
 
 const bindAttributes = computed(() => {
-  return {
+  const attributes: any = {
     clearable: props.clearable,
     disabled: props.disabled
   }
+  if (!isEmpty(props.placeholder)) {
+    attributes.placeholder = props.placeholder
+  }
+
+  return attributes
 })
 
 const emit = defineEmits([
@@ -246,7 +260,7 @@ defineExpose({
       ref="elInputRef"
       v-model="inputValue"
       class="__i-operator__"
-      :placeholder="$t('pleaseInput')"
+      :placeholder="i18nTranslate('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
@@ -259,7 +273,7 @@ defineExpose({
         <div class="__i-select__">
           <ElSelect
             v-model="selectValue"
-            :placeholder="$t('pleaseSelect')"
+            :placeholder="i18nTranslate('pleaseSelect')"
             :validate-event="false"
             :options="props.options"
             v-bind="bindAttributes"

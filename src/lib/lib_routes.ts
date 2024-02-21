@@ -127,7 +127,7 @@ const getLastTypeIcon = (systemType: RouterType[]): [IconType, string] => {
  * @returns {Array} 圖示
  */
 const getRouteIcon = (nav: Navigation | null | undefined): [IconType, string] => {
-  // 如果是 home
+  // 如果是 locatehome
   if ([null, undefined].includes(nav)) return ['fas', 'list']
 
   if (!isEmpty(nav.icon)) return getIcon(nav.icon)

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
-import { swal, isEmpty, getUuid, deepClone, getProxyData, useLocalI18n } from '@/lib/lib_utils'
+import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils'
 
 import type { Info, FilesInfo, FileType } from './CustomUploadInfo'
 import {
@@ -13,15 +14,17 @@ import {
 } from './CustomUploadInfo'
 
 import FilesView from './FilesView.vue'
-import i18nMessage from './i18n'
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const scopedId = getUuid('__i-upload__')
 
 const props = defineProps(uploadProps)
 
 const emit = defineEmits(['file'])
-
-const { i18nTranslate } = useLocalI18n(i18nMessage)
 
 const drag = ref(null)
 const active = ref(false)
@@ -224,16 +227,6 @@ const getIcon = (type: string) => {
       return 'file'
   }
 }
-const getText = (type: string) => {
-  switch (type) {
-    case 'image': return 'image'
-    case 'excel': return 'excel'
-    case 'word': return 'word'
-    case '':
-    default:
-      return 'file'
-  }
-}
 
 defineExpose({
   getFormData () {
@@ -268,7 +261,7 @@ defineExpose({
             <CustomIcon :name="getIcon(props.type)"/>
           </template>
           <template #description>
-            <!-- <span>{{ i18nTranslate(getText(props.type)) }}</span> -->
+            <!-- <span>{{ i18nTranslate(props.type) }}</span> -->
           </template>
         </CustomEmpty>
       </div>
@@ -281,7 +274,7 @@ defineExpose({
       </div>
 
       <CustomButton
-        :label="`${i18nTranslate('select')}${i18nTranslate(getText(props.type))}`"
+        :label="`${i18nTranslate('select')}${i18nTranslate(props.type)}`"
         icon-name="cloud-arrow-up"
         size="large"
         type="primary"

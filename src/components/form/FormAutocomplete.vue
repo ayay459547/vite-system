@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, ref } from 'vue'
+import { computed, useSlots, ref, inject } from 'vue'
 import { ElAutocomplete } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-type ModelValue = string | number | null
 export type FetchSuggestions = (queryString: string, callback: (data: any) => void) => void
+type ModelValue = string | number | null
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   modelValue: {
@@ -35,7 +41,12 @@ const props = defineProps({
     default: false
   },
   fetchSuggestions: {
-    type: Function as PropType<FetchSuggestions>
+    type: Function as PropType<FetchSuggestions>,
+    required: false
+  },
+  placeholder: {
+    type: String as PropType<string>,
+    required: false
   },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
@@ -44,12 +55,17 @@ const props = defineProps({
 })
 
 const bindAttributes = computed(() => {
-  return {
+  const attributes: any = {
     clearable: props.clearable,
     disabled: props.disabled,
     valueKey: props.valueKey,
     fitInputWidth: props.fitInputWidth
   }
+  if (!isEmpty(props.placeholder)) {
+    attributes.placeholder = props.placeholder
+  }
+
+  return attributes
 })
 
 const emit = defineEmits([
@@ -108,7 +124,7 @@ const scopedId = getUuid('__i-autocomplete__')
       ref="elAutocompleteRef"
       v-model="inputValue"
       class="__i-autocomplete__"
-      :placeholder="$t('pleaseInput')"
+      :placeholder="i18nTranslate('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       :fetch-suggestions="fetchSuggestions"

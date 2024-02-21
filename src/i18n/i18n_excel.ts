@@ -9,7 +9,7 @@ import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 import { getI18nMessages } from '@/i18n'
 
 // @ts-ignore
-import i18n from './i18n.xlsx?b64'
+import i18n from './i18n_table.xlsx?b64'
 import type { ScopeKey, ModuleType, ModuleLangMap } from './i18n_setting'
 import { defaultModuleLangMap, scopeList } from './i18n_setting'
 

@@ -1,12 +1,12 @@
 import type { LangMap } from '@/i18n'
 
 export default {
-  langType: {
+  userLanguage: {
     zhTw: '繁體中文',
     zhCn: '简体中文',
     en: 'English'
   },
-  home: {
+  locatehome: {
     zhTw: '首頁',
     zhCn: '首页',
     en: 'Home'

@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import { type PropType, ref, onMounted } from 'vue'
+import type { PropType } from 'vue'
+import { inject, ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
+import type { UseHook } from '@/declare/hook'
 import type { ButtonType } from '@/components'
 import { CustomIcon, CustomButton } from '@/components'
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
 import { useLayoutStore } from '@/stores/stores_layout'
-import { useLocalI18n } from '@/lib/lib_utils'
 
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
-import i18nMessage from '../i18n'
 
-const { i18nTranslate } = useLocalI18n(i18nMessage)
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   historyIsOpen: {

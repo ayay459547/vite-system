@@ -52,8 +52,8 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
 </script>
 
 <template>
-  <div class="home">
-    <div class="home-search">
+  <div class="locatehome">
+    <div class="locatehome-search">
       <CustomInput
         v-model="form.text"
         v-bind="formColumn.text"
@@ -73,14 +73,14 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
       />
     </div>
 
-    <div class="home-tree">
+    <div class="locatehome-tree">
       <FeatureTree :tree="showRoutes"></FeatureTree>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.home {
+.locatehome {
   width: 100%;
   height: calc(100% - 16px);
   padding: 16px;

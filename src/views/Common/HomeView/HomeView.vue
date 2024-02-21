@@ -9,15 +9,15 @@ const options = () => {
 </script>
 
 <template>
-  <div class="home">
-    <div class="home-title">
+  <div class="locatehome">
+    <div class="locatehome-title">
       <CustomCharts :options="options"/>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.home {
+.locatehome {
   width: 100%;
   height: 100%;
   padding: 16px;

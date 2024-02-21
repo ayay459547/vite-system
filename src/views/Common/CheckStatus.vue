@@ -11,9 +11,9 @@ const { isCheckedStatus } = storeToRefs(authStore)
 const router = useRouter()
 watch(isCheckedStatus, (isCheck: boolean) => {
   if (isCheck) {
-    router.push({ name: 'home' })
+    router.push({ name: 'locatehome' })
   }
-})
+}, { immediate: true })
 
 </script>
 

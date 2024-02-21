@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, ref } from 'vue'
+import { computed, ref, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import {
   CustomPopover,
   CustomButton,
@@ -11,6 +12,11 @@ import {
 } from '@/components'
 
 import type { Sorting, Order } from '../CustomTableInfo'
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   modelValue: {
@@ -91,7 +97,7 @@ const submit = () => {
       <template #reference>
         <CustomButton
           icon-name="arrow-down-short-wide"
-          :label="$t('sorting')"
+          :label="i18nTranslate('sorting')"
         />
       </template>
 
@@ -120,9 +126,9 @@ const submit = () => {
                     :label="element.label"
                     type="radio"
                     :options="[
-                      { label: $t('ascending'), value: 'ascending' },
-                      { label: $t('none'), value: 'none' },
-                      { label: $t('descending'), value: 'descending' }
+                      { label: i18nTranslate('ascending'), value: 'ascending' },
+                      { label: i18nTranslate('empty'), value: 'none' },
+                      { label: i18nTranslate('descending'), value: 'descending' }
                     ]"
                   />
                 </div>
@@ -145,7 +151,7 @@ const submit = () => {
 
         <div class="__column-reset">
           <CustomButton
-            :label="$t('returnDefault')"
+            :label="i18nTranslate('reset')"
             type="info"
             plain
             icon-name="repeat"
@@ -153,7 +159,7 @@ const submit = () => {
           />
 
           <CustomButton
-            :label="$t('confirm')"
+            :label="i18nTranslate('confirm')"
             type="success"
             plain
             icon-name="check"

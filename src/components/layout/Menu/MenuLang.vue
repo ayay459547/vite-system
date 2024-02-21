@@ -5,14 +5,11 @@ import type { UseHook, EventItem } from '@/declare/hook'
 import { options as langOptions } from '@/i18n'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { useLocaleStore } from '@/stores/stores_locale'
-import { useLocalI18n } from '@/lib/lib_utils'
-
-import i18nMessage from '../i18n'
 
 const useHook: UseHook = inject('useHook')
-const { eventList } = useHook()
-
-const { i18nTranslate } = useLocalI18n(i18nMessage)
+const { i18nTranslate, eventList } = useHook({
+  i18nModule: 'system'
+})
 
 const localeStore = useLocaleStore()
 
@@ -38,7 +35,7 @@ const openLangType = (e: MouseEvent) => {
   <div class="lang-container" @click="openLangType">
     <div class="lang-md">
       <CustomIcon name="earth-americas" />
-      <span>{{ i18nTranslate('langType') }}</span>
+      <span>{{ i18nTranslate('userLanguage') }}</span>
     </div>
 
     <div class="lang-xs">
@@ -46,7 +43,7 @@ const openLangType = (e: MouseEvent) => {
         <CustomIcon name="earth-americas" />
 
         <template #content>
-          <span>{{ i18nTranslate('langType') }}</span>
+          <span>{{ i18nTranslate('userLanguage') }}</span>
         </template>
       </CustomTooltip>
     </div>

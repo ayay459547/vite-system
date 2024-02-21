@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, ref } from 'vue'
+import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
@@ -14,6 +15,11 @@ export type Option = {
 }
 
 export type Options = Array<Option>
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   modelValue: {
@@ -110,8 +116,7 @@ const bindAttributes = computed(() => {
     allowCreate: props.allowCreate,
     defaultFirstOption: props.defaultFirstOption
   }
-
-  if (props.placeholder) {
+  if (!isEmpty(props.placeholder)) {
     attributes.placeholder = props.placeholder
   }
 
@@ -180,7 +185,7 @@ defineExpose({
       ref="elSelectRef"
       v-model="inputValue"
       class="__i-select__"
-      :placeholder="$t('pleaseSelect')"
+      :placeholder="i18nTranslate('pleaseSelect')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"

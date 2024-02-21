@@ -374,6 +374,7 @@ export type LocalI18n = Partial<Composer & {
   i18nTest: I18nTest
 }>
 /**
+ * 廢棄不用 所有的翻譯在Excel中設定
  * @author Caleb
  * @description 針對區域 設定翻譯 不影響其他地方
  * @param {Object} langMap 設定key 對應的語言顯示的資料
@@ -424,7 +425,6 @@ export const downloadFile = (path: string, fileName: string): void => {
   a.click()
   a.remove()
 }
-
 
 /**
  * @author Caleb

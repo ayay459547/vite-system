@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import type { ComputedRef, PropType } from 'vue'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { ListType, ListItem } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
 
-import i18nMessage from '../i18n'
-
-const { i18nTranslate } = useLocalI18n(i18nMessage)
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const {
   removeHistoryNavigation,

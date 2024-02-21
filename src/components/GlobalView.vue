@@ -38,6 +38,7 @@ import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useGlobalI18n } from '@/i18n/i18n_excel'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { getPermission, defaultPermission } from '@/lib/lib_permission'
@@ -154,7 +155,7 @@ const setWebInfo = () => {
       const { name, title } = currentNavigation
 
       if (i18nTest(name)) {
-        return i18nTranslate(name)
+        return i18nTranslate(name, 'system')
       }
       if (title ?? false) return title
     }
@@ -192,8 +193,8 @@ const setModalView = async (currentRoute: RouteLocationNormalized) => {
 const setNavigationData = (currentRoute: RouteLocationNormalized) => {
   const routeName = currentRoute.name as string
 
-  if (routeName === 'home') {
-    setBreadcrumbName(['home'])
+  if (routeName === 'locatehome') {
+    setBreadcrumbName(['locatehome'])
     setBreadcrumbTitle(['首頁'])
 
     setCurrentNavigation(null)
@@ -229,7 +230,7 @@ const initNavigationRoutes = async () => {
   await initSystemData()
 
   setNavigationRoutes(routesPermission.value)
-  router.push({ name: 'home' })
+  router.push({ name: 'locatehome' })
 
   await nextTick()
   await checkInitIdb()
@@ -253,7 +254,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  loading(true, i18nTranslate('systemInitialization'))
+  loading(true, i18nTranslate('systemInitialization', 'system'))
 })
 
 // 路由切換
@@ -268,7 +269,7 @@ const onRouterChange = async () => {
 // 登出
 const logout = async () => {
   await nextTick()
-  loading(true, i18nTranslate('logout'))
+  loading(true, i18nTranslate('logout', 'system'))
   clearToken()
   removeCookie('loginTime')
 
@@ -278,14 +279,14 @@ const logout = async () => {
 // 登入
 const login = async (userId: number) => {
   await nextTick()
-  loading(true, i18nTranslate('systemInitialization'))
+  loading(true, i18nTranslate('systemInitialization', 'system'))
 
   const loginTime = datetimeFormat(new Date(), 'YYYY-MM-DD_HH:mm:ss')
   setCookie('loginTime', loginTime)
   setToken(userId, loginTime)
 
   await initNavigationRoutes()
-  router.push({ name: 'home' })
+  router.push({ name: 'locatehome' })
 }
 
 // 歷史路由
@@ -303,8 +304,8 @@ provide<UseHook>('useHook', (options) => {
 
   return {
     loading,
-    i18nTranslate: (key) => {
-      return `${i18nTranslate(key, i18nModule)}`
+    i18nTranslate: (key: string, _i18nModule?: ScopeKey) => {
+      return `${i18nTranslate(key, _i18nModule ?? i18nModule)}`
     },
     i18nTest: (key) => {
       return i18nTest(key, i18nModule)

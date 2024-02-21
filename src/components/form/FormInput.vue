@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, ref, onMounted } from 'vue'
+import { computed, useSlots, ref, onMounted, inject } from 'vue'
 import { ElInput } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import { isEmpty, round, floor, ceil, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   modelValue: {
@@ -83,7 +89,7 @@ const bindAttributes = computed(() => {
     rows: props.rows,
     showPassword: props.showPassword
   }
-  if (props.placeholder) {
+  if (!isEmpty(props.placeholder)) {
     attributes.placeholder = props.placeholder
   }
 
@@ -210,7 +216,7 @@ defineExpose({
       ref="elInputRef"
       v-model="inputValue"
       class="__i-input__"
-      :placeholder="$t('pleaseInput')"
+      :placeholder="i18nTranslate('pleaseInput')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"

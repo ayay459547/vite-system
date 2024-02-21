@@ -21,14 +21,14 @@ console.log(Object.prototype.toString.call(p2))
 const baseRoutes = [
   {
     path: '',
-    redirect: { name: 'home' }
+    redirect: { name: 'locatehome' }
   },
   {
-    name: 'home',
+    name: 'locatehome',
     meta: {
       title: '首頁'
     },
-    path: '/home'
+    path: '/locatehome'
   },
   {
     name: 'login',

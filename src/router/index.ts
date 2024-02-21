@@ -68,22 +68,22 @@ const resRoutes = treeToRoutes(routes)
 const baseRoutes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: { name: 'home' }
+    redirect: { name: 'locatehome' }
   },
   {
     path: '/demo',
-    redirect: { name: 'home' }
+    redirect: { name: 'locatehome' }
   },
   {
     path: `${systemUrl}`,
-    redirect: { name: 'home' }
+    redirect: { name: 'locatehome' }
   },
   {
-    name: 'home',
+    name: 'locatehome',
     meta: {
       title: '首頁'
     },
-    path: `${systemUrl}/home`,
+    path: `${systemUrl}/locatehome`,
     component: HomeView
   },
   {
@@ -192,7 +192,7 @@ router.beforeEach(
         next()
       } else {
         // 未登入先將想去的頁面暫存
-        if (to.name !== 'home') {
+        if (to.name !== 'locatehome') {
           tempTo.value = to
         }
 
@@ -201,7 +201,7 @@ router.beforeEach(
     } else if (isLogin.value) {
       // 已經登入 如果要進登入頁 自動跳回首頁
       if (to.name === 'login') {
-        next({ name: 'home' })
+        next({ name: 'locatehome' })
       // 沒有讀取的權限
       } else if (
         from.name &&

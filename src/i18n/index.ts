@@ -1,10 +1,5 @@
 import { createI18n } from 'vue-i18n'
 
-import views from './i18n_views'
-import components from './i18n_components'
-import layout from './i18n_layout'
-import common from './i18n_common'
-
 export type LangMap = Record<string, {
   zhTw: string
   zhCn: string
@@ -19,8 +14,8 @@ export type Messages = {
 
 export const getI18nMessages = (langMap: LangMap): Messages => {
   return (langMap as any).$reduce((res: Messages, value: Record<string, any>, key: string) => {
-    for (const langType in value) {
-      res[langType][key] = value[langType]
+    for (const userLanguage in value) {
+      res[userLanguage][key] = value[userLanguage]
     }
 
     return res
@@ -31,18 +26,19 @@ export const getI18nMessages = (langMap: LangMap): Messages => {
   })
 }
 
-export const langMap: LangMap = {
-  ...views,
-  ...components,
-  ...layout,
-  ...common
-}
-
 export const options = [
   { label: '繁體中文', value: 'zhTw' },
   { label: '简体中文', value: 'zhCn' },
   { label: 'English', value: 'en' }
 ]
+
+export const langMap: LangMap = {
+  langType: {
+    zhTw: '繁體中文',
+    zhCn: '简体中文',
+    en: 'English'
+  }
+}
 
 const i18n = createI18n({
   fallbackWarn: false,
