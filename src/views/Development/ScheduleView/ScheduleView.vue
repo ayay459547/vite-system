@@ -97,7 +97,7 @@ const {
       type="info"
       plain
       icon-name="file-word"
-      @click="downloadFile('/static/file', '下載word測試.docx')"
+      @click="downloadFile('/static/file/', '下載word測試.docx')"
     />
 
     <h3 class="i-my-md">工作進度表</h3>

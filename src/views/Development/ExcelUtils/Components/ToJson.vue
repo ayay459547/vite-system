@@ -45,7 +45,7 @@ const excelToJson = () => {
         label="下載使用範例"
         type="info"
         icon-name="download"
-        @click="downloadFile('/static/file', 'Excel轉JSON.xlsx')"
+        @click="downloadFile('/static/file/', 'Excel轉JSON.xlsx')"
       />
     </div>
 

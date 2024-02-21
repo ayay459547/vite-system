@@ -162,7 +162,7 @@ const isPopoverVisible = ref(false)
 
       <CustomButton label="OpenModal" @click="openModal"/>
 
-      <CustomButton label="下載word" @click="downloadFile('/static/file', '下載word測試.docx')"/>
+      <CustomButton label="下載word" @click="downloadFile('/static/file/', '下載word測試.docx')"/>
 
       <CustomModal
         v-model="modalShow"
