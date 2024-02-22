@@ -302,7 +302,8 @@ const initShowColumns = async () => {
   if (columnSetting.value) {
     await columnSetting.value.checkColumnSetting()
 
-    const tempColumnList = await (columnSetting.value?.getcolumnList() ?? []) as ColumnItem[]
+    const tempColumnList = await (columnSetting.value?.getColumnList() ?? []) as ColumnItem[]
+    columnSetting.value?.setColumnList(tempColumnList)
 
     // 確認欄位 如果有變更 給予提示
     if (!isEmpty(tempColumnList)) {

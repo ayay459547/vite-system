@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, onBeforeMount, inject } from 'vue'
+import { ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -50,13 +50,16 @@ const emit = defineEmits(['change'])
 
 const columnList = ref<ColumnItem[]>([])
 
-const getcolumnList = async () => {
+const getColumnList = async () => {
   try {
     const getRes: SettingData = await getColumnSetting(props.settingKey)
     return getRes?.columns ?? []
   } catch (e) {
     return []
   }
+}
+const setColumnList = (columns: Array<ColumnItem>) => {
+  columnList.value = columns
 }
 
 /**
@@ -110,8 +113,8 @@ const setDefaultColumnSetting = async () => {
 const resetSetting = async () => {
   await setDefaultColumnSetting()
 
-  const tempColumnList = await getcolumnList()
-  columnList.value = tempColumnList
+  const tempColumnList = await getColumnList()
+  setColumnList(tempColumnList)
   updateSetting()
 }
 
@@ -134,7 +137,8 @@ const setColumnWidth = (props: string, newWidth: number) => {
 
 defineExpose({
   checkColumnSetting,
-  getcolumnList,
+  getColumnList,
+  setColumnList,
   resetSetting,
   setColumnWidth
 })
@@ -165,13 +169,6 @@ const onDragend = () => {
   drag.value = false
   updateSetting()
 }
-
-onBeforeMount(async () => {
-  await checkColumnSetting()
-
-  const tempColumnList = await getcolumnList()
-  columnList.value = tempColumnList
-})
 
 </script>
 

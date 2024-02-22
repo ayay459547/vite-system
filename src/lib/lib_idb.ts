@@ -24,7 +24,7 @@ async function keys (table: string) {
 }
 
 /**
- * 有新增表時 idbVersion + 1
+ * 有新增或刪除表時 idbVersion + 1
  * Table版本 > DB版本 => 加入新表
  */
 export const idbVersion = 1
@@ -32,47 +32,72 @@ export const idbVersion = 1
  * 管理新增加的 store
  * 已存在的 store 不用創建
  *
- * storeName 資料表名稱
- * newVersion 在什麼版本的 idbVersion 加入
+ * 資料表名稱: {
+ *   version 目前版本 版本不同會清空
+ *   createVersion 在什麼版本的 idbVersion 加入
+ *   isDelete 是否刪除
+ * }
+ *
+ * isDelete 變更為true 視為重新加入 需要變更 createVersion + idbVersion
  */
-export const storeVersion = [
-  {
-    storeName: 'iDBVersion',
-    newVersion: 1
+export const storeVersion = {
+  iDBVersion: {
+    version: '1.0.0',
+    createVersion: 1,
+    isDelete: false
   },
-  {
-    storeName: 'columnSetting',
-    newVersion: 1
+  columnSetting: {
+    version: '1.0.0',
+    createVersion: 1,
+    isDelete: false
   },
-  {
-    storeName: 'historyNavigation',
-    newVersion: 1
+  historyNavigation: {
+    version: '1.0.0',
+    createVersion: 1,
+    isDelete: false
   },
-  {
-    storeName: 'i18nInfo',
-    newVersion: 1
+  i18nInfo: {
+    version: '1.0.0',
+    createVersion: 1,
+    isDelete: false
   }
-]
+}
 
 // 紀錄版本
 export const checkInitIdb = async () => {
   const storeList = await keysIDBVersion()
 
-  storeVersion.forEach(async store => {
-    const { storeName, newVersion } = store
+  for (const storeName in storeVersion) {
+    const store = storeVersion[storeName]
+    const {
+      version,
+      createVersion,
+      isDelete
+    } = store
 
-    getIDBVersion(storeName).then(info => {
+    getIDBVersion(storeName).then(async info => {
       if (
         isEmpty(info) ||
-        info.newVersion !== newVersion
+        info.version !== version ||
+        info.createVersion !== createVersion ||
+        info.isDelete !== isDelete
       ) {
+        if (!isDelete) {
+          const clearKeys = await keys(storeName)
+          if (clearKeys.length > 0) {
+            clear(storeName)
+          }
+        }
+
         setIDBVersion(storeName, {
           storeName,
-          newVersion
+          version,
+          createVersion,
+          isDelete
         })
       }
     })
-  })
+  }
 
   return storeList
 }

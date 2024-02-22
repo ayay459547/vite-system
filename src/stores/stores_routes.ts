@@ -100,19 +100,21 @@ export const useRoutesStore = defineStore('routes', () => {
   const initHistoryNavigation = async () => {
     const keyList = await keysHistory()
     const historyList: Promise<HistoryNavigation>[] = []
-
     if (keyList.length > 0) {
       keyList.forEach((key: string) => {
         historyList.push(getHistory(key))
       })
       const resList = await Promise.all(historyList)
+      const navigationList = resList.filter(resItem => {
+        return !isEmpty(resItem)
+      })
 
       // 依照訪問次數排序
-      resList.sort((a, b) => {
+      navigationList.sort((a, b) => {
         return (b?.visitCount ?? 0) - (a?.visitCount ?? 0)
       })
 
-      resList.forEach(resItem => {
+      navigationList.forEach(resItem => {
         addHistoryNavigation(resItem.name, resItem)
       })
     }
