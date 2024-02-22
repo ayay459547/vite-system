@@ -7,7 +7,7 @@ import { fakeUserData, allPermissionData } from './fakeData'
 
 export const getRoutesPermission = async (userId: number) => {
   const resData = await ajax<Api<PermissionData[]>>({
-    url: '/page1/get',
+    url: '/api/getTableDataCount',
     method: 'get',
     data: {
       id: userId

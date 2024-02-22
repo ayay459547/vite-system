@@ -148,6 +148,7 @@ defineExpose({
 
   &-item {
     width: 100%;
+    min-height: 54px;
     color: #fff;
     font-weight: 600;
     letter-spacing: 1px;

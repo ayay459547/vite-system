@@ -63,7 +63,7 @@ export const fakeTableData: TableData[] = [
 // api
 export const getData = async () => {
   const resData = await ajax<Api<TableData[]>>({
-    url: '/page1/get',
+    url: '/api/getTableDataCount',
     method: 'post',
     data: {}
   }, {
@@ -79,7 +79,7 @@ export const getData = async () => {
 
 export const getDataCount = async () => {
   const resData = await ajax<Api<number>>({
-    url: '/page1/get',
+    url: '/api/getTableDataCount',
     method: 'post',
     data: {}
   }, {

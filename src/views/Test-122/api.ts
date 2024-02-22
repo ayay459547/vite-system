@@ -104,7 +104,7 @@ export const getData = async (params: any) => {
   }
 
   const resData = await ajax<Api<TableData[]>>({
-    url: '/page1/get',
+    url: '/api/getTableDataCount',
     method: 'post',
     data: {}
   }, {
@@ -154,7 +154,7 @@ export const getDataCount = async (params: any) => {
   }
 
   const resData = await ajax<Api<TableData[]>>({
-    url: '/page1/get',
+    url: '/api/getTableDataCount',
     method: 'post',
     data: {}
   }, {
