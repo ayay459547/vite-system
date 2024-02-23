@@ -72,3 +72,18 @@
     align-items: flex-end;
   }
 }
+
+.flex-label {
+  &-list {
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 80px;
+  }
+  &-item {
+    font-size: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

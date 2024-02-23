@@ -357,10 +357,11 @@ export interface TableOptoins {
   isHiddenExcel?: boolean
   tableSize?: TableSize
   showType?: string | 'custom' | 'auto'
+  selection?: boolean
 }
 
 export interface TableSetting {
-  tableRef: TableRef,
+  tableRef: Ref<TableRef>,
   tableSetting: {
     ref: (el: TableRef) => void
     title: string
@@ -382,6 +383,7 @@ export interface TableSetting {
   downloadExcel: (tableData: Record<string, any>[]) => void
   resetScroll: (tableRef?: TableRef) => void
   toggleSelection: (rows: any[], tableRef?: TableRef) => void
+  getSelectionRows: () => any[]
   getParams: (tableRef?: TableRef) => TableParams | null
   setParams: (params: TableParams, tableRef?: TableRef) => void
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
@@ -428,7 +430,8 @@ export const getTableSetting = (
     },
     isSorting = false,
     isHiddenExcel = false,
-    tableSize = ''
+    tableSize = '',
+    selection = false
   } = options
 
   // 設定 table 用的 column
@@ -595,7 +598,8 @@ export const getTableSetting = (
       isSorting,
       tableColumns: resColumns,
       tableSize,
-      isHiddenExcel
+      isHiddenExcel,
+      selection
     },
     downloadExcel,
     resetScroll: (tableRef?: TableRef) => {
@@ -610,6 +614,13 @@ export const getTableSetting = (
         return tableRef.toggleSelection(rows)
       } else if (_tableRef.value !== null) {
         return _tableRef.value.toggleSelection(rows)
+      }
+    },
+    getSelectionRows: (tableRef?: TableRef) => {
+      if (tableRef) {
+        return tableRef.getSelectionRows()
+      } else if (_tableRef.value !== null) {
+        return _tableRef.value.getSelectionRows()
       }
     },
     getParams: (tableRef?: TableRef): TableParams => {

@@ -68,6 +68,9 @@ const sortList = () => {
         item-key="key"
         :min="2"
         :max="16"
+        is-draggable
+        is-create
+        is-remove
         @add="add"
         @remove="remove"
       >

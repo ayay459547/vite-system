@@ -112,6 +112,7 @@ export declare interface CustomTableExpose {
   setTableParams: (params: TableParams) => void
   resetScroll: () => void
   toggleSelection: (rows: any[]) => void
+  getSelectionRows: () => any[]
 }
 export type {
   Order,

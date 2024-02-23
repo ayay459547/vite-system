@@ -5,7 +5,7 @@ import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } fr
 import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { getSimpleTableSetting } from '@/lib/lib_columns'
-import { swal, scrollToEl, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -21,7 +21,7 @@ const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
-      if (hasSlot('header-all')) return 'header-all'
+      // if (hasSlot('header-all')) return 'header-all'
       break
     case 'column':
       if (hasSlot(`column-${slotKey}`)) return `column-${slotKey}`
@@ -75,6 +75,21 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: 'key'
+  },
+  isDraggable: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  },
+  isCreate: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
+  },
+  isRemove: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false
   }
 })
 
@@ -107,7 +122,8 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector(`.${scopedId} .__list-group-item:last-child`)
+    const lastRowClass = props.isDraggable ? '.__list-group-item:last-child' : '.__data-table-row:last-child'
+    const newEl = document.querySelector(`.${scopedId} ${lastRowClass}`)
     if (newEl) scrollToEl(newEl)
   })
 }
@@ -134,11 +150,16 @@ onBeforeMount(() => {
     align: 'center'
   }
 
-  afterColumn['row_operations'] = { label: '操作' }
-  afterColumn['row_operations'][props.tableKey] = {
-    width: 90,
-    align: 'center',
-    isOperations: true
+  if (
+    props.isRemove ||
+    props.isDraggable
+  ) {
+    afterColumn['row_operations'] = { label: '操作' }
+    afterColumn['row_operations'][props.tableKey] = {
+      width: 90,
+      align: 'center',
+      isOperations: true
+    }
   }
 
   // 依原來欄位設定跑 slot 迴圈
@@ -163,17 +184,29 @@ onBeforeMount(() => {
 
 <template>
   <div class="__form-list__ form-container hover-card-info" :class="scopedId">
-    <div class="form-label">
+    <div v-if="!isEmpty(props.label)" class="form-label">
       <span>{{ props.label }}</span>
     </div>
     <SimpleTable
       v-model="tempValue"
       :item-key="props.itemKey"
-      is-draggable
+      :is-draggable="isDraggable"
       :handle="`.form-item-move__${scopedId}`"
       :table-data="tempValue"
       :table-columns="showTableColumns"
     >
+      <template #header-all="{ key, rowIndex, data, column: _column }">
+        <slot
+          name="header-all"
+          :label="data"
+          :row-index="rowIndex"
+          :column="_column"
+          :prop="key"
+        >
+          <div v-show="_column.required" class="text-danger i-pr-xs">*</div>
+          <div>{{ _column.label }}</div>
+        </slot>
+      </template>
       <template
         v-for="column in tableColumns"
         :key="column.prop"
@@ -215,12 +248,14 @@ onBeforeMount(() => {
       <template #column-row_operations="{ rowIndex }">
         <div class="flex-row">
           <CustomButton
+            v-if="props.isRemove"
             type="danger"
             icon-name="trash-can"
             text
             @click="remove(rowIndex)"
           />
           <CustomButton
+            v-if="props.isDraggable"
             type="info"
             icon-name="bars"
             text
@@ -231,6 +266,7 @@ onBeforeMount(() => {
     </SimpleTable>
 
     <CustomButton
+      v-if="isCreate"
       type="primary"
       :label="i18nTranslate('create')"
       icon-name="plus"
@@ -254,8 +290,8 @@ onBeforeMount(() => {
       padding: 8px;
       transition-duration: 0.3s;
 
-      position: sticky;
-      left: 0;
+      // position: sticky;
+      // left: 0;
     }
 
     &-label {

@@ -66,6 +66,9 @@ const sortList = () => {
         :table-data="formList"
         :column-setting="columnSetting"
         item-key="key"
+        is-draggable
+        is-create
+        is-remove
         @add="add"
         @remove="remove"
       >

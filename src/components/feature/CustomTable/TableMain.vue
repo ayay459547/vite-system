@@ -244,25 +244,26 @@ onUnmounted(() => {
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
 const resetScroll = (): void => {
-  if([null, undefined].includes(elTableRef.value)) return
-  elTableRef.value.setScrollTop(0)
+  elTableRef.value?.setScrollTop(0)
 }
-
 const toggleSelection = (rows: any[]): void => {
-  if([null, undefined].includes(elTableRef.value)) return
-
   if (isEmpty(rows)) {
-    elTableRef.value.clearSelection()
+    elTableRef.value?.clearSelection()
   } else {
     rows.forEach(row => {
-      elTableRef.value.toggleRowSelection(row, undefined)
+      elTableRef.value?.toggleRowSelection(row, undefined)
     })
+  }
 }
+const getSelectionRows = (): void => {
+  const selectionRows = elTableRef.value?.getSelectionRows()
+  return selectionRows ?? []
 }
 
 defineExpose({
   resetScroll,
-  toggleSelection
+  toggleSelection,
+  getSelectionRows
 })
 
 </script>

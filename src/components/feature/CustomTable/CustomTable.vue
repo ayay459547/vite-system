@@ -100,18 +100,6 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const resetScroll = () => {
-  if (tableMainRef.value) {
-    tableMainRef.value.resetScroll()
-  }
-}
-const toggleSelection = (rows: any[]) => {
-  if (tableMainRef.value) {
-    tableMainRef.value.toggleSelection(rows)
-  }
-}
-
-const tableMainRef = ref(null)
 const pageChange: PageChange = (page, pageSize) => {
   currentPage.value = page
 
@@ -347,9 +335,22 @@ onMounted(async () => {
   isRender.value = true
 })
 
+const tableMainRef = ref(null)
+const resetScroll = () => {
+  tableMainRef.value?.resetScroll()
+}
+const toggleSelection = (rows: any[]) => {
+  tableMainRef.value?.toggleSelection(rows)
+}
+const getSelectionRows = () => {
+  const selectionRows = tableMainRef.value?.getSelectionRows() ?? []
+  return getProxyData(selectionRows)
+}
+
 defineExpose({
   resetScroll,
   toggleSelection,
+  getSelectionRows,
   pageChange,
   getTableParams: () => {
     return {

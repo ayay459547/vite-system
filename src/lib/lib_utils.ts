@@ -413,12 +413,12 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
  * @description 點擊連結 下載檔案
  * @param {String} path 路徑
  */
-export const downloadFile = (path: string, fileName: string): void => {
+export const downloadFile = (path: string, fileName: string, downloadName?: string): void => {
   const a = document.createElement('a')
 
-  a.href = `${path}`
+  a.href = `${path}/${fileName}`
   a.setAttribute('target', '_blank')
-  a.setAttribute('download', `${fileName}`)
+  a.setAttribute('download', `${downloadName ?? fileName}`)
 
   a.style.display = 'none'
   document.body.appendChild(a)

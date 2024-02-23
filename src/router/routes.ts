@@ -1,16 +1,22 @@
 import type { RouterTree } from '@/declare/routes'
 import { totlaPermission } from '@/lib/lib_permission'
 
-import testRoutes from './test'
-import descriptionRoutes from './description'
-import developmentRoutes from './development'
 import { getInjectRoutes } from './setting'
+// 功能開發中
+export function InProgress () {
+  return import('@/views/Common/InProgress.vue')
+}
+// 功能維護中
+export function FixView () {
+  return import('@/views/Common/FixView.vue')
+}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const InProgress = () => import('@/views/Common/InProgress.vue')
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FixView = () => import('@/views/Common/FixView.vue')
+// 組件說明
+import descriptionRoutes from './description'
+// 開發用頁面
+import developmentRoutes from './development'
+// 測試用頁面
+import testRoutes from './test'
 
 const routes: Array<RouterTree> = [
   {
@@ -549,8 +555,8 @@ const routes: Array<RouterTree> = [
 ]
 
 export default getInjectRoutes([
-  ...testRoutes,
   ...routes,
   ...descriptionRoutes,
-  ...developmentRoutes
+  ...developmentRoutes,
+  ...testRoutes
 ])
