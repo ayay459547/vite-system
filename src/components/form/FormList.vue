@@ -9,7 +9,7 @@ import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_ut
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'iPASP_common'
+  i18nModule: 'system'
 })
 
 const slots = useSlots()

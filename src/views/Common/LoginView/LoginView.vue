@@ -259,6 +259,7 @@ const svg = `
     top: 3px;
     left: 3px;
     z-index: 1;
+    overflow: auto;
 
     @media (max-width: 992px) {
       padding: 24px 36px;

@@ -711,6 +711,7 @@ export const getSimpleTableSetting = (
       minWidth: 150,
       label: column?.label ?? '',
       title: column?.label ?? '',
+      required: false,
       ...column[type]
     }
   }
