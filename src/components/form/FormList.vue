@@ -9,7 +9,7 @@ import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_ut
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: 'iPASP_common'
 })
 
 const slots = useSlots()
@@ -90,6 +90,12 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: false,
     default: false
+  },
+  isShowNo: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否顯示編號'
   }
 })
 
@@ -144,10 +150,12 @@ const beforeColumn = reactive({})
 const afterColumn = reactive({})
 
 onBeforeMount(() => {
-  beforeColumn['row_index'] = { label: '#' }
-  beforeColumn['row_index'][props.tableKey] = {
-    width: 40,
-    align: 'center'
+  if (props.isShowNo) {
+    beforeColumn['row_index'] = { label: '#' }
+    beforeColumn['row_index'][props.tableKey] = {
+      width: 40,
+      align: 'center'
+    }
   }
 
   if (
@@ -242,25 +250,31 @@ onBeforeMount(() => {
       <template #column-row_index="{ rowIndex }">
         <span>{{ rowIndex + 1 }}</span>
       </template>
-      <template #header-row_operations="{ data }">
-        <span>{{ data }}</span>
+      <template #header-row_operations="scope">
+        <slot name="column-operations" v-bind="scope">
+          <span>{{ scope.data }}</span>
+        </slot>
       </template>
-      <template #column-row_operations="{ rowIndex }">
+      <template #column-row_operations="scope">
         <div class="flex-row">
-          <CustomButton
-            v-if="props.isRemove"
-            type="danger"
-            icon-name="trash-can"
-            text
-            @click="remove(rowIndex)"
-          />
-          <CustomButton
-            v-if="props.isDraggable"
-            type="info"
-            icon-name="bars"
-            text
-            :class="`form-item-move__${scopedId}`"
-          />
+          <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
+            <CustomButton
+              v-if="props.isRemove"
+              type="danger"
+              icon-name="trash-can"
+              text
+              @click="remove(scope.rowIndex)"
+            />
+          </slot>
+          <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
+            <CustomButton
+              v-if="props.isDraggable"
+              type="info"
+              icon-name="bars"
+              text
+              :class="`form-item-move__${scopedId}`"
+            />
+          </slot>
         </div>
       </template>
     </SimpleTable>
