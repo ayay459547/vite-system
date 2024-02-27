@@ -20,22 +20,22 @@ import testRoutes from './test'
 
 const routes: Array<RouterTree> = [
   {
-    name: 'nav1',
-    title: '選單1',
+    name: 'test-system-feature',
+    title: '功能測試',
     systemType: ['new'],
     icon: 'cloud',
     permission: totlaPermission,
     leaves: [
       {
-        name: 'nav1-1',
-        title: '選單1-1',
+        name: 'test-auto',
+        title: 'test-auto',
         systemType: ['new'],
         icon: 'wand-magic-sparkles',
         permission: totlaPermission,
         leaves: [
           {
-            name: 'nav-test-new',
-            title: '測試表格新功能',
+            name: 'test-auto-114',
+            title: '測試Auto-114',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -43,110 +43,21 @@ const routes: Array<RouterTree> = [
               completedDate: '2023-11'
             },
             systemType: ['new'],
-            path: '/nav-test-new',
-            icon: 'table',
-            component: () => import('@/views/Test-122/Test-122.vue')
-          },
-          {
-            name: 'nav1-1-1',
-            title: '測試表格',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-1',
-            icon: 'table',
-            component: () => import('@/views/Nav1-1-1/Nav1-1-1.vue')
-          },
-          {
-            name: 'nav1-1-2',
-            title: '清單列表',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-2',
-            icon: 'table-list',
-            component: () => import('@/views/Nav1-1-2/Nav1-1-2.vue')
-          },
-          {
-            name: 'nav1-1-3',
-            title: '無權限1-1-3',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-3',
-            icon: 'info',
-            component: FixView
-          },
-          {
-            name: 'nav1-1-4',
-            title: '行事曆',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-4',
-            icon: 'calendar-days',
-            component: () => import('@/views/Nav1-1-4/Nav1-1-4.vue')
-          },
-          {
-            name: 'nav1-1-5',
-            title: '時間線測試',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-5',
-            icon: 'timeline',
-            component: () => import('@/views/Nav1-1-5/Nav1-1-5.vue')
-          },
-          {
-            name: 'nav1-1-6',
-            title: '滾動條測試',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-10',
-              completedDate: '2023-10'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-6',
-            icon: 'scroll',
-            component: () => import('@/views/Nav1-1-6/Nav1-1-6.vue')
-          },
-          {
-            name: 'nav1-1-7',
-            title: '對話框測試',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-10',
-              completedDate: '2023-10'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-7',
-            icon: 'tv',
-            component: () => import('@/views/Nav1-1-7/Nav1-1-7.vue')
+            path: '/test-auto-114',
+            icon: 'file-circle-check',
+            component: () => import('@/views/Test-auto-114/Test-auto-114.vue')
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    name: 'nav1',
+    title: '選單1',
+    systemType: ['new'],
+    icon: 'cloud',
+    permission: totlaPermission,
+    leaves: [
       {
         name: 'nav1-2',
         title: '選單1-2',

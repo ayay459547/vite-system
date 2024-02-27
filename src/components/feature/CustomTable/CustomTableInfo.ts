@@ -226,7 +226,7 @@ export const props = {
     default: false,
     description: '是否隱藏下載Excel'
   },
-  showNo: {
+  isShowNo: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,

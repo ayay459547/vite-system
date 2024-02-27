@@ -601,7 +601,7 @@ onMounted(() => {
       <TableMain
         v-if="isRender"
         ref="tableMainRef"
-        :show-no="props.showNo"
+        :is-show-no="props.isShowNo"
         :render-key="renderKey"
         :show-data="showData"
         :table-data-count="tableDataCount"

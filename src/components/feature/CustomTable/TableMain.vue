@@ -66,7 +66,7 @@ const props = defineProps({
     },
     description: '資料存在 children 時 預設是否展開'
   },
-  showNo: {
+  isShowNo: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,
@@ -363,7 +363,7 @@ defineExpose({
         </template>
 
         <!-- 顯示行數 -->
-        <template v-if="props.showNo">
+        <template v-if="props.isShowNo">
           <ElTableColumn
             width="80"
             :align="'center'"

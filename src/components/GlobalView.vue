@@ -226,6 +226,7 @@ const initSystem = async () => {
 const layoutIsShow = ref(false)
 const initNavigationRoutes = async () => {
   layoutIsShow.value = false
+  await checkInitIdb()
 
   await initSystemData()
 
@@ -233,8 +234,6 @@ const initNavigationRoutes = async () => {
   router.push({ name: 'locatehome' })
 
   await nextTick()
-  await checkInitIdb()
-
   setTimeout(() => {
     layoutIsShow.value = true
   }, 120)

@@ -406,6 +406,7 @@ export default SimpleTable
     background-color: #fff;
     transition-duration: 0.3s;
     border-bottom: 1px solid #ebeef5;
+    content-visibility: auto;
 
     &:nth-child(even) {
       background-color: #fafafa;

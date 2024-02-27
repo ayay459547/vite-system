@@ -169,7 +169,7 @@ onBeforeMount(() => {
         v-bind="tableSetting1"
         lazy-loading
         :lazy-loading-status="lazyLoadingStatus"
-        show-no
+        is-show-no
         @excel="download1"
         @change-setting="initData"
         @load="loadData"
@@ -192,7 +192,7 @@ onBeforeMount(() => {
         v-bind="tableSetting2"
         lazy-loading
         :lazy-loading-status="lazyLoadingStatus"
-        show-no
+        is-show-no
         @excel="download2"
         @change-setting="initData"
         @load="loadData"

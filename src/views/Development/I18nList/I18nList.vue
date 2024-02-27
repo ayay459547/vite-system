@@ -61,7 +61,7 @@ onMounted(() => {
         :table-data="tableData"
         :table-data-count="tableDataCount"
         v-bind="tableSetting"
-        show-no
+        is-show-no
         @excel="download"
         @show-change="init()"
       >

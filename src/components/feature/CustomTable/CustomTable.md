@@ -140,7 +140,7 @@ const tableData2 = [
 | sort             | 預設排序設定     | object  | { key: null, order: null } |        |
 | showType         | 資料顯示類型     | enum    | 'custom'                   |        |
 | isHiddenExcel      | 是否隱藏下載excel | boolean | false                     |        |
-| showNo           | 是否顯示編號      | boolean | false                     |        |
+| isShowNo           | 是否顯示編號      | boolean | false                     |        |
 | isSorting          | 是否有多欄位排序  | boolean | false                     |        |
 | lazyLoading      | 是否啟用懶加載    | boolean | false                     |        |
 | lazyLoadingStatus | 懶加載狀態       | enum    | 'noMore'                  |        |

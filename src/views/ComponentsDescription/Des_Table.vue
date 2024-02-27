@@ -110,7 +110,7 @@ const onRandomClick = () => {
       <CustomTable
         :table-data="tableData2"
         :table-data-count="500"
-        show-no
+        is-show-no
         v-bind="tableSetting"
         @excel="download"
         @show-change="onTableChange"

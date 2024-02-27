@@ -92,7 +92,7 @@ export interface Props extends Record<string, any> {
   cellClassName?: CellClassName
   cellStyle?: CellStyle
 
-  showNo?: boolean
+  isShowNo?: boolean
   /**
    * 表單顯示相關
    * page 當前分頁
@@ -128,7 +128,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   defaultExpandAll: false,
   spanMethod: null,
   rowClassName: null,
-  showNo: false,
+  isShowNo: false,
   page: 1,
   pageSize: 100,
   sort: () => {
@@ -528,7 +528,7 @@ const slotKeyList = computed(() => {
       <TableMain
         v-if="isRender"
         ref="tableMainRef"
-        :show-no="props.showNo"
+        :is-show-no="props.isShowNo"
         :render-key="renderKey"
         :show-data="showData"
         :table-data-count="tableDataCount"
