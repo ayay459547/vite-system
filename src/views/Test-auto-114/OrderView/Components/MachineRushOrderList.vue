@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type  { PropType } from 'vue'
-import { ref, onMounted, inject } from 'vue'
+import { ref, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import { FormList, CustomInput, CustomButton } from '@/components'
 import { getSimpleTableSetting, getFormListSetting } from '@/lib/lib_columns'
 import { scrollToEl, isEmpty } from '@/lib/lib_utils'
-import type { TableData } from '../api'
+
 import { workReportColumnSetting } from './columns'
 
-const useHook = inject('useHook')
+const useHook: UseHook = inject('useHook')
 const { auth } = useHook()
 const authData = auth()
 
@@ -20,56 +20,12 @@ interface FormData {
   updateBy: string
 }
 
-const props = defineProps({
-  machine: {
-    type: Object as PropType<TableData>,
-    default: () => {
-      return {
-        machineNo: '',
-        machineArea: '',
-        count: '',
-        machineStatus: ''
-      }
-    }
-  }
-})
-
-const machine = ref<TableData>({
-  machineNo: '',
-  machineArea: '',
-  count: '',
-  machineStatus: ''
-})
-const initRushOrderData = () => {
-  const rushOrderlist = [
-    {
-      orderNo: 'PF0462103W056S-ENG',
-      sequence: '3',
-      processNo: 'CP-0210',
-      LAST_UPDATE_TIMESTAMP: '2024-01-23 09:49',
-      updateBy: 'aat'
-    },
-    {
-      orderNo: 'PF0462103W056S-ENG',
-      sequence: '4',
-      processNo: 'CP-0100',
-      LAST_UPDATE_TIMESTAMP: '2024-01-24 11:49',
-      updateBy: 'aat'
-    }
-  ]
-
-  rushOrderlist.forEach(rushOrderItem => {
-    add(rushOrderItem)
-  })
-}
-
-onMounted(() => {
-  machine.value = props.machine
-
-  initRushOrderData()
-
-  console.log('machine => ', machine.value)
-})
+const machineRef = ref('')
+const machineOptions = [
+  { label: 'machine-1', value: 'machine-1' },
+  { label: 'machine-2', value: 'machine-2' },
+  { label: 'machine-3', value: 'machine-3' }
+]
 
 const {
   tableColumns
@@ -89,38 +45,27 @@ const addItem = () => {
 
   add({
     orderNo: '',
-    sequence: '',
     processNo: '',
+    sequence: '',
     LAST_UPDATE_TIMESTAMP: '',
     updateBy: userName
   })
 }
 
-defineExpose({
-  submit: async (): Promise<string> => {
-    return validateForm().then(successList => {
-      console.log('vee success => ', successList)
-
-      return 'success'
-    }).catch(errorList => {
-      console.log('vee error => ', errorList)
-      const error = errorList.find(errorItem => {
-        return errorItem.el !== null
-      })
-      if (error) {
-        const el = error.getDom()
-        scrollToEl(el)
-      }
-      return 'error'
-    })
-  }
-})
 
 </script>
 
 <template>
-  <div class="machine-rush-order">
-    <div class="machine-rush-order-form">
+  <div class="info-container">
+    <div class="info-header">
+      <CustomInput
+        v-model="machineRef"
+        label="機台"
+        type="select"
+        :options="machineOptions"
+      />
+    </div>
+    <div class="info-body">
       <FormList
         v-model="formList"
         :table-data="formList"
@@ -135,16 +80,16 @@ defineExpose({
         <template #column-sequence="{ rowIndex }">
           <div>{{ rowIndex + 1 }}</div>
         </template>
-        <template #column-orderNo="{ rowIndex }">
-          <CustomInput
-            v-model="formList[rowIndex].orderNo"
-            v-bind="formColumn.orderNo"
-          ></CustomInput>
-        </template>
         <template #column-processNo="{ rowIndex }">
           <CustomInput
             v-model="formList[rowIndex].processNo"
             v-bind="formColumn.processNo"
+          ></CustomInput>
+        </template>
+        <template #column-orderNo="{ rowIndex }">
+          <CustomInput
+            v-model="formList[rowIndex].orderNo"
+            v-bind="formColumn.orderNo"
           ></CustomInput>
         </template>
         <template #column-LAST_UPDATE_TIMESTAMP="{ data }">
@@ -170,24 +115,22 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.machine-rush-order {
-  width: 100%;
-  height: 100%;
-  padding: 12px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-
-  &-form {
-    flex: 1;
+.info {
+  &-container {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    border-radius: 6px;
+    overflow: auto;
+    border: 1px solid #e9e9eb;
+    box-shadow: 2px 2px 8px 1px lighten(#bcbcbc, 20%);
   }
-
-  .empty-btn {
-    width: 44px;
-    height: 32px;
+  &-header {
+    background-color: #409EFF;
+    padding: 16px;
+  }
+  &-body {
+    width: 100%;
+    height: fit-content;
   }
 }
 </style>

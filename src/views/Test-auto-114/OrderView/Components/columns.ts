@@ -1,9 +1,28 @@
 export const workReportColumnSetting = {
-  sequence: {
+  c: {
     label: '生產順序',
     table: {
       width: 100,
       align: 'center'
+    }
+  },
+  processNo: {
+    label: '站點編號',
+    table: {
+      minWidth: 180,
+      required: true
+    },
+    form: {
+      type: 'select',
+      default: null,
+      validate: [],
+      options: [
+        { label: 'processNo-001', value: 'processNo-001' },
+        { label: 'processNo-002', value: 'processNo-002' },
+        { label: 'processNo-003', value: 'processNo-003' }
+      ],
+      hiddenLabel: true,
+      required: true
     }
   },
   orderNo: {
@@ -22,25 +41,6 @@ export const workReportColumnSetting = {
         { label: 'orderNo-03', value: 'orderNo-03' },
         { label: 'orderNo-04', value: 'orderNo-04' },
         { label: 'orderNo-05', value: 'orderNo-05' }
-      ],
-      hiddenLabel: true,
-      required: true
-    }
-  },
-  processNo: {
-    label: '站點編號',
-    table: {
-      minWidth: 180,
-      required: true
-    },
-    form: {
-      type: 'select',
-      default: null,
-      validate: [],
-      options: [
-        { label: 'processNo-001', value: 'processNo-001' },
-        { label: 'processNo-002', value: 'processNo-002' },
-        { label: 'processNo-003', value: 'processNo-003' }
       ],
       hiddenLabel: true,
       required: true

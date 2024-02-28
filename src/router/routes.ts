@@ -59,6 +59,113 @@ const routes: Array<RouterTree> = [
     permission: totlaPermission,
     leaves: [
       {
+        name: 'nav1-1',
+        title: '選單1-1',
+        systemType: ['new'],
+        icon: 'table',
+        permission: totlaPermission,
+        leaves: [
+          {
+            name: 'nav1-1-1',
+            title: '表格-可展開',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-1',
+            icon: 'info',
+            component: () => import('@/views/Nav1-1-1/Nav1-1-1.vue')
+          },
+          {
+            name: 'nav1-1-2',
+            title: '表格-詳細資料',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-2',
+            icon: 'info',
+            component: () => import('@/views/Nav1-1-2/Nav1-1-2.vue')
+          },
+          {
+            name: 'nav1-1-3',
+            title: '功能維護中',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-3',
+            icon: 'info',
+            component: FixView
+          },
+          {
+            name: 'nav1-1-4',
+            title: '日期表',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-4',
+            icon: 'info',
+            component: () => import('@/views/Nav1-1-4/Nav1-1-4.vue')
+          },
+          {
+            name: 'nav1-1-5',
+            title: '卡片',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-5',
+            icon: 'info',
+            component: () => import('@/views/Nav1-1-5/Nav1-1-5.vue')
+          },
+          {
+            name: 'nav1-1-6',
+            title: '拖拉',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-6',
+            icon: 'info',
+            component: () => import('@/views/Nav1-1-6/Nav1-1-6.vue')
+          },
+          {
+            name: 'nav1-1-7',
+            title: '彈窗',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-08',
+              completedDate: '2023-08'
+            },
+            systemType: ['new'],
+            path: '/nav1-1-7',
+            icon: 'info',
+            component: () => import('@/views/Nav1-1-7/Nav1-1-7.vue')
+          }
+        ]
+      },
+      {
         name: 'nav1-2',
         title: '選單1-2',
         systemType: ['new'],
@@ -67,7 +174,7 @@ const routes: Array<RouterTree> = [
         leaves: [
           {
             name: 'nav1-2-1',
-            title: '無權限1-2-1',
+            title: '功能開發中',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -81,7 +188,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-2-2',
-            title: '時間線測試2',
+            title: '時間線測試',
             meta: {
               keepAlive: false,
               status: 'completed',

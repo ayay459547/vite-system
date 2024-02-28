@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { ElCard } from 'element-plus'
 
-import { CustomTimeLine, CustomTag, CustomDivider, CustomInput } from '@/components'
+import { CustomTimeLine, CustomTag } from '@/components'
 
 const options = [
   {
@@ -40,63 +39,81 @@ const options = [
   }
 ]
 
-const isCheck = ref(false)
-const isCheckList = ref([])
-const onCheckboxChange = () => {
-  console.log(777)
-}
-const checkOptions = [
-  { label: 'checkbox1', value: true },
-  { label: 'checkbox2', value: false },
-  { label: 'checkbox3', value: 2 },
-  { label: 'checkbox4', value: 3 }
+const options2 = [
+  {
+    label: 'Danger',
+    timestamp: '2018-04-12 20:46',
+    size: 'large',
+    type: 'danger',
+    placement: 'top'
+  },
+  {
+    label: '#0bbd87',
+    timestamp: '2018-04-03 20:46',
+    color: '#0bbd87',
+    placement: 'top'
+  },
+  {
+    label: 'Danger',
+    timestamp: '2018-04-12 20:46',
+    size: 'large',
+    type: 'danger',
+    hollow: true,
+    placement: 'top'
+  },
+  {
+    label: 'Success',
+    timestamp: '2018-04-03 20:46',
+    type: 'success',
+    placement: 'top'
+  },
+  {
+    label: 'Empty',
+    timestamp: '2018-04-03 20:46',
+    size: 'large',
+    type: '',
+    placement: 'top'
+  },
+  {
+    label: 'Primary',
+    timestamp: '2018-04-03 20:46',
+    type: 'primary',
+    hollow: true,
+    placement: 'top'
+  },
+  {
+    label: 'Info',
+    timestamp: '2018-04-03 20:46',
+    type: 'info',
+    placement: 'top'
+  }
 ]
 
 </script>
 
 <template>
   <div class="nav-1-2-2">
-    <h1 class="i-mb-md">nav-1-2-2</h1>
-    <CustomDivider />
-    <!-- <CustomInput
-      label="測試checkbox"
-      v-model="isCheck"
-      :options="checkOptions"
-      type="select"
-    /> -->
-    <!-- <CustomInput
-      label="測試checkbox"
-      v-model="isCheck"
-      :options="checkOptions"
-      type="radio"
-      @change="onCheckboxChange"
-    /> -->
-    <CustomInput
-      label="測試checkbox"
-      v-model="isCheck"
-      type="checkbox"
-      hidden-label
-      @change="onCheckboxChange"
-    />
-    <CustomInput
-      label="測試checkbox"
-      v-model="isCheckList"
-      :options="checkOptions"
-      type="checkbox"
-      @change="onCheckboxChange"
-    />
-    <CustomDivider border-style="dashed">div</CustomDivider>
-    <CustomTimeLine
-      :options="options"
-    >
-      <template #default="{ label }">
-        <ElCard>
-          <h3>{{ label }}</h3>
-          <h4>Update Github template</h4>
-          <p>Tom committed 2018/4/2 20:46</p>
-        </ElCard>
-      </template>
-    </CustomTimeLine>
+    <div class="flex-row i-ga-xxl">
+      <CustomTimeLine
+        :options="options"
+      >
+        <template #default="{ label }">
+          <ElCard>
+            <h3>{{ label }}</h3>
+            <h4>Update Github template</h4>
+            <p>Tom committed 2018/4/2 20:46</p>
+          </ElCard>
+        </template>
+      </CustomTimeLine>
+
+      <CustomTimeLine :options="options2">
+        <template #default="{ label }">
+          <ElCard>
+            <h3>{{ label }}</h3>
+          </ElCard>
+        </template>
+      </CustomTimeLine>
+    </div>
 
     <div class="flex-column i-ga-md">
       <CustomTag label="test"/>

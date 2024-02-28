@@ -1,10 +1,10 @@
-import type { Api, ViewParams } from '@/declare/ajax'
+import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils'
 
 import { fakeTableData } from './fakeData'
 
-export interface Params extends ViewParams {
+export interface Params {
   machineNo: string
   machineArea: string
   count: string

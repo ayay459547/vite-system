@@ -10,11 +10,11 @@ import type { TableData, FilterData } from './api'
 import { getTableData, getTableDataCount, getExcelData } from './api'
 import { columnSetting } from './columns'
 
-import MachineRushOrder from './Components/MachineRushOrder.vue'
+import RushOrder from './Components/RushOrder.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 // filter
@@ -31,9 +31,9 @@ const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {
-  title: '站點列表',
+  title: '訂單列表',
   version: '1.0.1',
-  settingKey: 'auto-114-machine',
+  settingKey: 'auto-114-order',
   isSorting: true
 }
 const { tableSetting, downloadExcel, getParams, changePage } = getTableSetting(columnSetting, 'table', tableOptions)
@@ -102,26 +102,26 @@ onMounted(() => {
 
 // modal
 const modal = reactive({
-  machineRushOrder: false
+  rushOrder: false
 })
 const currentMachine = ref<TableData>({
-  machineNo: '',
-  machineArea: '',
-  count: '',
-  machineStatus: ''
+  orderId: '',
+  demandDate: '',
+  routeId: '',
+  isSettingsRushOrder: ''
 })
 
 const onOrderNoClick = async (row: TableData) => {
   currentMachine.value = row
   await nextTick()
-  modal.machineRushOrder = true
+  modal.rushOrder = true
 }
 
 const machineRushOrderRef = ref()
 const onMachineRushOrderSubmit = async () => {
   const status = await machineRushOrderRef.value?.submit()
   if (status === 'success') {
-    modal.machineRushOrder = false
+    modal.rushOrder = false
   }
 }
 
@@ -130,19 +130,19 @@ const onMachineRushOrderSubmit = async () => {
 <template>
   <div v-loading="isLoading" class="process-view">
     <CustomModal
-      v-model="modal.machineRushOrder"
-      :title="`機台插單作業 ${currentMachine.machineNo}`"
+      v-model="modal.rushOrder"
+      :title="`機台插單作業 ${currentMachine.orderId}`"
       height-size="large"
       @submit="onMachineRushOrderSubmit"
     >
-      <MachineRushOrder ref="machineRushOrderRef" :order="currentMachine" />
+      <RushOrder ref="machineRushOrderRef" :order="currentMachine" />
       <template #footer>
         <div class="flex-row content-end i-ga-sm">
           <CustomButton
             :label="i18nTranslate('cancel')"
             icon-name="angle-left"
             icon-move="translate"
-            @click="modal.machineRushOrder = false"
+            @click="modal.rushOrder = false"
           />
           <CustomButton
             type="success"
@@ -198,7 +198,7 @@ const onMachineRushOrderSubmit = async () => {
           @change="throttleInit($event, 'input')"
         />
       </template>
-      <template #column-machineNo="{ data, row }">
+      <template #column-orderId="{ data, row }">
         <CustomButton
           :label="data"
           icon-name="map-location-dot"

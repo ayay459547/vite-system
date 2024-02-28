@@ -2,13 +2,14 @@
 import type  { PropType } from 'vue'
 import { ref, onMounted, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import { FormList, CustomInput, CustomButton } from '@/components'
 import { getSimpleTableSetting, getFormListSetting } from '@/lib/lib_columns'
 import { scrollToEl, isEmpty } from '@/lib/lib_utils'
 import type { TableData } from '../api'
 import { workReportColumnSetting } from './columns'
 
-const useHook = inject('useHook')
+const useHook: UseHook = inject('useHook')
 const { auth } = useHook()
 const authData = auth()
 

@@ -1,40 +1,48 @@
-import type { Api, ViewParams } from '@/declare/ajax'
+import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils'
 
 import { fakeTableData } from './fakeData'
+import { columnSetting } from './columns'
 
-export interface Params extends ViewParams {
-  machineNo: string
-  machineArea: string
-  count: string
-  machineStatus: string
+export interface Params {
+  orderId: string
+  demandDate: string
+  routeId: string
+  isSettingsRushOrder: string
 }
 
 interface CommonData {
-  machineNo: string
-  machineArea: string
-  count: string
-  machineStatus: string
+  orderId: string
+  demandDate: string
+  routeId: string
 }
-export interface FilterData extends CommonData {}
-export interface ResponseData extends CommonData {}
-export interface TableData extends CommonData {}
-export interface ExcelData extends CommonData {}
+export interface FilterData extends CommonData {
+  isSettingsRushOrder: string
+}
+export interface ResponseData extends CommonData {
+  isSettingsRushOrder: boolean
+}
+export interface ExcelData extends CommonData {
+  isSettingsRushOrder: string
+}
+export interface TableData extends CommonData {
+  isSettingsRushOrder: string
+}
 
 const formatParams = (params: any): Params => {
   const {
-    machineNo = '',
-    machineArea = '',
-    count = '',
-    machineStatus = ''
+    orderId = '',
+    demandDate = '',
+    routeId = '',
+    isSettingsRushOrder = ''
   } = params
 
   return {
-    machineNo,
-    machineArea,
-    count,
-    machineStatus
+    orderId,
+    demandDate,
+    routeId,
+    isSettingsRushOrder
   }
 }
 
@@ -86,21 +94,21 @@ const getData = async (
 }
 
 // excel
-export const getExcelData = async (params: any): Promise<TableData[]> => {
+export const getExcelData = async (params: any): Promise<ExcelData[]> => {
   return getData(
     (row) => {
       const {
-        machineNo = '',
-        machineArea = '',
-        count = '',
-        machineStatus = ''
+        orderId = '',
+        demandDate = '',
+        routeId = '',
+        isSettingsRushOrder = false
       } = row
 
       return {
-        machineNo,
-        machineArea,
-        count,
-        machineStatus
+        orderId,
+        demandDate,
+        routeId,
+        isSettingsRushOrder: columnSetting.isSettingsRushOrder.getValue(isSettingsRushOrder)
       }
     },
     { ...params }
@@ -112,17 +120,17 @@ export const getTableData = async (params: any): Promise<TableData[]> => {
   return getData(
     (row) => {
       const {
-        machineNo = '',
-        machineArea = '',
-        count = '',
-        machineStatus = ''
+        orderId = '',
+        demandDate = '',
+        routeId = '',
+        isSettingsRushOrder = false
       } = row
 
       return {
-        machineNo,
-        machineArea,
-        count,
-        machineStatus
+        orderId,
+        demandDate,
+        routeId,
+        isSettingsRushOrder: columnSetting.isSettingsRushOrder.getValue(isSettingsRushOrder)
       }
     },
     { ...params }

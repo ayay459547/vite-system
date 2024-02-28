@@ -14,7 +14,7 @@ import MachineRushOrder from './Components/MachineRushOrder.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 // filter
@@ -31,7 +31,7 @@ const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions = {
-  title: '站點列表',
+  title: '機台列表',
   version: '1.0.1',
   settingKey: 'auto-114-machine',
   isSorting: true
@@ -111,7 +111,7 @@ const currentMachine = ref<TableData>({
   machineStatus: ''
 })
 
-const onOrderNoClick = async (row: TableData) => {
+const onMachineNoClick = async (row: TableData) => {
   currentMachine.value = row
   await nextTick()
   modal.machineRushOrder = true
@@ -204,7 +204,7 @@ const onMachineRushOrderSubmit = async () => {
           icon-name="map-location-dot"
           type="primary"
           text
-          @click="onOrderNoClick(row)"
+          @click="onMachineNoClick(row)"
         />
       </template>
     </CustomTable>

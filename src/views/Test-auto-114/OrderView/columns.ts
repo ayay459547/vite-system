@@ -1,6 +1,6 @@
 export const columnSetting = {
-  machineNo: {
-    label: '機台編號',
+  orderId: {
+    label: '訂單編號',
     table: {
       minWidth: 180,
       sortable: false
@@ -11,8 +11,8 @@ export const columnSetting = {
       default: null
     }
   },
-  machineArea: {
-    label: '機台區域',
+  demandDate: {
+    label: '需求日',
     table: {
       minWidth: 180,
       sortable: false
@@ -23,8 +23,8 @@ export const columnSetting = {
       default: null
     }
   },
-  count: {
-    label: '插單總數',
+  routeId: {
+    label: '流程代號',
     table: {
       minWidth: 180,
       sortable: false
@@ -35,8 +35,8 @@ export const columnSetting = {
       default: null
     }
   },
-  machineStatus: {
-    label: '機台狀態',
+  isSettingsRushOrder: {
+    label: '是否已設定插單',
     table: {
       minWidth: 180,
       sortable: false
@@ -45,6 +45,10 @@ export const columnSetting = {
       width: 250,
       isValidate: false,
       default: null
+    },
+    getValue (data: boolean) {
+      if (typeof data === 'boolean') return data ? '是' : '否'
+      return ''
     }
   }
 }
