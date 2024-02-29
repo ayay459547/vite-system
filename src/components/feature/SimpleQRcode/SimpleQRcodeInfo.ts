@@ -8,17 +8,11 @@ export const props = {
     required: true,
     description: 'text'
   },
-  width: {
-    type: String as PropType<string>,
+  size: {
+    type: Number as PropType<number>,
     required: false,
-    default: '200px',
-    description: 'style width'
-  },
-  height: {
-    type: String as PropType<string>,
-    required: false,
-    default: '200px',
-    description: 'style height'
+    default: 200,
+    description: 'qucode size'
   },
   bgSrc: {
     type: String as PropType<string>,

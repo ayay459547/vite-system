@@ -18,7 +18,8 @@ export default {
     const qrProps = ({
       text: props.text,
       bgSrc: props.bgSrc,
-      logoSrc: props.logoSrc
+      logoSrc: props.logoSrc,
+      size: props.size
     } as any).$filter((prop: any) => !isEmpty(prop))
 
     const SimpleQRcode = () => h(
@@ -30,8 +31,8 @@ export default {
           `${scopedId}`
         ],
         style: {
-          minWith: props.width,
-          minHeight: props.height
+          minWidth: `${props.size}px`,
+          minHeight: `${props.size}px`
         }
       },
       [
