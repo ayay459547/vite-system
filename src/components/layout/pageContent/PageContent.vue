@@ -51,7 +51,7 @@ const props = defineProps({
     width: 100%;
     flex: 1;
     border-radius: 6px;
-    background-color: #fff;
+    background-color: $page-content-bg-color;
     box-sizing: border-box;
     position: relative;
   }

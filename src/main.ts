@@ -33,9 +33,6 @@ import pluginDirective from '@/directive/pluginDirective'
 // 翻譯
 import i18n from '@/i18n'
 
-// 暗黑模式 尚未開發
-import 'element-plus/theme-chalk/dark/css-vars.css'
-
 const app = createApp(App)
 
 app.config.globalProperties.$log = (any: any) => {
