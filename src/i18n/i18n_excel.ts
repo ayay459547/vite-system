@@ -99,11 +99,14 @@ export const useGlobalI18n = (): GlobalI18n => {
     const _i18nModule = !isEmpty(i18nModule) ? i18nModule : moduleType.value
 
     // 沒有對應模組
-    if (!hasOwnProperty(i18nMap.value, _i18nModule)) return key
+    if (
+      !hasOwnProperty(i18nMap.value, _i18nModule) ||
+      typeof i18nMap.value[_i18nModule]?.te !== 'function'
+    ) return key
 
     // 有對應模組
     const i18nKey = `__${_i18nModule}__:${key}`
-    if (i18nMap.value[_i18nModule].te(i18nKey)) {
+    if (i18nMap.value[_i18nModule]?.te(i18nKey) ?? false) {
       return i18nMap.value[_i18nModule].t(i18nKey)
     }
     return i18nMap.value[_i18nModule].t(key)
@@ -113,11 +116,14 @@ export const useGlobalI18n = (): GlobalI18n => {
     const _i18nModule = !isEmpty(i18nModule) ? i18nModule : moduleType.value
 
     // 沒有對應模組
-    if (!hasOwnProperty(i18nMap.value, _i18nModule)) return false
+    if (
+      !hasOwnProperty(i18nMap.value, _i18nModule) ||
+      typeof i18nMap.value[_i18nModule]?.te !== 'function'
+    ) return false
 
     // 有對應模組
     const i18nKey = `__${_i18nModule}__:${key}`
-    return i18nMap.value[_i18nModule].te(i18nKey)
+    return i18nMap.value[_i18nModule]?.te(i18nKey) ?? key
   }
 
   return {

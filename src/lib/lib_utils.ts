@@ -36,6 +36,17 @@ export const hasOwnProperty = (obj: any, key: string): boolean => {
 
 /**
  * @author Caleb
+ * @description 數字每三位點一個逗點
+ * @param {Number} num 數字
+ * @returns {String}
+ */
+export const toLocaleString = (num: number): string => {
+  if (Number.isNaN(num) || typeof num !== 'number') return ''
+  return num.toLocaleString()
+}
+
+/**
+ * @author Caleb
  * @description 取的準確的資料類型
  * @param {*} value
  * @returns {String} 類型
@@ -68,7 +79,7 @@ export const isSet = (value: any): boolean => {
       }
       return false
     case 'Number':
-      if (!isNaN(parseInt(value))) return true
+      if (!Number.isNaN(parseInt(value))) return true
       return false
     default:
       return true
@@ -96,7 +107,7 @@ export const isEmpty = (value: any): boolean => {
       }
       return true
     case 'Number':
-      if (!isNaN(parseInt(value))) return false
+      if (!Number.isNaN(parseInt(value))) return false
       return true
     default:
       return false

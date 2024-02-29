@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { computed, ref, reactive, onMounted, nextTick } from 'vue'
+import { computed, ref, inject, reactive, onMounted, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook'
+import type { AuthData, UseHook } from '@/declare/hook'
 import { CustomModal } from '@/components'
 import { useLayoutStore } from '@/stores/stores_layout'
 
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
 import UserPreference from '@/components/layout/Preference/UserPreference.vue'
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps<{
   isShow: boolean
@@ -134,7 +139,7 @@ const onHistoryChange = ($event: boolean) => {
         click-outside
       >
         <template #header>
-          <label>{{ $t('preference') }}</label>
+          <label>{{ i18nTranslate('preference') }}</label>
         </template>
         <UserPreference
           ref="preferenceRef"

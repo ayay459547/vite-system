@@ -25,7 +25,7 @@ const systemType = (import.meta as any).env.VITE_API_SYSTEM_TYPE
  * @returns {String} format後的檔案大小
  */
 export const byteConvert = (bytes: number): string => {
-  if (isNaN(bytes)) return ''
+  if (Number.isNaN(bytes)) return ''
 
   const symbols = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 

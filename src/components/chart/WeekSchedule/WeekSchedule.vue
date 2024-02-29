@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { reactive, ref } from 'vue'
-import { nextTick } from 'vue'
+import { nextTick, reactive, ref, inject } from 'vue'
+
+import type { UseHook } from '@/declare/hook'
 import throttle from '@/lib/lib_throttle'
 import { getType, getUuid } from '@/lib/lib_utils'
 
@@ -32,6 +33,11 @@ export type TypeItem = {
   label: string
   color: string
 }
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps({
   typeList: {
@@ -532,7 +538,7 @@ const closeUpdate = () => {
             :key="dayItem.id"
             class="schedule-day-item"
           >
-            {{ $t(dayItem.label) }}
+            {{ i18nTranslate(dayItem.label) }}
           </li>
         </ul>
         <!-- 表格 -->

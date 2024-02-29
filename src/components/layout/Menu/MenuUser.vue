@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { inject, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
-import type { AuthData } from '@/declare/hook'
+import type { UseHook, AuthData } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { getCookie } from '@/lib/lib_cookie'
 
