@@ -23,14 +23,51 @@ const routes: Array<RouterTree> = [
     name: 'test-system-feature',
     title: '功能測試',
     systemType: ['new'],
-    icon: 'cloud',
+    icon: 'table',
     permission: totlaPermission,
     leaves: [
+      {
+        name: 'test-fund',
+        title: 'test-fund',
+        systemType: ['new'],
+        icon: 'f',
+        permission: totlaPermission,
+        leaves: [
+          {
+            name: 'test-new',
+            title: '測試表格',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/test-new',
+            icon: 'file-circle-check',
+            component: () => import('@/views/Test-new/Test-new.vue')
+          },
+          {
+            name: 'test-fund-122',
+            title: '測試Fund-122',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/test-fund-122',
+            icon: 'file-circle-check',
+            component: () => import('@/views/Test-fund-122/Test-fund-122.vue')
+          }
+        ]
+      },
       {
         name: 'test-auto',
         title: 'test-auto',
         systemType: ['new'],
-        icon: 'wand-magic-sparkles',
+        icon: 'a',
         permission: totlaPermission,
         leaves: [
           {
