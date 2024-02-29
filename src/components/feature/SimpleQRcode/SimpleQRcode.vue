@@ -31,7 +31,7 @@ export default {
         ],
         style: {
           minWith: props.width,
-          minHieght: props.hieght
+          minHeight: props.height
         }
       },
       [

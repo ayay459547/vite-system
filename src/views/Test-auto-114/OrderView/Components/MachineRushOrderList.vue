@@ -1,16 +1,30 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import type { PropType  } from 'vue'
+import { ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { FormList, CustomInput, CustomButton } from '@/components'
 import { getSimpleTableSetting, getFormListSetting } from '@/lib/lib_columns'
-import { scrollToEl, isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 
 import { workReportColumnSetting } from './columns'
 
 const useHook: UseHook = inject('useHook')
-const { auth } = useHook()
+const { auth } = useHook({
+  i18nModule: 'system'
+})
 const authData = auth()
+
+const props = defineProps({
+  uuid: {
+    type: String as PropType<string>,
+    default: ''
+  },
+  index: {
+    type: Number as PropType<number>,
+    default: -1
+  }
+})
 
 interface FormData {
   orderNo: string
@@ -35,7 +49,7 @@ const {
   // defaultValue,
   columns: formColumn,
   forms: formList,
-  validate: validateForm,
+  // validate: validateForm,
   add,
   remove
 } = getFormListSetting<FormData>(workReportColumnSetting, 'form', [])
@@ -52,21 +66,45 @@ const addItem = () => {
   })
 }
 
+const onMachineChange = async () => {
+  await nextTick()
+  if (formList.value.length === 0) {
+    addItem()
+  }
+}
+
+const emit = defineEmits(['remove'])
+
+const onMachineRemoveClick = () => {
+  emit('remove', props.index)
+}
 
 </script>
 
 <template>
   <div class="info-container">
     <div class="info-header">
+      <div class="info-header-index">
+        <label>{{ `${props.index + 1}.` }}</label>
+      </div>
       <CustomInput
         v-model="machineRef"
         label="機台"
         type="select"
+        direction="row"
         :options="machineOptions"
+        @change="onMachineChange"
+      />
+      <CustomButton
+        type="danger"
+        icon-name="trash-can"
+        text
+        @click="onMachineRemoveClick"
       />
     </div>
     <div class="info-body">
       <FormList
+        v-show="!isEmpty(machineRef)"
         v-model="formList"
         :table-data="formList"
         :table-columns="tableColumns"
@@ -118,15 +156,23 @@ const addItem = () => {
 .info {
   &-container {
     width: 100%;
-    height: 100%;
+    height: fit-content;
     border-radius: 6px;
     overflow: auto;
     border: 1px solid #e9e9eb;
     box-shadow: 2px 2px 8px 1px lighten(#bcbcbc, 20%);
   }
   &-header {
-    background-color: #409EFF;
+    background-color: #c6e2ff;
     padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &-index {
+      width: fit-content;
+      min-width: 24px;
+    }
   }
   &-body {
     width: 100%;

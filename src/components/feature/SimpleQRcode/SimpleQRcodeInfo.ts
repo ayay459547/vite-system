@@ -14,11 +14,11 @@ export const props = {
     default: '200px',
     description: 'style width'
   },
-  hieght: {
+  height: {
     type: String as PropType<string>,
     required: false,
     default: '200px',
-    description: 'style hieght'
+    description: 'style height'
   },
   bgSrc: {
     type: String as PropType<string>,

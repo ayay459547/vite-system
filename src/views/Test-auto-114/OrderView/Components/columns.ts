@@ -1,5 +1,5 @@
 export const workReportColumnSetting = {
-  c: {
+  sequence: {
     label: '生產順序',
     table: {
       width: 100,

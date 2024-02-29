@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { reactive, onMounted, inject } from 'vue'
+import { reactive, onMounted, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomButton } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid, scrollToEl } from '@/lib/lib_utils'
 
 import MachineRushOrderList from './MachineRushOrderList.vue'
 
@@ -13,9 +13,15 @@ const { i18nTranslate } = useHook({
 })
 const machineList = reactive([])
 
-const onCreateClick = () => {
+const onCreateClick = async () => {
   const dataId = getUuid()
   machineList.push(dataId)
+
+  await nextTick()
+  setTimeout(() => {
+    const el = document.querySelector(`.machine-${dataId}`)
+    scrollToEl(el)
+  }, 100)
 }
 const onResetClick = () => {
   init()
@@ -27,6 +33,10 @@ const init = () => {
   machineList.push(dataId)
 }
 
+const onRemove = ($event: number) => {
+  machineList.splice($event, 1)
+}
+
 onMounted(() => {
   init()
 })
@@ -36,13 +46,17 @@ onMounted(() => {
 <template>
   <div class="rush-order">
     <div class="rush-order-list">
-
       <div
-        v-for="machineItem in machineList"
-        :key="machineItem"
+        v-for="(dataId, dataIndex) in machineList"
+        :key="dataId"
         class="rush-order-item"
+        :class="`machine-${dataId}`"
       >
-        <MachineRushOrderList />
+        <MachineRushOrderList
+          :uuid="dataId"
+          :index="dataIndex"
+          @remove="onRemove"
+        />
       </div>
     </div>
 
@@ -53,7 +67,7 @@ onMounted(() => {
         @click="onResetClick"
       />
       <CustomButton
-        :label="i18nTranslate('create')"
+        :label="`${i18nTranslate('create')}${i18nTranslate('machine')}`"
         type="primary"
         icon-name="plus"
         @click="onCreateClick"
@@ -77,12 +91,13 @@ onMounted(() => {
     height: 100%;
     overflow: auto;
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 24px;
+    padding: 8px 12px;
   }
   &-item {
     width: 100%;
-    height: 500px;
+    height: fit-content;
   }
 
   &-btn {

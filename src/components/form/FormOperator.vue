@@ -287,9 +287,9 @@ defineExpose({
               :label="item.label"
               :value="item.value"
             >
-              <template v-if="hasSlot('defalut')" #defalut>
+              <template v-if="hasSlot('options')" #options>
                 <slot
-                  name="defalut"
+                  name="options"
                   :label="item.label"
                   :value="item.value"
                 >
