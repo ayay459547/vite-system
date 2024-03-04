@@ -77,6 +77,7 @@ export const getFormSetting = <T>(columns: Record<string, any>, type: string): F
       resizable: true,
       showOverflowTooltip: false,
       label: column?.label ?? '',
+      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
       ...column[type]
     }
   }
@@ -245,6 +246,7 @@ export const getFormListSetting = <T>(columns: Record<string, any>, type: string
       resizable: true,
       showOverflowTooltip: false,
       label: column?.label ?? '',
+      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
       ...column[type]
     }
   }
@@ -345,6 +347,7 @@ export interface TableRef extends Element, ComponentPublicInstance, CustomTableE
 
 export interface TableOptoins {
   title: string
+  i18nTitle?: string
   version: string
   settingKey: string
   page?: number
@@ -365,6 +368,7 @@ export interface TableSetting {
   tableSetting: {
     ref: (el: TableRef) => void
     title: string
+    i18nTitle?: string
     version: string
     settingKey: string
     params: TableParams
@@ -399,6 +403,7 @@ export interface TableColumnsItem {
   align?: 'left' | 'center' | 'right'
   fixed?: 'left' | 'right'
   isSorting?: boolean
+  order?: string | 'ascending' | 'descending' | 'none'
   sortable?: boolean | 'custom'
   isOperations?: boolean
   title?: string
@@ -445,6 +450,7 @@ export const getTableSetting = (
         prop: childkey,
         slotKey: childkey,
         label: child?.label ?? '',
+        i18nLabel: child?.i18nLabel ?? (child?.label ?? childkey),
         title: child?.label ?? '',
         minWidth: 150,
         // element ui 單排用
@@ -465,6 +471,7 @@ export const getTableSetting = (
       slotKey: key,
       isOperations: _isOperations,
       label: column?.label ?? '',
+      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
       title: column?.label ?? '',
       minWidth: 150,
       // element ui 單排用
@@ -685,6 +692,7 @@ export interface SimpleTableColumnsItem {
   width?: number
   minWidth?: number
   label: string
+  i18nLabel?: string
   title: string
 }
 /**
@@ -710,6 +718,7 @@ export const getSimpleTableSetting = (
       slotKey: key,
       minWidth: 150,
       label: column?.label ?? '',
+      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
       title: column?.label ?? '',
       required: false,
       ...column[type]

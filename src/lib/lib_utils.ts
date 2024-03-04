@@ -198,7 +198,39 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
   return mode as string
 }
 
+export type NumberFormatType = 'round' | 'floor' | 'ceil'
 /**
+ * @author Caleb
+ * @description 數字取四捨五入到第n位
+ * @param {Number} num 要四捨五入的數字
+ * @param {Object} options 設定
+ *    type: round(四捨五入), floor(無條件捨去), ceil(無條件進位)
+ *    toFixed 取小數點到第n位
+ * @returns {Number}
+ */
+export const numberFormat = (num: number, options?: {
+  type: NumberFormatType
+  toFixed: number
+}): number => {
+  const {
+    type = 'round',
+    toFixed = 0
+  } = options ?? {}
+
+  switch (type) {
+    case 'round':
+      return +(Math.round((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+    case 'floor':
+      return +(Math.floor((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+    case 'ceil':
+      return +(Math.ceil((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+    default:
+      return num
+  }
+}
+
+/**
+ * 廢棄不用 請使用 numberFormat
  * @author Caleb
  * @description 數字取四捨五入到第n位
  * @param {Number} num 要四捨五入的數字
@@ -210,6 +242,7 @@ export const round = (num: number, n: number = 2): number => {
 }
 
 /**
+ * 廢棄不用 請使用 numberFormat
  * @author Caleb
  * @description 數字取無條件捨去到第n位
  * @param {Number} num 要無條件捨去的數字
@@ -221,6 +254,7 @@ export const floor = (num: number, n: number = 2): number => {
 }
 
 /**
+ * 廢棄不用 請使用 numberFormat
  * @author Caleb
  * @description 數字取無條件進位到第n位
  * @param {Number} num 要無條件進位的數字

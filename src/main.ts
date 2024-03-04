@@ -20,6 +20,7 @@ import './lib/init/init_localStorage'
 
 import { createApp } from 'vue'
 import App from './App.vue'
+import './assets/reset.css'
 
 // 全域狀態管理
 import { createPinia } from 'pinia'

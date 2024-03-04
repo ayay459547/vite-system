@@ -94,7 +94,7 @@ const getStyle = (isSelected: boolean, color?: string) => {
         :label="item.value"
         :disabled="item.disabled ?? false"
       >
-        <div class="__i-radio__ option" :style="getStyle(inputValue === item.value, item?.color)">
+        <div class="__i-radio__" :style="getStyle(inputValue === item.value, item?.color)">
           <slot
             name="option"
             :is-selected="inputValue === item.value"
@@ -120,9 +120,5 @@ const getStyle = (isSelected: boolean, color?: string) => {
 .__i-radio__ {
   width: 100%;
   height: fit-content;
-
-  &.option {
-    padding-right: 12px;
-  }
 }
 </style>

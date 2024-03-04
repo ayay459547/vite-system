@@ -20,6 +20,7 @@ import type {
   PageChange,
   SortingList,
   SortingMap,
+  Order,
   TableParams
 } from './CustomTableInfo'
 import {
@@ -180,7 +181,7 @@ const initSortingList = () => {
       res.push({
         label: column.label,
         key: column.key,
-        order: column?.order ?? 'none'
+        order: (column?.order ?? 'none') as Order
       })
     }
     return res
@@ -552,7 +553,8 @@ onMounted(() => {
 
       <div class="setting-center grid-col-xs-24 grid-col-md-12 grid-col-xl-6">
         <slot name="setting-center">
-          <span class="setting-center-title">{{ i18nTranslate(props.title) }}</span>
+          <span class="setting-center-title">
+            <slot name="title">{{ props.title }}</slot></span>
         </slot>
       </div>
 
