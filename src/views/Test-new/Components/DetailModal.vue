@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type PropType, onMounted } from 'vue'
+import { swal } from '@/lib/lib_utils'
 
 const props = defineProps({
   data: {
@@ -8,8 +9,20 @@ const props = defineProps({
   }
 })
 
+const openSwal = () => {
+  swal({
+    icon: 'success',
+    title: '測試',
+    showCancelButton: false
+  })
+}
+
 onMounted(() => {
   console.log(props.data)
+
+  setTimeout(() => {
+    openSwal()
+  }, 1000)
 })
 
 </script>

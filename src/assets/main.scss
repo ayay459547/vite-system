@@ -1,0 +1,13 @@
+@use './styles/normalize.scss' as *;
+@use './styles/reset.scss' as *;
+
+@use './styles/common.scss' as *;
+@use './styles/color.scss' as *;
+@use './styles/flex.scss' as *;
+@use './styles/grid-system.scss' as *;
+@use './styles/tools.scss' as *;
+@use './styles/transition.scss' as *;
+
+@import './styles/_variable.scss';
+// @import './styles/_vars-light.scss';
+@import './styles/_vars-dark.scss';

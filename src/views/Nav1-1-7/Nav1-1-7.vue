@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import { CustomButton, CustomDivider, CustomDialog, CustomModal } from '@/components'
+import {
+  CustomButton,
+  CustomDivider,
+  CustomDialog,
+  CustomModal
+} from '@/components'
+
+import TestKeepAlive from './TestKeepAlive.vue'
 
 const isShow = ref(false)
 
-const modalIsShow = ref(true)
+const modalIsShow = ref(false)
 const modalIsShow2 = ref(false)
 const modalIsShow3 = ref(false)
+const modalIsShow4 = ref(false)
 
 const isLoading = ref(false)
 
@@ -136,6 +144,33 @@ onMounted(() => {
         height-size="extraSmall"
       >
         <h3>測試 CustomModal3 拖拉 draggable</h3>
+      </CustomModal>
+    </div>
+
+    <div class="flex-row i-ga-xs">
+      <CustomButton
+        type="primary"
+        label="打開 Modal3"
+        class="i-my-sm"
+        @click="modalIsShow4 = true"
+      />
+
+      <CustomButton
+        type="warning"
+        label="關閉 Modal3"
+        class="i-my-sm"
+        @click="modalIsShow4 = false"
+      />
+
+      <CustomModal
+        v-model="modalIsShow4"
+        :modal="false"
+        :is-keep-alive="true"
+        draggable
+        width-size="extraSmall"
+        height-size="extraSmall"
+      >
+        <TestKeepAlive />
       </CustomModal>
     </div>
   </div>

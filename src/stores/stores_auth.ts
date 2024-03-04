@@ -1,3 +1,8 @@
+/**
+ * stores_auth
+ * 使用者權限
+ */
+
 import { defineStore } from 'pinia'
 import { ref, shallowRef, computed, shallowReactive } from 'vue'
 

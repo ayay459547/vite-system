@@ -16,6 +16,14 @@ export const props = {
     default: false,
     description: 'v-model 綁定是否顯示'
   },
+  isKeepAlive: {
+    type: Boolean as PropType<ModelValue>,
+    default: false,
+    description: `是否暫存
+      true: v-show
+      false: v-if
+    `
+  },
   loading: {
     type: Boolean as PropType<ModelValue>,
     default: false,

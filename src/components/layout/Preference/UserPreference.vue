@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { inject, ref, onMounted } from 'vue'
+import { inject, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
-import type { ButtonType } from '@/components'
-import { CustomIcon, CustomButton } from '@/components'
+import { CustomIcon, FormRadio } from '@/components'
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
+import { useColorToneStore } from '@/stores/stores_colorTone'
 import { useLayoutStore } from '@/stores/stores_layout'
 
 import Layout1 from './Layout-1.vue'
@@ -19,6 +19,10 @@ const { i18nTranslate } = useHook({
 })
 
 const props = defineProps({
+  isDark: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   historyIsOpen: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -33,30 +37,67 @@ const emit = defineEmits([
 // 語言
 const localeStore = useLocaleStore()
 const { elLocale } = storeToRefs(localeStore)
+const langValue = computed({
+  get () {
+    return elLocale.value
+  },
+  set (lang: string) {
+    localeStore.currentLang = lang
+  }
+})
 
 // 瀏覽器顯示
+const browserView = ref('windows')
 const browserViewOptions = [
   { label: 'windows', value: 'windows' },
   { label: 'fullScreen', value: 'fullScreen' }
 ]
-const browserView = ref('windows')
-const changeBrowserView = (view: string) => {
-  browserView.value = view
+const browserValue = computed({
+  get () {
+    return browserView.value
+  },
+  set (view: string) {
+    browserView.value = view
 
-  if (document.fullscreenElement) {
-    if (document.exitFullscreen) {
-      document.exitFullscreen()
+    if (document.fullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      }
+    } else {
+      document.documentElement.requestFullscreen()
     }
-  } else {
-    document.documentElement.requestFullscreen()
   }
-}
+})
+
+// 色調
+const colorToneStore = useColorToneStore()
+const colorToneOptions = [
+  { label: 'light', value: 'light' },
+  { label: 'dark', value: 'dark' }
+]
+const colorTone = computed({
+  get () {
+    return props.isDark ? 'dark' : 'light'
+  },
+  set (colorTone: string) {
+    const _isDark = colorTone === 'dark'
+    colorToneStore.toggleDark(_isDark)
+  }
+})
 
 // 標籤連結
 const tagLinkOptions = [
   { label: 'show', value: true },
   { label: 'hidden', value: false }
 ]
+const tagLinkValue = computed({
+  get () {
+    return props.historyIsOpen
+  },
+  set (isShow: boolean) {
+    emit('historyChange', isShow)
+  }
+})
 
 onMounted(() => {
   if (document.fullscreenElement) {
@@ -97,13 +138,14 @@ const onClickLayout = (layoutValue: string) => {
         </div>
 
         <div class="modal-select">
-          <CustomButton
-            v-for="langOption in langOptions"
-            :key="langOption.value"
-            :type="((elLocale === langOption.value ? 'primary' : 'default') as ButtonType)"
-            :label="i18nTranslate(langOption.label)"
-            @click="localeStore.currentLang = langOption.value"
-          />
+          <FormRadio
+            v-model="langValue"
+            :options="langOptions"
+            >
+            <template #option="{ label }">
+              {{ i18nTranslate(label) }}
+            </template>
+          </FormRadio>
         </div>
       </div>
 
@@ -117,13 +159,35 @@ const onClickLayout = (layoutValue: string) => {
         </div>
 
         <div class="modal-select">
-          <CustomButton
-            v-for="viewOption in browserViewOptions"
-            :key="viewOption.value"
-            :type="((browserView === viewOption.value ? 'primary' : 'default') as ButtonType)"
-            :label="i18nTranslate(viewOption.label)"
-            @click="changeBrowserView(viewOption.value)"
-          />
+          <FormRadio
+            v-model="browserValue"
+            :options="browserViewOptions"
+          >
+            <template #option="{ label }">
+              {{ i18nTranslate(label) }}
+            </template>
+          </FormRadio>
+        </div>
+      </div>
+
+      <!-- 色調 -->
+      <div class="modal-item">
+        <div class="modal-label">
+          <div class="icon">
+            <CustomIcon type="fas" name="palette"/>
+          </div>
+          <label>{{ `${i18nTranslate('colorTone')}` }}</label>
+        </div>
+
+        <div class="modal-select">
+          <FormRadio
+            v-model="colorTone"
+            :options="colorToneOptions"
+          >
+            <template #option="{ label }">
+              {{ i18nTranslate(label) }}
+            </template>
+          </FormRadio>
         </div>
       </div>
 
@@ -137,13 +201,14 @@ const onClickLayout = (layoutValue: string) => {
         </div>
 
         <div class="modal-select">
-          <CustomButton
-            v-for="tagLinkOption in tagLinkOptions"
-            :key="tagLinkOption.label"
-            :type="((props.historyIsOpen === tagLinkOption.value ? 'primary' : 'default') as ButtonType)"
-            :label="i18nTranslate(tagLinkOption.label)"
-            @click="emit('historyChange', tagLinkOption.value)"
-          />
+          <FormRadio
+            v-model="tagLinkValue"
+            :options="tagLinkOptions"
+          >
+            <template #option="{ label }">
+              {{ i18nTranslate(label) }}
+            </template>
+          </FormRadio>
         </div>
       </div>
 

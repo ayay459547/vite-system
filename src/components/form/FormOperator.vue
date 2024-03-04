@@ -287,9 +287,9 @@ defineExpose({
               :label="item.label"
               :value="item.value"
             >
-              <template v-if="hasSlot('options')" #options>
+              <template v-if="hasSlot('option')" #option>
                 <slot
-                  name="options"
+                  name="option"
                   :label="item.label"
                   :value="item.value"
                 >

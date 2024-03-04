@@ -509,9 +509,16 @@ onUnmounted(() => {
 
             <div class="modal-body">
               <KeepAlive>
-                <div v-if="tempValue && !props.loading" style="width: 100%; height: 100%">
-                  <slot :key="scopedId">Body</slot>
-                </div>
+                <template v-if="props.isKeepAlive">
+                  <div v-show="tempValue && !props.loading" style="width: 100%; height: 100%">
+                    <slot :key="scopedId">Body</slot>
+                  </div>
+                </template>
+                <template v-else>
+                  <div v-if="tempValue && !props.loading" style="width: 100%; height: 100%">
+                    <slot :key="scopedId">Body</slot>
+                  </div>
+                </template>
               </KeepAlive>
             </div>
 

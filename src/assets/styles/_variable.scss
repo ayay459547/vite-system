@@ -1,3 +1,5 @@
+// @use 'vars-light' as *;
+
 // 依照 bootstrap 標準
 $extra-small: 576px;
 $small: 576px;
@@ -5,20 +7,6 @@ $medium: 768px;
 $large: 992px;
 $x-large: 1200px;
 $xx-large: 1400px;
-
-// 系統基本顏色
-$info: #909399;
-$primary: #409eff;
-$success: #67C23A;
-$warning: #E6A23C;
-$danger: #F56C6C;
-$white: #ffffff;
-
-// 系統選單顏色
-// $system-bg-color: #48648f;
-$system-bg-color: #506d9c;
-$page-content-bg-color: #ffffff;
-// $system-bg-color: #3e6ea4;
 
 /* z-index */
 $loading-index: 3000;

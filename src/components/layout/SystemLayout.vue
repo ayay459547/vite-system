@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData, UseHook } from '@/declare/hook'
 import { CustomModal } from '@/components'
+import { useColorToneStore } from '@/stores/stores_colorTone'
 import { useLayoutStore } from '@/stores/stores_layout'
 
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
@@ -35,6 +36,10 @@ const emit = defineEmits<{
 
 const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
+
+// 色調
+const colorToneStore = useColorToneStore()
+const { isDark } = storeToRefs(colorToneStore)
 
 // layout1
 const navIsOpen = ref(false)
@@ -143,6 +148,7 @@ const onHistoryChange = ($event: boolean) => {
         </template>
         <UserPreference
           ref="preferenceRef"
+          :is-dark="isDark"
           :history-is-open="props.historyIsOpen"
           @history-change="onHistoryChange"
           @change-layout="onChangeLayout"
