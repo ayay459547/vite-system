@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CustomTimeLine, CustomIcon, SimpleTable, CustomButton } from '@/components'
-import { getSimpleTableSetting } from '@/lib/lib_columns'
+import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { isEmpty, downloadFile } from '@/lib/lib_utils'
 
 import { columnSetting } from './columns'
@@ -86,7 +86,7 @@ const options = [
 
 const {
   tableColumns
-} = getSimpleTableSetting(columnSetting, 'table')
+} = useSimpleTableSetting(columnSetting, 'table')
 
 </script>
 

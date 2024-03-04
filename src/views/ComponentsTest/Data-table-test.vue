@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import { SimpleTable, CustomInput, CustomIcon } from '@/components'
-import { getSimpleTableSetting } from '@/lib/lib_columns'
+import { useSimpleTableSetting } from '@/lib/lib_columns'
 
 const columnSetting = {
   date: {
@@ -47,7 +47,7 @@ const columnSetting = {
 
 const {
   tableColumns
-} = getSimpleTableSetting(columnSetting, 'table')
+} = useSimpleTableSetting(columnSetting, 'table')
 
 const tableData = [
 {

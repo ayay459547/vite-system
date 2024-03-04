@@ -4,7 +4,7 @@ import { type ComputedRef, computed, provide, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { CustomInput, CustomIcon, CustomButton } from '@/components'
 import { scrollToEl } from '@/lib/lib_utils'
 import debounce from '@/lib/lib_debounce'
@@ -33,7 +33,7 @@ interface Form {
 const {
   columns: formColumn,
   forms: form
-} = getFormSetting<Form>(columnSetting, 'search')
+} = useFormSetting<Form>(columnSetting, 'search')
 
 provide('search', form)
 

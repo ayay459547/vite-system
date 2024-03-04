@@ -4,7 +4,7 @@ import { ref, shallowRef, reactive, inject, onMounted, nextTick } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
-import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'
@@ -26,7 +26,7 @@ const {
   columns: filterColumns,
   forms: filter,
   getActiveForms: getFilter
-} = getFormSetting(columnSetting, 'filter')
+} = useFormSetting(columnSetting, 'filter')
 
 const tableOptions = {
   title: pageTranslate('testTable'),
@@ -40,7 +40,7 @@ const {
   downloadExcel,
   getParams,
   changePage
-} = getTableSetting(columnSetting, 'table', tableOptions)
+} = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = async ({ type }) => {
   let excelData: any[] = []

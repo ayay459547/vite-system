@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomIcon, CustomButton, CustomInput, CustomSearch } from '@/components'
 
@@ -136,7 +136,7 @@ const {
   forms: form,
   reset: resetForm,
   validate: validateForm
-} = getFormSetting<Form>(columnSetting, 'filter')
+} = useFormSetting<Form>(columnSetting, 'filter')
 
 const submit = () => {
   validateForm().then(successList => {

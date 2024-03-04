@@ -4,7 +4,7 @@ import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } fr
 
 import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
-import { getSimpleTableSetting } from '@/lib/lib_columns'
+import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
 
 const useHook: UseHook = inject('useHook')
@@ -173,13 +173,13 @@ onBeforeMount(() => {
   // 依原來欄位設定跑 slot 迴圈
   const {
     tableColumns: _tableColumns
-  } = getSimpleTableSetting(props.columnSetting, props.tableKey)
+  } = useSimpleTableSetting(props.columnSetting, props.tableKey)
   tableColumns.value = _tableColumns
 
   // 顯示的欄位 + #序號 + 操作(delete)
   const {
     tableColumns: _showTableColumns
-  } = getSimpleTableSetting({
+  } = useSimpleTableSetting({
     ...beforeColumn,
     ...props.columnSetting,
     ...afterColumn

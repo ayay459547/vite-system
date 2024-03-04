@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
 import { onMounted } from 'vue'
@@ -14,7 +14,7 @@ const {
   forms: form,
   // reset: resetForm,
   validate: validateForm
-} = getFormSetting<TableData>(columnSetting, 'form')
+} = useFormSetting<TableData>(columnSetting, 'form')
 
 const props = defineProps({
   data: {

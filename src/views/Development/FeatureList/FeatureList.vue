@@ -2,7 +2,7 @@
 import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
 import { CustomTable, CustomInput, CustomIcon } from '@/components'
-import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
@@ -17,7 +17,7 @@ const tableOptions = {
   version: '1.0.6',
   settingKey: 'feature-list'
 }
-const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData.value.map(item => {
@@ -34,7 +34,7 @@ const {
   forms: filter,
   activeForms: fitlerAbleds,
   reset: filterReset
-} = getFormSetting<TableData>(columnSetting, 'filter')
+} = useFormSetting<TableData>(columnSetting, 'filter')
 
 const isLoading = ref(false)
 

@@ -51,7 +51,7 @@ export interface FormColumnsItem {
  * @param {String} type 取得 columnSetting 中的類型
  * @returns {Ojbect}
  */
-export const getFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
+export const useFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
   const resForms = reactive<Record<string, any>>({})
   const resActiveForms = reactive<Record<string, boolean>>({})
@@ -213,7 +213,7 @@ export interface FormListSetting<T> {
  * @param {Array} initData 初始化資料
  * @returns {Ojbect}
  */
-export const getFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []): FormListSetting<T> => {
+export const useFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []): FormListSetting<T> => {
   const resColumns = {}
   const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
@@ -418,7 +418,7 @@ export interface TableColumnsItem {
  * @param {Object} options 設定用的參數
  * @returns {Ojbect}
  */
-export const getTableSetting = (
+export const useTableSetting = (
   columns: Record<string, any>,
   type: string,
   options: TableOptoins
@@ -704,7 +704,7 @@ export interface SimpleTableColumnsItem {
  * @param {String} title 設定用的參數
  * @returns {Ojbect}
  */
-export const getSimpleTableSetting = (
+export const useSimpleTableSetting = (
   columns: Record<string, any>,
   type: string,
   title?: ''

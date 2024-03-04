@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, onMounted } from 'vue'
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
 
@@ -19,7 +19,7 @@ const {
   columns: formColumn,
   forms: form,
   validate: validateForm
-} = getFormSetting<UpdateFormData>(columnSetting, 'form')
+} = useFormSetting<UpdateFormData>(columnSetting, 'form')
 
 defineExpose({
   submit: async () => {

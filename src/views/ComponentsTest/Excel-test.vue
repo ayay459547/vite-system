@@ -3,7 +3,7 @@ import { inject, ref } from 'vue'
 import ExcelJs from 'exceljs'
 
 import type { UseHook } from '@/declare/hook'
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 import type { IconType, ButtonSize, TooltipTrigger } from '@/components'
 import {
   CustomButton,
@@ -107,7 +107,7 @@ const tableOptions = {
   version: '1.0.0',
   settingKey: 'test'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData2)

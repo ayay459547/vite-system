@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
 
@@ -10,7 +10,7 @@ const {
   columns: formColumn,
   forms: form,
   validate: validateForm
-} = getFormSetting<CreateFormData>(columnSetting, 'form')
+} = useFormSetting<CreateFormData>(columnSetting, 'form')
 
 defineExpose({
   submit: async () => {

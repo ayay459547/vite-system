@@ -9,7 +9,7 @@ import {
 } from '@/components'
 
 import { deepClone, useLocalI18n } from '@/lib/lib_utils'
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
@@ -45,7 +45,7 @@ const tableOptions = {
   version: '1.0.4',
   settingKey: 'test'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData.value)

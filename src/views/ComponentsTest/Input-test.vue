@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl, isEmpty } from '@/lib/lib_utils'
 import { CustomInput, CustomButton } from '@/components'
 
@@ -128,7 +128,7 @@ const {
   forms: form,
   reset: resetForm,
   validate: validateForm
-} = getFormSetting<Form>(columnSetting, 'filter')
+} = useFormSetting<Form>(columnSetting, 'filter')
 
 const submit = () => {
   validateForm().then(successList => {

@@ -3,7 +3,7 @@ import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
 import { CustomIcon, CustomModal, CustomButton, CustomTable, CustomSearch, GroupSearch } from '@/components'
-import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 
 import { columnSetting } from './columns'
@@ -33,7 +33,7 @@ const {
   downloadExcel,
   changePage,
   getParams
-} = getTableSetting(
+} = useTableSetting(
   columnSetting,
   'table',
   tableOptions
@@ -45,7 +45,7 @@ const {
   activeForms: activeFilter,
   getActiveForms: getFilter,
   reset: resetFilter
-} = getFormSetting<any>(columnSetting, 'filter')
+} = useFormSetting<any>(columnSetting, 'filter')
 
 const isLoading = ref(true)
 

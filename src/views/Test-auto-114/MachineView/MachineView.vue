@@ -3,7 +3,7 @@ import { ref, shallowRef, onMounted, inject, nextTick, reactive } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomModal } from '@/components'
-import { getTableSetting, getFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 
 import type { TableData, FilterData } from './api'
@@ -24,7 +24,7 @@ const {
   activeForms: activeFilter,
   getActiveForms: getFilter,
   reset: resetFilter
-} = getFormSetting<FilterData>(columnSetting, 'filter')
+} = useFormSetting<FilterData>(columnSetting, 'filter')
 
 // table
 const tableData = shallowRef<TableData[]>([])
@@ -36,7 +36,7 @@ const tableOptions = {
   settingKey: 'auto-114-machine',
   isSorting: true
 }
-const { tableSetting, downloadExcel, getParams, changePage } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams, changePage } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const isLoading = ref(false)
 

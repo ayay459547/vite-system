@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import { CustomSearch, CustomDrawer, CustomButton, GroupSearch } from '@/components'
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 
 type Form = {
   text: string
@@ -44,7 +44,7 @@ const {
   activeForms,
   reset,
   getActiveForms
-} = getFormSetting<Form>(columnSetting, 'filter')
+} = useFormSetting<Form>(columnSetting, 'filter')
 
 const isShow = ref(false)
 

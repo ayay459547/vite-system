@@ -2,7 +2,7 @@
 import { ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
 import { CustomIcon, CustomInput } from '@/components'
 
@@ -64,7 +64,7 @@ const {
   columns: formColumn,
   forms: form,
   validate: validateForm
-} = getFormSetting<Form>(columnSetting, 'fitler')
+} = useFormSetting<Form>(columnSetting, 'fitler')
 
 const svg = `
   <path class="path" d="

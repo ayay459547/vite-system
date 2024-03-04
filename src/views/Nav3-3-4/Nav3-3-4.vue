@@ -15,7 +15,7 @@ import {
   CustomSearch
 } from '@/components'
 import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils'
-import { getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
+import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import dayjs from '@/lib/lib_day'
 
 import type { TableData, Search } from './api'
@@ -62,7 +62,7 @@ const {
   reset: resetForm,
   getActiveForms: getSearch,
   validate: validateForm
-} = getFormSetting<Search>(columnSetting, 'search')
+} = useFormSetting<Search>(columnSetting, 'search')
 
 // filter
 const {
@@ -70,7 +70,7 @@ const {
   forms: filter,
   activeForms: activeFilter,
   getActiveForms: getFilter
-} = getFormSetting<TableData>(columnSetting, 'filter')
+} = useFormSetting<TableData>(columnSetting, 'filter')
 
 const isSubmitDisabled = computed(() => {
   return isEmpty(search.version) || isEmpty(search.dateInterval)
@@ -170,7 +170,7 @@ const resData = ref<Record<string, TableData[]>>({})
 const showData = shallowRef<TableData[]>([])
 
 // 資源警示
-const { tableColumns } = getSimpleTableSetting(columnSetting, 'table', '')
+const { tableColumns } = useSimpleTableSetting(columnSetting, 'table', '')
 const showColumns = shallowRef([])
 
 const initShowColumns = async () => {

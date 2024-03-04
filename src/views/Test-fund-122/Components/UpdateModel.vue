@@ -2,7 +2,7 @@
 import { onMounted, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { getFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
 
@@ -18,7 +18,7 @@ const {
   forms: form,
   // reset: resetForm,
   validate: validateForm
-} = getFormSetting<TableData>(columnSetting, 'form')
+} = useFormSetting<TableData>(columnSetting, 'form')
 
 const props = defineProps({
   data: {

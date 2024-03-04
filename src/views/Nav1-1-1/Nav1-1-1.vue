@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
 
@@ -42,7 +42,7 @@ const {
   tableSetting,
   downloadExcel,
   getParams
-} = getTableSetting(columnSetting, 'table', tableOptions)
+} = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = async ({ type }) => {
   let excelData = []

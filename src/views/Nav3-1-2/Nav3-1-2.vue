@@ -2,7 +2,7 @@
 import { ref, onBeforeMount, reactive } from 'vue'
 
 import { CustomInput, CustomButton } from '@/components'
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 
 // 手寫 lazy-loading 虛擬列表
 import CustomTable from './Components/CustomTable.vue'
@@ -46,7 +46,7 @@ const tableOptions1 = {
 const {
   tableSetting: tableSetting1,
   downloadExcel: downloadExcel1
-} = getTableSetting(columnSetting, 'table', tableOptions1)
+} = useTableSetting(columnSetting, 'table', tableOptions1)
 const download1 = () => {
   downloadExcel1(tableData)
 }
@@ -60,7 +60,7 @@ const tableOptions2 = {
 const {
   tableSetting: tableSetting2,
   downloadExcel: downloadExcel2
-} = getTableSetting(columnSetting, 'table', tableOptions2)
+} = useTableSetting(columnSetting, 'table', tableOptions2)
 const download2 = () => {
   downloadExcel2(tableData)
 }

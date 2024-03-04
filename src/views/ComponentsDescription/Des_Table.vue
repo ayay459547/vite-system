@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
 import type { TableParams, PropsTableColumn } from '@/components'
 import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components'
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 
 const columnSetting = {
   name: {
@@ -22,12 +22,12 @@ const columnSetting = {
   }
 }
 const tableOptions = {
-  title: '表格組件(使用 getTableSetting)',
+  title: '表格組件(使用 useTableSetting)',
   version: '1.0.0',
   settingKey: 'description-table-1',
   isSorting: true
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const tableData2 = [
   {
@@ -131,7 +131,7 @@ const onRandomClick = () => {
     <div style="width: 100%; height: 400px;">
       <CustomTable
         ref="checkTable"
-        title="表格組件(不使用 getTableSetting)"
+        title="表格組件(不使用 useTableSetting)"
         version="1.0.0"
         setting-key="test-table-1"
         row-key="id"

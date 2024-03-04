@@ -13,7 +13,7 @@ import {
   CustomSearch
 } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
-import { getTableSetting, getSimpleTableSetting, getFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
@@ -44,7 +44,7 @@ const {
   activeForms: activeFilter,
   reset: resetFilter,
   getActiveForms
-} = getFormSetting<TableData>(columnSetting, 'filter')
+} = useFormSetting<TableData>(columnSetting, 'filter')
 
 // table
 const tableData = shallowRef<TableData[]>([])
@@ -56,9 +56,9 @@ const tableOptions = {
   settingKey: 'fund-12',
   isSorting: true
 }
-const { tableSetting, downloadExcel, getParams } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = useTableSetting(columnSetting, 'table', tableOptions)
 
-const { tableColumns: childColumns } = getSimpleTableSetting(childColumnSetting, 'table')
+const { tableColumns: childColumns } = useSimpleTableSetting(childColumnSetting, 'table')
 
 const download = () => {
   downloadExcel(tableData.value)

@@ -4,7 +4,7 @@ import { ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { FormList, CustomInput, CustomButton } from '@/components'
-import { getSimpleTableSetting, getFormListSetting } from '@/lib/lib_columns'
+import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
 
 import { workReportColumnSetting } from './columns'
@@ -43,7 +43,7 @@ const machineOptions = [
 
 const {
   tableColumns
-} = getSimpleTableSetting(workReportColumnSetting, 'table')
+} = useSimpleTableSetting(workReportColumnSetting, 'table')
 
 const {
   // defaultValue,
@@ -52,7 +52,7 @@ const {
   // validate: validateForm,
   add,
   remove
-} = getFormListSetting<FormData>(workReportColumnSetting, 'form', [])
+} = useFormListSetting<FormData>(workReportColumnSetting, 'form', [])
 
 const addItem = () => {
   const userName = authData?.user?.fullName ?? ''

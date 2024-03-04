@@ -2,7 +2,7 @@
 import { reactive } from 'vue'
 
 import { FormList, CustomInput } from '@/components'
-import { getFormListSetting } from '@/lib/lib_columns'
+import { useFormListSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 
 import { columnSetting } from './columns'
@@ -29,7 +29,7 @@ const {
   validate: validateForm,
   add,
   remove
-} = getFormListSetting<Form>(columnSetting, 'form', testData)
+} = useFormListSetting<Form>(columnSetting, 'form', testData)
 
 const submit = () => {
   validateForm().then(successList => {

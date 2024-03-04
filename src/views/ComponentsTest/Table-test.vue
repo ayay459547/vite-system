@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue'
 
 import { CustomTable, CustomInput, CustomButton } from '@/components'
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 
 const columnSetting = {
   date: {
@@ -32,7 +32,7 @@ const tableOptions = {
   version: '1.0.0',
   settingKey: 'test'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData)
