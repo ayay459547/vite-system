@@ -28,14 +28,14 @@ import {
   props as tableProps
 } from './CustomTableInfo'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
-  i18nModule: 'system'
-})
-
 const scopedId = getUuid('__i-table__')
 
 const props = defineProps(tableProps)
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props?.i18nModule ?? 'system'
+})
 
 const emit = defineEmits([
   'header-click',
@@ -180,6 +180,7 @@ const initSortingList = () => {
     if (!_isOperations && (column?.isSorting ?? true)) {
       res.push({
         label: column.label,
+        i18nLabel: column.i18nLabel,
         key: column.key,
         order: (column?.order ?? 'none') as Order
       })
@@ -434,7 +435,7 @@ const getColumnSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'column')
 }
 
-const slotKeyList = computed(() => {
+const slotKeyList = computed<string[]>(() => {
   return showColumns.flatMap(column => {
     if (column.columns && column.columns.length > 0) {
       return [
@@ -530,11 +531,11 @@ onMounted(() => {
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon"/>
-              <div class="text">{{ i18nTranslate('allData') }}</div>
+              <div class="text">{{ i18nTranslate('allData', 'system') }}</div>
             </div>
             <div class="__excel-item" @click="onExcelClick('page')">
               <CustomIcon type="far" name="file-lines" class="icon"/>
-              <div class="text">{{ i18nTranslate('pageData') }}</div>
+              <div class="text">{{ i18nTranslate('pageData', 'system') }}</div>
             </div>
           </div>
         </CustomPopover>
@@ -542,6 +543,7 @@ onMounted(() => {
         <ColumnSetting
           ref="columnSetting"
           :columns="props.tableColumns"
+          :i18n-module="props.i18nModule"
           :version="props.version"
           :setting-key="props.settingKey"
           :setting-width="props.settingWidth"
@@ -554,7 +556,10 @@ onMounted(() => {
       <div class="setting-center grid-col-xs-24 grid-col-md-12 grid-col-xl-6">
         <slot name="setting-center">
           <span class="setting-center-title">
-            <slot name="title">{{ props.title }}</slot></span>
+            <slot name="title">
+              {{ i18nTranslate(props?.i18nTitle ?? props.title) }}
+            </slot>
+          </span>
         </slot>
       </div>
 
@@ -562,7 +567,7 @@ onMounted(() => {
         <slot name="setting-right"></slot>
 
         <div v-if="props.lazyLoading">
-          <label>{{ `${i18nTranslate('dataCount')}：${props.tableDataCount}` }}</label>
+          <label>{{ `${i18nTranslate('dataCount', 'system')}：${props.tableDataCount}` }}</label>
         </div>
 
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
@@ -571,7 +576,7 @@ onMounted(() => {
             v-model="pageSize"
             validate-key="CustomTable:pageSize"
             type="select"
-            :label="i18nTranslate('showCount')"
+            :label="i18nTranslate('showCount', 'system')"
             :options="sizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -581,7 +586,7 @@ onMounted(() => {
             v-model="pageSize"
             validate-key="CustomTable:pageSize"
             type="select"
-            :label="i18nTranslate('loadCount')"
+            :label="i18nTranslate('loadCount', 'system')"
             :options="lazyLoadSizeOptions"
             direction="row"
             @change="onSizeChange"
@@ -591,6 +596,7 @@ onMounted(() => {
         <GroupSorting
           v-if="props.isSorting"
           v-model="sortingList"
+          :i18n-module="props.i18nModule"
           :setting-width="props.settingWidth"
           :setting-height="`${tableHeight - 40}px`"
           @reset-sorting="initSortingList"
@@ -684,7 +690,7 @@ onMounted(() => {
         />
       </div>
       <div class="__table-pagination-right">
-        <span>{{ `${i18nTranslate('totalAmount')}：${props.tableDataCount}` }}</span>
+        <span>{{ `${i18nTranslate('totalAmount', 'system')}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>

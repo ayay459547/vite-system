@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import { computed, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 import {
   CustomPopover,
   CustomButton,
@@ -13,12 +14,13 @@ import {
 
 import type { Sorting, Order } from '../CustomTableInfo'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
-  i18nModule: 'system'
-})
-
 const props = defineProps({
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: 'system',
+    description: 'i18nModule'
+  },
   modelValue: {
     type: Array as PropType<Sorting[]>,
     required: true
@@ -34,6 +36,11 @@ const props = defineProps({
     default: '100%',
     description: '列表高度'
   }
+})
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props.i18nModule
 })
 
 const emit = defineEmits(['update:modelValue', 'reset-sorting', 'submit'])
@@ -97,7 +104,7 @@ const submit = () => {
       <template #reference>
         <CustomButton
           icon-name="arrow-down-short-wide"
-          :label="i18nTranslate('sorting')"
+          :label="i18nTranslate('sorting', 'system')"
         />
       </template>
 
@@ -123,7 +130,7 @@ const submit = () => {
                     :model-value="element.order"
                     :validate-key="`GroupSorting:${element.key}`"
                     @update:model-value="setSortingValue($event, element.key)"
-                    :label="element.label"
+                    :label="i18nTranslate(element?.i18nLabel ?? element.label)"
                     type="radio"
                     :options="[
                       { label: i18nTranslate('ascending'), value: 'ascending' },
@@ -151,7 +158,7 @@ const submit = () => {
 
         <div class="__column-reset">
           <CustomButton
-            :label="i18nTranslate('reset')"
+            :label="i18nTranslate('reset', 'system')"
             type="info"
             plain
             icon-name="repeat"
@@ -159,7 +166,7 @@ const submit = () => {
           />
 
           <CustomButton
-            :label="i18nTranslate('confirm')"
+            :label="i18nTranslate('confirm', 'system')"
             type="success"
             plain
             icon-name="check"

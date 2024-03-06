@@ -2,6 +2,7 @@ import type { PropType } from 'vue'
 import type { TableColumnCtx  } from 'element-plus'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 
 export const version = '1.0.0'
 
@@ -19,6 +20,7 @@ export type ShowType = 'custom' | 'auto'
 // 資料處理的格式
 export interface Sorting {
   label?: string
+  i18nLabel?: string
   key?: null | string
   order?: Order
 }
@@ -68,6 +70,12 @@ export type Load = (row: any, treeNode: any, resolve: any) => void | null
 export type LazyLoadingStatus = 'loadMore' | 'loading' | 'noMore'
 
 export const props = {
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: 'iPASP_common',
+    description: 'i18nModule'
+  },
   title: {
     type: String as PropType<string>,
     required: false,
@@ -94,7 +102,7 @@ export const props = {
   settingWidth: {
     type: Number as PropType<number>,
     required: false,
-    default: 250,
+    default: 320,
     description: '欄位設定框寬度'
   },
   // 表格資料相關

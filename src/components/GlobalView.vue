@@ -306,8 +306,8 @@ provide<UseHook>('useHook', (options) => {
     i18nTranslate: (key: string, _i18nModule?: ScopeKey) => {
       return `${i18nTranslate(key, _i18nModule ?? i18nModule)}`
     },
-    i18nTest: (key) => {
-      return i18nTest(key, i18nModule)
+    i18nTest: (key, _i18nModule?: ScopeKey) => {
+      return i18nTest(key,  _i18nModule ?? i18nModule)
     },
     eventList: (click, eventList, options) => {
       const { clientX, clientY } = click

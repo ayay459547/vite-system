@@ -72,9 +72,9 @@ export declare interface CustomPopoverQueue {
 export declare namespace UseHookList {
   type loading = (isOpen: boolean, message?: string) => void
 
-  type i18nTranslate = (key: string) => string
+  type i18nTranslate = (key: string, i18nModule?: ScopeKey) => string
 
-  type i18nTest = (key: string) => boolean
+  type i18nTest = (key: string, i18nModule?: ScopeKey) => boolean
 
   type eventList = (
     click: MouseEvent,

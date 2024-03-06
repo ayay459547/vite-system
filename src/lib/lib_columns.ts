@@ -1,7 +1,9 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
-import { reactive, shallowReactive, ref } from 'vue'
+import { reactive, shallowReactive, ref, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -361,6 +363,7 @@ export interface TableOptoins {
   tableSize?: TableSize
   showType?: string | 'custom' | 'auto'
   selection?: boolean
+  i18nModule?: ScopeKey
 }
 
 export interface TableSetting {
@@ -382,6 +385,7 @@ export interface TableSetting {
     tableColumns: any[]
     tableSize?: TableSize
     isHiddenExcel: boolean
+    i18nModule?: ScopeKey
     // 其他 table 的 props
   } & Record<string, any>,
   downloadExcel: (tableData: Record<string, any>[]) => void
@@ -425,6 +429,7 @@ export const useTableSetting = (
 ): TableSetting => {
   const {
     title,
+    i18nTitle,
     version,
     settingKey,
     page = 1,
@@ -436,7 +441,8 @@ export const useTableSetting = (
     isSorting = false,
     isHiddenExcel = false,
     tableSize = '',
-    selection = false
+    selection = false,
+    i18nModule = 'system'
   } = options
 
   // 設定 table 用的 column
@@ -497,6 +503,9 @@ export const useTableSetting = (
       resColumns.push(temp)
     }
   })
+  // excel header 翻譯
+  const useHook: UseHook = inject('useHook')
+  const { i18nTranslate } = useHook({ i18nModule })
 
   // 依據表單 及傳入資料 下載 excel
   const downloadExcel = async (tableData: Record<string, any>[], options?: WorkbookOptions) => {
@@ -529,6 +538,7 @@ export const useTableSetting = (
       const {
         key: columnKey = '',
         label: columnLabel = '',
+        i18nLabel: columnI18nLabel,
         isShow = false,
         isOperations = false
       } = tempColumn
@@ -544,7 +554,7 @@ export const useTableSetting = (
 
           const align = _currentColumn?.align ?? 'left'
           excelColumns.push({
-            header: columnLabel,
+            header: i18nTranslate(columnI18nLabel ?? columnLabel),
             key: columnKey,
             hidden: !isShow,
             style: {
@@ -572,7 +582,7 @@ export const useTableSetting = (
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
       })
-      a.download = `${title ?? ''}.xlsx`
+      a.download = `${i18nTranslate(i18nTitle ?? title) ?? ''}.xlsx`
       a.href = URL.createObjectURL(blobData)
       a.click()
     })
@@ -596,6 +606,7 @@ export const useTableSetting = (
         }
       },
       title,
+      i18nTitle,
       version,
       settingKey,
       params: tableParams,
@@ -606,7 +617,8 @@ export const useTableSetting = (
       tableColumns: resColumns,
       tableSize,
       isHiddenExcel,
-      selection
+      selection,
+      i18nModule
     },
     downloadExcel,
     resetScroll: (tableRef?: TableRef) => {

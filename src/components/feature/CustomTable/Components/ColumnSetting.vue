@@ -4,18 +4,20 @@ import { ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
+import type { ScopeKey } from '@/i18n/i18n_setting'
 import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from '../CustomTableInfo'
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
-  i18nModule: 'system'
-})
-
 const props = defineProps({
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: 'system',
+    description: 'i18nModule'
+  },
   columns: {
     type: Object as PropType<PropsTableColumn[]>,
     default () {
@@ -44,6 +46,11 @@ const props = defineProps({
     default: '100%',
     description: '列表高度'
   }
+})
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props.i18nModule
 })
 
 const emit = defineEmits(['change'])
@@ -95,6 +102,7 @@ const setDefaultColumnSetting = async () => {
         isShow: true,
         key: column.key,
         label: column.label,
+        i18nLabel: column.i18nLabel,
         width: column?.width ?? null,
         minWidth: column?.minWidth ?? null,
         isOperations: column.isOperations
@@ -184,7 +192,7 @@ const onDragend = () => {
         <CustomButton
           icon-name="list-check"
           class="i-mr-xs"
-          :label="i18nTranslate('columnSetting')"
+          :label="i18nTranslate('columnSetting', 'system')"
         />
       </template>
 
@@ -211,12 +219,11 @@ const onDragend = () => {
                       v-model="element.isShow"
                       type="checkbox"
                       :validate-key="`ColumnSetting:${element.key}`"
-                      :label="element.label"
                       hidden-label
+                      :label="i18nTranslate(element?.i18nLabel ?? element.label)"
                       @change="updateSetting(true)"
                     />
                   </div>
-                  <!-- <div class="text" @click.stop="copyText(element.label)">{{ element.label }}</div> -->
                 </div>
 
                 <div class="__column-item-right">
@@ -234,7 +241,7 @@ const onDragend = () => {
 
         <div class="__column-reset">
           <CustomButton
-            :label="i18nTranslate('reset')"
+            :label="i18nTranslate('reset', 'system')"
             type="info"
             plain
             icon-name="repeat"

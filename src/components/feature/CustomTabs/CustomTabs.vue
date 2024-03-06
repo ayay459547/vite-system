@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref, WritableComputedRef } from 'vue'
-import { ref, computed, onMounted, onUnmounted, watch, effectScope } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick } from 'vue'
 
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
@@ -77,13 +77,14 @@ const listRef: Ref<HTMLElement | null> = ref(null)
 const arrowIsShow = ref(false)
 
 const wrapROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(async (entry) => {
     conWidth.value = entry.contentRect.width - 84
 
     if (listRef.value !== null) {
       const listRect = listRef.value.getBoundingClientRect()
       listWidth.value = listRect.width
 
+      await nextTick()
       arrowIsShow.value = listWidth.value > conWidth.value
     }
   })
@@ -94,12 +95,12 @@ const conWidth = ref(0)
 
 const listWidth = ref(0)
 const listROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(async (entry) => {
     const oddListWidth = listWidth.value
     listWidth.value = entry.contentRect.width
 
+    await nextTick()
     arrowIsShow.value = listWidth.value > conWidth.value
-
     if (listWidth.value > oddListWidth) {
       debounceScrollToCurrentTab(tempValue.value)
     }
@@ -148,6 +149,9 @@ onUnmounted(() => {
       { 'is-background': props.background },
       `CustomTabs_${version} ${scopedId}`
     ]">
+    <div class="__tabs-left">
+      <slot name="left"></slot>
+    </div>
     <div class="__tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
       <CustomIcon name="chevron-left"/>
     </div>
@@ -191,6 +195,9 @@ onUnmounted(() => {
     </div>
     <div class="__tabs-right-arrow" :class="{ 'is-show': arrowIsShow }" @click="decreaseScroll">
       <CustomIcon name="chevron-right"/>
+    </div>
+    <div class="__tabs-right">
+      <slot name="right"></slot>
     </div>
   </div>
 </template>
