@@ -89,8 +89,10 @@ const hasSlot = (prop: string): boolean => {
   }
 
   &-title {
-    font-size: 1.2em;
-    font-weight: 600;
+    font: {
+      size: 1.2em;
+      weight: 600;
+    }
     padding: 0 8px;
   }
 }

@@ -347,7 +347,7 @@ export const useFormListSetting = <T>(columns: Record<string, any>, type: string
 
 export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
 
-export interface TableOptoins {
+export interface TableOptions {
   title: string
   i18nTitle?: string
   version: string
@@ -425,7 +425,7 @@ export interface TableColumnsItem {
 export const useTableSetting = (
   columns: Record<string, any>,
   type: string,
-  options: TableOptoins
+  options: TableOptions
 ): TableSetting => {
   const {
     title,

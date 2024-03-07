@@ -228,8 +228,9 @@ defineExpose({
     width: 100%;
     height: 100%;
     position: relative;
-    border: 2px solid #e9e9eb;
-    border-radius: 6px;
+    border: 2px solid #e9e9eb {
+      radius: 6px;
+    }
     overflow: hidden;
   }
   &-container {

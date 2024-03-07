@@ -1,6 +1,7 @@
 export const columnSetting = {
   column1: {
     label: '欄位1',
+    i18nLabel: 'column1',
     table: {
       width: 180,
       align: 'left',
@@ -19,6 +20,7 @@ export const columnSetting = {
   },
   column2: {
     label: '欄位2',
+    i18nLabel: 'column2',
     table: {
       width: 280,
       align: 'center'
@@ -36,6 +38,7 @@ export const columnSetting = {
   },
   column3: {
     label: '欄位3',
+    i18nLabel: 'column3',
     table: {
       width: 280,
       isSorting: false
@@ -53,6 +56,7 @@ export const columnSetting = {
   },
   column4: {
     label: '欄位4',
+    i18nLabel: 'column4',
     table: {
       minWidth: 300
     },
@@ -69,6 +73,7 @@ export const columnSetting = {
   },
   column5: {
     label: '欄位5',
+    i18nLabel: 'column5',
     table: {
       width: 200,
       align: 'left',

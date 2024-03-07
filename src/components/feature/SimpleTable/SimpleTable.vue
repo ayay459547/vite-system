@@ -375,8 +375,10 @@ export default SimpleTable
     flex: 1;
     width: 100%;
     height: 100%;
-    min-width: fit-content;
-    min-height: fit-content;
+    min: {
+      width: fit-content;
+      height: fit-content;
+    }
     position: relative;
     overflow-y: scroll;
   }

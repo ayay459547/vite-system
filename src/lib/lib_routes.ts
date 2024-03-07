@@ -1,9 +1,9 @@
 import { useI18n } from 'vue-i18n'
 
+import type { UseHookReturn } from '@/declare/hook'
 import type { RouterTree, Navigation } from '@/declare/routes'
 import type { IconType } from '@/components'
 import { type RouterType, routerTypeIcon } from '@/router/setting'
-import type { I18nTranslate, I18nTest } from '@/lib/lib_utils'
 import { isEmpty } from '@/lib/lib_utils'
 
 /**
@@ -148,8 +148,8 @@ const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18n
 }
 
 export const useRoutesHook = (params?: {
-  i18nTranslate?: I18nTranslate
-  i18nTest?: I18nTest
+  i18nTranslate?: UseHookReturn.i18nTranslate
+  i18nTest?: UseHookReturn.i18nTest
 }) => {
   const { i18nTranslate, i18nTest } = params ?? {}
 

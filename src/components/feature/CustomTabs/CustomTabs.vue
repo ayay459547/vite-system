@@ -265,13 +265,15 @@ $is-background: #f5f7fa;
     white-space: nowrap;
     gap: 8px;
     cursor: pointer;
-    border-radius: 4px 4px 0 0;
     padding: 8px 12px;
     background-color: #fff;
     transition-duration: 0.3s;
     color: #303133;
-    border: 1px solid #ececec;
-    border-bottom: 2px solid #40a0ff00;
+    border: 1px solid #ececec {
+      radius: 4px 4px 0 0;
+      bottom: 2px solid #40a0ff00;
+    }
+
     &.is-background {
       border-radius: 0;
       background-color: $is-background;

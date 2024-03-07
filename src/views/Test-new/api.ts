@@ -1,4 +1,4 @@
-import type { Api, ViewParams } from '@/declare/ajax'
+import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils'
 

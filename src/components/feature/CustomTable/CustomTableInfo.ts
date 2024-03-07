@@ -82,6 +82,11 @@ export const props = {
     default: '',
     description: 'table 標題'
   },
+  i18nTitle: {
+    type: String as PropType<string>,
+    required: false,
+    description: 'i18n table 標題'
+  },
   // 欄位設定相關
   version: {
     type: String as PropType<string>,

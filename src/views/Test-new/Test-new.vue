@@ -3,7 +3,7 @@ import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
 import { CustomIcon, CustomModal, CustomButton, CustomTable, CustomSearch, GroupSearch } from '@/components'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import { type TableOptions, useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 
 import { columnSetting } from './columns'
@@ -15,13 +15,17 @@ import UpdateModal from './Components/UpdateModal.vue'
 import DetailModal from './Components/DetailModal.vue'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, eventList, swal } = useHook()
+const { i18nTranslate, eventList, swal } = useHook({
+  i18nModule: 'view'
+})
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   // 基本屬性
   title: '新建測試',
-  version: '1.0.2',
+  i18nTitle: 'createTest',
+  version: '1.0.3',
   settingKey: 'caleb-new-test-1',
+  i18nModule: 'view',
   // 其他屬性
   isSorting: true,
   isHiddenExcel: false,
@@ -250,12 +254,13 @@ const remove = (rowData: TableData) => {
               @reset="resetFilter"
               @submit="throttleInit()"
             >
-              <template #search-all="{ prop }">
+              <template #search-all="{ prop, column }">
                 <CustomSearch
                   class="grid-col-xs-12 grid-col-md-8 grid-col-lg-6"
                   v-model="filter[prop]"
                   v-model:active="activeFilter[prop]"
                   v-bind="filterColumn[prop]"
+                  :label="i18nTranslate(column.i18nLabel)"
                 />
               </template>
             </GroupSearch>
@@ -269,20 +274,21 @@ const remove = (rowData: TableData) => {
           </div>
         </div>
       </template>
-      <template #header-all="{ prop }">
+      <template #header-all="{ prop, column }">
         <CustomSearch
           v-model="filter[prop]"
           v-model:active="activeFilter[prop]"
           v-bind="filterColumn[prop]"
           search
+          :label="i18nTranslate(column.i18nLabel)"
           @change="throttleInit($event, 'input')"
         />
       </template>
       <template #header-column1="{ column }">
-        <div class="text-danger fill-y flex-row align-center">{{ column.label + ' (column)' }}</div>
+        <div class="text-danger fill-y flex-row align-center">{{ i18nTranslate(column.i18nLabel) }}</div>
       </template>
       <template #header-column5="{ column }">
-        <div class="text-primary fill-y flex-row align-center">{{ column.label + ' (column)' }}</div>
+        <div class="text-primary fill-y flex-row align-center">{{ i18nTranslate(column.i18nLabel) }}</div>
       </template>
       <template #column-column5="{ row, data }">
         <CustomButton

@@ -702,8 +702,9 @@ $border-style: 1px solid #ebeef5;
   &-wrapper {
     width: 100%;
     height: 100%;
-    border: $border-style;
-    border-radius: 6px;
+    border: $border-style {
+      radius: 6px;
+    }
     display: flex;
     flex-direction: column;
     position: relative;
@@ -717,10 +718,11 @@ $border-style: 1px solid #ebeef5;
 
   &-prepend {
     height: fit-content;
-    border: $border-style;
-    border-radius: 6px 6px 0 0;
     position: relative;
     background-color: lighten($system-bg-color, 33%);
+    border: $border-style {
+      radius: 6px 6px 0 0;
+    }
 
     &-content {
       width: 100%;
@@ -745,10 +747,11 @@ $border-style: 1px solid #ebeef5;
   &-setting {
     height: fit-content;
     background-color: lighten($system-bg-color, 40%);
-    overflow: hidden;
-    overflow-x: scroll;
     width: 100%;
     padding: 6px;
+    overflow: hidden {
+      x: scroll;
+    }
 
     &::-webkit-scrollbar {
       width: 4px;

@@ -89,7 +89,7 @@ defineExpose<Expose>({
     position: fixed;
     top: 0;
     left: 0;
-    z-index: $loading-index;
+    z-index: var(--i-z-index-loading);
     cursor: default;
     background-color: #efefefa8;
   }
@@ -181,8 +181,10 @@ defineExpose<Expose>({
   }
 
   &-loading {
-    font-family: 'Lato';
-    font-size: 1.5em;
+    font: {
+      family: 'Lato';
+      size: 1.5em;
+    }
     letter-spacing: 12px;
     color: #464646;
     white-space: nowrap;

@@ -667,8 +667,10 @@ onUnmounted(() => {
     background-color: #fff;
     box-shadow: 2px 2px 8px 1px #d6d6d6;
     transition-duration: 0.3s;
-    min-width: 400px;
-    min-height: 300px;
+    min: {
+      width: 400px;
+      height: 300px;
+    }
     border-radius: 6px;
   }
 

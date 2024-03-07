@@ -33,7 +33,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { checkInitIdb } from '@/lib/lib_idb'
 
 // hook
-import type { UseHook, UseHookList, CustomPopoverQueue } from '@/declare/hook'
+import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
@@ -57,7 +57,7 @@ const queueId = ref(0)
 const customPopoverQueue: CustomPopoverQueue[] = shallowReactive([])
 const deleteCustomPopoverQueue = () => customPopoverQueue.pop()
 
-const loading: UseHookList.loading = (isOpen, message) => {
+const loading: UseHookReturn.loading = (isOpen, message) => {
   if (!customLoader.value) return
 
   if (isOpen) {

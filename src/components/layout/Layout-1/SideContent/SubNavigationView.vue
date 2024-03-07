@@ -181,7 +181,9 @@ export default defineComponent({
     }
   }
   &-list {
-    overflow: auto;
+    overflow: hidden {
+      y: auto;
+    }
   }
 
   &-sub-list,

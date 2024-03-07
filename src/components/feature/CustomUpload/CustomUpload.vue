@@ -300,10 +300,11 @@ defineExpose({
     width: inherit;
     height: fit-content;
 
-    border: 3px dashed #dedede;
     background-color: #409eff00;
+    border: 3px dashed #dedede {
+      radius: 6px;
+    }
 
-    border-radius: 6px;
     display: flex;
     flex-direction: column;
     justify-content: center;
