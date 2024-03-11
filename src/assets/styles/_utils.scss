@@ -1,0 +1,10 @@
+@use './function' as function;
+
+// set css var value, because we need translate value to string
+// for example:
+// @include set-css-var-value(('color', 'primary'), blue);
+// --i-color-primary: blue;
+@mixin set-css-var-value($name, $value) {
+  #{function.joinVarName($name)}: #{$value};
+}
+

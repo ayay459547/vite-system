@@ -1,10 +1,41 @@
-@use './styles/common.scss' as *;
-@use './styles/color.scss' as *;
-@use './styles/flex.scss' as *;
-@use './styles/grid-system.scss' as *;
-@use './styles/tools.scss' as *;
-@use './styles/transition.scss' as *;
+@forward 'element-plus/theme-chalk/src/dark/var.scss' with (
+  $bg-color: (
+    'page': hsl(0, 0%, 33%),
+    '': #4f4f4f,
+    'overlay': #1d1e1f,
+  )
+);
+// import dark theme
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
 
-@import './styles/_variable.scss';
-// @import './styles/_vars-light.scss';
-@import './styles/_vars-dark.scss';
+@use './styles/color-common' as *;
+
+@use './styles/common' as *;
+@use './styles/flex' as *;
+@use './styles/grid-system' as *;
+@use './styles/tools' as *;
+@use './styles/transition' as *;
+
+@use './styles/z-index' as *;
+@use './styles/media' as *;
+
+@use './styles/utils' as *;
+
+// 系統基本顏色
+$info: #909399 !default;
+$primary: #409eff !default;
+$success: #67C23A !default;
+$warning: #E6A23C !default;
+$danger: #F56C6C !default;
+$white: #ffffff !default;
+
+$system-bg-color: #506d9c !default;
+$page-content-bg-color: #ffffff !default;
+
+html {
+  --color-test: #dddddd;
+}
+
+html.dark {
+  --color-test: #d3bfbf;
+}

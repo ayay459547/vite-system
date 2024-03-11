@@ -1,0 +1,90 @@
+@use 'sass:map';
+@use './utils' as utils;
+
+$color-map: (
+  'info': #909399,    // var(--i-color-info);
+  'primary': #409eff, // var(--i-color-primary);
+  'success': #67C23A, // var(--i-color-success);
+  'warning': #E6A23C, // var(--i-color-warning);
+  'danger': #F56C6C,  // var(--i-color-danger);
+
+  'black': #000000,   // var(--i-color-black);
+  'white': #ffffff,   // var(--i-color-white);
+  'gray': #bcbcbc,    // var(--i-color-gray);
+  'yellow': #ffee55,  // var(--i-color-yellow);
+  'orange': #eeb155,  // var(--i-color-orange);
+  'green': #a0ff8a,   // var(--i-color-green);
+  'purple': #b458ee,  // var(--i-color-purple);
+
+  'empty': #ffffff00  // var(--i-color-empty);
+);
+
+/**
+  使用範例
+  <div class="text-primary">primary</div>
+  <div class="hover-text-primary">hover-primary</div>
+
+  <div class="bg-primary">primary</div>
+  <div class="hover-bg-primary">hover-primary</div>
+
+  <div class="border-primary">primary</div>
+  <div class="hover-border-primary">hover-primary</div>
+
+  <div class="card-primary">primary</div>
+  <div class="hover-card-primary">hover-primary</div>
+ */
+@each $type, $color in $color-map {
+
+  .text-#{$type} {
+    color: $color !important;
+  }
+  .hover-text-#{$type} {
+    transition-duration: 0.2s;
+    &:hover{
+      color: lighten($color, 20%) !important;
+    }
+  }
+
+  .bg-#{$type} {
+    background-color: lighten($color, 15%) !important;
+  }
+  .hover-bg-#{$type} {
+    transition-duration: 0.2s;
+    &:hover{
+      background-color: lighten($color, 20%) !important;
+    }
+  }
+
+  div[class*="border-"],
+  div[class*="card-"] {
+    border-radius: 6px;
+  }
+
+  .border-#{$type} {
+    border: 1px solid lighten($color, 5%) !important;
+  }
+  .hover-border-#{$type} {
+    transition-duration: 0.2s;
+    &:hover{
+      border: 1px solid lighten($color, 10%) !important;
+    }
+  }
+
+  .card-#{$type} {
+    box-shadow: 2px 2px 8px 1px lighten($color, 20%);
+  }
+  .hover-card-#{$type} {
+    transition-duration: 0.2s;
+    &:hover{
+      box-shadow: 2px 2px 8px 1px lighten($color, 25%);
+    }
+  }
+}
+
+html {
+  // @include utils.set-css-var-value(('color', 'primary'), #409eff)
+  // --i-color-primary: #409eff;
+  @each $type, $color in $color-map {
+    @include utils.set-css-var-value(('color', $type), $color);
+  }
+}

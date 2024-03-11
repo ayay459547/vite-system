@@ -1,0 +1,28 @@
+$namespace: 'i' !default;
+
+// join var name
+// joinVarName(('test', 'text-color')) => '--i-test-text-color'
+@function joinVarName($list) {
+  $name: '--' + $namespace;
+  @each $item in $list {
+    @if $item != '' {
+      $name: $name + '-' + $item;
+    }
+  }
+  @return $name;
+}
+
+// getCssVarName('test', 'text-color') => '--i-test-text-color'
+@function getCssVarName($args...) {
+  @return joinVarName($args);
+}
+
+// getCssVar('test', 'text-color') => var(--i-test-text-color)
+@function getCssVar($args...) {
+  @return var(#{joinVarName($args)});
+}
+
+// getCssVarWithDefault(('test', 'text-color'), blue) => var(--i-test-text-color, blue)
+@function getCssVarWithDefault($args, $default) {
+  @return var(#{joinVarName($args)}, #{$default});
+}

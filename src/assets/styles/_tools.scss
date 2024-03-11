@@ -1,4 +1,5 @@
-$size-list: (
+// 微調整使用
+$tool-map: (
   xxs: 4px,
   xs: 8px,
   sm: 12px,
@@ -8,7 +9,14 @@ $size-list: (
   xxl: 40px
 );
 
-@each $size, $value in $size-list {
+/**
+  使用範例
+  <div class="flex-row i-ga-lg">
+    <div class="i-pa-xxs"></div>
+    <div class="i-ma-md"></div>
+  </div>
+ */
+@each $size, $value in $tool-map {
   .i-pa-#{$size} {
     padding: $value !important;
   }

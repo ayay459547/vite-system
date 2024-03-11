@@ -1,0 +1,44 @@
+@use 'sass:map';
+@use './utils' as utils;
+
+$z-index-map: () !default;
+$z-index-map: map.merge(
+  (
+    // var(--i-z-index-loading);
+    'loading': 3000,
+    // var(--i-z-index-global-disabled);
+    'global-disabled': 2080,
+    // 在下方已使用
+    'notification': 2050,
+    // 在下方已使用
+    'swal2': 2040,
+    // var(--i-z-index-login);
+    'login': 2010,
+    // 對應 CustomModal 的 minModalIndex
+    'modal': 2005,
+    // var(--i-z-index-side);
+    'side': 2003,
+    // element-ul 設定的
+    'v-loading': 2000,        
+    // var(--i-z-index-v-fixed);
+    'v-fixed': 99,
+    // var(--i-z-index-popover);
+    'popover': 1,
+  ),
+  $z-index-map
+);
+
+.el-notification {
+  z-index: map.get($z-index-map, 'notification') !important;
+}
+.swal2-container.swal2-backdrop-show {
+  z-index: map.get($z-index-map, 'swal2');
+}
+
+html {
+  // @include utils.set-css-var-value(('z-index', 'loading'), 3000)
+  // --i-z-index-loading: 3000;
+  @each $type, $z-index in $z-index-map {
+    @include utils.set-css-var-value(('z-index', $type), $z-index);
+  }
+}

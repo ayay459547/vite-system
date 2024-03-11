@@ -133,7 +133,7 @@ defineExpose({
   }
 
   &-left {
-    z-index: $side-index;
+    z-index: var(--i-z-index-side);
     height: 100%;
     transition-duration: 0.3s;
     will-change: width;

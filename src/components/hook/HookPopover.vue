@@ -165,7 +165,7 @@ defineExpose<Expose>({
     width: fit-content;
     height: fit-content;
     position: fixed;
-    z-index: $popover-index;
+    z-index: var(--i-z-index-popover);
   }
   &-list {
     height: fit-content;

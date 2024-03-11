@@ -154,7 +154,7 @@ const svg = `
     position: fixed;
     top: 0;
     left: 0;
-    z-index: $login-index;
+    z-index: var(--i-z-index-login);
     background-color: #ecf5ff;
     @extend %flex-center;
   }

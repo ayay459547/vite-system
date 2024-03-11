@@ -1,4 +1,16 @@
-$color-list: (
+@use 'sass:map';
+
+html {
+  $system-bg-color: #506d9c;
+  $page-content-bg-color: #506d9c;
+  
+  &.dark {
+    $system-bg-color: #616b76;
+    $page-content-bg-color: #78858d;
+  }
+}
+
+$color-map: (
   'info': #909399, 
   'primary': #409eff,
   'success': #67C23A,
@@ -16,7 +28,8 @@ $color-list: (
   'empty': #ffffff00
 );
 
-@each $type, $color in $color-list {
+@each $type, $color in $color-map {
+
   .text-#{$type} {
     color: $color !important;
   }
@@ -62,14 +75,3 @@ $color-list: (
     }
   }
 }
-
-// 目前還未使用
-@mixin systemColor ($type, $color) {
-  .system-color-#{$type} {
-    background-color: $color;
-  }
-}
-
-@include systemColor ('base', #454545);
-@include systemColor ('blue', #324157);
-@include systemColor ('green', #3b723e);

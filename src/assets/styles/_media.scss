@@ -1,0 +1,30 @@
+@use 'sass:map';
+@use './utils' as utils;
+
+$media-map: () !default;
+// 依照 bootstrap 標準
+$media-map: map.merge(
+  (
+    // var(--i-media-xs);
+    'xs': 0px,
+    // var(--i-media-sm);
+    'sm': 576px,
+    // var(--i-media-md);
+    'md': 768px,
+    // var(--i-media-lg);
+    'lg': 992px,
+    // var(--i-media-xl);
+    'xl': 1200px,
+    // var(--i-media-xxl);
+    'xxl': 1400px,
+  ),
+  $media-map
+);
+
+html {
+  // @include utils.set-css-var-value(('media', 'xxl'), 1400px)
+  // --i-media-xxl: 1400px;
+  @each $type, $width in $media-map {
+    @include utils.set-css-var-value(('media', $type), $width);
+  }
+}

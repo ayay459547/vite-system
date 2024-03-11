@@ -160,7 +160,7 @@ export default defineComponent({
     padding: 0px 8px;
     cursor: default;
     position: fixed;
-    z-index: $v-fixed-index;
+    z-index: var(--i-z-index-v-fixed);
     white-space: nowrap;
     min-width: fit-content;
     // pointer-events: none;

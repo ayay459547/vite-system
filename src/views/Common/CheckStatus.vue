@@ -32,7 +32,7 @@ watch(isCheckedStatus, (isCheck: boolean) => {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: $login-index;
+    z-index: var(--i-z-index-login);
     background-color: #ecf5ff;
     display: flex;
     justify-content: center;
