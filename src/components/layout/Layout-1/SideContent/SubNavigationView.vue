@@ -36,7 +36,9 @@ export default defineComponent({
   emits: ['update:level2IsOpen', 'changeMap'],
   setup (props, { emit }) {
     const useHook: UseHook = inject('useHook')
-    const { i18nTest, i18nTranslate } = useHook()
+    const { i18nTest, i18nTranslate } = useHook({
+      i18nModule: 'system'
+    })
 
     const { getRouteIcon, getRouteTitle } = useRoutesHook({
       i18nTranslate,

@@ -10,7 +10,9 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import SubNavigationView from './SubNavigationView.vue'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTest, i18nTranslate } = useHook()
+const { i18nTest, i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
 
 const props = defineProps<{
   level1List: Navigation[]
