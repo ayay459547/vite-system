@@ -4,7 +4,7 @@ import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-import { isEmpty, getUuid, toLocaleString } from '@/lib/lib_utils'
+import { isEmpty, getUuid, numberFormat } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 
 import {
@@ -303,7 +303,7 @@ export default defineComponent({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             formatter: function (value: any, index: number) {
               const [type, length] = value.split(',')
-              return `${type} (${toLocaleString(parseInt(length))})`
+              return `${type} (${numberFormat(parseInt(length), { isToLocaleString: true })})`
             }
           },
           tooltip: {}

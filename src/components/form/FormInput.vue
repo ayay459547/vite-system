@@ -4,7 +4,8 @@ import { computed, useSlots, ref, onMounted, inject } from 'vue'
 import { ElInput } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import { isEmpty, round, floor, ceil, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import type { NumberFormatType } from '@/lib/lib_utils'
+import { isEmpty, numberFormat, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 type ModelValue = string | number | null
 
@@ -126,19 +127,28 @@ const onEvent = {
         }
       }
 
+      let numberFormatType: NumberFormatType = ''
+      let numberFormatToFixed = 0
       if (typeof _value === 'number') {
         // 四捨五入
         if (!isEmpty(props.round)) {
-          _value = round(_value, props.round)
+          numberFormatType = 'round'
+          numberFormatToFixed = props.round
         }
         // 無條件捨去
         if (!isEmpty(props.floor)) {
-          _value = floor(_value, props.floor)
+          numberFormatType = 'floor'
+          numberFormatToFixed = props.floor
         }
         // 無條件進位
         if (!isEmpty(props.ceil)) {
-          _value = ceil(_value, props.ceil)
+          numberFormatType = 'ceil'
+          numberFormatToFixed = props.ceil
         }
+        _value = numberFormat<number>(_value, {
+          type: numberFormatType,
+          toFixed: numberFormatToFixed
+        })
 
         // 最大值
         if (!isEmpty(props.max) && _value > props.max) {

@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
-import { defineComponent, computed, inject } from 'vue'
+import { defineComponent, computed, inject, ref, nextTick } from 'vue'
+import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
@@ -56,13 +57,29 @@ export default defineComponent({
 
     const changeOpen = (name: string): void => emit('changeMap', name)
 
+    const activeRouteName = ref('')
+
+    type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
+    const changeRoute = async (navigate: Navigate, routerName: string) => {
+      activeRouteName.value = routerName
+      await Promise.all([
+        navigate(),
+        nextTick()
+      ])
+      setTimeout(() => {
+        activeRouteName.value = ''
+      }, 0)
+    }
+
     return {
       getRouteIcon,
       getRouteTitle,
       navHeight: 54,
       changeOpen,
       tempIsOpen,
-      onTitleClick
+      onTitleClick,
+      activeRouteName,
+      changeRoute
     }
   }
 })
@@ -113,8 +130,10 @@ export default defineComponent({
               >
                 <div
                   class="nav-item-left"
-                  :class="{ active: $props.currentRouteName.level3 === leaf.name }"
-                  @click="navigate"
+                  :class="{
+                    active: [$props.currentRouteName.level3, activeRouteName].includes(leaf.name)
+                  }"
+                  @click="changeRoute(navigate, leaf.name)"
                 >
                   <div class="item-empty"></div>
                   <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
@@ -135,8 +154,10 @@ export default defineComponent({
           >
             <div
               class="nav-item-left"
-              :class="{ active: $props.currentRouteName.level2 === routerItem.name }"
-              @click="navigate"
+              :class="{
+                active: [$props.currentRouteName.level2, activeRouteName].includes(routerItem.name)
+              }"
+              @click="changeRoute(navigate, routerItem.name)"
             >
               <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>

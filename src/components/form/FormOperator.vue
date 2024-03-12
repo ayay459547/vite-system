@@ -5,7 +5,7 @@ import { ElInput, ElSelect, ElOption } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import type { Options } from '@/components'
-import { isEmpty, round, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, numberFormat, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
 export type OperatorValue = string | number | null
@@ -58,8 +58,11 @@ const props = defineProps({
     default () {
       return [
         // { label: '=', value: 'equal' },
-        // { label: '>=', value: 'greatthan' },
-        // { label: '<=', value: 'lessthan' }
+        // { label: '>', value: 'greatterThan' },
+        // { label: '>=', value: 'greaterThanOrEqualTo' },
+        // { label: '<', value: 'lessThan' },
+        // { label: '<=', value: 'lessThanOrEqualTo' },
+        // { label: '<>', value: 'notEqual' }
       ]
     }
   },
@@ -161,7 +164,10 @@ const onEvent = {
           if (typeof _value === 'number') {
             // 取小數點到第幾位
             if (!isEmpty(props.round)) {
-              _value = round(_value, props.round)
+              _value = numberFormat(_value, {
+                type: 'round',
+                toFixed: props.round
+              })
             }
 
             // 最大值

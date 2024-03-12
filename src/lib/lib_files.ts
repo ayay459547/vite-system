@@ -14,7 +14,7 @@ import ExcelJs from 'exceljs'
 export type { Workbook, Worksheet, Column as ExcelColumn } from 'exceljs'
 export { default as ExcelJs } from 'exceljs'
 
-import { isEmpty, tipLog, round, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, tipLog, numberFormat, hasOwnProperty } from '@/lib/lib_utils'
 
 const systemType = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 
@@ -35,7 +35,10 @@ export const byteConvert = (bytes: number): string => {
      * log 2 (bytes) = log 2 (bytes) / log 2 2
      */
     const _exp = Math.floor(Math.log(bytes) / Math.log(2))
-    return round(_exp, 0)
+    return numberFormat<number>(_exp, {
+      type: 'round',
+      toFixed: 0
+    })
   })()
 
   const i = Math.floor(exp / 10)
@@ -43,7 +46,10 @@ export const byteConvert = (bytes: number): string => {
 
   const size = ((i) => {
     const _size = bytes / Math.pow(2, 10 * i)
-    return round(_size, 2)
+    return numberFormat<number>(_size, {
+      type: 'round',
+      toFixed: 2
+    })
   })(i)
 
   return `${size}${unit}`
@@ -81,7 +87,8 @@ export const getFileType = (file: File): string => {
     case '.7z':
       return 'zip'
     default:
-      return fileType.substring(1)
+      // return fileType.substring(1)
+      return 'file'
   }
 }
 

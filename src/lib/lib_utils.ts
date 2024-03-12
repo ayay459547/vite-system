@@ -36,17 +36,6 @@ export const hasOwnProperty = (obj: any, key: string): boolean => {
 
 /**
  * @author Caleb
- * @description 數字每三位點一個逗點
- * @param {Number} num 數字
- * @returns {String}
- */
-export const toLocaleString = (num: number): string => {
-  if (Number.isNaN(num) || typeof num !== 'number') return ''
-  return num.toLocaleString()
-}
-
-/**
- * @author Caleb
  * @description 取的準確的資料類型
  * @param {*} value
  * @returns {String} 類型
@@ -198,7 +187,17 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
   return mode as string
 }
 
-export type NumberFormatType = 'round' | 'floor' | 'ceil'
+/**
+ * @author Caleb
+ * @description 數字每三位點一個逗點
+ * @param {Number} num 數字
+ * @returns {String}
+ */
+export const toLocaleString = (num: number): string => {
+  if (Number.isNaN(num) || typeof num !== 'number') return `${num}`
+  return num.toLocaleString()
+}
+export type NumberFormatType = 'round' | 'floor' | 'ceil' | ''
 /**
  * @author Caleb
  * @description 數字取四捨五入到第n位
@@ -206,27 +205,41 @@ export type NumberFormatType = 'round' | 'floor' | 'ceil'
  * @param {Object} options 設定
  *    type: round(四捨五入), floor(無條件捨去), ceil(無條件進位)
  *    toFixed 取小數點到第n位
+ *    isString 是否轉數字
+ *    isToLocaleString 是否要有三位一個小數點
  * @returns {Number}
  */
-export const numberFormat = (num: number, options?: {
-  type: NumberFormatType
-  toFixed: number
-}): number => {
+export const numberFormat = <T extends (number | string)>(num: number, options?: {
+  type?: NumberFormatType
+  toFixed?: number
+  isString?: boolean
+  isToLocaleString?: boolean
+}): T => {
   const {
-    type = 'round',
-    toFixed = 0
+    type = '',
+    toFixed = 0,
+    isString = false,
+    isToLocaleString = false
   } = options ?? {}
 
+  let res = 0
   switch (type) {
     case 'round':
-      return +(Math.round((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      res = +(Math.round((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      break
     case 'floor':
-      return +(Math.floor((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      res = +(Math.floor((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      break
     case 'ceil':
-      return +(Math.ceil((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      res = +(Math.ceil((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      break
     default:
-      return num
+      res = num
+      break
   }
+
+  if (isToLocaleString) return toLocaleString(res) as T
+  return (isString ? `${res}` : res) as T
 }
 
 /**
