@@ -202,8 +202,10 @@ defineExpose({
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>
       </template>
-      <template v-if="hasSlot('footer')" #footer>
-        <slot name="footer"></slot>
+      <template v-if="hasSlot('footer') || props.remote" #footer>
+        <slot name="footer">
+          <span class="search-more">{{ props.remote ? '搜尋顯示更多' : '' }}</span>
+        </slot>
       </template>
       <template v-if="hasSlot('prefix')" #prefix>
         <slot name="prefix"></slot>
@@ -236,5 +238,10 @@ defineExpose({
 .__i-select__ {
   width: 100%;
   height: 100%;
+}
+
+.search-more {
+  color: inherit;
+  opacity: 0.5;
 }
 </style>
