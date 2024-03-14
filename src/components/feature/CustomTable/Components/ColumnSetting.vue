@@ -103,6 +103,7 @@ const setDefaultColumnSetting = async () => {
         key: column.key,
         label: column.label,
         i18nLabel: column.i18nLabel,
+        fixed: column?.fixed,
         width: column?.width ?? null,
         minWidth: column?.minWidth ?? null,
         isOperations: column.isOperations

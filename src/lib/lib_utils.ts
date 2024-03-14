@@ -193,21 +193,21 @@ export const systemLog = (value: any, type: LogType = 'info', style: string = ''
  * @param {Number} num 數字
  * @returns {String}
  */
-export const toLocaleString = (num: number): string => {
+const toLocaleString = (num: number): string => {
   if (Number.isNaN(num) || typeof num !== 'number') return `${num}`
   return num.toLocaleString()
 }
 export type NumberFormatType = 'round' | 'floor' | 'ceil' | ''
 /**
  * @author Caleb
- * @description 數字取四捨五入到第n位
- * @param {Number} num 要四捨五入的數字
+ * @description 數字格式化
+ * @param {Number} num 輸入數字
  * @param {Object} options 設定
  *    type: round(四捨五入), floor(無條件捨去), ceil(無條件進位)
  *    toFixed 取小數點到第n位
- *    isString 是否轉數字
- *    isToLocaleString 是否要有三位一個小數點
- * @returns {Number}
+ *    isString 是否轉文字
+ *    isToLocaleString 是否要有三位一個逗點
+ * @returns {Number} 格式化的數字
  */
 export const numberFormat = <T extends (number | string)>(num: number, options?: {
   type?: NumberFormatType
@@ -221,6 +221,7 @@ export const numberFormat = <T extends (number | string)>(num: number, options?:
     isString = false,
     isToLocaleString = false
   } = options ?? {}
+  if (isEmpty(num)) return '' as T
 
   let res = 0
   switch (type) {
@@ -240,42 +241,6 @@ export const numberFormat = <T extends (number | string)>(num: number, options?:
 
   if (isToLocaleString) return toLocaleString(res) as T
   return (isString ? `${res}` : res) as T
-}
-
-/**
- * 廢棄不用 請使用 numberFormat
- * @author Caleb
- * @description 數字取四捨五入到第n位
- * @param {Number} num 要四捨五入的數字
- * @param {Number} n 取小數點到第n位
- * @returns {Number}
- */
-export const round = (num: number, n: number = 2): number => {
-  return +(Math.round((num + `e+${n}`) as unknown as number)  + `e-${n}`)
-}
-
-/**
- * 廢棄不用 請使用 numberFormat
- * @author Caleb
- * @description 數字取無條件捨去到第n位
- * @param {Number} num 要無條件捨去的數字
- * @param {Number} n 取小數點到第n位
- * @returns {Number}
- */
-export const floor = (num: number, n: number = 2): number => {
-  return +(Math.floor((num + `e+${n}`) as unknown as number)  + `e-${n}`)
-}
-
-/**
- * 廢棄不用 請使用 numberFormat
- * @author Caleb
- * @description 數字取無條件進位到第n位
- * @param {Number} num 要無條件進位的數字
- * @param {Number} n 取小數點到第n位
- * @returns {Number}
- */
-export const ceil = (num: number, n: number = 2): number => {
-  return +(Math.ceil((num + `e+${n}`) as unknown as number)  + `e-${n}`)
 }
 
 /**

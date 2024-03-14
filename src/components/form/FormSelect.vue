@@ -137,7 +137,13 @@ const onEvent = {
   focus: (e: FocusEvent): void => emit('focus', e),
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: string | number): void => emit('change', value),
+  change: (value: string | number): void => {
+    if ([undefined, null].includes(value)) {
+      emit('change', '')
+    } else {
+      emit('change', value)
+    }
+  },
   removeTag: (tagValue: any): void => emit('remove-tag', tagValue),
   visibleChange: (visible: boolean): void => emit('visible-change', visible)
 }
@@ -197,7 +203,12 @@ defineExpose({
           :key="`__${item.value}__`"
           :label="item.label"
           :value="item.value"
-        />
+          :disabled="item.disabled"
+        >
+          <slot name="option">
+            {{ item.label }}
+          </slot>
+        </ElOption>
       </slot>
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>
@@ -230,6 +241,8 @@ defineExpose({
     right: 8px;
     top: 0px;
   }
+  &.validate-error .is-filterable,
+  &.validate-error .el-select__wrapper,
   &.validate-error .el-input__wrapper {
     box-shadow: 0 0 0 1px $danger inset;
     background-color: lighten($danger, 20%);
