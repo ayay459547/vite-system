@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 // https://docs.sheetjs.com/docs/demos/static/vitejs/
 import { readFileSync } from 'fs'
+// import fs, { readFileSync } from 'fs'
 import { read, utils } from 'xlsx'
 
 import { defineConfig } from 'vite'
@@ -51,6 +52,10 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
+    // https: {
+    //   key: fs.readFileSync('RootCA-key.pem'),
+    //   cert: fs.readFileSync('RootCA.pem')
+    // }
   },
   resolve: {
     // extensions: ['.js', '.ts', '.vue'],

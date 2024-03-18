@@ -358,6 +358,7 @@ export interface TableOptions {
     key: null | string,
     order: null | 'ascending' | 'descending'
   }
+  rowKey?: string
   isSorting?: boolean
   isHiddenExcel?: boolean
   tableSize?: TableSize
