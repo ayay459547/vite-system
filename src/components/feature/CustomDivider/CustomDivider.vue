@@ -21,24 +21,24 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomDividerInfo_${version} ${scopedId}`" class="__divider-wrapper">
-    <ElDivider
-      :direction="props.direction"
-      :border-style="props.borderStyle"
-      :content-position="props.contentPosition"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot></slot>
-      </template>
-    </ElDivider>
-  </div>
+  <ElDivider
+    :direction="props.direction"
+    :border-style="props.borderStyle"
+    :content-position="props.contentPosition"
+    :class="`CustomDividerInfo_${version} ${scopedId}`"
+    class="__divider-wrapper"
+  >
+    <template v-if="hasSlot('default')" #default>
+      <slot></slot>
+    </template>
+  </ElDivider>
 </template>
 
 <style lang="scss" scoped>
 .__divider {
   &-wrapper {
     width: 100%;
-    height: fit-content;
+    // height: fit-content;
   }
 }
 </style>

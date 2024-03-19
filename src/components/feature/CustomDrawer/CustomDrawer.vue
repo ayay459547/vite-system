@@ -42,37 +42,36 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomDrawer_${version} ${scopedId}`" class="__drawer-wrapper">
-    <ElDrawer
-      v-model="tempValue"
-      class="__drawer-container card-info"
-      :direction="props.direction"
-      :title="props.title"
-      :destroy-on-close="props.destroyOnClose"
-      :custom-class="props.customClass"
-      :modal="props.modal"
-      :modal-class="props.modalClass"
-      :size="props.size"
-      @open="onOpen"
-      @opened="onOpened"
-      @close="onClose"
-      @closed="onClosed"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot name="default"></slot>
-      </template>
-      <!-- header title 擇一使用 -->
-      <template v-if="hasSlot('header')" #header>
-        <slot name="header"></slot>
-      </template>
-      <!-- <template v-if="hasSlot('title')" #title>
-        <slot name="title"></slot>
-      </template> -->
-      <template v-if="hasSlot('footer')" #footer>
-        <slot name="footer"></slot>
-      </template>
-    </ElDrawer>
-  </div>
+  <ElDrawer
+    v-model="tempValue"
+    class="__drawer-container"
+    :class="`CustomDrawer_${version} ${scopedId}`"
+    :direction="props.direction"
+    :title="props.title"
+    :destroy-on-close="props.destroyOnClose"
+    :custom-class="props.customClass"
+    :modal="props.modal"
+    :modal-class="props.modalClass"
+    :size="props.size"
+    @open="onOpen"
+    @opened="onOpened"
+    @close="onClose"
+    @closed="onClosed"
+  >
+    <template v-if="hasSlot('default')" #default>
+      <slot name="default"></slot>
+    </template>
+    <!-- header title 擇一使用 -->
+    <template v-if="hasSlot('header')" #header>
+      <slot name="header"></slot>
+    </template>
+    <!-- <template v-if="hasSlot('title')" #title>
+      <slot name="title"></slot>
+    </template> -->
+    <template v-if="hasSlot('footer')" #footer>
+      <slot name="footer"></slot>
+    </template>
+  </ElDrawer>
 </template>
 
 <style lang="scss" scoped>
@@ -85,10 +84,6 @@ const hasSlot = (prop: string): boolean => {
 }
 
 .__drawer {
-  &-wrapper {
-    width: fit-content;
-    height: fit-content;
-  }
   &-container {
     width: 100%;
     min-height: 300px;

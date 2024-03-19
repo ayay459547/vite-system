@@ -205,7 +205,7 @@ defineExpose({
           :value="item.value"
           :disabled="item.disabled"
         >
-          <slot name="option">
+          <slot name="option" v-bind="item">
             {{ item.label }}
           </slot>
         </ElOption>

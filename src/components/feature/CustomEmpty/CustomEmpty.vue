@@ -21,24 +21,23 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomEmpty_${version} ${scopedId}`" class="__empty-wrapper">
-    <ElEmpty
-      class="__empty-container"
-      :image="props.image"
-      :description="props.description"
-      :image-size="props.imageSize"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot></slot>
-      </template>
-      <template v-if="hasSlot('image')" #image>
-        <slot name="image"></slot>
-      </template>
-      <template v-if="hasSlot('description')" #description>
-        <slot name="description"></slot>
-      </template>
-    </ElEmpty>
-  </div>
+  <ElEmpty
+    class="__empty-container"
+    :class="`CustomEmpty_${version} ${scopedId}`"
+    :image="props.image"
+    :description="props.description"
+    :image-size="props.imageSize"
+  >
+    <template v-if="hasSlot('default')" #default>
+      <slot></slot>
+    </template>
+    <template v-if="hasSlot('image')" #image>
+      <slot name="image"></slot>
+    </template>
+    <template v-if="hasSlot('description')" #description>
+      <slot name="description"></slot>
+    </template>
+  </ElEmpty>
 </template>
 
 <style lang="scss" scoped>
@@ -48,7 +47,7 @@ const hasSlot = (prop: string): boolean => {
   }
 }
 .__empty {
-  &-wrapper {
+  &-container {
     width: 100%;
     height: 100%;
   }

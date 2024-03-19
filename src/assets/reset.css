@@ -21,8 +21,7 @@ a, div, nav, main, label, span {
 div, label,
 h1, h2, h3, h4, h5, h6,
 ul, li, span, nav {
-  touch-action: none;
-  /* touch-action: pan-y; */
+  /* touch-action: none; */
   font-family: 'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',Arial,sans-serif;
 }
 

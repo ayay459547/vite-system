@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, customRef, useSlots, ref, onMounted, nextTick, inject } from 'vue'
+import { computed, customRef, useSlots, ref, onMounted, inject, nextTick } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
@@ -81,7 +81,8 @@ const props = defineProps({
 
 const bindAttributes = computed(() => {
   const attributes: any = {
-    clearable: props.clearable,
+    // clearable: props.clearable,
+    clearable: false,
     disabled: props.disabled
   }
   if (!isEmpty(props.placeholder)) {
@@ -102,99 +103,102 @@ const emit = defineEmits([
 
 const isFocus = ref(false)
 
-
 let lastValue: any = ''
 
 onMounted(() => {
   lastValue = props.modelValue[1]
 })
-
+// 共用事件
 const onEvent = {
   focus: (e: FocusEvent): void => {
     isFocus.value = true
     emit('focus', e)
   },
   clear: (): void => emit('clear'),
-  blur: (e: FocusEvent): void => {
+  blur: async (e: FocusEvent): Promise<void> => {
     isFocus.value = false
-
-    setTimeout(async () => {
-      await nextTick()
-      if (!isFocus.value) {
+    await nextTick()
+    // 800豪秒內沒有點在輸入框做事 就取消聚焦
+    setTimeout(() => {
+      if(!isFocus.value) {
         emit('blur', e)
       }
-    }, 0)
-  },
-  input: (value: string | number, type: string): void => {
-    const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
-
-    let emitValue = null
-    switch (type) {
-      case 'select':
-        emitValue = [value, _inputValue]
-      break
-      case 'input':
-        emitValue = [_selectValue, value]
-      break
-    }
-    emit('input', emitValue)
-  },
-  change: (value: any, type: string) => {
-    const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
-
-    let emitValue = null
-    switch (type) {
-      case 'select':
-        emitValue = [value, _inputValue]
-      break
-      case 'input': {
-        let _value = value
-        // 數字
-        if (props.onlyNumber) {
-          // 轉化數字
-          if (typeof _value === 'string') {
-            _value = Number.parseFloat(_value)
-
-            // 不是數字 給最後一次的值
-            if (Number.isNaN(_value)) {
-              _value = lastValue
-            }
-          }
-
-          if (typeof _value === 'number') {
-            // 取小數點到第幾位
-            if (!isEmpty(props.round)) {
-              _value = numberFormat(_value, {
-                type: 'round',
-                toFixed: props.round
-              })
-            }
-
-            // 最大值
-            if (!isEmpty(props.max) && _value > props.max) {
-              _value = props.max
-            }
-            // 最小值
-            if (!isEmpty(props.min) && _value < props.min) {
-              _value = props.min
-            }
-          }
-        }
-
-        // 去前後空白
-        if (typeof _value === 'string') {
-          _value = _value.replace(/^(\s+)|(\s+)$/g, '')
-        }
-
-        emitValue = [_selectValue, _value]
-      }
-      break
-    }
-
-    tempValue.value = emitValue
-    emit('change', emitValue)
+    }, 800)
   }
 }
+// 選擇框事件
+const onInputEvent = {
+  input: (value: string | number): void => {
+    isFocus.value = true
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
+    emit('input', [_selectValue, value])
+  },
+  change: (value: any) => {
+    isFocus.value = false
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
+
+    let _value = value
+    // 數字
+    if (props.onlyNumber) {
+      // 轉化數字
+      if (typeof _value === 'string') {
+        _value = Number.parseFloat(_value)
+
+        // 不是數字 給最後一次的值
+        if (Number.isNaN(_value)) {
+          _value = lastValue
+        }
+      }
+
+      if (typeof _value === 'number') {
+        // 取小數點到第幾位
+        if (!isEmpty(props.round)) {
+          _value = numberFormat(_value, {
+            type: 'round',
+            toFixed: props.round
+          })
+        }
+
+        // 最大值
+        if (!isEmpty(props.max) && _value > props.max) {
+          _value = props.max
+        }
+        // 最小值
+        if (!isEmpty(props.min) && _value < props.min) {
+          _value = props.min
+        }
+      }
+    }
+
+    // 去前後空白
+    if (typeof _value === 'string') {
+      _value = _value.replace(/^(\s+)|(\s+)$/g, '')
+    }
+    const emitValue: ModelValue = [_selectValue, _value]
+    tempValue.value = emitValue
+    emit('change', emitValue)
+    emit('blur')
+  }
+}
+// 輸入框事件
+const onSelectEvent = {
+  input: (value: string | number): void => {
+    isFocus.value = true
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
+    emit('input', [_selectValue, value])
+  },
+  change: (value: string) => {
+    isFocus.value = false
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
+    emit('change', [value, _inputValue])
+    emit('blur')
+  }
+}
+
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
@@ -270,40 +274,45 @@ defineExpose({
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
-      v-on="onEvent"
-      @input="onEvent.input($event, 'input')"
-      @change="onEvent.change($event, 'input')"
+      v-on="{
+        ...onEvent,
+        ...onInputEvent
+      }"
+      clearable
     >
       <!-- 輸入框用 -->
       <template #prepend>
-        <div class="__i-select__">
-          <ElSelect
-            v-model="selectValue"
-            :placeholder="i18nTranslate('pleaseSelect')"
-            :validate-event="false"
-            :options="props.options"
-            v-bind="bindAttributes"
-            v-on="onEvent"
-            @input="onEvent.input($event, 'select')"
-            @change="onEvent.change($event, 'select')"
-          >
-            <ElOption
-              v-for="item in props.options"
-              :key="`${item.value}`"
-              :label="item.label"
-              :value="item.value"
+        <div class="__i-prepend">
+          <div class="__i-select__">
+            <ElSelect
+              v-model="selectValue"
+              :placeholder="i18nTranslate('pleaseSelect')"
+              :validate-event="false"
+              :options="props.options"
+              v-bind="bindAttributes"
+              v-on="{
+                ...onEvent,
+                ...onSelectEvent
+              }"
             >
-              <template v-if="hasSlot('option')" #option>
-                <slot
-                  name="option"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </slot>
-              </template>
-            </ElOption>
-          </ElSelect>
+              <ElOption
+                v-for="item in props.options"
+                :key="`${item.value}`"
+                :label="item.label"
+                :value="item.value"
+              >
+                <template v-if="hasSlot('option')" #option>
+                  <slot
+                    name="option"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </slot>
+                </template>
+              </ElOption>
+            </ElSelect>
+          </div>
         </div>
       </template>
 
@@ -322,7 +331,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:deep(.i-operator) {
+:deep(.__i-operator__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -347,6 +356,7 @@ defineExpose({
   }
   .el-input-group__prepend .el-select {
     margin: 0;
+    // min-width: 75px !important;
   }
 }
 
@@ -359,6 +369,7 @@ defineExpose({
   &-select__ {
     width: 100%;
     max-width: 100px;
+    min-width: 75px !important;
   }
 }
 </style>

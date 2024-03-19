@@ -31,30 +31,30 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomDialog_${version} ${scopedId}`" class="__dialog-wrapper">
-    <ElDialog
-      v-model="tempValue"
-      :title="props.title"
-      :width="props.width"
-      :fullscreen="props.fullscreen"
-      :top="props.top"
-      :modal="props.modal"
-      :modal-class="props.modalClass"
-      :append-to-body="props.appendToBody"
-      :lock-scroll="props.lockScroll"
-      :draggable="props.draggable"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot name="default"></slot>
-      </template>
-      <template v-if="hasSlot('header')" #header>
-        <slot name="header"></slot>
-      </template>
-      <template v-if="hasSlot('footer')" #footer>
-        <slot name="footer"></slot>
-      </template>
-    </ElDialog>
-  </div>
+  <ElDialog
+    v-model="tempValue"
+    :title="props.title"
+    :width="props.width"
+    :fullscreen="props.fullscreen"
+    :top="props.top"
+    :modal="props.modal"
+    :modal-class="props.modalClass"
+    :append-to-body="props.appendToBody"
+    :lock-scroll="props.lockScroll"
+    :draggable="props.draggable"
+    :class="`CustomDialog_${version} ${scopedId}`"
+    class="__dialog-wrapper"
+  >
+    <template v-if="hasSlot('default')" #default>
+      <slot name="default"></slot>
+    </template>
+    <template v-if="hasSlot('header')" #header>
+      <slot name="header"></slot>
+    </template>
+    <template v-if="hasSlot('footer')" #footer>
+      <slot name="footer"></slot>
+    </template>
+  </ElDialog>
 </template>
 
 <style lang="scss" scoped>

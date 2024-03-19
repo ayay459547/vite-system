@@ -4,12 +4,12 @@ import type { IconType } from '@/components'
 
 export const version = '1.0.0'
 
-export type TagType = 'default' | 'success' | 'info' | 'warning' | 'danger'
+export type TagType = 'primary' | 'success' | 'info' | 'warning' | 'danger'
 export type TagSize = 'large'| 'default'| 'small'
 export type TagEffect = 'dark' | 'light' | 'plain'
 
 export enum ElType {
-  default = '',
+  primary = 'primary',
   success = 'success',
   info = 'info',
   warning = 'warning',
@@ -32,7 +32,7 @@ export const props = {
   label: {
     type: String as PropType<string>,
     required: false,
-    default: ''
+    default: 'primary'
   },
   type: {
     type: String as PropType<TagType>,

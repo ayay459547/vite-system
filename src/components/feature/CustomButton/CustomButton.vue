@@ -30,51 +30,52 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomButton_${version} ${scopedId}`" class="__button-wrapper">
-    <div class="__button-container" :class="`size-${ElSize[props.size]}`">
-      <ElButton
-        :type="ElType[props.type]"
-        :text="props.text"
-        :plain="props.plain"
-        :round="props.round"
-        :circle="props.circle"
-        :disabled="props.disabled"
-        :color="props.color"
-        :dark="props.dark"
-        :loading="props.loading"
-        @click="onClick"
-      >
-        <template v-if="!props.loading && props.iconName.length > 0" #icon>
-          <CustomIcon
-            class="icon"
-            :class="`icon-${iconMove}`"
-            :size="ElSize[props.size]"
-            :type="FontIconType[props.iconType]"
-            :name="props.iconName"
-            :style="{ color: props.textColor }"
-          />
-        </template>
+  <div
+    class="__button-container"
+    :class="`CustomButton_${version} ${scopedId} size-${ElSize[props.size]}`"
+  >
+    <ElButton
+      :type="ElType[props.type]"
+      :text="props.text"
+      :plain="props.plain"
+      :round="props.round"
+      :circle="props.circle"
+      :disabled="props.disabled"
+      :color="props.color"
+      :dark="props.dark"
+      :loading="props.loading"
+      @click="onClick"
+    >
+      <template v-if="!props.loading && props.iconName.length > 0" #icon>
+        <CustomIcon
+          class="icon"
+          :class="`icon-${iconMove}`"
+          :size="ElSize[props.size]"
+          :type="FontIconType[props.iconType]"
+          :name="props.iconName"
+          :style="{ color: props.textColor }"
+        />
+      </template>
 
-        <template v-if="props.label.length > 0 || hasSlot('default')" #default>
-          <slot>
-            <span
-              class="__button-label"
-              :class="`size-${ElSize[props.size]}`"
-              :style="{ color: props.textColor }"
-            >
-              {{ props.label }}
-            </span>
-          </slot>
-        </template>
-      </ElButton>
-    </div>
+      <template v-if="props.label.length > 0 || hasSlot('default')" #default>
+        <slot>
+          <span
+            class="__button-label"
+            :class="`size-${ElSize[props.size]}`"
+            :style="{ color: props.textColor }"
+          >
+            {{ props.label }}
+          </span>
+        </slot>
+      </template>
+    </ElButton>
   </div>
 </template>
 
 <style lang="scss" scoped>
 :deep(.__button-container) {
   .el-button {
-    align-items: flex-start;
+    align-items: center;
   }
   &.size {
 
@@ -99,7 +100,6 @@ const hasSlot = (prop: string): boolean => {
   }
 }
 .__button {
-  &-wrapper,
   &-container {
     width: fit-content;
     height: fit-content;
@@ -134,7 +134,6 @@ const hasSlot = (prop: string): boolean => {
 
   &-label {
     display: inline-block;
-    transform: translateY(1px);
 
     &.size-large {
       font-size: 1.3em;

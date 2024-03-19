@@ -67,38 +67,34 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="`CustomScrollbar_${version} ${scopedId}`" class="__scroll-bar">
-    <ElScrollbar
-      ref="elScrollbarRef"
-      :height="props.height"
-      :max-height="props.maxHeight"
-      :wrap-style="props.wrapStyle"
-      :wrap-class="props.wrapClass"
-      :view-style="props.viewStyle"
-      :view-class="props.viewClass"
-      :noresize="props.noresize"
-      :tag="props.tag"
-      :always="props.always"
-      :min-size="props.minSize"
-      :id="props.id"
-      :role="props.role"
-      :aria-label="props.ariaLabel"
-      :aria-orientation="props.ariaOrientation"
-      @scroll="onScroll"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot></slot>
-      </template>
-    </ElScrollbar>
-  </div>
+  <ElScrollbar
+    ref="elScrollbarRef"
+    :height="props.height"
+    :max-height="props.maxHeight"
+    :wrap-style="props.wrapStyle"
+    :wrap-class="props.wrapClass"
+    :view-style="props.viewStyle"
+    :view-class="props.viewClass"
+    :noresize="props.noresize"
+    :tag="props.tag"
+    :always="props.always"
+    :min-size="props.minSize"
+    :id="props.id"
+    :role="props.role"
+    :aria-label="props.ariaLabel"
+    :aria-orientation="props.ariaOrientation"
+    :class="`CustomScrollbar_${version} ${scopedId}`"
+    class="__scroll-bar"
+    @scroll="onScroll"
+  >
+    <template v-if="hasSlot('default')" #default>
+      <slot></slot>
+    </template>
+  </ElScrollbar>
 </template>
 
 <style lang="scss" scoped>
-.__scroll {
-  &-bar {
-    width: fit-content;
-    height: fit-content;
-    display: contents;
-  }
-}
+// .__scroll {
+//   &-bar {}
+// }
 </style>

@@ -267,6 +267,14 @@ defineExpose({
     box-shadow: 0 0 0 1px $danger inset;
     background-color: lighten($danger, 20%);
   }
+
+  .el-input-group__prepend {
+    padding: 0;
+
+    div[class*="el-"] {
+      margin: 0;
+    }
+  }
 }
 
 .__i-input__ {

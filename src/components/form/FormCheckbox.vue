@@ -105,6 +105,7 @@ const scopedId = getUuid('__i-checkbox__')
           v-for="item in options"
           :key="`${item.value}`"
           :label="item.value"
+          :value="item.value"
           :validate-event="false"
           :disabled="item.disabled ?? false"
         >
