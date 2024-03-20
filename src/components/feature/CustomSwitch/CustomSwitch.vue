@@ -31,21 +31,20 @@ const onSwitchChange = (value: boolean) => {
 </script>
 
 <template>
-  <div :class="`CustomSwitch_${version} ${scopedId}`" class="__switch-wrapper">
-    <ElSwitch
-      v-model="tempValue"
-      class="__i-switch"
-      :style="props.style"
-      :active-text="props.activeText"
-      :inactive-text="props.inactiveText"
-      :disabled="props.disabled"
-      :loading="props.loading"
-      :width="props.width"
-      :size="props.size"
-      :validate-event="false"
-      @change="onSwitchChange"
-    ></ElSwitch>
-  </div>
+  <ElSwitch
+    v-model="tempValue"
+    class="__i-switch __i-switch-container"
+    :class="`CustomSwitch_${version} ${scopedId}`"
+    :style="props.style"
+    :active-text="props.activeText"
+    :inactive-text="props.inactiveText"
+    :disabled="props.disabled"
+    :loading="props.loading"
+    :width="props.width"
+    :size="props.size"
+    :validate-event="false"
+    @change="onSwitchChange"
+  ></ElSwitch>
 </template>
 
 <style lang="scss" scoped>
@@ -56,10 +55,10 @@ const onSwitchChange = (value: boolean) => {
     }
   }
 }
-.__switch {
-  &-wrapper {
-    width: fit-content;
-    height: fit-content;
-  }
-}
+// .__switch {
+//   &-container {
+//     width: fit-content;
+//     height: fit-content;
+//   }
+// }
 </style>

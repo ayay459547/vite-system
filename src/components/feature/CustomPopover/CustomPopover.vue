@@ -41,32 +41,32 @@ const tempValue = customRef((track, trigger) => {
 </script>
 
 <template>
-  <div :class="`CustomPopover_${version} ${scopedId}`" class="__popover-container">
-    <ElPopover
-      v-model:visible="tempValue"
-      :placement="props.placement"
-      :title="props.title"
-      :width="props.width"
-      :trigger="props.trigger"
-      :popper-style="props.popperStyle"
-      :show-arrow="props.showArrow"
-      :offset="props.offset"
-    >
-      <template #reference>
-        <slot name="reference"></slot>
-      </template>
-      <template #default>
-        <slot></slot>
-      </template>
-    </ElPopover>
-  </div>
+  <ElPopover
+    v-model:visible="tempValue"
+    :placement="props.placement"
+    :title="props.title"
+    :width="props.width"
+    :trigger="props.trigger"
+    :popper-style="props.popperStyle"
+    :show-arrow="props.showArrow"
+    :offset="props.offset"
+    :class="`CustomPopover_${version} ${scopedId}`"
+    class="__popover-container"
+  >
+    <template #reference>
+      <slot name="reference"></slot>
+    </template>
+    <template #default>
+      <slot></slot>
+    </template>
+  </ElPopover>
 </template>
 
 <style lang="scss" scoped>
-.__popover {
-  &-container {
-    width: fit-content;
-    height: fit-content;
-  }
-}
+// .__popover {
+//   &-container {
+//     width: fit-content;
+//     height: fit-content;
+//   }
+// }
 </style>

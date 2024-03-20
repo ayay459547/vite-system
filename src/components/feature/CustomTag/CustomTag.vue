@@ -24,35 +24,33 @@ const onClick = ($event: Event) => {
 </script>
 
 <template>
-  <div :class="`CustomTag_${version} ${scopedId}`" class="__tag-wrapper">
-    <div class="__tag-container" :class="`size-${ElSize[props.size]}`">
-      <ElTag
-        :type="ElType[props.type]"
-        :hit="props.hit"
-        :closable="props.closeable"
-        :round="props.round"
-        :color="props.color"
-        :effect="props.effect"
-        @click="onClick"
-      >
-        <template v-if="props.label.length > 0" #default>
-          <div
-            class="__tag-group"
-            :class="`size-${ElSize[props.size]}`"
-          >
-            <CustomIcon
-              v-if="props.iconName.length > 0"
-              class="icon"
-              :class="`icon-${iconMove}`"
-              :size="ElSize[props.size]"
-              :type="FontIconType[props.iconType]"
-              :name="props.iconName"
-            />
-            <span class="__tag-label">{{ props.label }}</span>
-          </div>
-        </template>
-      </ElTag>
-    </div>
+  <div class="__tag-container" :class="`CustomTag_${version} ${scopedId} size-${ElSize[props.size]}`">
+    <ElTag
+      :type="ElType[props.type]"
+      :hit="props.hit"
+      :closable="props.closeable"
+      :round="props.round"
+      :color="props.color"
+      :effect="props.effect"
+      @click="onClick"
+    >
+      <template v-if="props.label.length > 0" #default>
+        <div
+          class="__tag-group"
+          :class="`size-${ElSize[props.size]}`"
+        >
+          <CustomIcon
+            v-if="props.iconName.length > 0"
+            class="icon"
+            :class="`icon-${iconMove}`"
+            :size="ElSize[props.size]"
+            :type="FontIconType[props.iconType]"
+            :name="props.iconName"
+          />
+          <span class="__tag-label">{{ props.label }}</span>
+        </div>
+      </template>
+    </ElTag>
   </div>
 </template>
 
@@ -80,7 +78,6 @@ const onClick = ($event: Event) => {
   }
 }
 .__tag {
-  &-wrapper,
   &-container {
     width: fit-content;
     height: fit-content;
