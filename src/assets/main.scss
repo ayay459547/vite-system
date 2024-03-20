@@ -32,6 +32,31 @@ $white: #ffffff !default;
 $system-bg-color: #506d9c !default;
 $page-content-bg-color: #ffffff !default;
 
+$extra-small: 576px;
+$small: 576px;
+$medium: 768px;
+$large: 992px;
+$x-large: 1200px;
+$xx-large: 1400px;
+
+$loading-index: 3000;
+$global-disabled-index: 2080;
+$notification-index: 2050;
+$swal-index: 2040;
+$login-index: 2010;
+$modal-index: 2005;
+$side-index: 2003; // 大於 element-ul loading
+$v-loading-index: 2000; // element-ul 設定的
+$v-fixed-index: 99;
+$popover-index: 1;
+
+.el-notification {
+  z-index: $notification-index !important;
+}
+.swal2-container.swal2-backdrop-show {
+  z-index: $swal-index;
+}
+
 html {
   --color-test: #dddddd;
 }

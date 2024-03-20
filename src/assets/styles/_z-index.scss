@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use './utils' as utils;
 
+/* z-index */
 $z-index-map: () !default;
 $z-index-map: map.merge(
   (

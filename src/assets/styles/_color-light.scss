@@ -1,5 +1,5 @@
 @use 'sass:map';
-
+// 尚未開工
 $color-map: (
   'info': #909399, 
   'primary': #409eff,
@@ -17,51 +17,3 @@ $color-map: (
 
   'empty': #ffffff00
 );
-
-@each $type, $color in $color-map {
-
-  .text-#{$type} {
-    color: $color !important;
-  }
-  .hover-text-#{$type} {
-    transition-duration: 0.2s;
-    &:hover{
-      color: lighten($color, 20%) !important;
-    }
-  }
-
-  .bg-#{$type} {
-    background-color: lighten($color, 15%) !important;
-  }
-  .hover-bg-#{$type} {
-    transition-duration: 0.2s;
-    &:hover{
-      background-color: lighten($color, 20%) !important;
-    }
-  }
-
-  div[class*="border-"],
-  div[class*="card-"] {
-    border-radius: 6px;
-  }
-
-  .border-#{$type} {
-    border: 1px solid lighten($color, 5%) !important;
-  }
-  .hover-border-#{$type} {
-    transition-duration: 0.2s;
-    &:hover{
-      border: 1px solid lighten($color, 10%) !important;
-    }
-  }
-
-  .card-#{$type} {
-    box-shadow: 2px 2px 8px 1px lighten($color, 20%);
-  }
-  .hover-card-#{$type} {
-    transition-duration: 0.2s;
-    &:hover{
-      box-shadow: 2px 2px 8px 1px lighten($color, 25%);
-    }
-  }
-}

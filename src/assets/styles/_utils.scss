@@ -7,4 +7,3 @@
 @mixin set-css-var-value($name, $value) {
   #{function.joinVarName($name)}: #{$value};
 }
-
