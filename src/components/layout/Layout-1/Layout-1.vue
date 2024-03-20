@@ -133,21 +133,30 @@ defineExpose({
   }
 
   &-left {
-    z-index: var(--i-z-index-side);
+    z-index: $side-index;
     height: 100%;
     transition-duration: 0.3s;
     will-change: width;
     position: absolute;
-    left: 0;
     top: 0;
 
-    &.is-close,
-    &.is-open {
-      width: $side-width;
+    // 小螢幕 只移動不改變寬度
+    &.is-close {
+      left: -$nav-width;
+      width: $nav-width;
     }
-    // 至少要 992px 才可以定住選單
+    &.is-open {
+      left: 0;
+      width: $nav-width;
+    }
+    // 大螢幕 指改變寬度
     @media (min-width: 992px) {
+      &.is-close {
+        left: 0;
+        width: $side-width;
+      }
       &.is-open {
+        left: 0;
         width: $nav-width;
       }
     }
@@ -161,12 +170,17 @@ defineExpose({
 
     &.is-close,
     &.is-open {
-      width: calc(100% - $side-width);
-      left: $side-width;
+      width: 100%;
+      left: 0;
     }
 
     // 至少要 992px 才可以定住選單
     @media (min-width: 992px) {
+      &.is-close {
+        width: calc(100% - $side-width);
+        left: $side-width;
+      }
+
       &.is-open {
         width: calc(100% - $nav-width);
         left: $nav-width;

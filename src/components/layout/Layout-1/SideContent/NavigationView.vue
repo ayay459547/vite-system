@@ -37,6 +37,7 @@ const changeMap = (name: string): void => {
 
 // 第二層子路由預設全部打開
 const setLevel2Router = (level2Router: Navigation): void => {
+  console.log('open level2')
   const { leaves } = level2Router
 
   level2IsOpen.value = true
@@ -62,57 +63,62 @@ defineExpose({
 </script>
 
 <template>
-  <div class="nav-container" :class="level2IsOpen ? 'is-open': 'is-clse'">
-    <nav class="nav-list level1">
-      <template v-for="level1Item in props.level1List" :key="level1Item.name">
-        <!-- 有子路由 -->
-        <div
-          v-if="Object.prototype.hasOwnProperty.call(level1Item, 'leaves')"
-          class="nav-item"
-          @click="setLevel2Router(level1Item)"
-        >
+  <div class="nav-container">
+    <!-- 模組 -->
+    <div class="nav-level1-wrapper" :class="level2IsOpen ? 'is-close' : 'is-open'">
+      <nav class="nav-level1-container nav-list">
+        <template v-for="level1Item in props.level1List" :key="level1Item.name">
+          <!-- 有子路由 -->
           <div
-            class="nav-item-left"
-            :class="{ active: props.currentRouteName.level1 === level1Item.name }"
+            v-if="Object.prototype.hasOwnProperty.call(level1Item, 'leaves')"
+            class="nav-item"
+            @click="setLevel2Router(level1Item)"
           >
-            <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
+            <div
+              class="nav-item-left"
+              :class="{ active: props.currentRouteName.level1 === level1Item.name }"
+            >
+              <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+              <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
+            </div>
+
+            <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
           </div>
 
-          <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
-        </div>
-
-        <!-- 無子路由 -->
-        <RouterLink
-          v-else
-          :to="level1Item.path"
-          class="nav-item"
-          v-slot="{ navigate }"
-        >
-          <div
-            class="nav-item-left"
-            :class="{ active: props.currentRouteName.level1 === level1Item.name }"
-            @click="navigate"
+          <!-- 無子路由 -->
+          <RouterLink
+            v-else
+            :to="level1Item.path"
+            class="nav-item"
+            v-slot="{ navigate }"
           >
-            <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
-          </div>
+            <div
+              class="nav-item-left"
+              :class="{ active: props.currentRouteName.level1 === level1Item.name }"
+              @click="navigate"
+            >
+              <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+              <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
+            </div>
 
-          <div class="nav-item-right"></div>
-        </RouterLink>
+            <div class="nav-item-right"></div>
+          </RouterLink>
 
-      </template>
-    </nav>
-
-    <div class="nav-list level2">
-      <SubNavigationView
-        v-model:level2-is-open="level2IsOpen"
-        :title="getRouteTitle(level2Nav)"
-        :level2-list="level2List"
-        :open-map="level2OpenMap"
-        :current-route-name="props.currentRouteName"
-        @change-map="changeMap"
-      />
+        </template>
+      </nav>
+    </div>
+    <!-- 分類 + 子功能 -->
+    <div class="nav-level2-wrapper" :class="level2IsOpen ? 'is-open' : 'is-close'">
+      <div class="nav-level2-container nav-list">
+        <SubNavigationView
+          v-model:level2-is-open="level2IsOpen"
+          :title="getRouteTitle(level2Nav)"
+          :level2-list="level2List"
+          :open-map="level2OpenMap"
+          :current-route-name="props.currentRouteName"
+          @change-map="changeMap"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -120,32 +126,102 @@ defineExpose({
 <style lang="scss" scoped>
 @import '../Layout-1.scss';
 
+@mixin level1Style ($is-open) {
+  @if ($is-open) {
+    // 展開的寬度 - 左右
+    max-width: $nav-width - $nav-padding * 2;
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px #dedede;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #dadada80;
+      }
+    }
+  } @else {
+    // 縮起來的寬度 - 左右
+    max-width: $side-width - $nav-padding * 2;
+  }
+};
+
 .nav {
   &-container {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    transition-duration: 0.3s;
-    &.is-open {
-      transform: translateX(-$nav-width + $nav-padding * 2);
+    padding: 0 4px;
+    position: relative;
+  }
+
+  &-level1 {
+    &-wrapper {
+      left: 0;
+      top: 0;
+      z-index: 2;
+      position: absolute;
+      will-change: max-width;
+      transition-duration: 0.3s;
+      overflow: hidden {
+        y: auto;
+      };
+      width: 100%;
+      height: 100%;
+      padding: 0 2px;
+
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px #ffffff00;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #ffffff00;
+      }
+
+      &.is-close {
+        @include level1Style(false);
+      }
+      &.is-open {
+        @include level1Style(true);
+      }
     }
-    &.is-close {
-      transform: translateX(0px);
+    &-container {
+      width: 100%;
+      // 展開的寬度 - 左右
+      min-width: $nav-width - $nav-padding * 2;
+      height: fit-content;
+    }
+  }
+  &-level2 {
+    &-wrapper {
+      left: $side-width - $nav-padding * 2;
+      top: 0;
+      z-index: 1;
+      position: absolute;
+      will-change: max-width;
+      transition-duration: 0.3s;
+      overflow: hidden {
+        y: auto;
+      };
+      width: 100%;
+      height: 100%;
+      &.is-close {
+        opacity: 0;
+      }
+      &.is-open {
+        opacity: 1;
+      }
+    }
+    &-container {
+      // 選單全部寬度 - 第一階選單縮起來的寬度
+      min-width: $nav-width - $side-width;
+      height: fit-content;
     }
   }
 
   &-list {
-    min-width: $nav-width - $nav-padding * 2;
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition-duration: 0.3s;
-
-    &.level1 {
-      overflow-y: auto;
-    }
   }
 
   &-item {

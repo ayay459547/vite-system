@@ -74,7 +74,7 @@ export default defineComponent({
     return {
       getRouteIcon,
       getRouteTitle,
-      navHeight: 54,
+      navHeight: 54 * 1.5,
       changeOpen,
       tempIsOpen,
       onTitleClick,
@@ -102,7 +102,8 @@ export default defineComponent({
                 class="nav-item-left"
                 :class="{ active: $props.currentRouteName.level2 === routerItem.name }"
               >
-                <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
+                <div class="item-empty"></div>
+                <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
                 <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
               </div>
 
@@ -117,7 +118,6 @@ export default defineComponent({
               class="nav-sub-list"
               :class="$props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               :style="{
-                'min-height': `${navHeight * (routerItem.leaves.length)}px`,
                 'max-height': `${navHeight * (routerItem.leaves.length)}px`
               }"
             >
@@ -159,7 +159,8 @@ export default defineComponent({
               }"
               @click="changeRoute(navigate, routerItem.name)"
             >
-              <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
+              <div class="item-empty"></div>
+              <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
 
@@ -254,9 +255,9 @@ export default defineComponent({
         transform: translateX(0);
         transition-duration: 0.3s;
 
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        // overflow: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
       }
       .item-icon {
         width: 30px;
@@ -265,6 +266,7 @@ export default defineComponent({
       }
 
       .item-empty {
+        // width: 30px;
         height: 30px;
       }
     }
