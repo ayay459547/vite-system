@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, useSlots } from 'vue'
+import { computed, ref, nextTick, useSlots, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 
+import type { UseHook } from '@/declare/hook'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import {
   CustomPopover,
@@ -37,6 +38,11 @@ const emit = defineEmits([
   'select'
 ])
 
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, i18nTest } = useHook({
+  i18nModule: props.i18nModule
+})
+
 const inpuValue = computed({
   get () {
     return props.modelValue
@@ -62,7 +68,7 @@ const isActive = computed({
 })
 
 const customSearchStore = useCustomSearchStore()
-const { activeScopedId } = storeToRefs(customSearchStore)
+const { activeScopedIdSet } = storeToRefs(customSearchStore)
 
 const resizeEvent = () => {
   onVisibleClick(false)
@@ -76,7 +82,7 @@ const searchRef = ref()
 
 const isVisible = computed({
   get () {
-    const _isVisible = scopedId === activeScopedId.value
+    const _isVisible = activeScopedIdSet.value.has(scopedId)
     if (_isVisible) {
       openListenerSize()
     } else {
@@ -96,18 +102,17 @@ const isVisible = computed({
         searchRef?.value.focus()
       }
     } else {
-      customSearchStore.clearActiveScopedId()
+      customSearchStore.removeActiveScopedId(scopedId)
     }
   }
 })
 
 const onVisibleClick = async (_isVisible: boolean) => {
   await nextTick()
-
   setTimeout(() => {
     emit(_isVisible ? 'open' : 'close')
     isVisible.value = _isVisible
-  }, 150)
+  }, 0)
 }
 
 const isDot = computed(() => {
@@ -169,6 +174,7 @@ const bindAttributes = computed(() => {
     rows: props.rows,
     showPassword: props.showPassword,
     loading: props.loading,
+    placeholder: props.placeholder,
     // select
     remote: props.remote,
     remoteMethod: props.remoteMethod,
@@ -190,7 +196,9 @@ const bindAttributes = computed(() => {
     // autocomplete
     valueKey: props.valueKey,
     fitInputWidth: props.fitInputWidth,
-    fetchSuggestions: props.fetchSuggestions
+    fetchSuggestions: props.fetchSuggestions,
+    // i18nTranslate
+    i18nModule: props.i18nModule
   }
 })
 
@@ -206,7 +214,7 @@ const onEvent = {
   change: (value: string | number): void => emit('change', value),
   input: (value: string | number): void => emit('input', value),
   'remove-tag': (value: string | number): void => emit('remove-tag', value),
-  'visible-change': (value: string | number): void => emit('visible-change', value),
+  'visible-change': (visible: boolean): void => emit('visible-change', visible),
   select: (value: string | number): void => emit('select', value)
 }
 
@@ -234,6 +242,10 @@ defineExpose({
   }
 })
 
+const translateLabel = computed(() => {
+  return i18nTest(props?.i18nLabel) ? i18nTranslate(props.i18nLabel) : props.label
+})
+
 </script>
 
 <template>
@@ -241,7 +253,7 @@ defineExpose({
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="__search-title">
-        <label>{{ props.label }}</label>
+        <label>{{ translateLabel }}</label>
 
         <CustomPopover
           :visible="isVisible"
@@ -250,7 +262,7 @@ defineExpose({
         >
           <div>
             <div class="__search-title">
-              <label>{{ props.label }}</label>
+              <label>{{ translateLabel }}</label>
               <CustomSwitch v-model="isActive" />
             </div>
 
@@ -292,7 +304,7 @@ defineExpose({
     <!-- 直接全部顯示 -->
     <template v-else>
       <div class="__search-title">
-        <label>{{ props.label }}</label>
+        <label>{{ translateLabel }}</label>
         <CustomSwitch v-model="isActive" />
       </div>
 

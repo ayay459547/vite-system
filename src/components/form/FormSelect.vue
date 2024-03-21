@@ -62,6 +62,10 @@ const props = defineProps({
     type: Function as PropType<Function>,
     required: false
   },
+  remoteShowSuffix: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   multiple: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -107,6 +111,7 @@ const bindAttributes = computed(() => {
     loading: props.loading,
     remote: props.remote,
     remoteMethod: props.remoteMethod,
+    remoteShowSuffix: props.remoteShowSuffix,
     multiple: props.multiple,
     multipleLimit: props.multipleLimit,
     maxCollapseTags: props.maxCollapseTags,
@@ -138,11 +143,7 @@ const onEvent = {
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => emit('blur', e),
   change: (value: string | number): void => {
-    if ([undefined, null].includes(value)) {
-      emit('change', '')
-    } else {
-      emit('change', value)
-    }
+    emit('change', value ?? '')
   },
   removeTag: (tagValue: any): void => emit('remove-tag', tagValue),
   visibleChange: (visible: boolean): void => emit('visible-change', visible)
@@ -156,7 +157,7 @@ const validateRes = computed<string>(() => {
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:modelValue', value ?? '')
   }
 })
 

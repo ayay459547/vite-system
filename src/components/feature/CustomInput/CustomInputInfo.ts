@@ -1,6 +1,8 @@
 import type { PropType } from 'vue'
 
+import type { ScopeKey } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
+
 import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'
 
 export const version = '1.0.0'
@@ -136,6 +138,23 @@ const custom = {
     required: false,
     default: false,
     description: '是否顯示純文字 隱藏輸入框 顯示 modelValue 的值'
+  },
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: 'iPASP_common',
+    description: `
+      label, options 使用 i18nLabel 時套用的翻譯模組
+    `
+  },
+  i18nLabel: {
+    type: String as PropType<string>,
+    required: false,
+    default: null,
+    description: `
+     提供翻譯檔參照用的 i18nLabel
+     翻譯結果有效時會把原先的 label 替換掉
+    `
   }
 }
 
