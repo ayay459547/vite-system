@@ -16,6 +16,9 @@ import {
 } from '@/components'
 import { downloadFile } from '@/lib/lib_utils'
 
+// WordTest.docx
+import path from '@/assets/file/WordTest.docx?url'
+
 const useHook: UseHook = inject('useHook')
 const { loading } = useHook()
 
@@ -162,7 +165,7 @@ const isPopoverVisible = ref(false)
 
       <CustomButton label="OpenModal" @click="openModal"/>
 
-      <CustomButton label="下載word" @click="downloadFile('/static/file/', '下載word測試.docx')"/>
+      <CustomButton label="下載word" @click="downloadFile(path, 'WordTest.docx')"/>
 
       <CustomModal
         v-model="modalShow"

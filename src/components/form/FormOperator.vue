@@ -118,12 +118,12 @@ const onEvent = {
   blur: async (e: FocusEvent): Promise<void> => {
     isFocus.value = false
     await nextTick()
-    // 800豪秒內沒有點在輸入框做事 就取消聚焦
+    // 300豪秒內沒有點在輸入框做事 就取消聚焦
     setTimeout(() => {
       if(!isFocus.value) {
         emit('blur', e)
       }
-    }, 800)
+    }, 300)
   }
 }
 // 選擇框事件
@@ -176,10 +176,13 @@ const onInputEvent = {
     if (typeof _value === 'string') {
       _value = _value.replace(/^(\s+)|(\s+)$/g, '')
     }
+
     const emitValue: ModelValue = [_selectValue, _value]
     tempValue.value = emitValue
-    emit('change', emitValue)
-    emit('blur')
+    if (!isEmpty(_selectValue) && !isEmpty(_value)) {
+      emit('change', emitValue)
+      emit('blur')
+    }
   }
 }
 // 輸入框事件
@@ -194,8 +197,9 @@ const onSelectEvent = {
     isFocus.value = false
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
-    emit('change', [value, _inputValue])
-    emit('blur')
+    if (!isEmpty(value) && !isEmpty(_inputValue)) {
+      emit('change', [value, _inputValue])
+    }
   }
 }
 
@@ -369,7 +373,7 @@ defineExpose({
   &-select__ {
     width: 100%;
     max-width: 100px;
-    min-width: 75px !important;
+    min-width: 90px !important;
   }
 }
 </style>

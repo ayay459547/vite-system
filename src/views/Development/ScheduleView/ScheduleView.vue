@@ -5,6 +5,9 @@ import { isEmpty, downloadFile } from '@/lib/lib_utils'
 
 import { columnSetting } from './columns'
 
+// Excel轉JSON.xlsx
+import path from '@/assets/file/WordTest.docx?url'
+
 const options = [
   {
     timestamp: '8/10 ~ 8/17',
@@ -97,7 +100,7 @@ const {
       type="info"
       plain
       icon-name="file-word"
-      @click="downloadFile('/static/file/', '下載word測試.docx')"
+      @click="downloadFile(path, 'WordTest.docx')"
     />
 
     <h3 class="i-my-md">工作進度表</h3>

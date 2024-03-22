@@ -285,6 +285,10 @@ const updateTransform = (e: MouseEvent) => {
 const throttleUpdateTransform = throttle(updateTransform, 1) as typeof updateTransform
 
 // 確認是否超出螢幕 要重設位置
+// const windowSize = reactive({
+//   width: 0,
+//   height: 0
+// })
 const fixModalOutSide = () => {
   const contentRect = containerRef.value.getBoundingClientRect()
   const { x, y, width, height } = contentRect
@@ -628,6 +632,9 @@ onUnmounted(() => {
           width: 85%;
         }
       }
+      &-fitContent {
+        width: fit-content;
+      }
     }
     &.height {
       &-fill {
@@ -654,6 +661,13 @@ onUnmounted(() => {
           height: 90%;
         }
       }
+      &-fitContent {
+        height: fit-content;
+      }
+    }
+    max: {
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -668,8 +682,8 @@ onUnmounted(() => {
     box-shadow: 2px 2px 8px 1px #d6d6d6;
     transition-duration: 0.3s;
     min: {
-      width: 400px;
-      height: 300px;
+      width: 100px;
+      height: 100px;
     }
     border-radius: 6px;
   }

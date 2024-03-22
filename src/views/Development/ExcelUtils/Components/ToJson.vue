@@ -4,6 +4,9 @@ import { ref, computed } from 'vue'
 import { CustomMarkdown, CustomButton, CustomUpload } from '@/components'
 import { isEmpty, downloadFile, swal } from '@/lib/lib_utils'
 
+// Excel轉JSON.xlsx
+import path from '@/assets/file/ExcelToJSON.xlsx?url'
+
 const textData = ref('')
 const jsonData = computed(() => {
   return `\`\`\`json
@@ -45,7 +48,7 @@ const excelToJson = () => {
         label="下載使用範例"
         type="info"
         icon-name="download"
-        @click="downloadFile('/static/file/', 'Excel轉JSON.xlsx')"
+        @click="downloadFile(path, 'Excel轉JSON.xlsx')"
       />
     </div>
 
