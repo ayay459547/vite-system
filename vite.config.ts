@@ -1,20 +1,34 @@
 import { fileURLToPath, URL } from 'node:url'
 // https://docs.sheetjs.com/docs/demos/static/vitejs/
-import { readFileSync } from 'fs'
 // import fs, { readFileSync } from 'fs'
+import { readFileSync } from 'fs'
 import { read, utils } from 'xlsx'
+// import path from 'path'
+// import { resolve } from 'path'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-// import { resolve } from 'path'
+
+const Timestamp = new Date().getTime()
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
+  // root: path.resolve(__dirname, './src/'),
   build: {
     outDir: 'demo',
-    sourcemap: true
+    sourcemap: true,
+    // assetsDir: '',
+    // outDir: path.resolve(__dirname, ''),
+    rollupOptions: {
+      output: {
+        chunkFileNames: `static/js/[name].[hash]${Timestamp}.js`,
+        entryFileNames: `static/js/[name].[hash]${Timestamp}.js`,
+        assetFileNames: `static/[ext]/[name].[hash]${Timestamp}.[ext]`
+      }
+    },
+    minify: 'esbuild'
   },
   assetsInclude: ['**/*.xlsx'], // xlsx file should be treated as assets
   plugins: [
@@ -68,7 +82,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "~/main.scss";'
+        additionalData: '@import "@/assets/main.scss";'
       }
     }
   }
