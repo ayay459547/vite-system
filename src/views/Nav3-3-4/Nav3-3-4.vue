@@ -29,14 +29,14 @@ const isLoading = ref(true)
 
 const tab = ref('search')
 const tabs = [
-  { label: '搜尋', key: 'search' },
-  { label: '排序', key: 'sort' }
+  { label: '搜尋', value: 'search' },
+  { label: '排序', value: 'sort' }
 ]
 
 const dateTab = ref('')
 const dateTabs = ref([
-  // { label: '20231128', key: '20231128' },
-  // { label: '20231129', key: '20231129' }
+  // { label: '20231128', value: '20231128' },
+  // { label: '20231129', value: '20231129' }
 ])
 
 const isOpen = ref(true)
@@ -447,13 +447,13 @@ const initTabs = async () => {
       dateTab.value = date
     }
 
-    dateTabs.value.push({ label: date, key: date })
+    dateTabs.value.push({ label: date, value: date })
   })
 
   // 測試用
   dateTabs.value.unshift(...[
-    { label: '20231128', key: '20231128' },
-    { label: '20231129', key: '20231129' }
+    { label: '20231128', value: '20231128' },
+    { label: '20231129', value: '20231129' }
   ])
   dateTab.value = '20231128'
 }
@@ -514,7 +514,7 @@ const isShowChange = async () => {
         @click="isShowChange"
       />
 
-      <CustomTabs v-model="tab" :list="tabs" />
+      <CustomTabs v-model="tab" :options="tabs" />
 
       <div class="feature-container">
         <div class="feature-content">
@@ -574,7 +574,7 @@ const isShowChange = async () => {
     </div>
 
     <div class="page-table">
-      <CustomTabs v-model="dateTab" :list="dateTabs" @change="initShowTable"/>
+      <CustomTabs v-model="dateTab" :options="dateTabs" @change="initShowTable"/>
 
       <TableMain
         class="page-table"

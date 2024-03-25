@@ -37,6 +37,7 @@ export interface TableParams {
 }
 export type TableSize = '' | 'large' | 'default' | 'small'
 
+// props
 export type SpanMethod = (
   (data: {
     row: any,
@@ -271,3 +272,14 @@ export const props = {
     description: '狀態'
   }
 }
+
+// emit
+export type RowClick = (row: any, column: any, event: Event) => void
+export type HeaderClick = (column: any, event: Event) => void
+export type ExpandChange = (row: any, expanded: boolean) => void
+export type HeaderDragend = (newWidth: number, oldWidth: number, column: any, event: MouseEvent) => void
+
+export type Select = <T = any>(selection: T[], row: T) => void
+export type SelectAll = (selection: any[]) => void
+export type SelectionChange = (newSelection: any[]) => void
+export type RowContextmenu = (row: any, column: any, event: Event) => void

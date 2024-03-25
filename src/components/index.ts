@@ -135,8 +135,8 @@ export { default as TableMain } from './feature/CustomTable/TableMain.vue'
 export { default as CustomTableV2 } from './feature/CustomTableV2/CustomTableV2.vue'
 
 export type {
-  ListItem,
-  ListType,
+  Option as TabsOption,
+  Options as TabsOptions,
   ModelValue as TabsModelValue,
   TabPosition
 } from './feature/CustomTabs/CustomTabsInfo'

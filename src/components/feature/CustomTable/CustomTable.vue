@@ -21,7 +21,16 @@ import type {
   SortingList,
   SortingMap,
   Order,
-  TableParams
+  TableParams,
+  // emit
+  RowClick,
+  HeaderClick,
+  ExpandChange,
+  // HeaderDragend,
+  Select,
+  SelectAll,
+  SelectionChange,
+  RowContextmenu
 } from './CustomTableInfo'
 import {
   version,
@@ -52,6 +61,7 @@ const emit = defineEmits([
   'select',
   'select-all',
   'selection-change',
+  'row-contextmenu',
   'load'
 ])
 
@@ -111,10 +121,6 @@ const pageChange: PageChange = (page, pageSize) => {
     sort: currentSort.value
   })
   resetScroll()
-}
-
-const onRowClick = (row: any, column: any, event: Event) => {
-  emit('row-click', row, column, event)
 }
 
 // 單欄排序
@@ -190,6 +196,10 @@ const initSortingList = () => {
 
   activeSort()
 }
+
+const onRowClick: RowClick = (row, column, event) => {
+  emit('row-click', row, column, event)
+}
 const onSortingChange = () => {
   activeSort()
   emit('sorting-change', getProxyData(emitSortingData.value))
@@ -200,11 +210,10 @@ const onSortingChange = () => {
     sort: currentSort.value
   })
 }
-
-const onHeaderClick = (column: any, event: Event) => {
+const onHeaderClick: HeaderClick = (column, event) => {
   emit('header-click', column, event)
 }
-const onExpandChange = (row: any, expanded: boolean) => {
+const onExpandChange: ExpandChange = (row, expanded) => {
   emit('expand-change', row, expanded)
 }
 const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
@@ -214,14 +223,17 @@ const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event:
   }
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const onSelect = (selection: any, row: any) => {
+const onSelect: Select = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll = (selection: any) => {
+const onSelectAll: SelectAll = (selection) => {
   emit('select-all', selection)
 }
-const onSelectionChange = (selection: any) => {
-  emit('selection-change', selection)
+const onSelectionChange: SelectionChange = (newSelection) => {
+  emit('selection-change', newSelection)
+}
+const onRowContextmenu: RowContextmenu = (row, column, event) => {
+  emit('row-contextmenu', row, column, event)
 }
 const onLoad = () => {
   emit('load', {
@@ -637,6 +649,7 @@ onMounted(() => {
         @select="onSelect"
         @select-all="onSelectAll"
         @selection-change="onSelectionChange"
+        @row-contextmenu="onRowContextmenu"
         @load="onLoad"
         @update-size="onUpdateSize"
       >
@@ -650,7 +663,7 @@ onMounted(() => {
 
         <template
           v-for="slotKey in slotKeyList"
-          :key="slotKey"
+          :key="`${slotKey}`"
           #[getHeaderSlot(slotKey)]="scope"
         >
           <div class="__table-sorting-column">
@@ -669,7 +682,7 @@ onMounted(() => {
 
         <template
           v-for="slotKey in slotKeyList"
-          :key="slotKey"
+          :key="`${slotKey}`"
           #[getColumnSlot(slotKey)]="scope"
         >
           <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>

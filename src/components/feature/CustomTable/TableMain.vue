@@ -18,7 +18,16 @@ import type {
   CellStyle,
   Load,
   LazyLoadingStatus,
-  TableSize
+  TableSize,
+  // emit
+  RowClick,
+  HeaderClick,
+  ExpandChange,
+  HeaderDragend,
+  Select,
+  SelectAll,
+  SelectionChange,
+  RowContextmenu
 } from './CustomTableInfo'
 
 // slot
@@ -136,6 +145,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits([
+  // element plus ui
   'row-click',
   'sort-change',
   'header-click',
@@ -144,12 +154,14 @@ const emit = defineEmits([
   'select',
   'select-all',
   'selection-change',
+  'row-contextmenu',
+  // 懶加載
   'load',
   // 更新 table 大小
   'update-size'
 ])
 
-const onRowClick = (row: any, column: any, event: Event) => {
+const onRowClick: RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
 }
 const onSortChange = (props: {
@@ -160,23 +172,27 @@ const onSortChange = (props: {
   const { column, prop: key = '', order } = props
   emit('sort-change', { column, key, order })
 }
-const onHeaderClick = (column: any, event: Event) => {
+const onHeaderClick: HeaderClick = (column: any, event: Event) => {
   emit('header-click', column, event)
 }
-const onExpandChange = (row: any, expanded: boolean) => {
+const onExpandChange: ExpandChange = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
 }
-const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
+const onHeaderDragend: HeaderDragend = (newWidth: number, oddWidth: number, column: any, event: MouseEvent) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const onSelect = (selection: any, row: any) => {
+const onSelect: Select = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll = (selection: any) => {
+const onSelectAll: SelectAll = (selection) => {
   emit('select-all', selection)
 }
-const onSelectionChange = (selection: any) => {
-  emit('selection-change', selection)
+const onSelectionChange: SelectionChange = (newSelection) => {
+  emit('selection-change', newSelection)
+}
+const onRowContextmenu: RowContextmenu = (row, column, event) => {
+  event.preventDefault()
+  emit('row-contextmenu', row, column, event)
 }
 
 // 監聽寬度高度變化
@@ -302,6 +318,7 @@ defineExpose({
         @select="onSelect"
         @select-all="onSelectAll"
         @selection-change="onSelectionChange"
+        @row-contextmenu="onRowContextmenu"
       >
         <!-- 資料為空 顯示內容 -->
         <template v-if="hasSlot('empty')" #empty>

@@ -196,6 +196,7 @@ onMounted(() => {
       :title="pageTranslate('testTable')"
       @excel="download"
       @show-change="init"
+      @row-contextmenu="(row, column, event) => { openPopover(event, row) }"
     >
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">

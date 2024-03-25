@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import type { Ref, WritableComputedRef } from 'vue'
-import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick, inject} from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 import { CustomIcon } from '@/components'
 import { scrollToEl, getUuid } from '@/lib/lib_utils'
 
-import type { ModelValue, ListItem } from './CustomTabsInfo'
+import type { ModelValue, Option } from './CustomTabsInfo'
 import {
   version,
   props as tabsProps
@@ -23,6 +24,16 @@ const emit = defineEmits([
   'change',
   'remove'
 ])
+
+const useHook: UseHook = inject('useHook')
+  const { i18nTranslate, i18nTest } = useHook({
+    i18nModule: props.i18nModule
+})
+
+const getTranslateLabel = (option: Option) => {
+  const label = i18nTest(option.i18nLabel) ? i18nTranslate(option.i18nLabel) : option.label
+  return label
+}
 
 const tempValue: WritableComputedRef<ModelValue> = computed({
   get: () => props.modelValue,
@@ -43,14 +54,14 @@ const scrollToCurrentTab = (currentTab: string) => {
 }
 const debounceScrollToCurrentTab = debounce(scrollToCurrentTab, 200)
 
-const onTabClick = (key: string | number, label: string, value: any) => {
-  tempValue.value = key
+const onTabClick = (value: string | number, label: string, data: any) => {
+  tempValue.value = value
 
-  const changeProps: ListItem = { key, label, value }
+  const changeProps: Option = { value, label, data }
   emit('change', changeProps)
 }
-const removeTab = (key: string | number, label: string, value: any) => {
-  const removeProps: ListItem = { key, label, value }
+const removeTab = (value: string | number, label: string, data: any) => {
+  const removeProps: Option = { value, label, data }
   emit('remove', removeProps)
 }
 
@@ -127,6 +138,7 @@ onMounted(() => {
     listRO.observe(listRef.value)
   }
   debounceScrollToCurrentTab(tempValue.value)
+
 })
 onUnmounted(() => {
   scope.stop()
@@ -168,26 +180,26 @@ onUnmounted(() => {
     >
       <div ref="listRef" class="__tabs-list" :class="{ 'is-background': props.background }">
         <div
-          v-for="element in props.list"
+          v-for="element in props.options"
           class="__tabs-item"
           :class="[
             {
-              'is-active': props.modelValue === element.key,
+              'is-active': props.modelValue === element.value,
               'is-background': props.background
             },
-            `__tab_${element.key}`
+            `__tab_${element.value}`
           ]"
-          :key="element.key"
-          @click="onTabClick(element.key, element.label, element.value)"
+          :key="element.value"
+          @click="onTabClick(element.value, element.label, element?.data)"
         >
-          <slot :key="element.key" :label="element.label" :value="element.value">
-            <span>{{ element.label }}</span>
+          <slot :key="element.value" :label="element.label" :data="element.data">
+            <span>{{ getTranslateLabel(element) }}</span>
           </slot>
           <template v-if="props.remove">
-            <CustomIcon
+            <CustomIcond
               name="xmark"
               class="__tabs-item-remove"
-              @click="removeTab(element.key, element.label, element.value)"
+              @click="removeTab(element.value, element.label, element?.data)"
             />
           </template>
         </div>

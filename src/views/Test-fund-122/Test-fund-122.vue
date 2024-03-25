@@ -200,6 +200,7 @@ onMounted(() => {
       :title="i18nTranslate('info')"
       @excel="download"
       @show-change="throttleInit"
+      @row-contextmenu="(row, column, event) => { openPopover(event, row) }"
     >
       <template #prepend>
         <div class="flex-row i-ga-xs content-between">

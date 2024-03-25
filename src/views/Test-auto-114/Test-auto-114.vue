@@ -7,9 +7,9 @@ import MachineView from './MachineView/MachineView.vue'
 import OrderView from './OrderView/OrderView.vue'
 
 const tab = ref('MachineView')
-const options = [
-  { label: '機台', key: 'MachineView' },
-  { label: '訂單', key: 'OrderView' }
+const tabs = [
+  { label: '機台', value: 'MachineView' },
+  { label: '訂單', value: 'OrderView' }
 ]
 const isLoading = ref(true)
 
@@ -27,7 +27,7 @@ onMounted(() => {
   <div v-loading="isLoading" class="page">
     <div class="page-tabs">
       <!-- 切換 -->
-      <CustomTabs v-model="tab" :list="options"/>
+      <CustomTabs v-model="tab" :options="tabs"/>
     </div>
 
     <div class="page-view">

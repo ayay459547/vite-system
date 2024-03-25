@@ -236,6 +236,7 @@ const remove = (rowData: TableData) => {
       v-bind="tableSetting"
       @excel="download"
       @show-change="throttleInit($event, 'table')"
+      @row-contextmenu="(row, column, event) => { openPopover(event, row) }"
     >
       <template #prepend>
         <div class="flex-row i-ga-xs content-between">

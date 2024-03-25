@@ -20,11 +20,11 @@ const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()
 
 const tab = ref('tab1')
-const options = [
-  { label: '選項1', key: 'tab1' },
-  { label: '選項2', key: 'tab2' },
-  { label: '選項3', key: 'tab3' },
-  { label: '選項4', key: 'tab4' }
+const tabs = [
+  { label: '選項1', value: 'tab1' },
+  { label: '選項2', value: 'tab2' },
+  { label: '選項3', value: 'tab3' },
+  { label: '選項4', value: 'tab4' }
 ]
 </script>
 
@@ -37,8 +37,8 @@ const options = [
     <h2 class="i-mb-md text-danger">{{ pageTranslate('search123') }}</h2>
     <h2 class="i-mb-md text-primary">{{ pageTranslate('test') }}</h2>
 
-    <CustomTabs v-model="tab" :list="options"></CustomTabs>
-    <CustomTabs v-model="tab" :list="options" background></CustomTabs>
+    <CustomTabs v-model="tab" :options="tabs"></CustomTabs>
+    <CustomTabs v-model="tab" :options="tabs" background></CustomTabs>
 
   </div>
 </template>

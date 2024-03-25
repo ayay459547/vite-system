@@ -5,7 +5,7 @@ import { computed, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
-import type { ListType, ListItem } from '@/components'
+import type { TabsOptions, TabsOption } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
 
 const useHook: UseHook = inject('useHook')
@@ -36,14 +36,15 @@ const currentTab = computed(() => {
   return props.currentNavigation?.name ?? ''
 })
 
-const tabs: ComputedRef<ListType> = computed(() => {
+const tabs: ComputedRef<TabsOptions> = computed(() => {
   const res = []
   if (props.historyNavigation !== null) {
     props.historyNavigation.forEach((value, key) => {
       res.push({
-        key,
         label: value.title,
-        value
+        i18nLabel: key,
+        value: key,
+        data: value
       })
     })
   }
@@ -51,8 +52,8 @@ const tabs: ComputedRef<ListType> = computed(() => {
   return res
 })
 
-const removeHistory = (value: ListItem) => {
-  removeHistoryNavigation(`${value.key}`)
+const removeHistory = (option: TabsOption) => {
+  removeHistoryNavigation(`${option.value}`)
 }
 
 const clearHistory = () => {
@@ -77,7 +78,7 @@ const RouterChange = (navigate: () => void) => {
   <div class="history-wrapper">
     <CustomTabs
       :model-value="currentTab"
-      :list="tabs"
+      :options="tabs"
       class="history-tabs"
       remove
       move
@@ -85,9 +86,9 @@ const RouterChange = (navigate: () => void) => {
     >
       <template #default="slotProps">
         <RouterLink
-          :to="slotProps.value.path"
+          :to="slotProps.data.path"
           class="history-tab"
-          :class="{ 'is-active': currentTab === slotProps.key }"
+          :class="{ 'is-active': currentTab === slotProps.value }"
           v-slot="{ navigate }"
         >
           <span @click="RouterChange(navigate)">{{ slotProps.label }}</span>

@@ -16,9 +16,9 @@ const init = () => {
 }
 const tab = ref('toJson')
 const tabs = [
-  { key: 'toJson', label: 'Excel 轉 JSON' },
-  { key: 'toChart1', label: 'Excel 轉 圖表(1)' },
-  { key: 'toChart2', label: 'Excel 轉 圖表(2)' }
+  { value: 'toJson', label: 'Excel 轉 JSON' },
+  { value: 'toChart1', label: 'Excel 轉 圖表(1)' },
+  { value: 'toChart2', label: 'Excel 轉 圖表(2)' }
 ]
 
 const showComponents = computed(() => {
@@ -39,7 +39,7 @@ onMounted(() => {
   <div v-loading="isLoading" class="excel-wrapper">
     <div class="excel-container">
       <div class="excel-tabs">
-        <CustomTabs v-model="tab" :list="tabs" @change="init"/>
+        <CustomTabs v-model="tab" :options="tabs" @change="init"/>
       </div>
 
       <div class="excel-test">

@@ -1,13 +1,16 @@
 import type { PropType } from 'vue'
 
+import type { ScopeKey } from '@/i18n/i18n_setting'
+
 export const version = '1.0.0'
 
-export type ListItem = {
-  key: string | number
+export type Option = {
   label: string
-  value?: any
+  value: string | number | null
+  i18nLabel?: string
+  data?: any
 }
-export type ListType = Array<ListItem>
+export type Options = Array<Option>
 export type ModelValue = string | number | null
 export type TabPosition = 'left' | 'right'
 
@@ -17,8 +20,8 @@ export const props = {
     required: true,
     description: 'v-model'
   },
-  list: {
-    type: Array as PropType<ListType>,
+  options: {
+    type: Array as PropType<Options>,
     required: true,
     description: 'tabs 列表'
   },
@@ -45,6 +48,14 @@ export const props = {
     description: `位置
       left: flex-start (左邊)
       right: flex-end (右邊)
+    `
+  },
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: 'iPASP_common',
+    description: `
+      list:label 使用 i18nLabel 時套用的翻譯模組
     `
   }
 }
