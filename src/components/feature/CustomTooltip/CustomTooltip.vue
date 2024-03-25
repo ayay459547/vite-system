@@ -41,31 +41,31 @@ const tempValue = customRef((track, trigger) => {
 </script>
 
 <template>
-  <div :class="`CustomTooltip_${version} ${scopedId}`" class="__popover-wrapper">
-    <ElTooltip
-      v-model:visible="tempValue"
-      :placement="props.placement"
-      :trigger="props.trigger"
-      :popper-class="props.popperClass"
-      :show-arrow="props.showArrow"
-      :offset="props.offset"
-      effect="light"
-    >
-      <template #default>
-        <slot></slot>
-      </template>
-      <template #content>
-        <slot name="content"></slot>
-      </template>
-    </ElTooltip>
-  </div>
+  <ElTooltip
+    v-model:visible="tempValue"
+    :placement="props.placement"
+    :trigger="props.trigger"
+    :popper-class="props.popperClass"
+    :show-arrow="props.showArrow"
+    :offset="props.offset"
+    effect="light"
+    :class="`CustomTooltip_${version} ${scopedId}`"
+    class="__popover-wrapper"
+  >
+    <template #default>
+      <slot></slot>
+    </template>
+    <template #content>
+      <slot name="content"></slot>
+    </template>
+  </ElTooltip>
 </template>
 
 <style lang="scss" scoped>
-.__popover {
-  &-wrapper {
-    width: fit-content;
-    height: fit-content;
-  }
-}
+// .__popover {
+//   &-wrapper {
+//     width: fit-content;
+//     height: fit-content;
+//   }
+// }
 </style>

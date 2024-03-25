@@ -666,11 +666,17 @@ onMounted(() => {
           :key="`${slotKey}`"
           #[getHeaderSlot(slotKey)]="scope"
         >
-          <div class="__table-sorting-column">
+          <div
+            class="__table-sorting-column"
+            :class="{
+              'has-sorting': props.isSorting && (scope.column?.isSorting ?? true)
+            }"
+          >
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
               <label>{{ scope.label }}</label>
             </slot>
           </div>
+
           <ColumnSorting
             v-if="props.isSorting && (scope.column?.isSorting ?? true)"
             v-model="sortingList"
@@ -683,9 +689,9 @@ onMounted(() => {
         <template
           v-for="slotKey in slotKeyList"
           :key="`${slotKey}`"
-          #[getColumnSlot(slotKey)]="scope"
+          #[getColumnSlot(`${slotKey}`)]="scope"
         >
-          <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>
+          <slot :name="getColumnSlot(`${slotKey}`)" v-bind="scope"></slot>
         </template>
       </TableMain>
     </div>
@@ -826,6 +832,10 @@ $border-style: 1px solid #ebeef5;
     width: 100%;
     height: 100%;
     margin-top: 4px;
+
+    &.has-sorting {
+      width: calc(100% - 28px);
+    }
   }
 
   &-pagination {
@@ -868,7 +878,7 @@ $border-style: 1px solid #ebeef5;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 8px;
+    padding: 0 6px;
     background-color: #fff;
     transition-duration: 0.3s;
     cursor: pointer;

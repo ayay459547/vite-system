@@ -5,13 +5,13 @@ import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon } from '@/components'
+import { CustomIcon, CustomScrollbar } from '@/components'
 import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 export default defineComponent({
   name: 'SubNavigationView',
-  components: { CustomIcon },
+  components: { CustomIcon, CustomScrollbar },
   props: {
     level2IsOpen: {
       type: Boolean as PropType<boolean>,
@@ -74,7 +74,7 @@ export default defineComponent({
     return {
       getRouteIcon,
       getRouteTitle,
-      navHeight: 54,
+      navHeight: 48,
       changeOpen,
       tempIsOpen,
       onTitleClick,
@@ -87,14 +87,15 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="nav-container">
+  <div class="nav-wrapper">
     <div class="nav-title" @click="onTitleClick">
       <CustomIcon :icon="['fas', 'angle-left']" />
       <h3>{{ $props.title }}</h3>
     </div>
 
-    <nav class="nav-list">
-      <template v-for="routerItem in $props.level2List" :key="routerItem.name">
+    <CustomScrollbar class="nav-conatiner">
+      <nav class="nav-list">
+        <template v-for="routerItem in $props.level2List" :key="routerItem.name">
           <!-- 有子路由 -->
           <template v-if="Object.prototype.hasOwnProperty.call(routerItem, 'leaves')">
             <div class="nav-item" @click="changeOpen(routerItem.name)">
@@ -102,7 +103,7 @@ export default defineComponent({
                 class="nav-item-left"
                 :class="{ active: $props.currentRouteName.level2 === routerItem.name }"
               >
-                <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
+                <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
                 <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
               </div>
 
@@ -135,7 +136,7 @@ export default defineComponent({
                   }"
                   @click="changeRoute(navigate, leaf.name)"
                 >
-                  <div class="item-empty"></div>
+                  <!-- <div class="item-empty"></div> -->
                   <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
                   <span class="item-title">{{ getRouteTitle(leaf) }}</span>
                 </div>
@@ -159,24 +160,29 @@ export default defineComponent({
               }"
               @click="changeRoute(navigate, routerItem.name)"
             >
-              <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
+              <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
 
             <div class="nav-item-right"></div>
           </RouterLink>
         </template>
-    </nav>
+      </nav>
+    </CustomScrollbar>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .nav {
-  &-container {
+  &-wrapper {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+  }
+  &-container {
+    width: 100%;
+    height: 100%;
   }
 
   &-title {
@@ -224,7 +230,7 @@ export default defineComponent({
     transition-duration: 0.3s;
 
     border-radius: 6px;
-    padding: 12px 16px;
+    padding: 12px 16px 12px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -294,7 +300,7 @@ export default defineComponent({
 
   &-sub-item {
     padding: 12px 0;
-    padding-left: 62px;
+    padding-left: 40px;
     .item-icon {
       font-size: 1.2em;
     }

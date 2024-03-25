@@ -606,7 +606,7 @@ defineExpose({
         white-space: normal;
         word-break: break-all;
         line-height: 23px;
-        padding: 0 12px;
+        padding: 0 8px;
 
         display: flex;
         align-items: center;

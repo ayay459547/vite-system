@@ -146,7 +146,8 @@ const submit = () => {
                       type="info"
                       icon-name="right-left"
                       text
-                      class="sorting-move"
+                      :class="element.order !== 'none' ? 'sorting-move' : ''"
+                      :disabled="element.order === 'none'"
                       style="transform: rotateZ(90deg);"
                     />
                   </CustomBadge>
@@ -212,7 +213,7 @@ const submit = () => {
       background-color: #f5f7fa;
     }
 
-    opacity: 0.5;
+    opacity: 0.7;
     transition-duration: 0.3s;
     font-weight: 600 !important;
     &-left {

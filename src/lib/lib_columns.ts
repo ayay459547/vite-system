@@ -443,7 +443,7 @@ export const useTableSetting = (
     isHiddenExcel = false,
     tableSize = '',
     selection = false,
-    i18nModule = 'system'
+    i18nModule = 'iPASP_common'
   } = options
 
   // 設定 table 用的 column
@@ -471,7 +471,8 @@ export const useTableSetting = (
     return resChildren
   }
   const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
-    const _isOperations = column?.isOperations ?? false
+    const _isOperations = column[type]?.isOperations ?? false
+
     return {
       key,
       prop: key,
@@ -482,11 +483,11 @@ export const useTableSetting = (
       title: column?.label ?? '',
       minWidth: 150,
       // element ui 單排用
-      sortable: !_isOperations ? (column?.sortable ?? false) : false,
+      sortable: !_isOperations ? (column[type]?.sortable ?? false) : false,
       // 專案用 多排
-      isSorting: !_isOperations ? (column?.isSorting ?? true) : false, // 是否顯示排序
+      isSorting: !_isOperations ? (column[type]?.isSorting ?? true) : false, // 是否顯示排序
       // 專案用 多排 預設值
-      order: column?.order ?? 'none',   // ascending | descending | none
+      order: column[type]?.order ?? 'none',   // ascending | descending | none
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
@@ -828,4 +829,27 @@ export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
   return columns.$reduce((prev: Array<string>, curr: any, currKey: string) => {
       return [...prev, currKey]
   }, [])
+}
+
+/**
+ * @author Caleb
+ * @description 格式化 columns 設定
+ * @param {Ojbect} columns
+ * @param {String} type 取得 columnSetting 中的類型
+ * @param {Function} callback 返回格式
+ * @returns {Ojbect} 新的格式 columns
+ */
+export const formatColumns = (columns: Record<string, any>, type: string, callback: (column: Record<string, any>, key: string) => Record<string, any>): Record<string, any> => {
+  return columns.$reduce((res: Record<string, any>, column: Record<string, any>, key: string) => {
+    res[key] = { ...column }
+    const _column = res[key]
+
+    if(hasOwnProperty(column, type)) {
+      const newColumn = callback(column[type], key)
+
+      _column[type] = newColumn ?? column[type]
+    }
+
+    return res
+  }, {})
 }

@@ -253,7 +253,9 @@ const translateLabel = computed(() => {
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="__search-title">
-        <label>{{ translateLabel }}</label>
+        <slot name="label">
+          <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
+        </slot>
 
         <CustomPopover
           :visible="isVisible"
@@ -262,7 +264,9 @@ const translateLabel = computed(() => {
         >
           <div>
             <div class="__search-title">
-              <label>{{ translateLabel }}</label>
+              <slot name="search-label">
+                <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
+              </slot>
               <CustomSwitch v-model="isActive" />
             </div>
 
@@ -304,7 +308,9 @@ const translateLabel = computed(() => {
     <!-- 直接全部顯示 -->
     <template v-else>
       <div class="__search-title">
-        <label>{{ translateLabel }}</label>
+        <slot name="search-label">
+          <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
+        </slot>
         <CustomSwitch v-model="isActive" />
       </div>
 
@@ -339,7 +345,7 @@ const translateLabel = computed(() => {
     justify-content: space-between;
     align-items: center;
     gap: 8px;
-    padding: 0 2px;
+    // padding: 0 2px;
   }
 }
 </style>

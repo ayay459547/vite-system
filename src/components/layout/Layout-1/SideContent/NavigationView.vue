@@ -4,7 +4,7 @@ import { ref, shallowRef, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
-import { CustomIcon } from '@/components'
+import { CustomIcon, CustomScrollbar } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import SubNavigationView from './SubNavigationView.vue'
@@ -62,47 +62,49 @@ defineExpose({
 </script>
 
 <template>
-  <div class="nav-container" :class="level2IsOpen ? 'is-open': 'is-clse'">
-    <nav class="nav-list level1">
-      <template v-for="level1Item in props.level1List" :key="level1Item.name">
-        <!-- 有子路由 -->
-        <div
-          v-if="Object.prototype.hasOwnProperty.call(level1Item, 'leaves')"
-          class="nav-item"
-          @click="setLevel2Router(level1Item)"
-        >
+  <div class="nav-container">
+    <CustomScrollbar class="nav-level1-container" :class="level2IsOpen ? 'is-close' : 'is-open'">
+      <nav class="nav-list level1" >
+        <template v-for="level1Item in props.level1List" :key="level1Item.name">
+          <!-- 有子路由 -->
           <div
-            class="nav-item-left"
-            :class="{ active: props.currentRouteName.level1 === level1Item.name }"
+            v-if="Object.prototype.hasOwnProperty.call(level1Item, 'leaves')"
+            class="nav-item"
+            @click="setLevel2Router(level1Item)"
           >
-            <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
+            <div
+              class="nav-item-left"
+              :class="{ active: props.currentRouteName.level1 === level1Item.name }"
+            >
+              <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+              <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
+            </div>
+
+            <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
           </div>
 
-          <CustomIcon :icon="['fas', 'angle-right']" class="nav-item-right"></CustomIcon>
-        </div>
-
-        <!-- 無子路由 -->
-        <RouterLink
-          v-else
-          :to="level1Item.path"
-          class="nav-item"
-          v-slot="{ navigate }"
-        >
-          <div
-            class="nav-item-left"
-            :class="{ active: props.currentRouteName.level1 === level1Item.name }"
-            @click="navigate"
+          <!-- 無子路由 -->
+          <RouterLink
+            v-else
+            :to="level1Item.path"
+            class="nav-item"
+            v-slot="{ navigate }"
           >
-            <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
-            <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
-          </div>
+            <div
+              class="nav-item-left"
+              :class="{ active: props.currentRouteName.level1 === level1Item.name }"
+              @click="navigate"
+            >
+              <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+              <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
+            </div>
 
-          <div class="nav-item-right"></div>
-        </RouterLink>
+            <div class="nav-item-right"></div>
+          </RouterLink>
 
-      </template>
-    </nav>
+        </template>
+      </nav>
+    </CustomScrollbar>
 
     <div class="nav-list level2">
       <SubNavigationView
@@ -126,31 +128,50 @@ defineExpose({
     height: 100%;
     display: flex;
     flex-wrap: nowrap;
-    transition-duration: 0.3s;
-    &.is-open {
-      transform: translateX(-$nav-width + $nav-padding * 2);
-    }
-    &.is-close {
-      transform: translateX(0px);
+    padding: 0 2px;
+    // transition-duration: 0.3s;
+    // &.is-open {
+    //   transform: translateX(-$nav-width + $nav-padding * 2);
+    // }
+    // &.is-close {
+    //   transform: translateX(0px);
+    // }
+  }
+
+  &-level1 {
+    &-container {
+      overflow: hidden {
+        y: auto;
+      };
+      transition-duration: 0.3s;
+      &.is-close {
+        min-width: $side-width - $nav-padding * 2;
+        opacity: 0.6;
+      }
+      &.is-open {
+        min-width: $nav-width - $nav-padding * 2;
+      }
     }
   }
 
   &-list {
-    min-width: $nav-width - $nav-padding * 2;
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition-duration: 0.3s;
 
     &.level1 {
-      overflow-y: auto;
+      min-width: $nav-width - $nav-padding * 2;
+    }
+    &.level2 {
+      min-width:  $nav-width - $side-width;
+      padding: 0;
     }
   }
 
   &-item {
     width: 100%;
-    min-height: 54px;
+    min-height: 48px;
     color: #fff;
     font-weight: 600;
     letter-spacing: 1px;
@@ -158,7 +179,7 @@ defineExpose({
     transition-duration: 0.3s;
 
     border-radius: 6px;
-    padding: 12px 16px;
+    padding: 8px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
