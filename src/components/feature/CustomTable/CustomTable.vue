@@ -523,34 +523,39 @@ onMounted(() => {
       </div>
     </template>
 
-    <div class="__table-setting grid-row">
+    <div class="__table-setting">
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
-        <div v-if="props.isLazyLoading">
-          <label>{{ `${i18nTranslate('dataCount', 'system')}：${props.tableDataCount}` }}</label>
-        </div>
-
-        <div style="width: 160px; overflow: hidden;">
-          <CustomInput
-            v-if="!props.isLazyLoading"
-            v-model="pageSize"
-            validate-key="CustomTable:pageSize"
-            type="select"
-            :label="i18nTranslate('showCount', 'system')"
-            :options="sizeOptions"
-            direction="row"
-            @change="onSizeChange"
-          />
-          <CustomInput
-            v-if="props.isLazyLoading"
-            v-model="pageSize"
-            validate-key="CustomTable:pageSize"
-            type="select"
-            :label="i18nTranslate('loadCount', 'system')"
-            :options="lazyLoadSizeOptions"
-            direction="row"
-            @change="onSizeChange"
-          />
-        </div>
+        <!-- 顯示更多 -->
+        <template v-if="props.isLazyLoading">
+          <div style="width: 180px; overflow: hidden;">
+            <CustomInput
+              v-model="pageSize"
+              validate-key="CustomTable:pageSize"
+              type="select"
+              :label="i18nTranslate('loadCount', 'system')"
+              :options="lazyLoadSizeOptions"
+              direction="row"
+              @change="onSizeChange"
+            />
+          </div>
+          <div>
+            <label>{{ `${i18nTranslate('dataCount', 'system')}：${props.tableDataCount}` }}</label>
+          </div>
+        </template>
+       <!-- 分頁 -->
+        <template v-else>
+          <div style="width: 180px; overflow: hidden;">
+            <CustomInput
+              v-model="pageSize"
+              validate-key="CustomTable:pageSize"
+              type="select"
+              :label="i18nTranslate('showCount', 'system')"
+              :options="sizeOptions"
+              direction="row"
+              @change="onSizeChange"
+            />
+          </div>
+        </template>
 
         <CustomPopover
           v-if="!props.isHiddenExcel"
@@ -699,6 +704,7 @@ onMounted(() => {
       <div class="__table-pagination-left"></div>
       <div class="__table-pagination-center">
         <ElPagination
+          v-show="props.tableDataCount > 0"
           background
           layout="prev, pager, next"
           :total="props.tableDataCount"
@@ -763,9 +769,11 @@ $border-style: 1px solid #ebeef5;
   }
 
   &-setting {
-    height: fit-content;
-    background-color: lighten($system-bg-color, 40%);
     width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    background-color: lighten($system-bg-color, 40%);
     padding: 6px;
     overflow: hidden {
       x: scroll;

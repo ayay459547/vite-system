@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WritableComputedRef } from 'vue'
+import type { PropType, WritableComputedRef } from 'vue'
 import { computed, nextTick, ref } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
@@ -9,26 +9,73 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import SideContent from './SideContent/SideContent.vue'
 import HeaderContent from './HeaderContent/HeaderContent.vue'
 
-const props = defineProps<{
-  isOpen: boolean
-  isShow: boolean
+const props = defineProps({
+  isOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  isShow: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  showRoutes: {
+    type: Array as PropType<Navigation[]>,
+    default: () => {
+      return []
+    }
+  },
+  currentNavigation: {
+    type: Object as PropType<Navigation>,
+    default: () => {
+      return {}
+    }
+  },
+  currentRouteName: {
+    type: Object as PropType<CurrentRouteName>,
+    default: () => {
+      return {
+        level1: '',
+        level2: '',
+        level3: ''
+      }
+    }
+  },
+  historyIsOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  authData: {
+    type: Object as PropType<AuthData>,
+    default: () => {
+      return {
+        user: {},
+        role: {},
+        roleFunction: [],
+        groups: []
+      }
+    }
+  },
+  breadcrumbName: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  },
+  breadcrumbTitle: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  }
+})
 
-  showRoutes: Navigation[]
-  currentNavigation: Navigation
-  currentRouteName: CurrentRouteName
-
-  historyIsOpen: boolean
-  authData: AuthData
-  breadcrumbName: string[]
-  breadcrumbTitle: string[]
-}>()
-
-const emit = defineEmits<{
-  (e: 'logout'): void
-  (e: 'update:isOpen', value: boolean): void
-  (e: 'historyChange', value: boolean): void
-  (e: 'preference'): void
-}>()
+const emit = defineEmits([
+  'logout',
+  'update:isOpen',
+  'history-change',
+  'preference',
+  'change-page'
+])
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
   get () { return props.isOpen },
@@ -38,7 +85,7 @@ const tempIsOpen: WritableComputedRef<boolean> = computed({
 })
 
 const onHistoryChange = (v: boolean) => {
-  emit('historyChange', v)
+  emit('history-change', v)
 }
 
 const sideRef = ref()
@@ -75,6 +122,7 @@ defineExpose({
         :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
         @close="emit('update:isOpen', false)"
+        @change-page="emit('change-page')"
       >
         <template #logo="{ isShow }">
           <slot name="logo" :is-show="isShow"></slot>
@@ -133,7 +181,7 @@ defineExpose({
   }
 
   &-left {
-    z-index: $side-index;
+    z-index: var(--i-z-index-side);
     height: 100%;
     transition-duration: 0.3s;
     will-change: width;

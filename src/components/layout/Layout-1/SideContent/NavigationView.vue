@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { ref, shallowRef, inject } from 'vue'
+import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
@@ -14,10 +16,32 @@ const { i18nTest, i18nTranslate } = useHook({
   i18nModule: 'system'
 })
 
-const props = defineProps<{
-  level1List: Navigation[]
-  currentRouteName: CurrentRouteName
-}>()
+const props = defineProps({
+  level1List: {
+    type: Array as PropType<Navigation[]>,
+    default: () => {
+      return []
+    }
+  },
+  currentRouteName: {
+    type: Object as PropType<CurrentRouteName>,
+    default: () => {
+      return {
+        level1: '',
+        level2: '',
+        level3: ''
+      }
+    }
+  }
+})
+
+const emit = defineEmits(['change-page'])
+
+type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
+const onRouterLinkClick = (navigate: Navigate) => {
+  emit('change-page')
+  navigate()
+}
 
 const { getRouteIcon, getRouteTitle } = useRoutesHook({
   i18nTranslate,
@@ -93,7 +117,7 @@ defineExpose({
             <div
               class="nav-item-left"
               :class="{ active: props.currentRouteName.level1 === level1Item.name }"
-              @click="navigate"
+              @click="onRouterLinkClick(navigate)"
             >
               <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
               <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
@@ -114,6 +138,7 @@ defineExpose({
         :open-map="level2OpenMap"
         :current-route-name="props.currentRouteName"
         @change-map="changeMap"
+        @change-page="emit('change-page')"
       />
     </div>
   </div>

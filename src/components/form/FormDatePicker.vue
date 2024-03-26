@@ -114,14 +114,6 @@ const onEvent = {
   change: (value: ModelValue): void => emit('change', value)
 }
 
-onMounted(() => {
-  window.addEventListener('touchstart', e => e.preventDefault())
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('touchstart', e => e.preventDefault())
-})
-
 const scopedId = getUuid('__i-date-picker__')
 
 const elDatePickerRef = ref()

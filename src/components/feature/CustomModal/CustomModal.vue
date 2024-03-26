@@ -484,7 +484,7 @@ onUnmounted(() => {
 
               <!-- 關閉全部 -->
               <CustomTooltip
-                v-show="isCloseAllModal"
+                v-if="isCloseAllModal"
                 trigger="hover"
                 placement="top"
               >
@@ -504,7 +504,7 @@ onUnmounted(() => {
               </CustomTooltip>
               <!-- 關閉單個 -->
               <CustomButton
-                v-show="!isCloseAllModal"
+                v-else-if="!isCloseAllModal"
                 icon-name="close"
                 text
                 @click="close"

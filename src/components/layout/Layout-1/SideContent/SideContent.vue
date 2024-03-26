@@ -1,23 +1,44 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { computed, ref, nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
-import { isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import NavigationView from './NavigationView.vue'
 
-const props = defineProps<{
-  isOpen: boolean
-  showRoutes: Navigation[]
-  currentNavigation: Navigation
-  currentRouteName: CurrentRouteName
-}>()
+const props = defineProps({
+  isOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  showRoutes: {
+    type: Array as PropType<Navigation[]>,
+    default: () => {
+      return []
+    }
+  },
+  currentNavigation: {
+    type: Object as PropType<Navigation>,
+    default: () => {
+      return {}
+    }
+  },
+  currentRouteName: {
+    type: Object as PropType<CurrentRouteName>,
+    default: () => {
+      return {
+        level1: '',
+        level2: '',
+        level3: ''
+      }
+    }
+  }
+})
 
-const emit = defineEmits<{
-  (e: 'update:isOpen', value: boolean): void
-}>()
+const emit = defineEmits(['update:isOpen', 'change-page'])
 
 const tempIsOpen = computed<boolean>({
   get () { return props.isOpen },
@@ -43,13 +64,13 @@ const init = async () => {
   }
   navRef.value.setOpen(hasChild)
 
-  await nextTick()
-  setTimeout(() => {
-    const el = document.querySelector('.router-link-active')
-    if (el) {
-      scrollToEl(el)
-    }
-  }, 1200)
+  // await nextTick()
+  // setTimeout(() => {
+  //   const el = document.querySelector('.router-link-active')
+  //   if (el) {
+  //     scrollToEl(el)
+  //   }
+  // }, 1200)
 }
 
 defineExpose({
@@ -84,6 +105,7 @@ defineExpose({
           ref="navRef"
           :level1-list="props.showRoutes"
           :current-route-name="props.currentRouteName"
+          @change-page="emit('change-page')"
         />
       </div>
 
@@ -139,7 +161,13 @@ defineExpose({
     will-change: min-width;
     @include navStyle(false);
 
-    &:hover,
+    // 大於 992px 只能使用按鈕打開
+    @media (min-width: 992px) {
+      left: -$side-width;
+      &:hover {
+        @include navStyle(true);
+      }
+    }
     &.is-open {
       @include navStyle(true);
     }
@@ -194,6 +222,7 @@ defineExpose({
   &-nav {
     width: 100%;
     height: 100%;
+    padding: 0 2px;
     overflow: hidden;
   }
 }

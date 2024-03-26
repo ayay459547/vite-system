@@ -182,14 +182,10 @@ onMounted(() => {
       updateValue(newValue)
     })
   })
-
-  window.addEventListener('touchstart', e => e.preventDefault())
 })
 
 onBeforeUnmount(() => {
   scope.stop()
-
-  window.removeEventListener('touchstart', e => e.preventDefault())
 })
 
 const scopedId = getUuid('__i-time-picker__')

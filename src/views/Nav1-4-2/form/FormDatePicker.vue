@@ -175,14 +175,6 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-onMounted(() => {
-  window.addEventListener('touchstart', e => e.preventDefault())
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('touchstart', e => e.preventDefault())
-})
-
 const getTextValue = (tempValue: ModelValue) => {
   if (isEmpty(tempValue)) return ''
 

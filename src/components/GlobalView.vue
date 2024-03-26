@@ -116,27 +116,40 @@ const componentIsShow = ref(true)
 // 路由更換時執行
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
-  isLoading.value = true
-  componentIsShow.value = false
-
+  openLoading()
   setNavigationData(currentRoute)
 
   await nextTick()
-  updateToken()
-
   setTimeout(() => {
     setWebInfo()
     setModalView(currentRoute)
-  }, 80)
+  }, 480)
+
+  closeLoading()
 
   setTimeout(() => {
-    componentIsShow.value = true
-  }, 160)
+    updateToken()
+  }, 2400)
+}
+const openLoading = async () => {
+  await nextTick()
+  if (!isLoading.value) {
+    isLoading.value = true
+    componentIsShow.value = false
+  }
+}
+const closeLoading = async () => {
+  if (isLoading.value) {
+    await nextTick()
+    setTimeout(() => {
+      componentIsShow.value = true
+    }, 160)
 
-  setTimeout(() => {
-    pageScrollTop()
-    isLoading.value = false
-  }, 320)
+    setTimeout(() => {
+      pageScrollTop()
+      isLoading.value = false
+    }, 320)
+  }
 }
 // 做節流 因為畫面更新 為觸發多次
 const throttleOnRouteChange = throttle(onRouteChange, 80) as typeof onRouteChange
@@ -209,7 +222,10 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
     setBreadcrumbTitle(_breadcrumbTitle ?? [])
 
     setCurrentNavigation(currentRoute)
-    addHistoryNavigation(routeName, currentRoute)
+
+    setTimeout(() => {
+      addHistoryNavigation(routeName, currentRoute)
+    }, 1200)
   }
 }
 
@@ -368,6 +384,7 @@ provide<UseHook>('useHook', (options) => {
       @logout="logout"
       @change-locale="setWebInfo"
       @history-change="historyChange"
+      @change-page="openLoading"
     >
       <template #logo="{ isShow }">
         <slot name="logo" :is-show="isShow"></slot>
@@ -470,6 +487,6 @@ provide<UseHook>('useHook', (options) => {
   position: absolute;
   width: 100vw;
   height: 100vh;
-  z-index: 9999;
+  z-index: var(--i-z-index-global-disabled);
 }
 </style>

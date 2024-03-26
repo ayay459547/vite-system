@@ -135,6 +135,7 @@ defineExpose<Expose>({
             active: callbackItem.active
           }"
           @click="callEvent(callbackItem.event, callbackItem.disabled)"
+          @touchstart="callEvent(callbackItem.event, callbackItem.disabled)"
         >
           <div style="width: fit-content">
             <font-awesome-icon

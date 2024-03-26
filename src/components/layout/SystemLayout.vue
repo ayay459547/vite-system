@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PropType, Ref } from 'vue'
 import { computed, ref, inject, reactive, onMounted, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -17,22 +18,49 @@ const { i18nTranslate } = useHook({
   i18nModule: 'system'
 })
 
-const props = defineProps<{
-  isShow: boolean
+const props = defineProps({
+  isShow: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  currentNavigation: {
+    type: Object as PropType<Navigation>,
+    default: () => {
+      return {}
+    }
+  },
+  showRoutes: {
+    type: Array as PropType<Navigation[]>,
+    default: () => {
+      return []
+    }
+  },
+  breadcrumbName: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  },
+  historyIsOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  authData: {
+    type: Object as PropType<AuthData>
+  },
+  breadcrumbTitle: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  }
+})
 
-  currentNavigation: Navigation
-  showRoutes: Navigation[]
-  breadcrumbName: string[]
-
-  historyIsOpen: boolean
-  authData: AuthData
-  breadcrumbTitle: string[]
-}>()
-
-const emit = defineEmits<{
-  (e: 'logout'): void
-  (e: 'historyChange', value: boolean): void
-}>()
+const emit = defineEmits([
+  'logout',
+  'history-change',
+  'change-page'
+])
 
 const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
@@ -84,10 +112,11 @@ const layoutAttr = computed(() => {
 
 const layoutEvent = {
   logout: () => emit('logout'),
-  historyChange: ($event: boolean) => emit('historyChange', $event),
+  historyChange: ($event: boolean) => emit('history-change', $event),
   preference: () => {
     modal.preference = true
-  }
+  },
+  changePage: () => emit('change-page')
 }
 
 // modal
@@ -119,7 +148,7 @@ defineExpose({
     await nextTick()
 
     navIsOpen.value = false
-    emit('historyChange', false)
+    emit('history-change', false)
   },
   init
 })
@@ -129,7 +158,7 @@ const onChangeLayout = () => {
 }
 
 const onHistoryChange = ($event: boolean) => {
-  emit('historyChange', $event)
+  emit('history-change', $event)
 }
 
 </script>

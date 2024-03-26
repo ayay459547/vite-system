@@ -227,7 +227,6 @@ const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
       isIntersecting
       // isVisible
     } = entry
-    console.log(entry)
     if (isIntersecting) {
       load()
     }

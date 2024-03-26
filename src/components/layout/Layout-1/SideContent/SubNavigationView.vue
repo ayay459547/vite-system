@@ -1,6 +1,6 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { PropType, WritableComputedRef } from 'vue'
-import { defineComponent, computed, inject, ref, nextTick } from 'vue'
+import { computed, inject, ref, nextTick } from 'vue'
 import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook'
@@ -9,80 +9,67 @@ import { CustomIcon, CustomScrollbar } from '@/components'
 import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
-export default defineComponent({
-  name: 'SubNavigationView',
-  components: { CustomIcon, CustomScrollbar },
-  props: {
-    level2IsOpen: {
-      type: Boolean as PropType<boolean>,
-      default: false
-    },
-    title: {
-      type: String as PropType<string>,
-      default: ''
-    },
-    level2List: {
-      type: Array as PropType<Navigation[]>,
-      required: true
-    },
-    openMap: {
-      type: Object as PropType<Record<string, boolean>>,
-      required: true
-    },
-    currentRouteName: {
-      type: Object as PropType<CurrentRouteName>,
-      required: true
-    }
+const props = defineProps({
+  level2IsOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
   },
-  emits: ['update:level2IsOpen', 'changeMap'],
-  setup (props, { emit }) {
-    const useHook: UseHook = inject('useHook')
-    const { i18nTest, i18nTranslate } = useHook({
-      i18nModule: 'system'
-    })
-
-    const { getRouteIcon, getRouteTitle } = useRoutesHook({
-      i18nTranslate,
-      i18nTest
-    })
-
-    const tempIsOpen: WritableComputedRef<Boolean> = computed({
-      get: () => props.level2IsOpen,
-      set: value => emit('update:level2IsOpen', value)
-    })
-
-    const onTitleClick = (): void => {
-      tempIsOpen.value = !tempIsOpen.value
-    }
-
-    const changeOpen = (name: string): void => emit('changeMap', name)
-
-    const activeRouteName = ref('')
-
-    type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
-    const changeRoute = async (navigate: Navigate, routerName: string) => {
-      activeRouteName.value = routerName
-      await Promise.all([
-        navigate(),
-        nextTick()
-      ])
-      setTimeout(() => {
-        activeRouteName.value = ''
-      }, 0)
-    }
-
-    return {
-      getRouteIcon,
-      getRouteTitle,
-      navHeight: 48,
-      changeOpen,
-      tempIsOpen,
-      onTitleClick,
-      activeRouteName,
-      changeRoute
-    }
+  title: {
+    type: String as PropType<string>,
+    default: ''
+  },
+  level2List: {
+    type: Array as PropType<Navigation[]>,
+    required: true
+  },
+  openMap: {
+    type: Object as PropType<Record<string, boolean>>,
+    required: true
+  },
+  currentRouteName: {
+    type: Object as PropType<CurrentRouteName>,
+    required: true
   }
 })
+
+const emit = defineEmits(['update:level2IsOpen', 'change-map', 'change-page'])
+
+const navHeight = 48
+const useHook: UseHook = inject('useHook')
+const { i18nTest, i18nTranslate } = useHook({
+  i18nModule: 'system'
+})
+
+const { getRouteTitle } = useRoutesHook({
+  i18nTranslate,
+  i18nTest
+})
+
+const tempIsOpen: WritableComputedRef<Boolean> = computed({
+  get: () => props.level2IsOpen,
+  set: value => emit('update:level2IsOpen', value)
+})
+
+const onTitleClick = (): void => {
+  tempIsOpen.value = !tempIsOpen.value
+}
+
+const changeOpen = (name: string): void => emit('change-map', name)
+
+const activeRouteName = ref('')
+
+type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
+const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
+  activeRouteName.value = routerName
+  emit('change-page')
+  await Promise.all([
+    navigate(),
+    nextTick()
+  ])
+  setTimeout(() => {
+    activeRouteName.value = ''
+  }, 0)
+}
 
 </script>
 
@@ -134,7 +121,7 @@ export default defineComponent({
                   :class="{
                     active: [$props.currentRouteName.level3, activeRouteName].includes(leaf.name)
                   }"
-                  @click="changeRoute(navigate, leaf.name)"
+                  @click="onRouterLinkClick(navigate, leaf.name)"
                 >
                   <!-- <div class="item-empty"></div> -->
                   <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
@@ -158,7 +145,7 @@ export default defineComponent({
               :class="{
                 active: [$props.currentRouteName.level2, activeRouteName].includes(routerItem.name)
               }"
-              @click="changeRoute(navigate, routerItem.name)"
+              @click="onRouterLinkClick(navigate, routerItem.name)"
             >
               <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
