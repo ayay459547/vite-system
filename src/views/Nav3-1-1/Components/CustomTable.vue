@@ -109,10 +109,10 @@ export interface Props extends Record<string, any> {
   isHiddenExcel?: boolean
   /**
    * 資料懶加載
-   * lazyLoading: 是否啟用
+   * isLazyLoading: 是否啟用
    * lazyLoadingStatus: 狀態
    */
-  lazyLoading?: boolean
+  isLazyLoading?: boolean
   lazyLoadingStatus?: LazyLoadingStatus
 }
 
@@ -136,7 +136,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
   },
   showType: 'custom',
   isHiddenExcel: false,
-  lazyLoading: false,
+  isLazyLoading: false,
   lazyLoadingStatus: 'noMore'
 })
 
@@ -389,8 +389,8 @@ defineExpose({
       currentPage.value = page
     }
     if (!isEmpty(size)) {
-      const _index = ((lazyLoading) => {
-        if (lazyLoading) {
+      const _index = ((isLazyLoading) => {
+        if (isLazyLoading) {
           return lazyLoadSizeOptions.findIndex(option => {
             option.value === size
           })
@@ -399,7 +399,7 @@ defineExpose({
             option.value === size
           })
         }
-      })(props.lazyLoading)
+      })(props.isLazyLoading)
 
       if (_index >= 0) {
         pageSize.value = size
@@ -504,7 +504,7 @@ const slotKeyList = computed(() => {
         <slot name="setting-right"></slot>
         <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
           <CustomInput
-            v-if="!props.lazyLoading"
+            v-if="!props.isLazyLoading"
             v-model="pageSize"
             type="select"
             label="顯示筆數"
@@ -513,7 +513,7 @@ const slotKeyList = computed(() => {
             @change="onSizeChange"
           />
           <CustomInput
-            v-if="props.lazyLoading"
+            v-if="props.isLazyLoading"
             v-model="pageSize"
             type="select"
             label="載入筆數"
@@ -542,7 +542,7 @@ const slotKeyList = computed(() => {
         :row-style="props.rowStyle"
         :cell-class-name="props.cellClassName"
         :cell-style="props.cellStyle"
-        :lazy-loading="lazyLoading"
+        :is-lazy-loading="isLazyLoading"
         :lazy-loading-status="props.lazyLoadingStatus"
         @row-click="onRowClick"
         @sort-change="onSortChange"
@@ -581,7 +581,7 @@ const slotKeyList = computed(() => {
       <div class="table-pagination-left"></div>
       <div class="table-pagination-center">
         <ElPagination
-          v-if="!props.lazyLoading"
+          v-if="!props.isLazyLoading"
           background
           layout="prev, pager, next"
           :total="props.tableDataCount"
@@ -591,7 +591,7 @@ const slotKeyList = computed(() => {
         />
       </div>
       <div class="table-pagination-right">
-        <span>{{ `${!props.lazyLoading ? '總筆數' : '資料筆數'}：${props.tableDataCount}` }}</span>
+        <span>{{ `${!props.isLazyLoading ? '總筆數' : '資料筆數'}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>

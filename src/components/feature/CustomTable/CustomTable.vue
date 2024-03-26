@@ -389,8 +389,8 @@ defineExpose({
       currentPage.value = page
     }
     if (!isEmpty(size)) {
-      const _index = ((lazyLoading) => {
-        if (lazyLoading) {
+      const _index = ((isLazyLoading) => {
+        if (isLazyLoading) {
           return lazyLoadSizeOptions.findIndex(option => {
             option.value === size
           })
@@ -399,7 +399,7 @@ defineExpose({
             option.value === size
           })
         }
-      })(props.lazyLoading)
+      })(props.isLazyLoading)
 
       if (_index >= 0) {
         pageSize.value = size
@@ -525,6 +525,33 @@ onMounted(() => {
 
     <div class="__table-setting grid-row">
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
+        <div v-if="props.isLazyLoading">
+          <label>{{ `${i18nTranslate('dataCount', 'system')}：${props.tableDataCount}` }}</label>
+        </div>
+
+        <div style="width: 160px; overflow: hidden;">
+          <CustomInput
+            v-if="!props.isLazyLoading"
+            v-model="pageSize"
+            validate-key="CustomTable:pageSize"
+            type="select"
+            :label="i18nTranslate('showCount', 'system')"
+            :options="sizeOptions"
+            direction="row"
+            @change="onSizeChange"
+          />
+          <CustomInput
+            v-if="props.isLazyLoading"
+            v-model="pageSize"
+            validate-key="CustomTable:pageSize"
+            type="select"
+            :label="i18nTranslate('loadCount', 'system')"
+            :options="lazyLoadSizeOptions"
+            direction="row"
+            @change="onSizeChange"
+          />
+        </div>
+
         <CustomPopover
           v-if="!props.isHiddenExcel"
           v-model:visible="excelIsShow"
@@ -551,17 +578,6 @@ onMounted(() => {
             </div>
           </div>
         </CustomPopover>
-
-        <ColumnSetting
-          ref="columnSetting"
-          :columns="props.tableColumns"
-          :i18n-module="props.i18nModule"
-          :version="props.version"
-          :setting-key="props.settingKey"
-          :setting-width="props.settingWidth"
-          :setting-height="`${tableHeight - 40}px`"
-          @change="initShowColumns"
-        />
         <slot name="setting-left"></slot>
       </div>
 
@@ -577,33 +593,16 @@ onMounted(() => {
 
       <div class="setting-right grid-col-xs-24 grid-col-md-12 grid-col-xl-9">
         <slot name="setting-right"></slot>
-
-        <div v-if="props.lazyLoading">
-          <label>{{ `${i18nTranslate('dataCount', 'system')}：${props.tableDataCount}` }}</label>
-        </div>
-
-        <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
-          <CustomInput
-            v-if="!props.lazyLoading"
-            v-model="pageSize"
-            validate-key="CustomTable:pageSize"
-            type="select"
-            :label="i18nTranslate('showCount', 'system')"
-            :options="sizeOptions"
-            direction="row"
-            @change="onSizeChange"
-          />
-          <CustomInput
-            v-if="props.lazyLoading"
-            v-model="pageSize"
-            validate-key="CustomTable:pageSize"
-            type="select"
-            :label="i18nTranslate('loadCount', 'system')"
-            :options="lazyLoadSizeOptions"
-            direction="row"
-            @change="onSizeChange"
-          />
-        </div>
+        <ColumnSetting
+          ref="columnSetting"
+          :columns="props.tableColumns"
+          :i18n-module="props.i18nModule"
+          :version="props.version"
+          :setting-key="props.settingKey"
+          :setting-width="props.settingWidth"
+          :setting-height="`${tableHeight - 40}px`"
+          @change="initShowColumns"
+        />
 
         <GroupSorting
           v-if="props.isSorting"
@@ -639,7 +638,7 @@ onMounted(() => {
         :load="props.load"
         :tree-props="props.treeProps"
         :selection="props.selection"
-        :lazy-loading="lazyLoading"
+        :is-lazy-loading="isLazyLoading"
         :lazy-loading-status="props.lazyLoadingStatus"
         @row-click="onRowClick"
         @sort-change="onSortChange"
@@ -696,7 +695,7 @@ onMounted(() => {
       </TableMain>
     </div>
 
-    <div v-if="!props.lazyLoading" class="__table-pagination">
+    <div v-if="!props.isLazyLoading" class="__table-pagination">
       <div class="__table-pagination-left"></div>
       <div class="__table-pagination-center">
         <ElPagination

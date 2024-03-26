@@ -192,7 +192,6 @@ const onDragend = () => {
       <template #reference>
         <CustomButton
           icon-name="list-check"
-          class="i-mr-xs"
           :label="i18nTranslate('columnSetting', 'system')"
         />
       </template>

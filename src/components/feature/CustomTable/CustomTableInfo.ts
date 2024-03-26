@@ -259,7 +259,7 @@ export const props = {
     description: '是否有checkbox'
   },
   // 資料懶加載
-  lazyLoading: {
+  isLazyLoading: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,

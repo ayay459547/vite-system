@@ -86,7 +86,7 @@ const props = defineProps({
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
   },
-  lazyLoading: {
+  isLazyLoading: {
     type: Boolean as PropType<boolean>,
     description: '懶加載'
   },
@@ -232,7 +232,7 @@ const svg = `
         </template>
 
         <!-- 滾動到底 emit load -->
-        <template v-if="props.lazyLoading" #append>
+        <template v-if="props.isLazyLoading" #append>
           <div
             v-show="props.lazyLoadingStatus === 'noMore'"
             class="table-main-append"

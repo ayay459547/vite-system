@@ -96,7 +96,7 @@ const props = defineProps({
     type: Function as PropType<CellStyle | any>,
     description: 'cell style callback'
   },
-  lazyLoading: {
+  isLazyLoading: {
     type: Boolean as PropType<boolean>,
     description: '懶加載'
   },
@@ -283,7 +283,7 @@ onMounted(async () => {
    * 插入元素 撐高高度
    * 監聽滾動 重新切資料
    */
-  if (props.lazyLoading) {
+  if (props.isLazyLoading) {
     await nextTick()
     setSpliceData(0, 100)
 
@@ -324,7 +324,7 @@ defineExpose({
  * 一般表單 有分頁 資料直接使用
  */
  const elTableData = computed(() => {
-  if (props.lazyLoading) return spliceData.value
+  if (props.isLazyLoading) return spliceData.value
   return props.showData
 })
 
@@ -374,7 +374,7 @@ const svg = `
         </template>
 
         <!-- 滾動到底 emit load -->
-        <template v-if="props.lazyLoading" #append>
+        <template v-if="props.isLazyLoading" #append>
           <div
             v-show="props.lazyLoadingStatus === 'noMore'"
             class="table-main-append"

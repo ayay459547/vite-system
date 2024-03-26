@@ -142,7 +142,7 @@ const tableData2 = [
 | isHiddenExcel      | 是否隱藏下載excel | boolean | false                     |        |
 | isShowNo           | 是否顯示編號      | boolean | false                     |        |
 | isSorting          | 是否有多欄位排序  | boolean | false                     |        |
-| lazyLoading      | 是否啟用懶加載    | boolean | false                     |        |
+| isLazyLoading      | 是否啟用懶加載    | boolean | false                     |        |
 | lazyLoadingStatus | 懶加載狀態       | enum    | 'noMore'                  |        |
 
 ### Slots

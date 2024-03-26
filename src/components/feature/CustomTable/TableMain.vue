@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { useSlots, ref, onMounted, onUnmounted } from 'vue'
+import { useSlots, ref, onMounted, onUnmounted, computed, watch, effectScope, nextTick } from 'vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 
@@ -134,7 +134,7 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     description: 'checkbox'
   },
-  lazyLoading: {
+  isLazyLoading: {
     type: Boolean as PropType<boolean>,
     description: '懶加載'
   },
@@ -227,6 +227,7 @@ const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
       isIntersecting
       // isVisible
     } = entry
+    console.log(entry)
     if (isIntersecting) {
       load()
     }
@@ -234,28 +235,40 @@ const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
 }, 300) as IntersectionObserverCallback
 let IO = null
 
-onMounted(async () => {
+const scope = effectScope()
+const isLazyLoading = computed(() => {
+  return props.isLazyLoading
+})
+onMounted(() => {
   if (tableMainRef.value !== null) {
     RO.observe(tableMainRef.value)
-
-    if (loadMoreRef.value !== null) {
-      IO = new IntersectionObserver(IOcallback, {
-        root: tableMainRef.value,
-        rootMargin: '0px 0px 0px 0px',
-        threshold: 0.1
-      })
-      IO.observe(loadMoreRef.value)
-    }
   }
+
+  scope.run(() => {
+    watch(isLazyLoading, async (newValue) => {
+      await nextTick()
+      if (newValue && loadMoreRef.value !== null) {
+        IO = new IntersectionObserver(IOcallback, {
+          root: tableMainRef.value,
+          rootMargin: '0px 0px 0px 0px',
+          threshold: 0.1
+        })
+        IO.observe(loadMoreRef.value)
+      } else if (IO) {
+        IO.disconnect()
+      }
+    }, {
+      deep: false,
+      immediate: true
+    })
+  })
 })
+
 onUnmounted(() => {
   if (RO) {
     RO.disconnect()
   }
-
-  if (IO) {
-    IO.disconnect()
-  }
+  scope.stop()
 })
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
@@ -326,7 +339,7 @@ defineExpose({
         </template>
 
         <!-- 懶加載用 滾動到底 emit load -->
-        <template v-if="props.lazyLoading" #append>
+        <template v-if="isLazyLoading" #append>
           <div
             v-show="props.lazyLoadingStatus === 'noMore'"
             class="__table-main-append"

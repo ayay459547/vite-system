@@ -147,6 +147,10 @@ defineExpose({
       &.is-close {
         min-width: $side-width - $nav-padding * 2;
         opacity: 0.6;
+
+        &:hover {
+          opacity: 1;
+        }
       }
       &.is-open {
         min-width: $nav-width - $nav-padding * 2;

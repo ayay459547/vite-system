@@ -66,7 +66,7 @@ const props = defineProps({
     type: String as PropType<string>,
     description: '設定 最外層 class 確保不重複'
   },
-  lazyLoading: {
+  isLazyLoading: {
     type: Boolean as PropType<boolean>,
     description: '懶加載'
   },
@@ -252,7 +252,7 @@ const svg = `
   >
     <div class="table-main-container">
       <ElTable
-        v-show="props.lazyLoading"
+        v-show="props.isLazyLoading"
         ref="elTableRef"
         stripe
         scrollbar-always-on
@@ -282,7 +282,7 @@ const svg = `
         </template>
 
         <!-- 滾動到底 emit load -->
-        <template v-if="props.lazyLoading" #append>
+        <template v-if="props.isLazyLoading" #append>
           <div
             v-show="props.lazyLoadingStatus === 'noMore'"
             class="table-main-append"
