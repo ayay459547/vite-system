@@ -17,6 +17,10 @@ const { i18nTest, i18nTranslate } = useHook({
 })
 
 const props = defineProps({
+  isOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   level1List: {
     type: Array as PropType<Navigation[]>,
     default: () => {
@@ -73,7 +77,6 @@ const setLevel2Router = (level2Router: Navigation): void => {
     }
   })
 }
-
 const setOpen = (value: boolean) => {
   level2IsOpen.value = value
 }
@@ -87,7 +90,13 @@ defineExpose({
 
 <template>
   <div class="nav-container">
-    <CustomScrollbar class="nav-level1-container" :class="level2IsOpen ? 'is-close' : 'is-open'">
+    <CustomScrollbar
+      class="nav-level1-container"
+      :class="[
+        `${props.isOpen ? 'nav-is-open' : 'nav-is-close'}`,
+        `${level2IsOpen ? 'is-close' : 'is-open'}`,
+      ]"
+    >
       <nav class="nav-list level1" >
         <template v-for="level1Item in props.level1List" :key="level1Item.name">
           <!-- 有子路由 -->
@@ -161,21 +170,38 @@ defineExpose({
     // &.is-close {
     //   transform: translateX(0px);
     // }
+
+    &:hover {
+      .nav-level1-container {
+        &.is-close {
+          opacity: 0.2;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+        &.is-open {
+          opacity: 1;
+        }
+      }
+    }
   }
 
   &-level1 {
     &-container {
+      &.nav-is-close {
+        opacity: 1;
+      }
+      &.nav-is-open.is-close {
+        opacity: 0.2;
+      }
       overflow: hidden {
         y: auto;
       };
       transition-duration: 0.3s;
+
       &.is-close {
         min-width: $side-width - $nav-padding * 2;
-        opacity: 0.6;
-
-        &:hover {
-          opacity: 1;
-        }
       }
       &.is-open {
         min-width: $nav-width - $nav-padding * 2;

@@ -6,10 +6,11 @@ import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const slots = useSlots()
@@ -162,7 +163,7 @@ onBeforeMount(() => {
     props.isRemove ||
     props.isDraggable
   ) {
-    afterColumn['row_operations'] = { label: '操作' }
+    afterColumn['row_operations'] = { label: '操作'  }
     afterColumn['row_operations'][props.tableKey] = {
       width: 90,
       align: 'center',
@@ -252,7 +253,8 @@ onBeforeMount(() => {
       </template>
       <template #header-row_operations="scope">
         <slot name="column-operations" v-bind="scope">
-          <span>{{ scope.data }}</span>
+          <span>{{ i18nTranslate('operationCommands') }}</span>
+          <!-- <span>{{ scope.data }}</span> -->
         </slot>
       </template>
       <template #column-row_operations="scope">

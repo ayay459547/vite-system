@@ -5,12 +5,14 @@ import { ElSelect, ElOption } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
 
 export type Option = {
   label: string
   value: string | number | boolean | null
+  data?: any
   disabled?: boolean
 }
 
@@ -18,7 +20,7 @@ export type Options = Array<Option>
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({
@@ -205,11 +207,7 @@ defineExpose({
           :label="item.label"
           :value="item.value"
           :disabled="item.disabled"
-        >
-          <slot name="option" v-bind="item">
-            {{ item.label }}
-          </slot>
-        </ElOption>
+        ></ElOption>
       </slot>
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>
@@ -257,5 +255,11 @@ defineExpose({
 .search-more {
   color: inherit;
   opacity: 0.5;
+}
+</style>
+
+<style lang="scss">
+.el-select__popper {
+  z-index: var(--i-z-index-select-option) !important;
 }
 </style>

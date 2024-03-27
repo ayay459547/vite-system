@@ -3,13 +3,14 @@ import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
 import { read, utils } from '@/lib/lib_files'
+import type { I18nTranslate, I18nTest } from '@/lib/lib_hook'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 
 import { getI18nMessages } from '@/i18n'
 
 // @ts-ignore
-import i18n from './i18n_table.xlsx?b64'
+import i18n from './i18n.xlsx?b64'
 import type { ScopeKey, ModuleType, ModuleLangMap } from './i18n_setting'
 import { defaultModuleLangMap, scopeList } from './i18n_setting'
 
@@ -53,10 +54,6 @@ export const initTranslateSrcFile = () => {
 
   return moduleLangMap
 }
-
-
-export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
-export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
 
 export type GlobalI18n = Partial<Composer & {
   initModuleLangMap: () => void
@@ -123,7 +120,7 @@ export const useGlobalI18n = (): GlobalI18n => {
 
     // 有對應模組
     const i18nKey = `__${_i18nModule}__:${key}`
-    return i18nMap.value[_i18nModule]?.te(i18nKey) ?? key
+    return i18nMap.value[_i18nModule]?.te(i18nKey) ?? false
   }
 
   return {

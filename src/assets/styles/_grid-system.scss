@@ -11,7 +11,6 @@
   </div>
 */
 
-$gird-gap: 16px;
 $grid-system-map: (
   xs: 0,
   sm: 576px,
@@ -24,7 +23,11 @@ $grid-system-map: (
 .grid-row {
   display: grid;
   grid-template-columns: repeat(24, 1fr);
-  grid-gap: $gird-gap;
+  grid-gap: 12px 8px;
+  
+  @media (min-width: 992px) {
+    grid-gap: 16px;
+  }
 
   & > * {
     grid-column-start: span 24;
@@ -40,3 +43,4 @@ $grid-system-map: (
     }
   }
 }
+ 

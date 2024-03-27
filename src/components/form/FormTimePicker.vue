@@ -7,6 +7,7 @@ import type { Dayjs } from 'dayjs'
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type TimePickerType = 'time' | 'timerange'
 export declare type GetDisabledHours = (role: string, comparingDate?: Dayjs) => number[]
@@ -19,7 +20,7 @@ type ModelValue = BaseValue | [BaseValue, BaseValue]
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({

@@ -34,7 +34,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:level2IsOpen', 'change-map', 'change-page'])
 
-const navHeight = 48
+const navHeight = 40
 const useHook: UseHook = inject('useHook')
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: 'system'
@@ -50,11 +50,11 @@ const tempIsOpen: WritableComputedRef<Boolean> = computed({
   set: value => emit('update:level2IsOpen', value)
 })
 
-const onTitleClick = (): void => {
-  tempIsOpen.value = !tempIsOpen.value
+const titleClick = (): void => {
+  tempIsOpen.value = false
 }
 
-const changeOpen = (name: string): void => emit('change-map', name)
+const changeMap = (name: string): void => emit('change-map', name)
 
 const activeRouteName = ref('')
 
@@ -75,20 +75,20 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
 
 <template>
   <div class="nav-wrapper">
-    <div class="nav-title" @click="onTitleClick">
+    <div class="nav-title" @click="titleClick">
       <CustomIcon :icon="['fas', 'angle-left']" />
-      <h3>{{ $props.title }}</h3>
+      <h3>{{ props.title }}</h3>
     </div>
 
     <CustomScrollbar class="nav-conatiner">
       <nav class="nav-list">
-        <template v-for="routerItem in $props.level2List" :key="routerItem.name">
+        <template v-for="routerItem in props.level2List" :key="routerItem.name">
           <!-- 有子路由 -->
           <template v-if="Object.prototype.hasOwnProperty.call(routerItem, 'leaves')">
-            <div class="nav-item" @click="changeOpen(routerItem.name)">
+            <div class="nav-item" @click="changeMap(routerItem.name)">
               <div
                 class="nav-item-left"
-                :class="{ active: $props.currentRouteName.level2 === routerItem.name }"
+                :class="{ active: props.currentRouteName.level2 === routerItem.name }"
               >
                 <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
                 <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
@@ -97,13 +97,13 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
               <CustomIcon
                 :icon="['fas', 'angle-left']"
                 class="nav-item-right nav-arrow"
-                :class="$props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
+                :class="props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               />
             </div>
 
             <div
               class="nav-sub-list"
-              :class="$props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
+              :class="props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               :style="{
                 'min-height': `${navHeight * (routerItem.leaves.length)}px`,
                 'max-height': `${navHeight * (routerItem.leaves.length)}px`
@@ -119,7 +119,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
                 <div
                   class="nav-item-left"
                   :class="{
-                    active: [$props.currentRouteName.level3, activeRouteName].includes(leaf.name)
+                    active: [props.currentRouteName.level3, activeRouteName].includes(leaf.name)
                   }"
                   @click="onRouterLinkClick(navigate, leaf.name)"
                 >
@@ -143,7 +143,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
             <div
               class="nav-item-left"
               :class="{
-                active: [$props.currentRouteName.level2, activeRouteName].includes(routerItem.name)
+                active: [props.currentRouteName.level2, activeRouteName].includes(routerItem.name)
               }"
               @click="onRouterLinkClick(navigate, routerItem.name)"
             >
@@ -217,7 +217,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
     transition-duration: 0.3s;
 
     border-radius: 6px;
-    padding: 12px 16px 12px 18px;
+    padding: 8px 16px 8px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -286,8 +286,8 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
   }
 
   &-sub-item {
-    padding: 12px 0;
-    padding-left: 40px;
+    padding: 8px 0;
+    padding-left: 38.5px;
     .item-icon {
       font-size: 1.2em;
     }

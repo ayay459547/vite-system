@@ -5,13 +5,14 @@ import { ElAutocomplete } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type FetchSuggestions = (queryString: string, callback: (data: any) => void) => void
 type ModelValue = string | number | null
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({

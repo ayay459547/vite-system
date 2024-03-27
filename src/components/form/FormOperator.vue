@@ -6,6 +6,7 @@ import { ElInput, ElSelect, ElOption } from 'element-plus'
 import type { UseHook } from '@/declare/hook'
 import type { Options } from '@/components'
 import { isEmpty, numberFormat, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
 export type OperatorValue = string | number | null
@@ -13,7 +14,7 @@ export type ModelValue = [OperatorOptions, OperatorValue]
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const scopedId = getUuid('__i-operator__')

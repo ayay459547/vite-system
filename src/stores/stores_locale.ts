@@ -58,9 +58,27 @@ export const useLocaleStore = defineStore('locale', () => {
     }
   })
 
+  const changeLang = () => {
+    switch (elLocale.value) {
+      case 'zhTw':
+        currentLang.value = 'zhCn'
+        break
+      case 'zhCn':
+        currentLang.value = 'en'
+        break
+      case 'en':
+        currentLang.value = 'zhTw'
+        break
+      default:
+        currentLang.value = 'zhTw'
+        break
+    }
+  }
+
   return {
     elLocale,
     currentLang,
-    locale
+    locale,
+    changeLang
   }
 })

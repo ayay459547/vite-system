@@ -103,6 +103,7 @@ defineExpose({
       <div class="side-nav">
         <NavigationView
           ref="navRef"
+          :is-open="tempIsOpen"
           :level1-list="props.showRoutes"
           :current-route-name="props.currentRouteName"
           @change-page="emit('change-page')"

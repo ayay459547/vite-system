@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, onMounted, onBeforeUnmount, ref, inject } from 'vue'
+import { computed, useSlots, ref, inject } from 'vue'
 import { ElDatePicker } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type DatePickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
 export type Shortcuts = {
+  i18nLabel?: string
   text: string
   value: () => [number, number]
 }
@@ -17,7 +19,7 @@ type ModelValue = BaseValue | [BaseValue, BaseValue]
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({
@@ -66,6 +68,16 @@ const props = defineProps({
   onChange: Function as PropType<(e: ModelValue) => void>
 })
 
+const getTranslateShortcuts = (shortcuts) => {
+    if(!shortcuts) return []
+    return shortcuts.map(shortcut => {
+      return {
+        text: shortcut.text,
+        value: shortcut.value
+      }
+    })
+  }
+
 const bindAttributes = computed(() => {
   const attributes: any = {
     type: props.type,
@@ -73,7 +85,7 @@ const bindAttributes = computed(() => {
     disabled: props.disabled,
     format: props.format,
     valueFormat: props.valueFormat,
-    shortcuts: props.shortcuts
+    shortcuts: getTranslateShortcuts(props.shortcuts)
   }
   if (!isEmpty(props.placeholder)) {
     attributes.placeholder = props.placeholder

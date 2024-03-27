@@ -76,6 +76,8 @@ const router = useRouter()
 // store
 const localeStore = useLocaleStore()
 const locale = computed(() => localeStore.locale)
+// @ts-ignore
+window.changeLang = localeStore.changeLang
 
 const authStore = useAuthStore()
 const { initSystemData } = authStore
@@ -168,7 +170,7 @@ const setWebInfo = () => {
       const { name, title } = currentNavigation
 
       if (i18nTest(name)) {
-        return i18nTranslate(name, 'system')
+        return i18nTranslate(name, defaultModuleType)
       }
       if (title ?? false) return title
     }
@@ -269,7 +271,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  loading(true, i18nTranslate('systemInitialization', 'system'))
+  loading(true, i18nTranslate('systemInitialization', defaultModuleType))
 })
 
 // 路由切換
@@ -284,7 +286,7 @@ const onRouterChange = async () => {
 // 登出
 const logout = async () => {
   await nextTick()
-  loading(true, i18nTranslate('logout', 'system'))
+  loading(true, i18nTranslate('logout', defaultModuleType))
   clearToken()
   removeCookie('loginTime')
 
@@ -294,7 +296,7 @@ const logout = async () => {
 // 登入
 const login = async (userId: number) => {
   await nextTick()
-  loading(true, i18nTranslate('systemInitialization', 'system'))
+  loading(true, i18nTranslate('systemInitialization', defaultModuleType))
 
   const loginTime = datetimeFormat(new Date(), 'YYYY-MM-DD_HH:mm:ss')
   setCookie('loginTime', loginTime)
