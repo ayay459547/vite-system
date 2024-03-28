@@ -283,7 +283,7 @@ export class IWebScoket {
     const { baseWs, baseUrl, url, onopen, onclose, onerror, onmessage } = config
 
     this.baseWs = baseWs ?? `${baseWS}`
-    this.baseUrl = baseUrl ?? `${baseWSURL ?? window.location.host}`
+    this.baseUrl = baseUrl ?? `${isEmpty(baseWSURL) ? window.location.host : baseWSURL}`
     if (!isEmpty(url)) {
       this.url = url
     } else {

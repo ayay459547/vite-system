@@ -64,6 +64,11 @@ export default defineConfig({
         target: 'https://jsonplaceholder.typicode.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      // Proxying websockets or socket.io: ws://localhost:5173/socket.io -> ws://localhost:5174/socket.io
+      '/socket.io': {
+        target: 'ws://localhost:5174',
+        ws: true
       }
     }
     // https: {

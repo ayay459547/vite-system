@@ -1,5 +1,18 @@
 import checkSystemVersionDiff from './checkSystemVersion'
 
+
+const buildVersion = (import.meta as any).env.VITE_API_BUILD_VERSION
+
+// 打包版本 如果不同 會清除瀏覽器快取 並刷新
+const oldBuildVersion = localStorage.getItem('buildVersion')
+if (buildVersion !== oldBuildVersion) {
+  console.log('[init] init build version')
+  localStorage.setItem('buildVersion', buildVersion)
+
+  // @ts-ignore
+  location.reload(true)
+}
+
 /**
  * localStorage 刪除換新
  *
