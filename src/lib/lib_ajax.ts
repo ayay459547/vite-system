@@ -187,6 +187,8 @@ export class IWebScoket {
   // 送出訊息次數
   sendMessageCount: number
 
+  connectCount: number
+
   // 計時器
   timer: NodeJS.Timeout | null
 
@@ -215,6 +217,7 @@ export class IWebScoket {
     } else {
       console.log(`connect ( ${this.connectUrl} ) success`)
     }
+    this.connectCount++
 
     this.isReConnect = false
   }
@@ -237,7 +240,8 @@ export class IWebScoket {
     }
   }
   #onerror (onerror: Function | undefined) {
-    if (!isEmpty(onerror)) {
+    // 至少要連過一次 才會執行
+    if (!isEmpty(onerror) && this.connectCount > 0) {
       onerror()
     } else {
       console.log(`connect ( ${this.connectUrl} ) error`)
@@ -261,6 +265,7 @@ export class IWebScoket {
     this.isError = false
     this.isClose = false
     this.sendMessageCount = 0
+    this.connectCount = 0
 
     if (hasOwnProperty(window, 'WebSocket')) {
       this.init(config)

@@ -16,6 +16,11 @@ export type {
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
 export type {
+  CardShadow
+} from './feature/CustomCard/CustomCardInfo'
+export { default as CustomCard } from './feature/CustomCard/CustomCard.vue'
+
+export type {
   ModelValue as CollapseModelValue
 } from './feature/CustomCollapse/CustomCollapseInfo'
 export { default as CustomCollapse } from './feature/CustomCollapse/CustomCollapse.vue'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomCharts } from '@/components'
+import { CustomCharts, CustomCard } from '@/components'
 import { textOptions } from './options'
 import { ElCalendar } from 'element-plus'
 
@@ -14,10 +14,13 @@ const options = () => {
 
 <template>
   <div class="locatehome">
-    <ElCalendar v-model="value" />
-    <div class="locatehome-title">
-      <CustomCharts :options="options"/>
-    </div>
+    <CustomCard>
+      <ElCalendar v-model="value" />
+
+      <div class="locatehome-title">
+          <CustomCharts :options="options"/>
+      </div>
+    </CustomCard>
   </div>
 </template>
 
