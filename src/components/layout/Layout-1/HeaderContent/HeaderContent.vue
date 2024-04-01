@@ -29,6 +29,7 @@ const emit = defineEmits<{
   (e: 'historyChange', value: boolean): void
   (e: 'preference'): void
   (e: 'routerChange'): void
+  (e: 'setRouter', value: string[]): void
 }>()
 
 const onHistoryChange = ($event: boolean) => {
@@ -46,6 +47,9 @@ const tempIsOpen = computed<boolean>({
 // const onRouterChange = () => {
 //   emit('routerChange')
 // }
+const onBreadCrumbClick = (targetRoutePath: string[]) => {
+  emit('setRouter', targetRoutePath)
+}
 
 </script>
 
@@ -58,6 +62,7 @@ const tempIsOpen = computed<boolean>({
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
         text-align="start"
+        @set-router="onBreadCrumbClick"
       />
     </div>
 

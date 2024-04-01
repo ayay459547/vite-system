@@ -5,6 +5,7 @@ import type { UseHook, SwalResult } from '@/declare/hook'
 import { CustomIcon, CustomModal, CustomButton, CustomTable, CustomSearch, GroupSearch } from '@/components'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import { columnSetting } from './columns'
 import type { TableData } from './api'
@@ -17,7 +18,7 @@ import DetailModal from './Components/DetailModal.vue'
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList, swal } = useHook()
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   // 基本屬性
   title: '新建測試',
   version: '1.0.2',

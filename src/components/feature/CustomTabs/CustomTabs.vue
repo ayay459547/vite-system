@@ -192,11 +192,11 @@ onUnmounted(() => {
           :key="element.value"
           @click="onTabClick(element.value, element.label, element?.data)"
         >
-          <slot :key="element.value" :label="element.label" :data="element.data">
+          <slot :value="element.value" :label="element.label" :data="element.data">
             <span>{{ getTranslateLabel(element) }}</span>
           </slot>
           <template v-if="props.remove">
-            <CustomIcond
+            <CustomIcon
               name="xmark"
               class="__tabs-item-remove"
               @click="removeTab(element.value, element.label, element?.data)"

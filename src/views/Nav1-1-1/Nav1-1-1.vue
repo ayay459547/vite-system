@@ -8,6 +8,7 @@ import { useLocalI18n } from '@/lib/lib_utils'
 import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData, deleteData } from './api'
@@ -33,7 +34,7 @@ const userPermission = computed(() => {
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: pageTranslate('testTable'),
   version: '1.0.0',
   settingKey: 'nav1-1-1'

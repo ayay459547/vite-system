@@ -5,6 +5,7 @@ import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
 import { useLocalI18n } from '@/lib/lib_utils'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'
@@ -28,7 +29,7 @@ const {
   getActiveForms: getFilter
 } = useFormSetting(columnSetting, 'filter')
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: pageTranslate('testTable'),
   version: '1.0.0',
   settingKey: 'nav1-1-2',

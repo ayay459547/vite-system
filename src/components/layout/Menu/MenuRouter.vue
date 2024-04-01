@@ -8,10 +8,11 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { hasOwnProperty } from '@/lib/lib_utils'
 import { useRoutesHook } from '@/lib/lib_routes'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 const { getRouteIcon, getRouteTitle } = useRoutesHook()
 

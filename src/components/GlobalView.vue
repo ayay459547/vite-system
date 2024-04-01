@@ -76,7 +76,7 @@ const router = useRouter()
 // store
 const localeStore = useLocaleStore()
 const locale = computed(() => localeStore.locale)
-// @ts-ignore
+// @ts-ignore 更換語言
 window.changeLang = localeStore.changeLang
 
 const authStore = useAuthStore()

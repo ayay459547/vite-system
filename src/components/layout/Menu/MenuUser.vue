@@ -4,10 +4,11 @@ import { inject, computed } from 'vue'
 import type { UseHook, AuthData } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { getCookie } from '@/lib/lib_cookie'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, eventList } = useHook({
-  i18nModule: 'system'
+const { eventList, i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps<{
@@ -59,6 +60,7 @@ const loginTime = computed(() => {
 
           <template #content>
             <div @click="openUserEffect">
+              <span>{{ `${i18nTranslate('login')}${i18nTranslate('time')} : ` }}</span>
               <span>{{ loginTime }}</span>
             </div>
           </template>
@@ -71,7 +73,10 @@ const loginTime = computed(() => {
           <template #content>
             <div class="user-xs" @click="openUserEffect">
               <span>{{ userName }}</span>
-              <span>{{ loginTime }}</span>
+              <div>
+                <span>{{ `${i18nTranslate('login')}${i18nTranslate('time')} : ` }}</span>
+                <span>{{ loginTime }}</span>
+              </div>
             </div>
           </template>
         </CustomTooltip>

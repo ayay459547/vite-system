@@ -17,6 +17,7 @@ import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/li
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import i18nMessage from './i18n'
 import type { TableData } from './api'
@@ -50,7 +51,7 @@ const {
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: '資訊顯示測試',
   version: '1.0.5',
   settingKey: 'fund-12',

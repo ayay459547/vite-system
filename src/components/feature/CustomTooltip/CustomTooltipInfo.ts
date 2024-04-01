@@ -48,5 +48,17 @@ export const props = {
     required: false,
     default: 0,
     description: '定位偏移量'
+  },
+  enterable: {
+    type: Boolean as PropType<Props.ShowArrow>,
+    required: false,
+    default: true,
+    description: '滑鼠是否可進到 tooltip 中'
+  },
+  showAfter: {
+    type: Number as PropType<Props.Offset>,
+    required: false,
+    default: 0,
+    description: '觸發後多久顯示內容，單位毫秒'
   }
 }

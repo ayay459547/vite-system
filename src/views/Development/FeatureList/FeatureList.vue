@@ -6,13 +6,14 @@ import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import FilterView from './FilterView.vue'
 
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: '功能列表',
   version: '1.0.6',
   settingKey: 'feature-list'

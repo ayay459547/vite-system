@@ -4,6 +4,7 @@ import { ref, shallowRef, onMounted, inject, nextTick, reactive } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomModal } from '@/components'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 
 import type { TableData, FilterData } from './api'
@@ -30,7 +31,7 @@ const {
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: '訂單列表',
   version: '1.0.1',
   settingKey: 'auto-114-order',

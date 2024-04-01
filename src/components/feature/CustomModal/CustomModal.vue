@@ -8,6 +8,7 @@ import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { ModelValue } from './CustomModalInfo'
 import {
@@ -18,7 +19,7 @@ import {
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const scopedId = getUuid('__i-modal__')
@@ -514,12 +515,12 @@ onUnmounted(() => {
             <div class="modal-body">
               <KeepAlive>
                 <template v-if="props.isKeepAlive">
-                  <div v-show="tempValue && !props.loading" style="width: 100%; height: 100%">
+                  <div v-show="tempValue" style="width: 100%; height: 100%">
                     <slot :key="scopedId">Body</slot>
                   </div>
                 </template>
                 <template v-else>
-                  <div v-if="tempValue && !props.loading" style="width: 100%; height: 100%">
+                  <div v-if="tempValue" style="width: 100%; height: 100%">
                     <slot :key="scopedId">Body</slot>
                   </div>
                 </template>

@@ -8,12 +8,13 @@ import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomScrollbar } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import SubNavigationView from './SubNavigationView.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTest, i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({

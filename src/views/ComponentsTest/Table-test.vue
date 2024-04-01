@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 
 import { CustomTable, CustomInput, CustomButton } from '@/components'
 import { useTableSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/lib/lib_columns'
 
 const columnSetting = {
   date: {
@@ -27,7 +28,7 @@ const columnSetting = {
   }
 }
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: '測試表單',
   version: '1.0.0',
   settingKey: 'test'

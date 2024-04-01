@@ -10,6 +10,7 @@ import {
 
 import { deepClone, useLocalI18n } from '@/lib/lib_utils'
 import { useTableSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
@@ -40,7 +41,7 @@ const userPermission = computed(() => {
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: pageTranslate('testTable'),
   version: '1.0.4',
   settingKey: 'test'

@@ -3,11 +3,14 @@ import { type ComputedRef, computed, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 type TextAlign = 'start' | 'end'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTest, i18nTranslate } = useHook()
+const { i18nTest, i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
+})
 
 const props = defineProps<{
   breadcrumbName: string[]
@@ -15,57 +18,63 @@ const props = defineProps<{
   textAlign: TextAlign
 }>()
 
+const emit = defineEmits<{
+  (e: 'setRouter', value: string[]): void
+}>()
+
 type Breadcrumb = {
   type: string
   name: string
 }
-const currentPath:ComputedRef<Breadcrumb[]> = computed(() => {
+const currentPath: ComputedRef<Breadcrumb[]> = computed(() => {
   return props.breadcrumbName.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
     const name = i18nTest(crumb) ? i18nTranslate(crumb) : props.breadcrumbTitle[crumbIndex]
 
-
-    if (crumbIndex === 0){
+    if (crumbIndex === 0) {
       res.push({ type: 'text', name })
     } else {
-      res.push(
-        { type: 'icon', name: ' / '},
-        { type: 'text', name }
-      )
+      res.push({ type: 'icon', name: ' / ' }, { type: 'text', name })
     }
 
     return res
   }, [])
 })
 
-const breadcrumbSpan = computed<string>(() => {
-  return currentPath.value.reduce((res, crumb) => {
-    return res + crumb.name
-  }, '')
-})
+const onBreadcrumbTextClick = (index: number) => {
+  const targetLength = Math.floor(index / 2)
+  const targetRoutePath = props.breadcrumbName.slice(0, targetLength + 1)
 
+  emit('setRouter', targetRoutePath)
+}
 </script>
 
 <template>
   <div class="breadcrumb-container">
     <div class="breadcrumb-lg" :class="props.textAlign">
-      <CustomIcon
-        name="location-dot"
-        class="icon"
-        icon-class="text-danger"
-      />
-      <div class="text ellipsis">{{ breadcrumbSpan }}</div>
+      <CustomIcon name="location-dot" class="breadcrumb-icon" icon-class="text-danger" />
+      <div
+        v-for="(item, index) in currentPath"
+        :key="index"
+        class="breadcrumb-path"
+        @click="onBreadcrumbTextClick(index)"
+      >
+        {{ item.name }}
+      </div>
     </div>
 
     <div class="breadcrumb-xs">
       <CustomTooltip placement="right">
-        <CustomIcon
-          name="location-dot"
-          class="breadcrumb-icon"
-          icon-class="text-danger"
-        />
+        <CustomIcon name="location-dot" class="breadcrumb-icon" icon-class="text-danger" />
 
         <template #content>
-          <div class="breadcrumb-text">{{ breadcrumbSpan }}</div>
+          <div
+            v-for="(item, index) in currentPath"
+            :key="index"
+            class="breadcrumb-text"
+            @click="onBreadcrumbTextClick(index)"
+          >
+            <div v-if="item.type === 'text'">{{ item.name }}</div>
+          </div>
         </template>
       </CustomTooltip>
     </div>
@@ -79,9 +88,16 @@ const breadcrumbSpan = computed<string>(() => {
     height: fit-content;
   }
 
+  &-icon {
+    position: relative;
+  }
   &-text {
+    cursor: pointer;
     padding: 8px;
     font-size: 1.5em;
+  }
+  &-path {
+    cursor: pointer;
   }
 
   &-lg {
@@ -91,16 +107,18 @@ const breadcrumbSpan = computed<string>(() => {
     align-items: center;
     flex: 1;
     position: relative;
+    gap: 8px;
     &.start {
       .icon,
       .text {
         position: absolute;
+        cursor: pointer;
       }
       .text {
         max-width: 100%;
         width: fit-content;
         // 文字超出 ellipsis
-        left: 26px;
+        left: 36px;
       }
     }
     &.end {
@@ -109,6 +127,10 @@ const breadcrumbSpan = computed<string>(() => {
     }
 
     &.end {
+      .icon,
+      .text {
+        cursor: pointer;
+      }
       .text {
         max-width: 100%;
         width: fit-content;

@@ -52,7 +52,7 @@ const props = defineProps({
         role: {},
         roleFunction: [],
         groups: []
-      }
+      } as AuthData
     }
   },
   breadcrumbName: {
@@ -106,6 +106,19 @@ defineExpose({
   init
 })
 
+const onBreadCrumbClick = (targetRoutePath: string[]) => {
+  if (targetRoutePath.length === 0) return
+
+  // level1 被點擊
+  if (targetRoutePath.length === 1) {
+    sideRef.value?.setOpen(false)
+
+  // level2 level3 被點擊
+  } else {
+    sideRef.value?.setOpen(true)
+  }
+}
+
 </script>
 
 <template>
@@ -149,6 +162,7 @@ defineExpose({
           @logout="emit('logout')"
           @preference="emit('preference')"
           @router-change="onRouterChange"
+          @set-router="onBreadCrumbClick"
         >
           <template #header-left>
             <slot name="header-left"></slot>

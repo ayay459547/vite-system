@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType, Ref } from 'vue'
+import type { PropType } from 'vue'
 import { computed, ref, inject, reactive, onMounted, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -8,6 +8,7 @@ import type { AuthData, UseHook } from '@/declare/hook'
 import { CustomModal } from '@/components'
 import { useColorToneStore } from '@/stores/stores_colorTone'
 import { useLayoutStore } from '@/stores/stores_layout'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
@@ -15,7 +16,7 @@ import UserPreference from '@/components/layout/Preference/UserPreference.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({
@@ -46,7 +47,15 @@ const props = defineProps({
     default: false
   },
   authData: {
-    type: Object as PropType<AuthData>
+    type: Object as PropType<AuthData>,
+    default: () => {
+      return {
+        user: {},
+        role: {},
+        roleFunction: [],
+        groups: []
+      }
+    }
   },
   breadcrumbTitle: {
     type: Array as PropType<string[]>,

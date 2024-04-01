@@ -7,10 +7,11 @@ import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { TabsOptions, TabsOption } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const {

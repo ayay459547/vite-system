@@ -5,10 +5,11 @@ import type { UseHook, EventItem } from '@/declare/hook'
 import { options as langOptions } from '@/i18n'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { useLocaleStore } from '@/stores/stores_locale'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const localeStore = useLocaleStore()

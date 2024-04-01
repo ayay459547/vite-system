@@ -48,6 +48,8 @@ const tempValue = customRef((track, trigger) => {
     :popper-class="props.popperClass"
     :show-arrow="props.showArrow"
     :offset="props.offset"
+    :enterable="props.enterable"
+    :show-after="props.showAfter"
     effect="light"
     :class="`CustomTooltip_${version} ${scopedId}`"
     class="__popover-wrapper"

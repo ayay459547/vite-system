@@ -15,6 +15,7 @@ import {
   CustomTooltip
 } from '@/components'
 import { downloadFile } from '@/lib/lib_utils'
+import type { TableOptions } from '@/lib/lib_columns'
 
 // WordTest.docx
 import path from '@/assets/file/WordTest.docx?url'
@@ -105,7 +106,7 @@ const columnSetting = {
   }
 }
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: '測試表單',
   version: '1.0.0',
   settingKey: 'test'

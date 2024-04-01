@@ -3,6 +3,7 @@ import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
 import { CustomTable, CustomInput } from '@/components'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/lib/lib_columns'
 
 import { columnSetting } from './columns'
 import { type TableData, getData, getDataCount } from './api'
@@ -10,22 +11,23 @@ import { type TableData, getData, getDataCount } from './api'
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const tableOptions = {
+const tableOptions: TableOptions = {
   title: '翻譯值列表',
   version: '1.0.1',
   settingKey: 'i18n-list'
 }
-const { tableSetting, downloadExcel, getParams } = useTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions
+)
 
 const download = () => {
   downloadExcel(tableData.value)
 }
 
 // filter
-const {
-  columns: filterColumn,
-  forms: filter
-} = useFormSetting<TableData>(columnSetting, 'filter')
+const { columns: filterColumn, forms: filter } = useFormSetting<TableData>(columnSetting, 'filter')
 
 const isLoading = ref(false)
 
@@ -50,7 +52,6 @@ const init = async () => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>

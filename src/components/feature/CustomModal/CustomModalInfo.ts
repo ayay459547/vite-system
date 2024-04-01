@@ -4,8 +4,9 @@ export const version = '1.0.0'
 
 export const minModalIndex = 2005
 
-export type WidthSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
-export type HeightSize = 'fill' | 'large'| 'default'| 'small' | 'extraSmall'
+type Size = 'fill' | 'large'| 'default'| 'small' | 'extraSmall' | 'fitContent'
+export type WidthSize = Size
+export type HeightSize = Size
 export type ModelValue = boolean
 export type XPosition = 'start' | 'center' | 'end'
 export type YPosition = 'top' | 'center' | 'bottom'
