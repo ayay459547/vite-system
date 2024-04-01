@@ -9,13 +9,14 @@ import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
 import { useColorToneStore } from '@/stores/stores_colorTone'
 import { useLayoutStore } from '@/stores/stores_layout'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({
@@ -71,10 +72,12 @@ const browserValue = computed({
 
 // 色調
 const colorToneStore = useColorToneStore()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const colorToneOptions = [
   { label: 'light', value: 'light' },
   { label: 'dark', value: 'dark' }
 ]
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const colorTone = computed({
   get () {
     return props.isDark ? 'dark' : 'light'
@@ -171,7 +174,7 @@ const onClickLayout = (layoutValue: string) => {
       </div>
 
       <!-- 色調 -->
-      <div class="modal-item">
+      <!-- <div class="modal-item">
         <div class="modal-label">
           <div class="icon">
             <CustomIcon type="fas" name="palette"/>
@@ -189,7 +192,7 @@ const onClickLayout = (layoutValue: string) => {
             </template>
           </FormRadio>
         </div>
-      </div>
+      </div> -->
 
       <!-- 是否顯示標籤頁碼 -->
       <div class="modal-item">

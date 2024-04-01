@@ -10,6 +10,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
+import eslintPlugin from 'vite-plugin-eslint'
+
 const Timestamp = new Date().getTime()
 
 // https://vitejs.dev/config/
@@ -51,7 +53,17 @@ export default defineConfig({
         const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
         return `export default JSON.parse('${JSON.stringify(data)}')`
       }
-    }
+    },
+    eslintPlugin({
+      include: [
+        'src/**/*.ts',
+        'src/**/*.tsx',
+        'src/**/*.vue',
+        'src/*.ts',
+        'src/*.tsx',
+        'src/*.vue'
+      ]
+    })
   ],
   server: {
     port: 4040,

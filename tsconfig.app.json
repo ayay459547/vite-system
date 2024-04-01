@@ -1,11 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
-    "vite-env-override.d.ts",
-    // "src/**/*",
-    // "src/**/*.ts",
-    "src/**/*.vue",
-    "src/**/*.tsx"
+    "vite-env-override.d.ts"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
