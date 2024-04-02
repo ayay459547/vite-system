@@ -110,6 +110,12 @@ export type {
 } from './feature/CustomSwitch/CustomSwitchInfo'
 export { default as CustomSwitch } from './feature/CustomSwitch/CustomSwitch.vue'
 
+// 純表格
+export { default as TableMain } from './feature/CustomTable/TableMain.vue'
+// 虛擬表格
+export { default as CustomTableV2 } from './feature/CustomTableV2/CustomTableV2.vue'
+
+// 專案用表格
 import type { TableParams, PageChange } from './feature/CustomTable/CustomTableInfo'
 export declare interface CustomTableExpose {
   pageChange: PageChange
@@ -134,10 +140,6 @@ export type {
   ShowType
 } from './feature/CustomTable/CustomTableInfo'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
-
-export { default as TableMain } from './feature/CustomTable/TableMain.vue'
-
-export { default as CustomTableV2 } from './feature/CustomTableV2/CustomTableV2.vue'
 
 export type {
   Option as TabsOption,

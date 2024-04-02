@@ -13,13 +13,6 @@ declare module '@vue/runtime-core' {
   }
 }
 
-// CSS modules
-// type CSSModuleClasses = { readonly [key: string]: string }
-// declare module '*.module.scss' {
-//   const classes: CSSModuleClasses
-//   export default classes
-// }
-
 declare module '@/components.*' {
   const content: any
   export default content
@@ -29,15 +22,6 @@ declare module '*?b64' {
   const b64: any
   export default b64
 }
-
-// declare module '*.md' {
-//   const markdown: string
-//   export default markdown
-// }
-// declare module '*raw' {
-//   const markdown: string
-//   export default markdown
-// }
 
 declare module '*sheetjs' {
   const excel: any
