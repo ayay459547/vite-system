@@ -342,7 +342,10 @@ const initShowColumns = async () => {
 onMounted(async () => {
   isRender.value = false
 
-  initSortingList()
+  setTimeout(() => {
+    initSortingList()
+  }, 120)
+
   await initShowColumns()
 
   isRender.value = true
@@ -490,7 +493,7 @@ onMounted(() => {
     } else {
       prependIsOpen.value = _prependIsOpen === 'true'
     }
-  }, 120)
+  }, 60)
 })
 
 </script>

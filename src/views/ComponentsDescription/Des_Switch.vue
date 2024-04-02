@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// @ts-ignore
+
 import markdown from '@/components/feature/CustomSwitch/CustomSwitch.md?raw'
 import {
   type SwitchSize,

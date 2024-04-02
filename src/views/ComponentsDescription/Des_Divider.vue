@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// @ts-ignore
+
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
 import type { DividerDirection, DividerBorderStyle, DividerContentPosition } from '@/components'
 import { CustomInput, CustomDivider, CustomMarkdown } from '@/components'

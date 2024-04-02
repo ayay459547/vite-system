@@ -23,7 +23,7 @@ export type ModuleLangMap = {
 
 export type ScopeKey = keyof ModuleLangMap | ''
 
-export const defaultModuleType = 'system'
+export const defaultModuleType: ScopeKey = 'system'
 
 export const scopeList = [
   { scopeKey: 'system', label: '系統', version: '1.0.2' },

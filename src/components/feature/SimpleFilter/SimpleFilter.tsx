@@ -3,7 +3,7 @@ import { defineComponent, inject, computed, ref } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomPopover } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
-// @ts-ignore
+
 import styles from './SimpleFilter.module.scss'
 
 import {

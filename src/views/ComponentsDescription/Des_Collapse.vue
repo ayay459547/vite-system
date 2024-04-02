@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// @ts-ignore
+
 import markdown from '@/components/feature/CustomCollapse/CustomCollapse.md?raw'
 import { CustomInput, CustomDivider, CustomMarkdown, CustomCollapse } from '@/components'
 

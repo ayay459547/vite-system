@@ -191,7 +191,7 @@ const onSelectionChange: SelectionChange = (newSelection) => {
   emit('selection-change', newSelection)
 }
 const onRowContextmenu: RowContextmenu = (row, column, event) => {
-  event.preventDefault()
+  // event.preventDefault()
   emit('row-contextmenu', row, column, event)
 }
 

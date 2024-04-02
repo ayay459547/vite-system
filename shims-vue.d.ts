@@ -25,7 +25,11 @@ declare module '@/components.*' {
   export default content
 }
 
-declare module '*.md?raw'
+declare module '*?b64' {
+  const b64: any
+  export default b64
+}
+
 // declare module '*.md' {
 //   const markdown: string
 //   export default markdown

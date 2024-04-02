@@ -23,7 +23,7 @@ import {
   version,
   props as inputProps
 } from './CustomInputInfo'
-// @ts-ignore
+
 import styles from './CustomInput.module.scss'
 
 const CustomInput = defineComponent({

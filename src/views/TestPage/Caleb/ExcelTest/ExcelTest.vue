@@ -3,7 +3,6 @@ import { onMounted } from 'vue'
 
 import { CustomButton } from '@/components'
 
-// @ts-ignore
 import testExcelData from './test.xlsx?sheetjs'
 import {
   download1,

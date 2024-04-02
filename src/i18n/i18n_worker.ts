@@ -1,8 +1,8 @@
-let timer = null
+let timer: NodeJS.Timeout | null = null
 const now1 = performance.now()
 let count = 0
 
-const interval = () => {
+export const interval = () => {
   timer = setInterval(() => {
     count++
     const now2 = performance.now()

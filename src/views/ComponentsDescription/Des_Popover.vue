@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// @ts-ignore
+
 import markdown from '@/components/feature/CustomPopover/CustomPopover.md?raw'
 import {
   type PopoverPlacement,

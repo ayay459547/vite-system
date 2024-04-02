@@ -332,6 +332,7 @@ provide<UseHook>('useHook', (options) => {
       return i18nTest(key,  _i18nModule ?? i18nModule)
     },
     eventList: (click, eventList, options) => {
+      click.preventDefault()
       const { clientX, clientY } = click
 
       customPopoverQueue.unshift({

@@ -61,8 +61,8 @@ export type {
   Options,
   InputType
 } from './feature/CustomInput/CustomInputInfo'
-// @ts-ignore
-export { default as CustomInput } from './feature/CustomInput/CustomInput.tsx'
+
+export { default as CustomInput } from './feature/CustomInput/CustomInput'
 
 export { default as CustomMarkdown } from './feature/CustomMarkdown/CustomMarkdown.vue'
 
@@ -173,8 +173,7 @@ export type {
 } from './feature/CustomTimeLine/CustomTimeLineInfo'
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
-// @ts-ignore
-export { default as SimpleFilter } from './feature/SimpleFilter/SimpleFilter.tsx'
+export { default as SimpleFilter } from './feature/SimpleFilter/SimpleFilter'
 
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 

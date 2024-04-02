@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// @ts-ignore
+
 import markdown from '@/components/feature/CustomTooltip/CustomTooltip.md?raw'
 import {
   type TooltipPlacement,

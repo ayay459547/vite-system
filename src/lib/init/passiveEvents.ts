@@ -1,6 +1,6 @@
 // https://stackoverflow.com/questions/46094912/added-non-passive-event-listener-to-a-scroll-blocking-touchstart-event
 
-const passiveEvents = function () {
+export const passiveEvents = function () {
   if (typeof EventTarget !== 'undefined') {
     const func = EventTarget.prototype.addEventListener
     EventTarget.prototype.addEventListener = function (type, fn, capture) {

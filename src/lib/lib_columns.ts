@@ -364,6 +364,9 @@ export interface TableOptions {
   tableSize?: TableSize
   showType?: string | 'custom' | 'auto'
   selection?: boolean
+  lazy?: boolean
+  load?: Function
+  treeProps?: any
   i18nModule?: ScopeKey
 }
 

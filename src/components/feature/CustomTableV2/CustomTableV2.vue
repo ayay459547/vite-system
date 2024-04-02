@@ -218,6 +218,10 @@ defineExpose({
     .el-table-v2__row {
       .el-table-v2__row-cell {
         border-right: 1px solid #ebeef5;
+
+        & > div {
+          width: 100%;
+        }
       }
     }
   }
