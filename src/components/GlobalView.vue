@@ -133,6 +133,7 @@ const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
     updateToken()
   }, 2400)
 }
+// 打開 Loading
 const openLoading = async () => {
   await nextTick()
   if (!isLoading.value) {
@@ -140,6 +141,7 @@ const openLoading = async () => {
     componentIsShow.value = false
   }
 }
+// 關閉 Loading
 const closeLoading = async () => {
   if (isLoading.value) {
     await nextTick()
@@ -219,15 +221,17 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
       breadcrumbName: _breadcrumbName,
       breadcrumbTitle: _breadcrumbTitle
     } = currentRoute
-
+    // 麵包屑
     setBreadcrumbName(_breadcrumbName ?? [])
     setBreadcrumbTitle(_breadcrumbTitle ?? [])
-
+    // 當前路由
     setCurrentNavigation(currentRoute)
-
-    setTimeout(() => {
-      addHistoryNavigation(routeName, currentRoute)
-    }, 1200)
+    // 歷史路由
+    if (historyIsOpen.value) {
+      setTimeout(() => {
+        addHistoryNavigation(routeName, currentRoute)
+      }, 1200)
+    }
   }
 }
 

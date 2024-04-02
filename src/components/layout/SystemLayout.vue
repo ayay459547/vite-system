@@ -54,7 +54,7 @@ const props = defineProps({
         role: {},
         roleFunction: [],
         groups: []
-      }
+      } as AuthData
     }
   },
   breadcrumbTitle: {

@@ -443,7 +443,7 @@ export const useTableSetting = (
     isHiddenExcel = false,
     tableSize = '',
     selection = false,
-    i18nModule = 'iPASP_common'
+    i18nModule = 'system'
   } = options
 
   // 設定 table 用的 column

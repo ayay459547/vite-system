@@ -1,6 +1,7 @@
 import type { PropType } from 'vue'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
 
 import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'
@@ -16,6 +17,7 @@ export type InputType = (
 )
 export type Option = {
   label: string
+  i18nLabel?: string
   value: string | number | boolean | null
   disabled?: boolean
   color?: string
@@ -142,7 +144,7 @@ const custom = {
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: 'iPASP_common',
+    default: defaultModuleType,
     description: `
       label, options 使用 i18nLabel 時套用的翻譯模組
     `
@@ -227,7 +229,13 @@ const elSelect = {
   remoteMethod: {
     type: Function as PropType<Function>,
     required: false,
-    description: '函數取的選項'
+    description: 'api 搜尋'
+  },
+  remoteShowSuffix: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: 'api 搜尋 是否顯示箭頭'
   },
   multiple: {
     type: Boolean as PropType<boolean>,

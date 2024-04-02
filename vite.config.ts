@@ -11,6 +11,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 import eslintPlugin from 'vite-plugin-eslint'
+import VueDevTools from 'vite-plugin-vue-devtools'
 
 const Timestamp = new Date().getTime()
 
@@ -54,14 +55,18 @@ export default defineConfig({
         return `export default JSON.parse('${JSON.stringify(data)}')`
       }
     },
+    VueDevTools({
+      // openInEditorHost: 'http://localhost:3000',
+      // clientHost: 'http://localhost:3000'
+    }),
     eslintPlugin({
       include: [
-        'src/**/*.ts',
-        'src/**/*.tsx',
-        'src/**/*.vue',
-        'src/*.ts',
-        'src/*.tsx',
-        'src/*.vue'
+        './src/**/*.ts',
+        './src/*.ts',
+        './src/**/*.tsx',
+        './src/*.tsx',
+        './src/**/*.vue',
+        './src/*.vue'
       ]
     })
   ],

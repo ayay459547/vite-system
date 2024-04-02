@@ -18,7 +18,7 @@ import './lib/init/init_idb'
 import './lib/init/init_cookie'
 import './lib/init/init_localStorage'
 
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
 import App from './App.vue'
 import './assets/reset.css'
 
@@ -34,7 +34,12 @@ import pluginDirective from '@/directive/pluginDirective'
 // 翻譯
 import i18n from '@/i18n'
 
-const app = createApp(App)
+const app = createApp({
+  render: () => h(App),
+  devtools: {
+    hide: true
+  }
+})
 
 app.config.globalProperties.$log = (any: any) => {
   console.log('$log => ', any)

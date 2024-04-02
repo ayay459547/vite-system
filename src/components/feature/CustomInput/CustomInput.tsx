@@ -1,7 +1,6 @@
 import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
 import { useField } from 'vee-validate'
 
-// @ts-ignore
 import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
@@ -12,21 +11,19 @@ import {
   FormRadio,
   FormAutocomplete,
   FormOperator
-  // @ts-ignore
 } from '@/components'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
-// @ts-ignore
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 
-// @ts-ignore
 import type { ModelValue } from './CustomInputInfo'
 import {
   version,
   props as inputProps
 } from './CustomInputInfo'
-
+// @ts-ignore
 import styles from './CustomInput.module.scss'
 
 const CustomInput = defineComponent({
@@ -51,7 +48,7 @@ const CustomInput = defineComponent({
 
     const useHook: UseHook = inject('useHook')
     const { i18nTranslate, i18nTest } = useHook({
-      i18nModule: 'system'
+      i18nModule: props.i18nModule
     })
 
     // const inputValue = computed({
@@ -60,6 +57,27 @@ const CustomInput = defineComponent({
     //     emit('update:modelValue', value)
     //   }
     // })
+
+    const getTranslateLabel = (object: any) => {
+      const label = i18nTest(object.i18nLabel) ? i18nTranslate(object.i18nLabel) : object.label ?? ''
+      return label
+    }
+    const getTranslateOptions = (options: any[]) => {
+      const i18nOptions = options.map(option => {
+        return {
+          ...option,
+          label: getTranslateLabel(option),
+          value: option.value
+        }
+      })
+      return i18nOptions
+    }
+    const translateLabel = computed(() => {
+      return getTranslateLabel(props)
+    })
+    const translateOptions = computed(() => {
+      return getTranslateOptions(props.options)
+    })
 
     const validateCount = ref(0)
     onMounted(() => {
@@ -135,7 +153,7 @@ const CustomInput = defineComponent({
     const i18nErrorMessage = computed(() => {
       const keyword = errorMessage?.value ?? ''
 
-      if (i18nTest(keyword)) return i18nTranslate(keyword)
+      if (i18nTest(keyword, defaultModuleType)) return i18nTranslate(keyword, defaultModuleType)
       return keyword
     })
 
@@ -151,6 +169,7 @@ const CustomInput = defineComponent({
         // select
         remote: props.remote,
         remoteMethod: props.remoteMethod,
+        remoteShowSuffix: props.remoteShowSuffix,
         multiple: props.multiple,
         multipleLimit: props.multipleLimit,
         maxCollapseTags: props.maxCollapseTags,
@@ -341,7 +360,7 @@ const CustomInput = defineComponent({
           return inputValue.value
         case 'select': {
           const option = props.options.find(_option => _option.value === inputValue.value)
-          return option?.label ?? ''
+          return getTranslateLabel(option)
         }
         case 'year':
         case 'month':
@@ -492,7 +511,7 @@ const CustomInput = defineComponent({
               // v-bind 綁定屬性
               { ...bindAttributes.value }
               type={props.type}
-              options={props.options}
+              options={translateOptions.value}
               errorMessage={errorMessage.value}
               // v-on 接收事件
               onFocus={ (e: any) => onEvent.value.onFocus(e) }
@@ -502,7 +521,15 @@ const CustomInput = defineComponent({
               onRemove-tag={ (e: any) => onEvent.value.onRemoveTag(e) }
               onVisible-change={ (e: boolean) => onEvent.value.onVisibleChange(e) }
             >
-              {{ ...getSlot(['header', 'footer', 'prefix', 'empty']) }}
+              {{
+                ...getSlot([
+                  'option',
+                  'header',
+                  'footer',
+                  'prefix',
+                  'empty'
+                ])
+              }}
             </FormSelect>
           )
         case 'year':
@@ -561,8 +588,8 @@ const CustomInput = defineComponent({
               }
               // v-bind 綁定屬性
               { ...bindAttributes.value }
-              label={props.label}
-              options={props.options}
+              label={translateLabel.value}
+              options={translateOptions.value}
               errorMessage={errorMessage.value}
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
@@ -578,7 +605,7 @@ const CustomInput = defineComponent({
               }
               // v-bind 綁定屬性
               { ...bindAttributes.value }
-              options={props.options}
+              options={translateOptions.value}
               errorMessage={errorMessage.value}
               onChange={ (e: any) => onEvent.value.onChange(e) }
             >
@@ -682,7 +709,7 @@ const CustomInput = defineComponent({
                   styles['__input-prefix']
                 ]}>*</span>
               }
-              <span>{ props.label }</span>
+              <span>{ translateLabel.value }</span>
             </label>
           )
         }
@@ -691,7 +718,7 @@ const CustomInput = defineComponent({
         <div class={styles['__input-main']}>
           {
             props.text ?
-            <div class="i-pt-sm">{ getTextValue.value }</div> :
+            <div class="i-pt-xs">{ getTextValue.value }</div> :
             renderInput()
           }
           {

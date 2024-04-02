@@ -5,6 +5,7 @@ import { ElPagination } from 'element-plus'
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
 // 欄位設定
@@ -43,7 +44,7 @@ const props = defineProps(tableProps)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: props?.i18nModule ?? 'system'
+  i18nModule: props?.i18nModule ?? defaultModuleType
 })
 
 const emit = defineEmits([
@@ -286,9 +287,7 @@ const checkTableColumns = (tempColumnList: ColumnItem[]) => {
       `設定欄位列表 => ${props.tableColumns.map(item => item?.label ?? '').join(' , ')}`,
       '如果欄位有要新增 請變更 version'
     ])
-  }
-
-  if (settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])) {
+  } else if (settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])) {
     tipLog('欄位異動', [
       `table => ${props.title}`,
       `原始欄位列表 => ${originColumnsKey}`,
@@ -483,13 +482,15 @@ const prependIsOpen = computed<boolean>({
   }
 })
 onMounted(() => {
-  const _prependIsOpen = localStorage.getItem('prependIsOpen')
-  if (isEmpty(_prependIsOpen)) {
-    localStorage.setItem('prependIsOpen', 'true')
-    prependIsOpen.value = true
-  } else {
-    prependIsOpen.value = _prependIsOpen === 'true'
-  }
+  setTimeout(() => {
+    const _prependIsOpen = localStorage.getItem('prependIsOpen')
+    if (isEmpty(_prependIsOpen)) {
+      localStorage.setItem('prependIsOpen', 'true')
+      prependIsOpen.value = true
+    } else {
+      prependIsOpen.value = _prependIsOpen === 'true'
+    }
+  }, 120)
 })
 
 </script>
@@ -532,14 +533,14 @@ onMounted(() => {
               v-model="pageSize"
               validate-key="CustomTable:pageSize"
               type="select"
-              :label="i18nTranslate('loadCount', 'system')"
+              :label="i18nTranslate('loadCount', defaultModuleType)"
               :options="lazyLoadSizeOptions"
               direction="row"
               @change="onSizeChange"
             />
           </div>
           <div>
-            <label>{{ `${i18nTranslate('dataCount', 'system')}：${props.tableDataCount}` }}</label>
+            <label>{{ `${i18nTranslate('dataCount', defaultModuleType)}：${props.tableDataCount}` }}</label>
           </div>
         </template>
        <!-- 分頁 -->
@@ -549,7 +550,7 @@ onMounted(() => {
               v-model="pageSize"
               validate-key="CustomTable:pageSize"
               type="select"
-              :label="i18nTranslate('showCount', 'system')"
+              :label="i18nTranslate('showCount', defaultModuleType)"
               :options="sizeOptions"
               direction="row"
               @change="onSizeChange"
@@ -575,11 +576,11 @@ onMounted(() => {
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon"/>
-              <div class="text">{{ i18nTranslate('allData', 'system') }}</div>
+              <div class="text">{{ i18nTranslate('allData', defaultModuleType) }}</div>
             </div>
             <div class="__excel-item" @click="onExcelClick('page')">
               <CustomIcon type="far" name="file-lines" class="icon"/>
-              <div class="text">{{ i18nTranslate('pageData', 'system') }}</div>
+              <div class="text">{{ i18nTranslate('pageData', defaultModuleType) }}</div>
             </div>
           </div>
         </CustomPopover>
@@ -714,7 +715,7 @@ onMounted(() => {
         />
       </div>
       <div class="__table-pagination-right">
-        <span>{{ `${i18nTranslate('totalAmount', 'system')}：${props.tableDataCount}` }}</span>
+        <span>{{ `${i18nTranslate('totalAmount', defaultModuleType)}：${props.tableDataCount}` }}</span>
       </div>
     </div>
   </div>

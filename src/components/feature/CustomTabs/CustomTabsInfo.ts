@@ -53,7 +53,7 @@ export const props = {
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: 'iPASP_common',
+    default: 'system',
     description: `
       list:label 使用 i18nLabel 時套用的翻譯模組
     `

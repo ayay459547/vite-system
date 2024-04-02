@@ -3,6 +3,7 @@ import type { TableColumnCtx  } from 'element-plus'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export const version = '1.0.0'
 
@@ -74,7 +75,7 @@ export const props = {
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: 'iPASP_common',
+    default: defaultModuleType,
     description: 'i18nModule'
   },
   title: {
