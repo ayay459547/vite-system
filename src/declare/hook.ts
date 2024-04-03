@@ -82,11 +82,11 @@ export declare namespace UseHookReturn {
     options?: EventOptions
   ) => void
 
-  type swal = (options: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
+  type swal = (sweetAlertOptions: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 
-  type notification = (options: Partial<NotificationProps>) => NotificationHandle
+  type notification = (notificationProps: Partial<NotificationProps>) => NotificationHandle
 
-  type message = (options: Partial<MessageOptions>) => MessageHandler
+  type message = (messageOptions: Partial<MessageOptions>) => MessageHandler
 
   type permission = (permissionTotal?: string | null) => Permission
 

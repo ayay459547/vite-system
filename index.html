@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
-
 <head>
   <!-- <meta http-equiv="pragram" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
@@ -8,30 +7,32 @@
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>demo</title>
+  <title>iPASP</title>
 </head>
 
 <body>
   <div id="app"></div>
+
   <script type="module" src="/src/main.ts"></script>
   <script>
     (function () {
       // 確認打包版本
       function checkBuildVerison() {
-        console.log('[init] check build version')
         var buildVersion = localStorage.getItem('buildVersion')
         if (buildVersion === null) {
           console.log('[init] init build version')
           localStorage.setItem('buildVersion', 'v2000-01-01.1')
           location.reload(true)
         }
+        
+        console.log('[init] check build version：', buildVersion)
       }
 
       // 確認瀏覽器版本
       function checkBrowserVerison() {
         var userAgent = navigator.userAgent
-        console.log('[init] check browser')
-        console.log(userAgent)
+        
+        console.log('[init] check browser：', userAgent)
       }
 
       checkBuildVerison()

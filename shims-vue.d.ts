@@ -18,10 +18,7 @@ declare module '@/components.*' {
   export default content
 }
 
-declare module '*?b64' {
-  const b64: any
-  export default b64
-}
+declare module '*.xlsx?b64'
 
 declare module '*sheetjs' {
   const excel: any

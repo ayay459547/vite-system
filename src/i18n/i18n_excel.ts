@@ -13,7 +13,7 @@ import i18n from './i18n_table.xlsx?b64'
 import type { ScopeKey, ModuleType, ModuleLangMap } from './i18n_setting'
 import { defaultModuleLangMap, scopeList } from './i18n_setting'
 
-export const initTranslateSrcFile = () => {
+export const getTranslateSrcFile = () => {
   const wb = read(i18n)
   const ws = wb.Sheets[wb.SheetNames[0]]
   const moduleList = utils.sheet_to_json<ModuleType>(ws)
@@ -70,7 +70,7 @@ export const useGlobalI18n = (): GlobalI18n => {
   const i18nMap = shallowRef<Record<string, any>>(defaultModuleLangMap)
 
   const initModuleLangMap = () => {
-    const moduleLangMap = initTranslateSrcFile()
+    const moduleLangMap = getTranslateSrcFile()
 
     const _i18nMap = {}
     for (const _moduleType in moduleLangMap) {

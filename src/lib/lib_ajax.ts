@@ -1,10 +1,9 @@
 import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
-import Swal from 'sweetalert2'
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax'
-import { hasOwnProperty, isEmpty } from '@/lib/lib_utils'
+import { hasOwnProperty, isEmpty, swal } from '@/lib/lib_utils'
 import { updateToken } from '@/lib/lib_cookie'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
@@ -57,11 +56,14 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     (error) => {
       console.log('response error', error)
 
-      Swal.fire({
+      const status = error?.response?.status ?? ''
+      swal({
         icon: 'error',
         reverseButtons: true,
-        confirmButtonText: '確認',
-        title: 'Api Error',
+        title: `Api Error ${status}`,
+        showConfirmButton: false,
+        showCancelButton: false,
+        showDenyButton: false,
         text: error.message
       })
     }

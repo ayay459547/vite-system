@@ -34,7 +34,7 @@ export type LocalI18n = Partial<Composer & {
  */
 export const useLocalI18n = (i18nModule?: ScopeKey): LocalI18n => {
   const localI18n = useI18n({
-    useScope: 'local',
+    useScope: 'global',
     messages: {}
   }) as Partial<Composer>
 

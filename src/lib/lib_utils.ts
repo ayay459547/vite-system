@@ -1,7 +1,5 @@
 import { useSlots } from 'vue'
 
-import type { Composer, ComposerTranslation } from 'vue-i18n'
-import { useI18n } from 'vue-i18n'
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 
@@ -18,9 +16,6 @@ import { ElNotification, ElMessage } from 'element-plus'
 // import Utf8 from 'crypto-js/enc-utf8'
 import cryptoJS from 'crypto-js'
 import { v4 as uuidv4 } from 'uuid'
-
-import type { LangMap } from '@/i18n'
-import { getI18nMessages } from '@/i18n'
 
 /**
  * @author Caleb
@@ -254,10 +249,18 @@ export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
     // icon 類型
     // info, warning, success, error, question
     reverseButtons: true,
-    confirmButtonText: '確認',
-    confirmButtonColor: '#409eff',
-    showCancelButton: true,
-    cancelButtonText: '取消',
+
+    confirmButtonText: 'OK',
+    confirmButtonColor: '#409EFF',
+    showConfirmButton: false,
+
+    denyButtonText: 'No',
+    denyButtonColor: '#E6A23C',
+    showDenyButton: false,
+
+    cancelButtonText: 'Cancel',
+    cancelButtonColor: '#909399',
+    showCancelButton: false,
     ...options
   }
 
@@ -377,8 +380,9 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
     inline: 'nearest',
     ...options
   }
-  const re = new RegExp('Element')
+  if ([null, undefined].includes(el)) return
 
+  const re = new RegExp('Element')
   if (re.test(Object.prototype.toString.call(el))) {
     el.scrollIntoView(setting)
   } else {
@@ -386,33 +390,6 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
       '請給 html 的 dom 物件',
       `傳入參數: ${el} => ${getType(el)}`
     ])
-  }
-}
-
-export type I18nTranslate = ComposerTranslation
-export type I18nTest = (key: string) => boolean
-
-export type LocalI18n = Partial<Composer & {
-  i18nTranslate: I18nTranslate,
-  i18nTest: I18nTest
-}>
-/**
- * 廢棄不用 所有的翻譯在Excel中設定
- * @author Caleb
- * @description 針對區域 設定翻譯 不影響其他地方
- * @param {Object} langMap 設定key 對應的語言顯示的資料
- * @returns {Object} 翻譯工具
- */
-export const useLocalI18n = (langMap: LangMap): LocalI18n => {
-  const localI18n = useI18n({
-    useScope: 'local',
-    messages: getI18nMessages(langMap)
-  }) as Partial<Composer>
-
-  return {
-    ...localI18n,
-    i18nTranslate: localI18n.t,
-    i18nTest: localI18n.te
   }
 }
 

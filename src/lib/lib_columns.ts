@@ -4,6 +4,7 @@ import { reactive, shallowReactive, ref, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
 import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -24,6 +25,7 @@ export interface FormSetting<T> {
   columns: Record<string, any>
   forms: T
   activeForms: Record<string, boolean>
+  resetForms: (defaultValue?: Partial<T> | any) => void
   reset: (defaultValue?: Partial<T> | any) => void
   getActiveForms: (isShowEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
@@ -111,6 +113,20 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
     columns: resColumns,
     forms: resForms as T,
     activeForms: resActiveForms,
+    // 驗證不會 reset
+    resetForms: (defaultValue?: Partial<T> | any) => {
+      resForms.$forEach((value: any, key: string) => {
+        resForms[key] = resColumns[key]?.default ?? null
+        if (
+          !isEmpty(defaultValue) &&
+          hasOwnProperty(defaultValue, key) &&
+          !isEmpty(defaultValue[key])
+        ) {
+          resForms[key] = defaultValue[key]
+        }
+      })
+    },
+    // 驗證也會 reset
     reset: (defaultValue?: Partial<T> | any) => {
       resForms.$forEach((value: any, key: string) => {
         resForms[key] = resColumns[key]?.default ?? null
@@ -146,15 +162,18 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
 
       refMap.$forEach((input: InputRefItem) => {
         const { key, value, validate, getDom } = input
-
-        validateList.push(validate())
-        validateInput.push({
-          key,
-          value,
-          input,
-          el: getDom(),
-          getDom
-        })
+        // 只用有顯示的 input 才會被驗證
+        const el = getDom()
+        if (!isEmpty(el)) {
+          validateList.push(validate())
+          validateInput.push({
+            key,
+            value,
+            input,
+            el,
+            getDom
+          })
+        }
       })
 
       await Promise.all(validateList).then(resList => {
@@ -165,7 +184,6 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
               errors,
               valid
           }
-
           if (valid) {
             successList.push(validateRes)
           } else {
@@ -446,7 +464,7 @@ export const useTableSetting = (
     isHiddenExcel = false,
     tableSize = '',
     selection = false,
-    i18nModule = 'system'
+    i18nModule = defaultModuleType
   } = options
 
   // 設定 table 用的 column

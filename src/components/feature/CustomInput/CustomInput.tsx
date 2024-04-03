@@ -417,8 +417,12 @@ const CustomInput = defineComponent({
       const res = {}
       slotList.forEach(slotName => {
         if (!isEmpty(slots[slotName])) {
-          res[slotName] = () => {
-            return renderSlot(slots, slotName)
+          res[slotName] = (scope: any) => {
+            if (typeof slots[slotName] === 'function') {
+              return slots[slotName](scope)
+            } else {
+              return renderSlot(slots, slotName, scope)
+            }
           }
         }
       })

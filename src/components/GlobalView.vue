@@ -344,7 +344,15 @@ provide<UseHook>('useHook', (options) => {
       })
       queueId.value++
     },
-    swal,
+    swal: (sweetAlertOptions) => {
+      return swal({
+        confirmButtonText: i18nTranslate('confirm-yes'),
+        showConfirmButton: true,
+        cancelButtonText: i18nTranslate('confirm-no'),
+        showCancelButton: true,
+        ...sweetAlertOptions
+      })
+    },
     notification,
     message,
     permission: (routeName = null) => {
