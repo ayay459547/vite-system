@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 
-import type { AjaxOptions } from '@/declare/ajax'
+import type { AjaxOptions, ApiStatus } from '@/declare/ajax'
 import { hasOwnProperty, isEmpty, swal } from '@/lib/lib_utils'
 import { updateToken } from '@/lib/lib_cookie'
 
@@ -136,6 +136,47 @@ export const ajax = <ResData>(
       } else {
         return axiosApi<ResData>(config, baseURL)
       }
+  }
+}
+
+export type ApiResponseOptions = {
+  status: ApiStatus
+  msg?: string
+
+  isGetData?: boolean
+  successData?: any
+  errorData?: any
+}
+/**
+ * @author Caleb
+ * @description 統一 Api 回傳資料格式
+ * @param options 設定
+ */
+export const getApiResponse = <T>(options: ApiResponseOptions): T => {
+  const {
+    status,
+    msg = '',
+    isGetData = false,
+    successData,
+    errorData
+  } = options
+
+  const isSuccess = [true, 'success'].includes(status)
+
+  if (isSuccess) {
+    return isGetData ? successData : {
+      icon: 'success',
+      status: 'success',
+      title: 'createSuccess',
+      msg: ''
+    }
+  } else {
+    return isGetData ?  errorData : {
+      icon: 'error',
+      status: 'error',
+      title: 'createError',
+      msg
+    }
   }
 }
 
