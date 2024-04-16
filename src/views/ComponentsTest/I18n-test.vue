@@ -4,17 +4,18 @@ import { useI18n } from 'vue-i18n'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomTabs } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_hook'
 
 const { t: testT } = useI18n()
 
-const { i18nTranslate: pageTranslate } = useLocalI18n({
-  search123: {
-    zhTw: '搜尋ZhTw',
-    zhCn: '搜尋ZhCn',
-    en: 'search777'
-  }
-})
+const { i18nTranslate: pageTranslate } = useLocalI18n()
+// const { i18nTranslate: pageTranslate } = useLocalI18n({
+//   search123: {
+//     zhTw: '搜尋ZhTw',
+//     zhCn: '搜尋ZhCn',
+//     en: 'search777'
+//   }
+// })
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()

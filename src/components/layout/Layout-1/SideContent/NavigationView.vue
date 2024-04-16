@@ -9,6 +9,7 @@ import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomScrollbar } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+import { isEmpty } from '@/lib/lib_utils'
 
 import SubNavigationView from './SubNavigationView.vue'
 
@@ -65,11 +66,11 @@ const changeMap = (name: string): void => {
 }
 
 // 第二層子路由預設全部打開
-const setLevel2Router = (level2Router: Navigation): void => {
-  const { leaves } = level2Router
+const setLevel2Router = (level1Router: Navigation): void => {
+  const { leaves } = level1Router
 
   level2IsOpen.value = true
-  level2Nav.value = level2Router
+  level2Nav.value = level1Router
   level2List.value = leaves
 
   leaves.forEach(leaf => {
@@ -78,13 +79,32 @@ const setLevel2Router = (level2Router: Navigation): void => {
     }
   })
 }
+// 切換第二層是否打開
 const setOpen = (value: boolean) => {
   level2IsOpen.value = value
+}
+// 點擊麵包屑切換第二層路由
+const breadCrumbSetLevel2 = (breadCrumb: string[]) => {
+  const [level1Name, level2Name, level3Name] = breadCrumb
+
+  const level1Router = props.level1List.find(level1Item => {
+    return level1Item.name === level1Name
+  })
+
+  if (!isEmpty(level1Router) && !isEmpty(level2Name)) {
+    setLevel2Router(level1Router)
+    level2IsOpen.value = true
+
+  }
+  if (!isEmpty(level3Name) && !isEmpty(level2Name)) {
+    level2OpenMap.value[level2Name] = true
+  }
 }
 
 defineExpose({
   setLevel2Router,
-  setOpen
+  setOpen,
+  breadCrumbSetLevel2
 })
 
 </script>

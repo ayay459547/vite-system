@@ -12,14 +12,14 @@ import {
   GroupSearch,
   CustomSearch
 } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_hook'
 import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
 import type { TableOptions } from '@/lib/lib_columns'
 
-import i18nMessage from './i18n'
+// import i18nMessage from './i18n'
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
 import { columnSetting, childColumnSetting } from './columns'
@@ -29,7 +29,8 @@ import UpdateModel from './Components/UpdateModel.vue'
 
 const useHook: UseHook = inject('useHook')
 const { swal, loading, eventList } = useHook()
-const { i18nTranslate } = useLocalI18n(i18nMessage)
+// const { i18nTranslate } = useLocalI18n(i18nMessage)
+const { i18nTranslate } = useLocalI18n()
 
 // 權限
 const routesStore = useRoutesStore()

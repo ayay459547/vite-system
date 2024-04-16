@@ -3,8 +3,8 @@ import { ref, shallowRef, inject, reactive, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
+import { useLocalI18n } from '@/lib/lib_hook'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
 import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
@@ -13,7 +13,7 @@ import type { TableOptions } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData, deleteData } from './api'
 import { columnSetting } from './columns'
-import i18nMessage from './i18n'
+// import i18nMessage from './i18n'
 
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModal from './Components/UpdateModal.vue'
@@ -21,7 +21,8 @@ import UpdateModal from './Components/UpdateModal.vue'
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, swal, loading, eventList } = useHook()
 
-const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
+// const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
+const { i18nTranslate: pageTranslate } = useLocalI18n()
 
 // 權限
 const routesStore = useRoutesStore()

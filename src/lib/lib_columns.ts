@@ -526,9 +526,25 @@ export const useTableSetting = (
       resColumns.push(temp)
     }
   })
+
+
   // excel header 翻譯
-  const useHook: UseHook = inject('useHook')
-  const { i18nTranslate } = useHook({ i18nModule })
+  const getI18nTranslate = () => {
+    if(isHiddenExcel) return {
+      i18nTranslate: (o: string) => { return o },
+      i18nTest: (o: string) => { return o.length > 0 }
+    }
+
+    const useHook: UseHook = inject('useHook')
+    const { i18nTranslate, i18nTest } = useHook({ i18nModule })
+
+    return {
+      i18nTranslate,
+      i18nTest
+    }
+  }
+
+  const {i18nTranslate, i18nTest} = getI18nTranslate()
 
   // 依據表單 及傳入資料 下載 excel
   const downloadExcel = async (tableData: Record<string, any>[], options?: WorkbookOptions) => {
@@ -577,7 +593,7 @@ export const useTableSetting = (
 
           const align = _currentColumn?.align ?? 'left'
           excelColumns.push({
-            header: i18nTranslate(columnI18nLabel ?? columnLabel),
+            header: i18nTest(columnI18nLabel ?? '') ? i18nTranslate(columnI18nLabel) : columnLabel,
             key: columnKey,
             hidden: !isShow,
             style: {
@@ -605,6 +621,8 @@ export const useTableSetting = (
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
       })
+
+      // a.download = `${title}.xlsx`
       a.download = `${i18nTranslate(i18nTitle ?? title) ?? ''}.xlsx`
       a.href = URL.createObjectURL(blobData)
       a.click()

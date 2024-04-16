@@ -3,21 +3,22 @@ import { ref, shallowRef, reactive, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
-import { useLocalI18n } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_hook'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/lib/lib_columns'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'
 import { columnSetting } from './columns'
-import i18nMessage from './i18n'
+// import i18nMessage from './i18n'
 
 import DetailModal from './Components/DetailModal.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()
 
-const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
+// const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
+const { i18nTranslate: pageTranslate } = useLocalI18n()
 
 // table
 const tableData = shallowRef<TableData[]>([])

@@ -107,15 +107,23 @@ defineExpose({
 })
 
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
-  if (targetRoutePath.length === 0) return
+  if (targetRoutePath.length === 0) {
+    tempIsOpen.value = false
+    sideRef.value?.setOpen(false)
+  }
 
   // level1 被點擊
   if (targetRoutePath.length === 1) {
+    tempIsOpen.value = true
     sideRef.value?.setOpen(false)
-
-  // level2 level3 被點擊
+  // level2 被點擊
+  } else if (targetRoutePath.length === 2) {
+    tempIsOpen.value = true
+    sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
+  // level3 被點擊
   } else {
-    sideRef.value?.setOpen(true)
+    tempIsOpen.value = true
+    sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
   }
 }
 

@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 
-import type { AjaxOptions, ApiStatus } from '@/declare/ajax'
+import type { AjaxOptions } from '@/declare/ajax'
 import { hasOwnProperty, isEmpty, swal } from '@/lib/lib_utils'
 import { updateToken } from '@/lib/lib_cookie'
 

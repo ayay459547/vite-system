@@ -79,6 +79,11 @@ defineExpose({
     if (navRef.value) {
       navRef.value.setOpen(value)
     }
+  },
+  breadCrumbSetLevel2: (breadCrumb: string[]) => {
+    if (navRef.value) {
+      navRef.value.breadCrumbSetLevel2(breadCrumb)
+    }
   }
 })
 
@@ -127,7 +132,7 @@ defineExpose({
 
 @mixin navStyle ($isOpen) {
   @if ($isOpen) {
-    min-width: $nav-width - $nav-padding;
+    min-width: $nav-width;
     transition-delay: 0.2s;
     .side-logo .open,
     .side-footer .open {
