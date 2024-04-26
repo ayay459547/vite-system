@@ -3,21 +3,29 @@ import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
-import { getFileType, byteConvert, readImage, readExcel } from '@/lib/lib_files'
+import {
+  getFileType,
+  byteConvert,
+  // readExcel,
+  readImage
+} from '@/lib/lib_files'
 import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Info, FilesInfo, FileType } from './CustomUploadInfo'
 import {
   version,
   props as uploadProps,
-  fileTypeMap
+  fileTypeMap,
+  getIcon,
+  getIconClass
 } from './CustomUploadInfo'
 
 import FilesView from './FilesView.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const scopedId = getUuid('__i-upload__')
@@ -32,8 +40,14 @@ const active = ref(false)
 const targetList: File[] = []
 const files = ref<FilesInfo>([])
 
+/**
+ * 確認檔案類型是否符合條件
+ * @param {Array} _files 檔案列表
+ * @param fileType 類型
+ * @returns {Boolean} 是否符合
+ */
 const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
-  if (isEmpty(props.type)) return true
+  if (isEmpty(fileType) || fileType === 'file') return true
 
   return _files.every(_file => {
     if (fileTypeMap[fileType].includes(_file.type)) return true
@@ -41,8 +55,10 @@ const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
   })
 }
 
+// 能顯示的數量 (能上傳的數量)
 const showCount = ref(1)
 const isLoading = ref(false)
+// 初始化檔案的資料
 const initFilesData = async (target: FileList) => {
   isLoading.value = true
   if (props.overwrite) {
@@ -97,7 +113,7 @@ const initFilesData = async (target: FileList) => {
         info.src = await readImage(_target)
         break
       case 'excel':
-        info.excel = await readExcel(_target)
+        // info.excel = await readExcel(_target)
         break
       case 'word':
         break
@@ -217,17 +233,6 @@ const onClick = () => {
   input.addEventListener('change', handleFiles, false)
 }
 
-const getIcon = (type: string) => {
-  switch (type) {
-    case 'image': return 'image'
-    case 'excel': return 'file-excel'
-    case 'word': return 'file-word'
-    case '':
-    default:
-      return 'file'
-  }
-}
-
 defineExpose({
   getFormData () {
     const _formData = new FormData()
@@ -258,7 +263,10 @@ defineExpose({
       <div v-if="isEmpty(files)">
         <CustomEmpty :image-size="60">
           <template #image>
-            <CustomIcon :name="getIcon(props.type)"/>
+            <CustomIcon
+              :name="getIcon(props.type)"
+              :icon-class="getIconClass(props.type)"
+            />
           </template>
           <template #description>
             <!-- <span>{{ i18nTranslate(props.type) }}</span> -->

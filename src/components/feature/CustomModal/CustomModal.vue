@@ -2,7 +2,7 @@
 import { ref, inject, computed, watch, effectScope, onBeforeMount, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook'
 import { useBoundingClientRect } from '@/lib/lib_hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
@@ -18,7 +18,7 @@ import {
 } from './CustomModalInfo'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
+const { swal, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
@@ -393,6 +393,17 @@ const clickOutside = () => {
   }
 }
 
+const onCloseAllClick = () => {
+  swal({
+    title: '確定所有關閉視窗',
+    icon: 'question'
+  }).then(async (result: SwalResult) => {
+    if (result.isConfirmed) {
+      customModalStore.clearModal()
+    }
+  })
+}
+
 onBeforeMount(() => {
   // 如果一開始 綁定的值是 true 先設定 index
   if (props.modelValue) {
@@ -499,7 +510,7 @@ onUnmounted(() => {
                     :label="i18nTranslate('closeAll')"
                     type="danger"
                     icon-name="close"
-                    @click="customModalStore.clearModal"
+                    @click="onCloseAllClick"
                   />
                 </template>
               </CustomTooltip>

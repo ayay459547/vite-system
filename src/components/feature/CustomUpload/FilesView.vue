@@ -5,6 +5,7 @@ import { CustomIcon, CustomImage, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 
 import type { FilesInfo } from './CustomUploadInfo'
+import { getIcon, getIconClass } from './CustomUploadInfo'
 
 const props = defineProps({
   multiple: {
@@ -28,22 +29,6 @@ const previewSrcList = computed(() => {
     return item.src
   })
 })
-
-const getIcon = (fileType: string) => {
-  switch (fileType) {
-    case 'word': return 'file-word'
-    case 'excel': return 'file-excel'
-    case 'powerpoint': return 'file-powerpoint'
-    case 'pdf': return 'file-pdf'
-    case 'csv': return 'file-csv'
-    case 'audio': return 'file-audio'
-    case 'video': return 'file-video'
-    case 'code': return 'file-code'
-    case 'image': return 'file-image'
-    case 'zip': return 'file-zipper'
-    default: return 'file'
-  }
-}
 
 </script>
 
@@ -70,6 +55,7 @@ const getIcon = (fileType: string) => {
               class="icon"
               :class="`file-${file.fileType}`"
               :name="getIcon(file.fileType)"
+              :icon-class="getIconClass(file.fileType)"
             />
           </div>
 

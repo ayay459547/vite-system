@@ -216,6 +216,11 @@ const excelDataToMap = (excelData: any[]) => {
   }
   return resExcelData
 }
+/**
+ * 讀取Excel檔案的資料
+ * @param {File} file 檔案
+ * @returns {Object} Excel 的資料
+ */
 export const readExcel = async (file: File): Promise<any> => {
   const reader = new FileReader()
   return new Promise((resolve) => {
@@ -239,7 +244,8 @@ export const readExcel = async (file: File): Promise<any> => {
       }
       resolve(excel[0] ?? [])
     }
-    reader.readAsBinaryString(file)
+    // reader.readAsBinaryString(file)
+    reader.readAsArrayBuffer(file)
   })
 }
 
