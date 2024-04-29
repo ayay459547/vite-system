@@ -545,3 +545,17 @@ export const reverse = (list: Array<any>): Array<any> => {
   const temp = list.shift()
   return [...reverse(list), temp]
 }
+
+/**
+ * @author Caleb
+ * @description 等待時間:可配合 async await 使用
+ * @param time 等待時間(毫秒)
+ * @returns {Number} 等待時間
+ */
+export const awaitTime = (time: number): Promise<number> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(time)
+    }, time)
+  })
+}

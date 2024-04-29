@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
@@ -12,11 +12,12 @@ import {
 import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { Info, FilesInfo, FileType } from './CustomUploadInfo'
+import type { Info, FilesInfo } from './CustomUploadInfo'
 import {
   version,
   props as uploadProps,
-  fileTypeMap,
+  // fileTypeMap,
+  getFileTypeList,
   getIcon,
   getIconClass
 } from './CustomUploadInfo'
@@ -40,17 +41,24 @@ const active = ref(false)
 const targetList: File[] = []
 const files = ref<FilesInfo>([])
 
+const limitTypeList = computed(() => {
+  if (isEmpty(props.limitType)) return []
+
+  const _limitType = Array.isArray(props.limitType) ? props.limitType : [props.limitType]
+  return getFileTypeList(_limitType)
+})
+
 /**
  * 確認檔案類型是否符合條件
  * @param {Array} _files 檔案列表
  * @param fileType 類型
  * @returns {Boolean} 是否符合
  */
-const checkFilesType = (_files: Array<File>, fileType: FileType): boolean => {
-  if (isEmpty(fileType) || fileType === 'file') return true
+const checkFilesType = (_files: Array<File>): boolean => {
+  if (isEmpty(props.limitType)) return true
 
   return _files.every(_file => {
-    if (fileTypeMap[fileType].includes(_file.type)) return true
+    if (limitTypeList.value.includes(_file.type)) return true
     return false
   })
 }
@@ -78,7 +86,7 @@ const initFilesData = async (target: FileList) => {
     return
   }
 
-  if (!checkFilesType(Array.from(target), props.type)) {
+  if (!checkFilesType(Array.from(target))) {
     swal({
       icon: 'error',
       title: '上傳檔案失敗',
@@ -201,21 +209,7 @@ const onClick = () => {
   const input = document.createElement('input')
   input.type = 'file'
   input.multiple = props.multiple
-
-  switch (props.type) {
-    case 'image':
-      input.accept = fileTypeMap.image.join(', ')
-      break
-    case 'word':
-      input.accept = fileTypeMap.word.join(', ')
-      break
-    case 'excel':
-      input.accept = ''
-      break
-    default:
-      input.accept = ''
-      break
-  }
+  input.accept = limitTypeList.value.join(', ')
 
   input.style.display = 'none'
   document.body.appendChild(input)
@@ -264,12 +258,11 @@ defineExpose({
         <CustomEmpty :image-size="60">
           <template #image>
             <CustomIcon
-              :name="getIcon(props.type)"
-              :icon-class="getIconClass(props.type)"
+              name="file-arrow-up"
+              :icon-class="getIconClass('file')"
             />
           </template>
           <template #description>
-            <!-- <span>{{ i18nTranslate(props.type) }}</span> -->
           </template>
         </CustomEmpty>
       </div>
@@ -282,7 +275,7 @@ defineExpose({
       </div>
 
       <CustomButton
-        :label="`${i18nTranslate('select')}${i18nTranslate(props.type)}`"
+        :label="`${i18nTranslate('select')}${i18nTranslate('file')}`"
         icon-name="cloud-arrow-up"
         size="large"
         type="primary"

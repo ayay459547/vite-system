@@ -18,12 +18,12 @@ export interface FileInfo extends Partial<File>, Info {
 export type FilesInfo = Array<FileInfo>
 
 export const props = {
-  type: {
-    type: String as PropType<FileType>,
-    required: false,
-    default: 'file',
-    description: '上傳類型'
-  },
+  // type: {
+  //   type: String as PropType<FileType>,
+  //   required: false,
+  //   default: 'file',
+  //   description: '上傳類型'
+  // },
   overwrite: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -68,6 +68,16 @@ export const fileTypeMap = {
   json: [
     'application/json'
   ]
+}
+/**
+ * 取得所有檔案類型
+ * @param fileTypeList 類型名稱
+ * @returns {Array} 所有檔案類型
+ */
+export const getFileTypeList = (fileTypeList: FileType[]): string[] => {
+  return fileTypeList.reduce((res, fileType) => {
+    return [...res, ...fileTypeMap[fileType]]
+  }, [])
 }
 
 // 取得圖示
