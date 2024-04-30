@@ -1,6 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
+    // "shims-vue.d.ts",
     "vite-env-override.d.ts",
     "./src/**/*.ts",
     "./src/**/*.tsx",

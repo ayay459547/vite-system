@@ -13,7 +13,11 @@
 
 ### 安裝套件
 ```sh
-npm install
+npm install -l
+```
+### 代碼檢查
+```sh
+npm run type-check
 ```
 ### 運行開發環境
 ```sh
@@ -23,9 +27,13 @@ npm run dev
 ```sh
 npm run pro
 ```
-### 打包
+### 打包開發環境
 ```sh
-npm run build
+npm run build-only:dev
+```
+### 打包上線環境
+```sh
+npm run build-only:pro
 ```
 
 ### 單元測試

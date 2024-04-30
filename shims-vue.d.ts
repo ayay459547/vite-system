@@ -18,8 +18,6 @@ declare module '@/components.*' {
   export default content
 }
 
-declare module '*.xlsx?b64'
-
 declare module '*sheetjs' {
   const excel: any
   export default excel
@@ -29,7 +27,7 @@ declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'
 
-declare global {
+declare module Global {
   interface Object {
     $forEach (callback: Function, thisArg?: any): void
     $map (callback: Function, thisArg?: any): any

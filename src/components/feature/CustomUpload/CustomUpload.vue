@@ -18,7 +18,7 @@ import {
   props as uploadProps,
   // fileTypeMap,
   getFileTypeList,
-  getIcon,
+  // getIcon,
   getIconClass
 } from './CustomUploadInfo'
 
