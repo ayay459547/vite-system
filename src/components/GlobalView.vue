@@ -248,7 +248,7 @@ const initSystem = async () => {
 const layoutIsShow = ref(false)
 const initNavigationRoutes = async () => {
   layoutIsShow.value = false
-  await checkInitIdb()
+  checkInitIdb()
 
   await initSystemData()
 
