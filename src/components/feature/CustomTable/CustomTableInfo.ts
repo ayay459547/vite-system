@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { TableColumnCtx  } from 'element-plus'
+import type { TableColumnCtx } from 'element-plus'
 
 import type { TableColumnsItem } from '@/lib/lib_columns'
 import type { ScopeKey } from '@/i18n/i18n_setting'
@@ -39,32 +39,41 @@ export interface TableParams {
 export type TableSize = '' | 'large' | 'default' | 'small'
 
 // props
-export type SpanMethod = (
-  (data: {
-    row: any,
-    column: TableColumnCtx<any>,
-    rowIndex: number,
-    columnIndex: number
-  }, ...payload: any[]) => number[] | { rowspan: number, colspan: number } | void
-) | null
+export type SpanMethod =
+  | ((
+      data: {
+        row: any
+        column: TableColumnCtx<any>
+        rowIndex: number
+        columnIndex: number
+      },
+      ...payload: any[]
+    ) => number[] | { rowspan: number; colspan: number } | void)
+  | null
 
-type RowCallback<T> = (
-  (data: {
-    row: any,
-    rowIndex: number
-  }, ...payload: any[]) => T
-) | null
+type RowCallback<T> =
+  | ((
+      data: {
+        row: any
+        rowIndex: number
+      },
+      ...payload: any[]
+    ) => T)
+  | null
 export type RowClassName = RowCallback<string>
 export type RowStyle = RowCallback<Record<string, any>>
 
-type CellCallback<T> = (
-  (data: {
-    row: any,
-    column: TableColumnCtx<any>,
-    rowIndex: number,
-    columnIndex: number
-  }, ...payload: any[]) => T
-) | null
+type CellCallback<T> =
+  | ((
+      data: {
+        row: any
+        column: TableColumnCtx<any>
+        rowIndex: number
+        columnIndex: number
+      },
+      ...payload: any[]
+    ) => T)
+  | null
 export type CellClassName = CellCallback<string>
 export type CellStyle = CellCallback<Record<string, any>>
 
@@ -278,7 +287,12 @@ export const props = {
 export type RowClick = (row: any, column: any, event: Event) => void
 export type HeaderClick = (column: any, event: Event) => void
 export type ExpandChange = (row: any, expanded: boolean) => void
-export type HeaderDragend = (newWidth: number, oldWidth: number, column: any, event: MouseEvent) => void
+export type HeaderDragend = (
+  newWidth: number,
+  oldWidth: number,
+  column: any,
+  event: MouseEvent
+) => void
 
 export type Select = <T = any>(selection: T[], row: T) => void
 export type SelectAll = (selection: any[]) => void

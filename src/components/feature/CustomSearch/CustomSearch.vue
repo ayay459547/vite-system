@@ -4,20 +4,11 @@ import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
-import {
-  CustomPopover,
-  CustomSwitch,
-  CustomInput,
-  CustomButton,
-  CustomBadge
-} from '@/components'
+import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge } from '@/components'
 import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
 import type { ModelValue } from './CustomSearchInfo'
-import {
-  version,
-  props as searchProps
-} from './CustomSearchInfo'
+import { version, props as searchProps } from './CustomSearchInfo'
 
 const scopedId = getUuid('__i-search__')
 
@@ -44,10 +35,10 @@ const { i18nTranslate, i18nTest } = useHook({
 })
 
 const inpuValue = computed({
-  get () {
+  get() {
     return props.modelValue
   },
-  set (value: ModelValue) {
+  set(value: ModelValue) {
     emit('update:modelValue', value)
   }
 })
@@ -57,10 +48,10 @@ const inpuValue = computed({
 // }
 
 const isActive = computed({
-  get () {
+  get() {
     return props.active
   },
-  set (value: boolean) {
+  set(value: boolean) {
     onVisibleClick(false)
     emit('change', inpuValue.value)
     emit('update:active', value)
@@ -81,17 +72,17 @@ const iconSearchRef = ref()
 const searchRef = ref()
 
 const isVisible = computed({
-  get () {
+  get() {
     const _isVisible = activeScopedIdSet.value.has(scopedId)
     if (_isVisible) {
       openListenerSize()
     } else {
-      window.removeEventListener('resize', resizeEvent )
+      window.removeEventListener('resize', resizeEvent)
     }
 
     return _isVisible
   },
-  async set (v: boolean) {
+  async set(v: boolean) {
     if (v) {
       customSearchStore.setActiveScopedId(scopedId)
 
@@ -222,10 +213,15 @@ const onEvent = {
 const slots = useSlots()
 const slotList = computed(() => {
   return [
-    'prepend', 'append',
-    'prefix', 'suffix',
-    'header', 'footer', 'empty',
-    'default', 'range-separator',
+    'prepend',
+    'append',
+    'prefix',
+    'suffix',
+    'header',
+    'footer',
+    'empty',
+    'default',
+    'range-separator',
     'option'
   ].filter(slotName => {
     return hasOwnProperty(slots, slotName)
@@ -233,11 +229,11 @@ const slotList = computed(() => {
 })
 
 defineExpose({
-  async validate () {
+  async validate() {
     await nextTick()
     return { valid: true }
   },
-  getDom () {
+  getDom() {
     return document.querySelector(`.${scopedId}`)
   }
 })
@@ -245,7 +241,6 @@ defineExpose({
 const translateLabel = computed(() => {
   return i18nTest(props?.i18nLabel) ? i18nTranslate(props.i18nLabel) : props.label
 })
-
 </script>
 
 <template>
@@ -257,11 +252,7 @@ const translateLabel = computed(() => {
           <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
         </slot>
 
-        <CustomPopover
-          :visible="isVisible"
-          :width="props.width"
-          :placement="props.placement"
-        >
+        <CustomPopover :visible="isVisible" :width="props.width" :placement="props.placement">
           <div>
             <div class="__search-title">
               <slot name="search-label">
@@ -276,11 +267,7 @@ const translateLabel = computed(() => {
               v-bind="bindAttributes"
               v-on="onEvent"
             >
-              <template
-                v-for="slotName in slotList"
-                :key="slotName"
-                #[slotName]
-              >
+              <template v-for="slotName in slotList" :key="slotName" #[slotName]>
                 <slot :name="slotName"></slot>
               </template>
             </CustomInput>
@@ -288,18 +275,9 @@ const translateLabel = computed(() => {
           <template #reference>
             <div @click="onVisibleClick(!isVisible)">
               <CustomBadge v-if="isDot" is-dot>
-                <CustomButton
-                  icon-name="magnifying-glass"
-                  circle
-                  text
-                />
+                <CustomButton icon-name="magnifying-glass" circle text />
               </CustomBadge>
-              <CustomButton
-                v-else
-                icon-name="magnifying-glass"
-                circle
-                text
-              />
+              <CustomButton v-else icon-name="magnifying-glass" circle text />
             </div>
           </template>
         </CustomPopover>
@@ -314,17 +292,8 @@ const translateLabel = computed(() => {
         <CustomSwitch v-model="isActive" />
       </div>
 
-      <CustomInput
-        ref="searchRef"
-        v-model="inpuValue"
-        v-bind="bindAttributes"
-        v-on="onEvent"
-      >
-        <template
-          v-for="slotName in slotList"
-          :key="slotName"
-          #[slotName]
-        >
+      <CustomInput ref="searchRef" v-model="inpuValue" v-bind="bindAttributes" v-on="onEvent">
+        <template v-for="slotName in slotList" :key="slotName" #[slotName]>
           <slot :name="slotName"></slot>
         </template>
       </CustomInput>

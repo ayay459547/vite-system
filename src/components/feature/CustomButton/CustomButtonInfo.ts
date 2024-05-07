@@ -5,8 +5,8 @@ import type { IconType } from '@/components'
 export const version = '1.0.0'
 
 export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
-export type ButtonSize = 'large'| 'default'| 'small'
-export type ButtonMove = 'none' | 'translate'| 'rotate' | 'scale'
+export type ButtonSize = 'large' | 'default' | 'small'
+export type ButtonMove = 'none' | 'translate' | 'rotate' | 'scale'
 export type ButtonIconType = 'fas' | 'far' | 'fab'
 
 export enum ElType {
@@ -86,13 +86,13 @@ export const props = {
     description: '讀取中(無法點擊)'
   },
   color: {
-    type: String as PropType<string |  undefined>,
+    type: String as PropType<string | undefined>,
     required: false,
     default: undefined,
     description: '顏色'
   },
   textColor: {
-    type: String as PropType<string |  undefined>,
+    type: String as PropType<string | undefined>,
     required: false,
     default: undefined,
     description: '文字顏色'

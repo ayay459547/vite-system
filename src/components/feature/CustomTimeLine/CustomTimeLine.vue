@@ -4,10 +4,7 @@ import { ElTimeline, ElTimelineItem } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as timeLineProps
-} from './CustomTimeLineInfo'
+import { version, props as timeLineProps } from './CustomTimeLineInfo'
 
 const scopedId = getUuid('__i-time-line__')
 
@@ -17,7 +14,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

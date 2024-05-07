@@ -5,10 +5,7 @@ import { ElSwitch } from 'element-plus'
 import { getUuid } from '@/lib/lib_utils'
 
 import type { ModelValue } from './CustomSwitchInfo'
-import {
-  version,
-  props as switchProps
-} from './CustomSwitchInfo'
+import { version, props as switchProps } from './CustomSwitchInfo'
 
 const scopedId = getUuid('__i-switch__')
 
@@ -19,15 +16,11 @@ const tempValue = computed<ModelValue>({
   set: (value: ModelValue) => emit('update:modelValue', value)
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const onSwitchChange = (value: boolean) => {
   emit('change', value)
 }
-
 </script>
 
 <template>

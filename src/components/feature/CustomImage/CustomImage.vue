@@ -4,18 +4,13 @@ import { ElImage } from 'element-plus'
 
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as imageProps
-} from './CustomImageInfo'
+import { version, props as imageProps } from './CustomImageInfo'
 
 const scopedId = getUuid('__i-image__')
 
 const props = defineProps(imageProps)
 
-const emit = defineEmits([
-  'load', 'error', 'switch', 'close', 'show'
-])
+const emit = defineEmits(['load', 'error', 'switch', 'close', 'show'])
 const onEvent = {
   load: (e: Event): void => emit('load', e),
   error: (e: Error): void => emit('error', e),
@@ -28,7 +23,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

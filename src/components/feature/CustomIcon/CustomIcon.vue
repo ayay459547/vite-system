@@ -3,10 +3,7 @@ import { computed } from 'vue'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as iconProps
-} from './CustomIconInfo'
+import { version, props as iconProps } from './CustomIconInfo'
 
 const scopedId = getUuid('__i-icon__')
 
@@ -16,7 +13,6 @@ const getIcon = computed(() => {
   if (props.icon.length > 0) return props.icon
   return [props.type, props.name]
 })
-
 </script>
 
 <template>

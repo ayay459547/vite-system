@@ -63,7 +63,7 @@ export const props = {
   style: {
     type: Object as PropType<Record<string, string>>,
     required: false,
-    default () {
+    default() {
       return {}
     },
     description: '外層style 類型為object 不能使用string'
@@ -77,7 +77,7 @@ export const props = {
   rowStyle: {
     type: Object as PropType<Record<string, string>>,
     required: false,
-    default () {
+    default() {
       return {}
     },
     description: '資料列style 類型為object 不能使用string'

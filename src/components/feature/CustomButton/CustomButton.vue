@@ -5,13 +5,7 @@ import { ElButton } from 'element-plus'
 import { CustomIcon } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  ElType,
-  ElSize,
-  FontIconType,
-  version,
-  props as buttonProps
-} from './CustomButtonInfo'
+import { ElType, ElSize, FontIconType, version, props as buttonProps } from './CustomButtonInfo'
 
 const scopedId = getUuid('__i-button__')
 
@@ -26,7 +20,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>
@@ -78,7 +71,6 @@ const hasSlot = (prop: string): boolean => {
     align-items: center;
   }
   &.size {
-
     &-large {
       .el-button {
         height: 36px;

@@ -56,7 +56,7 @@ const props = defineProps({
   },
   options: {
     type: Array as PropType<Options>,
-    default () {
+    default() {
       return [
         // { label: '=', value: 'equal' },
         // { label: '>', value: 'greatterThan' },
@@ -93,14 +93,7 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'clear',
-  'focus',
-  'blur',
-  'input',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'clear', 'focus', 'blur', 'input', 'change'])
 
 const isFocus = ref(false)
 
@@ -121,7 +114,7 @@ const onEvent = {
     await nextTick()
     // 300豪秒內沒有點在輸入框做事 就取消聚焦
     setTimeout(() => {
-      if(!isFocus.value) {
+      if (!isFocus.value) {
         emit('blur', e)
       }
     }, 300)
@@ -132,13 +125,13 @@ const onInputEvent = {
   input: (value: string | number): void => {
     isFocus.value = true
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
     emit('input', [_selectValue, value])
   },
   change: (value: any) => {
     isFocus.value = false
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [ _selectValue, _inputValue ] = [...props.modelValue] as  ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
 
     let _value = value
     // 數字
@@ -191,19 +184,18 @@ const onSelectEvent = {
   input: (value: string | number): void => {
     isFocus.value = true
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
     emit('input', [_selectValue, value])
   },
   change: (value: string) => {
     isFocus.value = false
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as  ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
     if (!isEmpty(value) && !isEmpty(_inputValue)) {
       emit('change', [value, _inputValue])
     }
   }
 }
-
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
@@ -226,20 +218,14 @@ const tempValue = customRef<ModelValue>((track, trigger) => {
 const selectValue = computed({
   get: () => props.modelValue[0],
   set: (value: OperatorOptions) => {
-    tempValue.value = [
-      value,
-      props.modelValue[1]
-    ]
+    tempValue.value = [value, props.modelValue[1]]
   }
 })
 
 const inputValue = computed({
   get: () => props.modelValue[1],
   set: (value: OperatorValue) => {
-    tempValue.value = [
-      props.modelValue[0],
-      value
-    ]
+    tempValue.value = [props.modelValue[0], value]
   }
 })
 
@@ -262,15 +248,10 @@ defineExpose({
     }
   }
 })
-
 </script>
 
 <template>
-  <div
-    class="__i-operator__"
-    :class="scopedId"
-    @click.stop
-  >
+  <div class="__i-operator__" :class="scopedId" @click.stop>
     <ElInput
       ref="elInputRef"
       v-model="inputValue"
@@ -307,11 +288,7 @@ defineExpose({
                 :value="item.value"
               >
                 <template v-if="hasSlot('option')" #option>
-                  <slot
-                    name="option"
-                    :label="item.label"
-                    :value="item.value"
-                  >
+                  <slot name="option" :label="item.label" :value="item.value">
                     {{ item.label }}
                   </slot>
                 </template>

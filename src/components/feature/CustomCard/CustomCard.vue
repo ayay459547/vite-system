@@ -4,11 +4,7 @@ import { ElCard } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  ElShadow,
-  version,
-  props as cardProps
-} from './CustomCardInfo'
+import { ElShadow, version, props as cardProps } from './CustomCardInfo'
 
 const scopedId = getUuid('__i-card__')
 

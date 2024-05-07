@@ -101,13 +101,7 @@ const initFilesData = async (target: FileList) => {
     targetList.push(_target)
 
     const fileType = getFileType(_target)
-    const {
-      name,
-      type,
-      size,
-      lastModified,
-      webkitRelativePath
-    } = _target
+    const { name, type, size, lastModified, webkitRelativePath } = _target
 
     const info: Info = {
       src: '',
@@ -228,19 +222,18 @@ const onClick = () => {
 }
 
 defineExpose({
-  getFormData () {
+  getFormData() {
     const _formData = new FormData()
     for (const _target of targetList) {
       _formData.append('file', _target)
     }
     return _formData
   },
-  getFiles () {
+  getFiles() {
     const _files = getProxyData(files.value)
     return deepClone([], _files)
   }
 })
-
 </script>
 
 <template>
@@ -249,29 +242,17 @@ defineExpose({
     class="__upload-wrapper"
     :class="`CustomUpload_${version} ${scopedId}`"
   >
-    <div
-      ref="drag"
-      class="__upload-container"
-      :class="[{'__upload-active': active}]"
-    >
+    <div ref="drag" class="__upload-container" :class="[{ '__upload-active': active }]">
       <div v-if="isEmpty(files)">
         <CustomEmpty :image-size="60">
           <template #image>
-            <CustomIcon
-              name="file-arrow-up"
-              :icon-class="getIconClass('file')"
-            />
+            <CustomIcon name="file-arrow-up" :icon-class="getIconClass('file')" />
           </template>
-          <template #description>
-          </template>
+          <template #description> </template>
         </CustomEmpty>
       </div>
       <div v-else class="__upload-file">
-        <FilesView
-          :files="files"
-          :multiple="props.multiple"
-          @remove="remove"
-        />
+        <FilesView :files="files" :multiple="props.multiple" @remove="remove" />
       </div>
 
       <CustomButton

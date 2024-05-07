@@ -3,7 +3,7 @@ import type { PropType, Ref, CSSProperties } from 'vue'
 export const version = '1.0.0'
 
 export type AriaOrientation = 'horizontal' | 'vertical'
-export type OnScrollParams = { scrollLeft: number, scrollTop: number }
+export type OnScrollParams = { scrollLeft: number; scrollTop: number }
 
 export type HandleScroll = () => void
 export type ScrollTo = (options: ScrollToOptions | number, yCoord?: number) => void

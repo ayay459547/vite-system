@@ -5,10 +5,7 @@ import type { UseHook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as groupSearchProps
-} from './GroupSearchInfo'
+import { version, props as groupSearchProps } from './GroupSearchInfo'
 
 const scopedId = getUuid('__i-group-search__')
 
@@ -42,7 +39,6 @@ defineExpose({
     isShow.value = value
   }
 })
-
 </script>
 
 <template>
@@ -50,15 +46,11 @@ defineExpose({
     <CustomButton
       :label="i18nTranslate('filter')"
       icon-name="filter"
-      type='primary'
+      type="primary"
       @click="isShow = true"
     />
 
-    <CustomDrawer
-      v-model="isShow"
-      :size="props.size"
-      direction="ttb"
-    >
+    <CustomDrawer v-model="isShow" :size="props.size" direction="ttb">
       <template #header>
         <div class="__group-header">
           <label>{{ i18nTranslate('search') }}</label>
@@ -86,7 +78,6 @@ defineExpose({
                 :column="column"
               ></slot>
             </template>
-
           </template>
         </div>
       </template>
@@ -94,22 +85,22 @@ defineExpose({
       <template #footer>
         <div class="__group-footer">
           <CustomButton
-            icon-name='chevron-left'
-            icon-move='translate'
+            icon-name="chevron-left"
+            icon-move="translate"
             :label="i18nTranslate('return')"
             @click="isShow = false"
           />
           <CustomButton
-            icon-name='arrow-rotate-left'
-            icon-move='rotate'
-            type='warning'
+            icon-name="arrow-rotate-left"
+            icon-move="rotate"
+            type="warning"
             :label="i18nTranslate('reset')"
             @click="onResetClick"
           />
           <CustomButton
-            icon-name='search'
-            icon-move='scale'
-            type='success'
+            icon-name="search"
+            icon-move="scale"
+            type="success"
             :label="i18nTranslate('search')"
             @click="onSubmitClick"
           />
@@ -135,5 +126,4 @@ defineExpose({
     gap: 8px;
   }
 }
-
 </style>

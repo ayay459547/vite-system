@@ -18,7 +18,7 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
+const getSlot = (slotKey: string, type: 'header' | 'column'): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
@@ -41,7 +41,7 @@ const getColumnSlot = (slotKey: string): string => {
 const props = defineProps({
   modelValue: {
     type: Array as PropType<any[]>,
-    default () {
+    default() {
       return []
     }
   },
@@ -63,7 +63,7 @@ const props = defineProps({
   columnSetting: {
     type: Object as PropType<Record<string, any>>,
     required: true,
-    default () {
+    default() {
       return {}
     }
   },
@@ -100,11 +100,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'add',
-  'remove',
-  'update:modelValue'
-])
+const emit = defineEmits(['add', 'remove', 'update:modelValue'])
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -129,7 +125,9 @@ const add = () => {
   emit('add')
 
   nextTick(() => {
-    const lastRowClass = props.isDraggable ? '.__list-group-item:last-child' : '.__data-table-row:last-child'
+    const lastRowClass = props.isDraggable
+      ? '.__list-group-item:last-child'
+      : '.__data-table-row:last-child'
     const newEl = document.querySelector(`.${scopedId} ${lastRowClass}`)
     if (newEl) scrollToEl(newEl, { block: 'center' })
   })
@@ -159,11 +157,8 @@ onBeforeMount(() => {
     }
   }
 
-  if (
-    props.isRemove ||
-    props.isDraggable
-  ) {
-    afterColumn['row_operations'] = { label: '操作'  }
+  if (props.isRemove || props.isDraggable) {
+    afterColumn['row_operations'] = { label: '操作' }
     afterColumn['row_operations'][props.tableKey] = {
       width: 90,
       align: 'center',
@@ -172,23 +167,21 @@ onBeforeMount(() => {
   }
 
   // 依原來欄位設定跑 slot 迴圈
-  const {
-    tableColumns: _tableColumns
-  } = useSimpleTableSetting(props.columnSetting, props.tableKey)
+  const { tableColumns: _tableColumns } = useSimpleTableSetting(props.columnSetting, props.tableKey)
   tableColumns.value = _tableColumns
 
   // 顯示的欄位 + #序號 + 操作(delete)
-  const {
-    tableColumns: _showTableColumns
-  } = useSimpleTableSetting({
-    ...beforeColumn,
-    ...props.columnSetting,
-    ...afterColumn
-  }, props.tableKey)
+  const { tableColumns: _showTableColumns } = useSimpleTableSetting(
+    {
+      ...beforeColumn,
+      ...props.columnSetting,
+      ...afterColumn
+    },
+    props.tableKey
+  )
 
   showTableColumns.value = _showTableColumns
 })
-
 </script>
 
 <template>
@@ -205,13 +198,7 @@ onBeforeMount(() => {
       :table-columns="showTableColumns"
     >
       <template #header-all="{ key, rowIndex, data, column: _column }">
-        <slot
-          name="header-all"
-          :label="data"
-          :row-index="rowIndex"
-          :column="_column"
-          :prop="key"
-        >
+        <slot name="header-all" :label="data" :row-index="rowIndex" :column="_column" :prop="key">
           <div v-show="_column.required" class="text-danger i-pr-xs">*</div>
           <div>{{ _column.label }}</div>
         </slot>

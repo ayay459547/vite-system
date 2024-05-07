@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ElWatermark } from 'element-plus'
-
 </script>
 
 <template>
@@ -10,13 +9,9 @@ import { ElWatermark } from 'element-plus'
       :height="30"
       image="https://element-plus.org/images/element-plus-logo.svg"
     >
-      <div style="height: 500px">
-        CustomWatermark
-      </div>
+      <div style="height: 500px">CustomWatermark</div>
     </ElWatermark>
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

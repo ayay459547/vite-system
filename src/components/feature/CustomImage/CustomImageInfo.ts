@@ -49,7 +49,7 @@ export const props = {
   previewSrcList: {
     type: Array as PropType<string[]>,
     required: false,
-    default () {
+    default() {
       return []
     },
     description: '圖片預覽列表'

@@ -218,7 +218,6 @@ defineExpose({
     }
   }
 })
-
 </script>
 
 <template>
@@ -272,7 +271,7 @@ defineExpose({
   .el-input-group__prepend {
     padding: 0;
 
-    div[class*="el-"] {
+    div[class*='el-'] {
       margin: 0;
     }
   }

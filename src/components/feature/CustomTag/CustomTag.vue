@@ -4,13 +4,7 @@ import { ElTag } from 'element-plus'
 import { CustomIcon } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  ElType,
-  ElSize,
-  FontIconType,
-  props as tagProps
-} from './CustomTagInfo'
+import { version, ElType, ElSize, FontIconType, props as tagProps } from './CustomTagInfo'
 
 const scopedId = getUuid('__i-tag__')
 
@@ -20,11 +14,13 @@ const emit = defineEmits(['click'])
 const onClick = ($event: Event) => {
   emit('click', $event)
 }
-
 </script>
 
 <template>
-  <div class="__tag-container" :class="`CustomTag_${version} ${scopedId} size-${ElSize[props.size]}`">
+  <div
+    class="__tag-container"
+    :class="`CustomTag_${version} ${scopedId} size-${ElSize[props.size]}`"
+  >
     <ElTag
       :type="ElType[props.type]"
       :hit="props.hit"
@@ -35,10 +31,7 @@ const onClick = ($event: Event) => {
       @click="onClick"
     >
       <template v-if="props.label.length > 0" #default>
-        <div
-          class="__tag-group"
-          :class="`size-${ElSize[props.size]}`"
-        >
+        <div class="__tag-group" :class="`size-${ElSize[props.size]}`">
           <CustomIcon
             v-if="props.iconName.length > 0"
             class="icon"

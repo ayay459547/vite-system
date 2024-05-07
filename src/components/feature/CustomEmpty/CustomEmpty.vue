@@ -4,10 +4,7 @@ import { ElEmpty } from 'element-plus'
 
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as emptyProps
-} from './CustomEmptyInfo'
+import { version, props as emptyProps } from './CustomEmptyInfo'
 
 const scopedId = getUuid('__i-empty__')
 
@@ -17,7 +14,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

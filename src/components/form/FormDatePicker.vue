@@ -7,7 +7,16 @@ import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export type DatePickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
+export type DatePickerType =
+  | 'year'
+  | 'month'
+  | 'date'
+  | 'dates'
+  | 'datetime'
+  | 'week'
+  | 'datetimerange'
+  | 'daterange'
+  | 'monthrange'
 export type Shortcuts = {
   i18nLabel?: string
   text: string
@@ -68,15 +77,15 @@ const props = defineProps({
   onChange: Function as PropType<(e: ModelValue) => void>
 })
 
-const getTranslateShortcuts = (shortcuts) => {
-    if(!shortcuts) return []
-    return shortcuts.map(shortcut => {
-      return {
-        text: shortcut.text,
-        value: shortcut.value
-      }
-    })
-  }
+const getTranslateShortcuts = shortcuts => {
+  if (!shortcuts) return []
+  return shortcuts.map(shortcut => {
+    return {
+      text: shortcut.text,
+      value: shortcut.value
+    }
+  })
+}
 
 const bindAttributes = computed(() => {
   const attributes: any = {
@@ -94,12 +103,7 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'blur',
-  'focus',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'change'])
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'

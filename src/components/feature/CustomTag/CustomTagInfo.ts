@@ -5,7 +5,7 @@ import type { IconType } from '@/components'
 export const version = '1.0.0'
 
 export type TagType = 'primary' | 'success' | 'info' | 'warning' | 'danger'
-export type TagSize = 'large'| 'default'| 'small'
+export type TagSize = 'large' | 'default' | 'small'
 export type TagEffect = 'dark' | 'light' | 'plain'
 
 export enum ElType {
@@ -55,7 +55,7 @@ export const props = {
     default: false
   },
   color: {
-    type: String as PropType<string |  undefined>,
+    type: String as PropType<string | undefined>,
     required: false,
     default: undefined
   },
@@ -85,7 +85,7 @@ export const props = {
     default: ''
   },
   iconMove: {
-    type: String as PropType<'none' | 'translate'| 'rotate' | 'scale'>,
+    type: String as PropType<'none' | 'translate' | 'rotate' | 'scale'>,
     required: false,
     default: 'none'
   }

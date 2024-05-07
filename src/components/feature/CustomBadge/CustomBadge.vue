@@ -4,10 +4,7 @@ import { ElBadge } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as badgeProps
-} from './CustomBadgeInfo'
+import { version, props as badgeProps } from './CustomBadgeInfo'
 
 const scopedId = getUuid('__i-badge__')
 
@@ -17,7 +14,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

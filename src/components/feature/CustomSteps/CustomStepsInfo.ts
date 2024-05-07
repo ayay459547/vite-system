@@ -41,7 +41,7 @@ export const props = {
   },
   options: {
     type: Array as PropType<Options[]>,
-    default () {
+    default() {
       return []
     }
   }

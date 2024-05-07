@@ -4,32 +4,23 @@ import { ElDrawer } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as drawerProps
-} from './CustomDrawerInfo'
+import { version, props as drawerProps } from './CustomDrawerInfo'
 
 const scopedId = getUuid('__i-drawer__')
 
 const props = defineProps(drawerProps)
 
-const emit = defineEmits([
-  'update:modelValue',
-  'open',
-  'opened',
-  'close',
-  'closed'
-])
+const emit = defineEmits(['update:modelValue', 'open', 'opened', 'close', 'closed'])
 const onOpen = () => emit('open')
 const onOpened = () => emit('opened')
 const onClose = () => emit('close')
 const onClosed = () => emit('closed')
 
 const tempValue = computed({
-  get () {
+  get() {
     return props.modelValue
   },
-  set (value: boolean) {
+  set(value: boolean) {
     emit('update:modelValue', value)
   }
 })
@@ -38,7 +29,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

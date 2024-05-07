@@ -4,10 +4,7 @@ import { ElSteps, ElStep } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as stopsProps
-} from './CustomStepsInfo'
+import { version, props as stopsProps } from './CustomStepsInfo'
 
 const scopedId = getUuid('__i-steps__')
 
@@ -17,7 +14,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

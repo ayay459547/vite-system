@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { ref, inject, computed, watch, effectScope, onBeforeMount, onMounted, onUnmounted, reactive, nextTick } from 'vue'
+import {
+  ref,
+  inject,
+  computed,
+  watch,
+  effectScope,
+  onBeforeMount,
+  onMounted,
+  onUnmounted,
+  reactive,
+  nextTick
+} from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
@@ -11,11 +22,7 @@ import { useCustomModalStore } from '@/stores/stores_CustomModal'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { ModelValue } from './CustomModalInfo'
-import {
-  version,
-  props as modalProps,
-  minModalIndex
-} from './CustomModalInfo'
+import { version, props as modalProps, minModalIndex } from './CustomModalInfo'
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
@@ -26,12 +33,7 @@ const scopedId = getUuid('__i-modal__')
 
 const props = defineProps(modalProps)
 
-const emit = defineEmits([
-  'update:modelValue',
-  'close',
-  'cancel',
-  'submit'
-])
+const emit = defineEmits(['update:modelValue', 'close', 'cancel', 'submit'])
 
 const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
@@ -176,11 +178,11 @@ const setLimit = (x: number, y: number) => {
 const resetRect = () => {
   const contentRect = containerRef.value.getBoundingClientRect()
   const { width, height } = contentRect
-  const [ centerX, cneterY ] = [ width / 2, height / 2 ]
+  const [centerX, cneterY] = [width / 2, height / 2]
 
   setCenter(centerX, cneterY)
 
-  const [ windowWidth, windowHeight ] = [ window.innerWidth, window.innerHeight ]
+  const [windowWidth, windowHeight] = [window.innerWidth, window.innerHeight]
 
   // 確保 modal 全顯示
   // setLimit(windowWidth / 2 - centerX, windowHeight / 2 - cneterY)
@@ -209,7 +211,7 @@ const resetMove = async () => {
       break
     case 'start':
       move.x = -limitRect.x
-      transform.x = `${-(centerX - (-limitRect.x))}px`
+      transform.x = `${-(centerX - -limitRect.x)}px`
       break
     case 'end':
       move.x = limitRect.x
@@ -224,7 +226,7 @@ const resetMove = async () => {
       break
     case 'top':
       move.y = -limitRect.y
-      transform.y = `${-(centerY - (-limitRect.y))}px`
+      transform.y = `${-(centerY - -limitRect.y)}px`
       break
     case 'bottom':
       move.y = limitRect.y
@@ -253,15 +255,9 @@ const mousedownClient = reactive({
   clientY: 0
 })
 const updateTransform = (e: MouseEvent) => {
-  const {
-    clientX: mouseDownX,
-    clientY: mouseDownY
-  } = mousedownClient
+  const { clientX: mouseDownX, clientY: mouseDownY } = mousedownClient
 
-  const {
-    clientX: mouseMoveX,
-    clientY: mouseMoveY
-  } = e
+  const { clientX: mouseMoveX, clientY: mouseMoveY } = e
 
   const _moveX = mouseMoveX - mouseDownX
   const _moveY = mouseMoveY - mouseDownY
@@ -270,7 +266,7 @@ const updateTransform = (e: MouseEvent) => {
 
   const { x: moveX, y: moveY } = move
 
-  const [ newMoveX, newMoveY ] = [ _moveX + moveX, _moveY + moveY ]
+  const [newMoveX, newMoveY] = [_moveX + moveX, _moveY + moveY]
 
   // 舊的位移要加回來
   transform.x = `${-(centerX - newMoveX)}px`
@@ -293,12 +289,9 @@ const throttleUpdateTransform = throttle(updateTransform, 1) as typeof updateTra
 const fixModalOutSide = () => {
   const contentRect = containerRef.value.getBoundingClientRect()
   const { x, y, width, height } = contentRect
-  const [ windowWidth, windowHeight ] = [ window.innerWidth, window.innerHeight ]
+  const [windowWidth, windowHeight] = [window.innerWidth, window.innerHeight]
 
-  if (
-    x < -width || x > windowWidth ||
-    y < -height || y > windowHeight
-  ) {
+  if (x < -width || x > windowWidth || y < -height || y > windowHeight) {
     resetRect()
     resetMove()
   }
@@ -319,7 +312,7 @@ const mouseupEvent = () => {
     // x軸邊界修正
     if (move.lastX < -limitRect.x) {
       move.x = -limitRect.x
-      transform.x = `${-(centerX - (-limitRect.x))}px`
+      transform.x = `${-(centerX - -limitRect.x)}px`
     } else if (move.lastX > limitRect.x) {
       move.x = limitRect.x
       transform.x = `${-(centerX - limitRect.x)}px`
@@ -330,7 +323,7 @@ const mouseupEvent = () => {
     // y軸邊界修正
     if (move.lastY < -limitRect.y) {
       move.y = -limitRect.y
-      transform.y = `${-(centerY - (-limitRect.y))}px`
+      transform.y = `${-(centerY - -limitRect.y)}px`
     } else if (move.lastY > limitRect.y) {
       move.y = limitRect.y
       transform.y = `${-(centerY - limitRect.y)}px`
@@ -341,7 +334,6 @@ const mouseupEvent = () => {
     setTimeout(() => {
       wrapperStyle.value = ''
     }, 250)
-
   } else {
     wrapperStyle.value = ''
 
@@ -413,33 +405,35 @@ onBeforeMount(() => {
 
 onMounted(() => {
   scope.run(() => {
-    watch(tempValue, (newValue) => {
-      if (newValue) {
-        setModalIndex()
+    watch(
+      tempValue,
+      newValue => {
+        if (newValue) {
+          setModalIndex()
 
-        setTimeout(() => {
-          openModal()
-        }, 0)
+          setTimeout(() => {
+            openModal()
+          }, 0)
+        } else {
+          removeModalIndex()
+          removeEvent()
 
-      } else {
-        removeModalIndex()
-        removeEvent()
-
-        setTimeout(() => {
-          closeModal()
-        }, 0)
+          setTimeout(() => {
+            closeModal()
+          }, 0)
+        }
+      },
+      {
+        deep: false,
+        immediate: true
       }
-    }, {
-      deep: false,
-      immediate: true
-    })
+    )
   })
 })
 
 onUnmounted(() => {
   scope.stop()
 })
-
 </script>
 
 <template>
@@ -449,7 +443,7 @@ onUnmounted(() => {
       :class="[
         'modal-mask',
         `CustomModal_${version} ${scopedId}`,
-        containerIsShow ? 'is-show': 'is-close'
+        containerIsShow ? 'is-show' : 'is-close'
       ]"
       :style="`
         ${props.modal ? 'display: block;' : 'display: contents;'}
@@ -458,10 +452,7 @@ onUnmounted(() => {
     >
       <div
         class="modal-wrapper"
-        :class="[
-          `width-${props.widthSize}`,
-          `height-${props.heightSize}`
-        ]"
+        :class="[`width-${props.widthSize}`, `height-${props.heightSize}`]"
         :style="`
           transform: translateX(${transform.x}) translateY(${transform.y});
           ${wrapperStyle};
@@ -479,12 +470,8 @@ onUnmounted(() => {
             v-loading="props.loading"
           >
             <div class="modal-header">
-              <div
-                v-if="props.draggable"
-                class="modal-draggable"
-                @mousedown="addEvent"
-              >
-                <CustomIcon name="up-down-left-right"/>
+              <div v-if="props.draggable" class="modal-draggable" @mousedown="addEvent">
+                <CustomIcon name="up-down-left-right" />
                 <slot name="header">
                   <h3>{{ props.title }}</h3>
                 </slot>
@@ -495,16 +482,8 @@ onUnmounted(() => {
               </slot>
 
               <!-- 關閉全部 -->
-              <CustomTooltip
-                v-if="isCloseAllModal"
-                trigger="hover"
-                placement="top"
-              >
-                <CustomButton
-                  icon-name="close"
-                  text
-                  @click="close"
-                />
+              <CustomTooltip v-if="isCloseAllModal" trigger="hover" placement="top">
+                <CustomButton icon-name="close" text @click="close" />
                 <template #content>
                   <CustomButton
                     :label="i18nTranslate('closeAll')"
@@ -515,12 +494,7 @@ onUnmounted(() => {
                 </template>
               </CustomTooltip>
               <!-- 關閉單個 -->
-              <CustomButton
-                v-else-if="!isCloseAllModal"
-                icon-name="close"
-                text
-                @click="close"
-              />
+              <CustomButton v-else-if="!isCloseAllModal" icon-name="close" text @click="close" />
             </div>
 
             <div class="modal-body">
@@ -580,7 +554,6 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-
 .modal {
   &-mask {
     width: 100vw;

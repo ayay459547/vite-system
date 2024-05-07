@@ -4,10 +4,7 @@ import { ElPopover } from 'element-plus'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as popoverProps
-} from './CustomPopoverInfo'
+import { version, props as popoverProps } from './CustomPopoverInfo'
 
 const scopedId = getUuid('__i-popover__')
 
@@ -21,23 +18,19 @@ const tempVisible = ref(false)
 
 const tempValue = customRef((track, trigger) => {
   return {
-    get () {
+    get() {
       track() // 追蹤數據改變
-      if (
-        !isEmpty(props.visible) &&
-        typeof props.visible === 'boolean'
-      ) return props.visible
+      if (!isEmpty(props.visible) && typeof props.visible === 'boolean') return props.visible
 
       return tempVisible.value
     },
-    set (value: boolean) {
+    set(value: boolean) {
       tempVisible.value = value
       emit('update:visible', value)
       trigger() // 通知 vue 重新解析
     }
   }
 })
-
 </script>
 
 <template>

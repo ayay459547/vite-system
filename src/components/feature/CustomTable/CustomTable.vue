@@ -33,10 +33,7 @@ import type {
   SelectionChange,
   RowContextmenu
 } from './CustomTableInfo'
-import {
-  version,
-  props as tableProps
-} from './CustomTableInfo'
+import { version, props as tableProps } from './CustomTableInfo'
 
 const scopedId = getUuid('__i-table__')
 
@@ -130,8 +127,8 @@ const currentSort = shallowRef<Sort>({
   order: null
 })
 const onSortChange = (props: {
-  column: any,
-  key: string,
+  column: any
+  key: string
   order: null | 'ascending' | 'descending'
 }) => {
   const { key = '', order } = props
@@ -139,7 +136,7 @@ const onSortChange = (props: {
   if (order) {
     currentSort.value = { key, order }
   } else {
-    currentSort.value = { key: null, order: null}
+    currentSort.value = { key: null, order: null }
   }
   emit('sort-change', { key, order })
 
@@ -171,10 +168,7 @@ const emitSortingData = computed<SortingMap>(() => {
 
 const activeSort = () => {
   sortingList.value.sort((a, b) => {
-    if (
-      ['ascending', 'descending'].includes(a.order) &&
-      b.order === 'none'
-    ) {
+    if (['ascending', 'descending'].includes(a.order) && b.order === 'none') {
       return -1
     }
     return 1
@@ -182,7 +176,7 @@ const activeSort = () => {
 }
 const initSortingList = () => {
   sortingList.value = props.tableColumns.reduce<SortingList>((res, column) => {
-    const _isOperations = (column?.isOperations ?? false)
+    const _isOperations = column?.isOperations ?? false
 
     if (!_isOperations && (column?.isSorting ?? true)) {
       res.push({
@@ -227,10 +221,10 @@ const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event:
 const onSelect: Select = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll: SelectAll = (selection) => {
+const onSelectAll: SelectAll = (selection: any) => {
   emit('select-all', selection)
 }
-const onSelectionChange: SelectionChange = (newSelection) => {
+const onSelectionChange: SelectionChange = (newSelection: any) => {
   emit('selection-change', newSelection)
 }
 const onRowContextmenu: RowContextmenu = (row, column, event) => {
@@ -250,7 +244,7 @@ const onLoad = () => {
  * 頁碼
  * 排序
  */
-const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
+const onShowChange = (props: { page: number; pageSize: number; sort: Sort }) => {
   const { page, pageSize, sort } = props
 
   emit('show-change', {
@@ -287,7 +281,9 @@ const checkTableColumns = (tempColumnList: ColumnItem[]) => {
       `設定欄位列表 => ${props.tableColumns.map(item => item?.label ?? '').join(' , ')}`,
       '如果欄位有要新增 請變更 version'
     ])
-  } else if (settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])) {
+  } else if (
+    settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])
+  ) {
     tipLog('欄位異動', [
       `table => ${props.title}`,
       `原始欄位列表 => ${originColumnsKey}`,
@@ -303,7 +299,7 @@ const initShowColumns = async () => {
   if (columnSetting.value) {
     await columnSetting.value.checkColumnSetting()
 
-    const tempColumnList = await (columnSetting.value?.getColumnList() ?? []) as ColumnItem[]
+    const tempColumnList = (await (columnSetting.value?.getColumnList() ?? [])) as ColumnItem[]
     columnSetting.value?.setColumnList(tempColumnList)
 
     // 確認欄位 如果有變更 給予提示
@@ -380,18 +376,13 @@ defineExpose({
   setTableParams: (params: {
     [P in keyof TableParams]?: TableParams[P]
   }) => {
-    const {
-      page,
-      size,
-      sort,
-      sortingList: _sortingList
-    } = params
+    const { page, size, sort, sortingList: _sortingList } = params
 
-    if (!isEmpty(page) && (typeof page === 'number')) {
+    if (!isEmpty(page) && typeof page === 'number') {
       currentPage.value = page
     }
     if (!isEmpty(size)) {
-      const _index = ((isLazyLoading) => {
+      const _index = (isLazyLoading => {
         if (isLazyLoading) {
           return lazyLoadSizeOptions.findIndex(option => {
             option.value === size
@@ -429,7 +420,7 @@ const hasSlot = (prop: string): boolean => {
  * 1. column-{ slotKey }
  * 2. column-all
  */
-const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
+const getSlot = (slotKey: string, type: 'header' | 'column'): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
@@ -476,10 +467,10 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
 
 const _prependIsOpen = ref(false)
 const prependIsOpen = computed<boolean>({
-  get () {
+  get() {
     return _prependIsOpen.value
   },
-  set (value) {
+  set(value) {
     localStorage.setItem('prependIsOpen', `${value}`)
     _prependIsOpen.value = value
   }
@@ -495,15 +486,10 @@ onMounted(() => {
     }
   }, 60)
 })
-
 </script>
 
 <template>
-  <div
-    v-loading="loading"
-    class="__table-wrapper"
-    :class="`CustomTable_${version} ${scopedId}`"
-  >
+  <div v-loading="loading" class="__table-wrapper" :class="`CustomTable_${version} ${scopedId}`">
     <template v-if="hasSlot('prepend')">
       <div class="__table-prepend">
         <Transition name="fixed">
@@ -518,7 +504,7 @@ onMounted(() => {
           class="__table-prepend-btn"
           :class="{
             'is-open': prependIsOpen,
-            'is-close': !prependIsOpen,
+            'is-close': !prependIsOpen
           }"
           circle
           plain
@@ -531,7 +517,7 @@ onMounted(() => {
       <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
         <!-- 顯示更多 -->
         <template v-if="props.isLazyLoading">
-          <div style="width: 180px; overflow: hidden;">
+          <div style="width: 180px; overflow: hidden">
             <CustomInput
               v-model="pageSize"
               validate-key="CustomTable:pageSize"
@@ -543,12 +529,14 @@ onMounted(() => {
             />
           </div>
           <div>
-            <label>{{ `${i18nTranslate('dataCount', defaultModuleType)}：${props.tableDataCount}` }}</label>
+            <label>{{
+              `${i18nTranslate('dataCount', defaultModuleType)}：${props.tableDataCount}`
+            }}</label>
           </div>
         </template>
-       <!-- 分頁 -->
+        <!-- 分頁 -->
         <template v-else>
-          <div style="width: 180px; overflow: hidden;">
+          <div style="width: 180px; overflow: hidden">
             <CustomInput
               v-model="pageSize"
               validate-key="CustomTable:pageSize"
@@ -570,19 +558,16 @@ onMounted(() => {
           popper-style="padding: 4px;"
         >
           <template #reference>
-            <CustomButton
-              icon-name="file-excel"
-              label="Excel"
-            />
+            <CustomButton icon-name="file-excel" label="Excel" />
           </template>
 
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
-              <CustomIcon name="table-list" class="icon"/>
+              <CustomIcon name="table-list" class="icon" />
               <div class="text">{{ i18nTranslate('allData', defaultModuleType) }}</div>
             </div>
             <div class="__excel-item" @click="onExcelClick('page')">
-              <CustomIcon type="far" name="file-lines" class="icon"/>
+              <CustomIcon type="far" name="file-lines" class="icon" />
               <div class="text">{{ i18nTranslate('pageData', defaultModuleType) }}</div>
             </div>
           </div>
@@ -718,7 +703,9 @@ onMounted(() => {
         />
       </div>
       <div class="__table-pagination-right">
-        <span>{{ `${i18nTranslate('totalAmount', defaultModuleType)}：${props.tableDataCount}` }}</span>
+        <span>{{
+          `${i18nTranslate('totalAmount', defaultModuleType)}：${props.tableDataCount}`
+        }}</span>
       </div>
     </div>
   </div>
@@ -739,7 +726,7 @@ $border-style: 1px solid #ebeef5;
 
     .header-slot {
       width: calc(100% - 24px);
-      padding-right: 8px;;
+      padding-right: 8px;
       display: inline-block;
     }
   }
@@ -818,7 +805,7 @@ $border-style: 1px solid #ebeef5;
         font-weight: 600;
 
         &-title {
-          overflow:hidden;
+          overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
         }

@@ -5,20 +5,13 @@ import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { CustomEmpty } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  type ModelValue,
-  version,
-  props as collapseProps
-} from './CustomCollapseInfo'
+import { type ModelValue, version, props as collapseProps } from './CustomCollapseInfo'
 
 const scopedId = getUuid('__i-collapse__')
 
 const props = defineProps(collapseProps)
 
-const emit = defineEmits([
-  'update:modelValue',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
@@ -33,7 +26,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

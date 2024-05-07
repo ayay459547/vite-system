@@ -5,12 +5,9 @@ import { CustomDraggable } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
 import type { Props } from './SimpleTableInfo'
-import {
-  version,
-  props as simpleTableProps
-} from './SimpleTableInfo'
+import { version, props as simpleTableProps } from './SimpleTableInfo'
 
-function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHeader: boolean) {
+function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHeader: boolean) {
   let temp = null
   if (isHeader) {
     temp = slots[`header-${columnKey}`]
@@ -28,7 +25,12 @@ function getColumnSlotNode (slots: Record<string, any>, columnKey: string, isHea
   return null
 }
 
-const columnNode = (slots: Record<string, any>, column: Array<any>, rowItem: any, isHeader: boolean) => {
+const columnNode = (
+  slots: Record<string, any>,
+  column: Array<any>,
+  rowItem: any,
+  isHeader: boolean
+) => {
   return column.map(columnItem => {
     const {
       label = '',
@@ -43,9 +45,7 @@ const columnNode = (slots: Record<string, any>, column: Array<any>, rowItem: any
       index: columnIndex = 0
     } = columnItem
 
-    const {
-      index: rowIndex = 0
-    } = rowItem
+    const { index: rowIndex = 0 } = rowItem
 
     const columnNode = getColumnSlotNode(slots, slotKey, isHeader)
 
@@ -89,9 +89,8 @@ const columnNode = (slots: Record<string, any>, column: Array<any>, rowItem: any
           showStyle += 'justify-content: flex-end;'
           break
       }
-
-    } else if(Object.prototype.toString.call(columnStyle) === '[object Object]') {
-      showStyle = {...columnStyle}
+    } else if (Object.prototype.toString.call(columnStyle) === '[object Object]') {
+      showStyle = { ...columnStyle }
 
       if (width > 0) {
         showStyle['max-width'] = `${width}px`
@@ -130,14 +129,16 @@ const columnNode = (slots: Record<string, any>, column: Array<any>, rowItem: any
         style: showStyle
         // key: columnKey
       },
-      ![undefined, null].includes(columnNode) ? columnNode({
-        key: columnKey,
-        row: rowItem,
-        column: { ...columnItem },
-        rowIndex,
-        columnIndex,
-        data: defaultRender
-      }) : defaultRender
+      ![undefined, null].includes(columnNode)
+        ? columnNode({
+            key: columnKey,
+            row: rowItem,
+            column: { ...columnItem },
+            rowIndex,
+            columnIndex,
+            data: defaultRender
+          })
+        : defaultRender
     )
   })
 }
@@ -151,9 +152,7 @@ const rowNode = (
     isDraggable: boolean
   }
 ) => {
-  const {
-    isHeader = false
-  } = options
+  const { isHeader = false } = options
 
   // 渲染 header 的 row
   if (isHeader) {
@@ -164,7 +163,7 @@ const rowNode = (
       },
       columnNode(slots, column, {}, true)
     )
-  // 渲染 資料 的 row
+    // 渲染 資料 的 row
   } else {
     return tableData.map((rowData: any, rowIndex: number) => {
       return h(
@@ -173,10 +172,15 @@ const rowNode = (
           key: rowData.key ? rowData.key : rowIndex,
           class: '__data-table-row'
         },
-        columnNode(slots, column, {
-          ...rowData,
-          index: rowIndex
-        }, false)
+        columnNode(
+          slots,
+          column,
+          {
+            ...rowData,
+            index: rowIndex
+          },
+          false
+        )
       )
     })
   }
@@ -194,35 +198,32 @@ const scopedId = getUuid('__i-simple-table__')
 const bodyNode = (
   slots: Record<string, any>,
   column: Array<any>,
-  options:  {
-    props: Props,
-    emit: Function,
-    tableData: any[],
-    isDraggable: boolean,
+  options: {
+    props: Props
+    emit: Function
+    tableData: any[]
+    isDraggable: boolean
     handle: string
     itemKey: string
   }
 ) => {
-  const {
-    props,
-    emit,
-    tableData,
-    isDraggable,
-    handle,
-    itemKey
-  } = options
+  const { props, emit, tableData, isDraggable, handle, itemKey } = options
 
   if (tableData.length === 0) {
-    return h('div', {
-      class: '__data-table-body',
-      style: 'padding: 12px 16px; font-size: 1.2em'
-    }, h(
+    return h(
       'div',
       {
-        class: '__data-table-emtpy'
+        class: '__data-table-body',
+        style: 'padding: 12px 16px; font-size: 1.2em'
       },
-      '無資料'
-    ))
+      h(
+        'div',
+        {
+          class: '__data-table-emtpy'
+        },
+        '無資料'
+      )
+    )
   }
 
   // 可拖拉
@@ -232,7 +233,7 @@ const bodyNode = (
       {
         class: '__data-table-body',
         modelValue: props.tableData,
-        'onUpdate:modelValue': (value) => {
+        'onUpdate:modelValue': value => {
           emit('update:modelValue', value)
         },
         handle,
@@ -241,10 +242,15 @@ const bodyNode = (
       {
         item: (scope: any) => {
           const { element: rowData, index: rowIndex } = scope
-          return columnNode(slots, column, {
-            ...rowData,
-            index: rowIndex
-          }, false)
+          return columnNode(
+            slots,
+            column,
+            {
+              ...rowData,
+              index: rowIndex
+            },
+            false
+          )
         }
       }
     )
@@ -263,12 +269,9 @@ const bodyNode = (
 }
 
 const SimpleTable = (props: Props, context: any) => {
-  const {
-    slots = {},
-    emit
-  } = context
+  const { slots = {}, emit } = context
 
-  const{
+  const {
     modelValue = [],
     isDraggable = false,
     handle = '.__draggable',
@@ -278,68 +281,65 @@ const SimpleTable = (props: Props, context: any) => {
     tableColumns = []
   } = props
 
-  return h<Props>((props, context) => {
+  return h<Props>(
+    (props, context) => {
+      const { slots = {} } = context
+      const { tableColumns, tableData, isDraggable } = props
+      // console.log('props => ', props)
+      // console.log('context => ', context)
 
-    const { slots = {} } = context
-    const { tableColumns, tableData, isDraggable } = props
-    // console.log('props => ', props)
-    // console.log('context => ', context)
-
-    // const tableStyle = props['table-style']
-    // const tableClass = props['table-class']
-    return h(
-      'div',
-      {
-        class: [
-          '__data-table-wrapper',
-          `SimpleTable_${version}`,
-          `${scopedId}`
+      // const tableStyle = props['table-style']
+      // const tableClass = props['table-class']
+      return h(
+        'div',
+        {
+          class: ['__data-table-wrapper', `SimpleTable_${version}`, `${scopedId}`]
+          // style: { ...tableStyle }
+        },
+        [
+          h(
+            'div',
+            {
+              class: ['__data-table-container']
+            },
+            [
+              headerNode(slots, tableColumns),
+              h(
+                'div',
+                {
+                  class: ['__data-table-body-container']
+                },
+                [
+                  bodyNode(slots, tableColumns, {
+                    props,
+                    emit,
+                    tableData,
+                    isDraggable,
+                    handle,
+                    itemKey
+                  })
+                ]
+              )
+            ]
+          )
         ]
-        // style: { ...tableStyle }
-      },
-      [
-        h(
-          'div',
-          {
-            class: ['__data-table-container']
-          },
-          [
-            headerNode(slots, tableColumns),
-            h(
-              'div',
-              {
-                class: ['__data-table-body-container']
-              },
-              [
-                bodyNode(slots, tableColumns, {
-                  props,
-                  emit,
-                  tableData,
-                  isDraggable,
-                  handle,
-                  itemKey
-                })
-              ]
-            )
-          ]
-        )
-      ]
-    )
-  }, {
-    modelValue,
-    isDraggable,
-    handle,
-    itemKey,
-    tableData,
-    tableColumns
-  }, slots)
+      )
+    },
+    {
+      modelValue,
+      isDraggable,
+      handle,
+      itemKey,
+      tableData,
+      tableColumns
+    },
+    slots
+  )
 }
 
 SimpleTable.props = simpleTableProps
 
-SimpleTable.emits = [
-  'update:modelValue'
-]
+SimpleTable.emits = ['update:modelValue']
 
 export default SimpleTable
 </script>
@@ -392,7 +392,7 @@ export default SimpleTable
   &-body {
     background-color: #fff;
     width: 100%;
-    height: fit-content
+    height: fit-content;
   }
 
   &-emtpy {

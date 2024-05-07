@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export type Size = '' | 'large'| 'default'| 'small'
+export type Size = '' | 'large' | 'default' | 'small'
 export type ModelValue = boolean
 
 export const props = {

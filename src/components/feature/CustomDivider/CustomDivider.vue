@@ -4,10 +4,7 @@ import { ElDivider } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as dividerProps
-} from './CustomDividerInfo'
+import { version, props as dividerProps } from './CustomDividerInfo'
 
 const scopedId = getUuid('__i-divider__')
 
@@ -17,7 +14,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

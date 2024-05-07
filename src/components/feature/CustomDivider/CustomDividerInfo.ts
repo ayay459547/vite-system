@@ -4,7 +4,17 @@ export const version = '1.0.0'
 
 export type DividerDirection = 'horizontal' | 'vertical'
 
-export type DividerBorderStyle = 'none'| 'hidden'| 'dotted'| 'dashed'| 'solid'| 'double'| 'groove'| 'ridge'| 'inset'| 'outset'
+export type DividerBorderStyle =
+  | 'none'
+  | 'hidden'
+  | 'dotted'
+  | 'dashed'
+  | 'solid'
+  | 'double'
+  | 'groove'
+  | 'ridge'
+  | 'inset'
+  | 'outset'
 
 export type DividerContentPosition = 'left' | 'right' | 'center'
 

@@ -4,19 +4,13 @@ import { ElDialog } from 'element-plus'
 
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import {
-  type ModelValue,
-  version,
-  props as dialogProps
-} from './CustomDialogInfo'
+import { type ModelValue, version, props as dialogProps } from './CustomDialogInfo'
 
 const scopedId = getUuid('__i-dialog__')
 
 const props = defineProps(dialogProps)
 
-const emit = defineEmits([
-  'update:modelValue'
-])
+const emit = defineEmits(['update:modelValue'])
 
 const tempValue = computed<ModelValue>({
   get: () => props.modelValue,
@@ -27,7 +21,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

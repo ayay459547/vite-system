@@ -6,20 +6,13 @@ import type Node from 'element-plus/es/components/tree/src/model/node'
 import { getUuid } from '@/lib/lib_utils'
 
 import type { CheckNode } from './CustomTreeInfo'
-import {
-  version,
-  props as treeProps
-} from './CustomTreeInfo'
+import { version, props as treeProps } from './CustomTreeInfo'
 
 const scopedId = getUuid('__i-tree__')
 
 const props = defineProps(treeProps)
 
-const emit = defineEmits([
-  'node-click',
-  'check-change',
-  'check'
-])
+const emit = defineEmits(['node-click', 'check-change', 'check'])
 
 const onNodeClick = ($data1: any, $data2: any, $data3: any, $data4: any) => {
   emit('node-click', $data1, $data2, $data3, $data4)
@@ -71,7 +64,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
-
 </script>
 
 <template>

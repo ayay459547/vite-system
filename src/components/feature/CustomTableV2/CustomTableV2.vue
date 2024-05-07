@@ -7,10 +7,7 @@ import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import { getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as tableV2Props
-} from './CustomTableV2Info'
+import { version, props as tableV2Props } from './CustomTableV2Info'
 
 const scopedId = getUuid('__i-table-v2__')
 
@@ -31,7 +28,7 @@ const tableV2Ref = ref()
 const tableWidth = ref(500)
 const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     const newWidth = entry.contentRect.width
     const newHeight = entry.contentRect.height
     tableWidth.value = newWidth
@@ -54,27 +51,21 @@ onUnmounted(() => {
   if (RO) {
     RO.disconnect()
   }
-
 })
 
 const elTableV2Ref = ref<InstanceType<typeof ElTableV2Type> & TableV2Instance>()
 const resetScroll = (): void => {
-  if([null, undefined].includes(elTableV2Ref.value)) return
+  if ([null, undefined].includes(elTableV2Ref.value)) return
   elTableV2Ref.value.scrollToTop(0)
 }
 
 defineExpose({
   resetScroll
 })
-
 </script>
 
 <template>
-  <div
-    ref="tableV2Ref"
-    class="__table-v2-wrapper"
-    :class="`CustomTableV2_${version} ${scopedId}`"
-  >
+  <div ref="tableV2Ref" class="__table-v2-wrapper" :class="`CustomTableV2_${version} ${scopedId}`">
     <div class="__table-v2-container">
       <ElTableV2
         :key="props.renderKey"
@@ -134,9 +125,7 @@ defineExpose({
                 ></slot>
               </template>
             </template>
-
           </template>
-
         </template>
 
         <template #cell="scope">
@@ -184,7 +173,6 @@ defineExpose({
                 ></slot>
               </div>
             </template>
-
           </template>
         </template>
 

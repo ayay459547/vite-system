@@ -4,7 +4,7 @@ export const version = '1.0.0'
 
 export const minModalIndex = 2005
 
-type Size = 'fill' | 'large'| 'default'| 'small' | 'extraSmall' | 'fitContent'
+type Size = 'fill' | 'large' | 'default' | 'small' | 'extraSmall' | 'fitContent'
 export type WidthSize = Size
 export type HeightSize = Size
 export type ModelValue = boolean

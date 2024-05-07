@@ -24,7 +24,7 @@ const props = defineProps({
   },
   options: {
     type: Array as PropType<Options>,
-    default () {
+    default() {
       return []
     }
   },
@@ -44,10 +44,7 @@ const bindAttributes = computed(() => {
   }
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const onEvent = {
   change: (value: ModelValue): void => emit('change', value)
@@ -74,7 +71,6 @@ const getStyle = (isSelected: boolean, color?: string) => {
 
   return { color }
 }
-
 </script>
 
 <template>

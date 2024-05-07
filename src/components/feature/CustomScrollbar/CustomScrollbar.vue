@@ -13,10 +13,7 @@ import type {
   Update,
   WrapRef
 } from './CustomScrollbarInfo'
-import {
-  version,
-  props as scrollbarProps
-} from './CustomScrollbarInfo'
+import { version, props as scrollbarProps } from './CustomScrollbarInfo'
 
 const scopedId = getUuid('__i-scroll-bar__')
 
@@ -42,10 +39,10 @@ const handleScroll: HandleScroll = () => {
 const scrollTo: ScrollTo = (options, yCoord) => {
   elScrollbarRef?.value?.scrollTo(options, yCoord)
 }
-const setScrollTop: SetScrollTop = (scrollTop) => {
+const setScrollTop: SetScrollTop = scrollTop => {
   elScrollbarRef?.value?.setScrollTop(scrollTop)
 }
-const setScrollLeft: SetScrollLeft = (scrollLeft) => {
+const setScrollLeft: SetScrollLeft = scrollLeft => {
   elScrollbarRef?.value?.setScrollLeft(scrollLeft)
 }
 const update: Update = () => {
@@ -63,7 +60,6 @@ defineExpose({
   update,
   wrapRef
 })
-
 </script>
 
 <template>

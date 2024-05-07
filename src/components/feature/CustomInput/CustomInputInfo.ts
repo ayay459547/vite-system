@@ -9,12 +9,17 @@ import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from
 export const version = '1.0.0'
 
 export type ModelValue = any | null | undefined
-export type InputType = (
-  'text' | 'textarea' | 'password' |
-  'select' | 'checkbox' | 'radio' |
-  'autocomplete' | 'operator' |
-  DatePickerType | TimePickerType
-)
+export type InputType =
+  | 'text'
+  | 'textarea'
+  | 'password'
+  | 'select'
+  | 'checkbox'
+  | 'radio'
+  | 'autocomplete'
+  | 'operator'
+  | DatePickerType
+  | TimePickerType
 export type Option = {
   label: string
   i18nLabel?: string
@@ -188,7 +193,7 @@ const elCommon = {
   options: {
     type: Array as PropType<Option[]>,
     required: false,
-    default () {
+    default() {
       return []
     },
     description: '選項'

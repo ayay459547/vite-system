@@ -27,7 +27,7 @@ const props = defineProps({
   },
   options: {
     type: Array as PropType<Options>,
-    default () {
+    default() {
       return []
     }
   },
@@ -56,10 +56,7 @@ const bindAttributes = computed(() => {
   }
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const onEvent = {
   groupChange: (value: CheckboxGroupValueType): void => emit('change', value),
@@ -87,7 +84,6 @@ const getStyle = (isChecked: boolean, color?: string) => {
 }
 
 const scopedId = getUuid('__i-checkbox__')
-
 </script>
 
 <template>

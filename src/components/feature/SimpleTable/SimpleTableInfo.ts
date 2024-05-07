@@ -16,7 +16,7 @@ export const props = {
   // row 可拖拉 table
   modelValue: {
     type: Array,
-    default () {
+    default() {
       return []
     }
   },
@@ -35,13 +35,13 @@ export const props = {
   // 一般 table
   tableData: {
     type: Array,
-    default () {
+    default() {
       return []
     }
   },
   tableColumns: {
     type: Array,
-    default () {
+    default() {
       return []
     }
   }

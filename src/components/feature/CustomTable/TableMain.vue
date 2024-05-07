@@ -165,8 +165,8 @@ const onRowClick: RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
 }
 const onSortChange = (props: {
-  column: any,
-  prop: string,
+  column: any
+  prop: string
   order: null | 'ascending' | 'descending'
 }) => {
   const { column, prop: key = '', order } = props
@@ -178,16 +178,21 @@ const onHeaderClick: HeaderClick = (column: any, event: Event) => {
 const onExpandChange: ExpandChange = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
 }
-const onHeaderDragend: HeaderDragend = (newWidth: number, oddWidth: number, column: any, event: MouseEvent) => {
+const onHeaderDragend: HeaderDragend = (
+  newWidth: number,
+  oddWidth: number,
+  column: any,
+  event: MouseEvent
+) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
 const onSelect: Select = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll: SelectAll = (selection) => {
+const onSelectAll: SelectAll = selection => {
   emit('select-all', selection)
 }
-const onSelectionChange: SelectionChange = (newSelection) => {
+const onSelectionChange: SelectionChange = newSelection => {
   emit('selection-change', newSelection)
 }
 const onRowContextmenu: RowContextmenu = (row, column, event) => {
@@ -200,7 +205,7 @@ const tableMainRef = ref(null)
 const tableWidth = ref(500)
 const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     const newWidth = entry.contentRect.width
     const newHeight = entry.contentRect.height
     tableWidth.value = newWidth
@@ -244,22 +249,26 @@ onMounted(() => {
   }
 
   scope.run(() => {
-    watch(isLazyLoading, async (newValue) => {
-      await nextTick()
-      if (newValue && loadMoreRef.value !== null) {
-        IO = new IntersectionObserver(IOcallback, {
-          root: tableMainRef.value,
-          rootMargin: '0px 0px 0px 0px',
-          threshold: 0.1
-        })
-        IO.observe(loadMoreRef.value)
-      } else if (IO) {
-        IO.disconnect()
+    watch(
+      isLazyLoading,
+      async newValue => {
+        await nextTick()
+        if (newValue && loadMoreRef.value !== null) {
+          IO = new IntersectionObserver(IOcallback, {
+            root: tableMainRef.value,
+            rootMargin: '0px 0px 0px 0px',
+            threshold: 0.1
+          })
+          IO.observe(loadMoreRef.value)
+        } else if (IO) {
+          IO.disconnect()
+        }
+      },
+      {
+        deep: false,
+        immediate: true
       }
-    }, {
-      deep: false,
-      immediate: true
-    })
+    )
   })
 })
 
@@ -293,7 +302,6 @@ defineExpose({
   toggleSelection,
   getSelectionRows
 })
-
 </script>
 
 <template>
@@ -312,7 +320,7 @@ defineExpose({
         :default-expand-all="props.defaultExpandAll"
         :default-sort="{
           prop: props.sort.key,
-          order: props.sort.order,
+          order: props.sort.order
         }"
         :span-method="props.spanMethod"
         :row-class-name="props.rowClassName"
@@ -353,12 +361,12 @@ defineExpose({
             :style="`width: ${tableWidth}px;`"
           >
             <div
-              style="width: 100%; height: 50px;"
+              style="width: 100%; height: 50px"
               v-loading="true"
               element-loading-text="LOADING..."
               element-loading-background="rgba(255, 255, 255, 0.8)"
             ></div>
-            <div style="width: 100%; height: 30px;"></div>
+            <div style="width: 100%; height: 30px"></div>
           </div>
 
           <div
@@ -366,12 +374,7 @@ defineExpose({
             class="__table-main-append"
             :style="`width: ${tableWidth}px;`"
           >
-            <CustomButton
-              label="載入更多資料"
-              type="info"
-              text
-              @click="load"
-            />
+            <CustomButton label="載入更多資料" type="info" text @click="load" />
             <div ref="loadMoreRef" class="load-more"></div>
           </div>
         </template>
@@ -409,11 +412,7 @@ defineExpose({
 
         <!-- 勾選 checkbox -->
         <template v-if="props.selection">
-          <ElTableColumn
-            width="50"
-            :align="'center'"
-            type="selection"
-          />
+          <ElTableColumn width="50" :align="'center'" type="selection" />
         </template>
 
         <!-- 欄位設定 -->
@@ -449,12 +448,11 @@ defineExpose({
                   ></slot>
                 </div>
               </template>
-              <ElTableColumn
-                v-for="child in column.columns"
-                :key="child.prop"
-                v-bind="child"
-              >
-                <template v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)" #header="scope">
+              <ElTableColumn v-for="child in column.columns" :key="child.prop" v-bind="child">
+                <template
+                  v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)"
+                  #header="scope"
+                >
                   <div :class="child.sortable ? 'header-slot' : ''">
                     <slot
                       :name="`header-${column.slotKey}-${child.slotKey}`"
@@ -488,7 +486,10 @@ defineExpose({
                   </div>
                 </template>
 
-                <template v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)" #default="scope">
+                <template
+                  v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)"
+                  #default="scope"
+                >
                   <slot
                     :name="`column-${column.slotKey}-${child.slotKey}`"
                     :label="child.label"
@@ -600,10 +601,10 @@ defineExpose({
       thead {
         background-color: lighten($system-bg-color, 48%);
         & > tr {
-           background-color: inherit;
+          background-color: inherit;
 
           & > th {
-             background-color: inherit;
+            background-color: inherit;
           }
         }
 

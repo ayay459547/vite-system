@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref, WritableComputedRef } from 'vue'
-import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick, inject} from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
@@ -10,24 +10,17 @@ import { CustomIcon } from '@/components'
 import { scrollToEl, getUuid } from '@/lib/lib_utils'
 
 import type { ModelValue, Option } from './CustomTabsInfo'
-import {
-  version,
-  props as tabsProps
-} from './CustomTabsInfo'
+import { version, props as tabsProps } from './CustomTabsInfo'
 
 const scopedId = getUuid('__i-tabs__')
 
 const props = defineProps(tabsProps)
 
-const emit = defineEmits([
-  'update:modelValue',
-  'change',
-  'remove'
-])
+const emit = defineEmits(['update:modelValue', 'change', 'remove'])
 
 const useHook: UseHook = inject('useHook')
-  const { i18nTranslate, i18nTest } = useHook({
-    i18nModule: props.i18nModule
+const { i18nTranslate, i18nTest } = useHook({
+  i18nModule: props.i18nModule
 })
 
 const getTranslateLabel = (option: Option) => {
@@ -88,7 +81,7 @@ const listRef: Ref<HTMLElement | null> = ref(null)
 const arrowIsShow = ref(false)
 
 const wrapROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach(async (entry) => {
+  entries.forEach(async entry => {
     conWidth.value = entry.contentRect.width - 84
 
     if (listRef.value !== null) {
@@ -106,7 +99,7 @@ const conWidth = ref(0)
 
 const listWidth = ref(0)
 const listROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach(async (entry) => {
+  entries.forEach(async entry => {
     const oddListWidth = listWidth.value
     listWidth.value = entry.contentRect.width
 
@@ -125,7 +118,7 @@ onMounted(() => {
   // 有掛載才開啟監聽
   scope.run(() => {
     if (props.move) {
-      watch(tempValue, (newValue) => {
+      watch(tempValue, newValue => {
         debounceScrollToCurrentTab(newValue)
       })
     }
@@ -138,7 +131,6 @@ onMounted(() => {
     listRO.observe(listRef.value)
   }
   debounceScrollToCurrentTab(tempValue.value)
-
 })
 onUnmounted(() => {
   scope.stop()
@@ -150,22 +142,19 @@ onUnmounted(() => {
     listRO.disconnect()
   }
 })
-
 </script>
 
 <template>
   <div
     ref="wrapRef"
     class="__tabs-wrapper"
-    :class="[
-      { 'is-background': props.background },
-      `CustomTabs_${version} ${scopedId}`
-    ]">
+    :class="[{ 'is-background': props.background }, `CustomTabs_${version} ${scopedId}`]"
+  >
     <div class="__tabs-left">
       <slot name="left"></slot>
     </div>
-    <div class="__tabs-left-arrow" :class="{'is-show': arrowIsShow}" @click="increaseScroll">
-      <CustomIcon name="chevron-left"/>
+    <div class="__tabs-left-arrow" :class="{ 'is-show': arrowIsShow }" @click="increaseScroll">
+      <CustomIcon name="chevron-left" />
     </div>
     <div
       ref="conRef"
@@ -206,7 +195,7 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="__tabs-right-arrow" :class="{ 'is-show': arrowIsShow }" @click="decreaseScroll">
-      <CustomIcon name="chevron-right"/>
+      <CustomIcon name="chevron-right" />
     </div>
     <div class="__tabs-right">
       <slot name="right"></slot>
@@ -301,8 +290,8 @@ $is-background: #f5f7fa;
     }
 
     &.is-active {
-      color: #409EFF;
-      border-bottom: 2px solid #409EFF;
+      color: #409eff;
+      border-bottom: 2px solid #409eff;
     }
 
     &-remove {
@@ -319,10 +308,9 @@ $is-background: #f5f7fa;
         color: #fff;
       }
       &.is-active {
-        color: #409EFF;
+        color: #409eff;
       }
     }
-
   }
 }
 </style>

@@ -4,46 +4,39 @@ import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import {
-  version,
-  props as qrCodeProps
-} from './SimpleQRcodeInfo'
+import { version, props as qrCodeProps } from './SimpleQRcodeInfo'
 
 export default {
   props: qrCodeProps,
   // emits: [],
-  setup (props) {
+  setup(props) {
     const scopedId = getUuid('__i-qrcode__')
 
-    const qrProps = ({
-      text: props.text,
-      bgSrc: props.bgSrc,
-      logoSrc: props.logoSrc,
-      size: props.size
-    } as any).$filter((prop: any) => !isEmpty(prop))
-
-    const SimpleQRcode = () => h(
-      'div',
+    const qrProps = (
       {
-        class: [
-          '__qrcode-wrapper',
-          `SimpleQRcode_${version}`,
-          `${scopedId}`
-        ],
-        style: {
-          minWidth: `${props.size}px`,
-          minHeight: `${props.size}px`
-        }
-      },
-      [
-        h(vueQr, { ...qrProps }, null)
-      ]
-    )
+        text: props.text,
+        bgSrc: props.bgSrc,
+        logoSrc: props.logoSrc,
+        size: props.size
+      } as any
+    ).$filter((prop: any) => !isEmpty(prop))
+
+    const SimpleQRcode = () =>
+      h(
+        'div',
+        {
+          class: ['__qrcode-wrapper', `SimpleQRcode_${version}`, `${scopedId}`],
+          style: {
+            minWidth: `${props.size}px`,
+            minHeight: `${props.size}px`
+          }
+        },
+        [h(vueQr, { ...qrProps }, null)]
+      )
 
     return SimpleQRcode
   }
 }
-
 </script>
 
 <style lang="scss">

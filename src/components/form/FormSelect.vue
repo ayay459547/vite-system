@@ -34,7 +34,7 @@ const props = defineProps({
   },
   options: {
     type: Array as PropType<Options>,
-    default () {
+    default() {
       return []
     }
   },
@@ -163,7 +163,6 @@ const inputValue = computed({
   }
 })
 
-
 const scopedId = getUuid('__i-select__')
 
 // slot
@@ -185,7 +184,6 @@ defineExpose({
     }
   }
 })
-
 </script>
 
 <template>

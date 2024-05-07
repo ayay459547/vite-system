@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax'
@@ -9,17 +9,20 @@ import { updateToken } from '@/lib/lib_cookie'
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
 const connectApi = (import.meta as any).env.VITE_API_CONNECT_API
 
-const fakeApi = <ResData>(config: AxiosRequestConfig, options: AjaxOptions<ResData>): PromiseLike<ResData> => {
+const fakeApi = <ResData>(
+  config: AxiosRequestConfig,
+  options: AjaxOptions<ResData>
+): PromiseLike<ResData> => {
   const { fakeData, delay, callback } = options
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     // 自訂回傳資料
     if (typeof callback === 'function') {
       const resFakeData = callback(config, fakeData)
       setTimeout(() => {
         resolve(resFakeData)
       }, delay)
-    // 直接返回假資料
+      // 直接返回假資料
     } else {
       setTimeout(() => {
         resolve(fakeData)
@@ -41,19 +44,19 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
   })
 
   instance.interceptors.request.use(
-    (config) => {
+    (config: InternalAxiosRequestConfig<any>) => {
       return config
     },
-    (error) => {
+    (error: any) => {
       console.log('request error', error)
     }
   )
 
   instance.interceptors.response.use(
-    (res) => {
+    (res: AxiosResponse<any, any>) => {
       return res.data
     },
-    (error) => {
+    (error: any) => {
       console.log('response error', error)
 
       const status = error?.response?.status ?? ''
@@ -92,20 +95,15 @@ export const ajax = <ResData>(
   config: AxiosRequestConfig,
   options: AjaxOptions<ResData> = {}
 ): PromiseLike<ResData> => {
-
-  const {
-    isFakeData = false,
-    fakeData = null,
-    isLog = false,
-    delay = 0,
-    callback = null
-  } = options
+  const { isFakeData = false, fakeData = null, isLog = false, delay = 0, callback = null } = options
 
   /**
    * 有傳送資料 token 更新時間
    * 更新至少間隔1分鐘
    */
-  if (timeoutId) { clearInterval(timeoutId) }
+  if (timeoutId) {
+    clearInterval(timeoutId)
+  }
   timeoutId = setTimeout(() => {
     updateToken()
   }, 60 * 1000)
@@ -197,7 +195,7 @@ export class IWebScoket {
   /**
    * 重新連接
    */
-  #reconnect (delay: number) {
+  #reconnect(delay: number) {
     if (this.isReConnect) return
 
     if (this.socket.readyState === 1 || this.socket.readyState === 0) {
@@ -213,7 +211,7 @@ export class IWebScoket {
   }
 
   // 預設事件
-  #onopen (onopen: Function | undefined) {
+  #onopen(onopen: Function | undefined) {
     if (!isEmpty(onopen)) {
       onopen()
     } else {
@@ -223,7 +221,7 @@ export class IWebScoket {
 
     this.isReConnect = false
   }
-  #onclose (onclose: Function | undefined) {
+  #onclose(onclose: Function | undefined) {
     if (!isEmpty(onclose)) {
       onclose()
     } else {
@@ -241,7 +239,7 @@ export class IWebScoket {
       }
     }
   }
-  #onerror (onerror: Function | undefined) {
+  #onerror(onerror: Function | undefined) {
     // 至少要連過一次 才會執行
     if (!isEmpty(onerror) && this.connectCount > 0) {
       onerror()
@@ -250,12 +248,12 @@ export class IWebScoket {
     }
     this.isError = true
   }
-  #onmessage (msg: MessageEvent) {
+  #onmessage(msg: MessageEvent) {
     console.log(`get ( ${this.connectUrl} ) message`, msg)
     return msg
   }
 
-  constructor (config: WebSocketConfig) {
+  constructor(config: WebSocketConfig) {
     this.baseWs = ''
     this.baseUrl = ''
     this.url = ''
@@ -283,7 +281,7 @@ export class IWebScoket {
    * 初始化 WebSocket
    * @param {Object} config 設定檔案
    */
-  init (config: WebSocketConfig) {
+  init(config: WebSocketConfig) {
     if (isEmpty(config)) return
     // console.log('init WebSocket')
 
@@ -322,7 +320,7 @@ export class IWebScoket {
    * 發送訊息
    * @param {*} data 送出資料
    */
-  send (data: any) {
+  send(data: any) {
     let _timer: NodeJS.Timeout | null = null
 
     try {
@@ -346,7 +344,6 @@ export class IWebScoket {
           clearTimeout(_timer)
         }
       }
-
     } catch (e) {
       console.log(e)
     }
@@ -356,7 +353,7 @@ export class IWebScoket {
    * 重連 WebSocket
    * 手動關閉 會在1秒後重新連接
    */
-  reconnect () {
+  reconnect() {
     clearTimeout(this.timer)
     this.socket.close()
   }
@@ -365,7 +362,7 @@ export class IWebScoket {
    * 關閉 WebSocket
    * 手動關閉
    */
-  close () {
+  close() {
     this.isClose = true
     clearTimeout(this.timer)
     this.socket.close()

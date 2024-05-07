@@ -5,10 +5,7 @@ import Draggable from 'vuedraggable'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import type { DraggableChange } from './CustomDraggableInfo'
-import {
-  version,
-  props as draggableProps
-} from './CustomDraggableInfo'
+import { version, props as draggableProps } from './CustomDraggableInfo'
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -47,16 +44,15 @@ const onClone = ($event: any) => emit('clone', $event)
 const onChange = ($event: DraggableChange) => emit('change', $event)
 
 const listValue = computed({
-  get () {
+  get() {
     if (isEmpty(props.modelValue)) return []
 
     return props.modelValue
   },
-  set (value: any[]) {
+  set(value: any[]) {
     emit('update:modelValue', value)
   }
 })
-
 </script>
 
 <template>
@@ -96,17 +92,10 @@ const listValue = computed({
 
       <template #item="{ element, index }">
         <li
-          :class="[
-            `__draggable __list-group-item ${props.rowClass}`,
-            props.stripe ? 'stripe' : ''
-          ]"
+          :class="[`__draggable __list-group-item ${props.rowClass}`, props.stripe ? 'stripe' : '']"
           :style="props.rowStyle"
         >
-          <slot
-            name="item"
-            :element="element"
-            :index="index"
-          ></slot>
+          <slot name="item" :element="element" :index="index"></slot>
         </li>
       </template>
 

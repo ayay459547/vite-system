@@ -69,12 +69,7 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'select',
-  'blur',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'select', 'blur', 'change'])
 
 const onEvent = {
   select: (item: ModelValue): void => emit('select', item),
@@ -116,7 +111,6 @@ defineExpose({
 })
 
 const scopedId = getUuid('__i-autocomplete__')
-
 </script>
 
 <template>

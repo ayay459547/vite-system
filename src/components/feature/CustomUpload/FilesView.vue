@@ -29,7 +29,6 @@ const previewSrcList = computed(() => {
     return item.src
   })
 })
-
 </script>
 
 <template>
@@ -37,11 +36,7 @@ const previewSrcList = computed(() => {
     <template v-if="!isEmpty(props.files)">
       <!-- 多張圖片 -->
       <div class="__i-file-multiple">
-        <div
-          v-for="(file, fileIndex) in props.files"
-          :key="file.uuid"
-          class="__i-file-sigle"
-        >
+        <div v-for="(file, fileIndex) in props.files" :key="file.uuid" class="__i-file-sigle">
           <div class="__file-icon">
             <CustomImage
               v-if="file.fileType === 'image' && !isEmpty(file.src)"
@@ -70,7 +65,6 @@ const previewSrcList = computed(() => {
             text
             @click="emit('remove', fileIndex)"
           />
-
         </div>
       </div>
     </template>
@@ -78,7 +72,7 @@ const previewSrcList = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@mixin iconColor ($type, $color) {
+@mixin iconColor($type, $color) {
   &-#{$type} {
     color: $color !important;
   }
@@ -124,9 +118,9 @@ const previewSrcList = computed(() => {
       color: #909399;
     }
   }
-  @include iconColor('word', #409EFF);
-  @include iconColor('excel', #67C23A);
-  @include iconColor('powerpoint', #E6A23C);
+  @include iconColor('word', #409eff);
+  @include iconColor('excel', #67c23a);
+  @include iconColor('powerpoint', #e6a23c);
 
   &-info {
     width: 100%;

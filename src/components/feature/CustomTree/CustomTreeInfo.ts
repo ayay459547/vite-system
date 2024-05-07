@@ -13,9 +13,15 @@ export interface TreeOptionProps {
   label?: string | ((data: TreeNodeData, node: Node) => string)
   disabled?: string | ((data: TreeNodeData, node: Node) => string)
   isLeaf?: string | ((data: TreeNodeData, node: Node) => boolean)
-  class?: (data: TreeNodeData, node: Node) => string | {
-      [key: string]: boolean
-  } | string
+  class?: (
+    data: TreeNodeData,
+    node: Node
+  ) =>
+    | string
+    | {
+        [key: string]: boolean
+      }
+    | string
 }
 
 export const props = {

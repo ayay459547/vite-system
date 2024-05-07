@@ -11,12 +11,20 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type TimePickerType = 'time' | 'timerange'
 export declare type GetDisabledHours = (role: string, comparingDate?: Dayjs) => number[]
-export declare type GetDisabledMinutes = (hour: number, role: string, comparingDate?: Dayjs) => number[]
-export declare type GetDisabledSeconds = (hour: number, minute: number, role: string, comparingDate?: Dayjs) => number[]
+export declare type GetDisabledMinutes = (
+  hour: number,
+  role: string,
+  comparingDate?: Dayjs
+) => number[]
+export declare type GetDisabledSeconds = (
+  hour: number,
+  minute: number,
+  role: string,
+  comparingDate?: Dayjs
+) => number[]
 
 type BaseValue = string | Date | null
 type ModelValue = BaseValue | [BaseValue, BaseValue]
-
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -84,7 +92,7 @@ const props = defineProps({
 
 const bindAttributes = computed(() => {
   const attributes: any = {
-    isRange: props.isRange || (props.type === 'timerange'),
+    isRange: props.isRange || props.type === 'timerange',
     clearable: props.clearable,
     disabled: props.disabled,
     format: props.format,
@@ -100,12 +108,7 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'blur',
-  'focus',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'change'])
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
@@ -150,24 +153,20 @@ const scope = effectScope()
 // 當值發生改變時 更新資料
 // HH:mm:ss => Day Month Date Year HH:mm:ss GMT+0800 (台北標準時間)
 const updateValue = (value: ModelValue) => {
-  if (props.isRange || (props.type === 'timerange')) {
+  if (props.isRange || props.type === 'timerange') {
     const today = new Date()
     let _start = datetimeFormat(today, 'YYYY-MM-DD 00:00:00')
     let _end = datetimeFormat(today, 'YYYY-MM-DD 23:59:59')
 
     if (Array.isArray(value)) {
-      const [
-        value1 = '00:00:00',
-        value2 = '23:59:59'
-      ] = value
+      const [value1 = '00:00:00', value2 = '23:59:59'] = value
 
       if (!isEmpty(value1) && !isEmpty(value2)) {
         _start = datetimeFormat(today, `YYYY-MM-DD ${value1}`)
         _end = datetimeFormat(today, `YYYY-MM-DD ${value2}`)
       }
-      const defaultRange = [ _start, _end ]
+      const defaultRange = [_start, _end]
       _inputValue.value = defaultRange
-
     } else if (!isEmpty(value)) {
       _inputValue.value = datetimeFormat(today, `${value}`)
     }
@@ -179,7 +178,7 @@ onMounted(() => {
 
   // 有掛載才開啟監聽
   scope.run(() => {
-    watch(inputValue, (newValue) => {
+    watch(inputValue, (newValue: ModelValue) => {
       updateValue(newValue)
     })
   })
