@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { CustomInput } from '@/components'
 
 const inputValue = ref('')
-
 </script>
 
 <template>
@@ -13,6 +12,4 @@ const inputValue = ref('')
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

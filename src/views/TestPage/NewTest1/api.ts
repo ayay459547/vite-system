@@ -24,10 +24,7 @@ const getData = async (
   callback: (row: ResponseData) => TableData,
   params: any
 ): Promise<TableData[]> => {
-  const {
-    page = 1,
-    size = 100
-  } = params
+  const { page = 1, size = 100 } = params
 
   const resData = await ajax<Api<ResponseData[]>>(
     {
@@ -64,14 +61,8 @@ const getData = async (
 
 export const getExcelData = async (params: any): Promise<TableData[]> => {
   return getData(
-    (row) => {
-      const {
-        column1,
-        column2,
-        column3,
-        column4,
-        column5
-      } = row
+    row => {
+      const { column1, column2, column3, column4, column5 } = row
 
       return {
         column1,
@@ -87,14 +78,8 @@ export const getExcelData = async (params: any): Promise<TableData[]> => {
 
 export const getTableData = async (params: any): Promise<TableData[]> => {
   return getData(
-    (row) => {
-      const {
-        column1,
-        column2,
-        column3,
-        column4,
-        column5
-      } = row
+    row => {
+      const { column1, column2, column3, column4, column5 } = row
 
       return {
         column1,
@@ -155,32 +140,29 @@ export const getTableDataCount = async (params: any): Promise<number> => {
 
 // delete
 export const deleteData = async (rowData: TableData): Promise<string | boolean> => {
-  const {
-    column1,
-    column2,
-    column3,
-    column4,
-    column5
-  } = rowData
+  const { column1, column2, column3, column4, column5 } = rowData
 
-  const resData = await ajax<Api<any>>({
-    url: '/api/delete',
-    method: 'delete',
-    data: {
-      column1,
-      column2,
-      column3,
-      column4,
-      column5
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: null,
-      status: 'success'
+  const resData = await ajax<Api<any>>(
+    {
+      url: '/api/delete',
+      method: 'delete',
+      data: {
+        column1,
+        column2,
+        column3,
+        column4,
+        column5
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: null,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   const { status, msg } = resData
 
   if (status !== 'success') {
@@ -194,4 +176,3 @@ export const deleteData = async (rowData: TableData): Promise<string | boolean> 
 
   return status
 }
-

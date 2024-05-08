@@ -69,17 +69,13 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'logout',
-  'update:isOpen',
-  'history-change',
-  'preference',
-  'change-page'
-])
+const emit = defineEmits(['logout', 'update:isOpen', 'history-change', 'preference', 'change-page'])
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
-  get () { return props.isOpen },
-  set (value) {
+  get() {
+    return props.isOpen
+  },
+  set(value) {
     emit('update:isOpen', value)
   }
 })
@@ -116,17 +112,16 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
   if (targetRoutePath.length === 1) {
     tempIsOpen.value = true
     sideRef.value?.setOpen(false)
-  // level2 被點擊
+    // level2 被點擊
   } else if (targetRoutePath.length === 2) {
     tempIsOpen.value = true
     sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
-  // level3 被點擊
+    // level3 被點擊
   } else {
     tempIsOpen.value = true
     sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
   }
 }
-
 </script>
 
 <template>
@@ -134,7 +129,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     <div
       v-show="props.isShow"
       class="layout-left layout-side"
-      :class="tempIsOpen ? 'is-open': 'is-close'"
+      :class="tempIsOpen ? 'is-open' : 'is-close'"
     >
       <SideContent
         ref="sideRef"
@@ -154,11 +149,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       </SideContent>
     </div>
 
-    <div
-      v-show="props.isShow"
-      class="layout-right"
-      :class="tempIsOpen ? 'is-open': 'is-close'"
-    >
+    <div v-show="props.isShow" class="layout-right" :class="tempIsOpen ? 'is-open' : 'is-close'">
       <div class="layout-header">
         <HeaderContent
           v-model:is-open="tempIsOpen"

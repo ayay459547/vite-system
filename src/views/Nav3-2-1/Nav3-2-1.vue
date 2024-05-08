@@ -9,7 +9,7 @@ const tableData = reactive<any[]>([])
 let clusterize: any = null
 
 onBeforeMount(() => {
-  for(let i = 0 ; i < 1000; i++){
+  for (let i = 0; i < 1000; i++) {
     tableData.push({
       no: i,
       date: '2016-05-02',
@@ -34,18 +34,14 @@ onMounted(() => {
 
 <template>
   <div class="page">
-    <div id="scrollContent" style="height: 300px; overflow: auto;">
+    <div id="scrollContent" style="height: 300px; overflow: auto">
       <div class="i-mb-xl">{{ url }}</div>
 
       <ElTable :data="tableData" style="width: 100%">
-        <ElTableColumn prop="no" label="index" width="80">
-        </ElTableColumn>
-        <ElTableColumn prop="date" label="日期" width="180">
-        </ElTableColumn>
-        <ElTableColumn prop="name" label="姓名" width="180">
-        </ElTableColumn>
-        <ElTableColumn prop="address" label="地址">
-        </ElTableColumn>
+        <ElTableColumn prop="no" label="index" width="80"> </ElTableColumn>
+        <ElTableColumn prop="date" label="日期" width="180"> </ElTableColumn>
+        <ElTableColumn prop="name" label="姓名" width="180"> </ElTableColumn>
+        <ElTableColumn prop="address" label="地址"> </ElTableColumn>
       </ElTable>
     </div>
   </div>

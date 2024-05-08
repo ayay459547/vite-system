@@ -16,21 +16,23 @@ const {
 
 defineExpose({
   submit: async () => {
-    return await validateForm().then(async () => {
-      const { data, status } = await createData(form)
+    return await validateForm()
+      .then(async () => {
+        const { data, status } = await createData(form)
 
-      return { data, status }
-    }).catch(errorList => {
-      const error = errorList.find(errorItem => {
-        return errorItem.el !== null
+        return { data, status }
       })
-      if (error) {
-        const el = error.getDom()
-        scrollToEl(el)
-      }
+      .catch(errorList => {
+        const error = errorList.find(errorItem => {
+          return errorItem.el !== null
+        })
+        if (error) {
+          const el = error.getDom()
+          scrollToEl(el)
+        }
 
-      return { data: null, status: 'error' }
-    })
+        return { data: null, status: 'error' }
+      })
   }
 })
 </script>
@@ -49,11 +51,7 @@ defineExpose({
       v-bind="formColumn.date"
     />
 
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.address"
-      v-bind="formColumn.address"
-    />
+    <CustomInput class="grid-col-xs-24" v-model="form.address" v-bind="formColumn.address" />
   </div>
 </template>
 
@@ -63,4 +61,5 @@ defineExpose({
   height: fit-content;
   padding: 16px;
 }
-</style>../columns
+</style>
+../columns

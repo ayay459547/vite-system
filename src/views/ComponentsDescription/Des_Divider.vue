@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -30,42 +29,22 @@ const positionOptions = [
 ]
 const position = ref<DividerContentPosition>('left')
 
-
 // slot
 const slotText = ref('slot default')
 </script>
 
 <template>
   <div class="page">
-    <CustomInput
-      v-model="direction"
-      label="方向"
-      type="radio"
-      :options="directionOptions"
-    />
+    <CustomInput v-model="direction" label="方向" type="radio" :options="directionOptions" />
 
-    <CustomInput
-      v-model="style"
-      label="線條類型"
-      type="radio"
-      :options="styleOptions"
-    />
+    <CustomInput v-model="style" label="線條類型" type="radio" :options="styleOptions" />
 
-    <CustomInput
-      v-model="position"
-      label="位置"
-      type="radio"
-      :options="positionOptions"
-    />
+    <CustomInput v-model="position" label="位置" type="radio" :options="positionOptions" />
 
-    <CustomInput label="插槽文字" v-model="slotText" clearable/>
+    <CustomInput label="插槽文字" v-model="slotText" clearable />
 
     <div class="page-divider">
-      <CustomDivider
-        :direction="direction"
-        :border-style="style"
-        :content-position="position"
-      >
+      <CustomDivider :direction="direction" :border-style="style" :content-position="position">
         <h4>{{ `slot{ ${slotText} }` }}</h4>
       </CustomDivider>
     </div>

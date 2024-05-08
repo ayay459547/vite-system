@@ -3,11 +3,11 @@ import { totlaPermission } from '@/lib/lib_permission'
 
 import { getInjectRoutes } from './setting'
 // 功能開發中
-export function InProgress () {
+export function InProgress() {
   return import('@/views/Common/InProgress.vue')
 }
 // 功能維護中
-export function FixView () {
+export function FixView() {
   return import('@/views/Common/FixView.vue')
 }
 

@@ -9,12 +9,15 @@ const authStore = useAuthStore()
 const { isCheckedStatus } = storeToRefs(authStore)
 
 const router = useRouter()
-watch(isCheckedStatus, (isCheck: boolean) => {
-  if (isCheck) {
-    router.push({ name: 'locatehome' })
-  }
-}, { immediate: true })
-
+watch(
+  isCheckedStatus,
+  (isCheck: boolean) => {
+    if (isCheck) {
+      router.push({ name: 'locatehome' })
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

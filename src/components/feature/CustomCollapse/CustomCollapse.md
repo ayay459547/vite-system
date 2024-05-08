@@ -1,11 +1,12 @@
 # CustomCollapse
+
 ### 使用範例
+
 ```vue
 <script setup lang="ts">
 import { CustomCollapse } from '@/components'
 
 const active = ref([])
-
 </script>
 
 <template>
@@ -27,17 +28,21 @@ const active = ref([])
   </CustomCollapse>
 </template>
 ```
+
 ## Element UI Plus
+
 [https://element-plus.org/en-US/component/collapse.html](https://element-plus.org/en-US/component/collapse.html)
 
 ### Attributes ( props )
-| 屬姓名     | 說明           | 类型                    | 默認值     |
-| --------- | -------------- | ----------------------- | --------- |
-| value     | 展開的選項      | string / number / Array | ''        |
-| accordion | 是否為手風琴模式 | boolean                 | false     |
-| options   | 是否顯示小圓點   | Array                   | []        |
+
+| 屬姓名    | 說明             | 类型                    | 默認值 |
+| --------- | ---------------- | ----------------------- | ------ |
+| value     | 展開的選項       | string / number / Array | ''     |
+| accordion | 是否為手風琴模式 | boolean                 | false  |
+| options   | 是否顯示小圓點   | Array                   | []     |
 
 ### Slots
-| 插槽名     | 說明          |
-| --------- | ------------- |
-| default   | 文字顯示內容   |
+
+| 插槽名  | 說明         |
+| ------- | ------------ |
+| default | 文字顯示內容 |

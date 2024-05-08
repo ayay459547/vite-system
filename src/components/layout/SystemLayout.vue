@@ -65,11 +65,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'logout',
-  'history-change',
-  'change-page'
-])
+const emit = defineEmits(['logout', 'history-change', 'change-page'])
 
 const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
@@ -91,11 +87,7 @@ export type CurrentRouteName = {
   level3: string
 }
 const currentRouteName = computed(() => {
-  const [
-    level1Active = '',
-    level2Active = '',
-    level3Active = ''
-  ] = props.breadcrumbName
+  const [level1Active = '', level2Active = '', level3Active = ''] = props.breadcrumbName
 
   return {
     level1: level1Active,
@@ -137,20 +129,20 @@ const modal = reactive({
 const layout1Ref = ref()
 const layout2Ref = ref()
 
-const init =  async () => {
-    await nextTick()
+const init = async () => {
+  await nextTick()
 
-    setTimeout(() => {
-      switch (layout.value) {
-        case 'layout1':
-          layout1Ref.value.init()
-          break
-        case 'layout2':
-          layout2Ref.value.init()
-          break
-      }
-    }, 100)
-  }
+  setTimeout(() => {
+    switch (layout.value) {
+      case 'layout1':
+        layout1Ref.value.init()
+        break
+      case 'layout2':
+        layout2Ref.value.init()
+        break
+    }
+  }, 100)
+}
 
 defineExpose({
   setModalView: async () => {
@@ -169,18 +161,12 @@ const onChangeLayout = () => {
 const onHistoryChange = ($event: boolean) => {
   emit('history-change', $event)
 }
-
 </script>
 
 <template>
   <div class="system-layout">
     <div class="user-modal">
-      <CustomModal
-        v-model="modal.preference"
-        hidden-footer
-        draggable
-        click-outside
-      >
+      <CustomModal v-model="modal.preference" hidden-footer draggable click-outside>
         <template #header>
           <label>{{ i18nTranslate('preference') }}</label>
         </template>

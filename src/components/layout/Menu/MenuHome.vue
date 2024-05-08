@@ -19,19 +19,18 @@ const toHome = () => {
   emit('routerChange')
   router.push({ name: 'locatehome' })
 }
-
 </script>
 
 <template>
   <div class="locatehome-conatiner" @click="toHome">
     <div class="locatehome-md">
-      <CustomIcon name="home" class="icon"/>
+      <CustomIcon name="home" class="icon" />
       <span>{{ i18nTranslate('locatehome') }}</span>
     </div>
 
     <div class="locatehome-xs">
       <CustomTooltip>
-        <CustomIcon name="home"/>
+        <CustomIcon name="home" />
 
         <template #content>
           <span>{{ i18nTranslate('locatehome') }}</span>

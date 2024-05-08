@@ -8,7 +8,6 @@ import type { TableData } from '../api'
 import { updateData } from './api'
 import { columnSetting } from '../columns'
 
-
 const {
   columns: formrColumn,
   forms: form,
@@ -24,11 +23,7 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  const {
-    name = null,
-    date = null,
-    address = null
-  } = props.data
+  const { name = null, date = null, address = null } = props.data
 
   form.name = name
   form.date = date
@@ -36,21 +31,23 @@ onMounted(() => {
 })
 
 const submit = async () => {
-  const res = await validateForm().then(async () => {
-    const resData = await updateData(form)
+  const res = await validateForm()
+    .then(async () => {
+      const resData = await updateData(form)
 
-    return resData > 0 ? 'success' : 'error'
-  }).catch(errorList => {
-    const error = errorList.find(errorItem => {
-      return errorItem.el !== null
+      return resData > 0 ? 'success' : 'error'
     })
-    if (error) {
-      const el = error.getDom()
-      scrollToEl(el)
-    }
+    .catch(errorList => {
+      const error = errorList.find(errorItem => {
+        return errorItem.el !== null
+      })
+      if (error) {
+        const el = error.getDom()
+        scrollToEl(el)
+      }
 
-    return 'error'
-  })
+      return 'error'
+    })
   return res
 }
 
@@ -72,11 +69,7 @@ defineExpose({
       v-bind="formrColumn.date"
     />
 
-    <CustomInput
-      class="grid-col-md-24"
-      v-model="form.address"
-      v-bind="formrColumn.address"
-    />
+    <CustomInput class="grid-col-md-24" v-model="form.address" v-bind="formrColumn.address" />
   </div>
 </template>
 
@@ -86,4 +79,5 @@ defineExpose({
   height: fit-content;
   padding: 16px;
 }
-</style>../columns
+</style>
+../columns

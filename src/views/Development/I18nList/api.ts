@@ -1,4 +1,3 @@
-
 import {
   // properties,
   langMap
@@ -14,15 +13,20 @@ export type TableData = {
 
 const langData = [] as TableData[]
 
-(langMap as any).$forEach((lang: {
-  zhTw: string
-  zhCn: string
-  en: string
-}, key: string) => {
-  const { zhTw, zhCn, en } = lang
+;(langMap as any).$forEach(
+  (
+    lang: {
+      zhTw: string
+      zhCn: string
+      en: string
+    },
+    key: string
+  ) => {
+    const { zhTw, zhCn, en } = lang
 
-  langData.push({ keyword: key, zhTw, zhCn, en })
-})
+    langData.push({ keyword: key, zhTw, zhCn, en })
+  }
+)
 // console.log(properties)
 // properties.then(langProperties => {
 //   if (!isEmpty(langProperties)) {
@@ -40,35 +44,35 @@ const langData = [] as TableData[]
 // })
 
 export const getData = (params: any) => {
-  const {
-    keyword, zhTw, zhCn, en,
-    sort = {}, page, size
-  } = params
+  const { keyword, zhTw, zhCn, en, sort = {}, page, size } = params
   console.log(langData)
 
-  const { key: sortKey, order: sortType} = sort
+  const { key: sortKey, order: sortType } = sort
 
-  const filterList = ({
-    keyword, zhTw, zhCn, en
-  } as any).$reduce((
-    res: Record<string, string>[],
-    curr: string,
-    key: string
-  ) => {
+  const filterList = (
+    {
+      keyword,
+      zhTw,
+      zhCn,
+      en
+    } as any
+  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
     if (!isEmpty(curr)) {
-      res.push({ key, value: curr})
+      res.push({ key, value: curr })
     }
     return res
   }, []) as Record<string, string>[]
 
-  const tempData = cutTableData(page, size,
+  const tempData = cutTableData(
+    page,
+    size,
     langData.filter(route => {
       if (isEmpty(filterList)) return true
 
       return filterList.every(item => {
         const { key, value } = item
 
-        switch (key){
+        switch (key) {
           case 'keyword':
             return new RegExp(value).test(route.keyword)
           case 'zhTw':
@@ -93,10 +97,10 @@ export const getData = (params: any) => {
         break
       case 'descending':
         tempData.sort((a, b) => {
-           return b[sortKey].localeCompare(a[sortKey], 'zh-Hans-TW', { sensitivity: 'accent' })
+          return b[sortKey].localeCompare(a[sortKey], 'zh-Hans-TW', { sensitivity: 'accent' })
         })
         break
-      }
+    }
   }
   return tempData
 }
@@ -104,15 +108,16 @@ export const getData = (params: any) => {
 export const getDataCount = (params: any): number => {
   const { keyword, zhTw, zhCn, en } = params
 
-  const filterList = ({
-    keyword, zhTw, zhCn, en
-  } as any).$reduce((
-    res: Record<string, string>[],
-    curr: string,
-    key: string
-  ) => {
+  const filterList = (
+    {
+      keyword,
+      zhTw,
+      zhCn,
+      en
+    } as any
+  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
     if (!isEmpty(curr)) {
-      res.push({ key, value: curr})
+      res.push({ key, value: curr })
     }
     return res
   }, []) as Record<string, string>[]
@@ -123,7 +128,7 @@ export const getDataCount = (params: any): number => {
     return filterList.every(item => {
       const { key, value } = item
 
-      switch (key){
+      switch (key) {
         case 'keyword':
           return new RegExp(value).test(route.keyword)
         case 'zhTw':

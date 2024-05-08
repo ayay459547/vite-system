@@ -40,7 +40,6 @@ const onRemove = ($event: number) => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>
@@ -52,11 +51,7 @@ onMounted(() => {
         class="rush-order-item"
         :class="`machine-${dataId}`"
       >
-        <MachineRushOrderList
-          :uuid="dataId"
-          :index="dataIndex"
-          @remove="onRemove"
-        />
+        <MachineRushOrderList :uuid="dataId" :index="dataIndex" @remove="onRemove" />
       </div>
     </div>
 

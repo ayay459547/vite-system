@@ -31,12 +31,7 @@ export interface TableData extends CommonData {
 }
 
 const formatParams = (params: any): Params => {
-  const {
-    orderId = '',
-    demandDate = '',
-    routeId = '',
-    isSettingsRushOrder = ''
-  } = params
+  const { orderId = '', demandDate = '', routeId = '', isSettingsRushOrder = '' } = params
 
   return {
     orderId,
@@ -96,13 +91,8 @@ const getData = async (
 // excel
 export const getExcelData = async (params: any): Promise<ExcelData[]> => {
   return getData(
-    (row) => {
-      const {
-        orderId = '',
-        demandDate = '',
-        routeId = '',
-        isSettingsRushOrder = false
-      } = row
+    row => {
+      const { orderId = '', demandDate = '', routeId = '', isSettingsRushOrder = false } = row
 
       return {
         orderId,
@@ -118,13 +108,8 @@ export const getExcelData = async (params: any): Promise<ExcelData[]> => {
 // table
 export const getTableData = async (params: any): Promise<TableData[]> => {
   return getData(
-    (row) => {
-      const {
-        orderId = '',
-        demandDate = '',
-        routeId = '',
-        isSettingsRushOrder = false
-      } = row
+    row => {
+      const { orderId = '', demandDate = '', routeId = '', isSettingsRushOrder = false } = row
 
       return {
         orderId,

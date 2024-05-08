@@ -204,30 +204,28 @@ export type NumberFormatType = 'round' | 'floor' | 'ceil' | ''
  *    isToLocaleString 是否要有三位一個逗點
  * @returns {Number} 格式化的數字
  */
-export const numberFormat = <T extends (number | string)>(num: number, options?: {
-  type?: NumberFormatType
-  toFixed?: number
-  isString?: boolean
-  isToLocaleString?: boolean
-}): T => {
-  const {
-    type = '',
-    toFixed = 0,
-    isString = false,
-    isToLocaleString = false
-  } = options ?? {}
+export const numberFormat = <T extends number | string>(
+  num: number,
+  options?: {
+    type?: NumberFormatType
+    toFixed?: number
+    isString?: boolean
+    isToLocaleString?: boolean
+  }
+): T => {
+  const { type = '', toFixed = 0, isString = false, isToLocaleString = false } = options ?? {}
   if (isEmpty(num)) return '' as T
 
   let res = 0
   switch (type) {
     case 'round':
-      res = +(Math.round((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      res = +(Math.round((num + `e+${toFixed}`) as unknown as number) + `e-${toFixed}`)
       break
     case 'floor':
-      res = +(Math.floor((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      res = +(Math.floor((num + `e+${toFixed}`) as unknown as number) + `e-${toFixed}`)
       break
     case 'ceil':
-      res = +(Math.ceil((num + `e+${toFixed}`) as unknown as number)  + `e-${toFixed}`)
+      res = +(Math.ceil((num + `e+${toFixed}`) as unknown as number) + `e-${toFixed}`)
       break
     default:
       res = num
@@ -331,11 +329,7 @@ export const deepClone = <T = any>(targetElement: any, origin: T): T => {
 
   const target = targetElement
 
-  function setFun (
-    obj: Array<any> | Record<any, any>,
-    key: string | number,
-    value: any
-  ): void {
+  function setFun(obj: Array<any> | Record<any, any>, key: string | number, value: any): void {
     obj[key] = value
   }
 
@@ -373,7 +367,10 @@ export const deepClone = <T = any>(targetElement: any, origin: T): T => {
  *  block: start, center, end, nearest
  *  inline: start, center, end, nearest'
  */
-export const scrollToEl = (el: Element = document.querySelector('#app'), options: ScrollIntoViewOptions = {}): void => {
+export const scrollToEl = (
+  el: Element = document.querySelector('#app'),
+  options: ScrollIntoViewOptions = {}
+): void => {
   const setting: ScrollIntoViewOptions = {
     behavior: 'smooth',
     block: 'start',
@@ -386,10 +383,7 @@ export const scrollToEl = (el: Element = document.querySelector('#app'), options
   if (re.test(Object.prototype.toString.call(el))) {
     el.scrollIntoView(setting)
   } else {
-    tipLog('無法執行 scrollToEl', [
-      '請給 html 的 dom 物件',
-      `傳入參數: ${el} => ${getType(el)}`
-    ])
+    tipLog('無法執行 scrollToEl', ['請給 html 的 dom 物件', `傳入參數: ${el} => ${getType(el)}`])
   }
 }
 
@@ -524,7 +518,6 @@ export const copyText = async (text: string): Promise<string> => {
 
     return text
   } catch (err) {
-
     ElNotification({
       type: 'error',
       title: '複製文字失敗',
@@ -553,7 +546,7 @@ export const reverse = (list: Array<any>): Array<any> => {
  * @returns {Number} 等待時間
  */
 export const awaitTime = (time: number): Promise<number> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(time)
     }, time)

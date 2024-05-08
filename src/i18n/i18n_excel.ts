@@ -39,10 +39,7 @@ export const getTranslateSrcFile = () => {
 
       // 紀錄版本
       getI18nInfo(scopeKey).then(info => {
-        if (
-          isEmpty(info) ||
-          info.version !== version
-        ) {
+        if (isEmpty(info) || info.version !== version) {
           setI18nInfo(scopeKey, { label, scopeKey, version })
         }
       })
@@ -54,12 +51,14 @@ export const getTranslateSrcFile = () => {
   return moduleLangMap
 }
 
-export type GlobalI18n = Partial<Composer & {
-  initModuleLangMap: () => void
-  i18nTranslate: I18nTranslate
-  i18nTest: I18nTest
-  setModuleType: (type: ScopeKey) => void
-}>
+export type GlobalI18n = Partial<
+  Composer & {
+    initModuleLangMap: () => void
+    i18nTranslate: I18nTranslate
+    i18nTest: I18nTest
+    setModuleType: (type: ScopeKey) => void
+  }
+>
 /**
  * @author Caleb
  * @description 針對各模組 設定翻譯
@@ -98,7 +97,8 @@ export const useGlobalI18n = (): GlobalI18n => {
     if (
       !hasOwnProperty(i18nMap.value, _i18nModule) ||
       typeof i18nMap.value[_i18nModule]?.te !== 'function'
-    ) return key
+    )
+      return key
 
     // 有對應模組
     const i18nKey = `__${_i18nModule}__:${key}`
@@ -115,7 +115,8 @@ export const useGlobalI18n = (): GlobalI18n => {
     if (
       !hasOwnProperty(i18nMap.value, _i18nModule) ||
       typeof i18nMap.value[_i18nModule]?.te !== 'function'
-    ) return false
+    )
+      return false
 
     // 有對應模組
     const i18nKey = `__${_i18nModule}__:${key}`

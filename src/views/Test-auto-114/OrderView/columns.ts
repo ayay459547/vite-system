@@ -46,7 +46,7 @@ export const columnSetting = {
       isValidate: false,
       default: null
     },
-    getValue (data: boolean) {
+    getValue(data: boolean) {
       if (typeof data === 'boolean') return data ? '是' : '否'
       return ''
     }

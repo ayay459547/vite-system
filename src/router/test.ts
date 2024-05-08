@@ -157,7 +157,7 @@ const testRoutes: RouterTree[] = [
         systemType: ['development', 'test'],
         path: '/chart-1',
         icon: 'chart-pie',
-        component: () => import('@/views/ChartsTest/Chart1.vue')
+        component: () => import('@/views/ChartsTest/Chart1View.vue')
       },
       {
         name: 'chart-2',
@@ -169,7 +169,7 @@ const testRoutes: RouterTree[] = [
         systemType: ['development', 'test'],
         path: '/chart-2',
         icon: 'chart-column',
-        component: () => import('@/views/ChartsTest/Chart2.vue')
+        component: () => import('@/views/ChartsTest/Chart2View.vue')
       }
     ]
   },

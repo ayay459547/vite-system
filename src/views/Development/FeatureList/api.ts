@@ -28,15 +28,11 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
       label: leafNode.title,
       value: leafNode.name
     })
-  } else{
+  } else {
     nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
     nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
   }
-  const {
-    status = 'new',
-    startDate = '',
-    completedDate = ''
-  } = nextNode?.meta ?? {}
+  const { status = 'new', startDate = '', completedDate = '' } = nextNode?.meta ?? {}
 
   if (!['', null, undefined].includes(nextNode.path)) {
     routesData.push({
@@ -62,32 +58,33 @@ export const getOptions = () => {
 }
 
 export const getData = (params: any) => {
-  const {
-    status, title, path, mode, breadcrumbTitle,
-    sort = {}, page, size
-  } = params
+  const { status, title, path, mode, breadcrumbTitle, sort = {}, page, size } = params
 
-  const { key: sortKey, order: sortType} = sort
+  const { key: sortKey, order: sortType } = sort
 
-  const filterList = ({
-    status, title, path, mode, breadcrumbTitle
-  } as any).$reduce((
-    res: Record<string, string>[],
-    curr: string,
-    key: string
-  ) => {
+  const filterList = (
+    {
+      status,
+      title,
+      path,
+      mode,
+      breadcrumbTitle
+    } as any
+  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
     if (!['', null, undefined].includes(curr)) {
-      res.push({ key, value: curr})
+      res.push({ key, value: curr })
     }
     return res
   }, []) as Record<string, string>[]
 
-  const tempData = cutTableData(page, size,
+  const tempData = cutTableData(
+    page,
+    size,
     routesData.filter(route => {
       return filterList.every(item => {
         const { key, value } = item
 
-        switch (key){
+        switch (key) {
           case 'status':
             return value === route.status
           case 'title':
@@ -114,28 +111,28 @@ export const getData = (params: any) => {
         break
       case 'descending':
         tempData.sort((a, b) => {
-           return b[sortKey].localeCompare(a[sortKey], 'zh-Hans-TW', { sensitivity: 'accent' })
+          return b[sortKey].localeCompare(a[sortKey], 'zh-Hans-TW', { sensitivity: 'accent' })
         })
         break
-      }
+    }
   }
   return tempData
 }
 
 export const getDataCount = (params: any) => {
-  const {
-    status, title, path, mode, breadcrumbTitle
-  } = params
+  const { status, title, path, mode, breadcrumbTitle } = params
 
-  const filterList = ({
-    status, title, path, mode, breadcrumbTitle
-  } as any).$reduce((
-    res: Record<string, string>[],
-    curr: string,
-    key: string
-  ) => {
+  const filterList = (
+    {
+      status,
+      title,
+      path,
+      mode,
+      breadcrumbTitle
+    } as any
+  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
     if (!['', null, undefined].includes(curr)) {
-      res.push({ key, value: curr})
+      res.push({ key, value: curr })
     }
     return res
   }, []) as Record<string, string>[]
@@ -144,7 +141,7 @@ export const getDataCount = (params: any) => {
     return filterList.every(item => {
       const { key, value } = item
 
-      switch (key){
+      switch (key) {
         case 'status':
           return value === route.status
         case 'title':

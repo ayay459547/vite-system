@@ -20,7 +20,7 @@ const initDB = async () => {
   }
 
   const _dbPromise = openDB(system, idbVersion, {
-    upgrade (db, oldVersion) {
+    upgrade(db, oldVersion) {
       const tempStoreVersion = deepClone({}, storeVersion)
 
       // 已存在的db

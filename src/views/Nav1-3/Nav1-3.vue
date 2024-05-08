@@ -6,23 +6,17 @@ import { CustomUpload, CustomDivider } from '@/components'
 onMounted(() => {
   console.log(123)
 })
-
 </script>
 
 <template>
   <div class="page">
     <h3>測試檔案上傳</h3>
 
-    <CustomUpload
-      type="image"
-      multiple
-    />
+    <CustomUpload type="image" multiple />
 
     <CustomDivider />
 
-    <CustomUpload
-      multiple
-    />
+    <CustomUpload multiple />
   </div>
 </template>
 

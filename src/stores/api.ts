@@ -6,27 +6,30 @@ import type { AuthData, PermissionData } from '@/declare/hook'
 import { fakeUserData, allPermissionData } from './fakeData'
 
 export const getRoutesPermission = async (userId: number) => {
-  const resData = await ajax<Api<PermissionData[]>>({
-    url: '/api/getTableDataCount',
-    method: 'get',
-    data: {
-      id: userId
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: allPermissionData,
-      status: 'success'
+  const resData = await ajax<Api<PermissionData[]>>(
+    {
+      url: '/api/getTableDataCount',
+      method: 'get',
+      data: {
+        id: userId
+      }
     },
-    delay: 500,
-    callback: (config, fakeData) => {
-      if (config.data.id) {
-        return fakeData
-      } else {
-        return []
+    {
+      isFakeData: true,
+      fakeData: {
+        data: allPermissionData,
+        status: 'success'
+      },
+      delay: 500,
+      callback: (config, fakeData) => {
+        if (config.data.id) {
+          return fakeData
+        } else {
+          return []
+        }
       }
     }
-  })
+  )
   return resData
 }
 
@@ -44,28 +47,29 @@ export const defaultAuthData = {
     description: null
   },
   roleFunction: [],
-  groups: [
-    { id: null, fullName: null }
-  ]
+  groups: [{ id: null, fullName: null }]
 }
 
 export const getAuthData = async (token: number): Promise<AuthData> => {
-  const resData = await ajax<Api<AuthData>>({
-    baseURL: '/rest-common',
-    // url: '/role/getRole',
-    url: '/role/getRoleByUserId',
-    method: 'get',
-    params: {
-      id: token
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeUserData,
-      status: 'success'
+  const resData = await ajax<Api<AuthData>>(
+    {
+      baseURL: '/rest-common',
+      // url: '/role/getRole',
+      url: '/role/getRoleByUserId',
+      method: 'get',
+      params: {
+        id: token
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeUserData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   const { data, status, msg } = resData
 
   if (status === 'success') {

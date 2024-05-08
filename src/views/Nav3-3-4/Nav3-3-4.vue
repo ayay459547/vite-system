@@ -152,7 +152,7 @@ const spanMethodPoint = {
   restrictionName: ''
 }
 
-const rowSpanMethod: SpanMethod = (data) => {
+const rowSpanMethod: SpanMethod = data => {
   // console.log(data)
   const { row, column } = data
   const { property = '' } = column
@@ -243,7 +243,7 @@ const initShowData = async () => {
       let isShow = true
 
       // 計算跨欄
-      for (let i = (columnLength - 1); i >= 0; i--) {
+      for (let i = columnLength - 1; i >= 0; i--) {
         const column = spanMethodColumns[i]
         const { prop } = column
 
@@ -354,7 +354,8 @@ const initData = async () => {
           compareResults = []
         } = objectDetail
 
-        const { productGroup, custProduct, resourceScheduleRestrictedGroup } = limit2CertainTypeOfObj
+        const { productGroup, custProduct, resourceScheduleRestrictedGroup } =
+          limit2CertainTypeOfObj
 
         // 無排序
         compareResults.forEach(compareResult => {
@@ -365,7 +366,9 @@ const initData = async () => {
             const restrictionCompareReportsLength = restrictionCompareReports.length
 
             const _data = {
-              id: getUuid(`${dateOfPlan}-${machineId}-${processId}-${productGroup}-${custProduct}-${productId}-${resourceScheduleRestrictedGroup}`),
+              id: getUuid(
+                `${dateOfPlan}-${machineId}-${processId}-${productGroup}-${custProduct}-${productId}-${resourceScheduleRestrictedGroup}`
+              ),
               dateInterval: dateOfPlan,
               machine: machineId,
               process: processId,
@@ -405,7 +408,9 @@ const initData = async () => {
                 resData.value[dateOfPlan].push({
                   ..._data,
 
-                  id: getUuid(`${dateOfPlan}-${machineId}-${processId}-${productGroup}-${custProduct}-${productId}-${resourceScheduleRestrictedGroup}`),
+                  id: getUuid(
+                    `${dateOfPlan}-${machineId}-${processId}-${productGroup}-${custProduct}-${productId}-${resourceScheduleRestrictedGroup}`
+                  ),
                   restrictionName,
                   restrictionValue,
                   matchingType,
@@ -418,7 +423,6 @@ const initData = async () => {
             }
           })
         })
-
       })
     })
   })
@@ -451,31 +455,34 @@ const initTabs = async () => {
   })
 
   // 測試用
-  dateTabs.value.unshift(...[
-    { label: '20231128', value: '20231128' },
-    { label: '20231129', value: '20231129' }
-  ])
+  dateTabs.value.unshift(
+    ...[
+      { label: '20231128', value: '20231128' },
+      { label: '20231129', value: '20231129' }
+    ]
+  )
   dateTab.value = '20231128'
 }
 
 const filterSearch = async () => {
-  await validateForm().then(async () => {
-    isLoading.value = true
-    await nextTick()
+  await validateForm()
+    .then(async () => {
+      isLoading.value = true
+      await nextTick()
 
-    initTabs()
-    await initData()
+      initTabs()
+      await initData()
 
-    await nextTick()
-    initShowTable()
-
-  }).catch(errorList => {
-    console.log(errorList)
-    const el = errorList[0]?.getDom()
-    if (el) {
-      scrollToEl(el)
-    }
-  })
+      await nextTick()
+      initShowTable()
+    })
+    .catch(errorList => {
+      console.log(errorList)
+      const el = errorList[0]?.getDom()
+      if (el) {
+        scrollToEl(el)
+      }
+    })
 }
 
 onMounted(async () => {
@@ -499,17 +506,16 @@ const isShowChange = async () => {
     isLoading.value = false
   }, 500)
 }
-
 </script>
 
 <template>
   <div v-loading="isLoading" class="fund-1608 page-wrapper">
-    <div class="page-feature" :class="isOpen ? 'is-open': 'is-close'">
+    <div class="page-feature" :class="isOpen ? 'is-open' : 'is-close'">
       <!-- 縮放箭頭 -->
       <CustomButton
         icon-name="chevron-left"
         class="feature-btn"
-        :class="isOpen ? 'is-open': 'is-close'"
+        :class="isOpen ? 'is-open' : 'is-close'"
         circle
         @click="isShowChange"
       />
@@ -570,11 +576,10 @@ const isShowChange = async () => {
           </Transition>
         </div>
       </div>
-
     </div>
 
     <div class="page-table">
-      <CustomTabs v-model="dateTab" :options="dateTabs" @change="initShowTable"/>
+      <CustomTabs v-model="dateTab" :options="dateTabs" @change="initShowTable" />
 
       <TableMain
         class="page-table"
@@ -639,7 +644,7 @@ $bg-color: #ecf5ff;
   .cell {
     position: sticky;
     bottom: 30px;
-    top: 30px
+    top: 30px;
   }
 }
 .page {

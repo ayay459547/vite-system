@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { ref, shallowReactive, computed, provide, onMounted, onBeforeMount, nextTick, useSlots } from 'vue'
+import {
+  ref,
+  shallowReactive,
+  computed,
+  provide,
+  onMounted,
+  onBeforeMount,
+  nextTick,
+  useSlots
+} from 'vue'
 
 import { swal, notification, message, isEmpty, scrollToEl } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
@@ -167,7 +176,7 @@ const routeName = computed<any>(() => {
 // 設定 網頁 title
 // 設定 使用中的翻譯檔模組
 const setWebInfo = () => {
-  const currentTitle = ((currentNavigation) => {
+  const currentTitle = (currentNavigation => {
     if (currentNavigation) {
       const { name, title } = currentNavigation
 
@@ -185,10 +194,10 @@ const setWebInfo = () => {
 
 // 換頁時 scrollbar 移動到最上面
 const pageScrollTop = () => {
- const el = document.querySelector('.__layout-scroll-top__')
- if (el) {
-   scrollToEl(el, { behavior: 'auto' })
- }
+  const el = document.querySelector('.__layout-scroll-top__')
+  if (el) {
+    scrollToEl(el, { behavior: 'auto' })
+  }
 }
 
 const systemLayoutRef = ref()
@@ -217,10 +226,7 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
     setCurrentNavigation(null)
   } else if (navigationMap.value.has(routeName)) {
     const currentRoute = navigationMap.value.get(routeName)
-    const {
-      breadcrumbName: _breadcrumbName,
-      breadcrumbTitle: _breadcrumbTitle
-    } = currentRoute
+    const { breadcrumbName: _breadcrumbName, breadcrumbTitle: _breadcrumbTitle } = currentRoute
     // 麵包屑
     setBreadcrumbName(_breadcrumbName ?? [])
     setBreadcrumbTitle(_breadcrumbTitle ?? [])
@@ -312,7 +318,7 @@ const login = async (userId: number) => {
 
 // 歷史路由
 const historyIsOpen = ref(false)
-const historyChange = (v: boolean) => historyIsOpen.value = v
+const historyChange = (v: boolean) => (historyIsOpen.value = v)
 
 onMounted(() => {
   const _historyIsOpen = localStorage.getItem('historyIsOpen')
@@ -320,7 +326,7 @@ onMounted(() => {
 })
 
 // 向下傳送常用工具
-provide<UseHook>('useHook', (options) => {
+provide<UseHook>('useHook', options => {
   const { i18nModule } = options ?? {}
 
   return {
@@ -329,7 +335,7 @@ provide<UseHook>('useHook', (options) => {
       return `${i18nTranslate(key, _i18nModule ?? i18nModule)}`
     },
     i18nTest: (key, _i18nModule?: ScopeKey) => {
-      return i18nTest(key,  _i18nModule ?? i18nModule)
+      return i18nTest(key, _i18nModule ?? i18nModule)
     },
     eventList: (click, eventList, options) => {
       click.preventDefault()
@@ -344,7 +350,7 @@ provide<UseHook>('useHook', (options) => {
       })
       queueId.value++
     },
-    swal: (sweetAlertOptions) => {
+    swal: sweetAlertOptions => {
       return swal({
         confirmButtonText: i18nTranslate('confirm-yes'),
         showConfirmButton: true,
@@ -360,11 +366,9 @@ provide<UseHook>('useHook', (options) => {
         // 與路由守衛相同邏輯
         const userPermission = navigationMap.value.get(routeName)
         // pagePermission
-        const pagePermission = [
-          userPermission?.permission,
-          defaultPermission,
-          0
-        ].find(_permission => typeof _permission === 'number')
+        const pagePermission = [userPermission?.permission, defaultPermission, 0].find(
+          _permission => typeof _permission === 'number'
+        )
 
         return getPermission(pagePermission)
       }
@@ -380,7 +384,6 @@ provide<UseHook>('useHook', (options) => {
     }
   }
 })
-
 </script>
 
 <template>
@@ -469,7 +472,7 @@ provide<UseHook>('useHook', (options) => {
     </SystemLayout>
 
     <!-- hook loading -->
-    <HookLoader ref="customLoader"/>
+    <HookLoader ref="customLoader" />
     <!-- hook popover -->
     <template v-if="customPopoverQueue.length > 0">
       <HookPopover

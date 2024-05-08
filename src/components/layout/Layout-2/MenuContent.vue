@@ -37,7 +37,6 @@ const setLevel2Router = (level2Router: Navigation) => {
 // const onRouterChange = () => {
 //   emit('routerChange')
 // }
-
 </script>
 
 <template>
@@ -59,7 +58,8 @@ const setLevel2Router = (level2Router: Navigation) => {
       <MenuBreadcrumb
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
-        text-align="end"/>
+        text-align="end"
+      />
     </div>
 
     <div class="menu-right">

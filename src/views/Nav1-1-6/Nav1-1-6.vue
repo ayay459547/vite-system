@@ -19,7 +19,6 @@ onMounted(() => {
     console.log(resizeRef.value)
   }
 })
-
 </script>
 
 <template>
@@ -31,7 +30,7 @@ onMounted(() => {
       </CustomScrollbar>
     </div>
 
-    <CustomButton label="增加" @click="add"/>
+    <CustomButton label="增加" @click="add" />
 
     <div ref="resizeRef" class="page-resize">
       <h3>hook 計算大小變化</h3>
@@ -69,4 +68,3 @@ onMounted(() => {
   }
 }
 </style>
-

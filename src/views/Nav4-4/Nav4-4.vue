@@ -13,17 +13,19 @@ const userPermission = ref<Permission>(getPermission(defaultPermission))
 
 const [count, setCount] = useState(100)
 
-useEffect((newValue, oldValue) => {
-  console.table({
-    newValue,
-    oldValue
-  })
+useEffect(
+  (newValue, oldValue) => {
+    console.table({
+      newValue,
+      oldValue
+    })
 
-  return () => {
-    console.log('onUnmounted 777')
-  }
-
-}, [count])
+    return () => {
+      console.log('onUnmounted 777')
+    }
+  },
+  [count]
+)
 
 const testUseState = () => {
   setTimeout(() => {
@@ -42,7 +44,6 @@ onMounted(() => {
 
   testUseState()
 })
-
 </script>
 
 <template>

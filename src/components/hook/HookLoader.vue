@@ -56,7 +56,6 @@ defineExpose<Expose>({
     }
   }
 })
-
 </script>
 
 <template>
@@ -64,18 +63,15 @@ defineExpose<Expose>({
     <Transition name="fade">
       <div v-show="isOpen" class="loader-wrapper">
         <div class="loader-container">
-            <div class="loader-circle"></div>
-            <div class="loader-circle"></div>
-            <div class="loader-circle"></div>
-            <div class="loader-shadow"></div>
-            <div class="loader-shadow"></div>
-            <div class="loader-shadow"></div>
-            <div class="loader-loading">{{ massage }}</div>
+          <div class="loader-circle"></div>
+          <div class="loader-circle"></div>
+          <div class="loader-circle"></div>
+          <div class="loader-shadow"></div>
+          <div class="loader-shadow"></div>
+          <div class="loader-shadow"></div>
+          <div class="loader-loading">{{ massage }}</div>
         </div>
-        <div
-          class="loader-bar"
-          :style="`width: calc(${barPercentage}% - 2px)`"
-        ></div>
+        <div class="loader-bar" :style="`width: calc(${barPercentage}% - 2px)`"></div>
       </div>
     </Transition>
   </Teleport>
@@ -106,7 +102,7 @@ defineExpose<Expose>({
     justify-content: flex-end;
   }
 
-  &-circle{
+  &-circle {
     width: 20px;
     height: 20px;
     position: absolute;
@@ -114,37 +110,37 @@ defineExpose<Expose>({
     background-color: #363636;
     left: 15%;
     transform-origin: 50%;
-    animation: circle .5s alternate infinite ease;
+    animation: circle 0.5s alternate infinite ease;
     visibility: hidden;
   }
   @keyframes circle {
-    0%{
+    0% {
       visibility: visible;
       top: 60px;
       height: 5px;
       border-radius: 50px 50px 25px 25px;
       transform: scaleX(1.7);
     }
-    40%{
+    40% {
       height: 20px;
       border-radius: 50%;
       transform: scaleX(1);
     }
-    100%{
+    100% {
       top: 0;
     }
   }
-  &-circle:nth-child(2){
+  &-circle:nth-child(2) {
     left: 45%;
-    animation-delay: .2s;
+    animation-delay: 0.2s;
   }
-  &-circle:nth-child(3){
+  &-circle:nth-child(3) {
     left: auto;
     right: 15%;
-    animation-delay: .3s;
+    animation-delay: 0.3s;
   }
 
-  &-shadow{
+  &-shadow {
     width: 20px;
     height: 4px;
     border-radius: 50%;
@@ -155,29 +151,29 @@ defineExpose<Expose>({
     z-index: -1;
     left: 15%;
     filter: blur(1px);
-    animation: shadow .5s alternate infinite ease;
+    animation: shadow 0.5s alternate infinite ease;
   }
-  @keyframes shadow{
-    0%{
+  @keyframes shadow {
+    0% {
       transform: scaleX(1.5);
     }
-    40%{
+    40% {
       transform: scaleX(1);
-      opacity: .7;
+      opacity: 0.7;
     }
-    100%{
-      transform: scaleX(.2);
-      opacity: .4;
+    100% {
+      transform: scaleX(0.2);
+      opacity: 0.4;
     }
   }
-  &-shadow:nth-child(4){
+  &-shadow:nth-child(4) {
     left: 45%;
-    animation-delay: .2s
+    animation-delay: 0.2s;
   }
-  &-shadow:nth-child(5){
+  &-shadow:nth-child(5) {
     left: auto;
     right: 15%;
-    animation-delay: .3s;
+    animation-delay: 0.3s;
   }
 
   &-loading {

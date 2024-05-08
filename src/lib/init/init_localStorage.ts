@@ -1,6 +1,5 @@
 import checkSystemVersionDiff from './checkSystemVersion'
 
-
 const buildVersion = (import.meta as any).env.VITE_API_BUILD_VERSION
 
 // 打包版本 如果不同 會清除瀏覽器快取 並刷新

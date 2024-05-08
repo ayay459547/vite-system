@@ -47,14 +47,17 @@ const validateFun = {
  * @param {String} veeValue 需驗證資料
  * @returns {Boolean}
  */
-export const validateValue = (validate: ValidateType[] | ValidateType, veeValue: string): boolean => {
+export const validateValue = (
+  validate: ValidateType[] | ValidateType,
+  veeValue: string
+): boolean => {
   // 多個驗證格式
   if (Array.isArray(validate)) {
     return validate.every(type => {
       const { test } = validateFun[type](veeValue)
       return test
     })
-  // 單一驗證格式
+    // 單一驗證格式
   } else {
     const { test } = validateFun[validate](veeValue)
     return test

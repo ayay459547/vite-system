@@ -88,15 +88,12 @@ const options2 = [
     placement: 'top'
   }
 ]
-
 </script>
 
 <template>
   <div class="nav-1-2-2">
     <div class="flex-row i-ga-xxl">
-      <CustomTimeLine
-        :options="options"
-      >
+      <CustomTimeLine :options="options">
         <template #default="{ label }">
           <ElCard>
             <h3>{{ label }}</h3>
@@ -116,15 +113,10 @@ const options2 = [
     </div>
 
     <div class="flex-column i-ga-md">
-      <CustomTag label="test"/>
-      <CustomTag
-        label="test2"
-        type="danger"
-        icon-name="user"
-        icon-move="translate"
-      />
-      <CustomTag label="test3" type="success"/>
-      <CustomTag label="test4" type="info"/>
+      <CustomTag label="test" />
+      <CustomTag label="test2" type="danger" icon-name="user" icon-move="translate" />
+      <CustomTag label="test3" type="success" />
+      <CustomTag label="test4" type="info" />
     </div>
   </div>
 </template>

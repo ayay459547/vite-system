@@ -14,7 +14,11 @@ const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
  * @param value 值
  * @param options 設定
  */
-export const setCookie = (key: string, value: string, options?: Partial<Cookies.CookieAttributes>) => {
+export const setCookie = (
+  key: string,
+  value: string,
+  options?: Partial<Cookies.CookieAttributes>
+) => {
   const _options = { expires: 1 }
 
   Cookies.set(key, value, {
@@ -41,9 +45,9 @@ export const removeCookie = (key: string, options?: Partial<Cookies.CookieAttrib
 }
 
 export interface Token {
-	uid: string
-	date: Date
-	userId: number
+  uid: string
+  date: Date
+  userId: number
 }
 
 export const getToken = (loginTime?: string): Token | null => {
@@ -76,11 +80,9 @@ export const setToken = (userId: number, loginTime?: string) => {
   const minutes = 60
   const time = new Date(new Date().getTime() + minutes * 60 * 1000)
 
-  setCookie(
-    'token',
-    aesEncrypt(_token, `${privateKey}:${loginTime ?? '0000-00-00_00:00:00'}`),
-    { expires: time }
-  )
+  setCookie('token', aesEncrypt(_token, `${privateKey}:${loginTime ?? '0000-00-00_00:00:00'}`), {
+    expires: time
+  })
 }
 
 export const clearToken = () => {

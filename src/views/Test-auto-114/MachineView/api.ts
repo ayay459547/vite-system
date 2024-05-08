@@ -23,12 +23,7 @@ export interface TableData extends CommonData {}
 export interface ExcelData extends CommonData {}
 
 const formatParams = (params: any): Params => {
-  const {
-    machineNo = '',
-    machineArea = '',
-    count = '',
-    machineStatus = ''
-  } = params
+  const { machineNo = '', machineArea = '', count = '', machineStatus = '' } = params
 
   return {
     machineNo,
@@ -88,13 +83,8 @@ const getData = async (
 // excel
 export const getExcelData = async (params: any): Promise<TableData[]> => {
   return getData(
-    (row) => {
-      const {
-        machineNo = '',
-        machineArea = '',
-        count = '',
-        machineStatus = ''
-      } = row
+    row => {
+      const { machineNo = '', machineArea = '', count = '', machineStatus = '' } = row
 
       return {
         machineNo,
@@ -110,13 +100,8 @@ export const getExcelData = async (params: any): Promise<TableData[]> => {
 // table
 export const getTableData = async (params: any): Promise<TableData[]> => {
   return getData(
-    (row) => {
-      const {
-        machineNo = '',
-        machineArea = '',
-        count = '',
-        machineStatus = ''
-      } = row
+    row => {
+      const { machineNo = '', machineArea = '', count = '', machineStatus = '' } = row
 
       return {
         machineNo,

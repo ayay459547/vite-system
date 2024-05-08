@@ -50,23 +50,25 @@ onMounted(() => {
 const submit = async () => {
   loading(true, '新增資料中')
 
-  return await validateForm().then(async () => {
-    const { data, status } = await updateData(form)
-    loading(false)
+  return await validateForm()
+    .then(async () => {
+      const { data, status } = await updateData(form)
+      loading(false)
 
-    return { data, status }
-  }).catch(errorList => {
-    loading(false)
-    const error = errorList.find(errorItem => {
-      return errorItem.el !== null
+      return { data, status }
     })
-    if (error) {
-      const el = error.getDom()
-      scrollToEl(el)
-    }
+    .catch(errorList => {
+      loading(false)
+      const error = errorList.find(errorItem => {
+        return errorItem.el !== null
+      })
+      if (error) {
+        const el = error.getDom()
+        scrollToEl(el)
+      }
 
-    return { data: null, status: 'error' }
-  })
+      return { data: null, status: 'error' }
+    })
 }
 
 defineExpose({

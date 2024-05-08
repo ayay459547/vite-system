@@ -1,4 +1,4 @@
-const reverse = (data) => {
+const reverse = data => {
   if (data.length === 0) return []
   const temp = data.shift()
   return [...reverse(data), temp]
@@ -7,7 +7,7 @@ const reverse = (data) => {
 console.log(reverse([1, 2, 3]))
 
 class Person {
-  constructor (name, age) {
+  constructor(name, age) {
     this.name = name
     this.age = age
   }
@@ -69,11 +69,11 @@ console.log(baseRoutesName)
 
 const temp = { value: '' }
 const testProxy = new Proxy(temp, {
-  get (obj, prop) {
+  get(obj, prop) {
     if (prop === 'value') return obj[prop]
     return 'input.value'
   },
-  set (obj, prop, value) {
+  set(obj, prop, value) {
     obj.value = value.trim()
   }
 })

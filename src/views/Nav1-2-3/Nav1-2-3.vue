@@ -32,18 +32,20 @@ const {
 } = useFormListSetting<Form>(columnSetting, 'form', testData)
 
 const submit = () => {
-  validateForm().then(successList => {
-    console.log('vee success => ', successList)
-  }).catch(errorList => {
-    console.log('vee error => ', errorList)
-    const error = errorList.find(errorItem => {
-      return errorItem.el !== null
+  validateForm()
+    .then(successList => {
+      console.log('vee success => ', successList)
     })
-    if (error) {
-      const el = error.getDom()
-      scrollToEl(el)
-    }
-  })
+    .catch(errorList => {
+      console.log('vee error => ', errorList)
+      const error = errorList.find(errorItem => {
+        return errorItem.el !== null
+      })
+      if (error) {
+        const el = error.getDom()
+        scrollToEl(el)
+      }
+    })
 }
 
 const sortList = () => {
@@ -55,7 +57,6 @@ const sortList = () => {
     })
   }, 1000)
 }
-
 </script>
 
 <template>
@@ -80,16 +81,10 @@ const sortList = () => {
         </template>
 
         <template #column-name="{ rowIndex }">
-          <CustomInput
-            v-model="formList[rowIndex].name"
-            v-bind="formColumn.name"
-          ></CustomInput>
+          <CustomInput v-model="formList[rowIndex].name" v-bind="formColumn.name"></CustomInput>
         </template>
         <template #column-date="{ rowIndex }">
-          <CustomInput
-            v-model="formList[rowIndex].date"
-            v-bind="formColumn.date"
-          ></CustomInput>
+          <CustomInput v-model="formList[rowIndex].date" v-bind="formColumn.date"></CustomInput>
         </template>
         <template #column-age="{ rowIndex }">
           <CustomInput

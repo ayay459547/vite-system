@@ -40,7 +40,6 @@ const tabs = [
 
     <CustomTabs v-model="tab" :options="tabs"></CustomTabs>
     <CustomTabs v-model="tab" :options="tabs" background></CustomTabs>
-
   </div>
 </template>
 

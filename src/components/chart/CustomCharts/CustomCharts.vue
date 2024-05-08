@@ -16,12 +16,12 @@ export default defineComponent({
       default: '_charts'
     },
     options: {
-      type: Function as PropType<() => (EChartsOption | any)>,
+      type: Function as PropType<() => EChartsOption | any>,
       required: true
     }
   },
   emits: ['click'],
-  setup (props, context) {
+  setup(props, context) {
     // 監聽外框大小變化
     const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
       entries.forEach(() => {
@@ -53,19 +53,12 @@ export default defineComponent({
       const chartDom = document.getElementsByClassName(`${props.domKey}-charts__${scopedId}`)[0]
       if (isEmpty(props.options) || isEmpty(chartDom)) return
 
-      if (
-        isEmpty(myChart) &&
-        chartDom.clientWidth > 0 &&
-        chartDom.clientHeight > 0
-      ) {
+      if (isEmpty(myChart) && chartDom.clientWidth > 0 && chartDom.clientHeight > 0) {
         myChart = echarts.init(chartDom as HTMLElement)
       }
 
       const _options = props.options()
-      if (
-        !isEmpty(myChart) &&
-        !isEmpty(_options)
-      ) {
+      if (!isEmpty(myChart) && !isEmpty(_options)) {
         myChart.clear()
         myChart.setOption(_options, true)
 

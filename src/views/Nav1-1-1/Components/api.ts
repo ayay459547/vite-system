@@ -4,18 +4,21 @@ import { swal } from '@/lib/lib_utils'
 import type { TableData } from '../api'
 
 export const createData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>({
-    url: '/page/create',
-    method: 'post',
-    data: postData
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: 5,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page/create',
+      method: 'post',
+      data: postData
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: 5,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 
@@ -39,18 +42,21 @@ export const createData = async (postData: TableData) => {
 }
 
 export const updateData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>({
-    url: '/page1/update',
-    method: 'post',
-    data: postData
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: 2,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page1/update',
+      method: 'post',
+      data: postData
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: 2,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 

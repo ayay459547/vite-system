@@ -11,8 +11,11 @@ dayjs.extend(duration)
  * @param {String} format 想要的格式
  * @returns {String} 格式化後的時間
  */
-export const datetimeFormat = (value: string | number | Date, format: string = 'YYYY-MM-DD'): string => {
-  if(isEmpty(value)) return ''
+export const datetimeFormat = (
+  value: string | number | Date,
+  format: string = 'YYYY-MM-DD'
+): string => {
+  if (isEmpty(value)) return ''
   return dayjs(value).format(format)
 }
 
@@ -24,11 +27,11 @@ export const datetimeFormat = (value: string | number | Date, format: string = '
  * @returns {String} 格式化後的時間
  */
 export const formatISO8601 = (value: string | number | Date): string => {
-  if(isEmpty(value)) return ''
+  if (isEmpty(value)) return ''
   return dayjs(value).toISOString()
 }
 
-export type DurationType = 'seconds'| 'minutes'| 'hours'| 'days'| 'months'| 'years'
+export type DurationType = 'seconds' | 'minutes' | 'hours' | 'days' | 'months' | 'years'
 /**
  * @author Caleb
  * @description https://day.js.org/docs/en/durations/creating
@@ -37,7 +40,11 @@ export type DurationType = 'seconds'| 'minutes'| 'hours'| 'days'| 'months'| 'yea
  * @param {String} format 想要的格式
  * @returns {String} 格式化後的時間
  */
-export const durationFormat = (time: number, type: DurationType = 'seconds', format: string = 'HH:mm:ss'): string => {
+export const durationFormat = (
+  time: number,
+  type: DurationType = 'seconds',
+  format: string = 'HH:mm:ss'
+): string => {
   return dayjs.duration(time, type).format(format)
 }
 

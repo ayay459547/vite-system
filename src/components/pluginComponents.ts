@@ -31,7 +31,7 @@ import 'prismjs/components/prism-json'
 VMdPreview.use(vuepressTheme, { Prism })
 
 const pluginComponents = {
-  install (app: App): void {
+  install(app: App): void {
     library.add(fas, fab, far)
     app.component('font-awesome-icon', FontAwesomeIcon)
     app.use(VMdPreview)

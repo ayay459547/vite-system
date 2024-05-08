@@ -74,7 +74,7 @@ const setLevel2Router = (level1Router: Navigation): void => {
   level2List.value = leaves
 
   leaves.forEach(leaf => {
-    if(!Object.prototype.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
+    if (!Object.prototype.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
       level2OpenMap.value[leaf.name] = true
     }
   })
@@ -94,7 +94,6 @@ const breadCrumbSetLevel2 = (breadCrumb: string[]) => {
   if (!isEmpty(level1Router) && !isEmpty(level2Name)) {
     setLevel2Router(level1Router)
     level2IsOpen.value = true
-
   }
   if (!isEmpty(level3Name) && !isEmpty(level2Name)) {
     level2OpenMap.value[level2Name] = true
@@ -106,7 +105,6 @@ defineExpose({
   setOpen,
   breadCrumbSetLevel2
 })
-
 </script>
 
 <template>
@@ -115,10 +113,10 @@ defineExpose({
       class="nav-level1-container"
       :class="[
         `${props.isOpen ? 'nav-is-open' : 'nav-is-close'}`,
-        `${level2IsOpen ? 'is-close' : 'is-open'}`,
+        `${level2IsOpen ? 'is-close' : 'is-open'}`
       ]"
     >
-      <nav class="nav-list level1" >
+      <nav class="nav-list level1">
         <template v-for="level1Item in props.level1List" :key="level1Item.name">
           <!-- 有子路由 -->
           <div
@@ -138,12 +136,7 @@ defineExpose({
           </div>
 
           <!-- 無子路由 -->
-          <RouterLink
-            v-else
-            :to="level1Item.path"
-            class="nav-item"
-            v-slot="{ navigate }"
-          >
+          <RouterLink v-else :to="level1Item.path" class="nav-item" v-slot="{ navigate }">
             <div
               class="nav-item-left"
               :class="{ active: props.currentRouteName.level1 === level1Item.name }"
@@ -155,7 +148,6 @@ defineExpose({
 
             <div class="nav-item-right"></div>
           </RouterLink>
-
         </template>
       </nav>
     </CustomScrollbar>
@@ -218,7 +210,7 @@ defineExpose({
       }
       overflow: hidden {
         y: auto;
-      };
+      }
       transition-duration: 0.3s;
 
       &.is-close {
@@ -240,7 +232,7 @@ defineExpose({
       min-width: $nav-width - $nav-padding * 2;
     }
     &.level2 {
-      min-width:  $nav-width - $side-width;
+      min-width: $nav-width - $side-width;
       padding: 0;
     }
   }

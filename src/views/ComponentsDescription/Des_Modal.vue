@@ -1,16 +1,9 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomModal/CustomModal.md?raw'
 import type { WidthSize, HeightSize } from '@/components'
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown,
-  CustomModal,
-  CustomButton
-} from '@/components'
+import { CustomInput, CustomDivider, CustomMarkdown, CustomModal, CustomButton } from '@/components'
 
 const widthOptions = [
   { label: 'large', value: 'large' },
@@ -34,17 +27,11 @@ const isShow = ref(false)
 const onOpenClick = () => {
   isShow.value = true
 }
-
 </script>
 
 <template>
   <div class="page">
-    <CustomInput
-      label="插槽文字"
-      v-model="slotText"
-      clearable
-      class="i-mb-md"
-    />
+    <CustomInput label="插槽文字" v-model="slotText" clearable class="i-mb-md" />
 
     <CustomInput
       label="寬度類型"

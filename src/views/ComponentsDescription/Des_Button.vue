@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
@@ -24,7 +23,7 @@ const typeOptions = [
 const type = ref<ButtonType>('success')
 
 const styleOptions = [
-  { label: '無', value: ''},
+  { label: '無', value: '' },
   { label: 'text', value: 'text' },
   { label: 'plain', value: 'plain' },
   { label: 'round', value: 'round' },
@@ -36,13 +35,20 @@ const style = ref('')
 
 const attr = computed(() => {
   switch (style.value) {
-    case 'text': return { text: true }
-    case 'plain': return { plain: true }
-    case 'round': return { round: true }
-    case 'circle': return { circle: true }
-    case 'disabled': return { disabled: true }
-    case 'loading': return { loading: true }
-    default: return {}
+    case 'text':
+      return { text: true }
+    case 'plain':
+      return { plain: true }
+    case 'round':
+      return { round: true }
+    case 'circle':
+      return { circle: true }
+    case 'disabled':
+      return { disabled: true }
+    case 'loading':
+      return { loading: true }
+    default:
+      return {}
   }
 })
 
@@ -86,24 +92,9 @@ const slotText = ref('slot default')
 
 <template>
   <div class="page">
-    <CustomInput
-      v-model="size"
-      label="大小"
-      type="radio"
-      :options="sizeOptions"
-    />
-    <CustomInput
-      v-model="type"
-      label="類型"
-      type="radio"
-      :options="typeOptions"
-    />
-    <CustomInput
-      v-model="style"
-      label="其他參數"
-      type="radio"
-      :options="styleOptions"
-    />
+    <CustomInput v-model="size" label="大小" type="radio" :options="sizeOptions" />
+    <CustomInput v-model="type" label="類型" type="radio" :options="typeOptions" />
+    <CustomInput v-model="style" label="其他參數" type="radio" :options="styleOptions" />
 
     <CustomInput
       v-model="iconType"
@@ -112,15 +103,10 @@ const slotText = ref('slot default')
       :options="iconTypeOptions"
       hidden-label
     />
-    <CustomInput v-model="iconName" type="radio" :options="iconNameOptions" hidden-label/>
-    <CustomInput v-model="iconMove" type="radio" :options="iconMoveOptions" hidden-label/>
+    <CustomInput v-model="iconName" type="radio" :options="iconNameOptions" hidden-label />
+    <CustomInput v-model="iconMove" type="radio" :options="iconMoveOptions" hidden-label />
 
-    <CustomInput
-      v-model="color"
-      label="顏色"
-      type="radio"
-      :options="colorOptions"
-    />
+    <CustomInput v-model="color" label="顏色" type="radio" :options="colorOptions" />
 
     <CustomButton
       label="設定結果"
@@ -133,7 +119,7 @@ const slotText = ref('slot default')
       v-bind="attr"
     />
     <CustomDivider />
-    <CustomInput label="插槽文字" v-model="slotText" clearable/>
+    <CustomInput label="插槽文字" v-model="slotText" clearable />
     <CustomButton
       label="設定結果"
       :size="size"

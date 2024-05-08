@@ -20,60 +20,65 @@ const todos2 = ref<Todos[]>([])
  */
 
 const getTodosData = async () => {
-  const res = await ajax<Todos[]>({
-    url: '/todos',
-    method: 'get',
-    data: {}
-  }, {
-    isFakeData: false,
-    fakeData: [
-      {
-        'userId': 1,
-        'id': 1,
-        'title': 'delectus aut autem',
-        'completed': false
-      },
-      {
-        'userId': 2,
-        'id': 2,
-        'title': 'quis ut nam facilis et officia qui',
-        'completed': false
-      }
-    ],
-    delay: 300
-  })
+  const res = await ajax<Todos[]>(
+    {
+      url: '/todos',
+      method: 'get',
+      data: {}
+    },
+    {
+      isFakeData: false,
+      fakeData: [
+        {
+          userId: 1,
+          id: 1,
+          title: 'delectus aut autem',
+          completed: false
+        },
+        {
+          userId: 2,
+          id: 2,
+          title: 'quis ut nam facilis et officia qui',
+          completed: false
+        }
+      ],
+      delay: 300
+    }
+  )
 
   todos.value = res
   console.log('get todos => ', todos.value)
 }
 
-const getTodosData2 = (todos) => {
-  ajax<Todos[]>({
-    url: '/posts',
-    method: 'post',
-    data: { todos }
-  }, {
-    isFakeData: false,
-    fakeData: [
-      {
-        'userId': 1,
-        'id': 1,
-        'title': 'delectus aut autem',
-        'completed': false
-      },
-      {
-        'userId': 2,
-        'id': 2,
-        'title': 'quis ut nam facilis et officia qui',
-        'completed': false
-      }
-    ],
-    delay: 300
-  }).then(res => {
+const getTodosData2 = todos => {
+  ajax<Todos[]>(
+    {
+      url: '/posts',
+      method: 'post',
+      data: { todos }
+    },
+    {
+      isFakeData: false,
+      fakeData: [
+        {
+          userId: 1,
+          id: 1,
+          title: 'delectus aut autem',
+          completed: false
+        },
+        {
+          userId: 2,
+          id: 2,
+          title: 'quis ut nam facilis et officia qui',
+          completed: false
+        }
+      ],
+      delay: 300
+    }
+  ).then(res => {
     todos2.value = res
     console.log('post todos2 => ', todos2.value)
   })
-
 }
 
 onMounted(async () => {
@@ -92,13 +97,12 @@ const tableColumns = [
   { key: 'age', label: '年齡', prop: 'age', width: 120 },
   { key: 'address', label: '地址', prop: 'address', minWidth: 200 }
 ]
-
 </script>
 
 <template>
   <div class="page">
     api test
-    <div style="width: 800px; height: 500px;">
+    <div style="width: 800px; height: 500px">
       <CustomTable
         title="表單組件測試"
         version="1.0.0"
@@ -108,7 +112,7 @@ const tableColumns = [
       />
     </div>
 
-    <div style="width: 800px; height: 500px;">
+    <div style="width: 800px; height: 500px">
       <CustomTable
         title="表單組件測試"
         version="1.0.0"

@@ -33,32 +33,35 @@ export type UserData = {
 }
 
 export const getData = async (userId: number) => {
-  const resData = await ajax<Api<UserData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      userId
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeData,
-      status: 'success'
+  const resData = await ajax<Api<UserData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        userId
+      }
     },
-    delay: 300,
-    callback (config, fakeData) {
-      const { userId } = config.data
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeData,
+        status: 'success'
+      },
+      delay: 300,
+      callback(config, fakeData) {
+        const { userId } = config.data
 
-      const { data, status } = fakeData
+        const { data, status } = fakeData
 
-      return {
-        data: data.filter(item => {
-          return item.id === userId
-        }),
-        status
+        return {
+          data: data.filter(item => {
+            return item.id === userId
+          }),
+          status
+        }
       }
     }
-  })
+  )
 
   const { data, status, msg } = resData
 

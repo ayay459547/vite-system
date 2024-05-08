@@ -47,13 +47,13 @@ const excelToBar = () => {
     })
     return
   }
-  files.forEach((file) => {
+  files.forEach(file => {
     if (!isEmpty(file.excel)) {
       const _data = file.excel
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { map, matrix } = _data
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [ column, type = [], value = [] ] = matrix
+      const [column, type = [], value = []] = matrix
 
       barData.type = type
       barData.value = value
@@ -80,7 +80,6 @@ const init = () => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>

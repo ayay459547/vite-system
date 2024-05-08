@@ -32,7 +32,7 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
   const _treeToRoutes = (routes: RouterTree[], res: RouteRecordRaw[]): void => {
     routes.forEach(route => {
       if (Object.prototype.hasOwnProperty.call(route, 'path')) {
-        const { title, name,  meta, path, component } = route
+        const { title, name, meta, path, component } = route
 
         const pushItem = {
           path: `${systemUrl}${path}`,
@@ -158,11 +158,7 @@ const router = createRouter({
 const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
 router.beforeEach(
-  (
-    to: RouteLocationNormalized,
-    from: RouteLocationNormalized,
-    next: NavigationGuardNext
-  ) => {
+  (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     // 使用者
     const authStore = useAuthStore()
     const { isLogin, isCheckedStatus } = storeToRefs(authStore)
@@ -180,11 +176,9 @@ router.beforeEach(
      * 3. 系統預設
      * 4. 0 (無權限)
      */
-    const pagePermission = [
-      userPermission?.permission,
-      defaultPermission,
-      0
-    ].find(_permission => typeof _permission === 'number')
+    const pagePermission = [userPermission?.permission, defaultPermission, 0].find(
+      _permission => typeof _permission === 'number'
+    )
 
     // 尚未確認登入狀態
     if (!isCheckedStatus.value) {
@@ -202,7 +196,7 @@ router.beforeEach(
       // 已經登入 如果要進登入頁 自動跳回首頁
       if (to.name === 'login') {
         next({ name: 'locatehome' })
-      // 沒有讀取的權限
+        // 沒有讀取的權限
       } else if (
         from.name &&
         !baseRoutesName.includes(to.name as string) &&
@@ -210,13 +204,13 @@ router.beforeEach(
       ) {
         next({ name: 'noPermissions' })
 
-      // 如果再未登入時有 想進的頁面 會優先進入
+        // 如果再未登入時有 想進的頁面 會優先進入
       } else if (tempTo.value) {
         const temp = tempTo.value
         tempTo.value = null
 
         next({ ...temp })
-      // 已登入
+        // 已登入
       } else {
         next()
       }

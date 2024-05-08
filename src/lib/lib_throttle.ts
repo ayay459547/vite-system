@@ -16,7 +16,11 @@ export type ThrottleOptions = {
  *                 isNoTrailing: 是否不執行setTimeout的回調函數
  * @returns {Object} 包含回調函數的Proxy
  */
-export const throttle = <T = Function>(callback: Function, delay: number, options: ThrottleOptions = {}): T => {
+export const throttle = <T = Function>(
+  callback: Function,
+  delay: number,
+  options: ThrottleOptions = {}
+): T => {
   let now: number
   let timeoutId: NodeJS.Timeout | null
   let lastTime: number | null
@@ -30,13 +34,13 @@ export const throttle = <T = Function>(callback: Function, delay: number, option
   const { isNoTrailing } = defaultOptions
 
   const scopeData = {
-    clearLastTime () {
+    clearLastTime() {
       lastTime = null
     }
   }
 
   return new Proxy(() => {}, {
-    set (obj, key, value) {
+    set(obj, key, value) {
       if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
         scopeData[key] = value
       } else {
@@ -44,13 +48,13 @@ export const throttle = <T = Function>(callback: Function, delay: number, option
       }
       return true
     },
-    get (obj, key) {
+    get(obj, key) {
       if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
         return scopeData[key]
       }
       return obj[key]
     },
-    apply (obj, thisArg, params) {
+    apply(obj, thisArg, params) {
       now = +new Date()
 
       // 如果不是第一次執行 && 現在時間 < 上次執行時先 + 延遲時間

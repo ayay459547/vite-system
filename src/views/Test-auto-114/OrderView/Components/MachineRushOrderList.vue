@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType  } from 'vue'
+import type { PropType } from 'vue'
 import { ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
@@ -41,9 +41,7 @@ const machineOptions = [
   { label: 'machine-3', value: 'machine-3' }
 ]
 
-const {
-  tableColumns
-} = useSimpleTableSetting(workReportColumnSetting, 'table')
+const { tableColumns } = useSimpleTableSetting(workReportColumnSetting, 'table')
 
 const {
   // defaultValue,
@@ -78,7 +76,6 @@ const emit = defineEmits(['remove'])
 const onMachineRemoveClick = () => {
   emit('remove', props.index)
 }
-
 </script>
 
 <template>
@@ -95,12 +92,7 @@ const onMachineRemoveClick = () => {
         :options="machineOptions"
         @change="onMachineChange"
       />
-      <CustomButton
-        type="danger"
-        icon-name="trash-can"
-        text
-        @click="onMachineRemoveClick"
-      />
+      <CustomButton type="danger" icon-name="trash-can" text @click="onMachineRemoveClick" />
     </div>
     <div class="info-body">
       <FormList

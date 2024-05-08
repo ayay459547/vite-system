@@ -7,22 +7,25 @@ export type TokenData = number | string
 const fakeTokenData = '1'
 
 export const loginSystem = async (account: string, password: string): Promise<TokenData> => {
-  const resData = await ajax<Api<TokenData>>({
-    baseURL: '/api',
-    url: '/user/loginCheckAndGetUserId',
-    method: 'post',
-    data: {
-      account,
-      password
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTokenData,
-      status: 'success'
+  const resData = await ajax<Api<TokenData>>(
+    {
+      baseURL: '/api',
+      url: '/user/loginCheckAndGetUserId',
+      method: 'post',
+      data: {
+        account,
+        password
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTokenData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, errorMsg, status } = resData
 

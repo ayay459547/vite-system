@@ -40,7 +40,6 @@ const clone = (original: any) => {
     return original
   }
 }
-
 </script>
 
 <template>
@@ -55,18 +54,13 @@ const clone = (original: any) => {
       </template>
     </CustomDraggable>
 
-    <CustomDraggable
-      v-model="list2"
-      group="option"
-    >
+    <CustomDraggable v-model="list2" group="option">
       <template #item="{ element }">
         <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
       </template>
     </CustomDraggable>
 
-    <CustomDraggable
-      v-model="list3"
-    >
+    <CustomDraggable v-model="list3">
       <template #item="{ element }">
         <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
       </template>

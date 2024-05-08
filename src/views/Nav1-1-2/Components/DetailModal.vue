@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import {
-  ElDescriptions,
-  ElDescriptionsItem,
-  ElTag,
-  ElSteps,
-  ElStep
-} from 'element-plus'
+import { ElDescriptions, ElDescriptionsItem, ElTag, ElSteps, ElStep } from 'element-plus'
 
 import { isEmpty } from '@/lib/lib_utils'
 
@@ -35,12 +29,7 @@ const init = async (userId: number) => {
 
 const address = computed(() => {
   if (isEmpty(userData.value)) return ''
-  const {
-    street = '',
-    suite = '',
-    city = '',
-    zipcode = ''
-  } = userData.value?.address ?? {}
+  const { street = '', suite = '', city = '', zipcode = '' } = userData.value?.address ?? {}
 
   return `${street} ${suite} ${city} ${zipcode}`
 })
@@ -50,17 +39,11 @@ onMounted(() => {
 
   init(userId)
 })
-
 </script>
 
 <template>
   <div v-loading="isLoading" class="detal flex-column i-ga-lg">
-    <ElDescriptions
-      title="User Information"
-      direction="vertical"
-      :column="4"
-      border
-    >
+    <ElDescriptions title="User Information" direction="vertical" :column="4" border>
       <ElDescriptionsItem label="Username">{{ userData?.name ?? '' }}</ElDescriptionsItem>
       <ElDescriptionsItem label="Telephone">{{ userData?.phone ?? '' }}</ElDescriptionsItem>
       <ElDescriptionsItem label="Email" :span="2">{{ userData?.email ?? '' }}</ElDescriptionsItem>
@@ -87,4 +70,5 @@ onMounted(() => {
   height: fit-content;
   padding: 16px;
 }
-</style>../columns
+</style>
+../columns

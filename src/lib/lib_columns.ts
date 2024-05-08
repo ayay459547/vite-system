@@ -62,7 +62,11 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
 
   const refMap = shallowReactive<Record<string, any>>({})
 
-  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+  const getColumnData = (
+    column: Record<string, any>,
+    type: string,
+    key: string
+  ): Record<string, any> => {
     return {
       ref: (el: InputRefItem) => {
         if (el) {
@@ -81,14 +85,14 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       resizable: true,
       showOverflowTooltip: false,
       label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
+      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
       ...column[type]
     }
   }
 
   const defaultValue = {}
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty(column, type)) {
+    if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
 
@@ -101,10 +105,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
 
   if (isEmpty(resColumns)) {
     systemLog(columns, 'table')
-    tipLog('無欄位資料', [
-      '檢查 columns.ts 中的 欄位的 key',
-      `傳入 type 值 => ${type}`
-    ])
+    tipLog('無欄位資料', ['檢查 columns.ts 中的 欄位的 key', `傳入 type 值 => ${type}`])
   }
 
   return {
@@ -176,23 +177,25 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
       })
 
-      await Promise.all(validateList).then(resList => {
-        resList.forEach((resItme, resIndex) => {
-          const { errors, valid } = resItme
-          const validateRes = {
-            ...validateInput[resIndex],
+      await Promise.all(validateList)
+        .then(resList => {
+          resList.forEach((resItme, resIndex) => {
+            const { errors, valid } = resItme
+            const validateRes = {
+              ...validateInput[resIndex],
               errors,
               valid
-          }
-          if (valid) {
-            successList.push(validateRes)
-          } else {
-            errorList.push(validateRes)
-          }
+            }
+            if (valid) {
+              successList.push(validateRes)
+            } else {
+              errorList.push(validateRes)
+            }
+          })
         })
-      }).catch(errors => {
-        throw new Error(errors)
-      })
+        .catch(errors => {
+          throw new Error(errors)
+        })
 
       return new Promise((resolve, reject) => {
         if (errorList.length > 0) {
@@ -233,7 +236,11 @@ export interface FormListSetting<T> {
  * @param {Array} initData 初始化資料
  * @returns {Ojbect}
  */
-export const useFormListSetting = <T>(columns: Record<string, any>, type: string, initData: Array<any> = []): FormListSetting<T> => {
+export const useFormListSetting = <T>(
+  columns: Record<string, any>,
+  type: string,
+  initData: Array<any> = []
+): FormListSetting<T> => {
   const resColumns = {}
   const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
@@ -244,7 +251,11 @@ export const useFormListSetting = <T>(columns: Record<string, any>, type: string
     }
   })
 
-  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+  const getColumnData = (
+    column: Record<string, any>,
+    type: string,
+    key: string
+  ): Record<string, any> => {
     return {
       ref: (el: InputRefItem) => {
         if (el) {
@@ -266,14 +277,14 @@ export const useFormListSetting = <T>(columns: Record<string, any>, type: string
       resizable: true,
       showOverflowTooltip: false,
       label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
+      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
       ...column[type]
     }
   }
 
   const defaultValue = {}
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty(column, type)) {
+    if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
 
@@ -319,24 +330,26 @@ export const useFormListSetting = <T>(columns: Record<string, any>, type: string
         }
       })
 
-      await Promise.all(validateList).then(resList => {
-        resList.forEach((resItme, resIndex) => {
-          const { errors, valid } = resItme
-          const validateRes = {
-            ...validateInput[resIndex],
+      await Promise.all(validateList)
+        .then(resList => {
+          resList.forEach((resItme, resIndex) => {
+            const { errors, valid } = resItme
+            const validateRes = {
+              ...validateInput[resIndex],
               errors,
               valid
-          }
+            }
 
-          if (valid) {
-            successList.push(validateRes)
-          } else {
-            errorList.push(validateRes)
-          }
+            if (valid) {
+              successList.push(validateRes)
+            } else {
+              errorList.push(validateRes)
+            }
+          })
         })
-      }).catch(errors => {
-        throw new Error(errors)
-      })
+        .catch(errors => {
+          throw new Error(errors)
+        })
 
       return new Promise<any[]>((resolve, reject) => {
         if (errorList.length > 0) {
@@ -373,7 +386,7 @@ export interface TableOptions {
   page?: number
   size?: number
   sort?: {
-    key: null | string,
+    key: null | string
     order: null | 'ascending' | 'descending'
   }
   rowKey?: string
@@ -389,7 +402,7 @@ export interface TableOptions {
 }
 
 export interface TableSetting {
-  tableRef: Ref<TableRef>,
+  tableRef: Ref<TableRef>
   tableSetting: {
     ref: (el: TableRef) => void
     title: string
@@ -409,7 +422,7 @@ export interface TableSetting {
     isHiddenExcel: boolean
     i18nModule?: ScopeKey
     // 其他 table 的 props
-  } & Record<string, any>,
+  } & Record<string, any>
   downloadExcel: (tableData: Record<string, any>[]) => void
   resetScroll: (tableRef?: TableRef) => void
   toggleSelection: (rows: any[], tableRef?: TableRef) => void
@@ -478,20 +491,24 @@ export const useTableSetting = (
         prop: childkey,
         slotKey: childkey,
         label: child?.label ?? '',
-        i18nLabel: child?.i18nLabel ?? (child?.label ?? childkey),
+        i18nLabel: child?.i18nLabel ?? child?.label ?? childkey,
         title: child?.label ?? '',
         minWidth: 150,
         // element ui 單排用
         sortable: !_isOperations,
         // 專案用 多排
-        isSorting: !_isOperations ? (child?.isSorting ?? true) : false, // 是否顯示排序
+        isSorting: !_isOperations ? child?.isSorting ?? true : false, // 是否顯示排序
         order: child?.isSorting ?? 'none', // ascending | descending | none
         ...child
       })
     })
     return resChildren
   }
-  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+  const getColumnData = (
+    column: Record<string, any>,
+    type: string,
+    key: string
+  ): Record<string, any> => {
     const _isOperations = column[type]?.isOperations ?? false
 
     return {
@@ -500,22 +517,22 @@ export const useTableSetting = (
       slotKey: key,
       isOperations: _isOperations,
       label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
+      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
       title: column?.label ?? '',
       minWidth: 150,
       // element ui 單排用
-      sortable: !_isOperations ? (column[type]?.sortable ?? false) : false,
+      sortable: !_isOperations ? column[type]?.sortable ?? false : false,
       // 專案用 多排
-      isSorting: !_isOperations ? (column[type]?.isSorting ?? true) : false, // 是否顯示排序
+      isSorting: !_isOperations ? column[type]?.isSorting ?? true : false, // 是否顯示排序
       // 專案用 多排 預設值
-      order: column[type]?.order ?? 'none',   // ascending | descending | none
+      order: column[type]?.order ?? 'none', // ascending | descending | none
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
   }
   const resColumns = []
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty(column, type)) {
+    if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       if (temp.children ?? false) {
         delete temp.children
@@ -527,13 +544,17 @@ export const useTableSetting = (
     }
   })
 
-
   // excel header 翻譯
   const getI18nTranslate = () => {
-    if(isHiddenExcel) return {
-      i18nTranslate: (o: string) => { return o },
-      i18nTest: (o: string) => { return o.length > 0 }
-    }
+    if (isHiddenExcel)
+      return {
+        i18nTranslate: (o: string) => {
+          return o
+        },
+        i18nTest: (o: string) => {
+          return o.length > 0
+        }
+      }
 
     const useHook: UseHook = inject('useHook')
     const { i18nTranslate, i18nTest } = useHook({ i18nModule })
@@ -544,28 +565,23 @@ export const useTableSetting = (
     }
   }
 
-  const {i18nTranslate, i18nTest} = getI18nTranslate()
+  const { i18nTranslate, i18nTest } = getI18nTranslate()
 
   // 依據表單 及傳入資料 下載 excel
   const downloadExcel = async (tableData: Record<string, any>[], options?: WorkbookOptions) => {
     const workbook = createWorkbook({ ...options })
 
-    const worksheet = workbook.addWorksheet(
-      title,
-      {
-        properties: {
-          tabColor: { argb: 'FFFFFF' },
-          defaultRowHeight: 20,
-          showGridLines: true,
-          outlineLevelCol: 0,
-          outlineLevelRow: 0,
-          dyDescent: 55
-        },
-        views: [
-          { state: 'frozen', xSplit: 0, ySplit: 1 }
-        ]
-      }
-    ) //在檔案中新增工作表 參數放自訂名稱
+    const worksheet = workbook.addWorksheet(title, {
+      properties: {
+        tabColor: { argb: 'FFFFFF' },
+        defaultRowHeight: 20,
+        showGridLines: true,
+        outlineLevelCol: 0,
+        outlineLevelRow: 0,
+        dyDescent: 55
+      },
+      views: [{ state: 'frozen', xSplit: 0, ySplit: 1 }]
+    }) //在檔案中新增工作表 參數放自訂名稱
 
     const getRes: SettingData = await getColumnSetting(settingKey)
     const settingColumns = getRes.columns
@@ -616,7 +632,7 @@ export const useTableSetting = (
 
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
     // 異步的等待他處理完之後，創建url與連結，觸發下載
-    workbook.xlsx.writeBuffer().then((content) => {
+    workbook.xlsx.writeBuffer().then(content => {
       const a = document.createElement('a')
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
@@ -694,11 +710,14 @@ export const useTableSetting = (
         }
       }
     },
-    setParams: (params: {
-      page?: number
-      size?: number
-      sort?: Sort
-    }, tableRef?: TableRef) => {
+    setParams: (
+      params: {
+        page?: number
+        size?: number
+        sort?: Sort
+      },
+      tableRef?: TableRef
+    ) => {
       if (tableRef) {
         tableRef.setTableParams(params)
       } else if (_tableRef.value !== null) {
@@ -735,7 +754,7 @@ export const useTableSetting = (
 
 export interface SimpleTableSetting {
   title: string
-  tableColumns: any[],
+  tableColumns: any[]
   downloadExcel: (tableData: Record<string, any>[]) => void
 }
 export interface SimpleTableColumnsItem {
@@ -762,16 +781,19 @@ export const useSimpleTableSetting = (
   type: string,
   title?: ''
 ): SimpleTableSetting => {
-
   // 設定 table 用的 column
-  const getColumnData = (column: Record<string, any>, type: string, key: string): Record<string, any> => {
+  const getColumnData = (
+    column: Record<string, any>,
+    type: string,
+    key: string
+  ): Record<string, any> => {
     return {
       key,
       prop: key,
       slotKey: key,
       minWidth: 150,
       label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
+      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
       title: column?.label ?? '',
       required: false,
       ...column[type]
@@ -779,7 +801,7 @@ export const useSimpleTableSetting = (
   }
   const resColumns = []
   columns.$forEach((column: Record<string, any>, key: string) => {
-    if(hasOwnProperty(column, type)) {
+    if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns.push(temp)
     }
@@ -789,19 +811,16 @@ export const useSimpleTableSetting = (
   const downloadExcel = async (tableData: Record<string, any>[], options?: WorkbookOptions) => {
     const workbook = createWorkbook({ ...options })
 
-    const worksheet = workbook.addWorksheet(
-      title,
-      {
-        properties: {
-          tabColor: { argb: 'FFFFFF' },
-          defaultRowHeight: 20,
-          showGridLines: true,
-          outlineLevelCol: 0,
-          outlineLevelRow: 0,
-          dyDescent: 55
-        }
+    const worksheet = workbook.addWorksheet(title, {
+      properties: {
+        tabColor: { argb: 'FFFFFF' },
+        defaultRowHeight: 20,
+        showGridLines: true,
+        outlineLevelCol: 0,
+        outlineLevelRow: 0,
+        dyDescent: 55
       }
-    ) //在檔案中新增工作表 參數放自訂名稱
+    }) //在檔案中新增工作表 參數放自訂名稱
 
     const excelColumns: Partial<ExcelColumn>[] = []
 
@@ -840,7 +859,7 @@ export const useSimpleTableSetting = (
 
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
     // 異步的等待他處理完之後，創建url與連結，觸發下載
-    workbook.xlsx.writeBuffer().then((content) => {
+    workbook.xlsx.writeBuffer().then(content => {
       const a = document.createElement('a')
       const blobData = new Blob([content], {
         type: 'application/vnd.ms-excel;charset=utf-8;'
@@ -849,7 +868,6 @@ export const useSimpleTableSetting = (
       a.href = URL.createObjectURL(blobData)
       a.click()
     })
-
   }
   return {
     title,
@@ -866,7 +884,7 @@ export const useSimpleTableSetting = (
  */
 export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
   return columns.$reduce((prev: Array<string>, curr: any, currKey: string) => {
-      return [...prev, currKey]
+    return [...prev, currKey]
   }, [])
 }
 
@@ -878,12 +896,16 @@ export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
  * @param {Function} callback 返回格式
  * @returns {Ojbect} 新的格式 columns
  */
-export const formatColumns = (columns: Record<string, any>, type: string, callback: (column: Record<string, any>, key: string) => Record<string, any>): Record<string, any> => {
+export const formatColumns = (
+  columns: Record<string, any>,
+  type: string,
+  callback: (column: Record<string, any>, key: string) => Record<string, any>
+): Record<string, any> => {
   return columns.$reduce((res: Record<string, any>, column: Record<string, any>, key: string) => {
     res[key] = { ...column }
     const _column = res[key]
 
-    if(hasOwnProperty(column, type)) {
+    if (hasOwnProperty(column, type)) {
       const newColumn = callback(column[type], key)
 
       _column[type] = newColumn ?? column[type]

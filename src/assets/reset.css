@@ -9,20 +9,42 @@
 }
 
 #app,
-h1, h2, h3, h4, h5, h6,
-ul, li, form,
-a, div, nav, main, label, span {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+form,
+a,
+div,
+nav,
+main,
+label,
+span {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 /* 將監聽事件 標示為被動 會報錯 */
-div, label,
-h1, h2, h3, h4, h5, h6,
-ul, li, span, nav {
+div,
+label,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+span,
+nav {
   /* touch-action: none; */
-  font-family: 'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',Arial,sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    '微软雅黑', Arial, sans-serif;
 }
 
 body {
@@ -39,7 +61,8 @@ a {
   text-decoration: none;
 }
 
-ul, li {
+ul,
+li {
   list-style: none;
 }
 
@@ -56,4 +79,3 @@ ul, li {
   transition-duration: 0.3s;
   border-radius: 10px;
 }
-

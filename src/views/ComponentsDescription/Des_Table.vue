@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -19,7 +18,7 @@ const columnSetting = {
   },
   address: {
     label: '地址',
-    table: {minWidth: 300 }
+    table: { minWidth: 300 }
   }
 }
 const tableOptions: TableOptions = {
@@ -102,12 +101,11 @@ const onRandomClick = () => {
     checkTable.value.toggleSelection(newList)
   }
 }
-
 </script>
 
 <template>
   <div class="page">
-    <div style="width: 100%; height: 400px;">
+    <div style="width: 100%; height: 400px">
       <CustomTable
         :table-data="tableData2"
         :table-data-count="500"
@@ -129,7 +127,7 @@ const onRandomClick = () => {
         @click="onRandomClick"
       />
     </div>
-    <div style="width: 100%; height: 400px;">
+    <div style="width: 100%; height: 400px">
       <CustomTable
         ref="checkTable"
         title="表格組件(不使用 useTableSetting)"

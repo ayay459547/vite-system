@@ -37,8 +37,10 @@ const onHistoryChange = ($event: boolean) => {
 }
 
 const tempIsOpen = computed<boolean>({
-  get () { return props.isOpen },
-  set (value) {
+  get() {
+    return props.isOpen
+  },
+  set(value) {
     localStorage.setItem('navIsOpen', `${value}`)
     emit('update:isOpen', value)
   }
@@ -50,7 +52,6 @@ const tempIsOpen = computed<boolean>({
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   emit('setRouter', targetRoutePath)
 }
-
 </script>
 
 <template>
@@ -67,7 +68,6 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     </div>
 
     <div class="header-right">
-
       <div v-if="hasSlot('header-right')" class="header-right-effect">
         <slot name="header-right"></slot>
       </div>

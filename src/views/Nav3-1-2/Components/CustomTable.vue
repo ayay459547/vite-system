@@ -25,32 +25,41 @@ export interface TableParams {
   sort: Sort
 }
 
-export type SpanMethod = (
-  (data: {
-    row: any,
-    column: TableColumnCtx<any>,
-    rowIndex: number,
-    columnIndex: number
-  }, ...payload: any[]) => number[] | { rowspan: number, colspan: number } | void
-) | null
+export type SpanMethod =
+  | ((
+      data: {
+        row: any
+        column: TableColumnCtx<any>
+        rowIndex: number
+        columnIndex: number
+      },
+      ...payload: any[]
+    ) => number[] | { rowspan: number; colspan: number } | void)
+  | null
 
-type RowCallback<T> = (
-  (data: {
-    row: any,
-    rowIndex: number
-  }, ...payload: any[]) => T
-) | null
+type RowCallback<T> =
+  | ((
+      data: {
+        row: any
+        rowIndex: number
+      },
+      ...payload: any[]
+    ) => T)
+  | null
 export type RowClassName = RowCallback<string>
 export type RowStyle = RowCallback<Record<string, any>>
 
-type CellCallback<T> = (
-  (data: {
-    row: any,
-    column: TableColumnCtx<any>,
-    rowIndex: number,
-    columnIndex: number
-  }, ...payload: any[]) => T
-) | null
+type CellCallback<T> =
+  | ((
+      data: {
+        row: any
+        column: TableColumnCtx<any>
+        rowIndex: number
+        columnIndex: number
+      },
+      ...payload: any[]
+    ) => T)
+  | null
 export type CellClassName = CellCallback<string>
 export type CellStyle = CellCallback<Record<string, any>>
 export type LazyLoadingStatus = 'loadMore' | 'loading' | 'noMore'
@@ -165,8 +174,8 @@ const excel = (type: 'all' | 'page') => {
     type,
     tableColumns: props.tableColumns,
     tableData: props.tableData
-   })
-   excelIsShow.value = false
+  })
+  excelIsShow.value = false
 }
 
 // 每頁顯示筆數
@@ -225,8 +234,8 @@ const currentSort = ref<Sort>({
   order: null
 })
 const onSortChange = (props: {
-  column: any,
-  key: string,
+  column: any
+  key: string
   order: null | 'ascending' | 'descending'
 }) => {
   const { key = '', order } = props
@@ -234,7 +243,7 @@ const onSortChange = (props: {
   if (order) {
     currentSort.value = { key, order }
   } else {
-    currentSort.value = { key: null, order: null}
+    currentSort.value = { key: null, order: null }
   }
   emit('sort-change', { key, order })
 
@@ -271,7 +280,7 @@ const onLoad = () => {
  * 頁碼
  * 排序
  */
-const onShowChange = (props: { page: number, pageSize: number, sort: Sort}) => {
+const onShowChange = (props: { page: number; pageSize: number; sort: Sort }) => {
   const { page, pageSize, sort } = props
 
   emit('show-change', {
@@ -324,7 +333,7 @@ const initShowColumns = async () => {
   if (columnSetting.value) {
     await columnSetting.value.checkColumnSetting()
 
-    const tempColumnList = await columnSetting.value.getcolumnList() as ColumnItem[]
+    const tempColumnList = (await columnSetting.value.getcolumnList()) as ColumnItem[]
 
     // 確認欄位 如果有變更 給予提示
     checkTableColumns(tempColumnList)
@@ -373,22 +382,14 @@ defineExpose({
       sort: currentSort.value
     }
   },
-  setTableParams: (param: {
-    page?: number
-    size?: number
-    sort?: Sort
-  }) => {
-    const {
-      page,
-      size,
-      sort
-    } = param
+  setTableParams: (param: { page?: number; size?: number; sort?: Sort }) => {
+    const { page, size, sort } = param
 
-    if (!isEmpty(page) && (typeof page === 'number')) {
+    if (!isEmpty(page) && typeof page === 'number') {
       currentPage.value = page
     }
     if (!isEmpty(size)) {
-      const _index = ((isLazyLoading) => {
+      const _index = (isLazyLoading => {
         if (isLazyLoading) {
           return lazyLoadSizeOptions.findIndex(option => {
             option.value === size
@@ -416,7 +417,7 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
+const getSlot = (slotKey: string, type: 'header' | 'column'): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
@@ -439,15 +440,11 @@ const getColumnSlot = (slotKey: string): string => {
 const slotKeyList = computed(() => {
   return showColumns.flatMap(column => {
     if (column.columns && column.columns.length > 0) {
-      return [
-        ...column.columns.map(child => `${column.slotKey}-${child.slotKey}`),
-        column.slotKey
-      ]
+      return [...column.columns.map(child => `${column.slotKey}-${child.slotKey}`), column.slotKey]
     }
     return column.slotKey
   })
 })
-
 </script>
 
 <template>
@@ -463,20 +460,16 @@ const slotKeyList = computed(() => {
           popper-style="padding: 4px;"
         >
           <template #reference>
-            <CustomButton
-              icon-name="file-excel"
-              label="Excel"
-              class="i-mr-xs"
-            />
+            <CustomButton icon-name="file-excel" label="Excel" class="i-mr-xs" />
           </template>
 
           <div class="excel-list">
             <div class="excel-item" @click="excel('all')">
-              <CustomIcon name="table-list" class="icon"/>
+              <CustomIcon name="table-list" class="icon" />
               <div class="text">全部資料</div>
             </div>
             <div class="excel-item" @click="excel('page')">
-              <CustomIcon type="far" name="file-lines" class="icon"/>
+              <CustomIcon type="far" name="file-lines" class="icon" />
               <div class="text">當前頁面資料</div>
             </div>
           </div>
@@ -501,7 +494,7 @@ const slotKeyList = computed(() => {
 
       <div class="setting-right grid-col-xs-24 grid-col-lg-8">
         <slot name="setting-right"></slot>
-        <div class="i-ml-xs" style="width: 160px; overflow: hidden;">
+        <div class="i-ml-xs" style="width: 160px; overflow: hidden">
           <CustomInput
             v-if="!props.isLazyLoading"
             v-model="pageSize"
@@ -559,19 +552,11 @@ const slotKeyList = computed(() => {
           <slot name="row-expand" v-bind="scope"></slot>
         </template>
 
-        <template
-          v-for="slotKey in slotKeyList"
-          :key="slotKey"
-          #[getHeaderSlot(slotKey)]="scope"
-        >
+        <template v-for="slotKey in slotKeyList" :key="slotKey" #[getHeaderSlot(slotKey)]="scope">
           <slot :name="getHeaderSlot(slotKey)" v-bind="scope"></slot>
         </template>
 
-        <template
-          v-for="slotKey in slotKeyList"
-          :key="slotKey"
-          #[getColumnSlot(slotKey)]="scope"
-        >
+        <template v-for="slotKey in slotKeyList" :key="slotKey" #[getColumnSlot(slotKey)]="scope">
           <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>
         </template>
       </TableMain>
@@ -591,7 +576,9 @@ const slotKeyList = computed(() => {
         />
       </div>
       <div class="table-pagination-right">
-        <span>{{ `${!props.isLazyLoading ? '總筆數' : '資料筆數'}：${props.tableDataCount}` }}</span>
+        <span>{{
+          `${!props.isLazyLoading ? '總筆數' : '資料筆數'}：${props.tableDataCount}`
+        }}</span>
       </div>
     </div>
   </div>
@@ -609,7 +596,7 @@ const slotKeyList = computed(() => {
 
     .header-slot {
       width: calc(100% - 24px);
-      padding-right: 8px;;
+      padding-right: 8px;
       display: inline-block;
     }
   }

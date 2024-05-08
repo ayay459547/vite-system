@@ -109,8 +109,8 @@ const onRowClick = (row: any, column: any, event: Event) => {
   emit('row-click', row, column, event)
 }
 const onSortChange = (props: {
-  column: any,
-  prop: string,
+  column: any
+  prop: string
   order: null | 'ascending' | 'descending'
 }) => {
   const { column, prop: key = '', order } = props
@@ -131,7 +131,7 @@ const tableMainRef = ref(null)
 const tableWidth = ref(500)
 const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     tableWidth.value = entry.contentRect.width
     tableHeight.value = entry.contentRect.height
   })
@@ -147,7 +147,7 @@ const load = () => {
 }
 const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
-    const { isIntersecting, isVisible } = entry
+    const { isIntersecting } = entry
     if (isIntersecting) {
       load()
     }
@@ -196,7 +196,6 @@ const svg = `
     L 15 15
   " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
 `
-
 </script>
 
 <template>
@@ -214,7 +213,7 @@ const svg = `
         :default-expand-all="props.defaultExpandAll"
         :default-sort="{
           prop: props.sort.key,
-          order: props.sort.order,
+          order: props.sort.order
         }"
         :span-method="props.spanMethod"
         :row-class-name="props.rowClassName"
@@ -247,13 +246,13 @@ const svg = `
             :style="`width: ${tableWidth}px;`"
           >
             <div
-              style="width: 100%; height: 50px;"
+              style="width: 100%; height: 50px"
               v-loading="true"
               element-loading-text="Loading..."
               :element-loading-spinner="svg"
               element-loading-svg-view-box="-10, -10, 50, 50"
             ></div>
-            <div style="width: 100%; height: 30px;"></div>
+            <div style="width: 100%; height: 30px"></div>
           </div>
 
           <div
@@ -261,12 +260,7 @@ const svg = `
             class="table-main-append"
             :style="`width: ${tableWidth}px;`"
           >
-            <CustomButton
-              label="載入更多資料"
-              type="info"
-              text
-              @click="load"
-            />
+            <CustomButton label="載入更多資料" type="info" text @click="load" />
             <div ref="loadMoreRef" class="load-more"></div>
           </div>
         </template>
@@ -331,12 +325,11 @@ const svg = `
                   ></slot>
                 </div>
               </template>
-              <ElTableColumn
-                v-for="child in column.columns"
-                :key="child.prop"
-                v-bind="child"
-              >
-                <template v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)" #header="scope">
+              <ElTableColumn v-for="child in column.columns" :key="child.prop" v-bind="child">
+                <template
+                  v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)"
+                  #header="scope"
+                >
                   <div :class="child.sortable ? 'header-slot' : ''">
                     <slot
                       :name="`header-${column.slotKey}-${child.slotKey}`"
@@ -370,7 +363,10 @@ const svg = `
                   </div>
                 </template>
 
-                <template v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)" #default="scope">
+                <template
+                  v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)"
+                  #default="scope"
+                >
                   <slot
                     :name="`column-${column.slotKey}-${child.slotKey}`"
                     :data="scope.row[child.key]"
@@ -476,10 +472,10 @@ const svg = `
       thead {
         background-color: lighten($system-bg-color, 48%);
         & > tr {
-           background-color: inherit;
+          background-color: inherit;
 
           & > th {
-             background-color: inherit;
+            background-color: inherit;
           }
         }
       }

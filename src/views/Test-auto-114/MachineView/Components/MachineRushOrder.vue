@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type  { PropType } from 'vue'
+import type { PropType } from 'vue'
 import { ref, onMounted, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
@@ -72,9 +72,7 @@ onMounted(() => {
   console.log('machine => ', machine.value)
 })
 
-const {
-  tableColumns
-} = useSimpleTableSetting(workReportColumnSetting, 'table')
+const { tableColumns } = useSimpleTableSetting(workReportColumnSetting, 'table')
 
 const {
   // defaultValue,
@@ -99,24 +97,25 @@ const addItem = () => {
 
 defineExpose({
   submit: async (): Promise<string> => {
-    return validateForm().then(successList => {
-      console.log('vee success => ', successList)
+    return validateForm()
+      .then(successList => {
+        console.log('vee success => ', successList)
 
-      return 'success'
-    }).catch(errorList => {
-      console.log('vee error => ', errorList)
-      const error = errorList.find(errorItem => {
-        return errorItem.el !== null
+        return 'success'
       })
-      if (error) {
-        const el = error.getDom()
-        scrollToEl(el)
-      }
-      return 'error'
-    })
+      .catch(errorList => {
+        console.log('vee error => ', errorList)
+        const error = errorList.find(errorItem => {
+          return errorItem.el !== null
+        })
+        if (error) {
+          const el = error.getDom()
+          scrollToEl(el)
+        }
+        return 'error'
+      })
   }
 })
-
 </script>
 
 <template>

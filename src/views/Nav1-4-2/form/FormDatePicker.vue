@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, useSlots, onMounted, onBeforeUnmount, ref, nextTick } from 'vue'
+import { computed, useSlots, ref, nextTick } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { useField } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
@@ -14,7 +14,16 @@ const { t } = useI18n()
 type BaseValue = string | null
 type ModelValue = BaseValue | [BaseValue, BaseValue]
 
-type PickerType = 'year' | 'month' | 'date' | 'dates' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'monthrange'
+type PickerType =
+  | 'year'
+  | 'month'
+  | 'date'
+  | 'dates'
+  | 'datetime'
+  | 'week'
+  | 'datetimerange'
+  | 'daterange'
+  | 'monthrange'
 
 const props = defineProps({
   modelValue: {
@@ -88,12 +97,7 @@ const bindAttributes = computed(() => {
   }
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'blur',
-  'focus',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'change'])
 
 const validateRes = computed<string>(() => {
   if (isEmpty(errorMessage.value)) return 'success'
@@ -107,23 +111,23 @@ const validateField = (veeValue: ModelValue) => {
 
   // 必填
   if (Array.isArray(veeValue)) {
-    const [ value1, value2 ] = veeValue
+    const [value1, value2] = veeValue
 
-    if(isEmpty(value1)) return '此輸入框為必填'
-    if(isEmpty(value2)) return '此輸入框為必填'
+    if (isEmpty(value1)) return '此輸入框為必填'
+    if (isEmpty(value2)) return '此輸入框為必填'
   } else {
-    if(isEmpty(veeValue)) return '此輸入框為必填'
+    if (isEmpty(veeValue)) return '此輸入框為必填'
   }
 
   return true
 }
 
 const {
-  errorMessage,     // 錯誤訊息
+  errorMessage, // 錯誤訊息
   value: tempValue, // 值
-  handleChange,     // 換值
-  handleReset,      // 重置
-  validate          // 驗證
+  handleChange, // 換值
+  handleReset, // 重置
+  validate // 驗證
 } = useField('field', validateField, { validateOnValueUpdate: false })
 
 // event
@@ -161,10 +165,10 @@ defineExpose({
   value: tempValue,
   handleReset,
   validate,
-  setvalidateKey (validateKey: string) {
+  setvalidateKey(validateKey: string) {
     _domValidateKey.value = validateKey
   },
-  getDom () {
+  getDom() {
     return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
   }
 })
@@ -185,16 +189,12 @@ const getTextValue = (tempValue: ModelValue) => {
     return datetimeFormat(tempValue, props.format)
   }
 }
-
 </script>
 
 <template>
   <div
     class="input-container"
-    :class="[
-      `input-${domValidateKey}-${validateRes}`,
-      `${props.direction}`
-    ]"
+    :class="[`input-${domValidateKey}-${validateRes}`, `${props.direction}`]"
   >
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.required" class="input-required input-prefix">*</span>

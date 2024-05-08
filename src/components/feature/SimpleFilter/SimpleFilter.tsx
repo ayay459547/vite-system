@@ -6,16 +6,13 @@ import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import styles from './SimpleFilter.module.scss'
 
-import {
-  version,
-  props as simpleFilterProps
-} from './SimpleFilterInfo'
+import { version, props as simpleFilterProps } from './SimpleFilterInfo'
 
 const SimpleFilter = defineComponent({
   name: 'SimpleFilter',
   props: simpleFilterProps,
   emits: ['reset', 'submit'],
-  setup (props, { slots, emit, expose }) {
+  setup(props, { slots, emit, expose }) {
     const useHook: UseHook = inject('useHook')
     const { i18nTranslate } = useHook()
 
@@ -52,17 +49,13 @@ const SimpleFilter = defineComponent({
     const isVisible = ref(false)
 
     expose({
-      setIsVisible (visible: boolean) {
+      setIsVisible(visible: boolean) {
         isVisible.value = visible
       }
     })
 
     return () => (
-      <div class={[
-        `SimpleFilter_${version}`,
-        `${scopedId}`,
-        styles['__i-simple-filter__']
-      ]}>
+      <div class={[`SimpleFilter_${version}`, `${scopedId}`, styles['__i-simple-filter__']]}>
         <CustomPopover
           visible={isVisible.value}
           placement={props.placement}
@@ -81,7 +74,7 @@ const SimpleFilter = defineComponent({
               >
                 <div class={styles['filter-header']}>
                   <CustomButton
-                    iconName='close'
+                    iconName="close"
                     text
                     onClick={(e: MouseEvent) => {
                       isVisible.value = false
@@ -91,21 +84,21 @@ const SimpleFilter = defineComponent({
                 </div>
 
                 <div class={`${styles['filter-body']} ${props.class}`}>
-                  {
-                    columnList.value.length > 0 ?
-                    columnList.value.map(column => {
-                      const { key } = column
+                  {columnList.value.length > 0
+                    ? columnList.value
+                        .map(column => {
+                          const { key } = column
 
-                      return getSlot(key, column)
-                    }).filter(item => !isEmpty(item)) :
-                    'empty'
-                  }
+                          return getSlot(key, column)
+                        })
+                        .filter(item => !isEmpty(item))
+                    : 'empty'}
                 </div>
 
                 <div class={styles['filter-footer']}>
                   <CustomButton
-                    iconName='chevron-left'
-                    iconMove='translate'
+                    iconName="chevron-left"
+                    iconMove="translate"
                     label={i18nTranslate('return')}
                     onClick={(e: MouseEvent) => {
                       isVisible.value = false
@@ -113,9 +106,9 @@ const SimpleFilter = defineComponent({
                     }}
                   />
                   <CustomButton
-                    iconName='arrow-rotate-left'
-                    iconMove='rotate'
-                    type='warning'
+                    iconName="arrow-rotate-left"
+                    iconMove="rotate"
+                    type="warning"
                     label={i18nTranslate('reset')}
                     onClick={(e: MouseEvent) => {
                       emit('reset')
@@ -123,9 +116,9 @@ const SimpleFilter = defineComponent({
                     }}
                   />
                   <CustomButton
-                    iconName='search'
-                    iconMove='scale'
-                    type='success'
+                    iconName="search"
+                    iconMove="scale"
+                    type="success"
                     label={i18nTranslate('search')}
                     onClick={(e: MouseEvent) => {
                       // isVisible.value = false
@@ -139,8 +132,8 @@ const SimpleFilter = defineComponent({
             // v-slot:reference
             reference: () => (
               <CustomButton
-                iconName='filter'
-                type='primary'
+                iconName="filter"
+                type="primary"
                 label={i18nTranslate('filter')}
                 onClick={(e: MouseEvent) => {
                   isVisible.value = !isVisible.value

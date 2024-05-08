@@ -20,7 +20,7 @@ const props = defineProps({
   },
   columns: {
     type: Object as PropType<PropsTableColumn[]>,
-    default () {
+    default() {
       return {}
     }
   },
@@ -76,7 +76,7 @@ const setColumnList = (columns: Array<ColumnItem>) => {
  * 如果版本更換
  * 重新給預設值
  */
- const checkColumnSetting = async () => {
+const checkColumnSetting = async () => {
   const getRes = await getColumnSetting(props.settingKey)
 
   if ([null, undefined].includes(getRes)) {
@@ -178,7 +178,6 @@ const onDragend = () => {
   drag.value = false
   updateSetting()
 }
-
 </script>
 
 <template>
@@ -190,17 +189,16 @@ const onDragend = () => {
       popper-style="padding: 4px;"
     >
       <template #reference>
-        <CustomButton
-          icon-name="list-check"
-          :label="i18nTranslate('columnSetting', 'system')"
-        />
+        <CustomButton icon-name="list-check" :label="i18nTranslate('columnSetting', 'system')" />
       </template>
 
       <div>
-        <div :style="{
-          maxHeight: props.settingHeight,
-          overflow: 'auto'
-        }">
+        <div
+          :style="{
+            maxHeight: props.settingHeight,
+            overflow: 'auto'
+          }"
+        >
           <CustomDraggable
             v-model="columnList"
             @start="drag = true"
@@ -208,8 +206,7 @@ const onDragend = () => {
             item-key="key"
             class="__column-list"
             :handle="`.setting-move`"
-            :style="{
-            }"
+            :style="{}"
           >
             <template #item="{ element }">
               <div v-if="!element.isOperations" class="__column-item">
@@ -227,12 +224,7 @@ const onDragend = () => {
                 </div>
 
                 <div class="__column-item-right">
-                  <CustomButton
-                    type="info"
-                    icon-name="bars"
-                    text
-                    class="setting-move"
-                  />
+                  <CustomButton type="info" icon-name="bars" text class="setting-move" />
                 </div>
               </div>
             </template>

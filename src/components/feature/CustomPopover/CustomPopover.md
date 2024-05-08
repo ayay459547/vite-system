@@ -1,53 +1,55 @@
 # CustomPopover
+
 ### 使用範例
+
 ```vue
 <script setup lang="ts">
-  import { CustomPopover, CustomButton } from '@/components'
+import { CustomPopover, CustomButton } from '@/components'
 </script>
 
 <template>
   <CustomPopover>
     <div>顯示內容1 Popover</div>
     <template #reference>
-      <CustomButton label="滑鼠點擊 Popover"/>
+      <CustomButton label="滑鼠點擊 Popover" />
     </template>
   </CustomPopover>
 
-  <CustomPopover
-    :width="300"
-    title="內容2標題"
-    trigger="hover"
-    placement="right"
-  >
+  <CustomPopover :width="300" title="內容2標題" trigger="hover" placement="right">
     <div>顯示內容2 Popover --------------</div>
     <template #reference>
-      <CustomButton label="滑鼠移入 Popover"/>
+      <CustomButton label="滑鼠移入 Popover" />
     </template>
   </CustomPopover>
 </template>
 ```
+
 ## Element UI Plus
+
 [https://element-plus.org/zh-US/component/popover.html](https://element-plus.org/zh-US/component/popover.html)
 
 ### Attributes ( props )
-| 屬姓名       | 說明          | 类型    | 默認值    |
-| ----------- | ------------- | ------- | -------- |
-| visible     | 是否顯示       | boolean | false    |
-| width       | 寬度           | number  | 150      |
-| title       | 內容標題        | string  | ''       |
-| placement   | 出現位置        | enum    | 'bottom' |
-| trigger     | 切換方式        | enum    | 'click'  |
-| popperStyle | 自訂樣式        | string  | ''       |
-| showArrow   | 是否顯示箭頭     | boolean | true    |
-| offset      | 出現位置的偏移量 | number   | 0      |
+
+| 屬姓名      | 說明             | 类型    | 默認值   |
+| ----------- | ---------------- | ------- | -------- |
+| visible     | 是否顯示         | boolean | false    |
+| width       | 寬度             | number  | 150      |
+| title       | 內容標題         | string  | ''       |
+| placement   | 出現位置         | enum    | 'bottom' |
+| trigger     | 切換方式         | enum    | 'click'  |
+| popperStyle | 自訂樣式         | string  | ''       |
+| showArrow   | 是否顯示箭頭     | boolean | true     |
+| offset      | 出現位置的偏移量 | number  | 0        |
 
 ### Slots
-| 插槽名     | 說明         |
-| --------- | ------------ |
-| default   | 顯示內容      |
+
+| 插槽名    | 說明           |
+| --------- | -------------- |
+| default   | 顯示內容       |
 | reference | 觸發事件的元素 |
 
 ### Events ( emit )
-| 事件名         | 說明          | 傳值類型 |
-| -------------- | ------------ | ------- |
-| update:visible | 顯示切換      | boolean |
+
+| 事件名         | 說明     | 傳值類型 |
+| -------------- | -------- | -------- |
+| update:visible | 顯示切換 | boolean  |

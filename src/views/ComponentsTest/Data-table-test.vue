@@ -45,12 +45,10 @@ const columnSetting = {
   }
 }
 
-const {
-  tableColumns
-} = useSimpleTableSetting(columnSetting, 'table')
+const { tableColumns } = useSimpleTableSetting(columnSetting, 'table')
 
 const tableData = [
-{
+  {
     id: 1,
     date: '2016-05-03',
     name: 'Tom',
@@ -112,10 +110,7 @@ const onInput = (value: string) => {
     <h1>Data-table-test</h1>
 
     <div class="i-mt-xl">
-      <SimpleTable
-        :table-data="tableData"
-        :table-columns="tableColumns"
-      >
+      <SimpleTable :table-data="tableData" :table-columns="tableColumns">
         <template #header-all="{ data }">
           {{ data + ' ==> header' }}
         </template>
@@ -140,7 +135,7 @@ const onInput = (value: string) => {
         <span>append</span>
       </template>
       <template #prefix>
-        <CustomIcon name="check"/>
+        <CustomIcon name="check" />
       </template>
     </CustomInput>
   </div>

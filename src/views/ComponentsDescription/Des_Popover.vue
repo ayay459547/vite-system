@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -66,46 +65,22 @@ const slotText = ref('slot default')
 <template>
   <div class="page">
     <div class="flex-row i-ga-sm i-mb-sm">
-      <CustomButton label="顯示" icon-name="eye" @click="isVisible = true"/>
-      <CustomButton label="隱藏" icon-name="eye-slash" @click="isVisible = false"/>
+      <CustomButton label="顯示" icon-name="eye" @click="isVisible = true" />
+      <CustomButton label="隱藏" icon-name="eye-slash" @click="isVisible = false" />
     </div>
 
-    <CustomInput
-      v-model="placement"
-      label="位置"
-      type="radio"
-      :options="placementOptions"
-    />
-    <CustomInput
-      v-model="trigger"
-      label="與滑鼠互動方式"
-      type="radio"
-      :options="triggerOptions"
-    />
+    <CustomInput v-model="placement" label="位置" type="radio" :options="placementOptions" />
+    <CustomInput v-model="trigger" label="與滑鼠互動方式" type="radio" :options="triggerOptions" />
     <CustomInput
       v-model="showArrow"
       label="是否顯示箭頭"
       type="radio"
       :options="showArrowOptions"
     />
-    <CustomInput
-      v-model="width"
-      label="寬度"
-      type="radio"
-      :options="widthOptions"
-    />
-    <CustomInput
-      v-model="offset"
-      label="偏移量"
-      type="radio"
-      :options="offsetOptions"
-    />
+    <CustomInput v-model="width" label="寬度" type="radio" :options="widthOptions" />
+    <CustomInput v-model="offset" label="偏移量" type="radio" :options="offsetOptions" />
 
-    <CustomInput
-      v-model="slotText"
-      label="提示框顯示內容"
-      type="text"
-    />
+    <CustomInput v-model="slotText" label="提示框顯示內容" type="text" />
 
     <CustomPopover
       v-model:visible="isVisible"
@@ -116,12 +91,7 @@ const slotText = ref('slot default')
       :offset="offset"
     >
       <template #reference>
-        <CustomButton
-          label="reference slot"
-          type="info"
-          plain
-          class="i-my-sm"
-        />
+        <CustomButton label="reference slot" type="info" plain class="i-my-sm" />
       </template>
       <div>{{ slotText }}</div>
     </CustomPopover>

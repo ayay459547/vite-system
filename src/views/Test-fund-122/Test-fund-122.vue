@@ -58,7 +58,11 @@ const tableOptions: TableOptions = {
   settingKey: 'fund-12',
   isSorting: true
 }
-const { tableSetting, downloadExcel, getParams } = useTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions
+)
 
 const { tableColumns: childColumns } = useSimpleTableSetting(childColumnSetting, 'table')
 
@@ -131,8 +135,7 @@ const remove = (rowData: TableData) => {
   swal({
     icon: 'warning',
     title: `確定刪除 ${rowData.no}`
-  }).then(async (result) => {
-
+  }).then(async result => {
     if (result.isConfirmed) {
       loading(true, '刪除資料中')
       await deleteData(rowData)
@@ -160,7 +163,7 @@ const init = async () => {
   // const apiParam  = { page, size, sort }
   // console.log(apiParam)
 
-  const [resData, resDataCount ] = await Promise.all([
+  const [resData, resDataCount] = await Promise.all([
     getData({
       ...getParams(),
       ...getActiveForms(true)
@@ -180,7 +183,6 @@ const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
 onMounted(() => {
   throttleInit()
 })
-
 </script>
 
 <template>
@@ -202,7 +204,11 @@ onMounted(() => {
       :title="i18nTranslate('info')"
       @excel="download"
       @show-change="throttleInit"
-      @row-contextmenu="(row, column, event) => { openPopover(event, row) }"
+      @row-contextmenu="
+        (row, column, event) => {
+          openPopover(event, row)
+        }
+      "
     >
       <template #prepend>
         <div class="flex-row i-ga-xs content-between">
@@ -268,7 +274,7 @@ onMounted(() => {
       </template>
       <template #column-operations="scope">
         <div class="flex-row-center cursor-pointer" @click="openPopover($event, scope.row)">
-          <CustomIcon name="ellipsis-vertical"/>
+          <CustomIcon name="ellipsis-vertical" />
         </div>
       </template>
     </CustomTable>
@@ -279,7 +285,7 @@ onMounted(() => {
       :title="i18nTranslate('edit')"
       @submit="onUpdateSubmit"
     >
-      <UpdateModel ref="updateRef" :data="editData"/>
+      <UpdateModel ref="updateRef" :data="editData" />
     </CustomModal>
   </div>
 </template>

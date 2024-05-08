@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import {
-  ref,
-  reactive,
-  inject,
-  onBeforeMount,
-  nextTick,
-  useSlots,
-  computed
-} from 'vue'
+import { ref, reactive, inject, onBeforeMount, nextTick, useSlots, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
@@ -21,7 +13,7 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const getSlot = (slotKey: string, type: ('header' | 'column')): string => {
+const getSlot = (slotKey: string, type: 'header' | 'column'): string => {
   switch (type) {
     case 'header':
       if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
@@ -47,7 +39,7 @@ const { i18nTranslate, swal } = useHook()
 const props = defineProps({
   modelValue: {
     type: Array as PropType<any[]>,
-    default () {
+    default() {
       return []
     }
   },
@@ -69,7 +61,7 @@ const props = defineProps({
   columnSetting: {
     type: Object as PropType<Record<string, any>>,
     required: true,
-    default () {
+    default() {
       return {}
     }
   },
@@ -85,11 +77,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'add',
-  'remove',
-  'update:modelValue'
-])
+const emit = defineEmits(['add', 'remove', 'update:modelValue'])
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -148,23 +136,21 @@ onBeforeMount(() => {
   }
 
   // 依原來欄位設定跑 slot 迴圈
-  const {
-    tableColumns: _tableColumns
-  } = useSimpleTableSetting(props.columnSetting, props.tableKey)
+  const { tableColumns: _tableColumns } = useSimpleTableSetting(props.columnSetting, props.tableKey)
   tableColumns.value = _tableColumns
 
   // 顯示的欄位 + #序號 + 操作(delete)
-  const {
-    tableColumns: _showTableColumns
-  } = useSimpleTableSetting({
-    ...beforeColumn,
-    ...props.columnSetting,
-    ...afterColumn
-  }, props.tableKey)
+  const { tableColumns: _showTableColumns } = useSimpleTableSetting(
+    {
+      ...beforeColumn,
+      ...props.columnSetting,
+      ...afterColumn
+    },
+    props.tableKey
+  )
 
   showTableColumns.value = _showTableColumns
 })
-
 </script>
 
 <template>
@@ -220,18 +206,8 @@ onBeforeMount(() => {
       </template>
       <template #column-row_operations="{ rowIndex }">
         <div class="flex-row">
-          <CustomButton
-            type="danger"
-            icon-name="trash-can"
-            text
-            @click="remove(rowIndex)"
-          />
-          <CustomButton
-            type="info"
-            icon-name="bars"
-            text
-            class="form-item-move"
-          />
+          <CustomButton type="danger" icon-name="trash-can" text @click="remove(rowIndex)" />
+          <CustomButton type="info" icon-name="bars" text class="form-item-move" />
         </div>
       </template>
     </SimpleTable>

@@ -85,14 +85,7 @@ const bindAttributes = computed(() => {
   }
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'blur',
-  'focus',
-  'change',
-  'input',
-  'clear'
-])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'change', 'input', 'clear'])
 
 const validateRes = computed<string>(() => {
   if (isEmpty(errorMessage.value)) return 'success'
@@ -110,15 +103,15 @@ const validateField = (veeValue: ModelValue) => {
 
   // 多個驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {
-    for (let type of (props.validate as ValidateType[])) {
-      const { test, msg } = (validateFun[type](veeValue) as VeeRes)
+    for (let type of props.validate as ValidateType[]) {
+      const { test, msg } = validateFun[type](veeValue) as VeeRes
       if (!test) return msg
     }
   }
 
   // 單一驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { test, msg } = (validateFun[(props.validate as ValidateType)](veeValue) as VeeRes)
+    const { test, msg } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
     if (!test) return msg
   }
 
@@ -151,11 +144,11 @@ const inputValue = computed({
  */
 
 const {
-  errorMessage,     // 錯誤訊息
+  errorMessage, // 錯誤訊息
   value: tempValue, // 值
-  handleChange,     // 換值
-  handleReset,      // 重置
-  validate          // 驗證
+  handleChange, // 換值
+  handleReset, // 重置
+  validate // 驗證
 } = useField('field', validateField, {
   validateOnValueUpdate: false,
   initialValue: inputValue.value,
@@ -219,10 +212,10 @@ defineExpose({
   value: tempValue,
   handleReset,
   validate,
-  setvalidateKey (validateKey: string) {
+  setvalidateKey(validateKey: string) {
     _domValidateKey.value = validateKey
   },
-  getDom () {
+  getDom() {
     return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
   }
 })
@@ -238,7 +231,6 @@ const getTextValue = (tempValue: ModelValue) => {
 
   return tempValue
 }
-
 </script>
 
 <template>
@@ -248,7 +240,7 @@ const getTextValue = (tempValue: ModelValue) => {
       `input-${domValidateKey}-${validateRes}`,
       `${props.direction}`,
       props.hiddenLabel ? 'hidden-label' : '',
-      props.hiddenErrorMessage ? 'hidden-error-message' : '',
+      props.hiddenErrorMessage ? 'hidden-error-message' : ''
     ]"
   >
     <label v-if="!props.hiddenLabel" class="input-label">

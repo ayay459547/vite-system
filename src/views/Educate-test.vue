@@ -5,7 +5,7 @@ import { CustomInput } from '@/components'
 
 const valueTest = ref<number | null>(null)
 
-watch(valueTest, (newValue) => {
+watch(valueTest, newValue => {
   console.log('newValue => ', newValue)
 })
 
@@ -23,10 +23,9 @@ const selectValue = ref(null)
 
 const operatorValue = ref<any>([null, null])
 
-const onOperatorChange = (v) => {
+const onOperatorChange = v => {
   console.log(v)
 }
-
 </script>
 
 <template>
@@ -43,27 +42,10 @@ const onOperatorChange = (v) => {
       label="Operator測試"
       @change="onOperatorChange"
     />
-    <CustomInput
-      v-model="dateValue"
-      type="date"
-      label="日期測試"
-    />
-    <CustomInput
-      v-model="checkValue"
-      label="勾選測試"
-      type="checkbox"
-    />
-    <CustomInput
-      v-model="selectValue"
-      label="選項測試"
-      type="select"
-      :options="options"
-    />
-    <CustomInput
-      v-model="valueTest"
-      type="radio"
-      :options="options"
-    />
+    <CustomInput v-model="dateValue" type="date" label="日期測試" />
+    <CustomInput v-model="checkValue" label="勾選測試" type="checkbox" />
+    <CustomInput v-model="selectValue" label="選項測試" type="select" :options="options" />
+    <CustomInput v-model="valueTest" type="radio" :options="options" />
   </div>
 </template>
 

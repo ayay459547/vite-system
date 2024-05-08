@@ -18,28 +18,40 @@ export const columnSetting = {
       ],
       hiddenErrorMessage: true
     },
-    getValue (data: string) {
+    getValue(data: string) {
       switch (data) {
-        case 'completed': return '已完成'
-        case 'inProgress': return '進行中'
-        case 'new': return '未完成'
-        default: return '未完成'
+        case 'completed':
+          return '已完成'
+        case 'inProgress':
+          return '進行中'
+        case 'new':
+          return '未完成'
+        default:
+          return '未完成'
       }
     },
-    getIcon (data: string) {
+    getIcon(data: string) {
       switch (data) {
-        case 'completed': return 'check'
-        case 'inProgress': return 'hammer'
-        case 'new': return 'xmark'
-        default: return 'xmark'
+        case 'completed':
+          return 'check'
+        case 'inProgress':
+          return 'hammer'
+        case 'new':
+          return 'xmark'
+        default:
+          return 'xmark'
       }
     },
-    getClass (data: string) {
+    getClass(data: string) {
       switch (data) {
-        case 'completed': return 'text-success'
-        case 'inProgress': return 'text-warning'
-        case 'new': return 'text-danger'
-        default: return 'text-danger'
+        case 'completed':
+          return 'text-success'
+        case 'inProgress':
+          return 'text-warning'
+        case 'new':
+          return 'text-danger'
+        default:
+          return 'text-danger'
       }
     }
   },

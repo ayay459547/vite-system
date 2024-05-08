@@ -26,7 +26,7 @@ const excelToJson = () => {
     })
     return
   }
-  files.forEach((file) => {
+  files.forEach(file => {
     if (!isEmpty(file.excel)) {
       const _data = file.excel
       const { map, matrix } = _data
@@ -37,7 +37,6 @@ const excelToJson = () => {
     }
   })
 }
-
 </script>
 
 <template>

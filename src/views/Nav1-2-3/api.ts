@@ -35,22 +35,25 @@ export const getExcelData = async (params: any) => {
     }
   } = params as Params
 
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      page,
-      size,
-      sort
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        page,
+        size,
+        sort
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 
@@ -79,31 +82,34 @@ export const getData = async (params: any) => {
     }
   } = params as Params
 
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      page,
-      size,
-      sort
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        page,
+        size,
+        sort
+      }
     },
-    delay: 300,
-    callback (config, fakeData) {
-      const { data: tempData, status } = fakeData
-      const { page, size } = config.data
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300,
+      callback(config, fakeData) {
+        const { data: tempData, status } = fakeData
+        const { page, size } = config.data
 
-      return {
-        data: cutTableData(page, size, tempData),
-        status
+        return {
+          data: cutTableData(page, size, tempData),
+          status
+        }
       }
     }
-  })
+  )
 
   const { data, status, msg } = resData
 
@@ -122,26 +128,29 @@ export const getData = async (params: any) => {
 }
 
 export const getDataCount = async () => {
-  const resData = await ajax<Api<number>>({
-    url: '/page/getDataCount',
-    method: 'get',
-    data: {}
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeData.length,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page/getDataCount',
+      method: 'get',
+      data: {}
     },
-    delay: 300,
-    callback (config, fakeData) {
-      const { data: tempData, status } = fakeData
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeData.length,
+        status: 'success'
+      },
+      delay: 300,
+      callback(config, fakeData) {
+        const { data: tempData, status } = fakeData
 
-      return {
-        data: tempData,
-        status
+        return {
+          data: tempData,
+          status
+        }
       }
     }
-  })
+  )
 
   const { data, status, msg } = resData
 

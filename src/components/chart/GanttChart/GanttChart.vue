@@ -7,16 +7,13 @@ import debounce from '@/lib/lib_debounce'
 import { isEmpty, getUuid, numberFormat } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
 
-import {
-  version,
-  props as ganttChartProps
-} from './GanttChartInfo'
+import { version, props as ganttChartProps } from './GanttChartInfo'
 
 export default defineComponent({
   name: 'GanttChart',
   props: ganttChartProps,
   emits: ['typeClick', 'itemClick'],
-  setup (props, context) {
+  setup(props, context) {
     const scopedId = getUuid('__i-gantt-chart__')
 
     // 監聽外框大小變化
@@ -76,7 +73,7 @@ export default defineComponent({
       props.ganttData.forEach((item, itemIndex) => {
         _typeData.push([item.type, item.list.length])
 
-        const tempList = item.list.map((barItem) => {
+        const tempList = item.list.map(barItem => {
           const [_startTime, _endTime, _title, _value] = barItem
 
           return [itemIndex, _startTime, _endTime, _title, JSON.stringify(_value)]
@@ -102,7 +99,7 @@ export default defineComponent({
 
     // const debounceInit = debounce(init)
 
-    function getYScrollStart (typeLangth = 0, showCount: number) {
+    function getYScrollStart(typeLangth = 0, showCount: number) {
       const percentage = (showCount / typeLangth) * 100
 
       if (percentage >= 100) return 100
@@ -111,7 +108,7 @@ export default defineComponent({
       return Math.ceil(percentage)
     }
 
-    function makeOption () {
+    function makeOption() {
       return {
         animation: false,
         title: {},
@@ -141,7 +138,8 @@ export default defineComponent({
             bottom: 20,
             start: 0,
             end: props.dataZoomX,
-            handleIcon: 'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleIcon:
+              'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
             handleSize: '80%',
             showDetail: false
           },
@@ -324,19 +322,24 @@ export default defineComponent({
             tooltip: {
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               position: function (point: any, params: any, dom: any, rect: any, size: any) {
-                const [ x, y ] = point
+                const [x, y] = point
 
                 const { x: resX, y: resY } = props.tooltipPositionCallback(x, y)
 
-                return [ resX, resY ]
+                return [resX, resY]
               },
               backgroundColor: 'rgba(255, 255, 255, 0.9)',
               extraCssText: 'width: 300px;',
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               formatter: function (params: any, api: any) {
-
-                const start = datetimeFormat(params.value[GANTT_START_TIME_INDEX], 'YYYY/MM/DD hh:mm:ss')
-                const end = datetimeFormat(params.value[GANTT_COMPLETE_TIME_INDEX], 'YYYY/MM/DD hh:mm:ss')
+                const start = datetimeFormat(
+                  params.value[GANTT_START_TIME_INDEX],
+                  'YYYY/MM/DD hh:mm:ss'
+                )
+                const end = datetimeFormat(
+                  params.value[GANTT_COMPLETE_TIME_INDEX],
+                  'YYYY/MM/DD hh:mm:ss'
+                )
 
                 const title = params.value[GANTT_TITLE_INDEX]
                 const tempValue = params.value[GANTT_VALUE_INDEX]
@@ -351,7 +354,7 @@ export default defineComponent({
         ]
       }
     }
-    function renderGanttItem (params: any, api: any) {
+    function renderGanttItem(params: any, api: any) {
       const categoryIndex = api.value(GANTT_TYPE_INDEX)
       const timeStart = api.coord([api.value(GANTT_START_TIME_INDEX), categoryIndex])
       const timeEnd = api.coord([api.value(GANTT_COMPLETE_TIME_INDEX), categoryIndex])
@@ -396,7 +399,7 @@ export default defineComponent({
         ]
       }
     }
-    function clipRectByRect (params: any, rect: any) {
+    function clipRectByRect(params: any, rect: any) {
       return echarts.graphic.clipRectByRect(rect, {
         x: params.coordSys.x,
         y: params.coordSys.y,

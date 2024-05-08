@@ -61,10 +61,9 @@ export const useRoutesStore = defineStore('routes', () => {
         const { visitCount: oldCount = 0 } = _value as HistoryNavigation
         newCount = oldCount
       } else {
-      // 不存在舊的次數 代表是第一次訪問
+        // 不存在舊的次數 代表是第一次訪問
         newCount = 1
       }
-
     } else {
       // 再次訪問時 次數 + 1
       const navigation = historyNavigation.get(key)
@@ -83,7 +82,10 @@ export const useRoutesStore = defineStore('routes', () => {
     setHistory(key, _navigation)
   }
   // 做防抖 避免因為畫面刷新而重複計算 訪問次數
-  const debounceAddHistoryNavigation = debounce(addHistoryNavigation, 700) as typeof addHistoryNavigation
+  const debounceAddHistoryNavigation = debounce(
+    addHistoryNavigation,
+    700
+  ) as typeof addHistoryNavigation
 
   const removeHistoryNavigation = (key: string) => {
     if (historyNavigation.has(key)) {
@@ -172,7 +174,6 @@ export const useRoutesStore = defineStore('routes', () => {
      */
     const _getRouterPermission = (route: Navigation, nodeName: string): number => {
       if (!permissionMap.has(nodeName)) {
-
         const nodePermission = [
           // 依據後端權限資料 算出最大值
           _getLeavesPermission(route),
@@ -202,7 +203,7 @@ export const useRoutesStore = defineStore('routes', () => {
       if (parentsNode === null) {
         nextNode.breadcrumbName = [leafNodeName]
         nextNode.breadcrumbTitle = [leafNodeTitle]
-      } else{
+      } else {
         nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNodeName]
         nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNodeTitle]
       }

@@ -5,7 +5,6 @@ import { ElRow, ElCol, ElStatistic, ElCalendar } from 'element-plus'
 import { CustomIcon } from '@/components'
 
 const value = ref(new Date())
-
 </script>
 
 <template>
@@ -20,7 +19,7 @@ const value = ref(new Date())
             <template #title>
               <div style="display: inline-flex; align-items: center">
                 Ratio of men to women
-                <CustomIcon name="venus" class="i-ml-xs"/>
+                <CustomIcon name="venus" class="i-ml-xs" />
               </div>
             </template>
             <template #suffix>/100</template>
@@ -32,7 +31,7 @@ const value = ref(new Date())
         <ElCol :span="6">
           <ElStatistic title="Feedback number" :value="562">
             <template #suffix>
-              <CustomIcon name="comments" class="i-ml-md"/>
+              <CustomIcon name="comments" class="i-ml-md" />
             </template>
           </ElStatistic>
         </ElCol>

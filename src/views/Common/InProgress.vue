@@ -19,12 +19,13 @@ const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) 
 
 const container = ref(null)
 const centerPoint = reactive({
-  x: 0, y: 0
+  x: 0,
+  y: 0
 })
 
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
-    const { x, y, width, height} = entry.contentRect
+  entries.forEach(entry => {
+    const { x, y, width, height } = entry.contentRect
     centerPoint.x = x + width / 2
     centerPoint.y = y + height / 2
   })
@@ -40,18 +41,12 @@ onMounted(() => {
 onUnmounted(() => {
   RO.disconnect()
 })
-
 </script>
 
 <template>
   <div ref="container" class="empty" @mousemove="throttleSetImgStyle">
     <h1 class="empty-title" :style="titleStyle">功能開發中</h1>
-    <img
-      class="empty-img"
-      src="@/assets/images/common/empty.svg"
-      alt="login"
-      :style="imgStyle"
-    />
+    <img class="empty-img" src="@/assets/images/common/empty.svg" alt="login" :style="imgStyle" />
   </div>
 </template>
 

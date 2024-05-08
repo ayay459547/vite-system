@@ -12,7 +12,7 @@ export const twentyFourHourSecond = 24 * 60 * 60
  */
 export const secondToTop = (second: number): number => {
   const _percentage = second / oneHourSecond
-  const top = ((_top) => {
+  const top = (_top => {
     if (_top <= 0) return 0
     if (_top >= twentyFourHourHeight) return twentyFourHourHeight
     return _top
@@ -29,7 +29,7 @@ export const secondToTop = (second: number): number => {
  */
 export const topToSecond = (top: number): number => {
   const _percentage = top / oneHourHeight
-  const second = ((_second) => {
+  const second = (_second => {
     if (_second <= 0) return 0
     if (_second >= twentyFourHourSecond) return twentyFourHourSecond
     return _second
@@ -45,13 +45,13 @@ export const topToSecond = (top: number): number => {
  * @returns {string} hh:mm
  */
 export const secondToTime = (second: number): string => {
-  const tempSecond = ((_second) => {
+  const tempSecond = (_second => {
     if (_second <= 0) return 0
     if (_second >= twentyFourHourSecond) return twentyFourHourSecond
     return _second
   })(second)
 
   const _hour = Math.floor(tempSecond / oneHourSecond)
-  const _minutes = Math.floor((tempSecond - (_hour * oneHourSecond)) / 60)
+  const _minutes = Math.floor((tempSecond - _hour * oneHourSecond) / 60)
   return `${_hour}`.padStart(2, '0') + ':' + `${_minutes}`.padStart(2, '0')
 }

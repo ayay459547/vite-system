@@ -2,7 +2,7 @@
 /* 讓 object 有類似 array 的方法 */
 
 const objectFunction = {
-  $forEach (callback: Function, thisArg: any) {
+  $forEach(callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
     for (const key in this) {
@@ -13,7 +13,7 @@ const objectFunction = {
 
     return this
   },
-  $map (callback: Function, thisArg: any) {
+  $map(callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
     const resObj = new (this as any).constructor()
@@ -24,7 +24,7 @@ const objectFunction = {
     }
     return resObj
   },
-  $filter (callback: Function, thisArg: any) {
+  $filter(callback: Function, thisArg: any) {
     thisArg = thisArg || window
 
     const resObj = new (this as any).constructor()
@@ -53,7 +53,7 @@ const objectFunction = {
   //   }
   //   return true
   // },
-  $reduce (callback: Function, temp: any, thisArg: any) {
+  $reduce(callback: Function, temp: any, thisArg: any) {
     thisArg = thisArg || window
     for (const key in this) {
       if (this.hasOwnProperty(key)) {
@@ -64,11 +64,11 @@ const objectFunction = {
   }
 }
 
-export function injectObjectFunction () {
+export function injectObjectFunction() {
   for (const key in objectFunction) {
     if (!Object.prototype[key]) {
       Object.defineProperty(Object.prototype, key, {
-        get () {
+        get() {
           return objectFunction[key]
         }
       })

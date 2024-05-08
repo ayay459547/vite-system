@@ -36,22 +36,25 @@ export const getExcelData = async (params: any) => {
     }
   } = params as Params
 
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      page,
-      size,
-      sort
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        page,
+        size,
+        sort
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 
@@ -85,61 +88,67 @@ export const getData = async (params: any) => {
   } = params as Params
 
   const filterMap = {
-    userId (data: number) {
+    userId(data: number) {
       if (userId === null) return true
       return data === userId
     },
-    id (data: number) {
+    id(data: number) {
       if (id === null) return true
       return data === id
     },
-    title (data: string) {
+    title(data: string) {
       if (title === null) return true
       const regexp = new RegExp(title)
       return regexp.test(data)
     },
-    completed (data: boolean) {
+    completed(data: boolean) {
       if (completed === null) return true
       switch (completed) {
-        case '1': return data
-        case '0': return !data
-        default: return true
+        case '1':
+          return data
+        case '0':
+          return !data
+        default:
+          return true
       }
     }
   }
 
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      page,
-      size,
-      sort
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        page,
+        size,
+        sort
+      }
     },
-    delay: 300,
-    callback (config, fakeData) {
-      const { data, status } = fakeData
-      const { page, size } = config.data
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300,
+      callback(config, fakeData) {
+        const { data, status } = fakeData
+        const { page, size } = config.data
 
-      const tempData = data.filter(item => {
-        return (filterMap as any).$every((filterFun, filterKey) => {
-          const data = item[filterKey]
-          return filterFun(data)
+        const tempData = data.filter(item => {
+          return (filterMap as any).$every((filterFun, filterKey) => {
+            const data = item[filterKey]
+            return filterFun(data)
+          })
         })
-      })
 
-      return {
-        data: cutTableData(page, size, tempData),
-        status
+        return {
+          data: cutTableData(page, size, tempData),
+          status
+        }
       }
     }
-  })
+  )
 
   const { data, status, msg } = resData
 
@@ -158,64 +167,65 @@ export const getData = async (params: any) => {
 }
 
 export const getDataCount = async (params: any) => {
-  const {
-    userId = null,
-    id = null,
-    title = null,
-    completed = null
-  } = params as Params
+  const { userId = null, id = null, title = null, completed = null } = params as Params
 
   const filterMap = {
-    userId (data: number) {
+    userId(data: number) {
       if (userId === null) return true
       return data === userId
     },
-    id (data: number) {
+    id(data: number) {
       if (id === null) return true
       return data === id
     },
-    title (data: string) {
+    title(data: string) {
       if (title === null) return true
       const regexp = new RegExp(title)
       return regexp.test(data)
     },
-    completed (data: boolean) {
+    completed(data: boolean) {
       if (completed === null) return true
       switch (completed) {
-        case '1': return data
-        case '0': return !data
-        default: return true
+        case '1':
+          return data
+        case '0':
+          return !data
+        default:
+          return true
       }
     }
   }
 
-  const resData = await ajax<Api<number>>({
-    url: '/page/getDataCount',
-    method: 'get',
-    data: {}
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeData.length,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page/getDataCount',
+      method: 'get',
+      data: {}
     },
-    delay: 300,
-    callback (config, fakeData) {
-      const { status } = fakeData
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeData.length,
+        status: 'success'
+      },
+      delay: 300,
+      callback(config, fakeData) {
+        const { status } = fakeData
 
-      const tempData = fakeTableData.filter(item => {
-        return (filterMap as any).$every((filterFun, filterKey) => {
-          const data = item[filterKey]
-          return filterFun(data)
+        const tempData = fakeTableData.filter(item => {
+          return (filterMap as any).$every((filterFun, filterKey) => {
+            const data = item[filterKey]
+            return filterFun(data)
+          })
         })
-      })
 
-      return {
-        data: tempData.length,
-        status
+        return {
+          data: tempData.length,
+          status
+        }
       }
     }
-  })
+  )
 
   const { data, status, msg } = resData
 

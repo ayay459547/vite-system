@@ -38,13 +38,10 @@ const columnSetting = {
   }
 }
 
-const {
-  columns,
-  forms,
-  activeForms,
-  reset,
-  getActiveForms
-} = useFormSetting<Form>(columnSetting, 'filter')
+const { columns, forms, activeForms, reset, getActiveForms } = useFormSetting<Form>(
+  columnSetting,
+  'filter'
+)
 
 const isShow = ref(false)
 
@@ -52,17 +49,11 @@ const get = () => {
   const data = getActiveForms(true)
   console.log(data)
 }
-
 </script>
 
 <template>
   <div class="page">
-    <GroupSearch
-      :columns="columns"
-      class="grid-row"
-      @reset="reset"
-      @submit="get"
-    >
+    <GroupSearch :columns="columns" class="grid-row" @reset="reset" @submit="get">
       <template #search-all="{ prop, column }">
         <CustomSearch
           class="grid-col-xs-8"
@@ -90,9 +81,9 @@ const get = () => {
           v-bind="columns.date"
           v-model:active="activeForms.date"
         />
-        <CustomButton label="重置" @click="reset"/>
-        <CustomButton label="取值" @click="get"/>
-        <CustomButton label="測試Drawer" @click="isShow = true"/>
+        <CustomButton label="重置" @click="reset" />
+        <CustomButton label="取值" @click="get" />
+        <CustomButton label="測試Drawer" @click="isShow = true" />
       </div>
 
       <div style="flex: 1" class="flex-column i-ga-md">
@@ -114,17 +105,13 @@ const get = () => {
           search
           v-model:active="activeForms.date"
         />
-        <CustomButton label="重置" @click="reset"/>
-        <CustomButton label="取值" @click="get"/>
-        <CustomButton label="測試Drawer" @click="isShow = true"/>
+        <CustomButton label="重置" @click="reset" />
+        <CustomButton label="取值" @click="get" />
+        <CustomButton label="測試Drawer" @click="isShow = true" />
       </div>
     </div>
 
-    <CustomDrawer
-      v-model="isShow"
-      title="title"
-      direction="rtl"
-    >
+    <CustomDrawer v-model="isShow" title="title" direction="rtl">
       <span>Hi there!----------</span>
     </CustomDrawer>
   </div>
@@ -140,4 +127,3 @@ const get = () => {
   gap: 32px;
 }
 </style>
-

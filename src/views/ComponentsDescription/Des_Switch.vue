@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -27,24 +26,9 @@ const inactiveText = ref('inactiveText')
 
 <template>
   <div class="page">
-    <CustomInput
-      v-model="size"
-      label="大小"
-      type="radio"
-      :options="sizeOptions"
-    />
-    <CustomInput
-      label="啟用文字"
-      v-model="activeText"
-      clearable
-      class="i-my-sm"
-    />
-    <CustomInput
-      label="關閉文字"
-      v-model="inactiveText"
-      clearable
-      class="i-my-sm"
-    />
+    <CustomInput v-model="size" label="大小" type="radio" :options="sizeOptions" />
+    <CustomInput label="啟用文字" v-model="activeText" clearable class="i-my-sm" />
+    <CustomInput label="關閉文字" v-model="inactiveText" clearable class="i-my-sm" />
 
     <CustomSwitch
       v-model="value"

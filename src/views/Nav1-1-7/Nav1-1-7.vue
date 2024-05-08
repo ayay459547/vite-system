@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import {
-  CustomButton,
-  CustomDivider,
-  CustomDialog,
-  CustomModal
-} from '@/components'
+import { CustomButton, CustomDivider, CustomDialog, CustomModal } from '@/components'
 
 import TestKeepAlive from './TestKeepAlive.vue'
 
@@ -34,7 +29,6 @@ onMounted(() => {
     isLoading.value = false
   }, 10000)
 })
-
 </script>
 
 <template>
@@ -44,39 +38,19 @@ onMounted(() => {
     <CustomDivider />
 
     <div class="flex-row i-ga-xs">
-      <CustomButton
-        type="success"
-        label="打開 Dialog"
-        class="i-my-sm"
-        @click="isShow = true"
-      />
+      <CustomButton type="success" label="打開 Dialog" class="i-my-sm" @click="isShow = true" />
 
-      <CustomButton
-        type="warning"
-        label="關閉 Dialog"
-        class="i-my-sm"
-        @click="isShow = false"
-      />
+      <CustomButton type="warning" label="關閉 Dialog" class="i-my-sm" @click="isShow = false" />
 
-      <CustomDialog
-        v-model="isShow"
-        draggable
-        modal
-      >
+      <CustomDialog v-model="isShow" draggable modal>
         <h3>測試 CustomDialog</h3>
       </CustomDialog>
     </div>
 
-
     <CustomDivider />
 
     <div class="flex-row i-ga-xs">
-      <CustomButton
-        type="primary"
-        label="打開 Modal"
-        class="i-my-sm"
-        @click="modalIsShow = true"
-      />
+      <CustomButton type="primary" label="打開 Modal" class="i-my-sm" @click="modalIsShow = true" />
 
       <CustomButton
         type="warning"
@@ -85,12 +59,7 @@ onMounted(() => {
         @click="modalIsShow = false"
       />
 
-      <CustomModal
-        v-model="modalIsShow"
-        :modal="false"
-        draggable
-        :loading="isLoading"
-      >
+      <CustomModal v-model="modalIsShow" :modal="false" draggable :loading="isLoading">
         <h3>測試 CustomModal 拖拉 draggable</h3>
       </CustomModal>
     </div>

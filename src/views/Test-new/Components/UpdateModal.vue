@@ -4,8 +4,8 @@ import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
 
-import type { TableData  } from '../api'
-import { type UpdateFormData, updateData  } from './api'
+import type { TableData } from '../api'
+import { type UpdateFormData, updateData } from './api'
 import { columnSetting } from '../columns'
 
 const props = defineProps({
@@ -23,32 +23,28 @@ const {
 
 defineExpose({
   submit: async () => {
-    return await validateForm().then(async () => {
-      const status = await updateData(form)
+    return await validateForm()
+      .then(async () => {
+        const status = await updateData(form)
 
-      return status
-    }).catch(errorList => {
-      const error = errorList.find(errorItem => {
-        return errorItem.el !== null
+        return status
       })
-      if (error) {
-        const el = error.getDom()
-        scrollToEl(el)
-      }
+      .catch(errorList => {
+        const error = errorList.find(errorItem => {
+          return errorItem.el !== null
+        })
+        if (error) {
+          const el = error.getDom()
+          scrollToEl(el)
+        }
 
-      return 'error'
-    })
+        return 'error'
+      })
   }
 })
 
 onMounted(() => {
-  const {
-    column1,
-    column2,
-    column3,
-    column4,
-    column5
-  } = props.data ?? {}
+  const { column1, column2, column3, column4, column5 } = props.data ?? {}
 
   form.column1 = column1
   form.column2 = column2
@@ -56,7 +52,6 @@ onMounted(() => {
   form.column4 = column4
   form.column5 = column5
 })
-
 </script>
 
 <template>
@@ -79,17 +74,9 @@ onMounted(() => {
       v-bind="formColumn.column3"
     />
 
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.column4"
-      v-bind="formColumn.column4"
-    />
+    <CustomInput class="grid-col-xs-24" v-model="form.column4" v-bind="formColumn.column4" />
 
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.column5"
-      v-bind="formColumn.column5"
-    />
+    <CustomInput class="grid-col-xs-24" v-model="form.column5" v-bind="formColumn.column5" />
   </div>
 </template>
 

@@ -15,7 +15,7 @@ export const debounce = <T = Function>(callback: Function, delay: number): T => 
   const scopeData = {}
 
   return new Proxy(() => {}, {
-    set (obj, key, value) {
+    set(obj, key, value) {
       if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
         scopeData[key] = value
       } else {
@@ -23,14 +23,16 @@ export const debounce = <T = Function>(callback: Function, delay: number): T => 
       }
       return true
     },
-    get (obj, key) {
+    get(obj, key) {
       if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
         return scopeData[key]
       }
       return obj[key]
     },
-    apply (obj, thisArg, params) {
-      if (timeoutId) { clearInterval(timeoutId) }
+    apply(obj, thisArg, params) {
+      if (timeoutId) {
+        clearInterval(timeoutId)
+      }
 
       timeoutId = setTimeout(() => {
         callback.call(thisArg, ...params)

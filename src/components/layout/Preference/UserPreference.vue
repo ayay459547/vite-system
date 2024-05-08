@@ -30,19 +30,16 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'historyChange',
-  'changeLayout'
-])
+const emit = defineEmits(['historyChange', 'changeLayout'])
 
 // 語言
 const localeStore = useLocaleStore()
 const { elLocale } = storeToRefs(localeStore)
 const langValue = computed({
-  get () {
+  get() {
     return elLocale.value
   },
-  set (lang: string) {
+  set(lang: string) {
     localeStore.currentLang = lang
   }
 })
@@ -54,10 +51,10 @@ const browserViewOptions = [
   { label: 'fullScreen', value: 'fullScreen' }
 ]
 const browserValue = computed({
-  get () {
+  get() {
     return browserView.value
   },
-  set (view: string) {
+  set(view: string) {
     browserView.value = view
 
     if (document.fullscreenElement) {
@@ -79,10 +76,10 @@ const colorToneOptions = [
 ]
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const colorTone = computed({
-  get () {
+  get() {
     return props.isDark ? 'dark' : 'light'
   },
-  set (colorTone: string) {
+  set(colorTone: string) {
     const _isDark = colorTone === 'dark'
     colorToneStore.toggleDark(_isDark)
   }
@@ -94,10 +91,10 @@ const tagLinkOptions = [
   { label: 'hidden', value: false }
 ]
 const tagLinkValue = computed({
-  get () {
+  get() {
     return props.historyIsOpen
   },
-  set (isShow: boolean) {
+  set(isShow: boolean) {
     emit('historyChange', isShow)
   }
 })
@@ -115,9 +112,11 @@ const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
 
 const getLayoutView = (layoutNumber: string) => {
-  switch (layoutNumber){
-    case '1': return Layout1
-    case '2': return Layout2
+  switch (layoutNumber) {
+    case '1':
+      return Layout1
+    case '2':
+      return Layout2
   }
 }
 
@@ -125,7 +124,6 @@ const onClickLayout = (layoutValue: string) => {
   layoutStore.currentLayout = layoutValue
   emit('changeLayout')
 }
-
 </script>
 
 <template>
@@ -135,16 +133,13 @@ const onClickLayout = (layoutValue: string) => {
       <div class="modal-item">
         <div class="modal-label">
           <div class="icon">
-            <CustomIcon name="earth-americas"/>
+            <CustomIcon name="earth-americas" />
           </div>
           <label>{{ i18nTranslate('language') }}</label>
         </div>
 
         <div class="modal-select">
-          <FormRadio
-            v-model="langValue"
-            :options="langOptions"
-            >
+          <FormRadio v-model="langValue" :options="langOptions">
             <template #option="{ label }">
               {{ i18nTranslate(label) }}
             </template>
@@ -156,16 +151,13 @@ const onClickLayout = (layoutValue: string) => {
       <div class="modal-item">
         <div class="modal-label">
           <div class="icon">
-            <CustomIcon type="far" name="window-restore"/>
+            <CustomIcon type="far" name="window-restore" />
           </div>
           <label>{{ i18nTranslate('browser') + i18nTranslate('mode') }}</label>
         </div>
 
         <div class="modal-select">
-          <FormRadio
-            v-model="browserValue"
-            :options="browserViewOptions"
-          >
+          <FormRadio v-model="browserValue" :options="browserViewOptions">
             <template #option="{ label }">
               {{ i18nTranslate(label) }}
             </template>
@@ -198,16 +190,13 @@ const onClickLayout = (layoutValue: string) => {
       <div class="modal-item">
         <div class="modal-label">
           <div class="icon">
-            <CustomIcon type="fas" name="hashtag"/>
+            <CustomIcon type="fas" name="hashtag" />
           </div>
           <label>{{ `${i18nTranslate('tagLink')}` }}</label>
         </div>
 
         <div class="modal-select">
-          <FormRadio
-            v-model="tagLinkValue"
-            :options="tagLinkOptions"
-          >
+          <FormRadio v-model="tagLinkValue" :options="tagLinkOptions">
             <template #option="{ label }">
               {{ i18nTranslate(label) }}
             </template>
@@ -219,7 +208,7 @@ const onClickLayout = (layoutValue: string) => {
       <div class="modal-item">
         <div class="modal-label">
           <div class="icon">
-            <CustomIcon name="chalkboard-user"/>
+            <CustomIcon name="chalkboard-user" />
           </div>
           <label>{{ i18nTranslate('layout') }}</label>
         </div>
@@ -233,7 +222,7 @@ const onClickLayout = (layoutValue: string) => {
             @click="onClickLayout(layoutOption.value)"
           >
             <div class="i-mb-sm">{{ i18nTranslate('layout') + layoutOption.label }}</div>
-            <component :is="getLayoutView(layoutOption.label)"/>
+            <component :is="getLayoutView(layoutOption.label)" />
           </div>
         </div>
       </div>

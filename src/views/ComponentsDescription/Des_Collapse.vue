@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -19,13 +18,8 @@ const slotText = ref('slot default')
 
 <template>
   <div class="page">
-    <CustomInput
-      v-model="accordion"
-      label="模式"
-      type="radio"
-      :options="accordionOptions"
-    />
-    <CustomInput label="插槽文字" v-model="slotText" clearable/>
+    <CustomInput v-model="accordion" label="模式" type="radio" :options="accordionOptions" />
+    <CustomInput label="插槽文字" v-model="slotText" clearable />
 
     <CustomDivider></CustomDivider>
     <CustomCollapse

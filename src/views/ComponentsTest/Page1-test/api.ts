@@ -62,71 +62,83 @@ export const fakeTableData: TableData[] = [
 
 // api
 export const getData = async () => {
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/api/getTableDataCount',
-    method: 'post',
-    data: {}
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/api/getTableDataCount',
+      method: 'post',
+      data: {}
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   return resData
 }
 
 export const getDataCount = async () => {
-  const resData = await ajax<Api<number>>({
-    url: '/api/getTableDataCount',
-    method: 'post',
-    data: {}
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: 1000,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/api/getTableDataCount',
+      method: 'post',
+      data: {}
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: 1000,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   return resData
 }
 
 export const createData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>({
-    url: '/page1/create',
-    method: 'post',
-    data: postData
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: 5,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page1/create',
+      method: 'post',
+      data: postData
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: 5,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   return resData
 }
 
 export const updateData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>({
-    url: '/page1/update',
-    method: 'post',
-    data: postData
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: 2,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page1/update',
+      method: 'post',
+      data: postData
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: 2,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   return resData
 }
 
 export const deleteData = async (rowData: TableData) => {
-  await new Promise((resolve) => {
+  await new Promise(resolve => {
     console.log('delete id => ', rowData.id)
 
     setTimeout(() => {

@@ -22,11 +22,11 @@ $z-index-map: map.merge(
     // var(--i-z-index-side);
     'side': 2003,
     // element-ul 設定的
-    'v-loading': 2000,        
+    'v-loading': 2000,
     // var(--i-z-index-v-fixed);
     'v-fixed': 99,
     // var(--i-z-index-popover);
-    'popover': 1,
+    'popover': 1
   ),
   $z-index-map
 );

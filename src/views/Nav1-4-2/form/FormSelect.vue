@@ -40,7 +40,7 @@ const props = defineProps({
   },
   options: {
     type: Array as PropType<Options>,
-    default () {
+    default() {
       return []
     }
   },
@@ -145,11 +145,11 @@ const inputValue = computed({
 })
 
 const {
-  errorMessage,     // 錯誤訊息
+  errorMessage, // 錯誤訊息
   value: tempValue, // 值
-  handleChange,     // 換值
-  handleReset,      // 重置
-  validate          // 驗證
+  handleChange, // 換值
+  handleReset, // 重置
+  validate // 驗證
 } = useField('field', validateField, {
   validateOnValueUpdate: false,
   initialValue: inputValue.value,
@@ -201,10 +201,10 @@ defineExpose({
   value: tempValue,
   handleReset,
   validate,
-  setvalidateKey (validateKey: string) {
+  setvalidateKey(validateKey: string) {
     _domValidateKey.value = validateKey
   },
-  getDom () {
+  getDom() {
     return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
   }
 })
@@ -221,7 +221,6 @@ const getTextValue = (tempValue: ModelValue) => {
   const _option = props.options.find(option => option.value === tempValue)
   return _option?.label ?? ''
 }
-
 </script>
 
 <template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CustomButton, CustomBadge } from '@/components'
-
 </script>
 
 <template>
@@ -8,13 +7,11 @@ import { CustomButton, CustomBadge } from '@/components'
     <div class="page-container">
       <div class="fill-x flex-row i-mb-md">
         <CustomBadge value="3">
-          <CustomButton label="test"/>
+          <CustomButton label="test" />
         </CustomBadge>
       </div>
 
-      <div class="fill-x flex-row">
-        7
-      </div>
+      <div class="fill-x flex-row">7</div>
     </div>
   </div>
 </template>

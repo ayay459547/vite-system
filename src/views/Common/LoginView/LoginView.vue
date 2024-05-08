@@ -20,19 +20,21 @@ const login = ($event: MouseEvent | KeyboardEvent) => {
   // 移除 form 原有事件處理
   $event.preventDefault()
 
-  validateForm().then(async () => {
-    const { account, password } = form
-    isLoading.value = true
-    const userId = await loginSystem(account, password)
+  validateForm()
+    .then(async () => {
+      const { account, password } = form
+      isLoading.value = true
+      const userId = await loginSystem(account, password)
 
-    if (!isEmpty(userId)) {
-      emit('login', userId)
-    }
+      if (!isEmpty(userId)) {
+        emit('login', userId)
+      }
 
-    isLoading.value = false
-  }).catch(() => {
-    isLoading.value = false
-  })
+      isLoading.value = false
+    })
+    .catch(() => {
+      isLoading.value = false
+    })
 }
 
 const columnSetting = {
@@ -76,7 +78,6 @@ const svg = `
     L 15 15
   " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
 `
-
 </script>
 
 <template>
@@ -88,20 +89,11 @@ const svg = `
     element-loading-background="rgba(236, 245, 255, 0.8)"
     class="login-wrapper"
   >
-    <img
-      class="login-img-lg"
-      src="@/assets/images/common/login-lg.svg"
-      alt="login"
-    />
+    <img class="login-img-lg" src="@/assets/images/common/login-lg.svg" alt="login" />
 
     <div class="login-container card-primary">
-
       <div class="login-form">
-        <img
-          class="login-img-xs"
-          src="@/assets/images/common/login-xs.svg"
-          alt="login"
-        />
+        <img class="login-img-xs" src="@/assets/images/common/login-xs.svg" alt="login" />
 
         <div class="login-logo">
           <img src="@/assets/images/Vue-logo.png" alt="vue" />
@@ -115,25 +107,24 @@ const svg = `
           @keyup.enter="login"
         >
           <template #prefix>
-            <CustomIcon name="user"/>
+            <CustomIcon name="user" />
           </template>
         </CustomInput>
 
-        <form style="display: contents;" @submit="login">
+        <form style="display: contents" @submit="login">
           <CustomInput
             v-model="form.password"
             v-bind="formColumn.password"
             :label="i18nTranslate('password')"
           >
             <template #prefix>
-              <CustomIcon name="unlock-keyhole"/>
+              <CustomIcon name="unlock-keyhole" />
             </template>
           </CustomInput>
         </form>
 
         <button class="login-button" @click="login">{{ i18nTranslate('login') }}</button>
       </div>
-
     </div>
   </div>
 </template>
@@ -299,7 +290,7 @@ const svg = `
     cursor: pointer;
 
     &:hover {
-      background-color: #409EFF;
+      background-color: #409eff;
       color: #fff;
     }
   }

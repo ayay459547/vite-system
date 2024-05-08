@@ -34,7 +34,7 @@ const showAlert = (icon: Icon) => {
   swal({
     icon,
     title: '測試彈框'
-  }).then((result) => {
+  }).then(result => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
       Swal.fire('Saved!', '', 'success')
@@ -43,7 +43,6 @@ const showAlert = (icon: Icon) => {
     }
   })
 }
-
 </script>
 
 <template>
@@ -59,41 +58,23 @@ const showAlert = (icon: Icon) => {
       v-fixed test
     </div>
 
-    <CustomButton
-      label="測試Popover"
-      @click="openPopover"
-    />
+    <CustomButton label="測試Popover" @click="openPopover" />
 
-    <CustomButton
-      label="測試Sweetalert2 info"
-      @click="showAlert('info')"
-    />
-    <CustomButton
-      label="測試Sweetalert2 warning"
-      @click="showAlert('warning')"
-    />
-    <CustomButton
-      label="測試Sweetalert2 success"
-      @click="showAlert('success')"
-    />
-    <CustomButton
-      label="測試Sweetalert2 error"
-      @click="showAlert('error')"
-    />
-    <CustomButton
-      label="測試Sweetalert2 question"
-      @click="showAlert('question')"
-    />
+    <CustomButton label="測試Sweetalert2 info" @click="showAlert('info')" />
+    <CustomButton label="測試Sweetalert2 warning" @click="showAlert('warning')" />
+    <CustomButton label="測試Sweetalert2 success" @click="showAlert('success')" />
+    <CustomButton label="測試Sweetalert2 error" @click="showAlert('error')" />
+    <CustomButton label="測試Sweetalert2 question" @click="showAlert('question')" />
 
     <CustomTooltip>
-      <CustomButton label="滑鼠移入 Tooltip" type="primary"/>
+      <CustomButton label="滑鼠移入 Tooltip" type="primary" />
       <template #content>
         <div>Tooltip 內容1</div>
       </template>
     </CustomTooltip>
 
     <CustomTooltip trigger="click">
-      <CustomButton label="滑鼠點擊 Tooltip" type="success"/>
+      <CustomButton label="滑鼠點擊 Tooltip" type="success" />
       <template #content>
         <div>Tooltip 內容2</div>
       </template>
@@ -102,19 +83,14 @@ const showAlert = (icon: Icon) => {
     <CustomPopover>
       <div>顯示內容1 Popover</div>
       <template #reference>
-        <CustomButton label="滑鼠點擊 Popover"/>
+        <CustomButton label="滑鼠點擊 Popover" />
       </template>
     </CustomPopover>
 
-    <CustomPopover
-      :width="300"
-      title="內容2標題"
-      trigger="hover"
-      placement="right"
-    >
+    <CustomPopover :width="300" title="內容2標題" trigger="hover" placement="right">
       <div>顯示內容2 Popover --------------</div>
       <template #reference>
-        <CustomButton label="滑鼠移入 Popover"/>
+        <CustomButton label="滑鼠移入 Popover" />
       </template>
     </CustomPopover>
   </div>

@@ -20,28 +20,25 @@ onMounted(() => {
     isLoading.value = false
   }, 300)
 })
-
 </script>
 
 <template>
   <div v-loading="isLoading" class="page">
     <div class="page-tabs">
       <!-- 切換 -->
-      <CustomTabs v-model="tab" :options="tabs"/>
+      <CustomTabs v-model="tab" :options="tabs" />
     </div>
 
     <div class="page-view">
       <Transition name="fade" mode="out-in">
-        <MachineView v-if="tab === 'MachineView'"/>
-        <OrderView v-else-if="tab === 'OrderView'"/>
+        <MachineView v-if="tab === 'MachineView'" />
+        <OrderView v-else-if="tab === 'OrderView'" />
         <template v-else>
           <CustomEmpty />
         </template>
       </Transition>
     </div>
-
   </div>
-
 </template>
 
 <style lang="scss" scoped>

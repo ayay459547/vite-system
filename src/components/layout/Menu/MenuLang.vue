@@ -29,7 +29,6 @@ const langCallbackList = computed<EventItem[]>(() => {
 const openLangType = (e: MouseEvent) => {
   eventList(e, langCallbackList.value, { width: 150 })
 }
-
 </script>
 
 <template>

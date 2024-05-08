@@ -1,15 +1,8 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomEmpty/CustomEmpty.md?raw'
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown,
-  CustomEmpty,
-  CustomIcon
-} from '@/components'
+import { CustomInput, CustomDivider, CustomMarkdown, CustomEmpty, CustomIcon } from '@/components'
 
 // slot
 const slotText = ref('slot default')
@@ -17,14 +10,11 @@ const slotText = ref('slot default')
 
 <template>
   <div class="page">
-    <CustomInput label="插槽文字" v-model="slotText" clearable/>
+    <CustomInput label="插槽文字" v-model="slotText" clearable />
 
-    <CustomEmpty
-      :image-size="60"
-      description="empty-test"
-    >
+    <CustomEmpty :image-size="60" description="empty-test">
       <template #image>
-        <CustomIcon name="cube"/>
+        <CustomIcon name="cube" />
       </template>
       <span>{{ slotText }}</span>
     </CustomEmpty>

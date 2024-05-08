@@ -11,13 +11,10 @@ const props = defineProps({
 onMounted(() => {
   console.log(props.data)
 })
-
 </script>
 
 <template>
-  <div class="modal">
-    詳細資料
-  </div>
+  <div class="modal">詳細資料</div>
 </template>
 
 <style lang="scss" scoped>

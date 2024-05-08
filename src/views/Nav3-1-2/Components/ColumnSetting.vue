@@ -12,7 +12,7 @@ import type { PropsTableColumn } from './CustomTable.vue'
 const props = defineProps({
   columns: {
     type: Object as PropType<PropsTableColumn[]>,
-    default () {
+    default() {
       return {}
     }
   },
@@ -50,7 +50,7 @@ const getcolumnList = async () => {
  * 如果版本更換
  * 重新給預設值
  */
- const checkColumnSetting = async () => {
+const checkColumnSetting = async () => {
   const getRes = await getColumnSetting(props.settingKey)
 
   if ([null, undefined].includes(getRes)) {
@@ -156,7 +156,6 @@ onBeforeMount(async () => {
   const tempColumnList = await getcolumnList()
   columnList.value = tempColumnList
 })
-
 </script>
 
 <template>
@@ -168,11 +167,7 @@ onBeforeMount(async () => {
       popper-style="padding: 4px;"
     >
       <template #reference>
-        <CustomButton
-          icon-name="list-check"
-          class="i-mr-xs"
-          :label="$t('columnSetting')"
-        />
+        <CustomButton icon-name="list-check" class="i-mr-xs" :label="$t('columnSetting')" />
       </template>
 
       <CustomDraggable
@@ -197,12 +192,7 @@ onBeforeMount(async () => {
               <div class="text">{{ element.label }}</div>
             </div>
 
-            <CustomButton
-              type="info"
-              icon-name="bars"
-              text
-              class="setting-move"
-            />
+            <CustomButton type="info" icon-name="bars" text class="setting-move" />
           </div>
         </template>
 
@@ -218,7 +208,6 @@ onBeforeMount(async () => {
           </div>
         </template>
       </CustomDraggable>
-
     </CustomPopover>
   </div>
 </template>

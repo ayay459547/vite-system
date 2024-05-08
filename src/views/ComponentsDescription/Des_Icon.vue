@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -24,24 +23,14 @@ const onClick = (iconType: IconType, iconName: string) => {
   type.value = iconType
   name.value = iconName
 }
-
 </script>
 
 <template>
   <div class="page">
-    <CustomInput
-      v-model="type"
-      label="類型"
-      type="radio"
-      :options="typeOptions"
-    />
-    <CustomInput
-      v-model="name"
-      label="圖示名稱"
-      type="text"
-    />
+    <CustomInput v-model="type" label="類型" type="radio" :options="typeOptions" />
+    <CustomInput v-model="name" label="圖示名稱" type="text" />
     <div class="page-icon">
-      <CustomIcon :name="name" :type="type"/>
+      <CustomIcon :name="name" :type="type" />
     </div>
 
     <h3 class="i-my-md">fas 填滿</h3>
@@ -137,7 +126,7 @@ const onClick = (iconType: IconType, iconName: string) => {
   &-icon {
     padding: 12px 0;
     font-size: 5em;
-    color: #409EFF;
+    color: #409eff;
     width: 100%;
     height: 150px;
   }

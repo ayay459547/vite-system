@@ -30,7 +30,7 @@ const filterNoneColumnList = computed(() => {
 
 const columnValue = customRef<Sorting & { index?: number | string }>((track, trigger) => {
   return {
-    get () {
+    get() {
       track() // 追蹤數據改變
       const column = props.modelValue.find(item => item.key === props.prop)
       const serialNumber = filterNoneColumnList.value.findIndex(item => item.key === props.prop)
@@ -40,7 +40,7 @@ const columnValue = customRef<Sorting & { index?: number | string }>((track, tri
         index: serialNumber === -1 ? '~' : serialNumber + 1
       }
     },
-    set (value: Sorting & { index?: number | string }) {
+    set(value: Sorting & { index?: number | string }) {
       const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
       const _temp = props.modelValue[columnIndex]
 
@@ -107,7 +107,6 @@ onMounted(() => {
 
   isShow.value = !(column?.isOperations ?? false)
 })
-
 </script>
 
 <template>

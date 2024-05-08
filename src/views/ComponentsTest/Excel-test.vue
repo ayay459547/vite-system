@@ -23,14 +23,15 @@ import path from '@/assets/file/WordTest.docx?url'
 const useHook: UseHook = inject('useHook')
 const { loading } = useHook()
 
-function onClick () {
+function onClick() {
   const workbook = new ExcelJs.Workbook() // 創建試算表檔案
   const sheet = workbook.addWorksheet('工作表範例1') //在檔案中新增工作表 參數放自訂名稱
 
-  sheet.addTable({ // 在工作表裡面指定位置、格式並用columsn與rows屬性填寫內容
-    name: 'table名稱',  // 表格內看不到的，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
+  sheet.addTable({
+    // 在工作表裡面指定位置、格式並用columsn與rows屬性填寫內容
+    name: 'table名稱', // 表格內看不到的，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
     ref: 'A1', // 從A1開始
-    columns: [{name: '名字'}, {name: '年齡'}, {name: '電話'}],
+    columns: [{ name: '名字' }, { name: '年齡' }, { name: '電話' }],
     rows: [
       ['小明', '20', '0987654321'],
       ['小美', '23', '0912345678'],
@@ -41,8 +42,8 @@ function onClick () {
 
   // 表格裡面的資料都填寫完成之後，訂出下載的callback function
   // 異步的等待他處理完之後，創建url與連結，觸發下載
-  workbook.xlsx.writeBuffer().then((content) => {
-  const link = document.createElement('a')
+  workbook.xlsx.writeBuffer().then(content => {
+    const link = document.createElement('a')
     const blobData = new Blob([content], {
       type: 'application/vnd.ms-excel;charset=utf-8;'
     })
@@ -52,7 +53,7 @@ function onClick () {
   })
 }
 
-function changeLoading () {
+function changeLoading() {
   loading(true, 'loader-test')
 
   setTimeout(() => {
@@ -143,30 +144,20 @@ const tableData2 = [
 const tooltipPlacement: TooltipTrigger = 'click'
 
 const isPopoverVisible = ref(false)
-
 </script>
 
 <template>
   <div class="excel">
     <div class="flex-row i-ga-xxl">
-      <CustomButton
-        label="ButtonLabel"
-        :size="size"
-        @click="onClick"
-      />
+      <CustomButton label="ButtonLabel" :size="size" @click="onClick" />
 
-      <CustomButton
-        label="loadingTest"
-        :size="size"
-        loading
-        @click="onClick"
-      />
+      <CustomButton label="loadingTest" :size="size" loading @click="onClick" />
 
-      <CustomButton label="loading-test" type="warning" @click="changeLoading"/>
+      <CustomButton label="loading-test" type="warning" @click="changeLoading" />
 
-      <CustomButton label="OpenModal" @click="openModal"/>
+      <CustomButton label="OpenModal" @click="openModal" />
 
-      <CustomButton label="下載word" @click="downloadFile(path, 'WordTest.docx')"/>
+      <CustomButton label="下載word" @click="downloadFile(path, 'WordTest.docx')" />
 
       <CustomModal
         v-model="modalShow"
@@ -175,18 +166,16 @@ const isPopoverVisible = ref(false)
         @cancel="onModalCancel"
         @submit="onModalSubmit"
       >
-        <div class="i-pa-xl">
-          test-modal
-        </div>
+        <div class="i-pa-xl">test-modal</div>
       </CustomModal>
     </div>
 
     <div class="flex-row i-ga-xxl">
-      <CustomIcon :icon="['far', 'user']"/>
-      <CustomIcon :icon="testIcon"/>
+      <CustomIcon :icon="['far', 'user']" />
+      <CustomIcon :icon="testIcon" />
 
-      <CustomIcon type="fas" name="user"/>
-      <CustomIcon :type="testType" :name="testName"/>
+      <CustomIcon type="fas" name="user" />
+      <CustomIcon :type="testType" :name="testName" />
     </div>
 
     <div class="flex-row i-ga-xxl">
@@ -201,14 +190,11 @@ const isPopoverVisible = ref(false)
       <CustomPopover>
         <div>Popover 內容1</div>
         <template #reference>
-          <CustomButton label="滑鼠點擊 Popover" type="danger"/>
+          <CustomButton label="滑鼠點擊 Popover" type="danger" />
         </template>
       </CustomPopover>
 
-      <CustomPopover
-        :visible="isPopoverVisible"
-        width="300px"
-      >
+      <CustomPopover :visible="isPopoverVisible" width="300px">
         <div>
           Popover 內容1
           <CustomButton
@@ -227,39 +213,30 @@ const isPopoverVisible = ref(false)
         </template>
       </CustomPopover>
 
-      <CustomPopover
-        :width="300"
-        title="內容2標題"
-        trigger="hover"
-        placement="right"
-      >
+      <CustomPopover :width="300" title="內容2標題" trigger="hover" placement="right">
         <div>Popover 內容2</div>
         <template #reference>
-          <CustomButton label="滑鼠移入 Popover"/>
+          <CustomButton label="滑鼠移入 Popover" />
         </template>
       </CustomPopover>
 
       <CustomTooltip>
-        <CustomButton label="滑鼠移入 Tooltip" type="primary"/>
+        <CustomButton label="滑鼠移入 Tooltip" type="primary" />
         <template #content>
           <div>Tooltip 內容1</div>
         </template>
       </CustomTooltip>
 
       <CustomTooltip :trigger="tooltipPlacement">
-        <CustomButton label="滑鼠點擊 Tooltip" type="success"/>
+        <CustomButton label="滑鼠點擊 Tooltip" type="success" />
         <template #content>
           <div>Tooltip 內容2</div>
         </template>
       </CustomTooltip>
     </div>
 
-    <div style="width: 800px; height: 400px;">
-      <CustomTable
-        :table-data="tableData2"
-        v-bind="tableSetting"
-        @excel="download"
-      >
+    <div style="width: 800px; height: 400px">
+      <CustomTable :table-data="tableData2" v-bind="tableSetting" @excel="download">
         <template #header-all="{ column }">{{ column.label }}</template>
       </CustomTable>
     </div>

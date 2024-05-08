@@ -30,10 +30,7 @@ interface Form {
   text: string
 }
 
-const {
-  columns: formColumn,
-  forms: form
-} = useFormSetting<Form>(columnSetting, 'search')
+const { columns: formColumn, forms: form } = useFormSetting<Form>(columnSetting, 'search')
 
 provide('search', form)
 
@@ -48,7 +45,6 @@ const scorllFrist = () => {
   }, 200)
 }
 const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
-
 </script>
 
 <template>
@@ -62,15 +58,11 @@ const debounceScorllFrist = debounce(scorllFrist, 200) as () => void
         @keyup.enter="debounceScorllFrist"
       >
         <template #prefix>
-          <CustomIcon name="search"/>
+          <CustomIcon name="search" />
         </template>
       </CustomInput>
 
-      <CustomButton
-        :label="i18nTranslate('search')"
-        type="primary"
-        @click="debounceScorllFrist"
-      />
+      <CustomButton :label="i18nTranslate('search')" type="primary" @click="debounceScorllFrist" />
     </div>
 
     <div class="locatehome-tree">

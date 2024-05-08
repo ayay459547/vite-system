@@ -14,11 +14,7 @@ const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const {
-  removeHistoryNavigation,
-  clearHistoryNavigation,
-  addHistoryNavigation
-} = useRoutesStore()
+const { removeHistoryNavigation, clearHistoryNavigation, addHistoryNavigation } = useRoutesStore()
 
 const props = defineProps({
   historyNavigation: {
@@ -72,7 +68,6 @@ const RouterChange = (navigate: () => void) => {
   emit('RouterChange')
   navigate()
 }
-
 </script>
 
 <template>
@@ -123,7 +118,7 @@ const RouterChange = (navigate: () => void) => {
     color: #303133;
 
     &.is-active {
-      color: #409EFF;
+      color: #409eff;
     }
   }
   &-clear {

@@ -6,7 +6,6 @@ import { CustomCollapse, CustomDivider } from '@/components'
 const active1 = ref(['options1', 'options2'])
 
 const active2 = ref('options3')
-
 </script>
 
 <template>

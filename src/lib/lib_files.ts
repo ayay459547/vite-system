@@ -3,11 +3,7 @@
 // import XLSX from 'xlsx'
 import type { Range } from 'xlsx'
 import { writeFile, read, utils } from 'xlsx'
-export {
-  default as XLSX,
-  read,
-  utils
-} from 'xlsx'
+export { default as XLSX, read, utils } from 'xlsx'
 
 import type { WorkbookProperties, CalculationProperties, Workbook } from 'exceljs'
 import ExcelJs from 'exceljs'
@@ -44,7 +40,7 @@ export const byteConvert = (bytes: number): string => {
   const i = Math.floor(exp / 10)
   const unit = symbols[i]
 
-  const size = ((i) => {
+  const size = (i => {
     const _size = bytes / Math.pow(2, 10 * i)
     return numberFormat<number>(_size, {
       type: 'round',
@@ -112,8 +108,8 @@ export const readImage = async (file: File): Promise<string> => {
   document.body.appendChild(img)
 
   const reader = new FileReader()
-  return new Promise((resolve) => {
-    reader.onload = (event) => {
+  return new Promise(resolve => {
+    reader.onload = event => {
       const imgSrc = event.target.result as string
       img.setAttribute('src', imgSrc)
       resolve(imgSrc)
@@ -139,7 +135,7 @@ export const excelColumnToNumber = (column: string): number => {
   const wordList = column.split('').reverse()
 
   return wordList.reduce((res, word, wordIndex) => {
-    return res + (word.charCodeAt(0) - 64) * (26 ** wordIndex)
+    return res + (word.charCodeAt(0) - 64) * 26 ** wordIndex
   }, 0)
 }
 /**
@@ -223,8 +219,8 @@ const excelDataToMap = (excelData: any[]) => {
  */
 export const readExcel = async (file: File): Promise<any> => {
   const reader = new FileReader()
-  return new Promise((resolve) => {
-    reader.onload = (event) => {
+  return new Promise(resolve => {
+    reader.onload = event => {
       const result = event.target.result
 
       const workbook = read(result, { type: 'binary' })
@@ -289,8 +285,8 @@ export type WorkbookOptions = {
   subject?: string
 
   created?: Date
-	modified?: Date
-	lastPrinted?: Date
+  modified?: Date
+  lastPrinted?: Date
 
   properties?: WorkbookProperties
   calcProperties?: CalculationProperties
@@ -298,7 +294,7 @@ export type WorkbookOptions = {
 
 // https://github.com/exceljs/exceljs/blob/master/README_zh.md
 export const createWorkbook = (options?: WorkbookOptions) => {
-  const  {
+  const {
     title = systemType,
     category = systemType,
     description = systemType,
@@ -335,7 +331,7 @@ export const createWorkbook = (options?: WorkbookOptions) => {
 
 export const downloadWorkbook = (workbook: Workbook, filename: string) => {
   // download
-  workbook.xlsx.writeBuffer().then((content) => {
+  workbook.xlsx.writeBuffer().then(content => {
     const a = document.createElement('a')
     const blobData = new Blob([content], {
       type: 'application/vnd.ms-excel;charset=utf-8;'

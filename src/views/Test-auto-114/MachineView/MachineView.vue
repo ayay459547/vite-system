@@ -37,7 +37,11 @@ const tableOptions: TableOptions = {
   settingKey: 'auto-114-machine',
   isSorting: true
 }
-const { tableSetting, downloadExcel, getParams, changePage } = useTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams, changePage } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions
+)
 
 const isLoading = ref(false)
 
@@ -69,7 +73,7 @@ const download = async ({ type }) => {
 const initData = async (tableParams: any) => {
   const filterData = getFilter(false)
 
-  const [resData, resDataCount ] = await Promise.all([
+  const [resData, resDataCount] = await Promise.all([
     getTableData({
       ...tableParams,
       ...filterData
@@ -125,7 +129,6 @@ const onMachineRushOrderSubmit = async () => {
     modal.machineRushOrder = false
   }
 }
-
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-function getItemKey (item, key) {
+function getItemKey(item, key) {
   if (!item || !key) return void 666
   return typeof key === 'string' ? item[key] : key(item)
 }
@@ -8,7 +8,7 @@ function getItemKey (item, key) {
  * @param {Array} list
  * @param {String|Function} key
  */
-export function makeKeyIndexAndFree (list, key) {
+export function makeKeyIndexAndFree(list, key) {
   const keyIndex = {}
   const free = []
   for (let i = 0, len = list.length; i < len; i++) {
@@ -33,7 +33,7 @@ export function makeKeyIndexAndFree (list, key) {
  * @return {Object} - {moves: <Array>}
  *                  - moves is a list of actions that telling how to remove and insert
  */
-export function diff (oldList, newList, key) {
+export function diff(oldList, newList, key) {
   const oldMap = makeKeyIndexAndFree(oldList, key)
   const newMap = makeKeyIndexAndFree(newList, key)
 
@@ -127,17 +127,17 @@ export function diff (oldList, newList, key) {
     remove(k + i)
   }
 
-  function remove (index: number) {
+  function remove(index: number) {
     const move = { index: index, item: null, type: 0, status: 'reomve' }
     moves.push(move)
   }
 
-  function insert (index: number, item: any) {
+  function insert(index: number, item: any) {
     const move = { index: index, item: item, type: 1, status: 'insert' }
     moves.push(move)
   }
 
-  function removeSimulate (index: number) {
+  function removeSimulate(index: number) {
     simulateList.splice(index, 1)
   }
 

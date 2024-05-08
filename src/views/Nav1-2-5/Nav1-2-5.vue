@@ -21,30 +21,19 @@ onMounted(() => {
 })
 
 const switchValue = ref(false)
-
 </script>
 
 <template>
   <div class="page">
     <h3>QRcode測試</h3>
 
-    <div style="width: 200px; height: 200px;">
-      <vue-qr
-        :bgSrc='bgimg'
-        :logoSrc="img"
-        :text="url"
-      ></vue-qr>
+    <div style="width: 200px; height: 200px">
+      <vue-qr :bgSrc="bgimg" :logoSrc="img" :text="url"></vue-qr>
     </div>
 
-    <CustomSwitch
-      v-model="switchValue"
-    />
+    <CustomSwitch v-model="switchValue" />
 
-    <SimpleQRcode
-      :text="url"
-      :bgSrc='bgimg'
-      :logoSrc="img"
-    />
+    <SimpleQRcode :text="url" :bgSrc="bgimg" :logoSrc="img" />
 
     <h4>{{ now }}</h4>
   </div>

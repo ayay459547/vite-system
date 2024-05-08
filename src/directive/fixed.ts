@@ -12,18 +12,18 @@ export const vFixed = {
   //   el.addEventListener(mouseenter, createHandler.bind(el, options))
   //   el.addEventListener(mouseleave, removeHandler.bind(el, options))
   // },
-  mounted (el: Element, { value: options }) {
+  mounted(el: Element, { value: options }) {
     el.addEventListener(mouseenter, createHandler.bind(el, options))
     el.addEventListener(mouseleave, removeHandler.bind(el, options))
   },
-  unmounted (el: Element, { value: options }) {
+  unmounted(el: Element, { value: options }) {
     el.removeEventListener(mouseenter, createHandler.bind(el, options))
     el.removeEventListener(mouseleave, removeHandler.bind(el, options))
   }
 }
 
 const fixedSet = new Set<{
-  app: App,
+  app: App
   el: Element
 }>()
 
@@ -39,15 +39,11 @@ type Options = {
  *                 class: class 類型(string, object, array)
  *                 style: style 類型(string, object)
  */
-function createHandler (this: Element, options: Options) {
+function createHandler(this: Element, options: Options) {
   const clientRect = this.getBoundingClientRect()
-  const {
-    text: tempText,
-    style: textStyle = '',
-    class: textClass = ''
-  } = options
+  const { text: tempText, style: textStyle = '', class: textClass = '' } = options
 
-  const text = ((tempText) => {
+  const text = (tempText => {
     if (typeof tempText === 'function') return tempText()
     return tempText
   })(tempText)
@@ -75,10 +71,9 @@ function createHandler (this: Element, options: Options) {
     app,
     el: newEl
   })
-
 }
 
-function removeHandler (this: Element) {
+function removeHandler(this: Element) {
   if (fixedSet.size > 0) {
     const tempSize = fixedSet.size
 

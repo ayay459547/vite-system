@@ -24,7 +24,7 @@ $grid-system-map: (
   display: grid;
   grid-template-columns: repeat(24, 1fr);
   grid-gap: 12px 8px;
-  
+
   @media (min-width: 992px) {
     grid-gap: 16px;
   }
@@ -38,9 +38,8 @@ $grid-system-map: (
   @media (min-width: $value) {
     @for $i from 1 through 24 {
       .grid-col-#{$size}-#{$i} {
-        grid-column-start: span $i
+        grid-column-start: span $i;
       }
     }
   }
 }
- 

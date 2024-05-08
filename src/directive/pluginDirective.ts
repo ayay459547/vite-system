@@ -10,7 +10,7 @@ import { vLoading } from 'element-plus'
 import { vFixed } from './fixed'
 
 const pluginDirective = {
-  install (app: App): void {
+  install(app: App): void {
     app.use(vClickOutside)
 
     app.directive('loading', vLoading)

@@ -25,28 +25,15 @@ const options = [
 <template>
   <div class="nav-2">
     <h1 class="i-mb-md">This is Nav-2 page</h1>
-    <CustomInput
-      v-model="value"
-      label="測試密碼"
-      required
-      :validate="['password']"
-    />
+    <CustomInput v-model="value" label="測試密碼" required :validate="['password']" />
 
     <CustomDivider />
 
-    <CustomInput
-      v-model="valuePhone"
-      label="測試phone"
-      :validate="['phone']"
-    />
+    <CustomInput v-model="valuePhone" label="測試phone" :validate="['phone']" />
 
     <CustomDivider />
 
-    <CustomInput
-      v-model="checkboxValue"
-      type="checkbox"
-      :options="options"
-    >
+    <CustomInput v-model="checkboxValue" type="checkbox" :options="options">
       <!-- <template #options="{ label, value, color, isChecked }">
         <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
       </template> -->
@@ -54,11 +41,7 @@ const options = [
 
     <CustomDivider />
 
-    <CustomInput
-      v-model="checkboxValue"
-      type="checkbox"
-      :options="options"
-    >
+    <CustomInput v-model="checkboxValue" type="checkbox" :options="options">
       <template #option="{ label, value, color, isChecked }">
         <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
       </template>

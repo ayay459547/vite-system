@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -22,7 +21,9 @@ const fitOptions = [
 const fit = ref<ImageFit>('cover')
 
 // slot
-const srcText = ref('https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/215px-Vue.js_Logo_2.svg.png')
+const srcText = ref(
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/215px-Vue.js_Logo_2.svg.png'
+)
 
 const urlList = [
   'https://avatars.githubusercontent.com/u/6128107?s=200&v=4',
@@ -55,19 +56,9 @@ const onShow = () => {
 
 <template>
   <div class="page">
-    <CustomInput
-      label="圖片網址"
-      v-model="srcText"
-      clearable
-      class="i-mb-md"
-    />
+    <CustomInput label="圖片網址" v-model="srcText" clearable class="i-mb-md" />
 
-    <CustomInput
-      label="Fit 類型"
-      type="radio"
-      v-model="fit"
-      :options="fitOptions"
-    />
+    <CustomInput label="Fit 類型" type="radio" v-model="fit" :options="fitOptions" />
 
     <div class="page-image">
       <CustomImage
@@ -81,13 +72,13 @@ const onShow = () => {
       >
         <template #placeholder>
           <div class="page-icon">
-            <CustomIcon type="fas" name="spinner"/>
+            <CustomIcon type="fas" name="spinner" />
             <h3>圖片讀取中 slot { placeholder }</h3>
           </div>
         </template>
         <template #error>
           <div class="page-icon">
-            <CustomIcon type="fas" name="triangle-exclamation"/>
+            <CustomIcon type="fas" name="triangle-exclamation" />
             <h3>加載失敗 slot { error }</h3>
           </div>
         </template>

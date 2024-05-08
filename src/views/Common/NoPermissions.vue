@@ -19,11 +19,12 @@ const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) 
 
 const container = ref(null)
 const centerPoint = reactive({
-  x: 0, y: 0
+  x: 0,
+  y: 0
 })
 
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     const { x, y, width, height } = entry.contentRect
     centerPoint.x = x + width / 2
     centerPoint.y = y + height / 2
@@ -40,17 +41,12 @@ onMounted(() => {
 onUnmounted(() => {
   RO.disconnect()
 })
-
 </script>
 
 <template>
   <div ref="container" class="page" @mousemove="throttleSetImgStyle">
     <h1 class="page-title" :style="titleStyle">無此權限</h1>
-    <img
-      class="page-img"
-      src="@/assets/images/common/noPermissions.svg"
-      alt="404"
-    />
+    <img class="page-img" src="@/assets/images/common/noPermissions.svg" alt="404" />
   </div>
 </template>
 

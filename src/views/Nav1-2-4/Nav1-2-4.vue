@@ -7,7 +7,8 @@ import throttle from '@/lib/lib_throttle'
 const titleStyle = ref('')
 const container = ref(null)
 const centerPoint = reactive({
-  x: 0, y: 0
+  x: 0,
+  y: 0
 })
 
 const setImgStyle = (e: MouseEvent) => {
@@ -21,7 +22,8 @@ const setImgStyle = (e: MouseEvent) => {
 const eyeStyle = ref('')
 const eye = ref(null)
 const eyeCenter = reactive({
-  x: 0, y: 0
+  x: 0,
+  y: 0
 })
 
 const setEyeAngle = (e: MouseEvent) => {
@@ -40,7 +42,7 @@ const onMouseMove = (e: MouseEvent) => {
 const throttleOnMouseMove = throttle(onMouseMove, 80) as (payload: MouseEvent) => void
 
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     // 寬度中心
     const { x, y, width, height } = entry.contentRect
     centerPoint.x = x + width / 2
@@ -63,17 +65,12 @@ onMounted(() => {
 onUnmounted(() => {
   RO.disconnect()
 })
-
 </script>
 
 <template>
   <div ref="container" class="page" @mousemove="throttleOnMouseMove">
     <h1 class="page-title" :style="titleStyle">TEST</h1>
-    <img
-      class="page-img"
-      src="@/assets/images/common/_page404.svg"
-      alt="404"
-    />
+    <img class="page-img" src="@/assets/images/common/_page404.svg" alt="404" />
     <div class="man-body">
       <div ref="eye" class="man-eye" :style="eyeStyle">
         <div class="man-eye-ball"></div>

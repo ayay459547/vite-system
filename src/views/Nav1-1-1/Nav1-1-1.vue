@@ -40,16 +40,16 @@ const tableOptions: TableOptions = {
   version: '1.0.0',
   settingKey: 'nav1-1-1'
 }
-const {
-  tableSetting,
-  downloadExcel,
-  getParams
-} = useTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions
+)
 
 const download = async ({ type }) => {
   let excelData = []
   const apiParam = {
-    ...getParams(tableRef.value) as any
+    ...(getParams(tableRef.value) as any)
   }.$filter(item => item !== null)
 
   switch (type) {
@@ -118,8 +118,7 @@ const remove = (rowData: TableData) => {
   swal({
     icon: 'warning',
     title: `確定刪除 ${rowData.name}`
-  }).then(async (result) => {
-
+  }).then(async result => {
     if (result.isConfirmed) {
       loading(true, '刪除資料中')
       await deleteData(rowData)
@@ -143,11 +142,11 @@ const init = async (props?: any) => {
   let apiParam = {}
   if (typeof props === 'object') {
     apiParam = {
-      ...getParams(tableRef.value) as any
+      ...(getParams(tableRef.value) as any)
     }.$filter(item => item !== null)
   }
 
-  const [resData, resDataCount ] = await Promise.all([ getData(apiParam), getDataCount() ])
+  const [resData, resDataCount] = await Promise.all([getData(apiParam), getDataCount()])
 
   tableData.value = resData
   tableDataCount.value = resDataCount
@@ -158,7 +157,6 @@ const init = async (props?: any) => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>
@@ -198,21 +196,21 @@ onMounted(() => {
       :title="pageTranslate('testTable')"
       @excel="download"
       @show-change="init"
-      @row-contextmenu="(row, column, event) => { openPopover(event, row) }"
+      @row-contextmenu="
+        (row, column, event) => {
+          openPopover(event, row)
+        }
+      "
     >
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
-          <CustomIcon name="ellipsis-vertical"/>
+          <CustomIcon name="ellipsis-vertical" />
         </div>
       </template>
     </CustomTable>
 
-    <CustomModal
-      v-model="model.update"
-      :title="i18nTranslate('update')"
-      @submit="onUpdateSubmit"
-    >
-      <UpdateModal ref="updateRef" :data="editData"/>
+    <CustomModal v-model="model.update" :title="i18nTranslate('update')" @submit="onUpdateSubmit">
+      <UpdateModal ref="updateRef" :data="editData" />
     </CustomModal>
   </div>
 </template>

@@ -14,21 +14,25 @@ import { isEmpty } from '@/lib/lib_utils'
  * @param hasLeaves 是否包含子路由
  * @returns {Array} 返回路由
  */
-export const getRouterLeafLayer = (routes: RouterTree[], level = [1, 2, 3], hasLeaves = true): Array<RouterTree> => {
+export const getRouterLeafLayer = (
+  routes: RouterTree[],
+  level = [1, 2, 3],
+  hasLeaves = true
+): Array<RouterTree> => {
   const res = []
 
   const _getRouterLeaf = (
     routes: RouterTree[] = [],
     res: RouterTree[] = [],
     options = {
-      currLevel: 1,         // 目前階層
-      getLevel: [1, 2, 3],  // 想取得的階層
-      hasLeaves: true       // 是否包含子路由
+      currLevel: 1, // 目前階層
+      getLevel: [1, 2, 3], // 想取得的階層
+      hasLeaves: true // 是否包含子路由
     }
   ): void => {
     const { currLevel, getLevel, hasLeaves } = options
 
-    if (currLevel > Math.max(...getLevel)) return  // 超過指定層數就結束
+    if (currLevel > Math.max(...getLevel)) return // 超過指定層數就結束
 
     const nextLeaves = []
 
@@ -72,7 +76,10 @@ export const getRouterLeafLayer = (routes: RouterTree[], level = [1, 2, 3], hasL
  * @returns {Array} T 指定格式
  */
 export const refactorRoutes = <T>(
-  callback: (leafNode: RouterTree, parentsNode: T) => {
+  callback: (
+    leafNode: RouterTree,
+    parentsNode: T
+  ) => {
     refactorNode: T // 重構後的格式
     isShow: boolean // 是否顯示
   },
@@ -82,10 +89,7 @@ export const refactorRoutes = <T>(
 
   const _refactorRoutes = (leafNode: RouterTree[], parentsNode: T | null, res: Array<T>) => {
     leafNode.forEach(route => {
-      const {
-        refactorNode: currentNode,
-        isShow
-      } = callback(route, parentsNode)
+      const { refactorNode: currentNode, isShow } = callback(route, parentsNode)
 
       if (isShow) {
         // 不可自訂 leaves
@@ -103,7 +107,6 @@ export const refactorRoutes = <T>(
           res.push({ ...currentNode })
         }
       }
-
     })
   }
   _refactorRoutes(routes, null, res)
@@ -111,7 +114,7 @@ export const refactorRoutes = <T>(
   return res
 }
 
-const getIcon = (icon:  [IconType, string] | string): [IconType, string] => {
+const getIcon = (icon: [IconType, string] | string): [IconType, string] => {
   if (typeof icon === 'string') return ['fas', icon]
   return icon
 }
@@ -141,9 +144,9 @@ const getRouteIcon = (nav: Navigation | null | undefined): [IconType, string] =>
  * @returns {String} 文字
  */
 const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18nTest }): string => {
-  if ([null, undefined].includes(nav)) return (i18nTranslate('systemModule') as unknown as string)
+  if ([null, undefined].includes(nav)) return i18nTranslate('systemModule') as unknown as string
 
-  if (i18nTest(nav.name)) return (i18nTranslate(nav.name) as unknown as string)
+  if (i18nTest(nav.name)) return i18nTranslate(nav.name) as unknown as string
   return nav.title
 }
 

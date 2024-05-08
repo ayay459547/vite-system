@@ -19,10 +19,7 @@ import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 
 import type { ModelValue } from './CustomInputInfo'
-import {
-  version,
-  props as inputProps
-} from './CustomInputInfo'
+import { version, props as inputProps } from './CustomInputInfo'
 
 import styles from './CustomInput.module.scss'
 
@@ -43,7 +40,7 @@ const CustomInput = defineComponent({
     // autocomplete
     'select'
   ],
-  setup (props, { slots, emit, expose }) {
+  setup(props, { slots, emit, expose }) {
     const scopedId = getUuid('__i-group-input__')
 
     const useHook: UseHook = inject('useHook')
@@ -59,7 +56,9 @@ const CustomInput = defineComponent({
     // })
 
     const getTranslateLabel = (object: any) => {
-      const label = i18nTest(object.i18nLabel) ? i18nTranslate(object.i18nLabel) : object.label ?? ''
+      const label = i18nTest(object.i18nLabel)
+        ? i18nTranslate(object.i18nLabel)
+        : object.label ?? ''
       return label
     }
     const getTranslateOptions = (options: any[]) => {
@@ -94,11 +93,7 @@ const CustomInput = defineComponent({
       if (props.required) {
         switch (props.type) {
           case 'operator':
-            if (
-              !Array.isArray(veeValue) ||
-              isEmpty(veeValue[0]) ||
-              isEmpty(veeValue[1])
-            ) {
+            if (!Array.isArray(veeValue) || isEmpty(veeValue[0]) || isEmpty(veeValue[1])) {
               // 此輸入框為必填
               return 'required'
             }
@@ -117,15 +112,15 @@ const CustomInput = defineComponent({
 
       // 多個驗證格式
       if (Object.prototype.toString.call(props.validate) === '[object Array]') {
-        for (const type of (props.validate as ValidateType[])) {
-          const { test, msg } = (validateFun[type](veeValue) as VeeRes)
+        for (const type of props.validate as ValidateType[]) {
+          const { test, msg } = validateFun[type](veeValue) as VeeRes
           if (!test) return msg
         }
       }
 
       // 單一驗證格式
       if (Object.prototype.toString.call(props.validate) === '[object String]') {
-        const { test, msg } = (validateFun[(props.validate as ValidateType)](veeValue) as VeeRes)
+        const { test, msg } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
         if (!test) return msg
       }
 
@@ -139,11 +134,11 @@ const CustomInput = defineComponent({
      * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
      */
     const {
-      errorMessage,      // 錯誤訊息
+      errorMessage, // 錯誤訊息
       value: inputValue, // 值
-      handleChange,      // 換值
-      handleReset,       // 重置
-      validate           // 驗證
+      handleChange, // 換值
+      handleReset, // 重置
+      validate // 驗證
     } = useField<any>(props.validateKey, validateField, {
       // validateOnValueUpdate: true
       // initialValue: inputValue,
@@ -269,14 +264,14 @@ const CustomInput = defineComponent({
         handleReset()
       },
       validate,
-      setvalidateKey (validateKey: string) {
+      setvalidateKey(validateKey: string) {
         _domValidateKey.value = validateKey
       },
-      getDom () {
+      getDom() {
         // return document.querySelector(`[class*="__input-${domValidateKey.value}"]`)
         return document.querySelector(`[class*="__input-${scopedId}"]`)
       },
-      focus () {
+      focus() {
         switch (props.type) {
           case 'text':
           case 'textarea':
@@ -309,7 +304,7 @@ const CustomInput = defineComponent({
             break
         }
       },
-      blur () {
+      blur() {
         switch (props.type) {
           case 'text':
           case 'textarea':
@@ -373,7 +368,10 @@ const CustomInput = defineComponent({
         case 'monthrange':
           if (Array.isArray(inputValue.value)) {
             const [value1, value2] = inputValue.value
-            return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(value2, props.format)}`
+            return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(
+              value2,
+              props.format
+            )}`
           } else {
             return datetimeFormat(inputValue.value, props.format)
           }
@@ -395,14 +393,14 @@ const CustomInput = defineComponent({
             return `${inputValue.value}`
           }
         case 'radio': {
-            const option = props.options.find(_option => _option.value === inputValue.value)
-            return option?.label ?? ''
-          }
+          const option = props.options.find(_option => _option.value === inputValue.value)
+          return option?.label ?? ''
+        }
         case 'operator': {
-            const [ selectValue = '', inputText = '' ] = inputValue.value
-            const option = props.options.find(_option => _option.value === selectValue)
-            return `${option?.label ?? ''}-${inputText}`
-          }
+          const [selectValue = '', inputText = ''] = inputValue.value
+          const option = props.options.find(_option => _option.value === selectValue)
+          return `${option?.label ?? ''}-${inputText}`
+        }
         default:
           return ''
       }
@@ -437,11 +435,9 @@ const CustomInput = defineComponent({
             <FormInput
               ref={inputRef}
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               type={props.type}
               onlyNumber={props.onlyNumber}
               round={props.round}
@@ -451,19 +447,14 @@ const CustomInput = defineComponent({
               min={props.min}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e: any) => onEvent.value.onFocus(e) }
-              onClear={ () => onEvent.value.onClear() }
-              onBlur={ (e: any) => onEvent.value.onBlur(e) }
-              onChange={ (e: any) => onEvent.value.onChange(e) }
-              onInput={ (e: any) => onEvent.value.onInput(e) }
+              onFocus={(e: any) => onEvent.value.onFocus(e)}
+              onClear={() => onEvent.value.onClear()}
+              onBlur={(e: any) => onEvent.value.onBlur(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
+              onInput={(e: any) => onEvent.value.onInput(e)}
             >
               {{
-                ...getSlot([
-                  'prepend',
-                  'append',
-                  'prefix',
-                  'suffix'
-                ])
+                ...getSlot(['prepend', 'append', 'prefix', 'suffix'])
               }}
             </FormInput>
           )
@@ -473,11 +464,9 @@ const CustomInput = defineComponent({
               <FormInput
                 ref={inputRef}
                 modelValue={inputValue.value}
-                onUpdate:modelValue={
-                  ($event: any) => (inputValue.value = $event)
-                }
+                onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
                 // v-bind 綁定屬性
-                { ...bindAttributes.value }
+                {...bindAttributes.value}
                 type={props.type}
                 onlyNumber={props.onlyNumber}
                 round={props.round}
@@ -487,19 +476,14 @@ const CustomInput = defineComponent({
                 min={props.min}
                 errorMessage={errorMessage.value}
                 // v-on 接收事件
-                onFocus={ (e: any) => onEvent.value.onFocus(e) }
-                onClear={ () => onEvent.value.onClear() }
-                onBlur={ (e: any) => onEvent.value.onBlur(e) }
-                onChange={ (e: any) => onEvent.value.onChange(e) }
-                onInput={ (e: any) => onEvent.value.onInput(e) }
+                onFocus={(e: any) => onEvent.value.onFocus(e)}
+                onClear={() => onEvent.value.onClear()}
+                onBlur={(e: any) => onEvent.value.onBlur(e)}
+                onChange={(e: any) => onEvent.value.onChange(e)}
+                onInput={(e: any) => onEvent.value.onInput(e)}
               >
                 {{
-                  ...getSlot([
-                    'prepend',
-                    'append',
-                    'prefix',
-                    'suffix'
-                  ])
+                  ...getSlot(['prepend', 'append', 'prefix', 'suffix'])
                 }}
               </FormInput>
             </form>
@@ -509,30 +493,22 @@ const CustomInput = defineComponent({
             <FormSelect
               ref={selectRef}
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               type={props.type}
               options={translateOptions.value}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e: any) => onEvent.value.onFocus(e) }
-              onClear={ () => onEvent.value.onClear() }
-              onBlur={ (e: any) => onEvent.value.onBlur(e) }
-              onChange={ (e: any) => onEvent.value.onChange(e) }
-              onRemove-tag={ (e: any) => onEvent.value.onRemoveTag(e) }
-              onVisible-change={ (e: boolean) => onEvent.value.onVisibleChange(e) }
+              onFocus={(e: any) => onEvent.value.onFocus(e)}
+              onClear={() => onEvent.value.onClear()}
+              onBlur={(e: any) => onEvent.value.onBlur(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
+              onRemove-tag={(e: any) => onEvent.value.onRemoveTag(e)}
+              onVisible-change={(e: boolean) => onEvent.value.onVisibleChange(e)}
             >
               {{
-                ...getSlot([
-                  'option',
-                  'header',
-                  'footer',
-                  'prefix',
-                  'empty'
-                ])
+                ...getSlot(['option', 'header', 'footer', 'prefix', 'empty'])
               }}
             </FormSelect>
           )
@@ -549,17 +525,15 @@ const CustomInput = defineComponent({
             <FormDatePicker
               ref={datePickerRef}
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               type={props.type}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e: any) => onEvent.value.onFocus(e) }
-              onBlur={ (e: any) => onEvent.value.onBlur(e) }
-              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onFocus={(e: any) => onEvent.value.onFocus(e)}
+              onBlur={(e: any) => onEvent.value.onBlur(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
             >
               {{ ...getSlot(['default', 'range-separator']) }}
             </FormDatePicker>
@@ -570,32 +544,28 @@ const CustomInput = defineComponent({
             <FormTimePicker
               ref={timePickerRef}
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               type={props.type}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e: any) => onEvent.value.onFocus(e) }
-              onBlur={ (e: any) => onEvent.value.onBlur(e) }
-              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onFocus={(e: any) => onEvent.value.onFocus(e)}
+              onBlur={(e: any) => onEvent.value.onBlur(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
             ></FormTimePicker>
           )
         case 'checkbox':
           return (
             <FormCheckbox
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               label={translateLabel.value}
               options={translateOptions.value}
               errorMessage={errorMessage.value}
-              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onChange={(e: any) => onEvent.value.onChange(e)}
             >
               {{ ...getSlot(['default', 'option']) }}
             </FormCheckbox>
@@ -604,14 +574,12 @@ const CustomInput = defineComponent({
           return (
             <FormRadio
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               options={translateOptions.value}
               errorMessage={errorMessage.value}
-              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onChange={(e: any) => onEvent.value.onChange(e)}
             >
               {{ ...getSlot(['option']) }}
             </FormRadio>
@@ -621,22 +589,15 @@ const CustomInput = defineComponent({
             <FormAutocomplete
               ref={autocompleteRef}
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               errorMessage={errorMessage.value}
-              onSelect={ (e: any) => onEvent.value.onSelect(e) }
-              onChange={ (e: any) => onEvent.value.onChange(e) }
+              onSelect={(e: any) => onEvent.value.onSelect(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
             >
               {{
-                ...getSlot([
-                  'prepend',
-                  'append',
-                  'prefix',
-                  'suffix'
-                ]),
+                ...getSlot(['prepend', 'append', 'prefix', 'suffix']),
                 default: ({ item }) => {
                   return slots.default?.({ item })
                 }
@@ -648,11 +609,9 @@ const CustomInput = defineComponent({
             <FormOperator
               ref={operatorRef}
               modelValue={inputValue.value}
-              onUpdate:modelValue={
-                ($event: any) => (inputValue.value = $event)
-              }
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
-              { ...bindAttributes.value }
+              {...bindAttributes.value}
               options={props.options}
               onlyNumber={props.onlyNumber}
               round={props.round}
@@ -660,11 +619,11 @@ const CustomInput = defineComponent({
               min={props.min}
               errorMessage={errorMessage.value}
               // v-on 接收事件
-              onFocus={ (e: any) => onEvent.value.onFocus(e) }
-              onClear={ () => onEvent.value.onClear() }
-              onBlur={ (e: any) => onEvent.value.onBlur(e) }
-              onChange={ (e: any) => onEvent.value.onChange(e) }
-              onInput={ (e: any) => onEvent.value.onInput(e) }
+              onFocus={(e: any) => onEvent.value.onFocus(e)}
+              onClear={() => onEvent.value.onClear()}
+              onBlur={(e: any) => onEvent.value.onBlur(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
+              onInput={(e: any) => onEvent.value.onInput(e)}
             >
               {{
                 ...getSlot([
@@ -682,15 +641,25 @@ const CustomInput = defineComponent({
         default:
           tipLog(`輸入框類型 ${props.type} 不存在`, [
             '以下為可用類型',
-            'text', 'textarea', 'password', 'select',
-            'year', 'month', 'date', 'dates', 'datetime', 'week',
-            'datetimerange', 'daterange', 'monthrange',
-            'time', 'timerange',
-            'checkbox', 'radio'
+            'text',
+            'textarea',
+            'password',
+            'select',
+            'year',
+            'month',
+            'date',
+            'dates',
+            'datetime',
+            'week',
+            'datetimerange',
+            'daterange',
+            'monthrange',
+            'time',
+            'timerange',
+            'checkbox',
+            'radio'
           ])
-          return (
-            <div></div>
-          )
+          return <div></div>
       }
     }
 
@@ -704,30 +673,20 @@ const CustomInput = defineComponent({
           styles[`__input-${props.direction}`]
         ]}
       >
-        {
-          !props.hiddenLabel && (
-            <label class={styles['__input-label']}>
-              {
-                props.isValidate && props.required && <span class={[
-                  styles['__input-required'],
-                  styles['__input-prefix']
-                ]}>*</span>
-              }
-              <span>{ translateLabel.value }</span>
-            </label>
-          )
-        }
-
+        {!props.hiddenLabel && (
+          <label class={styles['__input-label']}>
+            {props.isValidate && props.required && (
+              <span class={[styles['__input-required'], styles['__input-prefix']]}>*</span>
+            )}
+            <span>{translateLabel.value}</span>
+          </label>
+        )}
 
         <div class={styles['__input-main']}>
-          {
-            props.text ?
-            <div class="i-pt-xs">{ getTextValue.value }</div> :
-            renderInput()
-          }
-          {
-            props.isValidate && !props.hiddenErrorMessage && <span class={styles['__input-error']}>{ i18nErrorMessage.value }</span>
-          }
+          {props.text ? <div class="i-pt-xs">{getTextValue.value}</div> : renderInput()}
+          {props.isValidate && !props.hiddenErrorMessage && (
+            <span class={styles['__input-error']}>{i18nErrorMessage.value}</span>
+          )}
         </div>
       </div>
     )

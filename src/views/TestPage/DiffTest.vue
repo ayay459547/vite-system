@@ -24,7 +24,6 @@ onMounted(() => {
   const diffList = diff(list1, list2, 'id')
   console.log(diffList)
 })
-
 </script>
 
 <template>

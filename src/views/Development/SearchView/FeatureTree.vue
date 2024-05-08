@@ -16,7 +16,7 @@ export default defineComponent({
   props: {
     tree: {
       type: Array as PropType<Navigation[]>,
-      default () {
+      default() {
         return []
       }
     },
@@ -26,7 +26,7 @@ export default defineComponent({
     }
   },
   inject: ['search'],
-  data () {
+  data() {
     return {
       // 當前節點
       isListOpen: {},
@@ -37,24 +37,24 @@ export default defineComponent({
     }
   },
   computed: {
-    routes ({ tree }) {
+    routes({ tree }) {
       return tree
     },
-    routesLength () {
+    routesLength() {
       return this.getLength(this.routes)
     },
-    searchText () {
+    searchText() {
       return (this.search as any).text ?? ''
     },
     ...mapStores(useRoutesStore)
   },
   methods: {
     // 判斷是否有子路由
-    hasLeaves (route: Navigation) {
+    hasLeaves(route: Navigation) {
       return Object.prototype.hasOwnProperty.call(route, 'leaves')
     },
     // 取的總數計算高度
-    getLength (routes: Navigation[]) {
+    getLength(routes: Navigation[]) {
       return routes.reduce((res: number, curr: Navigation) => {
         if (curr.leaves && curr.leaves.length > 0) {
           res += this.getLength(curr.leaves)
@@ -64,7 +64,7 @@ export default defineComponent({
       }, 0)
     },
     // 選單縮放
-    changeOpen (routeName: string) {
+    changeOpen(routeName: string) {
       const el = this.$refs[`feature-tree-${routeName}`]
 
       if (el) {
@@ -72,14 +72,14 @@ export default defineComponent({
         el[0].changeOpenTree()
       }
     },
-    changeOpenTree () {
+    changeOpenTree() {
       if (this.isOpen) {
         this.closeTree()
       } else {
         this.openTree()
       }
     },
-    openTree () {
+    openTree() {
       const el = this.$refs.currentRef
 
       if (el) {
@@ -90,10 +90,10 @@ export default defineComponent({
         }
       }
     },
-    closeTree () {
+    closeTree() {
       const el = this.$refs.currentRef
 
-       if (el) {
+      if (el) {
         this.isOpen = false
         this.bindStyle = {
           'max-height': '0px'
@@ -101,10 +101,10 @@ export default defineComponent({
       }
     },
     // 新增路由選項
-    addHistory (route: Navigation): void {
+    addHistory(route: Navigation): void {
       this.routesStore.addHistoryNavigation(route.name, route)
     },
-    newWindow (route: Navigation): void {
+    newWindow(route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name,
         query: { isModal: 'true' }
@@ -122,14 +122,14 @@ export default defineComponent({
         `
       )
     },
-    newPage (route: Navigation): void {
+    newPage(route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name
       })
       window.open(routeData.href, '_blank')
     },
     // 搜尋
-    isMatch (title: string): boolean {
+    isMatch(title: string): boolean {
       if (this.searchText.length > 0) {
         const regexp = new RegExp(this.searchText)
 
@@ -138,8 +138,8 @@ export default defineComponent({
       return false
     }
   },
-  created () {},
-  mounted () {
+  created() {},
+  mounted() {
     this.routes.forEach((route: Navigation) => {
       this.changeOpen(route.name)
     })
@@ -148,71 +148,42 @@ export default defineComponent({
 </script>
 
 <template>
-  <ul
-    ref="currentRef"
-    :class="['tree-list', `level-${level}`]"
-    :style="bindStyle"
-  >
+  <ul ref="currentRef" :class="['tree-list', `level-${level}`]" :style="bindStyle">
     <li v-for="route in routes" :key="route.name" class="tree-item">
       <div
-        :class="[
-          'tree-item-block',
-          `level-${level}`,
-          isMatch(route.title) ? '__match' : ''
-        ]"
+        :class="['tree-item-block', `level-${level}`, isMatch(route.title) ? '__match' : '']"
         @click="changeOpen(route.name)"
       >
         <div class="tree-item-title">
           <div :class="['tree-item-icon', isListOpen[route.name] ? 'is-open' : 'is-close']">
-            <CustomIcon v-if="hasLeaves(route)" name="caret-right"/>
+            <CustomIcon v-if="hasLeaves(route)" name="caret-right" />
           </div>
           <span>{{ route.title }}</span>
         </div>
 
         <div v-if="!hasLeaves(route)" class="tree-item-operations-lg">
-          <CustomButton
-            label="新增分頁"
-            icon-name="plus"
-            @click="addHistory(route)"
-          />
-          <CustomButton
-            label="另開視窗"
-            icon-name="window-restore"
-            @click="newWindow(route)"
-          />
-          <CustomButton
-            label="新開分頁"
-            icon-name="up-right-from-square"
-            @click="newPage(route)"
-          />
+          <CustomButton label="新增分頁" icon-name="plus" @click="addHistory(route)" />
+          <CustomButton label="另開視窗" icon-name="window-restore" @click="newWindow(route)" />
+          <CustomButton label="新開分頁" icon-name="up-right-from-square" @click="newPage(route)" />
         </div>
 
         <div v-if="!hasLeaves(route)" class="tree-item-operations-xs">
           <CustomTooltip>
-            <CustomButton
-              icon-name="plus"
-              @click="addHistory(route)"
-            />
+            <CustomButton icon-name="plus" @click="addHistory(route)" />
             <template #content>
               <span>{{ '新增選項' }}</span>
             </template>
           </CustomTooltip>
 
           <CustomTooltip>
-            <CustomButton
-              icon-name="window-restore"
-              @click="newWindow(route)"
-            />
+            <CustomButton icon-name="window-restore" @click="newWindow(route)" />
             <template #content>
               <span>{{ '另開視窗' }}</span>
             </template>
           </CustomTooltip>
 
           <CustomTooltip>
-            <CustomButton
-              icon-name="up-right-from-square"
-              @click="newPage(route)"
-            />
+            <CustomButton icon-name="up-right-from-square" @click="newPage(route)" />
             <template #content>
               <span>{{ '新開分頁' }}</span>
             </template>
@@ -221,11 +192,7 @@ export default defineComponent({
       </div>
 
       <template v-if="hasLeaves(route)">
-        <FeatureTree
-          :ref="`feature-tree-${route.name}`"
-          :tree="route.leaves"
-          :level="level + 1"
-        />
+        <FeatureTree :ref="`feature-tree-${route.name}`" :tree="route.leaves" :level="level + 1" />
       </template>
     </li>
   </ul>

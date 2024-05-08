@@ -2,21 +2,33 @@
 @use './utils' as utils;
 
 $color-map: (
-  'info': #909399,    // var(--i-color-info);
-  'primary': #409eff, // var(--i-color-primary);
-  'success': #67C23A, // var(--i-color-success);
-  'warning': #E6A23C, // var(--i-color-warning);
-  'danger': #F56C6C,  // var(--i-color-danger);
+  'info': #909399,
+  // var(--i-color-info);
+  'primary': #409eff,
+  // var(--i-color-primary);
+  'success': #67c23a,
+  // var(--i-color-success);
+  'warning': #e6a23c,
+  // var(--i-color-warning);
+  'danger': #f56c6c,
 
-  'black': #000000,   // var(--i-color-black);
-  'white': #ffffff,   // var(--i-color-white);
-  'gray': #bcbcbc,    // var(--i-color-gray);
-  'yellow': #ffee55,  // var(--i-color-yellow);
-  'orange': #eeb155,  // var(--i-color-orange);
-  'green': #a0ff8a,   // var(--i-color-green);
-  'purple': #b458ee,  // var(--i-color-purple);
+  // var(--i-color-danger);
+  'black': #000000,
+  // var(--i-color-black);
+  'white': #ffffff,
+  // var(--i-color-white);
+  'gray': #bcbcbc,
+  // var(--i-color-gray);
+  'yellow': #ffee55,
+  // var(--i-color-yellow);
+  'orange': #eeb155,
+  // var(--i-color-orange);
+  'green': #a0ff8a,
+  // var(--i-color-green);
+  'purple': #b458ee,
 
-  'empty': #ffffff00  // var(--i-color-empty);
+  // var(--i-color-purple);
+  'empty': #ffffff00 // var(--i-color-empty);
 );
 
 /**
@@ -34,13 +46,12 @@ $color-map: (
   <div class="hover-card-primary">hover-primary</div>
  */
 @each $type, $color in $color-map {
-
   .text-#{$type} {
     color: $color !important;
   }
   .hover-text-#{$type} {
     transition-duration: 0.2s;
-    &:hover{
+    &:hover {
       color: lighten($color, 20%) !important;
     }
   }
@@ -50,13 +61,13 @@ $color-map: (
   }
   .hover-bg-#{$type} {
     transition-duration: 0.2s;
-    &:hover{
+    &:hover {
       background-color: lighten($color, 20%) !important;
     }
   }
 
-  div[class*="border-"],
-  div[class*="card-"] {
+  div[class*='border-'],
+  div[class*='card-'] {
     border-radius: 6px;
   }
 
@@ -65,7 +76,7 @@ $color-map: (
   }
   .hover-border-#{$type} {
     transition-duration: 0.2s;
-    &:hover{
+    &:hover {
       border: 1px solid lighten($color, 10%) !important;
     }
   }
@@ -75,7 +86,7 @@ $color-map: (
   }
   .hover-card-#{$type} {
     transition-duration: 0.2s;
-    &:hover{
+    &:hover {
       box-shadow: 2px 2px 8px 1px lighten($color, 25%);
     }
   }

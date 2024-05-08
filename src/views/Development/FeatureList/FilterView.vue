@@ -23,10 +23,10 @@ const props = defineProps({
 const emit = defineEmits(['reset', 'submit', 'update:forms'])
 
 const filterValue = computed({
-  get () {
+  get() {
     return props.forms
   },
-  set (v) {
+  set(v) {
     emit('update:forms', v)
   }
 })
@@ -36,7 +36,6 @@ const modeOptions = ref()
 onBeforeMount(() => {
   modeOptions.value = getOptions()
 })
-
 </script>
 
 <template>

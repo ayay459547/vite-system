@@ -2,11 +2,11 @@
   $bg-color: (
     'page': hsl(0, 0%, 33%),
     '': #4f4f4f,
-    'overlay': #1d1e1f,
+    'overlay': #1d1e1f
   )
 );
 // import dark theme
-@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+@use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
 
 @use './styles/color-common' as *;
 
@@ -24,9 +24,9 @@
 // 系統基本顏色
 $info: #909399 !default;
 $primary: #409eff !default;
-$success: #67C23A !default;
-$warning: #E6A23C !default;
-$danger: #F56C6C !default;
+$success: #67c23a !default;
+$warning: #e6a23c !default;
+$danger: #f56c6c !default;
 $white: #ffffff !default;
 
 $system-bg-color: #506d9c !default;

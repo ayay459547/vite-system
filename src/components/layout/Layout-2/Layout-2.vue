@@ -77,7 +77,6 @@ const onRouterChange = async () => {
 defineExpose({
   init
 })
-
 </script>
 
 <template>

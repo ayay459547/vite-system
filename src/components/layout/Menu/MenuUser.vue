@@ -21,20 +21,24 @@ const emit = defineEmits<{
 }>()
 
 const openUserEffect = (e: MouseEvent) => {
-  eventList(e, [
+  eventList(
+    e,
+    [
+      {
+        icon: ['fas', 'gear'],
+        label: i18nTranslate('preference'),
+        event: () => emit('preference')
+      },
+      {
+        icon: ['fas', 'right-from-bracket'],
+        label: i18nTranslate('logout'),
+        event: () => emit('logout')
+      }
+    ],
     {
-      icon: ['fas', 'gear'],
-      label: i18nTranslate('preference'),
-      event: () => emit('preference')
-    },
-    {
-      icon: ['fas', 'right-from-bracket'],
-      label: i18nTranslate('logout'),
-      event: () => emit('logout')
+      width: 180
     }
-  ], {
-    width: 180
-  })
+  )
 }
 
 const userName = computed(() => {
@@ -45,7 +49,6 @@ const loginTime = computed(() => {
   const _loginTime = getCookie('loginTime') ?? ''
   return _loginTime.split('_').join(' ')
 })
-
 </script>
 
 <template>
@@ -54,7 +57,7 @@ const loginTime = computed(() => {
       <div class="user-md">
         <CustomTooltip>
           <div class="user-md">
-            <CustomIcon name="user" class="icon"/>
+            <CustomIcon name="user" class="icon" />
             <span>{{ userName }}</span>
           </div>
 
@@ -68,7 +71,7 @@ const loginTime = computed(() => {
       </div>
       <div class="user-xs">
         <CustomTooltip>
-          <CustomIcon name="user"/>
+          <CustomIcon name="user" />
 
           <template #content>
             <div class="user-xs" @click="openUserEffect">

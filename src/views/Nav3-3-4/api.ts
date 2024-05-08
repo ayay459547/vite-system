@@ -79,17 +79,20 @@ export type TableData = {
 }
 
 export const getVersionOptions = async (): Promise<Options> => {
-  const resData = await ajax<Api<string[]>>({
-    url: '/maintainResourceCompareResult/retrieveNewestVersionBySetting',
-    method: 'get'
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: ['20231129_1'],
-      status: 'success'
+  const resData = await ajax<Api<string[]>>(
+    {
+      url: '/maintainResourceCompareResult/retrieveNewestVersionBySetting',
+      method: 'get'
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: ['20231129_1'],
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   const { data, status, msg } = resData
 
   if (status === 'success') {
@@ -122,27 +125,26 @@ export const getVersionOptions = async (): Promise<Options> => {
 
 // table
 export const getData = async (params: any): Promise<ResponseData[]> => {
-  const {
-    dateOfPlan = [],
-    dateVersion = '',
-    showCorrectCompare = false
-  } = params
-  const resData = await ajax<Api<ResponseData[]>>({
-    url: '/maintainResourceCompareResult/retrieveByFilter',
-    method: 'post',
-    data: {
-      dateOfPlan,
-      dateVersion,
-      showCorrectCompare
-    } as Params
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const { dateOfPlan = [], dateVersion = '', showCorrectCompare = false } = params
+  const resData = await ajax<Api<ResponseData[]>>(
+    {
+      url: '/maintainResourceCompareResult/retrieveByFilter',
+      method: 'post',
+      data: {
+        dateOfPlan,
+        dateVersion,
+        showCorrectCompare
+      } as Params
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   const { data, status, msg } = resData
 
   if (status === 'success') {

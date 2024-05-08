@@ -56,9 +56,7 @@ const options = [
     size: 'large',
     placement: 'top',
     type: '',
-    list: [
-      { title: '南丁格爾玫瑰圖', path: 'chart-1' }
-    ],
+    list: [{ title: '南丁格爾玫瑰圖', path: 'chart-1' }],
     ps: ''
   },
   {
@@ -87,10 +85,7 @@ const options = [
   }
 ]
 
-const {
-  tableColumns
-} = useSimpleTableSetting(columnSetting, 'table')
-
+const { tableColumns } = useSimpleTableSetting(columnSetting, 'table')
 </script>
 
 <template>
@@ -109,19 +104,13 @@ const {
       <template #default="{ label, list, ps }">
         <div class="flex-column i-ga-md">
           <label>{{ label }}</label>
-          <SimpleTable
-            :table-data="list"
-            :table-columns="tableColumns"
-          >
+          <SimpleTable :table-data="list" :table-columns="tableColumns">
             <template #column-path="{ row }">
-              <RouterLink
-                :to="`${row.path}`"
-                v-slot="{ navigate }"
-              >
-              <div class="flex-row i-ga-xs text-primary" @click="navigate">
-                <CustomIcon name="up-right-from-square"/>
-                <span>{{ row.path }}</span>
-              </div>
+              <RouterLink :to="`${row.path}`" v-slot="{ navigate }">
+                <div class="flex-row i-ga-xs text-primary" @click="navigate">
+                  <CustomIcon name="up-right-from-square" />
+                  <span>{{ row.path }}</span>
+                </div>
               </RouterLink>
             </template>
           </SimpleTable>

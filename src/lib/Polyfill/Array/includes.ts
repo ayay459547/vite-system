@@ -30,7 +30,7 @@ const includes = () => {
         //  b. If k < 0, let k be 0.
         let k = Math.max(n >= 0 ? n : len - Math.abs(n), 0)
 
-        function sameValueZero (x: any, y: any) {
+        function sameValueZero(x: any, y: any) {
           return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
         }
 

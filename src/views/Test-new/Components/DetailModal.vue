@@ -24,13 +24,10 @@ onMounted(() => {
     openSwal()
   }, 1000)
 })
-
 </script>
 
 <template>
-  <div class="modal">
-    詳細資料
-  </div>
+  <div class="modal">詳細資料</div>
 </template>
 
 <style lang="scss" scoped>

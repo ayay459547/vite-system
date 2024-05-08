@@ -37,17 +37,16 @@ const tableOptions: TableOptions = {
   size: 30
 }
 
-const {
-  tableSetting,
-  downloadExcel,
-  getParams,
-  changePage
-} = useTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams, changePage } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions
+)
 
 const download = async ({ type }) => {
   let excelData: any[] = []
   const apiParam = {
-    ...getParams(tableRef.value) as any
+    ...(getParams(tableRef.value) as any)
   }
 
   switch (type) {
@@ -85,7 +84,7 @@ const init = async (props?: any) => {
     changePage()
   }
 
-  const [resData, resDataCount ] = await Promise.all([ getData(apiParam), getDataCount(apiParam) ])
+  const [resData, resDataCount] = await Promise.all([getData(apiParam), getDataCount(apiParam)])
 
   tableData.value = resData
   tableDataCount.value = resDataCount
@@ -108,7 +107,6 @@ const onUserIdClick = (rowData: any) => {
 
   model.detail = true
 }
-
 </script>
 
 <template>
@@ -128,7 +126,7 @@ const onUserIdClick = (rowData: any) => {
       click-outside
       @submit="model.detail = false"
     >
-      <DetailModal :data="currnetData"/>
+      <DetailModal :data="currnetData" />
     </CustomModal>
 
     <CustomTable
@@ -141,22 +139,14 @@ const onUserIdClick = (rowData: any) => {
       @show-change="init"
     >
       <template #header-all="{ prop }">
-        <CustomInput
-          v-model="filter[prop]"
-          v-bind="filterColumns[prop]"
-          @change="init('input')"
-        >
+        <CustomInput v-model="filter[prop]" v-bind="filterColumns[prop]" @change="init('input')">
           <template #suffix>
-            <CustomIcon name="search"/>
+            <CustomIcon name="search" />
           </template>
         </CustomInput>
       </template>
       <template #header-completed="{ prop }">
-        <CustomInput
-          v-model="filter[prop]"
-          v-bind="filterColumns[prop]"
-          @change="init('input')"
-        />
+        <CustomInput v-model="filter[prop]" v-bind="filterColumns[prop]" @change="init('input')" />
       </template>
 
       <template #column-userId="{ data, row }">

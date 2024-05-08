@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -31,39 +30,19 @@ const size = ref('300')
 const slotText = ref('slot default')
 
 const isShow = ref(false)
-
 </script>
 
 <template>
   <div class="page">
-    <CustomInput
-      v-model="direction"
-      label="打開方向"
-      type="radio"
-      :options="directionOptions"
-    />
+    <CustomInput v-model="direction" label="打開方向" type="radio" :options="directionOptions" />
 
-    <CustomInput
-      v-model="size"
-      label="大小"
-      type="radio"
-      :options="sizeOptions"
-    />
+    <CustomInput v-model="size" label="大小" type="radio" :options="sizeOptions" />
 
-    <CustomInput label="插槽文字" v-model="slotText" clearable/>
+    <CustomInput label="插槽文字" v-model="slotText" clearable />
 
-    <CustomButton
-      label="打開Drawer"
-      class="i-my-xs"
-      type="info"
-      @click="isShow = true"
-    />
+    <CustomButton label="打開Drawer" class="i-my-xs" type="info" @click="isShow = true" />
 
-    <CustomDrawer
-      v-model="isShow"
-      :direction="direction"
-      :size="size"
-    >
+    <CustomDrawer v-model="isShow" :direction="direction" :size="size">
       <template #header>
         <span>{{ 'header slot' }}</span>
       </template>

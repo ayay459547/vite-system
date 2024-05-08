@@ -8,9 +8,9 @@ import Elen from 'element-plus/dist/locale/en.min.js'
 
 export type LangType = 'zhTw' | 'zhCn' | 'en'
 const localeType = {
-  'zhTw': ElzhTw,
-  'zhCn': ElzhCn,
-  'en': Elen
+  zhTw: ElzhTw,
+  zhCn: ElzhCn,
+  en: Elen
 }
 
 export const useLocaleStore = defineStore('locale', () => {
@@ -53,7 +53,7 @@ export const useLocaleStore = defineStore('locale', () => {
   const locale = computed(() => {
     return {
       lang: currentLang.value, // 當前語言
-      i18n: i18nLocale.value,  // i18n
+      i18n: i18nLocale.value, // i18n
       el: localeType[elLocale.value] // element UI 使用
     }
   })

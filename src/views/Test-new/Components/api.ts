@@ -26,32 +26,29 @@ export type UpdateParams = {} & FormParams
 
 // create
 export const createData = async (form: CreateFormData) => {
-  const {
-    column1,
-    column2,
-    column3,
-    column4,
-    column5
-  } = form
+  const { column1, column2, column3, column4, column5 } = form
 
-  const resData = await ajax<Api<null>>({
-    url: '/api/create',
-    method: 'post',
-    data: {
-      column1,
-      column2,
-      column3,
-      column4,
-      column5
-    } as CreateParams
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: null,
-      status: 'success'
+  const resData = await ajax<Api<null>>(
+    {
+      url: '/api/create',
+      method: 'post',
+      data: {
+        column1,
+        column2,
+        column3,
+        column4,
+        column5
+      } as CreateParams
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: null,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   const { status, msg } = resData
 
   if (status !== 'success') {
@@ -67,32 +64,29 @@ export const createData = async (form: CreateFormData) => {
 
 // update
 export const updateData = async (form: UpdateFormData) => {
-  const {
-    column1,
-    column2,
-    column3,
-    column4,
-    column5
-  } = form
+  const { column1, column2, column3, column4, column5 } = form
 
-  const resData = await ajax<Api<null>>({
-    url: '/api/update',
-    method: 'put',
-    data: {
-      column1,
-      column2,
-      column3,
-      column4,
-      column5
-    } as UpdateParams
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: null,
-      status: 'success'
+  const resData = await ajax<Api<null>>(
+    {
+      url: '/api/update',
+      method: 'put',
+      data: {
+        column1,
+        column2,
+        column3,
+        column4,
+        column5
+      } as UpdateParams
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: null,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
   const { status, msg } = resData
 
   if (status !== 'success') {

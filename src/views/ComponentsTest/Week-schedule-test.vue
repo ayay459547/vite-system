@@ -29,23 +29,18 @@ const typeList = [
     color: '#f2b5c9'
   }
 ]
-
 </script>
 
 <template>
   <div class="page-container">
     <h3 class="i-mb-md">WeekSchedule-test</h3>
-    <WeekSchedule
-      :type-list="typeList"
-    >
+    <WeekSchedule :type-list="typeList">
       <template #label="{ label }">
         {{ i18nTranslate(label) }}
       </template>
     </WeekSchedule>
 
-    <WeekSchedule
-      :type-list="typeList"
-    >
+    <WeekSchedule :type-list="typeList">
       <template #label="{ label }">
         {{ i18nTranslate(label) }}
       </template>

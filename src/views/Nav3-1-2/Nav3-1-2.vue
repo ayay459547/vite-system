@@ -43,24 +43,25 @@ const tableOptions1 = {
   version: '1.0.1',
   settingKey: 'test-1'
 }
-const {
-  tableSetting: tableSetting1,
-  downloadExcel: downloadExcel1
-} = useTableSetting(columnSetting, 'table', tableOptions1)
+const { tableSetting: tableSetting1, downloadExcel: downloadExcel1 } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions1
+)
 const download1 = () => {
   downloadExcel1(tableData)
 }
-
 
 const tableOptions2 = {
   title: '測試表單',
   version: '1.0.1',
   settingKey: 'test-2'
 }
-const {
-  tableSetting: tableSetting2,
-  downloadExcel: downloadExcel2
-} = useTableSetting(columnSetting, 'table', tableOptions2)
+const { tableSetting: tableSetting2, downloadExcel: downloadExcel2 } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions2
+)
 const download2 = () => {
   downloadExcel2(tableData)
 }
@@ -148,7 +149,6 @@ onBeforeMount(() => {
   lazyLoadingStatus.value = 'loadMore'
   initData()
 })
-
 </script>
 
 <template>
@@ -156,10 +156,7 @@ onBeforeMount(() => {
     <div class="flex-row-center i-ga-md">
       <label>Element ui plus table Clusterize.js 虛擬列表</label>
 
-      <CustomButton
-        label="測試新增資料"
-        @click="addData"
-      />
+      <CustomButton label="測試新增資料" @click="addData" />
     </div>
 
     <div class="table-main">
@@ -175,14 +172,10 @@ onBeforeMount(() => {
         @load="loadData"
       >
         <template #header-name="{ column }">
-          <CustomInput
-            v-model="filterName"
-            direction="row"
-            :label="column.label"
-          />
+          <CustomInput v-model="filterName" direction="row" :label="column.label" />
         </template>
         <template #header-date="{ column }">
-          {{  column.label }}
+          {{ column.label }}
         </template>
       </CustomTable>
 
@@ -198,14 +191,10 @@ onBeforeMount(() => {
         @load="loadData"
       >
         <template #header-name="{ column }">
-          <CustomInput
-            v-model="filterName"
-            direction="row"
-            :label="column.label"
-          />
+          <CustomInput v-model="filterName" direction="row" :label="column.label" />
         </template>
         <template #header-date="{ column }">
-          {{  column.label }}
+          {{ column.label }}
         </template>
       </CustomTable>
     </div>

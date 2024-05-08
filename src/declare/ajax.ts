@@ -24,7 +24,7 @@ export type AjaxOptions<T> = {
 }
 
 export type ApiRes<T = any> = {
-  status: ApiStatus,
+  status: ApiStatus
   data?: T
   msg?: string
 }

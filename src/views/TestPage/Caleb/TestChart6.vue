@@ -6,7 +6,7 @@ import { CustomCharts } from '@/components'
 
 import { chart6Data } from './fakeData'
 
-function splitData (rawData: any) {
+function splitData(rawData: any) {
   var categoryData = []
   var values = []
   var volumns = []
@@ -22,7 +22,7 @@ function splitData (rawData: any) {
   }
 }
 
-function calculateMA (dayCount: any, data: any) {
+function calculateMA(dayCount: any, data: any) {
   var result = []
   for (var i = 0, len = data.values.length; i < len; i++) {
     if (i < dayCount) {

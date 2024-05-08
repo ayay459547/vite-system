@@ -9,7 +9,6 @@ const value = ref(new Date())
 const options = () => {
   return textOptions
 }
-
 </script>
 
 <template>
@@ -18,7 +17,7 @@ const options = () => {
       <ElCalendar v-model="value" />
 
       <div class="locatehome-title">
-          <CustomCharts :options="options"/>
+        <CustomCharts :options="options" />
       </div>
     </CustomCard>
   </div>

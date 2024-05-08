@@ -41,8 +41,10 @@ const props = defineProps({
 const emit = defineEmits(['update:isOpen', 'change-page'])
 
 const tempIsOpen = computed<boolean>({
-  get () { return props.isOpen },
-  set (value) {
+  get() {
+    return props.isOpen
+  },
+  set(value) {
     localStorage.setItem('navIsOpen', `${value}`)
     emit('update:isOpen', value)
   }
@@ -86,11 +88,10 @@ defineExpose({
     }
   }
 })
-
 </script>
 
 <template>
-  <div class="side-wrapper" :class="tempIsOpen ? 'is-open': 'is-close'">
+  <div class="side-wrapper" :class="tempIsOpen ? 'is-open' : 'is-close'">
     <div class="side-container">
       <div class="side-logo">
         <div class="side-logo-navigate open">
@@ -101,7 +102,7 @@ defineExpose({
         </div>
 
         <div class="side-logo-close" @click="tempIsOpen = false">
-          <CustomIcon name="close"/>
+          <CustomIcon name="close" />
         </div>
       </div>
 
@@ -130,7 +131,7 @@ defineExpose({
 <style lang="scss" scoped>
 @import '../Layout-1.scss';
 
-@mixin navStyle ($isOpen) {
+@mixin navStyle($isOpen) {
   @if ($isOpen) {
     min-width: $nav-width;
     transition-delay: 0.2s;
@@ -154,7 +155,6 @@ defineExpose({
       display: block;
     }
   }
-
 }
 
 .side {

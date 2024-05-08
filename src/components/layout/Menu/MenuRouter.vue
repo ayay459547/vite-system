@@ -30,39 +30,42 @@ const router = useRouter()
 
 const openRouterList = (e: MouseEvent) => {
   const level1List = props.showRoutes
-  eventList(e, level1List.map(level1Item => {
-    const { name } = level1Item
+  eventList(
+    e,
+    level1List.map(level1Item => {
+      const { name } = level1Item
 
-    return {
-      icon: getRouteIcon(level1Item),
-      label: getRouteTitle(level1Item),
-      active: level1Item.name === props.currentRouteName.level1,
-      event: () => {
-        if (hasOwnProperty(level1Item, 'leaves')) {
-          emit('setLevel2Router', level1Item)
-        } else {
-          emit('setLevel2Router', level1Item)
-          router.push({ name })
+      return {
+        icon: getRouteIcon(level1Item),
+        label: getRouteTitle(level1Item),
+        active: level1Item.name === props.currentRouteName.level1,
+        event: () => {
+          if (hasOwnProperty(level1Item, 'leaves')) {
+            emit('setLevel2Router', level1Item)
+          } else {
+            emit('setLevel2Router', level1Item)
+            router.push({ name })
+          }
         }
       }
+    }),
+    {
+      width: 180
     }
-  }), {
-    width: 180
-  })
+  )
 }
-
 </script>
 
 <template>
   <div class="router-container" @click="openRouterList">
     <div class="router-md">
-      <CustomIcon :icon="['fas', 'list']"/>
+      <CustomIcon :icon="['fas', 'list']" />
       <span>{{ i18nTranslate('systemModule') }}</span>
     </div>
 
     <div class="router-xs">
       <CustomTooltip>
-        <CustomIcon :icon="['fas', 'list']"/>
+        <CustomIcon :icon="['fas', 'list']" />
 
         <template #content>
           <span>{{ i18nTranslate('systemModule') }}</span>

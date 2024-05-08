@@ -1,5 +1,10 @@
 import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
-import type { NotificationProps, NotificationHandle, MessageOptions, MessageHandler } from 'element-plus'
+import type {
+  NotificationProps,
+  NotificationHandle,
+  MessageOptions,
+  MessageHandler
+} from 'element-plus'
 
 import type { IconType } from '@/components/feature/CustomIcon/CustomIconInfo'
 import type { Permission } from '@/lib/lib_permission'
@@ -76,11 +81,7 @@ export declare namespace UseHookReturn {
 
   type i18nTest = (key: string, i18nModule?: ScopeKey) => boolean
 
-  type eventList = (
-    click: MouseEvent,
-    eventList?: Array<EventItem>,
-    options?: EventOptions
-  ) => void
+  type eventList = (click: MouseEvent, eventList?: Array<EventItem>, options?: EventOptions) => void
 
   type swal = (sweetAlertOptions: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
 
@@ -120,10 +121,10 @@ export declare type SwalResult = {
 }
 
 export declare interface ObjectFunction {
-  $forEach (callback: Function, thisArg?: any): void
-  $map (callback: Function, thisArg?: any): any
-  $filter (callback: Function, thisArg?: any): any
-  $some (callback: Function, thisArg?: any): boolean
-  $every (callback: Function, thisArg?: any): boolean
-  $reduce (callback: Function, temp: any, thisArg?: any): any
+  $forEach(callback: Function, thisArg?: any): void
+  $map(callback: Function, thisArg?: any): any
+  $filter(callback: Function, thisArg?: any): any
+  $some(callback: Function, thisArg?: any): boolean
+  $every(callback: Function, thisArg?: any): boolean
+  $reduce(callback: Function, temp: any, thisArg?: any): any
 }

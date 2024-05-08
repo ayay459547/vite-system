@@ -89,7 +89,6 @@ const submit = () => {
   emit('submit')
   visible.value = false
 }
-
 </script>
 
 <template>
@@ -109,10 +108,12 @@ const submit = () => {
       </template>
 
       <div>
-        <div :style="{
-          maxHeight: props.settingHeight,
-          overflow: 'auto'
-        }">
+        <div
+          :style="{
+            maxHeight: props.settingHeight,
+            overflow: 'auto'
+          }"
+        >
           <CustomDraggable
             v-model="tempValue"
             item-key="key"
@@ -141,14 +142,17 @@ const submit = () => {
                 </div>
 
                 <div class="__column-item-right">
-                  <CustomBadge :value="activeIndexMap[element.key]" :hidden="activeIndexMap[element.key] <= 0">
+                  <CustomBadge
+                    :value="activeIndexMap[element.key]"
+                    :hidden="activeIndexMap[element.key] <= 0"
+                  >
                     <CustomButton
                       type="info"
                       icon-name="right-left"
                       text
                       :class="element.order !== 'none' ? 'sorting-move' : ''"
                       :disabled="element.order === 'none'"
-                      style="transform: rotateZ(90deg);"
+                      style="transform: rotateZ(90deg)"
                     />
                   </CustomBadge>
                 </div>

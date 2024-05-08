@@ -54,7 +54,7 @@ export const download2 = () => {
 
 const downloadWorkbook = (workbook: Workbook) => {
   // download
-  workbook.xlsx.writeBuffer().then((content) => {
+  workbook.xlsx.writeBuffer().then(content => {
     const a = document.createElement('a')
     const blobData = new Blob([content], {
       type: 'application/vnd.ms-excel;charset=utf-8;'
@@ -267,10 +267,7 @@ export const excleDownload2 = () => {
     }
   ]
 
-  worksheet.views = [
-    { showGridLines: false },
-    { state: 'frozen', xSplit: 0, ySplit: 1 }
-  ]
+  worksheet.views = [{ showGridLines: false }, { state: 'frozen', xSplit: 0, ySplit: 1 }]
 
   worksheet.addRows([
     {

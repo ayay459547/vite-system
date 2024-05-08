@@ -75,15 +75,11 @@ const addData = () => {
     address: 'TESTAddress'
   })
 }
-
 </script>
 
 <template>
   <div class="table-test">
-    <CustomButton
-      label="測試新增資料"
-      @click="addData"
-    />
+    <CustomButton label="測試新增資料" @click="addData" />
     <div class="table-main">
       <CustomTable
         :table-data="tableData"
@@ -92,14 +88,10 @@ const addData = () => {
         @change-setting="initData"
       >
         <template #header-name="{ column }">
-          <CustomInput
-            v-model="filterName"
-            direction="row"
-            :label="column.label"
-          />
+          <CustomInput v-model="filterName" direction="row" :label="column.label" />
         </template>
         <template #header-date="{ column }">
-          {{  column.label }}
+          {{ column.label }}
         </template>
       </CustomTable>
     </div>

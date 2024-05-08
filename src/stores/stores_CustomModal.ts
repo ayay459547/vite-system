@@ -10,13 +10,13 @@ export const useCustomModalStore = defineStore('customModal', () => {
   const modalMax = ref(0)
 
   const modalCount = computed({
-    get () {
+    get() {
       if (count.value <= 0) {
         clearModal()
       }
       return count.value
     },
-    set (v: number) {
+    set(v: number) {
       count.value = Math.max(0, v)
     }
   })

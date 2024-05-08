@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import type { UseHook } from '@/declare/hook'
 import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
-import {
-  CustomButton,
-  CustomTable,
-  CustomModal,
-  CustomIcon
-} from '@/components'
+import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
 
 import { useLocalI18n } from '@/lib/lib_hook'
 import { deepClone } from '@/lib/lib_utils'
@@ -125,8 +120,7 @@ const remove = (rowData: TableData) => {
   swal({
     icon: 'warning',
     title: `確定刪除 ${rowData.name}`
-  }).then(async (result) => {
-
+  }).then(async result => {
     if (result.isConfirmed) {
       loading(true, '刪除資料中')
       await deleteData(rowData)
@@ -148,10 +142,10 @@ const init = async (props = tableSetting) => {
   loading(true)
   const { page = 1, size = 100, sort = {} } = props?.params ?? {}
 
-  const apiParam  = { page, size, sort }
+  const apiParam = { page, size, sort }
   console.log(apiParam)
 
-  const [resData, resDataCount ] = await Promise.all([ getData(), getDataCount() ])
+  const [resData, resDataCount] = await Promise.all([getData(), getDataCount()])
 
   if (resData.status === 'success') {
     tableData.value = deepClone([], resData.data)
@@ -179,7 +173,6 @@ const init = async (props = tableSetting) => {
 onActivated(() => {
   init()
 })
-
 </script>
 
 <template>
@@ -219,24 +212,22 @@ onActivated(() => {
       :title="pageTranslate('testTable')"
       @excel="download"
       @show-change="init"
-      @row-contextmenu="(row, column, event) => { openPopover(event, row) }"
+      @row-contextmenu="
+        (row, column, event) => {
+          openPopover(event, row)
+        }
+      "
     >
-    <template #header-name>
-      name
-    </template>
+      <template #header-name> name </template>
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
-          <CustomIcon name="ellipsis-vertical"/>
+          <CustomIcon name="ellipsis-vertical" />
         </div>
       </template>
     </CustomTable>
 
-    <CustomModal
-      v-model="model.update"
-      :title="i18nTranslate('update')"
-      @submit="onUpdateSubmit"
-    >
-      <UpdateModal ref="updateRef" :data="editData"/>
+    <CustomModal v-model="model.update" :title="i18nTranslate('update')" @submit="onUpdateSubmit">
+      <UpdateModal ref="updateRef" :data="editData" />
     </CustomModal>
   </div>
 </template>

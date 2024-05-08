@@ -8,7 +8,7 @@ import { useEnvStore } from '@/stores/stores_env'
 export default defineComponent({
   name: 'AppView',
   components: { GlobalView },
-  setup () {
+  setup() {
     const envStore = useEnvStore()
     const { system, version } = envStore
     const router = useRouter()
@@ -20,7 +20,6 @@ export default defineComponent({
     }
   }
 })
-
 </script>
 
 <template>

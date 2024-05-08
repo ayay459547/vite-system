@@ -131,18 +131,20 @@ const {
 } = useFormSetting<Form>(columnSetting, 'filter')
 
 const submit = () => {
-  validateForm().then(successList => {
-    console.log('vee success => ', successList)
-  }).catch(errorList => {
-    console.log('vee error => ', errorList)
-    const error = errorList.find(errorItem => {
-      return errorItem.el !== null
+  validateForm()
+    .then(successList => {
+      console.log('vee success => ', successList)
     })
-    if (error) {
-      const el = error.getDom()
-      scrollToEl(el)
-    }
-  })
+    .catch(errorList => {
+      console.log('vee error => ', errorList)
+      const error = errorList.find(errorItem => {
+        return errorItem.el !== null
+      })
+      if (error) {
+        const el = error.getDom()
+        scrollToEl(el)
+      }
+    })
 }
 
 const list = [
@@ -166,7 +168,6 @@ const fetchSuggestions = (queryString: string, cb: (data: any[]) => void) => {
 
   cb(results)
 }
-
 </script>
 
 <template>
@@ -184,62 +185,28 @@ const fetchSuggestions = (queryString: string, cb: (data: any[]) => void) => {
       </template>
     </CustomInput>
 
-    <CustomInput
-      v-model="form.operator"
-      v-bind="formColumn.operator"
-    />
+    <CustomInput v-model="form.operator" v-bind="formColumn.operator" />
 
-    <CustomInput
-      v-model="form.passowrd"
-      v-bind="formColumn.passowrd"
-    />
+    <CustomInput v-model="form.passowrd" v-bind="formColumn.passowrd" />
 
-    <CustomInput
-      v-model="form.phone"
-      v-bind="formColumn.phone"
-    />
+    <CustomInput v-model="form.phone" v-bind="formColumn.phone" />
 
-    <CustomInput
-      v-model="form.select"
-      v-bind="formColumn.select"
-    />
+    <CustomInput v-model="form.select" v-bind="formColumn.select" />
 
-    <CustomInput
-      v-model="form.date"
-      v-bind="formColumn.date"
-    />
+    <CustomInput v-model="form.date" v-bind="formColumn.date" />
 
-    <CustomInput
-      v-model="form.daterange"
-      v-bind="formColumn.daterange"
-    />
+    <CustomInput v-model="form.daterange" v-bind="formColumn.daterange" />
 
-    <CustomInput
-      v-model="form.timerange"
-      v-bind="formColumn.timerange"
-    />
+    <CustomInput v-model="form.timerange" v-bind="formColumn.timerange" />
 
-    <CustomInput
-      v-model="form.checkbox"
-      v-bind="formColumn.checkbox"
-    />
+    <CustomInput v-model="form.checkbox" v-bind="formColumn.checkbox" />
 
-    <CustomInput
-      v-model="form.radio"
-      v-bind="formColumn.radio"
-    />
+    <CustomInput v-model="form.radio" v-bind="formColumn.radio" />
 
     <div class="input-btn">
-      <CustomButton
-        label="重置"
-        class="i-mb-md"
-        @click="resetForm"
-      />
+      <CustomButton label="重置" class="i-mb-md" @click="resetForm" />
 
-      <CustomButton
-        label="提交"
-        @click="submit"
-      />
+      <CustomButton label="提交" @click="submit" />
     </div>
   </div>
 </template>

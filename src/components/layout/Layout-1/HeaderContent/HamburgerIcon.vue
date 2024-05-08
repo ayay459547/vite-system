@@ -23,7 +23,7 @@ const changeOpen = (): void => {
 <template>
   <div
     class="hamburger-container"
-    :class="[{ 'open': tempIsOpen }, { 'close': !tempIsOpen }]"
+    :class="[{ open: tempIsOpen }, { close: !tempIsOpen }]"
     @click="changeOpen"
   >
     <div class="item-bar"></div>
@@ -36,7 +36,7 @@ $bar-height: 4px;
 
 @mixin bar-style($height, $width, $top) {
   display: block;
-  content: "";
+  content: '';
   transition-duration: 0.5s;
   position: absolute;
   background-color: $system-bg-color;

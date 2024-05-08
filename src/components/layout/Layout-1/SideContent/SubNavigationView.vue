@@ -63,15 +63,11 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
 const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
   activeRouteName.value = routerName
   emit('change-page')
-  await Promise.all([
-    navigate(),
-    nextTick()
-  ])
+  await Promise.all([navigate(), nextTick()])
   setTimeout(() => {
     activeRouteName.value = ''
   }, 0)
 }
-
 </script>
 
 <template>
@@ -106,8 +102,8 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
               class="nav-sub-list"
               :class="props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               :style="{
-                'min-height': `${navHeight * (routerItem.leaves.length)}px`,
-                'max-height': `${navHeight * (routerItem.leaves.length)}px`
+                'min-height': `${navHeight * routerItem.leaves.length}px`,
+                'max-height': `${navHeight * routerItem.leaves.length}px`
               }"
             >
               <RouterLink
@@ -135,12 +131,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
           </template>
 
           <!-- 無子路由 -->
-          <RouterLink
-            v-else
-            :to="routerItem.path"
-            class="nav-item"
-            v-slot="{ navigate }"
-          >
+          <RouterLink v-else :to="routerItem.path" class="nav-item" v-slot="{ navigate }">
             <div
               class="nav-item-left"
               :class="{

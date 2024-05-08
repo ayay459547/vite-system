@@ -23,7 +23,7 @@ export default defineComponent({
   props: {
     elAttr: {
       typs: Object as PropType<ElAttr>,
-      default () {
+      default() {
         return {
           left: 0,
           top: 0,
@@ -34,7 +34,7 @@ export default defineComponent({
     },
     options: {
       typs: Object as PropType<Options>,
-      default () {
+      default() {
         return {
           text: '',
           class: '',
@@ -43,19 +43,21 @@ export default defineComponent({
       }
     }
   },
-  data () {
+  data() {
     return {
       timer: null,
       isShow: false,
       elRect: { left: 0, top: 0, width: 0, height: 0 },
       mousePos: { left: 0, top: 0 },
-      throttleOnWheelChange: throttle(this.close, 150, { isNoLeading: true }) as (payload: WheelEvent) => void,
+      throttleOnWheelChange: throttle(this.close, 150, { isNoLeading: true }) as (
+        payload: WheelEvent
+      ) => void,
       // eslint-disable-next-line no-undef
       debounceSetMousePos: debounce(this.setMousePos, 100) as EventListenerOrEventListenerObject
     }
   },
   computed: {
-    bindStyle ({ elAttr, options }) {
+    bindStyle({ elAttr, options }) {
       const { left, top, width, height } = elAttr
       const { style } = options
       const padding = 6
@@ -69,35 +71,37 @@ export default defineComponent({
           height: `${padding + height}px`
         }
       } else {
-        return `
+        return (
+          `
           left: ${left - padding}px;
           top: ${top - padding + 2}px;
           width: ${padding * 2 + width}px;
           height: ${padding + height}px;
         ` + style
+        )
       }
     }
   },
   methods: {
-    open () {
+    open() {
       this.isShow = true
       this.openTimer()
     },
-    close () {
+    close() {
       this.isShow = false
       this.mousePos.left = 0
       this.mousePos.top = 0
       this.closeTimer()
     },
     // 滑鼠超出範圍 關閉fixed
-    setMousePos (e: MouseEvent) {
+    setMousePos(e: MouseEvent) {
       this.mousePos.left = e.clientX
       this.mousePos.top = e.clientY
     },
-    openTimer (tolerance = 10) {
+    openTimer(tolerance = 10) {
       this.timer = setInterval(() => {
         const { left, top, width, height } = this.elRect
-        const { left: mouseLeft, top: mouseTop} = this.mousePos
+        const { left: mouseLeft, top: mouseTop } = this.mousePos
 
         if (
           mouseLeft + tolerance < left ||
@@ -109,11 +113,11 @@ export default defineComponent({
         }
       }, 480)
     },
-    closeTimer () {
+    closeTimer() {
       clearInterval(this.timer)
     }
   },
-  mounted () {
+  mounted() {
     this.open()
     window.addEventListener('mousemove', this.debounceSetMousePos)
 
@@ -128,7 +132,7 @@ export default defineComponent({
       }
     }, 100)
   },
-  unmounted () {
+  unmounted() {
     window.removeEventListener('mousemove', this.debounceSetMousePos)
   }
 })

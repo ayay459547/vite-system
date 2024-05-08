@@ -43,7 +43,6 @@ defineExpose({
   clearLevel3List,
   setOpen
 })
-
 </script>
 
 <template>
@@ -51,7 +50,7 @@ defineExpose({
     <div class="menu-container" :class="isOpen ? 'is-open' : 'is-close'">
       <nav v-show="props.level2List.length > 0" class="menu-list level2">
         <template v-for="routerItem in props.level2List" :key="routerItem.name">
-           <!-- 有子路由 -->
+          <!-- 有子路由 -->
           <div
             v-if="Object.prototype.hasOwnProperty.call(routerItem, 'leaves')"
             class="menu-item"
@@ -70,7 +69,7 @@ defineExpose({
             v-slot="{ navigate }"
             @click="clearLevel3List"
           >
-            <div style="display: contents;" @click="navigate">
+            <div style="display: contents" @click="navigate">
               <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
@@ -86,7 +85,7 @@ defineExpose({
             :to="leaf.path"
             v-slot="{ navigate }"
           >
-            <div style="display: contents;" @click="navigate">
+            <div style="display: contents" @click="navigate">
               <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
               <span class="item-title">{{ getRouteTitle(leaf) }}</span>
             </div>

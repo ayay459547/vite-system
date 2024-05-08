@@ -119,8 +119,8 @@ const onRowClick = (row: any, column: any, event: Event) => {
   emit('row-click', row, column, event)
 }
 const onSortChange = (props: {
-  column: any,
-  prop: string,
+  column: any
+  prop: string
   order: null | 'ascending' | 'descending'
 }) => {
   const { column, prop: key = '', order } = props
@@ -151,7 +151,9 @@ const totalHeight = computed<number>(() => {
   return props.tableDataCount * rowHeight + appendHeight
 })
 
-interface ElementStyle extends Element { style: any }
+interface ElementStyle extends Element {
+  style: any
+}
 let scrollbarRef = null
 let scrollbarWrapper = null
 let showDataTable = null
@@ -171,18 +173,17 @@ const setSpliceData = (start: number, _spliceCount: number) => {
  * 虛擬渲染dom
  */
 const setTableView = (isMandatoryReset: boolean) => {
-  if (scrollbarWrapper as (Element | null)) {
+  if (scrollbarWrapper as Element | null) {
     scrollbarRef.update()
 
     let _scrollTop = scrollbarWrapper.scrollTop
     const start = Math.max(Math.floor(_scrollTop / rowHeight) - bufferCount, 0)
 
-    const isResetView = (
+    const isResetView =
       // 高度變化不大 不用在渲染
-      ((_scrollTop > prevScrollTop + 10) || (_scrollTop < prevScrollTop - 10)) &&
+      (_scrollTop > prevScrollTop + 10 || _scrollTop < prevScrollTop - 10) &&
       // 最後面資料 不用再切了
-      (start + spliceCount) < (props.tableDataCount + bufferCount)
-    )
+      start + spliceCount < props.tableDataCount + bufferCount
 
     if (isMandatoryReset || isResetView) {
       setSpliceData(start, spliceCount)
@@ -231,7 +232,7 @@ const tableMainRef = ref(null)
 const tableWidth = ref(500)
 const tableHeight = ref(500)
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     tableWidth.value = entry.contentRect.width
 
     const _tableHeight = entry.contentRect.height
@@ -289,7 +290,7 @@ onMounted(async () => {
 
     insertVirtualDom()
 
-    if(elTableRef.value) {
+    if (elTableRef.value) {
       scrollbarRef = elTableRef.value.scrollBarRef
 
       showDataTable = document.querySelector('table.el-table__body') as ElementStyle
@@ -323,7 +324,7 @@ defineExpose({
  * 懶加載 使用切片資料 虛擬列表
  * 一般表單 有分頁 資料直接使用
  */
- const elTableData = computed(() => {
+const elTableData = computed(() => {
   if (props.isLazyLoading) return spliceData.value
   return props.showData
 })
@@ -338,7 +339,6 @@ const svg = `
     L 15 15
   " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
 `
-
 </script>
 
 <template>
@@ -356,7 +356,7 @@ const svg = `
         :default-expand-all="props.defaultExpandAll"
         :default-sort="{
           prop: props.sort.key,
-          order: props.sort.order,
+          order: props.sort.order
         }"
         :span-method="props.spanMethod"
         :row-class-name="props.rowClassName"
@@ -389,13 +389,13 @@ const svg = `
             :style="`width: ${tableWidth}px;`"
           >
             <div
-              style="width: 100%; height: 50px;"
+              style="width: 100%; height: 50px"
               v-loading="true"
               element-loading-text="Loading..."
               :element-loading-spinner="svg"
               element-loading-svg-view-box="-10, -10, 50, 50"
             ></div>
-            <div style="width: 100%; height: 30px;"></div>
+            <div style="width: 100%; height: 30px"></div>
           </div>
 
           <div
@@ -403,12 +403,7 @@ const svg = `
             class="table-main-append"
             :style="`width: ${tableWidth}px;`"
           >
-            <CustomButton
-              label="載入更多資料"
-              type="info"
-              text
-              @click="load"
-            />
+            <CustomButton label="載入更多資料" type="info" text @click="load" />
             <div ref="loadMoreRef" class="load-more"></div>
           </div>
         </template>
@@ -473,12 +468,11 @@ const svg = `
                   ></slot>
                 </div>
               </template>
-              <ElTableColumn
-                v-for="child in column.columns"
-                :key="child.prop"
-                v-bind="child"
-              >
-                <template v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)" #header="scope">
+              <ElTableColumn v-for="child in column.columns" :key="child.prop" v-bind="child">
+                <template
+                  v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)"
+                  #header="scope"
+                >
                   <div :class="child.sortable ? 'header-slot' : ''">
                     <slot
                       :name="`header-${column.slotKey}-${child.slotKey}`"
@@ -512,7 +506,10 @@ const svg = `
                   </div>
                 </template>
 
-                <template v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)" #default="scope">
+                <template
+                  v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)"
+                  #default="scope"
+                >
                   <slot
                     :name="`column-${column.slotKey}-${child.slotKey}`"
                     :data="scope.row[child.key]"
@@ -618,10 +615,10 @@ const svg = `
       thead {
         background-color: lighten($system-bg-color, 48%);
         & > tr {
-           background-color: inherit;
+          background-color: inherit;
 
           & > th {
-             background-color: inherit;
+            background-color: inherit;
           }
         }
       }

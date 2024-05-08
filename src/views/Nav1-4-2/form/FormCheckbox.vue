@@ -33,8 +33,8 @@ const props = defineProps({
     default: false
   },
   options: {
-    type: Array as PropType<{ label: string, value: string | number }[]>,
-    default () {
+    type: Array as PropType<{ label: string; value: string | number }[]>,
+    default() {
       return []
     }
   },
@@ -54,10 +54,7 @@ const bindAttributes = computed(() => {
   }
 })
 
-const emit = defineEmits([
-  'update:modelValue',
-  'change'
-])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const validateRes = computed<string>(() => {
   if (isEmpty(errorMessage.value)) return 'success'
@@ -78,11 +75,11 @@ const validateField = (veeValue: ModelValue) => {
 }
 
 const {
-  errorMessage,     // 錯誤訊息
+  errorMessage, // 錯誤訊息
   value: tempValue, // 值
-  handleChange,     // 換值
-  handleReset,      // 重置
-  validate          // 驗證
+  handleChange, // 換值
+  handleReset, // 重置
+  validate // 驗證
 } = useField('field', validateField, { validateOnValueUpdate: false })
 
 // event
@@ -107,10 +104,10 @@ defineExpose({
   value: tempValue,
   handleReset,
   validate,
-  setvalidateKey (validateKey: string) {
+  setvalidateKey(validateKey: string) {
     _domValidateKey.value = validateKey
   },
-  getDom () {
+  getDom() {
     return document.querySelector(`[class*="input-${domValidateKey.value}"]`)
   }
 })
@@ -127,7 +124,6 @@ const getTextValue = (tempValue: ModelValue) => {
     return ''
   }
 }
-
 </script>
 
 <template>
@@ -156,11 +152,7 @@ const getTextValue = (tempValue: ModelValue) => {
       v-bind="bindAttributes"
       v-on="validationListeners"
     >
-      <ElCheckbox
-        v-for="item in options"
-        :key="item.value"
-        :label="item.value"
-      >
+      <ElCheckbox v-for="item in options" :key="item.value" :label="item.value">
         {{ item.label }}
       </ElCheckbox>
     </ElCheckboxGroup>

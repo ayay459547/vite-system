@@ -4,12 +4,14 @@ export const version = '1.0.0'
 
 export declare namespace GanttData {
   type Type = string
-  type List = Array<[
-    number, // 開始時間
-    number, // 結束時間
-    string, // 標題
-    any     // 資料
-  ]>
+  type List = Array<
+    [
+      number, // 開始時間
+      number, // 結束時間
+      string, // 標題
+      any // 資料
+    ]
+  >
 }
 
 export const props = {
@@ -30,7 +32,7 @@ export const props = {
   },
   intervalX: {
     type: Number as PropType<number>,
-    default () {
+    default() {
       return 1000 * 60 * 60 * 24
     },
     description: 'x軸 時間增加毫秒'
@@ -46,11 +48,13 @@ export const props = {
     description: 'x軸 最大時間 YYYY-MM-DD hh:mm'
   },
   ganttData: {
-    type: Array as PropType<{
-      type: GanttData.Type
-      list: GanttData.List
-    }[]>,
-    default () {
+    type: Array as PropType<
+      {
+        type: GanttData.Type
+        list: GanttData.List
+      }[]
+    >,
+    default() {
       return [
         {
           type: 'type1',

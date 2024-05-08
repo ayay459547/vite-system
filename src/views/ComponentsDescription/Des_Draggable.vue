@@ -28,7 +28,7 @@ const getData = (rowRandom: string): string => {
 }
 
 const addData = () => {
-  const [ row1, row2 ] = [ getUuid(), getUuid() ]
+  const [row1, row2] = [getUuid(), getUuid()]
   list1.value.push({
     id: getData(row1),
     value: getData(row1)
@@ -46,7 +46,7 @@ const resetData = () => {
 }
 
 const randomData = () => {
-  const [ row1, row2, row3, row4, row5 ] = [ getUuid(), getUuid(), getUuid(), getUuid(), getUuid() ]
+  const [row1, row2, row3, row4, row5] = [getUuid(), getUuid(), getUuid(), getUuid(), getUuid()]
 
   list1.value = [
     { id: getData(row1), value: getData(row1) },
@@ -73,25 +73,19 @@ const sortData = () => {
 onMounted(() => {
   resetData()
 })
-
 </script>
 
 <template>
   <div class="page">
     <div class="flex-row i-ga-xs">
-      <CustomButton label="新增資料" class="i-mb-md" type="primary" @click="addData"/>
-      <CustomButton label="重置資料" class="i-mb-md" type="success" @click="resetData"/>
-      <CustomButton label="隨機資料" class="i-mb-md" type="info" @click="randomData"/>
-      <CustomButton label="亂序資料" class="i-mb-md" type="warning" @click="sortData"/>
+      <CustomButton label="新增資料" class="i-mb-md" type="primary" @click="addData" />
+      <CustomButton label="重置資料" class="i-mb-md" type="success" @click="resetData" />
+      <CustomButton label="隨機資料" class="i-mb-md" type="info" @click="randomData" />
+      <CustomButton label="亂序資料" class="i-mb-md" type="warning" @click="sortData" />
     </div>
 
     <div class="flex-row i-ga-xs">
-      <CustomDraggable
-        v-model="list1"
-        class="border-info"
-        ghost-class="bg-primary"
-        group="test"
-      >
+      <CustomDraggable v-model="list1" class="border-info" ghost-class="bg-primary" group="test">
         <template #header>
           <div class="i-pa-md">{{ 'header' }}</div>
         </template>
@@ -105,12 +99,7 @@ onMounted(() => {
         </template>
       </CustomDraggable>
 
-      <CustomDraggable
-        v-model="list2"
-        class="border-info"
-        ghost-class="bg-primary"
-        group="test"
-      >
+      <CustomDraggable v-model="list2" class="border-info" ghost-class="bg-primary" group="test">
         <template #header>
           <div class="i-pa-md">{{ 'header' }}</div>
         </template>

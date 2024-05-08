@@ -22,10 +22,12 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
 export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
 
-export type LocalI18n = Partial<Composer & {
-  i18nTranslate: I18nTranslate,
-  i18nTest: I18nTest
-}>
+export type LocalI18n = Partial<
+  Composer & {
+    i18nTranslate: I18nTranslate
+    i18nTest: I18nTest
+  }
+>
 /**
  * @author Caleb
  * @description 使用翻譯工具
@@ -87,8 +89,8 @@ export type updateContentRect = () => BoundingClientRect
  * @param {*} callback Dom元素變化時執行
  * @returns {Object} 大小
  */
-export function useBoundingClientRect (
-  dom: Ref<Element |  null> | Element,
+export function useBoundingClientRect(
+  dom: Ref<Element | null> | Element,
   callback?: (contentRect: BoundingClientRect) => void
 ): {
   contentRect: BoundingClientRect
@@ -176,16 +178,16 @@ export function useBoundingClientRect (
  * @param {*} value 資料
  * @returns {*}
  */
-export function useDebouncedRef (value: any): Ref<any> {
+export function useDebouncedRef(value: any): Ref<any> {
   let timeout: any
 
   return customRef((track, trigger) => {
     return {
-      get () {
+      get() {
         track()
         return value
       },
-      set (newValue) {
+      set(newValue) {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
           value = newValue
@@ -203,7 +205,7 @@ export function useDebouncedRef (value: any): Ref<any> {
  * @description 類似 react useId
  * @returns {String} 隨機Id
  */
-export function useId (): string {
+export function useId(): string {
   return getUuid()
 }
 
@@ -216,16 +218,18 @@ export function useId (): string {
  * @param defaultValue 預設值
  * @returns {Array} [資料, 設定資料函數]
  */
-export function useState<T> (defaultValue: T): [Readonly<Ref<DeepReadonly<T>>>, (newValue: T) => void] {
+export function useState<T>(
+  defaultValue: T
+): [Readonly<Ref<DeepReadonly<T>>>, (newValue: T) => void] {
   let value = defaultValue
 
   const data = customRef<T>((track, trigger) => {
     return {
-      get () {
+      get() {
         track()
         return value
       },
-      set (newValue) {
+      set(newValue) {
         value = newValue
         trigger()
       }
@@ -250,7 +254,7 @@ export type OnMountedCallback<T> = (newValue?: T, oldValue?: T) => OnUnmountedCa
  *                 (變更後, 變更前) => onUnmounted
  * @param watchValue 監聽資料
  */
-export function useEffect<T> (callback: OnMountedCallback<T>, watchValue: any): void {
+export function useEffect<T>(callback: OnMountedCallback<T>, watchValue: any): void {
   const scope = effectScope()
   let isWatch = false
   let onUnmountedCallback = null
@@ -260,12 +264,16 @@ export function useEffect<T> (callback: OnMountedCallback<T>, watchValue: any): 
 
     if (isWatch) {
       scope.run(() => {
-        watch(watchValue, (newValue, oldValue) => {
-          onUnmountedCallback = callback(newValue, oldValue)
-        }, {
-          deep: true,
-          immediate: true
-        })
+        watch(
+          watchValue,
+          (newValue, oldValue) => {
+            onUnmountedCallback = callback(newValue, oldValue)
+          },
+          {
+            deep: true,
+            immediate: true
+          }
+        )
       })
     } else {
       onUnmountedCallback = callback()

@@ -25,18 +25,13 @@ onMounted(() => {
 
   console.log(`${i18nTranslate('nav4-3')} => `, userPermission.value)
 })
-
 </script>
 
 <template>
   <div class="page">
     <h4>測試翻譯檔 View</h4>
 
-    <div
-      v-for="key in testList"
-      :key="key"
-      class="flex-row align-center i-ga-md"
-    >
+    <div v-for="key in testList" :key="key" class="flex-row align-center i-ga-md">
       <label>{{ key }}</label>
       <p>{{ i18nTranslate(key) }}</p>
     </div>

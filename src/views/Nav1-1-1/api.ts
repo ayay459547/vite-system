@@ -79,22 +79,25 @@ export const getExcelData = async (params: any) => {
     }
   } = params as Params
 
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      page,
-      size,
-      sort
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        page,
+        size,
+        sort
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 
@@ -123,22 +126,25 @@ export const getData = async (params: any) => {
     }
   } = params as Params
 
-  const resData = await ajax<Api<TableData[]>>({
-    url: '/page/getData',
-    method: 'get',
-    data: {
-      page,
-      size,
-      sort
-    }
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: fakeTableData,
-      status: 'success'
+  const resData = await ajax<Api<TableData[]>>(
+    {
+      url: '/page/getData',
+      method: 'get',
+      data: {
+        page,
+        size,
+        sort
+      }
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: fakeTableData,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 
@@ -157,18 +163,21 @@ export const getData = async (params: any) => {
 }
 
 export const getDataCount = async () => {
-  const resData = await ajax<Api<number>>({
-    url: '/page/getDataCount',
-    method: 'get',
-    data: {}
-  }, {
-    isFakeData: true,
-    fakeData: {
-      data: 1000,
-      status: 'success'
+  const resData = await ajax<Api<number>>(
+    {
+      url: '/page/getDataCount',
+      method: 'get',
+      data: {}
     },
-    delay: 300
-  })
+    {
+      isFakeData: true,
+      fakeData: {
+        data: 1000,
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
 
   const { data, status, msg } = resData
 
@@ -188,7 +197,7 @@ export const getDataCount = async () => {
 
 // delet
 export const deleteData = async (rowData: TableData) => {
-  await new Promise((resolve) => {
+  await new Promise(resolve => {
     console.log('delete id => ', rowData.id)
 
     setTimeout(() => {

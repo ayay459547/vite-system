@@ -6,7 +6,19 @@ import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
 import throttle from '@/lib/lib_throttle'
 
-type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
+type Placement =
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end'
 
 const visible = ref<boolean>(false)
 const placement = ref<Placement>('bottom')
@@ -87,12 +99,7 @@ const closePopover = () => {
 const throttleClosePopover = throttle(closePopover, 0) as (payload: WheelEvent) => void
 
 onMounted(() => {
-  openPopover(
-    props.clientX,
-    props.clientY,
-    props.eventList,
-    props.options
-  )
+  openPopover(props.clientX, props.clientY, props.eventList, props.options)
 })
 
 interface Expose {
@@ -108,7 +115,6 @@ defineExpose<Expose>({
   openPopover,
   closePopover
 })
-
 </script>
 
 <template>
@@ -141,7 +147,7 @@ defineExpose<Expose>({
             <font-awesome-icon
               v-if="callbackItem.icon.length > 0"
               :icon="callbackItem.icon"
-              style="width: 24px;"
+              style="width: 24px"
             />
           </div>
           <span>{{ callbackItem.label }}</span>
@@ -150,11 +156,7 @@ defineExpose<Expose>({
       <div v-else>empty</div>
 
       <template #reference>
-        <div
-          v-click-outside="deletePopover"
-          class="popover-test"
-          @click="visible = !visible"
-        ></div>
+        <div v-click-outside="deletePopover" class="popover-test" @click="visible = !visible"></div>
       </template>
     </CustomPopover>
   </div>
@@ -187,7 +189,7 @@ defineExpose<Expose>({
 
     &.active,
     &:hover {
-      color: #409EFF;
+      color: #409eff;
       background-color: #f5f7fa;
     }
 

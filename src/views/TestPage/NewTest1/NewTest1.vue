@@ -2,7 +2,14 @@
 import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
-import { CustomIcon, CustomModal, CustomButton, CustomTable, CustomSearch, GroupSearch } from '@/components'
+import {
+  CustomIcon,
+  CustomModal,
+  CustomButton,
+  CustomTable,
+  CustomSearch,
+  GroupSearch
+} from '@/components'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import type { TableOptions } from '@/lib/lib_columns'
@@ -29,12 +36,7 @@ const tableOptions: TableOptions = {
   showType: 'auto'
 }
 
-const {
-  tableSetting,
-  downloadExcel,
-  changePage,
-  getParams
-} = useTableSetting(
+const { tableSetting, downloadExcel, changePage, getParams } = useTableSetting(
   columnSetting,
   'table',
   tableOptions
@@ -197,33 +199,19 @@ const remove = (rowData: TableData) => {
     }
   })
 }
-
 </script>
 
 <template>
   <div v-loading="isLoading" class="page">
-    <CustomModal
-      v-model="modal.create"
-      title="新增資料"
-      @submit="onCreateSubmit"
-    >
+    <CustomModal v-model="modal.create" title="新增資料" @submit="onCreateSubmit">
       <CreateModal ref="createRef" />
     </CustomModal>
 
-    <CustomModal
-      v-model="modal.update"
-      title="編輯資料"
-      @submit="onUpdateSubmit"
-    >
+    <CustomModal v-model="modal.update" title="編輯資料" @submit="onUpdateSubmit">
       <UpdateModal :data="updateData" ref="updateRef" />
     </CustomModal>
 
-    <CustomModal
-      v-model="modal.detail"
-      title="檢視資源詳細資料"
-      click-outside
-      hidden-footer
-    >
+    <CustomModal v-model="modal.detail" title="檢視資源詳細資料" click-outside hidden-footer>
       <DetailModal :data="detailData" />
     </CustomModal>
 
@@ -283,7 +271,9 @@ const remove = (rowData: TableData) => {
         <div class="text-danger fill-y flex-row align-center">{{ column.label + ' (column)' }}</div>
       </template>
       <template #header-column5="{ column }">
-        <div class="text-primary fill-y flex-row align-center">{{ column.label + ' (column)' }}</div>
+        <div class="text-primary fill-y flex-row align-center">
+          {{ column.label + ' (column)' }}
+        </div>
       </template>
       <template #column-column5="{ row, data }">
         <CustomButton
@@ -300,7 +290,7 @@ const remove = (rowData: TableData) => {
       </template>
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
-          <CustomIcon name="ellipsis-vertical"/>
+          <CustomIcon name="ellipsis-vertical" />
         </div>
       </template>
     </CustomTable>

@@ -54,7 +54,7 @@ onMounted(() => {
 
 <template>
   <div v-loading="isLoading" class="page">
-    <CustomCharts :options="options"/>
+    <CustomCharts :options="options" />
   </div>
 </template>
 

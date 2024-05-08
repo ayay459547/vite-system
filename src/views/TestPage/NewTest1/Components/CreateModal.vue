@@ -14,24 +14,25 @@ const {
 
 defineExpose({
   submit: async () => {
-    return await validateForm().then(async () => {
-      const status = await createData(form)
+    return await validateForm()
+      .then(async () => {
+        const status = await createData(form)
 
-      return status
-    }).catch(errorList => {
-      const error = errorList.find(errorItem => {
-        return errorItem.el !== null
+        return status
       })
-      if (error) {
-        const el = error.getDom()
-        scrollToEl(el)
-      }
+      .catch(errorList => {
+        const error = errorList.find(errorItem => {
+          return errorItem.el !== null
+        })
+        if (error) {
+          const el = error.getDom()
+          scrollToEl(el)
+        }
 
-      return 'error'
-    })
+        return 'error'
+      })
   }
 })
-
 </script>
 
 <template>
@@ -54,17 +55,9 @@ defineExpose({
       v-bind="formColumn.column3"
     />
 
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.column4"
-      v-bind="formColumn.column4"
-    />
+    <CustomInput class="grid-col-xs-24" v-model="form.column4" v-bind="formColumn.column4" />
 
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.column5"
-      v-bind="formColumn.column5"
-    />
+    <CustomInput class="grid-col-xs-24" v-model="form.column5" v-bind="formColumn.column5" />
   </div>
 </template>
 

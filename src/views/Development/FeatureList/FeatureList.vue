@@ -18,15 +18,21 @@ const tableOptions: TableOptions = {
   version: '1.0.6',
   settingKey: 'feature-list'
 }
-const { tableSetting, downloadExcel, getParams } = useTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel, getParams } = useTableSetting(
+  columnSetting,
+  'table',
+  tableOptions
+)
 
 const download = () => {
-  downloadExcel(tableData.value.map(item => {
-    return {
-      ...item
-      // status: columnSetting.status.getValue(item.status)
-    }
-  }))
+  downloadExcel(
+    tableData.value.map(item => {
+      return {
+        ...item
+        // status: columnSetting.status.getValue(item.status)
+      }
+    })
+  )
 }
 
 // filter
@@ -63,7 +69,6 @@ const init = async () => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>
@@ -89,18 +94,10 @@ onMounted(() => {
         @show-change="init()"
       >
         <template #header-all="{ prop }">
-          <CustomInput
-            v-model="filter[prop]"
-            v-bind="filterColumn[prop]"
-            @change="init()"
-          />
+          <CustomInput v-model="filter[prop]" v-bind="filterColumn[prop]" @change="init()" />
         </template>
         <template #header-status="{ prop }">
-          <CustomInput
-            v-model="filter[prop]"
-            v-bind="filterColumn[prop]"
-            @change="init()"
-          />
+          <CustomInput v-model="filter[prop]" v-bind="filterColumn[prop]" @change="init()" />
         </template>
         <template #header-startDate="{ column }">
           <div class="flex-column-center align-start fill-y">{{ column.label }}</div>
@@ -118,19 +115,16 @@ onMounted(() => {
         </template>
         <template #column-status="{ prop, data }">
           <div class="flex-row i-ga-xs" :class="columnSetting[prop].getClass(data)">
-            <CustomIcon :name="columnSetting[prop].getIcon(data)"/>
+            <CustomIcon :name="columnSetting[prop].getIcon(data)" />
             <span>{{ columnSetting[prop].getValue(data) }}</span>
           </div>
         </template>
         <template #column-path="{ data }">
-          <RouterLink
-            :to="`${data}`"
-            v-slot="{ navigate }"
-          >
-          <div class="flex-row i-ga-xs text-primary" @click="navigate">
-            <CustomIcon name="up-right-from-square"/>
-            <span>{{ data }}</span>
-          </div>
+          <RouterLink :to="`${data}`" v-slot="{ navigate }">
+            <div class="flex-row i-ga-xs text-primary" @click="navigate">
+              <CustomIcon name="up-right-from-square" />
+              <span>{{ data }}</span>
+            </div>
           </RouterLink>
         </template>
       </CustomTable>

@@ -23,10 +23,14 @@ const tabs = [
 
 const showComponents = computed(() => {
   switch (tab.value) {
-    case 'toJson': return ToJson
-    case 'toChart1': return ToChart1
-    case 'toChart2': return ToChart2
-    default: return CustomEmpty
+    case 'toJson':
+      return ToJson
+    case 'toChart1':
+      return ToChart1
+    case 'toChart2':
+      return ToChart2
+    default:
+      return CustomEmpty
   }
 })
 
@@ -39,11 +43,11 @@ onMounted(() => {
   <div v-loading="isLoading" class="excel-wrapper">
     <div class="excel-container">
       <div class="excel-tabs">
-        <CustomTabs v-model="tab" :options="tabs" @change="init"/>
+        <CustomTabs v-model="tab" :options="tabs" @change="init" />
       </div>
 
       <div class="excel-test">
-        <component :is="showComponents"/>
+        <component :is="showComponents" />
       </div>
     </div>
   </div>

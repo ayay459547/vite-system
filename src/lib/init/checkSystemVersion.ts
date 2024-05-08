@@ -15,8 +15,8 @@ const checkSystemVersionDiff = () => {
   const isChange = [
     [null, undefined, ''].includes(localSystem),
     [null, undefined, ''].includes(localVersion),
-    (localSystem !== system),
-    (localVersion !== systemVersion)
+    localSystem !== system,
+    localVersion !== systemVersion
   ].some(isCheck => isCheck)
 
   return {

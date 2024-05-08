@@ -1,18 +1,20 @@
 # Form 使用
 
 ### 使用說明
+
 Form 類型的組件 需配合 getFormSetting 的函數使用
 
 getFormSetting 需要傳入 欄位設定資料 + 取的資料的 key
 常見的有 form、filter，目前不限 key 是什麼
 
 可以取的
-columns: Form組件需要的屬性
-forms: Form組件 v-model 綁定的資料
+columns: Form 組件需要的屬性
+forms: Form 組件 v-model 綁定的資料
 reset: 重置驗證及輸入框資料
 validate: 驗證輸入框
 
 ### 使用範例
+
 ```vue
 <script setup lang="ts">
 import { getFormSetting } from '@/lib/lib_columns'
@@ -115,70 +117,43 @@ const {
 } = getFormSetting<Form>(columnSetting, 'filter')
 
 const submit = () => {
-  validateForm().then(successList => {
-    console.log('vee success => ', successList)
-  }).catch(errorList => {
-    console.log('vee error => ', errorList)
-    const error = errorList.find(errorItem => {
-      return errorItem.el !== null
+  validateForm()
+    .then(successList => {
+      console.log('vee success => ', successList)
     })
-    if (error) {
-      const el = error.getDom()
-      scrollToEl(el)
-    }
-  })
+    .catch(errorList => {
+      console.log('vee error => ', errorList)
+      const error = errorList.find(errorItem => {
+        return errorItem.el !== null
+      })
+      if (error) {
+        const el = error.getDom()
+        scrollToEl(el)
+      }
+    })
 }
-
 </script>
 
 <template>
   <div class="input-test">
-    <FormInput
-      v-model="form.passowrd"
-      v-bind="formColumn.passowrd"
-    />
+    <FormInput v-model="form.passowrd" v-bind="formColumn.passowrd" />
 
-    <FormInput
-      v-model="form.phone"
-      v-bind="formColumn.phone"
-    />
+    <FormInput v-model="form.phone" v-bind="formColumn.phone" />
 
-    <FormSelect
-      v-model="form.select"
-      v-bind="formColumn.select"
-    />
+    <FormSelect v-model="form.select" v-bind="formColumn.select" />
 
-    <FormDatePicker
-      v-model="form.date"
-      v-bind="formColumn.date"
-    />
+    <FormDatePicker v-model="form.date" v-bind="formColumn.date" />
 
-    <FormDatePicker
-      v-model="form.daterange"
-      v-bind="formColumn.daterange"
-    />
+    <FormDatePicker v-model="form.daterange" v-bind="formColumn.daterange" />
 
-    <FormCheckbox
-      v-model="form.checkbox"
-      v-bind="formColumn.checkbox"
-    />
+    <FormCheckbox v-model="form.checkbox" v-bind="formColumn.checkbox" />
 
-    <FormRadio
-      v-model="form.radio"
-      v-bind="formColumn.radio"
-    />
+    <FormRadio v-model="form.radio" v-bind="formColumn.radio" />
 
     <div class="input-btn">
-      <CustomButton
-        label="重置"
-        class="i-mb-md"
-        @click="resetForm"
-      />
+      <CustomButton label="重置" class="i-mb-md" @click="resetForm" />
 
-      <CustomButton
-        label="提交"
-        @click="submit"
-      />
+      <CustomButton label="提交" @click="submit" />
     </div>
   </div>
 </template>
