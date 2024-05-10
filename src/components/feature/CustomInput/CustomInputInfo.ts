@@ -26,6 +26,7 @@ export type Option = {
   value: string | number | boolean | null
   disabled?: boolean
   color?: string
+  data?: any
 }
 export type Options = Array<Option>
 

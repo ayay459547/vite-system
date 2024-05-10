@@ -1,4 +1,4 @@
-# 系統前端開發
+# demo
 
 ### commit message
 * feat: 新增/修改功能 (feature)。
@@ -15,10 +15,20 @@
 ```sh
 npm install -l
 ```
-### 代碼檢查
+
+### 代碼類型檢查
 ```sh
 npm run type-check
 ```
+### 代碼格式檢查+修正
+```sh
+npm run lint
+```
+### 代碼格式化
+```sh
+npm run format
+```
+
 ### 運行開發環境
 ```sh
 npm run dev
@@ -27,6 +37,7 @@ npm run dev
 ```sh
 npm run pro
 ```
+
 ### 打包開發環境
 ```sh
 npm run build-only:dev
@@ -34,32 +45,4 @@ npm run build-only:dev
 ### 打包上線環境
 ```sh
 npm run build-only:pro
-```
-
-### 單元測試
-#### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-#### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-### 依據 ESLint 配置修正文件
-#### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```
