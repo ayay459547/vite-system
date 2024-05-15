@@ -77,6 +77,9 @@ export type {
 } from './feature/CustomPopover/CustomPopoverInfo'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
 
+export type { Props as CustomProgressProps } from './feature/CustomProgress/CustomProgressInfo'
+export { default as CustomProgress } from './feature/CustomProgress/CustomProgress.vue'
+
 export type {
   AriaOrientation,
   OnScrollParams,

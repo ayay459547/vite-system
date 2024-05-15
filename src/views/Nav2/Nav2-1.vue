@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 
-import { CustomInput, CustomDivider, CustomEmpty } from '@/components'
+import { CustomInput, CustomDivider, CustomEmpty, CustomProgress, CustomButton } from '@/components'
+
+import { awaitTime } from '@/lib/lib_utils'
 
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')
@@ -20,11 +22,52 @@ const options = [
   { label: 'test4', value: '4' },
   { label: 'test5', value: '5' }
 ]
+const progress = reactive({
+  percentage: 0,
+  status: ''
+})
+const testCustomProgress = async () => {
+  progress.percentage = 0
+  progress.status = ''
+  await awaitTime(1000)
+
+  for (let i = 0; i < 10; i++) {
+    await awaitTime(Math.random() * 1000)
+
+    if (progress.percentage === 40) {
+      progress.status = 'exception'
+    }
+    if (progress.percentage === 60) {
+      progress.status = 'warning'
+    }
+    progress.percentage += 10
+    console.log(`${progress.percentage}%`)
+  }
+  progress.status = 'success'
+}
+
+onMounted(() => {
+  testCustomProgress()
+})
 </script>
 
 <template>
   <div class="nav-2">
     <h1 class="i-mb-md">This is Nav-2 page</h1>
+    <CustomProgress
+      :percentage="progress.percentage"
+      type="line"
+      :stroke-width="24"
+      :striped="progress.percentage < 100"
+      striped-flow
+    />
+
+    <div class="i-my-md"></div>
+
+    <CustomButton label="再一次" @click="testCustomProgress"/>
+
+    <CustomDivider />
+
     <CustomInput v-model="value" label="測試密碼" required :validate="['password']" />
 
     <CustomDivider />
@@ -48,6 +91,7 @@ const options = [
     </CustomInput>
 
     <CustomEmpty />
+
   </div>
 </template>
 

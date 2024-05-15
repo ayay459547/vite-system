@@ -192,7 +192,7 @@ const toLocaleString = (num: number): string => {
   if (Number.isNaN(num) || typeof num !== 'number') return `${num}`
   return num.toLocaleString()
 }
-export type NumberFormatType = 'round' | 'floor' | 'ceil' | ''
+export type NumberFormatType = 'round' | 'floor' | 'ceil' | 'none' | ''
 /**
  * @author Caleb
  * @description 數字格式化
@@ -213,20 +213,23 @@ export const numberFormat = <T extends number | string>(
     isToLocaleString?: boolean
   }
 ): T => {
-  const { type = '', toFixed = 0, isString = false, isToLocaleString = false } = options ?? {}
+  const { type = 'round', toFixed = 2, isString = false, isToLocaleString = false } = options ?? {}
   if (isEmpty(num)) return '' as T
+
+  const _num = +(num + `e+${toFixed}`)
 
   let res = 0
   switch (type) {
     case 'round':
-      res = +(Math.round((num + `e+${toFixed}`) as unknown as number) + `e-${toFixed}`)
+      res = +(Math.round(_num) + `e-${toFixed}`)
       break
     case 'floor':
-      res = +(Math.floor((num + `e+${toFixed}`) as unknown as number) + `e-${toFixed}`)
+      res = +(Math.floor(_num) + `e-${toFixed}`)
       break
     case 'ceil':
-      res = +(Math.ceil((num + `e+${toFixed}`) as unknown as number) + `e-${toFixed}`)
+      res = +(Math.ceil(_num) + `e-${toFixed}`)
       break
+    case 'none':
     default:
       res = num
       break

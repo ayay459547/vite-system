@@ -1,8 +1,20 @@
 import dbPromise from './init/init_idb'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, swal } from '@/lib/lib_utils'
 
 async function get(table: string, key: string) {
-  return (await dbPromise).get(table, key)
+  try {
+    return (await dbPromise).get(table, key)
+  } catch (e) {
+    console.log(e)
+    swal({
+      icon: 'error',
+      title: `indexedDB get ${table}[${key}] error`,
+      text: e,
+      showCancelButton: false
+    })
+
+    return []
+  }
 }
 async function set(table: string, key: string, val: any) {
   const tx = (await dbPromise).transaction(table, 'readwrite')
@@ -20,14 +32,26 @@ async function clear(table: string) {
   return (await dbPromise).clear(table)
 }
 async function keys(table: string) {
-  return (await dbPromise).getAllKeys(table)
+  try {
+    return (await dbPromise).getAllKeys(table)
+  } catch (e) {
+    console.log(e)
+    swal({
+      icon: 'error',
+      title: `indexedDB ${table} getAllKeys error`,
+      text: e,
+      showCancelButton: false
+    })
+
+    return []
+  }
 }
 
 /**
  * 有新增或刪除表時 idbVersion + 1
  * Table版本 > DB版本 => 加入新表
  */
-export const idbVersion = 1
+export const idbVersion = 2
 /**
  * 管理新增加的 store
  * 已存在的 store 不用創建
@@ -60,42 +84,58 @@ export const storeVersion = {
     version: '1.0.0',
     createVersion: 1,
     isDelete: false
+  },
+  pageSetting: {
+    version: '1.0.0',
+    createVersion: 2,
+    isDelete: false
   }
 }
 
 // 紀錄版本
 export const checkInitIdb = async () => {
-  const storeList = await keysIDBVersion()
+  try {
+    const storeList = await keysIDBVersion()
 
-  for (const storeName in storeVersion) {
-    const store = storeVersion[storeName]
-    const { version, createVersion, isDelete } = store
+    for (const storeName in storeVersion) {
+      const store = storeVersion[storeName]
+      const { version, createVersion, isDelete } = store
 
-    getIDBVersion(storeName).then(async info => {
-      if (
-        isEmpty(info) ||
-        info.version !== version ||
-        info.createVersion !== createVersion ||
-        info.isDelete !== isDelete
-      ) {
-        if (!isDelete) {
-          const clearKeys = await keys(storeName)
-          if (clearKeys.length > 0) {
-            clear(storeName)
+      getIDBVersion(storeName).then(async info => {
+        if (
+          isEmpty(info) ||
+          info.version !== version ||
+          info.createVersion !== createVersion ||
+          info.isDelete !== isDelete
+        ) {
+          if (!isDelete) {
+            const clearKeys = await keys(storeName)
+            if (clearKeys.length > 0) {
+              clear(storeName)
+            }
           }
+
+          setIDBVersion(storeName, {
+            storeName,
+            version,
+            createVersion,
+            isDelete
+          })
         }
+      })
+    }
 
-        setIDBVersion(storeName, {
-          storeName,
-          version,
-          createVersion,
-          isDelete
-        })
-      }
+    return storeList
+  } catch (e) {
+    console.log(e)
+    swal({
+      icon: 'error',
+      title: 'checkInit indexedDB error',
+      text: e
     })
-  }
 
-  return storeList
+    return []
+  }
 }
 
 // iDB版本
@@ -164,4 +204,22 @@ export async function clearI18nInfo() {
 }
 export async function keysI18nInfo() {
   return await keys('i18nInfo')
+}
+
+// 頁面用的設定資料
+// 開發時 個人可依照需求自行調用
+export async function getPageSetting(key: string) {
+  return await get('pageSetting', key)
+}
+export async function setPageSetting(key: string, val: any) {
+  return await set('pageSetting', key, val)
+}
+export async function delPageSetting(key: string) {
+  return await del('pageSetting', key)
+}
+export async function clearPageSetting() {
+  return await clear('pageSetting')
+}
+export async function keysPageSetting() {
+  return await keys('pageSetting')
 }

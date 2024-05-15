@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { onMounted, ref, nextTick } from 'vue'
+
 import { ElCard } from 'element-plus'
 
-import { CustomTimeLine, CustomTag } from '@/components'
+import { CustomTimeLine, CustomTag, CustomButton } from '@/components'
+
+import { awaitTime, scrollToEl } from '@/lib/lib_utils'
 
 const options = [
   {
@@ -32,12 +36,60 @@ const options = [
     placement: 'top'
   },
   {
+    label: 'Custom hollow',
+    timestamp: '2018-04-03 20:46',
+    type: 'primary',
+    hollow: true,
+    placement: 'top'
+  },
+  {
+    label: 'Custom hollow',
+    timestamp: '2018-04-03 20:46',
+    type: 'primary',
+    hollow: false,
+    placement: 'top'
+  },
+  {
+    label: 'Custom hollow',
+    timestamp: '2018-04-03 20:46',
+    type: 'primary',
+    hollow: true
+  },
+  {
+    label: 'Custom hollow',
+    timestamp: '2018-04-03 20:46',
+    type: 'primary',
+    hollow: true,
+    placement: 'top'
+  },
+  {
     label: 'Default node',
     timestamp: '2018-04-03 20:46',
     type: 'info',
     placement: 'top'
   }
 ]
+
+const options1 = ref([])
+const testPushOptions = async () => {
+  options1.value.splice(0)
+  awaitTime(1000)
+
+  for (let i = 0; i < options.length; i++) {
+    await awaitTime(300)
+    console.log(i, ' => ', options[i])
+    options1.value.push(options[i])
+
+    await nextTick()
+    const allCard = document.querySelectorAll('.test-card')
+    const lastEl = allCard[allCard.length - 1]
+    scrollToEl(lastEl, { behavior: 'auto' })
+  }
+}
+
+onMounted(() => {
+  testPushOptions()
+})
 
 const options2 = [
   {
@@ -93,15 +145,17 @@ const options2 = [
 <template>
   <div class="nav-1-2-2">
     <div class="flex-row i-ga-xxl">
-      <CustomTimeLine :options="options">
+      <CustomTimeLine :options="options1">
         <template #default="{ label }">
           <ElCard>
-            <h3>{{ label }}</h3>
+            <h3 class="test-card">{{ label }}</h3>
             <h4>Update Github template</h4>
             <p>Tom committed 2018/4/2 20:46</p>
           </ElCard>
         </template>
       </CustomTimeLine>
+
+      <CustomButton label="再一次" @click="testPushOptions"/>
 
       <CustomTimeLine :options="options2">
         <template #default="{ label }">

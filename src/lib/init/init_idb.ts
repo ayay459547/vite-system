@@ -1,7 +1,7 @@
 import { openDB, deleteDB } from 'idb'
 import checkSystemVersionDiff from './checkSystemVersion'
 import { idbVersion, storeVersion } from '@/lib/lib_idb'
-import { deepClone } from '@/lib/lib_utils'
+import { deepClone, swal } from '@/lib/lib_utils'
 
 /**
  * indexedDB 刪除換新
@@ -21,31 +21,41 @@ const initDB = async () => {
 
   const _dbPromise = openDB(system, idbVersion, {
     upgrade(db, oldVersion) {
-      const tempStoreVersion = deepClone({}, storeVersion)
+      try {
+        const tempStoreVersion = deepClone({}, storeVersion)
 
-      // 已存在的db
-      const objectStoreNames = db.objectStoreNames
-      const len = objectStoreNames.length
-      for (let i = 0; i < len; i++) {
-        const storeName = objectStoreNames[i]
-        const storeInfo = storeVersion[storeName]
+        // 已存在的db
+        const objectStoreNames = db.objectStoreNames
+        const len = objectStoreNames.length
+        for (let i = 0; i < len; i++) {
+          const storeName = objectStoreNames[i]
+          const storeInfo = storeVersion[storeName]
 
-        const { createVersion, isDelete } = storeInfo
-        // 是否刪除
-        if (isDelete || createVersion > oldVersion) {
-          db.deleteObjectStore(storeName)
+          const { createVersion, isDelete } = storeInfo
+          // 是否刪除
+          if (isDelete || createVersion > oldVersion) {
+            db.deleteObjectStore(storeName)
+          }
+          delete tempStoreVersion[storeName]
         }
-        delete tempStoreVersion[storeName]
-      }
 
-      // 尚未存在的db
-      for (const storeName in tempStoreVersion) {
-        const storeInfo = storeVersion[storeName]
-        const { createVersion, isDelete } = storeInfo
-        // 加入版本 > 舊資料庫版本
-        if (!isDelete && createVersion > oldVersion) {
-          db.createObjectStore(storeName)
+        // 尚未存在的db
+        for (const storeName in tempStoreVersion) {
+          const storeInfo = storeVersion[storeName]
+          const { createVersion, isDelete } = storeInfo
+          // 加入版本 > 舊資料庫版本
+          if (!isDelete && createVersion > oldVersion) {
+            db.createObjectStore(storeName)
+          }
         }
+      } catch (e) {
+        console.log(e)
+
+        swal({
+          icon: 'error',
+          title: 'upgrade indexedDB error',
+          text: e
+        })
       }
     }
   })
