@@ -25,7 +25,7 @@ const toHome = () => {
   <div class="locatehome-conatiner" @click="toHome">
     <div class="locatehome-md">
       <CustomIcon name="home" class="icon" />
-      <span>{{ i18nTranslate('locatehome') }}</span>
+      <span>{{ i18nTranslate('locatehome', defaultModuleType) }}</span>
     </div>
 
     <div class="locatehome-xs">
@@ -33,7 +33,7 @@ const toHome = () => {
         <CustomIcon name="home" />
 
         <template #content>
-          <span>{{ i18nTranslate('locatehome') }}</span>
+          <span>{{ i18nTranslate('locatehome', defaultModuleType) }}</span>
         </template>
       </CustomTooltip>
     </div>

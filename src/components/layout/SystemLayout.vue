@@ -168,7 +168,7 @@ const onHistoryChange = ($event: boolean) => {
     <div class="user-modal">
       <CustomModal v-model="modal.preference" hidden-footer draggable click-outside>
         <template #header>
-          <label>{{ i18nTranslate('preference') }}</label>
+          <label>{{ i18nTranslate('preference', defaultModuleType) }}</label>
         </template>
         <UserPreference
           ref="preferenceRef"

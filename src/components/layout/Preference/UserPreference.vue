@@ -135,7 +135,7 @@ const onClickLayout = (layoutValue: string) => {
           <div class="icon">
             <CustomIcon name="earth-americas" />
           </div>
-          <label>{{ i18nTranslate('language') }}</label>
+          <label>{{ i18nTranslate('language', defaultModuleType) }}</label>
         </div>
 
         <div class="modal-select">
@@ -210,7 +210,7 @@ const onClickLayout = (layoutValue: string) => {
           <div class="icon">
             <CustomIcon name="chalkboard-user" />
           </div>
-          <label>{{ i18nTranslate('layout') }}</label>
+          <label>{{ i18nTranslate('layout', defaultModuleType) }}</label>
         </div>
 
         <div class="modal-select">
@@ -221,7 +221,7 @@ const onClickLayout = (layoutValue: string) => {
             class="layout cursor-pointer"
             @click="onClickLayout(layoutOption.value)"
           >
-            <div class="i-mb-sm">{{ i18nTranslate('layout') + layoutOption.label }}</div>
+            <div class="i-mb-sm">{{ i18nTranslate('layout', defaultModuleType) + layoutOption.label }}</div>
             <component :is="getLayoutView(layoutOption.label)" />
           </div>
         </div>

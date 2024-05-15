@@ -5,12 +5,13 @@ import type { UseHook } from '@/declare/hook'
 import { useFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
 import { CustomIcon, CustomInput } from '@/components'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { loginSystem } from './api'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 const emit = defineEmits(['login'])
 
@@ -97,13 +98,13 @@ const svg = `
 
         <div class="login-logo">
           <img src="@/assets/images/Vue-logo.png" alt="vue" />
-          <!-- <h1>{{ i18nTranslate('login') }}</h1> -->
+          <!-- <h1>{{ i18nTranslate('login', defaultModuleType) }}</h1> -->
         </div>
 
         <CustomInput
           v-model="form.account"
           v-bind="formColumn.account"
-          :label="i18nTranslate('account')"
+          :label="i18nTranslate('account', defaultModuleType)"
           @keyup.enter="login"
         >
           <template #prefix>
@@ -115,7 +116,7 @@ const svg = `
           <CustomInput
             v-model="form.password"
             v-bind="formColumn.password"
-            :label="i18nTranslate('password')"
+            :label="i18nTranslate('password', defaultModuleType)"
           >
             <template #prefix>
               <CustomIcon name="unlock-keyhole" />
@@ -123,7 +124,7 @@ const svg = `
           </CustomInput>
         </form>
 
-        <button class="login-button" @click="login">{{ i18nTranslate('login') }}</button>
+        <button class="login-button" @click="login">{{ i18nTranslate('login', defaultModuleType) }}</button>
       </div>
     </div>
   </div>

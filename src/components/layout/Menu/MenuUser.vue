@@ -26,12 +26,12 @@ const openUserEffect = (e: MouseEvent) => {
     [
       {
         icon: ['fas', 'gear'],
-        label: i18nTranslate('preference'),
+        label: i18nTranslate('preference', defaultModuleType),
         event: () => emit('preference')
       },
       {
         icon: ['fas', 'right-from-bracket'],
-        label: i18nTranslate('logout'),
+        label: i18nTranslate('logout', defaultModuleType),
         event: () => emit('logout')
       }
     ],
@@ -63,7 +63,7 @@ const loginTime = computed(() => {
 
           <template #content>
             <div @click="openUserEffect">
-              <span>{{ `${i18nTranslate('login')}${i18nTranslate('time')} : ` }}</span>
+              <span>{{ `${i18nTranslate('login', defaultModuleType)}${i18nTranslate('time')} : ` }}</span>
               <span>{{ loginTime }}</span>
             </div>
           </template>
@@ -77,7 +77,7 @@ const loginTime = computed(() => {
             <div class="user-xs" @click="openUserEffect">
               <span>{{ userName }}</span>
               <div>
-                <span>{{ `${i18nTranslate('login')}${i18nTranslate('time')} : ` }}</span>
+                <span>{{ `${i18nTranslate('login', defaultModuleType)}${i18nTranslate('time')} : ` }}</span>
                 <span>{{ loginTime }}</span>
               </div>
             </div>
