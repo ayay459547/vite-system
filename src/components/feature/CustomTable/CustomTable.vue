@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useSlots, inject, ref, shallowRef, shallowReactive, computed, onMounted } from 'vue'
+import { useSlots, inject, ref, shallowRef, shallowReactive, computed, onMounted, nextTick } from 'vue'
 import { ElPagination } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
-import { tipLog, isEmpty, getProxyData, getUuid } from '@/lib/lib_utils'
+import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
@@ -60,7 +60,8 @@ const emit = defineEmits([
   'select-all',
   'selection-change',
   'row-contextmenu',
-  'load'
+  'load',
+  'init-finish'
 ])
 
 const loading = ref(true)
@@ -174,7 +175,7 @@ const activeSort = () => {
     return 1
   })
 }
-const initSortingList = () => {
+const initSortingList = async () => {
   sortingList.value = props.tableColumns.reduce<SortingList>((res, column) => {
     const _isOperations = column?.isOperations ?? false
 
@@ -183,13 +184,15 @@ const initSortingList = () => {
         label: column.label,
         i18nLabel: column.i18nLabel,
         key: column.key,
-        order: (column?.order ?? 'none') as Order
+        order: (column?.order ?? 'none') as Order,
+        orderIndex: (column?.orderIndex ?? -1) as number
       })
     }
     return res
   }, [])
 
   activeSort()
+  await awaitTime(120)
 }
 
 const onRowClick: RowClick = (row, column, event) => {
@@ -337,14 +340,26 @@ const initShowColumns = async () => {
 
 onMounted(async () => {
   isRender.value = false
-
-  setTimeout(() => {
-    initSortingList()
-  }, 120)
+  // 初始化排序
+  await initSortingList()
+  // 第一次依照欄位設定排序
+  sortingList.value.sort((a, b) => {
+    if (
+      ['ascending', 'descending'].includes(a.order) &&
+      ['ascending', 'descending'].includes(b.order)
+    ) {
+      return (a?.orderIndex ?? -1) - (b?.orderIndex ?? -1)
+    }
+    return 0
+  })
 
   await initShowColumns()
+  await nextTick()
 
-  isRender.value = true
+  setTimeout(() => {
+    isRender.value = true
+    emit('init-finish')
+  }, 120)
 })
 
 const tableMainRef = ref(null)

@@ -441,10 +441,15 @@ export interface TableColumnsItem {
   minWidth?: number
   align?: 'left' | 'center' | 'right'
   fixed?: 'left' | 'right'
+  // 客製化排序
   isSorting?: boolean
   order?: string | 'ascending' | 'descending' | 'none'
+  orderIndex?: number
+  // element ui 排序
   sortable?: boolean | 'custom'
+  // 是否為特殊欄位
   isOperations?: boolean
+
   title?: string
 }
 
@@ -526,6 +531,7 @@ export const useTableSetting = (
       isSorting: !_isOperations ? column[type]?.isSorting ?? true : false, // 是否顯示排序
       // 專案用 多排 預設值
       order: column[type]?.order ?? 'none', // ascending | descending | none
+      orderIndex: column[type]?.orderIndex ?? -1,
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }

@@ -24,6 +24,7 @@ export interface Sorting {
   i18nLabel?: string
   key?: null | string
   order?: Order
+  orderIndex?: number
 }
 export type SortingList = Sorting[]
 // 送 api 的格式
