@@ -130,7 +130,7 @@ const mode = (import.meta as any).env.MODE
  * @param {String} title 主要提示
  * @param {Array} messages 訊息列表
  */
-export const tipLog = (title: string = '', messages: string[] = []): string => {
+export const tipLog = (title: string = '', messages: any[] = []): string => {
   if (mode !== 'development') return mode
 
   const style = `
@@ -139,7 +139,11 @@ export const tipLog = (title: string = '', messages: string[] = []): string => {
   `
   console.groupCollapsed('%c%s', style, `開發中提示：${title}`)
   messages.forEach(message => {
-    console.log('%c%s', style, message)
+    if (typeof message === 'string') {
+      console.log('%c%s', style, message)
+    } else {
+      console.log(message)
+    }
   })
   console.groupEnd()
 
