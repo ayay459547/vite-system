@@ -1,82 +1,40 @@
-const reverse = data => {
-  if (data.length === 0) return []
-  const temp = data.shift()
-  return [...reverse(data), temp]
-}
+import { read, utils } from 'xlsx'
+import { readFileSync, writeFileSync } from 'fs'
 
-console.log(reverse([1, 2, 3]))
+// 換版本 更新Json翻譯
+export const writeI18nJSON = () => {
+  console.log('writeI18nJSON')
+  const localI18nVersion = localStorage.getItem('i18nVersion')
+  const i18nVersion = import.meta.env.VITE_API_I18N_VERSION
 
-class Person {
-  constructor(name, age) {
-    this.name = name
-    this.age = age
+  const isChange = [null, undefined, ''].includes(localI18nVersion) || (localI18nVersion !== i18nVersion)
+
+  if (isChange) {
+    // 讀取 excel
+    const b64 = readFileSync('./src/i18n.xlsx', 'base64')
+    const i18n = JSON.parse(JSON.stringify(b64))
+
+    const wb = read(i18n)
+    const [
+      wsTranslate,
+      wsOptions,
+      wsLiveBoard,
+      wsPage
+    ] = [
+      wb.Sheets[wb.SheetNames[0]],
+      wb.Sheets[wb.SheetNames[1]],
+      wb.Sheets[wb.SheetNames[2]],
+      wb.Sheets[wb.SheetNames[3]]
+    ]
+    const moduleList = [
+      ...utils.sheet_to_json(wsTranslate),
+      ...utils.sheet_to_json(wsOptions),
+      ...utils.sheet_to_json(wsLiveBoard),
+      ...utils.sheet_to_json(wsPage)
+    ]
+
+    // 將新的翻譯檔寫入
+    writeFileSync('./src/i18n.json', JSON.stringify(moduleList), { 'flag': 'w' })
+    localStorage.setItem('buildVersion', i18nVersion)
   }
 }
-
-const p1 = new Person('小名', 16)
-const p2 = new Person('小其', 26)
-console.log(p1.name)
-console.log(Object.prototype.toString.call(p2))
-
-const baseRoutes = [
-  {
-    path: '',
-    redirect: { name: 'locatehome' }
-  },
-  {
-    name: 'locatehome',
-    meta: {
-      title: '首頁'
-    },
-    path: '/locatehome'
-  },
-  {
-    name: 'login',
-    meta: {
-      title: '登入'
-    },
-    path: '/login'
-  },
-  {
-    name: 'noPermissions',
-    meta: {
-      title: '無此權限'
-    },
-    path: '/noPermissions'
-  },
-  {
-    name: 'page404',
-    meta: {
-      title: '404'
-    },
-    path: '/page404'
-  },
-  {
-    path: '/:pathMatch(.*)',
-    redirect: { name: 'page404' }
-  }
-]
-
-const baseRoutesName = baseRoutes.reduce((res, curr) => {
-  const routeName = curr.name
-  if (routeName) {
-    res.push(routeName)
-  }
-  return res
-}, [])
-
-console.log(baseRoutesName)
-
-const temp = { value: '' }
-const testProxy = new Proxy(temp, {
-  get(obj, prop) {
-    if (prop === 'value') return obj[prop]
-    return 'input.value'
-  },
-  set(obj, prop, value) {
-    obj.value = value.trim()
-  }
-})
-
-testProxy.value = ' 789'
-console.log(testProxy.value)
