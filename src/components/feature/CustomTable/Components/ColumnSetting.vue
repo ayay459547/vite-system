@@ -99,7 +99,9 @@ const setDefaultColumnSetting = async () => {
     columns: props.columns.map(column => {
       // 只要顯示資料
       return {
-        isShow: true,
+        isShow: column?.isShow ?? true,
+        order: column?.order ?? 'none',
+        orderIndex: column?.orderIndex ?? -1,
         key: column.key,
         label: column.label,
         i18nLabel: column.i18nLabel,

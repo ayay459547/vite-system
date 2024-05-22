@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 // https://docs.sheetjs.com/docs/demos/static/vitejs/
 // import fs, { readFileSync } from 'fs'
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { read, utils } from 'xlsx'
 // import path from 'path'
 // import { resolve } from 'path'
@@ -12,6 +12,8 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 import eslintPlugin from 'vite-plugin-eslint'
 import VueDevTools from 'vite-plugin-vue-devtools'
+
+const buildVersion = (import.meta as any).env.VITE_API_BUILD_VERSION
 
 const Timestamp = new Date().getTime()
 
@@ -26,9 +28,9 @@ export default defineConfig({
     // outDir: path.resolve(__dirname, ''),
     rollupOptions: {
       output: {
-        chunkFileNames: `static/js/[name].[hash]${Timestamp}.js`,
-        entryFileNames: `static/js/[name].[hash]${Timestamp}.js`,
-        assetFileNames: `static/[ext]/[name].[hash]${Timestamp}.[ext]`
+        chunkFileNames: `static/js/[name].[hash]${buildVersion}${Timestamp}.js`,
+        entryFileNames: `static/js/[name].[hash]${buildVersion}${Timestamp}.js`,
+        assetFileNames: `static/[ext]/[name].[hash]${buildVersion}${Timestamp}.[ext]`
       }
     },
     minify: 'esbuild'
@@ -40,10 +42,39 @@ export default defineConfig({
     { // this plugin handles ?b64 tags
       name: 'vite-b64-plugin',
       transform (code, id) {
-        if(!id.match(/\?b64$/)) return
+        // if (!id.match(/\?b64$/)) return
+        // const path = id.replace(/\?b64/, '')
+        // const data = readFileSync(path, 'base64')
+        // return `export default '${data}'`
+
+        if (!id.match(/\?b64$/)) return
         const path = id.replace(/\?b64/, '')
         const b64 = readFileSync(path, 'base64')
-        return `export default '${b64}'`
+        const i18n = JSON.parse(JSON.stringify(b64))
+
+        const wb = read(i18n)
+        const [wsTranslate] = [
+          wb.Sheets[wb.SheetNames[0]]
+          // wb.Sheets[wb.SheetNames[1]],
+          // wb.Sheets[wb.SheetNames[2]],
+          // wb.Sheets[wb.SheetNames[3]]
+        ]
+        const moduleList = [
+          ...utils.sheet_to_json(wsTranslate)
+          // ...utils.sheet_to_json(wsOptions),
+          // ...utils.sheet_to_json(wsLiveBoard),
+          // ...utils.sheet_to_json(wsPage)
+        ]
+        // // 將新的翻譯檔寫入
+        const jsonPath = id.replace(/\.xlsx\?b64/, '.json')
+        writeFileSync(jsonPath, JSON.stringify(moduleList), { flag: 'w' })
+        console.log('writeI18nJSON => ', jsonPath)
+
+        // return `export default '${b64}'`
+        return `export default JSON.parse('${JSON.stringify({
+          excelPath: path,
+          jsonPath
+        })}')`
       }
     },
     { // this plugin handles ?sheetjs tags

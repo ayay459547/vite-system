@@ -2,21 +2,33 @@ import { ref, shallowRef } from 'vue'
 import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
-import { read, utils } from '@/lib/lib_files'
+// import { read, utils } from '@/lib/lib_files'
 import type { I18nTranslate, I18nTest } from '@/lib/lib_hook'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 
 import { getI18nMessages } from '@/i18n'
 
-import i18n from './i18n_table.xlsx?b64'
-import type { ScopeKey, ModuleType, ModuleLangMap } from './i18n_setting'
+import type { ScopeKey, ModuleLangMap } from './i18n_setting'
 import { defaultModuleLangMap, scopeList } from './i18n_setting'
 
+// import i18n from './i18n_table.xlsx?b64'
+import i18nJson from './i18n_table.json'
+/**
+ * 如果不需要 更新翻譯檔
+ * 註解下面兩行
+ *
+ * 只有啟動服務時有效
+ * 讀取 ?b64
+ * 1.將 i18n.xlsx 轉 base64
+ * 2.base64 轉 json
+ * 3.重新寫入 i18n.json
+ */
+import i18nXlsx from './i18n_table.xlsx?b64'
+console.log('i18nXlsx => ', i18nXlsx)
+
 export const getTranslateSrcFile = () => {
-  const wb = read(i18n)
-  const ws = wb.Sheets[wb.SheetNames[0]]
-  const moduleList = utils.sheet_to_json<ModuleType>(ws)
+  const moduleList = i18nJson as any[]
 
   if (isEmpty(moduleList)) return defaultModuleLangMap
 

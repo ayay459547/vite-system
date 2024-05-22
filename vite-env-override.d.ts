@@ -8,6 +8,11 @@ declare module '*?sheetjs' {
   export default sheetjs
 }
 
+declare module '*?i18n' {
+  const i18n: any
+  export default i18n
+}
+
 // declare module '*.svg' {
 //   const content: React.FC<React.SVGProps<SVGElement>>
 //   export default content

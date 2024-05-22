@@ -58,8 +58,9 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     },
     (error: any) => {
       console.log('response error', error)
-
+      const apiUrl = error?.request?.responseURL ?? ''
       const status = error?.response?.status ?? ''
+
       swal({
         icon: 'error',
         reverseButtons: true,
@@ -67,7 +68,10 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
         showConfirmButton: false,
         showCancelButton: false,
         showDenyButton: false,
-        text: error.message
+        text: `
+        ${error.message}
+        ${apiUrl}
+        `
       })
     }
   )
