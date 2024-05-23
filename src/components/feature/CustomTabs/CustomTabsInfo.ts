@@ -1,6 +1,7 @@
 import type { PropType } from 'vue'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export const version = '1.0.0'
 
@@ -53,7 +54,7 @@ export const props = {
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: 'system',
+    default: defaultModuleType,
     description: `
       list:label 使用 i18nLabel 時套用的翻譯模組
     `
