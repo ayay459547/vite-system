@@ -542,6 +542,22 @@ const routes: Array<RouterTree> = [
     permission: totlaPermission,
     leaves: [
       {
+        name: 'nav4-5',
+        title: '虛擬select',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2024-01',
+          completedDate: '2024-01'
+        },
+        systemType: ['new'],
+        icon: 'v',
+        permission: totlaPermission,
+        path: '/nav4-5',
+        i18nModule: 'view',
+        component: () => import('@/views/Nav4-5/Nav4-5.vue')
+      },
+      {
         name: 'nav4-1',
         title: 'system翻譯',
         meta: {
