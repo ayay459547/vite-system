@@ -1,6 +1,7 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal, cutTableData } from '@/lib/lib_utils'
+import { object_every } from '@/lib/lib_object'
 import type { Sort } from '@/components'
 
 import { fakeData } from './fakeData'
@@ -136,7 +137,7 @@ export const getData = async (params: any) => {
         const { page, size } = config.data
 
         const tempData = data.filter(item => {
-          return (filterMap as any).$every((filterFun, filterKey) => {
+          return object_every(filterMap, (filterFun, filterKey) => {
             const data = item[filterKey]
             return filterFun(data)
           })
@@ -213,7 +214,7 @@ export const getDataCount = async (params: any) => {
         const { status } = fakeData
 
         const tempData = fakeTableData.filter(item => {
-          return (filterMap as any).$every((filterFun, filterKey) => {
+          return object_every(filterMap, (filterFun, filterKey) => {
             const data = item[filterKey]
             return filterFun(data)
           })

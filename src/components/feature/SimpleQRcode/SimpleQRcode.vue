@@ -3,6 +3,7 @@ import { h } from 'vue'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { object_filter } from '@/lib/lib_object'
 
 import { version, props as qrCodeProps } from './SimpleQRcodeInfo'
 
@@ -12,14 +13,12 @@ export default {
   setup(props) {
     const scopedId = getUuid('__i-qrcode__')
 
-    const qrProps = (
-      {
+    const qrProps = object_filter<any>({
         text: props.text,
         bgSrc: props.bgSrc,
         logoSrc: props.logoSrc,
         size: props.size
-      } as any
-    ).$filter((prop: any) => !isEmpty(prop))
+      }, (prop: any) => !isEmpty(prop))
 
     const SimpleQRcode = () =>
       h(

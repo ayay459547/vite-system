@@ -119,12 +119,3 @@ export declare type SwalResult = {
   isDismissed: boolean
   value: boolean
 }
-
-export declare interface ObjectFunction {
-  $forEach(callback: Function, thisArg?: any): void
-  $map(callback: Function, thisArg?: any): any
-  $filter(callback: Function, thisArg?: any): any
-  $some(callback: Function, thisArg?: any): boolean
-  $every(callback: Function, thisArg?: any): boolean
-  $reduce(callback: Function, temp: any, thisArg?: any): any
-}

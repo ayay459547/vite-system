@@ -14,7 +14,7 @@ const { isChange, system } = checkSystemVersionDiff()
 
 const initDB = async () => {
   if (isChange) {
-    console.log('init DB')
+    console.log('[init] init DB')
 
     await deleteDB(system)
   }

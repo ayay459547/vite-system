@@ -22,7 +22,7 @@ if (buildVersion !== oldBuildVersion) {
 const { isChange, system, systemVersion } = checkSystemVersionDiff()
 
 if (isChange) {
-  console.log('init localStorage')
+  console.log('[init] init localStorage')
 
   localStorage.clear()
   localStorage.setItem('system', system)

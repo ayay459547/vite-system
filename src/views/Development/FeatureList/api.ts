@@ -2,6 +2,7 @@ import type { Navigation } from '@/declare/routes'
 import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { cutTableData } from '@/lib/lib_utils'
+import { object_reduce } from '@/lib/lib_object'
 
 export type TableData = {
   status: 'completed' | 'inProgress' | 'new'
@@ -62,15 +63,13 @@ export const getData = (params: any) => {
 
   const { key: sortKey, order: sortType } = sort
 
-  const filterList = (
-    {
-      status,
-      title,
-      path,
-      mode,
-      breadcrumbTitle
-    } as any
-  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
+  const filterList = object_reduce<any[]>({
+    status,
+    title,
+    path,
+    mode,
+    breadcrumbTitle
+  }, (res: Record<string, string>[], curr: string, key: string) => {
     if (!['', null, undefined].includes(curr)) {
       res.push({ key, value: curr })
     }
@@ -122,15 +121,13 @@ export const getData = (params: any) => {
 export const getDataCount = (params: any) => {
   const { status, title, path, mode, breadcrumbTitle } = params
 
-  const filterList = (
-    {
-      status,
-      title,
-      path,
-      mode,
-      breadcrumbTitle
-    } as any
-  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
+  const filterList = object_reduce<any[]>({
+    status,
+    title,
+    path,
+    mode,
+    breadcrumbTitle
+  }, (res: Record<string, string>[], curr: string, key: string) => {
     if (!['', null, undefined].includes(curr)) {
       res.push({ key, value: curr })
     }

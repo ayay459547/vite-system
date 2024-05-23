@@ -3,6 +3,7 @@ import {
   langMap
 } from '@/i18n'
 import { cutTableData, isEmpty } from '@/lib/lib_utils'
+import { object_forEach, object_reduce } from '@/lib/lib_object'
 
 export type TableData = {
   keyword: string
@@ -13,7 +14,8 @@ export type TableData = {
 
 const langData = [] as TableData[]
 
-;(langMap as any).$forEach(
+object_forEach(
+  langMap,
   (
     lang: {
       zhTw: string
@@ -30,7 +32,7 @@ const langData = [] as TableData[]
 // console.log(properties)
 // properties.then(langProperties => {
 //   if (!isEmpty(langProperties)) {
-//     (langProperties as any).$forEach((lang: {
+//     object_forEach(langProperties, (lang: {
 //       zhTw: string
 //       zhCn: string
 //       en: string
@@ -49,14 +51,12 @@ export const getData = (params: any) => {
 
   const { key: sortKey, order: sortType } = sort
 
-  const filterList = (
-    {
-      keyword,
-      zhTw,
-      zhCn,
-      en
-    } as any
-  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
+  const filterList = object_reduce<any[]>({
+    keyword,
+    zhTw,
+    zhCn,
+    en
+  }, (res: Record<string, string>[], curr: string, key: string) => {
     if (!isEmpty(curr)) {
       res.push({ key, value: curr })
     }
@@ -108,14 +108,12 @@ export const getData = (params: any) => {
 export const getDataCount = (params: any): number => {
   const { keyword, zhTw, zhCn, en } = params
 
-  const filterList = (
-    {
-      keyword,
-      zhTw,
-      zhCn,
-      en
-    } as any
-  ).$reduce((res: Record<string, string>[], curr: string, key: string) => {
+  const filterList = object_reduce({
+    keyword,
+    zhTw,
+    zhCn,
+    en
+  }, (res: Record<string, string>[], curr: string, key: string) => {
     if (!isEmpty(curr)) {
       res.push({ key, value: curr })
     }

@@ -6,10 +6,12 @@ import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
+
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'
 import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { object_forEach, object_filter } from '@/lib/lib_object'
 
 import type { ValidateType } from './lib_validate'
 
@@ -91,7 +93,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
   }
 
   const defaultValue = {}
-  columns.$forEach((column: Record<string, any>, key: string) => {
+  object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
@@ -116,7 +118,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
     activeForms: resActiveForms,
     // 驗證不會 reset
     resetForms: (defaultValue?: Partial<T> | any) => {
-      resForms.$forEach((value: any, key: string) => {
+      object_forEach(resForms, (value: any, key: string) => {
         resForms[key] = resColumns[key]?.default ?? null
         if (
           !isEmpty(defaultValue) &&
@@ -129,7 +131,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
     },
     // 驗證也會 reset
     reset: (defaultValue?: Partial<T> | any) => {
-      resForms.$forEach((value: any, key: string) => {
+      object_forEach(resForms, (value: any, key: string) => {
         resForms[key] = resColumns[key]?.default ?? null
         if (
           !isEmpty(defaultValue) &&
@@ -147,7 +149,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       })
     },
     getActiveForms: (isShowEmpty: boolean = false) => {
-      return resForms.$filter((value: any, key: string) => {
+      return object_filter(resForms, (value: any, key: string) => {
         if (isShowEmpty) {
           return resActiveForms[key]
         }
@@ -161,7 +163,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       const successList = []
       const errorList = []
 
-      refMap.$forEach((input: InputRefItem) => {
+      object_forEach(refMap, (input: InputRefItem) => {
         const { key, value, validate, getDom } = input
         // 只用有顯示的 input 才會被驗證
         const el = getDom()
@@ -206,7 +208,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       })
     },
     handleReset: () => {
-      resForms.$forEach((value: any, key: string) => {
+      object_forEach(resForms, (value: any, key: string) => {
         if (typeof refMap[key]?.handleReset === 'function') {
           refMap[key].handleReset()
         }
@@ -283,7 +285,7 @@ export const useFormListSetting = <T>(
   }
 
   const defaultValue = {}
-  columns.$forEach((column: Record<string, any>, key: string) => {
+  object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns[key] = temp
@@ -311,7 +313,7 @@ export const useFormListSetting = <T>(
       const errorList = []
 
       const checkRepeatSet = new Set()
-      refMap.$forEach((input: InputRefItem, mapKey: string) => {
+      object_forEach(refMap, (input: InputRefItem, mapKey: string) => {
         const { key, value, validate, getDom } = input
         const el = getDom()
         if (checkRepeatSet.has(el) || el === null) {
@@ -441,6 +443,7 @@ export interface TableColumnsItem {
   minWidth?: number
   align?: 'left' | 'center' | 'right'
   fixed?: 'left' | 'right'
+  isShow?: boolean
   // 客製化排序
   isSorting?: boolean
   order?: string | 'ascending' | 'descending' | 'none'
@@ -489,7 +492,7 @@ export const useTableSetting = (
   const getChildrenData = (columns: Record<string, any>): Array<any> => {
     const resChildren = []
 
-    columns.$forEach((child: Record<string, any>, childkey: string) => {
+    object_forEach(columns, (child: Record<string, any>, childkey: string) => {
       const _isOperations = child?.isOperations ?? false
       resChildren.push({
         key: childkey,
@@ -524,6 +527,7 @@ export const useTableSetting = (
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
       title: column?.label ?? '',
+      isShow: column?.isShow ?? true,
       minWidth: 150,
       // element ui 單排用
       sortable: !_isOperations ? column[type]?.sortable ?? false : false,
@@ -537,7 +541,7 @@ export const useTableSetting = (
     }
   }
   const resColumns = []
-  columns.$forEach((column: Record<string, any>, key: string) => {
+  object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       if (temp.children ?? false) {
@@ -806,7 +810,7 @@ export const useSimpleTableSetting = (
     }
   }
   const resColumns = []
-  columns.$forEach((column: Record<string, any>, key: string) => {
+  object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
       const temp = getColumnData(column, type, key)
       resColumns.push(temp)
@@ -889,7 +893,7 @@ export const useSimpleTableSetting = (
  * @returns {Array}
  */
 export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
-  return columns.$reduce((prev: Array<string>, curr: any, currKey: string) => {
+  return object_reduce(columns, (prev: Array<string>, curr: any, currKey: string) => {
     return [...prev, currKey]
   }, [])
 }
@@ -907,7 +911,7 @@ export const formatColumns = (
   type: string,
   callback: (column: Record<string, any>, key: string) => Record<string, any>
 ): Record<string, any> => {
-  return columns.$reduce((res: Record<string, any>, column: Record<string, any>, key: string) => {
+  return object_reduce(columns, (res: Record<string, any>, column: Record<string, any>, key: string) => {
     res[key] = { ...column }
     const _column = res[key]
 

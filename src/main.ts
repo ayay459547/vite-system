@@ -1,9 +1,6 @@
 // 去除 chrome 的touch事件警告
 import './lib/init/passiveEvents'
 
-// object 有類似 array 方法
-import './lib/init/objectFunction'
-
 // Polyfill
 import './lib/Polyfill/inject'
 

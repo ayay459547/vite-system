@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iPASP</title>
+  <title>Demo</title>
 </head>
 
 <body>
@@ -16,27 +16,35 @@
   <script type="module" src="/src/main.ts"></script>
   <script>
     (function () {
+      const Demo = `
+      Demo
+      `
+      console.groupCollapsed('[init] Demo')
+      console.log(Demo)
+
       // 確認打包版本
       function checkBuildVerison() {
         var buildVersion = localStorage.getItem('buildVersion')
-        if (buildVersion === null) {
+        if ([null, undefined, ''].includes(buildVersion)) {
           console.log('[init] init build version')
           localStorage.setItem('buildVersion', 'v2000-01-01.1')
           location.reload(true)
         }
         
-        console.log('[init] check build version：', buildVersion)
+        console.log('build version：', buildVersion)
       }
 
       // 確認瀏覽器版本
       function checkBrowserVerison() {
         var userAgent = navigator.userAgent
         
-        console.log('[init] check browser：', userAgent)
+        console.log('browser version：', userAgent)
       }
 
       checkBuildVerison()
       checkBrowserVerison()
+      
+      console.groupEnd()
     })()
 
   </script>

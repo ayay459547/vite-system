@@ -9,6 +9,7 @@ import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
 import type { TableOptions } from '@/lib/lib_columns'
+import { object_filter } from '@/lib/lib_object'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData, deleteData } from './api'
@@ -48,9 +49,9 @@ const { tableSetting, downloadExcel, getParams } = useTableSetting(
 
 const download = async ({ type }) => {
   let excelData = []
-  const apiParam = {
+  const apiParam = object_filter({
     ...(getParams(tableRef.value) as any)
-  }.$filter(item => item !== null)
+  }, (item: any) => item !== null)
 
   switch (type) {
     case 'all':
@@ -141,9 +142,9 @@ const init = async (props?: any) => {
 
   let apiParam = {}
   if (typeof props === 'object') {
-    apiParam = {
+    apiParam = object_filter({
       ...(getParams(tableRef.value) as any)
-    }.$filter(item => item !== null)
+    }, (item: any) => item !== null)
   }
 
   const [resData, resDataCount] = await Promise.all([getData(apiParam), getDataCount()])
