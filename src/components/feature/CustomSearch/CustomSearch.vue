@@ -115,6 +115,7 @@ const isDot = computed(() => {
     case 'password':
     case 'autocomplete':
     case 'select':
+    case 'select-v2':
     case 'year':
     case 'month':
     case 'date':

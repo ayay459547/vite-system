@@ -12,6 +12,7 @@ export type Option = {
   label: string
   value: string | number | boolean | null
   disabled?: boolean
+  data?: any
   color?: string
 }
 export type Options = Array<Option>
@@ -107,10 +108,11 @@ const scopedId = getUuid('__i-checkbox__')
         >
           <span :style="getStyle(inputValue.includes(item.value), item?.color)">
             <slot
-              name="option"
+              name="options"
               :is-checked="inputValue.includes(item.value)"
               :label="item.label"
               :value="item.value"
+              :data="item.data"
               :color="item?.color ?? '#ffffff'"
             >
               {{ item.label }}

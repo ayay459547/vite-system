@@ -5,6 +5,7 @@ import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
   FormSelect,
+  FormSelectV2,
   FormDatePicker,
   FormTimePicker,
   FormCheckbox,
@@ -251,6 +252,7 @@ const CustomInput = defineComponent({
 
     const inputRef = ref()
     const selectRef = ref()
+    const selectV2Ref = ref()
     const datePickerRef = ref()
     const timePickerRef = ref()
     const autocompleteRef = ref()
@@ -280,6 +282,9 @@ const CustomInput = defineComponent({
             break
           case 'select':
             selectRef.value.focus()
+            break
+          case 'select-v2':
+            selectV2Ref.value.focus()
             break
           case 'year':
           case 'month':
@@ -313,6 +318,9 @@ const CustomInput = defineComponent({
             break
           case 'select':
             selectRef.value.blur()
+            break
+          case 'select-v2':
+            selectV2Ref.value.blur()
             break
           case 'year':
           case 'month':
@@ -353,7 +361,8 @@ const CustomInput = defineComponent({
         case 'password':
         case 'autocomplete':
           return inputValue.value
-        case 'select': {
+        case 'select':
+        case 'select-v2': {
           const option = props.options.find(_option => _option.value === inputValue.value)
           return getTranslateLabel(option)
         }
@@ -511,6 +520,29 @@ const CustomInput = defineComponent({
                 ...getSlot(['option', 'header', 'footer', 'prefix', 'empty'])
               }}
             </FormSelect>
+          )
+        case 'select-v2':
+          return (
+            <FormSelectV2
+              ref={selectV2Ref}
+              modelValue={inputValue.value}
+              onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
+              // v-bind 綁定屬性
+              {...bindAttributes.value}
+              options={translateOptions.value}
+              errorMessage={errorMessage.value}
+              // v-on 接收事件
+              onFocus={(e: any) => onEvent.value.onFocus(e)}
+              onClear={() => onEvent.value.onClear()}
+              onBlur={(e: any) => onEvent.value.onBlur(e)}
+              onChange={(e: any) => onEvent.value.onChange(e)}
+              onRemove-tag={(e: any) => onEvent.value.onRemoveTag(e)}
+              onVisible-change={(e: boolean) => onEvent.value.onVisibleChange(e)}
+            >
+              {{
+                ...getSlot(['option', 'header', 'footer', 'prefix', 'empty'])
+              }}
+            </FormSelectV2>
           )
         case 'year':
         case 'month':

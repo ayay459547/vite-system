@@ -8,6 +8,7 @@ export type Options = Array<{
   label: string
   value: string | number | boolean
   disabled?: boolean
+  data?: any
   color?: string
 }>
 
@@ -87,15 +88,17 @@ const getStyle = (isSelected: boolean, color?: string) => {
       <ElRadio
         v-for="item in props.options"
         :key="`key-${item.value}`"
+        :label="item.value"
         :value="item.value"
         :disabled="item.disabled ?? false"
       >
         <div class="__i-radio__" :style="getStyle(inputValue === item.value, item?.color)">
           <slot
-            name="option"
+            name="options"
             :is-selected="inputValue === item.value"
             :label="item.label"
             :value="item.value"
+            :data="item.data"
             :color="item?.color ?? '#ffffff'"
           >
             {{ item.label }}

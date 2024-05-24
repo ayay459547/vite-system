@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed, useSlots, ref, inject } from 'vue'
-import { ElSelect, ElOption } from 'element-plus'
+import { ElSelectV2 } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
@@ -14,8 +14,6 @@ export type Option = {
   value: string | number | boolean | null
   data?: any
   disabled?: boolean
-  // 區別一般 select 與 group select 尚未製作
-  options?: Array<Option>
 }
 
 export type Options = Array<Option>
@@ -24,6 +22,13 @@ const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
+
+const propsValue = {
+  value: 'value',
+  label: 'label',
+  options: 'options',
+  disabled: 'disabled'
+}
 
 const props = defineProps({
   modelValue: {
@@ -93,6 +98,10 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false
   },
+  valuekey: {
+    type: String as PropType<string>,
+    default: 'value'
+  },
   // tsx event
   'onUpdate:modelValue': Function as PropType<(e: any) => void>,
   onFocus: Function as PropType<(e: FocusEvent) => void>,
@@ -118,7 +127,11 @@ const bindAttributes = computed(() => {
     collapseTagsTooltip: props.multiple,
     filterable: props.filterable,
     allowCreate: props.allowCreate,
-    defaultFirstOption: props.defaultFirstOption
+    defaultFirstOption: props.defaultFirstOption,
+    valuekey: props.valuekey,
+
+    // 固定
+    props: propsValue
   }
   if (!isEmpty(props.placeholder)) {
     attributes.placeholder = props.placeholder
@@ -160,7 +173,7 @@ const inputValue = computed({
   }
 })
 
-const scopedId = getUuid('__i-select__')
+const scopedId = getUuid('__i-select-v2__')
 
 // slot
 const slots = useSlots()
@@ -168,56 +181,46 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const elSelectRef = ref()
+const elSelectV2Ref = ref()
 defineExpose({
   focus: (): void => {
-    if (elSelectRef.value) {
-      elSelectRef.value.focus()
+    if (elSelectV2Ref.value) {
+      elSelectV2Ref.value.focus()
     }
   },
   blur: (): void => {
-    if (elSelectRef.value) {
-      elSelectRef.value.blur()
+    if (elSelectV2Ref.value) {
+      elSelectV2Ref.value.blur()
     }
   }
 })
 </script>
 
 <template>
-  <div class="__i-select__" :class="scopedId">
-    <ElSelect
-      ref="elSelectRef"
+  <div class="__i-select-v2__" :class="scopedId">
+    <ElSelectV2
+      ref="elSelectV2Ref"
       v-model="inputValue"
-      class="__i-select__"
+      class="__i-select-v2__"
       :placeholder="i18nTranslate('pleaseSelect')"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
       v-on="onEvent"
+      :options="options"
     >
-      <slot>
-        <ElOption
-          v-for="item in props.options"
-          :key="`__${item.value}__`"
+      <template #default="{ item }">
+        <slot
+          name="options"
+          :is-selected="inputValue === item.value"
           :label="item.label"
           :value="item.value"
           :data="item.data"
-          :disabled="item.disabled"
+          v-bind="item"
         >
-          <template v-if="hasSlot('options')">
-            <slot
-              name="options"
-              :is-selected="inputValue === item.value"
-              :label="item.label"
-              :value="item.value"
-              :data="item.data"
-              v-bind="item"
-            >
-              <span>{{ item.label }}</span>
-            </slot>
-          </template>
-        </ElOption>
-      </slot>
+          <span>{{ item.label }}</span>
+        </slot>
+      </template>
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>
       </template>
@@ -238,12 +241,12 @@ defineExpose({
       <template v-if="hasSlot('loading')" #loading>
         <slot name="loading"></slot>
       </template>
-    </ElSelect>
+    </ElSelectV2>
   </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.__i-select__) {
+:deep(.__i-select-v2__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
     box-shadow: 0 0 0 1px inherit inset;
@@ -262,7 +265,7 @@ defineExpose({
     background-color: lighten($danger, 20%);
   }
 }
-.__i-select__ {
+.__i-select-v2__ {
   width: 100%;
   height: 100%;
 }

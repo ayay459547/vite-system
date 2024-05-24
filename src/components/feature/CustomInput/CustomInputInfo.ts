@@ -14,6 +14,7 @@ export type InputType =
   | 'textarea'
   | 'password'
   | 'select'
+  | 'select-v2'
   | 'checkbox'
   | 'radio'
   | 'autocomplete'

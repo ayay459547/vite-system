@@ -155,6 +155,7 @@ export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.
 
 export type { TreeOptionProps } from './feature/CustomTree/CustomTreeInfo'
 export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
+export { default as CustomTreeV2 } from './feature/CustomTreeV2/CustomTreeV2.vue'
 
 export type {
   Size as TimeLineSize,
@@ -196,6 +197,7 @@ export { default as FormRadio } from './form/FormRadio.vue'
 
 export type { Options as FormSelectOptions } from './form/FormSelect.vue'
 export { default as FormSelect } from './form/FormSelect.vue'
+export { default as FormSelectV2 } from './form/FormSelectV2.vue'
 
 export type { TimePickerType } from './form/FormTimePicker.vue'
 export { default as FormTimePicker } from './form/FormTimePicker.vue'

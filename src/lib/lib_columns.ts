@@ -11,7 +11,7 @@ import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize }
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'
 import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
-import { object_forEach, object_filter } from '@/lib/lib_object'
+import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
 
 import type { ValidateType } from './lib_validate'
 
