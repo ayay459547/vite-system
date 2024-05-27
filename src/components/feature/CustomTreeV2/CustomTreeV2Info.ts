@@ -8,20 +8,11 @@ export interface TreeNodeData {
   [key: string]: any
 }
 
-export interface TreeOptionProps {
+export interface TreeV2OptionProps {
+  value?: string | number
   children?: string
-  label?: string | ((data: TreeNodeData, node: Node) => string)
-  disabled?: string | ((data: TreeNodeData, node: Node) => string)
-  isLeaf?: string | ((data: TreeNodeData, node: Node) => boolean)
-  class?: (
-    data: TreeNodeData,
-    node: Node
-  ) =>
-    | string
-    | {
-        [key: string]: boolean
-      }
-    | string
+  label?: string
+  disabled?: string
 }
 
 export const props = {
@@ -34,10 +25,14 @@ export const props = {
     description: '樹結構資料'
   },
   props: {
-    type: Object as PropType<TreeOptionProps | any>,
+    type: Object as PropType<TreeV2OptionProps | any>,
     required: false,
     default: () => {
-      return {}
+      return {
+        value: 'id',
+        label: 'label',
+        children: 'children'
+      }
     },
     description: '參數'
   },

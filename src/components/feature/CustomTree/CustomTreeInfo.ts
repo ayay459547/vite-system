@@ -37,7 +37,10 @@ export const props = {
     type: Object as PropType<TreeOptionProps | any>,
     required: false,
     default: () => {
-      return {}
+      return {
+        label: 'label',
+        children: 'children'
+      }
     },
     description: '參數'
   },

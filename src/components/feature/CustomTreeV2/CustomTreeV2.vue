@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { useSlots, ref } from 'vue'
+import type { Ref } from 'vue'
+import { useSlots, ref, reactive, effectScope, onMounted, onUnmounted } from 'vue'
 import type { TreeNode } from 'element-plus'
 import { ElTreeV2 } from 'element-plus'
 // import type Node from 'element-plus/es/components/tree/src/model/node'
 
 import { getUuid } from '@/lib/lib_utils'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 
 // import type { CheckNode } from './CustomTreeV2Info'
 import { version, props as treeProps } from './CustomTreeV2Info'
 
-const scopedId = getUuid('__i-tree__')
+const scopedId = getUuid('__i-tree-v2__')
 
 const props = defineProps(treeProps)
 
 const emit = defineEmits(['node-click', 'check-change', 'check'])
 
 type TreeNodeData = any
+
+type TreeKey = string | number
 
 const onNodeClick = (data: TreeNodeData, node: TreeNode, e: MouseEvent) => {
   emit('node-click', e, data, node)
@@ -30,55 +35,91 @@ const onCheck = (nodeDate: any, checkedData: any) => {
 const elTreeV2Ref = ref<InstanceType<typeof ElTreeV2>>()
 
 // 取得資料
-// const getCheckedNodes = (leafOnly?: boolean, includeHalfChecked?: boolean) => {
-//   return elTreeV2Ref.value!.getCheckedNodes(leafOnly ?? false, includeHalfChecked ?? false)
-// }
-// const getCheckedKeys = (leafOnly?: boolean) => {
-//   return elTreeV2Ref.value!.getCheckedKeys(leafOnly ?? false)
-// }
+const getCheckedNodes = (leafOnly?: boolean) => {
+  return elTreeV2Ref.value!.getCheckedNodes(leafOnly ?? false)
+}
+const getCheckedKeys = (leafOnly?: boolean) => {
+  return elTreeV2Ref.value!.getCheckedKeys(leafOnly ?? false)
+}
 
 // 設定勾選
 // const setCheckedNodes = (nodeList: Node[], leafOnly?: boolean) => {
 //   elTreeV2Ref.value!.setCheckedNodes(nodeList, leafOnly ?? false)
 // }
 
-// const setCheckedKeys = (keyList: Array<string | number>, leafOnly?: boolean) => {
-//   elTreeV2Ref.value!.setCheckedKeys(keyList, leafOnly ?? false)
-// }
+const setCheckedKeys = (keyList: Array<TreeKey>) => {
+  elTreeV2Ref.value!.setCheckedKeys(keyList)
+}
 
-// const resetChecked = () => {
-//   elTreeV2Ref.value!.setCheckedKeys([], false)
-// }
+const resetChecked = () => {
+  elTreeV2Ref.value!.setCheckedKeys([])
+}
 
-// const setChecked = (checkNode: CheckNode, checked: boolean, deep: boolean) => {
-//   elTreeV2Ref.value!.setChecked(checkNode, checked ?? false, deep ?? false)
-// }
+const setChecked = (key: TreeKey, checked: boolean) => {
+  elTreeV2Ref.value!.setChecked(key, checked)
+}
 
 defineExpose({
-  // getCheckedNodes,
-  // getCheckedKeys,
+  getCheckedNodes,
+  getCheckedKeys,
   // setCheckedNodes,
-  // setCheckedKeys,
-  // resetChecked,
-  // setChecked
+  setCheckedKeys,
+  resetChecked,
+  setChecked
 })
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
+
+// 高度計算
+const wrapRef: Ref<HTMLElement | null> = ref(null)
+const treeSize = reactive({
+  width: 240,
+  height: 200
+})
+const wrapROcallback = throttle((entries: ResizeObserverEntry[]) => {
+  entries.forEach(async entry => {
+    const { width = 0, height = 0 } = entry.contentRect
+
+    treeSize.width = width
+    treeSize.height = height
+  })
+}, 100) as ResizeObserverCallback
+const wrapRO = new ResizeObserver(wrapROcallback)
+
+const scope = effectScope()
+
+onMounted(() => {
+  if (wrapRef.value !== null) {
+    wrapRO.observe(wrapRef.value)
+  }
+})
+onUnmounted(() => {
+  scope.stop()
+
+  if (wrapRO) {
+    wrapRO.disconnect()
+  }
+})
 </script>
 
 <template>
-  <div :class="`CustomTree_${version} ${scopedId}`" class="__tree-wrapper">
+  <div
+    ref="wrapRef"
+    :class="`CustomTree_${version} ${scopedId}`"
+    class="__tree-wrapper"
+  >
     <ElTreeV2
       ref="elTreeV2Ref"
       :data="props.data"
       :props="props.props"
-      :node-key="props.nodeKey"
       :highlight-current="props.highlightCurrent"
       :default-expand-all="props.defaultExpandAll"
       :show-checkbox="props.showCheckbox"
+      :style="`max-width: ${treeSize.width}px`"
+      :height="treeSize.height"
       @node-click="onNodeClick"
       @check-change="onCheckChange"
       @check="onCheck"
@@ -99,7 +140,7 @@ const hasSlot = (prop: string): boolean => {
 .__tree {
   &-wrapper {
     width: 100%;
-    height: fit-content;
+    height: 100%;
   }
 }
 </style>

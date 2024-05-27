@@ -132,6 +132,7 @@ const columnNode = (
       ![undefined, null].includes(columnNode)
         ? columnNode({
             key: columnKey,
+            prop: columnKey,
             row: rowItem,
             column: { ...columnItem },
             rowIndex,

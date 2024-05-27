@@ -155,6 +155,7 @@ export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.
 
 export type { TreeOptionProps } from './feature/CustomTree/CustomTreeInfo'
 export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
+export type { TreeV2OptionProps } from './feature/CustomTreeV2/CustomTreeV2Info'
 export { default as CustomTreeV2 } from './feature/CustomTreeV2/CustomTreeV2.vue'
 
 export type {
