@@ -79,7 +79,7 @@ const RouterChange = (navigate: () => void) => {
       closable
       @remove="removeHistory"
     >
-      <template #default="slotProps">
+      <template #label="slotProps">
         <RouterLink
           :to="slotProps.data.path"
           class="history-tab"

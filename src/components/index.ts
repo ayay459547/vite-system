@@ -23,7 +23,7 @@ export { default as CustomCollapse } from './feature/CustomCollapse/CustomCollap
 
 export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue'
 
-export type { BadgeType } from './feature/CustomBadge/CustomBadgeInfo'
+export type { Props as BadgeProps } from './feature/CustomBadge/CustomBadgeInfo'
 export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
 
 export type {
@@ -137,10 +137,7 @@ export type {
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 export type {
-  Option as TabsOption,
-  Options as TabsOptions,
-  ModelValue as TabsModelValue,
-  TabPosition
+  Props as CustomTabsProps
 } from './feature/CustomTabs/CustomTabsInfo'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 

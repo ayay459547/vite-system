@@ -5,9 +5,10 @@ import { ElButton } from 'element-plus'
 import { CustomIcon } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import { ElType, ElSize, FontIconType, version, props as buttonProps } from './CustomButtonInfo'
+import { version, props as buttonProps } from './CustomButtonInfo'
 
-const scopedId = getUuid('__i-button__')
+const scopedName = '__i-button__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(buttonProps)
 
@@ -24,11 +25,16 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <div
-    class="__button-container"
-    :class="`CustomButton_${version} ${scopedId} size-${ElSize[props.size]}`"
+    class="button-container"
+    :class="[
+      `CustomButton_${version}`,
+      `size-${props.size}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <ElButton
-      :type="ElType[props.type]"
+      :type="props.type"
       :text="props.text"
       :size="props.size"
       :plain="props.plain"
@@ -39,14 +45,15 @@ const hasSlot = (prop: string): boolean => {
       :dark="props.dark"
       :loading="props.loading"
       :style="props.style"
+      class="button-container"
       @click="onClick"
     >
       <template v-if="!props.loading && props.iconName.length > 0" #icon>
         <CustomIcon
           class="icon"
           :class="`icon-${iconMove}`"
-          :size="ElSize[props.iconSize]"
-          :type="FontIconType[props.iconType]"
+          :size="props.iconSize"
+          :type="props.iconType"
           :name="props.iconName"
           :style="{ color: props.textColor }"
         />
@@ -56,7 +63,7 @@ const hasSlot = (prop: string): boolean => {
         <slot>
           <span
             class="__button-label"
-            :class="`size-${ElSize[props.iconSize]}`"
+            :class="`size-${props.iconSize}`"
             :style="{ color: props.textColor }"
           >
             {{ props.label }}
@@ -68,35 +75,31 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.__button-container) {
-  .el-button {
+:deep(.__i-button__.button-container) {
+  &.el-button {
     align-items: center;
-  }
-  &.size {
-    &-large {
-      .el-button {
+
+    &.size {
+      &-large {
         height: 36px;
         gap: 4px;
       }
-    }
-    &-default {
-      .el-button {
+      &-default {
         height: 32px;
         gap: 2px;
       }
-    }
-    &-small {
-      .el-button {
+      &-small {
         height: 28px;
         gap: 0px;
       }
     }
   }
 }
-.__button {
+
+.__i-button__.button {
   &-container {
-    width: fit-content;
-    height: fit-content;
+    width: inherit;
+    height: inherit;
 
     .icon {
       transition-duration: 0.3s;
@@ -129,14 +132,16 @@ const hasSlot = (prop: string): boolean => {
   &-label {
     display: inline-block;
 
-    &.size-large {
-      font-size: 1.3em;
-    }
-    &.size-default {
-      font-size: 1.1em;
-    }
-    &.size-small {
-      font-size: 1em;
+    &.size {
+      &-large {
+        font-size: 1.3em;
+      }
+      &-default {
+        font-size: 1.1em;
+      }
+      &-small {
+        font-size: 1em;
+      }
     }
   }
 }

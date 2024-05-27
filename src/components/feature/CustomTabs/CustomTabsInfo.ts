@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export const version = '1.0.0'
+export const version = '1.1.0'
 
 export type Option = {
   label: string
@@ -12,9 +12,6 @@ export type Option = {
   disabled?: boolean
   data?: any
 }
-export type Options = Array<Option>
-export type ModelValue = string | number | null
-export type TabPosition = 'left' | 'right'
 
 export declare namespace Props {
   type ModelValue = string | number | null
@@ -62,7 +59,7 @@ export const props = {
   tabPosition: {
     type: String as PropType<Props.TabPosition>,
     required: false,
-    default: '',
+    default: 'top',
     description: '位置'
   },
   stretch: {
