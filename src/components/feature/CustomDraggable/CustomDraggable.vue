@@ -126,6 +126,7 @@ const listValue = computed({
 .__list-group {
   // width: 100%;
   // height: 100%;
+    border-bottom: 1px solid #ffffff00;
 
   &-item {
     background-color: #fff;

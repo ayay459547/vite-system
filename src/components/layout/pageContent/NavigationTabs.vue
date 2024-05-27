@@ -76,8 +76,7 @@ const RouterChange = (navigate: () => void) => {
       :model-value="currentTab"
       :options="tabs"
       class="history-tabs"
-      remove
-      move
+      closable
       @remove="removeHistory"
     >
       <template #default="slotProps">

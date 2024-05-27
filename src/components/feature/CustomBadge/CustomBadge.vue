@@ -17,19 +17,19 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomBadge_${version} ${scopedId}`" class="__badge-wrapper">
-    <ElBadge
-      :value="props.value"
-      :max="props.max"
-      :is-dot="props.isDot"
-      :hidden="props.hidden"
-      :type="props.type"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot></slot>
-      </template>
-    </ElBadge>
-  </div>
+  <ElBadge
+    :value="props.value"
+    :max="props.max"
+    :is-dot="props.isDot"
+    :hidden="props.hidden"
+    :type="props.type"
+    :class="`CustomBadge_${version} ${scopedId}`"
+    class="__badge-wrapper"
+  >
+    <template v-if="hasSlot('default')" #default>
+      <slot></slot>
+    </template>
+  </ElBadge>
 </template>
 
 <style lang="scss" scoped>

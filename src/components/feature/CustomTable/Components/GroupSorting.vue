@@ -125,7 +125,7 @@ const submit = () => {
             }"
           >
             <template #item="{ element }">
-              <div class="__column-item" :class="element.order !== 'none' ? 'is-active' : ''">
+              <div class="__column-item" :class="element.order !== 'none' ? 'is-active sorting-move' : ''">
                 <div class="__column-item-left">
                   <CustomInput
                     :model-value="element.order"
@@ -150,7 +150,6 @@ const submit = () => {
                       type="info"
                       icon-name="right-left"
                       text
-                      :class="element.order !== 'none' ? 'sorting-move' : ''"
                       :disabled="element.order === 'none'"
                       style="transform: rotateZ(90deg)"
                     />
@@ -234,8 +233,11 @@ const submit = () => {
 
   &-reset {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 8px 8px 4px;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px;
   }
 }
 </style>

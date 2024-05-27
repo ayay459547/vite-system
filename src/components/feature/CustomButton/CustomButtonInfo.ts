@@ -5,8 +5,8 @@ import type { IconType } from '@/components'
 export const version = '1.0.0'
 
 export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
-export type ButtonSize = 'large' | 'default' | 'small'
-export type ButtonMove = 'none' | 'translate' | 'rotate' | 'scale'
+export type ButtonSize = 'large'| 'default'| 'small'
+export type ButtonMove = 'none' | 'translate'| 'rotate' | 'scale'
 export type ButtonIconType = 'fas' | 'far' | 'fab'
 
 export enum ElType {
@@ -41,7 +41,7 @@ export const props = {
     type: String as PropType<ButtonSize>,
     required: false,
     default: 'default',
-    description: '大小'
+    description: 'Button尺寸'
   },
   type: {
     type: String as PropType<ButtonType>,
@@ -103,6 +103,12 @@ export const props = {
     default: false,
     description: '是否為深色模式'
   },
+  iconSize: {
+    type: String as PropType<ButtonSize>,
+    required: false,
+    default: 'default',
+    description: 'Icon尺寸'
+  },
   iconType: {
     type: String as PropType<IconType>,
     required: false,
@@ -120,6 +126,14 @@ export const props = {
     required: false,
     default: 'none',
     description: 'hover後 的效果'
+  },
+  style: {
+    type: Object as PropType<any>,
+    default: {},
+    description: `
+      ElButton 使用的style
+      以 Object 格式輸入
+    `
   },
   // tsx event
   onClick: Function as PropType<(e: MouseEvent) => void>

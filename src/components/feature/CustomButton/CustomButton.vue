@@ -30,6 +30,7 @@ const hasSlot = (prop: string): boolean => {
     <ElButton
       :type="ElType[props.type]"
       :text="props.text"
+      :size="props.size"
       :plain="props.plain"
       :round="props.round"
       :circle="props.circle"
@@ -37,13 +38,14 @@ const hasSlot = (prop: string): boolean => {
       :color="props.color"
       :dark="props.dark"
       :loading="props.loading"
+      :style="props.style"
       @click="onClick"
     >
       <template v-if="!props.loading && props.iconName.length > 0" #icon>
         <CustomIcon
           class="icon"
           :class="`icon-${iconMove}`"
-          :size="ElSize[props.size]"
+          :size="ElSize[props.iconSize]"
           :type="FontIconType[props.iconType]"
           :name="props.iconName"
           :style="{ color: props.textColor }"
@@ -54,7 +56,7 @@ const hasSlot = (prop: string): boolean => {
         <slot>
           <span
             class="__button-label"
-            :class="`size-${ElSize[props.size]}`"
+            :class="`size-${ElSize[props.iconSize]}`"
             :style="{ color: props.textColor }"
           >
             {{ props.label }}

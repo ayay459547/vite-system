@@ -39,7 +39,7 @@ const tabs = [
     <h2 class="i-mb-md text-primary">{{ pageTranslate('test') }}</h2>
 
     <CustomTabs v-model="tab" :options="tabs"></CustomTabs>
-    <CustomTabs v-model="tab" :options="tabs" background></CustomTabs>
+    <CustomTabs v-model="tab" :options="tabs"></CustomTabs>
   </div>
 </template>
 

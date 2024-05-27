@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, inject } from 'vue'
+import { ref, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -56,6 +56,17 @@ const { i18nTranslate } = useHook({
 const emit = defineEmits(['change'])
 
 const columnList = ref<ColumnItem[]>([])
+
+const showColumnList = computed<Array<ColumnItem>>({
+  get () {
+    return columnList.value.filter(item => {
+      return !(item?.isOperations ?? false)
+    })
+  },
+  set (v: Array<ColumnItem>) {
+    setColumnList(v)
+  }
+})
 
 const getColumnList = async () => {
   try {
@@ -191,7 +202,10 @@ const onDragend = () => {
       popper-style="padding: 4px;"
     >
       <template #reference>
-        <CustomButton icon-name="list-check" :label="i18nTranslate('columnSetting', 'system')" />
+        <CustomButton
+          icon-name="list-check"
+          :label="i18nTranslate('columnSetting', 'system')"
+        />
       </template>
 
       <div>
@@ -202,7 +216,7 @@ const onDragend = () => {
           }"
         >
           <CustomDraggable
-            v-model="columnList"
+            v-model="showColumnList"
             @start="drag = true"
             @end="onDragend"
             item-key="key"
@@ -211,7 +225,7 @@ const onDragend = () => {
             :style="{}"
           >
             <template #item="{ element }">
-              <div v-if="!element.isOperations" class="__column-item">
+              <div v-if="!element.isOperations" class="__column-item setting-move">
                 <div class="__column-item-left">
                   <div>
                     <CustomInput
@@ -226,14 +240,19 @@ const onDragend = () => {
                 </div>
 
                 <div class="__column-item-right">
-                  <CustomButton type="info" icon-name="bars" text class="setting-move" />
+                  <CustomButton
+                    type="info"
+                    icon-name="right-left"
+                    text
+                    style="transform: rotateZ(90deg)"
+                  />
                 </div>
               </div>
             </template>
           </CustomDraggable>
         </div>
 
-        <div class="__column-reset">
+        <div class="__column-footer">
           <CustomButton
             :label="i18nTranslate('reset', 'system')"
             type="info"
@@ -293,10 +312,13 @@ const onDragend = () => {
     }
   }
 
-  &-reset {
+  &-footer {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
-    padding: 8px 12px 4px;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px;
   }
 }
 </style>
