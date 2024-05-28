@@ -7,9 +7,10 @@ import type {
 } from 'element-plus'
 
 import type { IconType } from '@/components/feature/CustomIcon/CustomIconInfo'
-import type { Permission } from '@/lib/lib_permission'
+import type { Permission as PagePermission } from '@/lib/lib_permission'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 
+// 使用者
 export declare interface User {
   id?: number
   loginName?: string
@@ -19,12 +20,14 @@ export declare interface User {
   password?: string
 }
 
+// 權限 角色
 export declare interface Role {
   id?: number
   roleName?: string
   description?: string
 }
 
+// 權限 詳細資料
 export declare interface PermissionData {
   autoGeneratingId: boolean
   createDate: string
@@ -42,11 +45,13 @@ export declare interface PermissionData {
   executePermissions: boolean
 }
 
+// 權限 群組
 export declare interface Group {
   id: number
   fullName?: string
 }
 
+// 權限 使用者
 export declare interface AuthData {
   user?: User
   role?: Role
@@ -54,6 +59,7 @@ export declare interface AuthData {
   groups?: Array<Group>
 }
 
+// event 事件
 export declare interface EventItem {
   icon: [IconType, string] | []
   label: string
@@ -75,25 +81,16 @@ export declare interface CustomPopoverQueue {
 }
 
 export declare namespace UseHookReturn {
-  type loading = (isOpen: boolean, message?: string) => void
-
-  type i18nTranslate = (key: string, i18nModule?: ScopeKey) => string
-
-  type i18nTest = (key: string, i18nModule?: ScopeKey) => boolean
-
-  type eventList = (click: MouseEvent, eventList?: Array<EventItem>, options?: EventOptions) => void
-
-  type swal = (sweetAlertOptions: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
-
-  type notification = (notificationProps: Partial<NotificationProps>) => NotificationHandle
-
-  type message = (messageOptions: Partial<MessageOptions>) => MessageHandler
-
-  type permission = (permissionTotal?: string | null) => Permission
-
-  type env = () => Record<string, any>
-
-  type auth = () => AuthData
+  type Loading = (isOpen: boolean, message?: string) => void
+  type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
+  type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
+  type EventList = (click: MouseEvent, eventList?: Array<EventItem>, options?: EventOptions) => void
+  type Swal = (sweetAlertOptions: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
+  type Notification = (notificationProps: Partial<NotificationProps>) => NotificationHandle
+  type Message = (messageOptions: Partial<MessageOptions>) => MessageHandler
+  type Permission = (permissionTotal?: string | null) => PagePermission
+  type Env = () => Record<string, any>
+  type Auth = () => AuthData
 }
 
 export declare type UseHookOptions = {
@@ -101,16 +98,16 @@ export declare type UseHookOptions = {
 }
 
 export declare type UseHook = (options?: UseHookOptions) => {
-  loading: UseHookReturn.loading
-  i18nTranslate: UseHookReturn.i18nTranslate
-  i18nTest: UseHookReturn.i18nTest
-  eventList: UseHookReturn.eventList
-  swal: UseHookReturn.swal
-  notification: UseHookReturn.notification
-  message: UseHookReturn.message
-  permission: UseHookReturn.permission
-  env: UseHookReturn.env
-  auth: UseHookReturn.auth
+  loading: UseHookReturn.Loading
+  i18nTranslate: UseHookReturn.I18nTranslate
+  i18nTest: UseHookReturn.I18nTest
+  eventList: UseHookReturn.EventList
+  swal: UseHookReturn.Swal
+  notification: UseHookReturn.Notification
+  message: UseHookReturn.Message
+  permission: UseHookReturn.Permission
+  env: UseHookReturn.Env
+  auth: UseHookReturn.Auth
 }
 
 export declare type SwalResult = {

@@ -2,29 +2,29 @@ import type { CSSProperties, PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export type CardShadow = 'always' | 'never' | 'hover'
-
-export enum ElShadow {
-  always = 'always',
-  never = 'never',
-  hover = 'hover'
+export declare namespace Props {
+  type Header = string
+  type Footer = string
+  type BodyStyle = CSSProperties
+  type BodyClass = string
+  type Shadow = 'always' | 'never' | 'hover'
 }
 
 export const props = {
   header: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.Header>,
     required: false,
     default: '',
     description: '標題'
   },
   footer: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.Footer>,
     required: false,
     default: '',
     description: '頁尾文字'
   },
   bodyStyle: {
-    type: Object as PropType<CSSProperties>,
+    type: Object as PropType<Props.BodyStyle>,
     required: false,
     default: () => {
       return {}
@@ -32,13 +32,13 @@ export const props = {
     description: 'body 的自訂 Style CSSProperties'
   },
   bodyClass: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.BodyClass>,
     required: false,
     default: '',
     description: 'body 的自訂 Class 名稱'
   },
   shadow: {
-    type: String as PropType<CardShadow>,
+    type: String as PropType<Props.Shadow>,
     required: false,
     default: 'hover',
     description: '卡片陰影顯示時機'

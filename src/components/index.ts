@@ -1,56 +1,53 @@
 import type { Ref } from 'vue'
 import type { ValidationOptions, ValidationResult } from 'vee-validate'
 
+// 通用
+export type CustomSize = 'large' | 'default' | 'small'
+export type CustomElType = '' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
+export type { Option, Options } from '@/declare/columnSetting'
+
 // chart
 export { default as CustomCharts } from './chart/CustomCharts/CustomCharts.vue'
 export { default as GanttChart } from './chart/GanttChart/GanttChart.vue'
 export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
 
 // feature
-export type {
-  ButtonType,
-  ButtonSize,
-  ButtonMove,
-  ButtonIconType
-} from './feature/CustomButton/CustomButtonInfo'
+export type { Props as ButtonProps } from './feature/CustomButton/CustomButtonInfo'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
-export type { CardShadow } from './feature/CustomCard/CustomCardInfo'
+export type { Props as CardProps } from './feature/CustomCard/CustomCardInfo'
 export { default as CustomCard } from './feature/CustomCard/CustomCard.vue'
 
-export type { ModelValue as CollapseModelValue } from './feature/CustomCollapse/CustomCollapseInfo'
+export type { Props as CollapseProps } from './feature/CustomCollapse/CustomCollapseInfo'
 export { default as CustomCollapse } from './feature/CustomCollapse/CustomCollapse.vue'
 
+// 棄用 CustomModal 代替
+export type { Props as DialogProps } from './feature/CustomDialog/CustomDialogInfo'
 export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue'
 
 export type { Props as BadgeProps } from './feature/CustomBadge/CustomBadgeInfo'
 export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
 
-export type {
-  DividerDirection,
-  DividerBorderStyle,
-  DividerContentPosition
-} from './feature/CustomDivider/CustomDividerInfo'
+export type { Props as DividerProps } from './feature/CustomDivider/CustomDividerInfo'
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
-export type { DraggableChange } from './feature/CustomDraggable/CustomDraggableInfo'
+export type { Props as DraggableProps, DraggableChange } from './feature/CustomDraggable/CustomDraggableInfo'
 export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
 
-export type { DrawerDirection } from './feature/CustomDrawer/CustomDrawerInfo'
+export type { Props as DrawerProps } from './feature/CustomDrawer/CustomDrawerInfo'
 export { default as CustomDrawer } from './feature/CustomDrawer/CustomDrawer.vue'
 
+export type { Props as EmptyProps } from './feature/CustomEmpty/CustomEmptyInfo'
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
 export type { ImageFit } from './feature/CustomImage/CustomImageInfo'
 export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
 
-export type { IconType, IconSize } from './feature/CustomIcon/CustomIconInfo'
+export type { IconType, Props as IconProps } from './feature/CustomIcon/CustomIconInfo'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
 export type {
   ModelValue as InputModelValue,
-  Option,
-  Options,
   InputType
 } from './feature/CustomInput/CustomInputInfo'
 

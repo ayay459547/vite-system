@@ -4,17 +4,18 @@ import { ElDialog } from 'element-plus'
 
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import { type ModelValue, version, props as dialogProps } from './CustomDialogInfo'
+import { type Props, version, props as dialogProps } from './CustomDialogInfo'
 
-const scopedId = getUuid('__i-dialog__')
+const scopedName = '__i-dialog__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(dialogProps)
 
 const emit = defineEmits(['update:modelValue'])
 
-const tempValue = computed<ModelValue>({
+const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:modelValue', value)
 })
 
 const slots = useSlots()
@@ -35,8 +36,12 @@ const hasSlot = (prop: string): boolean => {
     :append-to-body="props.appendToBody"
     :lock-scroll="props.lockScroll"
     :draggable="props.draggable"
-    :class="`CustomDialog_${version} ${scopedId}`"
-    class="__dialog-wrapper"
+    class="dialog-wrapper"
+    :class="[
+      `CustomDialog_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot name="default"></slot>
@@ -51,7 +56,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__dialog {
+.__i-dialog__.dialog {
   &-wrapper {
     width: fit-content;
     height: fit-content;

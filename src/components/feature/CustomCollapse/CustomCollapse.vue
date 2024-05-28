@@ -5,20 +5,21 @@ import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { CustomEmpty } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import { type ModelValue, version, props as collapseProps } from './CustomCollapseInfo'
+import { type Props, version, props as collapseProps } from './CustomCollapseInfo'
 
-const scopedId = getUuid('__i-collapse__')
+const scopedName = '__i-collapse__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(collapseProps)
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const tempValue = computed<ModelValue>({
+const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:modelValue', value)
 })
 
-const onChange = (active: ModelValue) => {
+const onChange = (active: Props.ModelValue) => {
   emit('change', active)
 }
 
@@ -32,8 +33,12 @@ const hasSlot = (prop: string): boolean => {
   <ElCollapse
     v-model="tempValue"
     :accordion="props.accordion"
-    :class="`CustomCollapse_${version} ${scopedId}`"
-    class="__collapse-wrapper"
+    class="collapse-wrapper"
+    :class="[
+      `CustomCollapse_${version}`,
+      scopedId,
+      scopedName
+    ]"
     @change="onChange"
   >
     <template v-if="props.options.length > 0">
@@ -46,17 +51,17 @@ const hasSlot = (prop: string): boolean => {
       >
         <template v-if="hasSlot(`${item.value}-title`)" #title>
           <slot :name="`${item.value}-title`" v-bind="item">
-            <label class="__collapse-title">{{ item.label }}</label>
+            <label class="collapse-title">{{ item.label }}</label>
           </slot>
         </template>
         <template v-else #title>
           <slot name="title" v-bind="item">
-            <label class="__collapse-title">{{ item.label }}</label>
+            <label class="collapse-title">{{ item.label }}</label>
           </slot>
         </template>
 
-        <template v-if="hasSlot(item.value)" #default>
-          <slot :name="item.value" v-bind="item">
+        <template v-if="hasSlot(`${item.value}`)" #default>
+          <slot :name="`${item.value}`" v-bind="item">
             <span>{{ item.value }}</span>
           </slot>
         </template>
@@ -74,7 +79,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__collapse {
+.__i-collapse__.collapse {
   &-wrapper {
     width: 100%;
     height: fit-content;

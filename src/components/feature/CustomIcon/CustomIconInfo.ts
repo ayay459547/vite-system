@@ -1,9 +1,8 @@
 import type { PropType } from 'vue'
-
+import type { CustomSize } from '@/components'
 export const version = '1.0.0'
 
 export type IconType = 'fas' | 'far' | 'fab'
-export type IconSize = 'large' | 'default' | 'small'
 
 /**
  * icon 和 type, name 選一種給
@@ -12,7 +11,7 @@ export declare namespace Props {
   type Icon = [IconType, string] | []
   type Type = IconType
   type Name = string
-  type Size = IconSize
+  type Size = CustomSize
   type IconClass = string
 }
 

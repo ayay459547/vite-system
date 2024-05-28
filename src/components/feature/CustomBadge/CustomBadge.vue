@@ -6,7 +6,8 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as badgeProps } from './CustomBadgeInfo'
 
-const scopedId = getUuid('__i-badge__')
+const scopedName = '__i-badge__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps({ ...badgeProps })
 
@@ -23,8 +24,8 @@ const hasSlot = (prop: string): boolean => {
     :is-dot="props.isDot"
     :hidden="props.hidden"
     :type="props.type"
-    :class="`CustomBadge_${version} ${scopedId}`"
-    class="__badge-wrapper"
+    :class="`CustomBadge_${version} ${scopedId} ${scopedName}`"
+    class="badge-wrapper"
   >
     <template v-if="hasSlot('default')" #default>
       <slot></slot>
@@ -33,9 +34,9 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__badge {
+.__i-badge__.badge {
   &-wrapper {
-    width: 100%;
+    width: fit-content;
     height: fit-content;
   }
 }

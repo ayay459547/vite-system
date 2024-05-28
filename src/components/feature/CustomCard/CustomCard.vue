@@ -4,9 +4,10 @@ import { ElCard } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
-import { ElShadow, version, props as cardProps } from './CustomCardInfo'
+import { version, props as cardProps } from './CustomCardInfo'
 
-const scopedId = getUuid('__i-card__')
+const scopedName = '__i-card__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(cardProps)
 
@@ -22,9 +23,13 @@ const hasSlot = (prop: string): boolean => {
     :footer="props.footer"
     :body-style="props.bodyStyle"
     :body-class="props.bodyClass"
-    :shadow="ElShadow[props.shadow]"
-    :class="`CustomCard_${version} ${scopedId}`"
-    class="__card-wrapper"
+    :shadow="props.shadow"
+    class="card-wrapper"
+    :class="[
+      `CustomCard_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot name="default"></slot>
@@ -39,7 +44,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-// .__card {
+// .__i-card__.card {
 //   &-wrapper {
 //     width: 100%;
 //     height: 100%;

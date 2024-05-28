@@ -26,13 +26,15 @@ onMounted(() => {
   <div v-loading="isLoading" class="page">
     <div class="page-tabs">
       <!-- 切換 -->
-      <CustomTabs v-model="tab" :options="tabs">
-        <div class="page-view">
-          <MachineView v-if="tab === 'MachineView'" />
-          <OrderView v-else-if="tab === 'OrderView'" />
-          <CustomEmpty v-else />
-        </div>
-      </CustomTabs>
+      <CustomTabs v-model="tab" :options="tabs"></CustomTabs>
+    </div>
+
+    <div class="page-view">
+      <Transition name="fade" mode="out-in">
+        <MachineView v-if="tab === 'MachineView'" />
+        <OrderView v-else-if="tab === 'OrderView'" />
+        <CustomEmpty v-else />
+      </Transition>
     </div>
   </div>
 </template>
@@ -47,8 +49,10 @@ onMounted(() => {
   gap: 8px;
 
   &-tabs {
-    width: 100%;
-    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: fit-content;
   }
   &-view {
     width: 100%;

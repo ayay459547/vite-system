@@ -6,7 +6,8 @@ import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 import { version, props as emptyProps } from './CustomEmptyInfo'
 
-const scopedId = getUuid('__i-empty__')
+const scopedName = '__i-empty__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(emptyProps)
 
@@ -18,11 +19,15 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElEmpty
-    class="__empty-container"
-    :class="`CustomEmpty_${version} ${scopedId}`"
-    :image="props.image"
-    :description="props.description"
-    :image-size="props.imageSize"
+  :image="props.image"
+  :description="props.description"
+  :image-size="props.imageSize"
+  class="empty-container"
+  :class="[
+    `CustomEmpty_${version}`,
+    scopedId,
+    scopedName
+  ]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot></slot>
@@ -37,12 +42,13 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.__empty-container) {
+.__i-empty__ :deep {
   &.el-empty {
     padding: 12px 0;
   }
 }
-.__empty {
+
+.__i-empty__.empty {
   &-container {
     width: 100%;
     height: 100%;

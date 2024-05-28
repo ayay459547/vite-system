@@ -12,7 +12,8 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const scopedId = getUuid('__i-draggable__')
+const scopedName = '__i-draggable__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(draggableProps)
 
@@ -56,7 +57,14 @@ const listValue = computed({
 </script>
 
 <template>
-  <div :class="`CustomDraggable_${version} ${scopedId}`" class="__draggable-wrapper">
+  <div
+    :class="[
+      `CustomDraggable_${version}`,
+      scopedId,
+      scopedName
+    ]"
+    class="draggable-wrapper"
+  >
     <Draggable
       v-model="listValue"
       :handle="props.handle"
@@ -67,7 +75,7 @@ const listValue = computed({
       :tag="props.tag"
       :disabled="false"
       :animation="200"
-      class="__list-group"
+      class="list-group"
       :class="`flex-${props.direction} ${props.class}`"
       :ghost-class="ghostClass"
       :style="{
@@ -92,7 +100,7 @@ const listValue = computed({
 
       <template #item="{ element, index }">
         <li
-          :class="[`__draggable __list-group-item ${props.rowClass}`, props.stripe ? 'stripe' : '']"
+          :class="[`draggable list-group-item ${props.rowClass}`, props.stripe ? 'stripe' : '']"
           :style="props.rowStyle"
         >
           <slot name="item" :element="element" :index="index"></slot>
@@ -107,23 +115,23 @@ const listValue = computed({
 </template>
 
 <style lang="scss" scoped>
-.__draggable {
+.__i-draggable__.draggable {
   &-wrapper {
     display: contents;
 
-    .__draggable {
+    .draggable {
       width: 100%;
       display: flex;
       // height: 100%;
     }
   }
 }
-.ghost {
+.__i-draggable__ .ghost {
   opacity: 0.7;
   background: #c8ebfb;
 }
 
-.__list-group {
+.__i-draggable__ .list-group {
   // width: 100%;
   // height: 100%;
     border-bottom: 1px solid #ffffff00;

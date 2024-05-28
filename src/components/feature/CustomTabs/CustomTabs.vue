@@ -104,7 +104,8 @@ const elTabsRef = ref()
 .__i-tabs__.tabs {
   &-wrapper {
     width: 100%;
-    height: 100%;
+    // height: 100%;
+    height: fit-content;
   }
   &-container {
     width: 100%;

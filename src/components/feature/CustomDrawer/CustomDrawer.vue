@@ -6,7 +6,8 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as drawerProps } from './CustomDrawerInfo'
 
-const scopedId = getUuid('__i-drawer__')
+const scopedName = '__i-drawer__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(drawerProps)
 
@@ -33,9 +34,13 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElDrawer
+    class="drawer-container"
+    :class="[
+      `CustomDrawer_${version}`,
+      scopedId,
+      scopedName
+    ]"
     v-model="tempValue"
-    class="__drawer-container"
-    :class="`CustomDrawer_${version} ${scopedId}`"
     :direction="props.direction"
     :title="props.title"
     :destroy-on-close="props.destroyOnClose"
@@ -65,15 +70,11 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.__drawer-container) {
-  &.el-drawer {
-    .el-drawer__header {
-      margin-bottom: 0;
-    }
-  }
+.__i-drawer__ :global(.el-drawer__header) {
+  margin-bottom: 0 !important;
 }
 
-.__drawer {
+.__i-drawer__.drawer {
   &-container {
     width: 100%;
     min-height: 300px;

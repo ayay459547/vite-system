@@ -1,17 +1,11 @@
 import type { PropType } from 'vue'
 
-import type { IconType as CustomIconType } from '@/components'
+import type { CustomSize, IconType as CustomIconType } from '@/components'
 
 export const version = '1.0.0'
-
-export type ButtonSize = 'large'| 'default'| 'small'
-export type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
-export type ButtonMove = 'none' | 'translate'| 'rotate' | 'scale'
-export type ButtonIconType = 'fas' | 'far' | 'fab'
-
 export declare namespace Props {
   type Label = string
-  type Size = 'large'| 'default'| 'small'
+  type Size = CustomSize
   type Type = '' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
   type Text = boolean
   type Plain = boolean
@@ -22,7 +16,7 @@ export declare namespace Props {
   type Color = string | undefined
   type TextColor = string | undefined
   type Dark = boolean
-  type IconSize = 'large'| 'default'| 'small'
+  type IconSize = CustomSize
   type IconType = CustomIconType
   type IconName = string
   type IconMove = 'none' | 'translate'| 'rotate' | 'scale'

@@ -2,25 +2,25 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export type DividerDirection = 'horizontal' | 'vertical'
-
-export type DividerBorderStyle =
-  | 'none'
-  | 'hidden'
-  | 'dotted'
-  | 'dashed'
-  | 'solid'
-  | 'double'
-  | 'groove'
-  | 'ridge'
-  | 'inset'
-  | 'outset'
-
-export type DividerContentPosition = 'left' | 'right' | 'center'
+export declare namespace Props {
+  type Direction = 'horizontal' | 'vertical'
+  type BorderStyle =
+    | 'none'
+    | 'hidden'
+    | 'dotted'
+    | 'dashed'
+    | 'solid'
+    | 'double'
+    | 'groove'
+    | 'ridge'
+    | 'inset'
+    | 'outset'
+  type ContentPosition = 'left' | 'right' | 'center'
+}
 
 export const props = {
   direction: {
-    type: String as PropType<DividerDirection>,
+    type: String as PropType<Props.Direction>,
     required: false,
     default: 'horizontal',
     description: `
@@ -28,7 +28,7 @@ export const props = {
       vertical: 直線`
   },
   borderStyle: {
-    type: String as PropType<DividerBorderStyle>,
+    type: String as PropType<Props.BorderStyle>,
     required: false,
     default: 'solid',
     description: `
@@ -36,7 +36,7 @@ export const props = {
       css border 的 style`
   },
   contentPosition: {
-    type: String as PropType<DividerContentPosition>,
+    type: String as PropType<Props.ContentPosition>,
     required: false,
     default: 'center',
     description: '文字位置'

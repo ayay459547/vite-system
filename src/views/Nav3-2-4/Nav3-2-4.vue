@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomButton, CustomBadge } from '@/components'
+import { CustomButton, CustomBadge, CustomEmpty } from '@/components'
 </script>
 
 <template>
@@ -12,6 +12,9 @@ import { CustomButton, CustomBadge } from '@/components'
       </div>
 
       <div class="fill-x flex-row">7</div>
+      <div>
+        <CustomEmpty />
+      </div>
     </div>
   </div>
 </template>
