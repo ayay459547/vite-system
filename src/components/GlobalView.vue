@@ -11,7 +11,7 @@ import {
   useSlots
 } from 'vue'
 
-import { swal, notification, message, isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { aesDecrypt, swal, notification, message, isEmpty, scrollToEl, tipLog } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 
 // layout
@@ -66,7 +66,7 @@ const queueId = ref(0)
 const customPopoverQueue: CustomPopoverQueue[] = shallowReactive([])
 const deleteCustomPopoverQueue = () => customPopoverQueue.pop()
 
-const loading: UseHookReturn.loading = (isOpen, message) => {
+const loading: UseHookReturn.Loading = (isOpen, message) => {
   if (!customLoader.value) return
 
   if (isOpen) {
@@ -370,10 +370,16 @@ provide<UseHook>('useHook', options => {
           _permission => typeof _permission === 'number'
         )
 
-        return getPermission(pagePermission)
+        const _pagePermission = getPermission(pagePermission)
+        tipLog(`${routeName} 權限`, [routeName, _pagePermission])
+
+        return _pagePermission
       }
 
       const { permission = 0 } = currentNavigation?.value ?? {}
+      const _pagePermission = getPermission(permission)
+      tipLog(`${currentNavigation?.value} 權限`, [currentNavigation?.value, _pagePermission])
+
       return getPermission(permission)
     },
     env: () => {
@@ -381,6 +387,19 @@ provide<UseHook>('useHook', options => {
     },
     auth: () => {
       return authData.value
+    },
+    redirectInfo: () => {
+      const fromQuery = route.query ?? {}
+      const [fromPage = '', fromData = ''] = [
+        Array.isArray(fromQuery.from) ? fromQuery.from.join(',') : fromQuery.from,
+        Array.isArray(fromQuery.data) ? fromQuery.data.join(',') : fromQuery.data
+      ]
+      const queryData = isEmpty(fromData) ? '' : aesDecrypt(fromData as string, envStore.QUERY_KEY)
+
+      return {
+        fromPage,
+        queryData
+      }
     }
   }
 })

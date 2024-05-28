@@ -21,7 +21,7 @@ import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { ModelValue } from './CustomModalInfo'
+import type { Props } from './CustomModalInfo'
 import { version, props as modalProps, minModalIndex } from './CustomModalInfo'
 
 const useHook: UseHook = inject('useHook')
@@ -29,15 +29,16 @@ const { swal, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const scopedId = getUuid('__i-modal__')
+const scopedName = '__i-modal__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(modalProps)
 
 const emit = defineEmits(['update:modelValue', 'close', 'cancel', 'submit'])
 
-const tempValue = computed<ModelValue>({
+const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:modelValue', value)
 })
 
 // 正在使用中的 modal 會被至頂
@@ -440,9 +441,11 @@ onUnmounted(() => {
   <Teleport to="body">
     <div
       v-show="wrapperIsShow"
+      class="modal-mask"
       :class="[
-        'modal-mask',
-        `CustomModal_${version} ${scopedId}`,
+        `CustomModal_${version}`,
+        scopedId,
+        scopedName,
         containerIsShow ? 'is-show' : 'is-close'
       ]"
       :style="`

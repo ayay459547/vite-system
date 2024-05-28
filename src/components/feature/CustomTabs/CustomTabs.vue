@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { WritableComputedRef } from 'vue'
 import { ref, computed, inject } from 'vue'
+import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { ElTabs, ElTabPane } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import { getUuid } from '@/lib/lib_utils'
 
-import type { Props, Option } from './CustomTabsInfo'
+import type { Option } from '@/components'
+import type { Props } from './CustomTabsInfo'
 import { version, props as tabsProps } from './CustomTabsInfo'
 
 const scopedName = '__i-tabs__'
@@ -14,7 +16,29 @@ const scopedId = getUuid(scopedName)
 
 const props = defineProps(tabsProps)
 
-const emit = defineEmits(['update:modelValue', 'change', 'remove'])
+const emit = defineEmits([
+  'update:modelValue',
+  'tab-click',
+  'tab-change',
+  'tab-remove',
+  'tab-add',
+  'edit'
+])
+const onTabClick = (pane: TabsPaneContext, ev: Event) => {
+  emit('tab-click', pane, ev)
+}
+const onTabChange =	(name: TabPaneName) => {
+  emit('tab-change', name)
+}
+const onTabRemove =	(name: TabPaneName) => {
+  emit('tab-remove', name)
+}
+const onTabAdd = () => {
+  emit('tab-add')
+}
+const onEdit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => {
+  emit('edit', paneName, action)
+}
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, i18nTest } = useHook({
@@ -36,7 +60,14 @@ const elTabsRef = ref()
 </script>
 
 <template>
-  <div :class="`CustomTabs_${version} ${scopedId} ${scopedName}`" class="tabs-wrapper">
+  <div
+    class="tabs-wrapper"
+    :class="[
+      `CustomTabs_${version}`,
+      scopedId,
+      scopedName
+    ]"
+  >
     <ElTabs
       ref="elTabsRef"
       v-model="tempValue"
@@ -46,8 +77,13 @@ const elTabsRef = ref()
       :editable="props.editable"
       :tab-position="props.tabPosition"
       :stretch="props.stretch"
-      :class="scopedName"
       class="tabs-container"
+      :class="scopedName"
+      @tab-click="onTabClick"
+      @tab-change="onTabChange"
+      @tab-remove="onTabRemove"
+      @tab-add="onTabAdd"
+      @edit="onEdit"
     >
       <ElTabPane
         v-for="item in props.options"

@@ -6,7 +6,8 @@ import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import { version, props as popoverProps } from './CustomPopoverInfo'
 
-const scopedId = getUuid('__i-popover__')
+const scopedName = '__i-popover__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(popoverProps)
 
@@ -43,8 +44,12 @@ const tempValue = customRef((track, trigger) => {
     :popper-style="props.popperStyle"
     :show-arrow="props.showArrow"
     :offset="props.offset"
-    :class="`CustomPopover_${version} ${scopedId}`"
-    class="__popover-container"
+    class="popover-container"
+    :class="[
+      `CustomPopover_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <template #reference>
       <slot name="reference"></slot>
@@ -56,7 +61,7 @@ const tempValue = customRef((track, trigger) => {
 </template>
 
 <style lang="scss" scoped>
-// .__popover {
+// .__i-popover__.popover {
 //   &-container {
 //     width: fit-content;
 //     height: fit-content;

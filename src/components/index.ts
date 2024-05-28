@@ -40,7 +40,7 @@ export { default as CustomDrawer } from './feature/CustomDrawer/CustomDrawer.vue
 export type { Props as EmptyProps } from './feature/CustomEmpty/CustomEmptyInfo'
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
-export type { ImageFit } from './feature/CustomImage/CustomImageInfo'
+export type { Props as ImageProps } from './feature/CustomImage/CustomImageInfo'
 export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
 
 export type { IconType, Props as IconProps } from './feature/CustomIcon/CustomIconInfo'
@@ -53,39 +53,31 @@ export type {
 
 export { default as CustomInput } from './feature/CustomInput/CustomInput'
 
+export type { Props as MarkdownProps } from './feature/CustomMarkdown/CustomMarkdownInfo'
 export { default as CustomMarkdown } from './feature/CustomMarkdown/CustomMarkdown.vue'
 
-export type {
-  WidthSize,
-  HeightSize,
-  ModelValue as ModalModelValue,
-  XPosition,
-  YPosition
-} from './feature/CustomModal/CustomModalInfo'
+export type { Props as ModalProps } from './feature/CustomModal/CustomModalInfo'
 export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 
 export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
 
 export { default as CustomWatermark } from './feature/CustomWatermark/CustomWatermark.vue'
 
-export type {
-  Placement as PopoverPlacement,
-  Trigger as PopoverTrigger
-} from './feature/CustomPopover/CustomPopoverInfo'
+export type { Props as PopoverProps } from './feature/CustomPopover/CustomPopoverInfo'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
 
 export type { Props as CustomProgressProps } from './feature/CustomProgress/CustomProgressInfo'
 export { default as CustomProgress } from './feature/CustomProgress/CustomProgress.vue'
 
 export type {
-  AriaOrientation,
   OnScrollParams,
   HandleScroll,
   ScrollTo,
   SetScrollTop,
   SetScrollLeft,
   Update,
-  WrapRef
+  WrapRef,
+  Props as ScrollbarProps
 } from './feature/CustomScrollbar/CustomScrollbarInfo'
 export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
@@ -133,9 +125,7 @@ export type {
 } from './feature/CustomTable/CustomTableInfo'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
-export type {
-  Props as CustomTabsProps
-} from './feature/CustomTabs/CustomTabsInfo'
+export type { Props as CustomTabsProps } from './feature/CustomTabs/CustomTabsInfo'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 
 export type { TagType, TagSize, TagEffect } from './feature/CustomTag/CustomTagInfo'

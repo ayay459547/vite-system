@@ -505,7 +505,6 @@ const CustomInput = defineComponent({
               onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
               // v-bind 綁定屬性
               {...bindAttributes.value}
-              type={props.type}
               options={translateOptions.value}
               errorMessage={errorMessage.value}
               // v-on 接收事件

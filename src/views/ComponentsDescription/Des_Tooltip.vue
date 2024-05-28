@@ -2,9 +2,8 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomTooltip/CustomTooltip.md?raw'
+import type { Options, TooltipPlacement, TooltipTrigger } from '@/components'
 import {
-  type TooltipPlacement,
-  type TooltipTrigger,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
@@ -36,13 +35,13 @@ const triggerOptions = [
 ]
 const trigger = ref<TooltipTrigger>('hover')
 
-const showArrowOptions = [
+const showArrowOptions: Options<any> = [
   { label: '是', value: true },
   { label: '否', value: false }
 ]
 const showArrow = ref<boolean>(true)
 
-const offsetOptions = [
+const offsetOptions: Options<any> = [
   { label: '0', value: 0 },
   { label: '10', value: 10 },
   { label: '50', value: 50 },

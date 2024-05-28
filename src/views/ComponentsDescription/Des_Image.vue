@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomImage/CustomImage.md?raw'
 import {
-  type ImageFit,
+  type ImageProps,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
@@ -18,7 +18,7 @@ const fitOptions = [
   { label: 'none', value: 'none' },
   { label: 'scale-down', value: 'scale-down' }
 ]
-const fit = ref<ImageFit>('cover')
+const fit = ref<ImageProps.Fit>('cover')
 
 // slot
 const srcText = ref(

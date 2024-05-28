@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
+import type { DrawerProps } from '@/components'
 import {
-  type DrawerDirection,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
@@ -17,7 +17,7 @@ const directionOptions = [
   { label: 'ttb', value: 'ttb' },
   { label: 'btt', value: 'btt' }
 ]
-const direction = ref<DrawerDirection>('rtl')
+const direction = ref<DrawerProps.Direction>('rtl')
 
 const sizeOptions = [
   { label: '300', value: '300' },

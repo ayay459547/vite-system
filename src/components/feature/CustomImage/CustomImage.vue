@@ -6,7 +6,8 @@ import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 import { version, props as imageProps } from './CustomImageInfo'
 
-const scopedId = getUuid('__i-image__')
+const scopedName = '__i-image__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(imageProps)
 
@@ -27,8 +28,6 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElImage
-    :class="`CustomImage_${version} ${scopedId}`"
-    class="__image-wrapper"
     :src="props.src"
     :fit="props.fit"
     :alt="props.alt"
@@ -39,6 +38,12 @@ const hasSlot = (prop: string): boolean => {
     :preview-src-list="props.previewSrcList"
     :hide-on-click-modal="props.hideOnClickModal"
     :preview-teleported="props.previewTeleported"
+    class="image-wrapper"
+    :class="[
+      `CustomImage_${version}`,
+      scopedId,
+      scopedName
+    ]"
     v-on="onEvent"
   >
     <template v-if="hasSlot('placeholder')" #placeholder>
@@ -54,7 +59,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__image {
+.__i-image__.image {
   &-wrapper {
     width: 100%;
     height: 100%;

@@ -5,7 +5,7 @@ import { computed, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
-import type { TabsOptions, TabsOption } from '@/components'
+import type { Options, Option } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
@@ -33,7 +33,7 @@ const currentTab = computed(() => {
   return props.currentNavigation?.name ?? ''
 })
 
-const tabs: ComputedRef<TabsOptions> = computed(() => {
+const tabs: ComputedRef<Options> = computed(() => {
   const res = []
   if (props.historyNavigation !== null) {
     props.historyNavigation.forEach((value, key) => {
@@ -49,7 +49,7 @@ const tabs: ComputedRef<TabsOptions> = computed(() => {
   return res
 })
 
-const removeHistory = (option: TabsOption) => {
+const removeHistory = (option: Option) => {
   removeHistoryNavigation(`${option.value}`)
 }
 
@@ -72,24 +72,25 @@ const RouterChange = (navigate: () => void) => {
 
 <template>
   <div class="history-wrapper">
-    <CustomTabs
-      :model-value="currentTab"
-      :options="tabs"
-      class="history-tabs"
-      closable
-      @remove="removeHistory"
-    >
-      <template #label="slotProps">
-        <RouterLink
-          :to="slotProps.data.path"
-          class="history-tab"
-          :class="{ 'is-active': currentTab === slotProps.value }"
-          v-slot="{ navigate }"
-        >
-          <span @click="RouterChange(navigate)">{{ slotProps.label }}</span>
-        </RouterLink>
-      </template>
-    </CustomTabs>
+    <div class="history-tabs">
+      <CustomTabs
+        :model-value="currentTab"
+        :options="tabs"
+        closable
+        @tab-remove="removeHistory"
+      >
+        <template #label="slotProps">
+          <RouterLink
+            :to="slotProps.data.path"
+            class="history-tab"
+            :class="{ 'is-active': currentTab === slotProps.value }"
+            v-slot="{ navigate }"
+          >
+            <span @click="RouterChange(navigate)">{{ slotProps.label }}</span>
+          </RouterLink>
+        </template>
+      </CustomTabs>
+    </div>
 
     <div class="history-clear">
       <CustomButton
@@ -110,7 +111,7 @@ const RouterChange = (navigate: () => void) => {
     display: flex;
   }
   &-tabs {
-    width: inherit;
+    width: calc(100% - 86px);
     flex: 1;
   }
   &-tab {
@@ -121,7 +122,7 @@ const RouterChange = (navigate: () => void) => {
     }
   }
   &-clear {
-    width: fit-content;
+    width: 86px;
     height: 100%;
     @extend %flex-center;
   }

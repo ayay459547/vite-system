@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
+import type { Option } from '@/components'
 
 import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'
 
@@ -21,15 +22,6 @@ export type InputType =
   | 'operator'
   | DatePickerType
   | TimePickerType
-export type Option = {
-  label: string
-  i18nLabel?: string
-  value: string | number | boolean | null
-  disabled?: boolean
-  color?: string
-  data?: any
-}
-export type Options = Array<Option>
 
 const custom = {
   modelValue: {

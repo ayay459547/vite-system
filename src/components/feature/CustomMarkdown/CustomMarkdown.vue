@@ -5,7 +5,8 @@ import { tipLog, getUuid } from '@/lib/lib_utils'
 
 import { version, props as markdownProps } from './CustomMarkdownInfo'
 
-const scopedId = getUuid('__i-markdown__')
+const scopedName = '__i-markdown__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(markdownProps)
 
@@ -15,21 +16,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :class="`CustomMarkdown_${version} ${scopedId}`" class="__markdown-wrapper">
-    <v-md-preview class="__markdown-container" :text="props.text"></v-md-preview>
+  <div
+    class="markdown-wrapper"
+    :class="[
+      `CustomMarkdown_${version}`,
+      scopedId,
+      scopedName
+    ]"
+  >
+    <v-md-preview class="markdown-container" :text="props.text"></v-md-preview>
   </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.__markdown-container) {
-  &.v-md-editor-preview {
-    .vuepress-markdown-body {
-      padding: 0 !important;
+.__i-markdown__ :deep {
+  .markdown-container {
+    &.v-md-editor-preview {
+      .vuepress-markdown-body {
+        padding: 0 !important;
+      }
     }
   }
 }
 
-.__markdown {
+.__i-markdown__.markdown {
   &-wrapper {
     width: 100%;
     height: 100%;

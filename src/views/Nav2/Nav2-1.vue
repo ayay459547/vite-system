@@ -59,6 +59,7 @@ onMounted(() => {
       type="line"
       :stroke-width="24"
       :striped="progress.percentage < 100"
+      :status="progress.percentage >= 80  ? 'exception' : ''"
       striped-flow
     />
 

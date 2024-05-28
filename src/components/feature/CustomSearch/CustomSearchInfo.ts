@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { PopoverPlacement } from '@/components'
+import type { PopoverProps } from '@/components'
 import { props as inputProps } from '@/components/feature/CustomInput/CustomInputInfo'
 
 export const version = '1.0.0'
@@ -28,7 +28,7 @@ export const props = {
     description: '寬度'
   },
   placement: {
-    type: String as PropType<PopoverPlacement>,
+    type: String as PropType<PopoverProps.Placement>,
     required: false,
     default: 'top',
     description: '出現位置'

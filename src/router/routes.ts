@@ -27,6 +27,57 @@ const routes: Array<RouterTree> = [
     permission: totlaPermission,
     leaves: [
       {
+        name: 'test-feat',
+        title: '測試新功能',
+        systemType: ['new'],
+        icon: 'f',
+        permission: totlaPermission,
+        leaves: [
+          {
+            name: 'feat-gantt',
+            title: '甘特圖(新)',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/feat-gantt',
+            icon: 'gantt',
+            component: () => import('@/views/Feat-gantt/Feat-gantt.vue')
+          },
+          {
+            name: 'feat-gantt-old',
+            title: '甘特圖(舊)',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/feat-gantt-old',
+            icon: 'gantt',
+            component: () => import('@/views/Feat-gantt-old/Feat-gantt-old.vue')
+          },
+          {
+            name: 'feat-gantt-flight',
+            title: '飛機航班甘特圖',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/feat-gantt-flight',
+            icon: 'gantt',
+            component: () => import('@/views/Feat-gantt-flight/Feat-gantt-flight.vue')
+          }
+        ]
+      },
+      {
         name: 'test-fund',
         title: 'test-fund',
         systemType: ['new'],

@@ -15,7 +15,8 @@ import type {
 } from './CustomScrollbarInfo'
 import { version, props as scrollbarProps } from './CustomScrollbarInfo'
 
-const scopedId = getUuid('__i-scroll-bar__')
+const scopedName = '__i-scroll-bar__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(scrollbarProps)
 
@@ -79,8 +80,12 @@ defineExpose({
     :role="props.role"
     :aria-label="props.ariaLabel"
     :aria-orientation="props.ariaOrientation"
-    :class="`CustomScrollbar_${version} ${scopedId}`"
-    class="__scroll-bar"
+    class="scroll-bar"
+    :class="[
+      `CustomScrollbar_${version}`,
+      scopedId,
+      scopedName
+    ]"
     @scroll="onScroll"
   >
     <template v-if="hasSlot('default')" #default>
@@ -90,7 +95,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-// .__scroll {
+// .__i-scroll-bar__'.scroll {
 //   &-bar {}
 // }
 </style>

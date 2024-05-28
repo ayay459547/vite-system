@@ -2,9 +2,8 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomPopover/CustomPopover.md?raw'
+import type { Options, PopoverProps } from '@/components'
 import {
-  type PopoverPlacement,
-  type PopoverTrigger,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
@@ -28,15 +27,15 @@ const placementOptions = [
   { label: 'right-start', value: 'right-start' },
   { label: 'right-end', value: 'right-end' }
 ]
-const placement = ref<PopoverPlacement>('top')
+const placement = ref<PopoverProps.Placement>('top')
 
 const triggerOptions = [
   { label: 'click', value: 'click' },
   { label: 'hover', value: 'hover' }
 ]
-const trigger = ref<PopoverTrigger>('hover')
+const trigger = ref<PopoverProps.Trigger>('hover')
 
-const showArrowOptions = [
+const showArrowOptions: Options<any> = [
   { label: '是', value: true },
   { label: '否', value: false }
 ]

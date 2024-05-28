@@ -579,7 +579,7 @@ const isShowChange = async () => {
     </div>
 
     <div class="page-table">
-      <CustomTabs v-model="dateTab" :options="dateTabs" @change="initShowTable" />
+      <CustomTabs v-model="dateTab" :options="dateTabs" @tab-change="initShowTable" />
 
       <TableMain
         class="page-table"

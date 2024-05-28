@@ -2,11 +2,12 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomCollapse/CustomCollapse.md?raw'
+import type { Options } from '@/components'
 import { CustomInput, CustomDivider, CustomMarkdown, CustomCollapse } from '@/components'
 
 const value = ref()
 
-const accordionOptions = [
+const accordionOptions: Options<any> = [
   { label: '一般模式', value: false },
   { label: '手風琴模式', value: true }
 ]

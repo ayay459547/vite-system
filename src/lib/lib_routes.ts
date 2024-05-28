@@ -151,8 +151,8 @@ const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18n
 }
 
 export const useRoutesHook = (params?: {
-  i18nTranslate?: UseHookReturn.i18nTranslate
-  i18nTest?: UseHookReturn.i18nTest
+  i18nTranslate?: UseHookReturn.I18nTranslate
+  i18nTest?: UseHookReturn.I18nTest
 }) => {
   const { i18nTranslate, i18nTest } = params ?? {}
 

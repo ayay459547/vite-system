@@ -5,7 +5,8 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as progressProps } from './CustomProgressInfo'
 
-const scopedId = getUuid('__i-popover__')
+const scopedName = '__i-popover__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(progressProps)
 
@@ -15,19 +16,23 @@ const props = defineProps(progressProps)
   <ElProgress
     :percentage ="props.percentage"
     :type ="props.type"
-    :strokeWidth ="props.strokeWidth"
-    :textInside ="props.textInside"
+    :stroke-width ="props.strokeWidth"
+    :text-inside ="props.textInside"
     :status ="props.status"
     :indeterminate ="props.indeterminate"
     :duration ="props.duration"
     :color ="props.color"
-    :showText ="props.showText"
-    :strokeLinecap ="props.strokeLinecap"
+    :show-text ="props.showText"
+    :stroke-linecap ="props.strokeLinecap"
     :format ="props.format"
     :striped ="props.striped"
-    :stripedFlow ="props.stripedFlow"
-    :class="`CustomProgress_${version} ${scopedId}`"
-    class="__progress-container"
+    :striped-flow ="props.stripedFlow"
+    class="progress-container"
+    :class="[
+      `CustomProgress_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <template #default>
       <slot></slot>
@@ -36,7 +41,7 @@ const props = defineProps(progressProps)
 </template>
 
 <style lang="scss" scoped>
-// .__progress {
+// .__i-popover__.progress {
 //   &-container {
 //     width: fit-content;
 //     height: fit-content;

@@ -4,7 +4,7 @@ import ExcelJs from 'exceljs'
 
 import type { UseHook } from '@/declare/hook'
 import { useTableSetting } from '@/lib/lib_columns'
-import type { IconType, ButtonSize, TooltipTrigger } from '@/components'
+import type { IconType, ButtonProps, TooltipTrigger } from '@/components'
 import {
   CustomButton,
   CustomModal,
@@ -65,7 +65,7 @@ const testIcon: [IconType, string] = ['fas', 'check']
 const testType: IconType = 'far'
 const testName = 'folder-open'
 
-const size: ButtonSize = 'large'
+const size: ButtonProps.Size = 'large'
 
 const modalShow = ref<boolean>(false)
 

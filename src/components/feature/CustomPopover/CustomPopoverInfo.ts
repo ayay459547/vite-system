@@ -2,7 +2,11 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export type Placement =
+export declare namespace Props {
+  type Visible = boolean | null
+  type Width = number | string
+  type Title = string
+  type Placement =
   | 'top'
   | 'top-start'
   | 'top-end'
@@ -15,12 +19,7 @@ export type Placement =
   | 'right'
   | 'right-start'
   | 'right-end'
-export type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
-
-export declare namespace Props {
-  type Visible = boolean | null
-  type Width = number | string
-  type Title = string
+  type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
   type PopperStyle = string
   type ShowArrow = boolean
   type Offset = number
@@ -46,13 +45,13 @@ export const props = {
     description: '標題'
   },
   placement: {
-    type: String as PropType<Placement>,
+    type: String as PropType<Props.Placement>,
     required: false,
     default: 'bottom',
     description: '顯示位置'
   },
   trigger: {
-    type: String as PropType<Trigger>,
+    type: String as PropType<Props.Trigger>,
     required: false,
     default: 'click',
     description: '觸發方式'

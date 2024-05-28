@@ -2,20 +2,13 @@ import type { PropType } from 'vue'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { Option } from '@/components'
 
-export const version = '1.1.0'
-
-export type Option = {
-  label: string
-  value: string | number | null
-  i18nLabel?: string
-  disabled?: boolean
-  data?: any
-}
+export const version = '2.0.0'
 
 export declare namespace Props {
   type ModelValue = string | number | null
-  type Options = Array<Option>
+  type Options = Array<Option<string | number>>
   type Type = '' | 'card' | 'border-card'
   type Closable = boolean
   type Addable = boolean

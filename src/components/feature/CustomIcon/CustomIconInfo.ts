@@ -1,5 +1,6 @@
 import type { PropType } from 'vue'
 import type { CustomSize } from '@/components'
+
 export const version = '1.0.0'
 
 export type IconType = 'fas' | 'far' | 'fab'

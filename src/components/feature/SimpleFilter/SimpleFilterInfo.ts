@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { PopoverPlacement } from '@/components'
+import type { PopoverProps } from '@/components'
 
 export const version = '1.0.0'
 
@@ -21,7 +21,7 @@ export const props = {
     default: ''
   },
   placement: {
-    type: String as PropType<PopoverPlacement>,
+    type: String as PropType<PopoverProps.Placement>,
     default: 'bottom-start'
   }
 }

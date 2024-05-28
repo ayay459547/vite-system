@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 export const version = '1.0.0'
 
 type ProgressFunction = (percentage: number) => string
-export type ProgressColor =
+type ProgressColor =
   | string
   | Array<{
       color: string

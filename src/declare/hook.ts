@@ -91,6 +91,10 @@ export declare namespace UseHookReturn {
   type Permission = (permissionTotal?: string | null) => PagePermission
   type Env = () => Record<string, any>
   type Auth = () => AuthData
+  type RedirectInfo = () => {
+    fromPage: string,
+    queryData: any
+  }
 }
 
 export declare type UseHookOptions = {
@@ -108,6 +112,7 @@ export declare type UseHook = (options?: UseHookOptions) => {
   permission: UseHookReturn.Permission
   env: UseHookReturn.Env
   auth: UseHookReturn.Auth
+  redirectInfo: UseHookReturn.RedirectInfo
 }
 
 export declare type SwalResult = {

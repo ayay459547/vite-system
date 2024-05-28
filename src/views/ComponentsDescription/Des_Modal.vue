@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomModal/CustomModal.md?raw'
-import type { WidthSize, HeightSize } from '@/components'
+import type { ModalProps } from '@/components'
 import { CustomInput, CustomDivider, CustomMarkdown, CustomModal, CustomButton } from '@/components'
 
 const widthOptions = [
@@ -10,14 +10,14 @@ const widthOptions = [
   { label: 'default', value: 'default' },
   { label: 'small', value: 'small' }
 ]
-const widthSize = ref<WidthSize>('default')
+const widthSize = ref<ModalProps.WidthSize>('default')
 
 const heightOptions = [
   { label: 'large', value: 'large' },
   { label: 'default', value: 'default' },
   { label: 'small', value: 'small' }
 ]
-const heightSize = ref<HeightSize>('default')
+const heightSize = ref<ModalProps.HeightSize>('default')
 
 // slot
 const slotText = ref('slot default')

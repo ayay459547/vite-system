@@ -31,12 +31,13 @@ export interface SettingData {
   columns: Array<ColumnItem>
 }
 
-export interface Option extends Record<string, any> {
+export interface Option<T = (string | number | null | undefined)> extends Record<string, any> {
   label: string
-  value: string | number | null
   i18nLabel?: string
+  value: T
   disabled?: boolean
+  color?: string
   data?: any
 }
 
-export type Options = Array<Option>
+export type Options<T = (string | number | null | undefined)> = Array<Option<T>>
