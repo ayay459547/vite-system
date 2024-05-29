@@ -7,18 +7,18 @@ export declare namespace Props {
   type Width = number | string
   type Title = string
   type Placement =
-  | 'top'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'left'
-  | 'left-start'
-  | 'left-end'
-  | 'right'
-  | 'right-start'
-  | 'right-end'
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end'
   type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
   type PopperStyle = string
   type ShowArrow = boolean

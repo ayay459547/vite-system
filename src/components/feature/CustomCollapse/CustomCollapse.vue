@@ -5,7 +5,8 @@ import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { CustomEmpty } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import { type Props, version, props as collapseProps } from './CustomCollapseInfo'
+import type { Props, Emits } from './CustomCollapseInfo'
+import { version, props as collapseProps } from './CustomCollapseInfo'
 
 const scopedName = '__i-collapse__'
 const scopedId = getUuid(scopedName)
@@ -13,15 +14,14 @@ const scopedId = getUuid(scopedName)
 const props = defineProps(collapseProps)
 
 const emit = defineEmits(['update:modelValue', 'change'])
+const onChange: Emits.Change = (active: Props.ModelValue) => {
+  emit('change', active)
+}
 
 const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => emit('update:modelValue', value)
 })
-
-const onChange = (active: Props.ModelValue) => {
-  emit('change', active)
-}
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -33,7 +33,7 @@ const hasSlot = (prop: string): boolean => {
   <ElCollapse
     v-model="tempValue"
     :accordion="props.accordion"
-    class="collapse-wrapper"
+    class="collapse-container"
     :class="[
       `CustomCollapse_${version}`,
       scopedId,
@@ -80,7 +80,7 @@ const hasSlot = (prop: string): boolean => {
 
 <style lang="scss" scoped>
 .__i-collapse__.collapse {
-  &-wrapper {
+  &-container {
     width: 100%;
     height: fit-content;
   }

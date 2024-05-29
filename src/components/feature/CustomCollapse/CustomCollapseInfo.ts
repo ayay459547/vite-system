@@ -3,12 +3,14 @@ import type { Option } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 
-type CollapseValue = string | number
+export declare namespace Custom {
+  type CollapseValue = string | number
+}
 
 export declare namespace Props {
-  type ModelValue = CollapseValue | Array<CollapseValue>
+  type ModelValue = Custom.CollapseValue | Array<Custom.CollapseValue>
   type Accordion = boolean
-  type Options = Array<Option>
+  type Options = Array<Option<Custom.CollapseValue>>
 }
 
 export const props = {
@@ -21,7 +23,7 @@ export const props = {
       手風琴模式 值為字串: 只能展開一個`
   },
   accordion: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<Props.Accordion>,
     default: false,
     description: '是否為手風琴模式'
   },
@@ -31,4 +33,8 @@ export const props = {
       return []
     }
   }
+}
+
+export declare namespace Emits {
+  type Change = (active: Props.ModelValue) => void
 }

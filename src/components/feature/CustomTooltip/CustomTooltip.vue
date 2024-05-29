@@ -6,7 +6,8 @@ import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import { version, props as tooltipProps } from './CustomTooltipInfo'
 
-const scopedId = getUuid('__i-tooltip__')
+const scopedName = '__i-tooltip__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(tooltipProps)
 
@@ -44,8 +45,12 @@ const tempValue = customRef((track, trigger) => {
     :enterable="props.enterable"
     :show-after="props.showAfter"
     effect="light"
-    :class="`CustomTooltip_${version} ${scopedId}`"
-    class="__popover-wrapper"
+    class="tooltip-container"
+    :class="[
+      `CustomTooltip_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <template #default>
       <slot></slot>
@@ -56,11 +61,4 @@ const tempValue = customRef((track, trigger) => {
   </ElTooltip>
 </template>
 
-<style lang="scss" scoped>
-// .__popover {
-//   &-wrapper {
-//     width: fit-content;
-//     height: fit-content;
-//   }
-// }
-</style>
+<style lang="scss" scoped></style>

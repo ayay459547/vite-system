@@ -1,25 +1,29 @@
 import type { PropType } from 'vue'
 import type { TimelineItemProps } from 'element-plus'
 
+import type { CustomSize } from '@/components'
+
 export const version = '1.0.0'
 
-export type Size = 'large' | 'default' | 'small'
-export type Placement = 'top' | 'bottom'
-export type TimeType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
+export declare namespace Custom {
+  type Option = Partial<TimelineItemProps> & {
+    label?: string
+    timestamp?: string
+    type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
+    color?: string
+    size?: CustomSize
+    hollow?: boolean
+    placement?: 'top' | 'bottom'
+  } & any
+}
 
-export type Options = TimelineItemProps & {
-  label?: string
-  timestamp?: string
-  type?: TimeType
-  color?: string
-  size?: Size
-  hollow?: boolean
-  placement?: Placement
-} & any
+export declare namespace Props {
+  type Options = Array<Custom.Option>
+}
 
 export const props = {
   options: {
-    type: Array as PropType<Options[]>,
+    type: Array as PropType<Props.Options>,
     default() {
       return []
     }

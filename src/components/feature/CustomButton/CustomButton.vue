@@ -5,6 +5,7 @@ import { ElButton } from 'element-plus'
 import { CustomIcon } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
+import type { Emits } from './CustomButtonInfo'
 import { version, props as buttonProps } from './CustomButtonInfo'
 
 const scopedName = '__i-button__'
@@ -13,7 +14,7 @@ const scopedId = getUuid(scopedName)
 const props = defineProps(buttonProps)
 
 const emit = defineEmits(['click'])
-const onClick = ($event: Event) => {
+const onClick: Emits.Click = ($event: Event) => {
   emit('click', $event)
 }
 
@@ -39,30 +40,20 @@ const hasSlot = (prop: string): boolean => {
     class="button-container"
     :class="[
       `CustomButton_${version}`,
-      `size-${props.size}`,
+      `button-size-${props.size}`,
       scopedId,
       scopedName
     ]"
     @click="onClick"
   >
     <template v-if="!props.loading && props.iconName.length > 0" #icon>
-      <CustomIcon
-        class="icon"
-        :class="`icon-${iconMove}`"
-        :size="props.iconSize"
-        :type="props.iconType"
-        :name="props.iconName"
-        :style="{ color: props.textColor }"
-      />
+      <CustomIcon class="icon" :class="`icon-${iconMove}`" :size="props.iconSize" :type="props.iconType"
+        :name="props.iconName" :style="{ color: props.textColor }" />
     </template>
 
     <template v-if="props.label.length > 0 || hasSlot('default')" #default>
       <slot>
-        <span
-          class="button-label"
-          :class="`size-${props.iconSize}`"
-          :style="{ color: props.textColor }"
-        >
+        <span class="button-label" :class="`button-label-size-${props.iconSize}`" :style="{ color: props.textColor }">
           {{ props.label }}
         </span>
       </slot>
@@ -71,71 +62,58 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__i-button__ :deep {
-  &.el-button {
-    align-items: center;
+:global(.__i-button__.el-button) {
+  align-items: center;
+}
 
-    &.size {
-      &-large {
-        height: 36px;
-        gap: 4px;
-      }
-      &-default {
-        height: 32px;
-        gap: 2px;
-      }
-      &-small {
-        height: 28px;
-        gap: 0px;
-      }
-    }
+@mixin icon-transform($class-name, $style, $hover-style) {
+  .icon-#{$class-name} {
+    transform: $style;
+  }
+  &:hover .icon-#{$class-name} {
+    transform: $hover-style;
   }
 }
 
-.__i-button__.button {
-  &-container {
-    width: fit-content;
-    height: fit-content;
+.__i-button__ {
+  &.button {
+    &-container {
+      width: fit-content;
+      height: fit-content;
 
-    .icon {
-      transition-duration: 0.3s;
-      &-scale {
-        transform: scale(1.01);
-      }
-      &-rotate {
-        transform: rotateZ(0);
-      }
-      &-translate {
-        transform: translateX(0);
-      }
-    }
-
-    &:hover {
       .icon {
-        &-scale {
-          transform: scale(1.25);
-        }
-        &-rotate {
-          transform: rotateZ(-90deg);
-        }
-        &-translate {
-          transform: translateX(-4px);
-        }
+        transition-duration: 0.3s;
       }
+      @include icon-transform(scale, scale(1.01), scale(1.25));
+      @include icon-transform(rotate, rotateZ(0), rotateZ(-90deg));
+      @include icon-transform(translate, translateX(0), translateX(-4px));
     }
-  }
 
-  &-label {
-    display: inline-block;
+    // 按鈕大小
+    &-size-large {
+      height: 36px;
+      gap: 4px;
+    }
+    &-size-default {
+      height: 32px;
+      gap: 2px;
+    }
+    &-size-small {
+      height: 28px;
+      gap: 0px;
+    }
 
-    &.size {
-      &-large {
+    // 文字大小
+    &-label {
+      display: inline-block;
+
+      &-size-large {
         font-size: 1.3em;
       }
-      &-default {
+      &-size-default {
         font-size: 1.1em;
       }
-      &-small {
+      &-size-small {
         font-size: 1em;
       }
     }

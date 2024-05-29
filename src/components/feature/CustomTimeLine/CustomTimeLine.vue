@@ -6,7 +6,8 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as timeLineProps } from './CustomTimeLineInfo'
 
-const scopedId = getUuid('__i-time-line__')
+const scopedName = '__i-time-line__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(timeLineProps)
 
@@ -17,30 +18,28 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="`CustomTimeLine_${version} ${scopedId}`" class="__time-line-wrapper">
-    <ElTimeline>
-      <ElTimelineItem
-        v-for="(option, optionIndex) in props.options"
-        :key="optionIndex"
-        v-bind="option"
-      >
-        <template v-if="hasSlot('dot')" #dot>
-          <slot name="dot" v-bind="option"></slot>
-        </template>
+  <ElTimeline
+    class="time-line-container"
+    :class="[
+      `CustomTimeLine_${version}`,
+      scopedId,
+      scopedName
+    ]"
+  >
+    <ElTimelineItem
+      v-for="(option, optionIndex) in props.options"
+      :key="optionIndex"
+      v-bind="option"
+    >
+      <template v-if="hasSlot('dot')" #dot>
+        <slot name="dot" v-bind="option"></slot>
+      </template>
 
-        <template #default>
-          <slot v-bind="option">{{ option?.label ?? '' }}</slot>
-        </template>
-      </ElTimelineItem>
-    </ElTimeline>
-  </div>
+      <template #default>
+        <slot v-bind="option">{{ option?.label ?? '' }}</slot>
+      </template>
+    </ElTimelineItem>
+  </ElTimeline>
 </template>
 
-<style lang="scss" scoped>
-.__time-line {
-  &-wrapper {
-    width: fit-content;
-    height: fit-content;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -2,19 +2,21 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export type DraggableChange = {
-  added?: {
-    newIndex: number
-    element: Record<string, any>
-  }
-  removed?: {
-    oldIndex: number
-    element: Record<string, any>
-  }
-  moved?: {
-    newIndex: number
-    oldIndex: number
-    element: Record<string, any>
+export declare namespace Custom {
+  type DraggableChange = {
+    added?: {
+      newIndex: number
+      element: Record<string, any>
+    }
+    removed?: {
+      oldIndex: number
+      element: Record<string, any>
+    }
+    moved?: {
+      newIndex: number
+      oldIndex: number
+      element: Record<string, any>
+    }
   }
 }
 
@@ -145,4 +147,18 @@ export const props = {
     default: 'name',
     description: '資料列class'
   }
+}
+
+export declare namespace Emits {
+  type Update = ($event: any) => void
+  type Sort = ($event: any) => void
+  // type Filter = ($event: any) => void
+  type Start = ($event: any) => void
+  type End = ($event: any) => void
+  type Add = ($event: any) => void
+  type Remove = ($event: any) => void
+  type Choose = ($event: any) => void
+  type Unchoose = ($event: any) => void
+  type Clone = ($event: any) => void
+  type Change = ($event: Custom.DraggableChange) => void
 }

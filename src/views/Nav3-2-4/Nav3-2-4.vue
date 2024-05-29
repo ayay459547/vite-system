@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomButton, CustomBadge, CustomEmpty } from '@/components'
+import { CustomButton, CustomBadge, CustomEmpty, CustomTag } from '@/components'
 </script>
 
 <template>
@@ -14,6 +14,13 @@ import { CustomButton, CustomBadge, CustomEmpty } from '@/components'
       <div class="fill-x flex-row">7</div>
       <div>
         <CustomEmpty />
+      </div>
+
+      <div class="flex-row i-ga-md">
+        <CustomTag label="Tag" icon-name="edit" size="large"/>
+        <CustomTag label="Tag" icon-name="edit" size="default"/>
+        <CustomTag label="Tag" icon-name="edit" size="small"/>
+        <CustomTag label="Tag"/>
       </div>
     </div>
   </div>

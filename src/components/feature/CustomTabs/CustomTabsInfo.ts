@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { TabsPaneContext, TabPaneName } from 'element-plus'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -68,4 +69,12 @@ export const props = {
       list:label 使用 i18nLabel 時套用的翻譯模組
     `
   }
+}
+
+export declare namespace Emits {
+  type TabClick = (pane: TabsPaneContext, ev: Event) => void
+  type TabChange =	(name: TabPaneName) => void
+  type TabRemove =	(name: TabPaneName) => void
+  type TabAdd = () => void
+  type Edit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => void
 }

@@ -119,20 +119,18 @@ const elTabsRef = ref()
 </template>
 
 <style lang="scss" scoped>
-:deep(.__i-tabs__) {
-  &.el-tabs {
-    .el-tabs__header {
-      margin: 0 0 8px;
-    }
-    .el-tabs__content {
-      width: 100%;
-      height: calc(100% - 40px);
-      overflow: visible;
+.__i-tabs__ :deep(.el-tabs) {
+  .el-tabs__header {
+    margin: 0 0 8px;
+  }
+  .el-tabs__content {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: visible;
 
-      .el-tab-pane {
-        width: 100%;
-        height: 100%;
-      }
+    .el-tab-pane {
+      width: 100%;
+      height: 100%;
     }
   }
 }

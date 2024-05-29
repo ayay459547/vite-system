@@ -2,22 +2,17 @@ import type { PropType, Ref, CSSProperties } from 'vue'
 
 export const version = '1.0.0'
 
-export type OnScrollParams = { scrollLeft: number; scrollTop: number }
-
-export type HandleScroll = () => void
-export type ScrollTo = (options: ScrollToOptions | number, yCoord?: number) => void
-export type SetScrollTop = (scrollTop: number) => void
-export type SetScrollLeft = (scrollLeft: number) => void
-export type Update = () => void
-export type WrapRef = () => Ref<HTMLDivElement> | void
-
+export declare namespace Custom {
+  type Style = CSSProperties | CSSProperties[] | string[]
+  type OnScrollParams = { scrollLeft: number; scrollTop: number }
+}
 
 export declare namespace Props {
   type Height = string | number
   type MaxHeight = string | number
-  type WrapStyle = CSSProperties | CSSProperties[] | string[]
+  type WrapStyle = Custom.Style
   type WrapClass = string
-  type ViewStyle = CSSProperties | CSSProperties[] | string[]
+  type ViewStyle = Custom.Style
   type ViewClass = string
   type Noresize = boolean
   type Tag = string
@@ -108,4 +103,17 @@ export const props = {
     required: false,
     description: '視圖 aria-orientation'
   }
+}
+
+export declare namespace Emits {
+  type Scroll = ($event: Custom.OnScrollParams) => void
+}
+
+export declare namespace Expose {
+  type HandleScroll = () => void
+  type ScrollTo = (options: ScrollToOptions | number, yCoord?: number) => void
+  type SetScrollTop = (scrollTop: number) => void
+  type SetScrollLeft = (scrollLeft: number) => void
+  type Update = () => void
+  type WrapRef = () => Ref<HTMLDivElement> | void
 }

@@ -26,7 +26,7 @@ const hasSlot = (prop: string): boolean => {
     :align-center="props.alignCenter"
     :simple="props.simple"
     :class="`CustomSteps_${version} ${scopedId}`"
-    class="__steps-wrapper"
+    class="__steps-container"
   >
     <ElStep
       v-for="(option, optionIndex) in props.options"
@@ -50,7 +50,7 @@ const hasSlot = (prop: string): boolean => {
 
 <style lang="scss" scoped>
 .__steps {
-  &-wrapper {
+  &-container {
     width: 100%;
     height: fit-content;
   }

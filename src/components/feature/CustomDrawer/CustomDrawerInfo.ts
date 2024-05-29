@@ -55,3 +55,10 @@ export const props = {
     description: '視窗大小'
   }
 }
+
+export declare namespace Emits {
+  type Open = () => void
+  type Opened = () => void
+  type Close = () => void
+  type Closed = () => void
+}

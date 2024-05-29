@@ -1,8 +1,9 @@
 import type { PropType } from 'vue'
 
-import type { CustomSize, IconType as CustomIconType } from '@/components'
+import type { CustomSize, IconProps } from '@/components'
 
 export const version = '1.0.0'
+
 export declare namespace Props {
   type Label = string
   type Size = CustomSize
@@ -17,7 +18,7 @@ export declare namespace Props {
   type TextColor = string | undefined
   type Dark = boolean
   type IconSize = CustomSize
-  type IconType = CustomIconType
+  type IconType = IconProps.Type
   type IconName = string
   type IconMove = 'none' | 'translate'| 'rotate' | 'scale'
   type Style = string | Record<string, string>
@@ -130,4 +131,8 @@ export const props = {
   },
   // tsx event
   onClick: Function as PropType<(e: MouseEvent) => void>
+}
+
+export declare namespace Emits {
+  type Click = ($event: Event) => void
 }

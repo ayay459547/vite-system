@@ -77,3 +77,12 @@ export const props = {
     description: 'image-viewer 是否插入至 body 元素上'
   }
 }
+
+type EventError = Error
+export declare namespace Emits {
+  type Load = (e: Event) => void
+  type Error = (e: EventError) => void
+  type Switch = (e: number) => void
+  type Close = () => void
+  type Show = () => void
+}

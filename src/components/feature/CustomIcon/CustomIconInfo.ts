@@ -3,14 +3,16 @@ import type { CustomSize } from '@/components'
 
 export const version = '1.0.0'
 
-export type IconType = 'fas' | 'far' | 'fab'
+export declare namespace Custom {
+  type IconType = 'fas' | 'far' | 'fab'
+}
 
 /**
  * icon 和 type, name 選一種給
  */
 export declare namespace Props {
-  type Icon = [IconType, string] | []
-  type Type = IconType
+  type Icon = [Custom.IconType, string] | []
+  type Type = Custom.IconType
   type Name = string
   type Size = CustomSize
   type IconClass = string

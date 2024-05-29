@@ -17,6 +17,7 @@ const jsonData = computed(() => {
 const excelRef = ref()
 const excelToJson = () => {
   const files = excelRef.value.getFiles()
+  console.log(files)
   if (isEmpty(files)) {
     swal({
       icon: 'error',

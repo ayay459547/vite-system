@@ -24,7 +24,7 @@ const hasSlot = (prop: string): boolean => {
     :body-style="props.bodyStyle"
     :body-class="props.bodyClass"
     :shadow="props.shadow"
-    class="card-wrapper"
+    class="card-container"
     :class="[
       `CustomCard_${version}`,
       scopedId,
@@ -43,11 +43,4 @@ const hasSlot = (prop: string): boolean => {
   </ElCard>
 </template>
 
-<style lang="scss" scoped>
-// .__i-card__.card {
-//   &-wrapper {
-//     width: 100%;
-//     height: 100%;
-//   }
-// }
-</style>
+<style lang="scss" scoped></style>

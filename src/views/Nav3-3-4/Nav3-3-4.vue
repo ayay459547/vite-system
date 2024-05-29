@@ -4,7 +4,7 @@ import { shallowRef, ref, reactive, onMounted, nextTick, computed, inject } from
 import type { UseHook } from '@/declare/hook'
 
 import {
-  type DraggableChange,
+  type DraggableCustom,
   CustomDraggable,
   type SpanMethod,
   TableMain,
@@ -313,7 +313,7 @@ const initShowTable = async () => {
   }, 300)
 }
 
-const onSortChange = async (draggable: DraggableChange) => {
+const onSortChange = async (draggable: DraggableCustom.DraggableChange) => {
   isLoading.value = true
 
   await nextTick()

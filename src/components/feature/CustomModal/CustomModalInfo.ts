@@ -4,7 +4,10 @@ export const version = '1.0.0'
 
 export const minModalIndex = 2005
 
-type Size = 'fill' | 'large' | 'default' | 'small' | 'extraSmall' | 'fitContent'
+export declare namespace Custom {
+  type Size = 'fill' | 'large' | 'default' | 'small' | 'extraSmall' | 'fitContent'
+}
+
 export declare namespace Props {
   type ModelValue = boolean
   type IsKeepAlive = boolean
@@ -13,8 +16,8 @@ export declare namespace Props {
   type ClickOutside = boolean
   type Width = string
   type Height = string
-  type WidthSize = Size
-  type HeightSize = Size
+  type WidthSize = Custom.Size
+  type HeightSize = Custom.Size
   type Modal = boolean
   type AutoClose = boolean
   type Draggable = boolean
@@ -114,4 +117,10 @@ export const props = {
     default: false,
     description: '是否隱藏 取消按鈕'
   }
+}
+
+export declare namespace Emits {
+  type Close = () => void
+  type Cancel = () => void
+  type Submit = () => void
 }

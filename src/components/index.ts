@@ -6,78 +6,116 @@ export type CustomSize = 'large' | 'default' | 'small'
 export type CustomElType = '' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 export type { Option, Options } from '@/declare/columnSetting'
 
-// chart
+// 圖表類
 export { default as CustomCharts } from './chart/CustomCharts/CustomCharts.vue'
 export { default as GanttChart } from './chart/GanttChart/GanttChart.vue'
 export { default as WeekSchedule } from './chart/WeekSchedule/WeekSchedule.vue'
 
-// feature
-export type { Props as ButtonProps } from './feature/CustomButton/CustomButtonInfo'
+// 專案功能組件
+
+// 區塊右上方顯示 數字/圖示/其他
+export type { Props as BadgeProps } from './feature/CustomBadge/CustomBadgeInfo'
+export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
+
+// 按鈕
+export type {
+  Props as ButtonProps,
+  Emits as ButtonEmits
+} from './feature/CustomButton/CustomButtonInfo'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
+// 卡片
 export type { Props as CardProps } from './feature/CustomCard/CustomCardInfo'
 export { default as CustomCard } from './feature/CustomCard/CustomCard.vue'
 
-export type { Props as CollapseProps } from './feature/CustomCollapse/CustomCollapseInfo'
+// 展開/縮起 區塊
+export type {
+  Custom as CollapseCustom,
+  Props as CollapseProps,
+  Emits as CollapseEmits
+} from './feature/CustomCollapse/CustomCollapseInfo'
 export { default as CustomCollapse } from './feature/CustomCollapse/CustomCollapse.vue'
 
 // 棄用 CustomModal 代替
 export type { Props as DialogProps } from './feature/CustomDialog/CustomDialogInfo'
 export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue'
 
-export type { Props as BadgeProps } from './feature/CustomBadge/CustomBadgeInfo'
-export { default as CustomBadge } from './feature/CustomBadge/CustomBadge.vue'
-
+// 分隔線
 export type { Props as DividerProps } from './feature/CustomDivider/CustomDividerInfo'
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
-export type { Props as DraggableProps, DraggableChange } from './feature/CustomDraggable/CustomDraggableInfo'
+// 拖拉
+export type {
+  Custom as DraggableCustom,
+  Props as DraggableProps,
+  Emits as DraggableEmits
+} from './feature/CustomDraggable/CustomDraggableInfo'
 export { default as CustomDraggable } from './feature/CustomDraggable/CustomDraggable.vue'
 
-export type { Props as DrawerProps } from './feature/CustomDrawer/CustomDrawerInfo'
+// 從銀幕外插入畫面
+export type {
+  Props as DrawerProps,
+  Emits as DrawerEmits
+} from './feature/CustomDrawer/CustomDrawerInfo'
 export { default as CustomDrawer } from './feature/CustomDrawer/CustomDrawer.vue'
 
+// 無資料
 export type { Props as EmptyProps } from './feature/CustomEmpty/CustomEmptyInfo'
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
-export type { Props as ImageProps } from './feature/CustomImage/CustomImageInfo'
-export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
-
-export type { IconType, Props as IconProps } from './feature/CustomIcon/CustomIconInfo'
+// 圖示
+export type {
+  Custom as IconCustom,
+  Props as IconProps
+} from './feature/CustomIcon/CustomIconInfo'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
+// 圖片
+export type {
+  Props as ImageProps,
+  Emits as ImageEmits
+} from './feature/CustomImage/CustomImageInfo'
+export { default as CustomImage } from './feature/CustomImage/CustomImage.vue'
+
+// 輸入框
 export type {
   ModelValue as InputModelValue,
   InputType
 } from './feature/CustomInput/CustomInputInfo'
-
 export { default as CustomInput } from './feature/CustomInput/CustomInput'
 
+// 跳轉用組件
+// export { default as CustomLink } from './feature/CustomLink/CustomLink.vue'
+
+// .md
 export type { Props as MarkdownProps } from './feature/CustomMarkdown/CustomMarkdownInfo'
 export { default as CustomMarkdown } from './feature/CustomMarkdown/CustomMarkdown.vue'
 
-export type { Props as ModalProps } from './feature/CustomModal/CustomModalInfo'
+// 彈窗
+export type {
+  Custom as ModalCustom,
+  Props as ModalProps,
+  Emits as ModalEmits
+} from './feature/CustomModal/CustomModalInfo'
 export { default as CustomModal } from './feature/CustomModal/CustomModal.vue'
 
-export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
-
-export { default as CustomWatermark } from './feature/CustomWatermark/CustomWatermark.vue'
-
+// 彈出 區塊提示
 export type { Props as PopoverProps } from './feature/CustomPopover/CustomPopoverInfo'
 export { default as CustomPopover } from './feature/CustomPopover/CustomPopover.vue'
 
-export type { Props as CustomProgressProps } from './feature/CustomProgress/CustomProgressInfo'
+// 進度條
+export type {
+  Custom as ProgressCustom,
+  Props as ProgressProps
+} from './feature/CustomProgress/CustomProgressInfo'
 export { default as CustomProgress } from './feature/CustomProgress/CustomProgress.vue'
 
+// 滾輪
 export type {
-  OnScrollParams,
-  HandleScroll,
-  ScrollTo,
-  SetScrollTop,
-  SetScrollLeft,
-  Update,
-  WrapRef,
-  Props as ScrollbarProps
+  Custom as ScrollbarCustom,
+  Props as ScrollbarProps,
+  Emits as ScrollbarEmits,
+  Expose as ScrollbarExpose
 } from './feature/CustomScrollbar/CustomScrollbarInfo'
 export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
@@ -86,19 +124,25 @@ export { default as CustomSearch } from './feature/CustomSearch/CustomSearch.vue
 // GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
 export { default as GroupSearch } from './feature/CustomSearch/GroupSearch.vue'
 
+// 步驟
+export type {
+  Custom as StepsCustom,
+  Props as StepsProps
+} from './feature/CustomSteps/CustomStepsInfo'
 export { default as CustomSteps } from './feature/CustomSteps/CustomSteps.vue'
 
+// 切換鈕
 export type {
-  Size as SwitchSize,
-  ModelValue as SwitchModelValue
+  Custom as SwitchCustom,
+  Props as SwitchProps,
+  Emits as SwitchEmits
 } from './feature/CustomSwitch/CustomSwitchInfo'
 export { default as CustomSwitch } from './feature/CustomSwitch/CustomSwitch.vue'
 
-// 純表格
+// 表格
 export { default as TableMain } from './feature/CustomTable/TableMain.vue'
 // 虛擬表格
 export { default as CustomTableV2 } from './feature/CustomTableV2/CustomTableV2.vue'
-
 // 專案用表格
 import type { TableParams, PageChange } from './feature/CustomTable/CustomTableInfo'
 export declare interface CustomTableExpose {
@@ -125,35 +169,62 @@ export type {
 } from './feature/CustomTable/CustomTableInfo'
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
-export type { Props as CustomTabsProps } from './feature/CustomTabs/CustomTabsInfo'
+// 分頁
+export type {
+  Props as TabsProps,
+  Emits as TabsEmits
+} from './feature/CustomTabs/CustomTabsInfo'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 
-export type { TagType, TagSize, TagEffect } from './feature/CustomTag/CustomTagInfo'
+// 類似按鈕的標籤
+export type {
+  Props as TagProps,
+  Emits as TagEmits
+} from './feature/CustomTag/CustomTagInfo'
 export { default as CustomTag } from './feature/CustomTag/CustomTag.vue'
 
+// 時間線
 export type {
-  Placement as TooltipPlacement,
-  Trigger as TooltipTrigger
-} from './feature/CustomTooltip/CustomTooltipInfo'
-export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
-
-export type { TreeOptionProps } from './feature/CustomTree/CustomTreeInfo'
-export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
-export type { TreeV2OptionProps } from './feature/CustomTreeV2/CustomTreeV2Info'
-export { default as CustomTreeV2 } from './feature/CustomTreeV2/CustomTreeV2.vue'
-
-export type {
-  Size as TimeLineSize,
-  Placement as TimeLinePlacement,
-  TimeType,
-  Options as TimeLineOptions
+  Custom as TimeLineCustom,
+  Props as TimeLineProps
 } from './feature/CustomTimeLine/CustomTimeLineInfo'
 export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLine.vue'
 
+// 彈出 文字提示
+export type { Props as TooltipProps } from './feature/CustomTooltip/CustomTooltipInfo'
+export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
+
+// 樹狀
+export type {
+  Custom as TreeCustom,
+  Props as TreeProps,
+  Emits as TreeEmits,
+  Expose as TreeExpose
+ } from './feature/CustomTree/CustomTreeInfo'
+export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
+
+// 虛擬樹狀
+export type {
+  Custom as TreeV2Custom,
+  Props as TreeV2Props,
+  Emits as TreeV2Emits,
+  Expose as TreeV2Expose
+ } from './feature/CustomTreeV2/CustomTreeV2Info'
+export { default as CustomTreeV2 } from './feature/CustomTreeV2/CustomTreeV2.vue'
+
+// 檔案上傳
+export { default as CustomUpload } from './feature/CustomUpload/CustomUpload.vue'
+
+// 浮水印
+export { default as CustomWatermark } from './feature/CustomWatermark/CustomWatermark.vue'
+
+// 過濾
 export { default as SimpleFilter } from './feature/SimpleFilter/SimpleFilter'
 
+// 表格
 export { default as SimpleTable } from './feature/SimpleTable/SimpleTable.vue'
 
+// QRcode
 export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
 // form

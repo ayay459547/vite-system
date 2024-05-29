@@ -2,14 +2,16 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-type ProgressFunction = (percentage: number) => string
-type ProgressColor =
-  | string
-  | Array<{
-      color: string
-      percentage: number
-    }>
-  | ProgressFunction
+export declare namespace Custom {
+  type ProgressFunction = (percentage: number) => string
+  type ProgressColor =
+    | string
+    | Array<{
+        color: string
+        percentage: number
+      }>
+    | ProgressFunction
+}
 
 export declare namespace Props {
   type Percentage = number
@@ -19,10 +21,10 @@ export declare namespace Props {
   type Status = '' | 'success' | 'exception' | 'warning'
   type Indeterminate = boolean
   type Duration = number
-  type Color = ProgressColor
+  type Color = Custom.ProgressColor
   type ShowText = boolean
   type StrokeLinecap = 'butt' | 'round' | 'square'
-  type Format = ProgressFunction
+  type Format = Custom.ProgressFunction
   type Striped = boolean
   type StripedFlow = boolean
 }

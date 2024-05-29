@@ -18,34 +18,36 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <ElEmpty
-  :image="props.image"
-  :description="props.description"
-  :image-size="props.imageSize"
-  class="empty-container"
-  :class="[
-    `CustomEmpty_${version}`,
-    scopedId,
-    scopedName
-  ]"
+  <div
+    class="empty-container"
+    :class="[
+      `CustomEmpty_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
-    <template v-if="hasSlot('default')" #default>
-      <slot></slot>
-    </template>
-    <template v-if="hasSlot('image')" #image>
-      <slot name="image"></slot>
-    </template>
-    <template v-if="hasSlot('description')" #description>
-      <slot name="description"></slot>
-    </template>
-  </ElEmpty>
+    <ElEmpty
+      :image="props.image"
+      :description="props.description"
+      :image-size="props.imageSize"
+    >
+      <template v-if="hasSlot('default')" #default>
+        <slot></slot>
+      </template>
+      <template v-if="hasSlot('image')" #image>
+        <slot name="image"></slot>
+      </template>
+      <template v-if="hasSlot('description')" #description>
+        <slot name="description"></slot>
+      </template>
+    </ElEmpty>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.__i-empty__ :deep {
-  &.el-empty {
-    padding: 12px 0;
-  }
+// :deep() 需要一個根節點
+.__i-empty__ :deep(.el-empty) {
+  padding: 12px 0;
 }
 
 .__i-empty__.empty {

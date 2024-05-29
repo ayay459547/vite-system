@@ -4,13 +4,8 @@ import Draggable from 'vuedraggable'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import type { DraggableChange } from './CustomDraggableInfo'
+import type { Custom, Emits } from './CustomDraggableInfo'
 import { version, props as draggableProps } from './CustomDraggableInfo'
-
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
 
 const scopedName = '__i-draggable__'
 const scopedId = getUuid(scopedName)
@@ -32,17 +27,17 @@ const emit = defineEmits([
   'update:modelValue'
 ])
 
-const onUpdate = ($event: any) => emit('update', $event)
-const onSort = ($event: any) => emit('sort', $event)
-// const onFilter = ($event: any) => emit('filter', $event)
-const onStart = ($event: any) => emit('start', $event)
-const onEnd = ($event: any) => emit('end', $event)
-const onAdd = ($event: any) => emit('add', $event)
-const onRemove = ($event: any) => emit('remove', $event)
-const onChoose = ($event: any) => emit('choose', $event)
-const onUnchoose = ($event: any) => emit('unchoose', $event)
-const onClone = ($event: any) => emit('clone', $event)
-const onChange = ($event: DraggableChange) => emit('change', $event)
+const onUpdate: Emits.Update = ($event: any) => emit('update', $event)
+const onSort: Emits.Sort = ($event: any) => emit('sort', $event)
+// const onFilter: Emits.Filter = ($event: any) => emit('filter', $event)
+const onStart: Emits.Start = ($event: any) => emit('start', $event)
+const onEnd: Emits.End = ($event: any) => emit('end', $event)
+const onAdd: Emits.Add = ($event: any) => emit('add', $event)
+const onRemove: Emits.Remove = ($event: any) => emit('remove', $event)
+const onChoose: Emits.Choose = ($event: any) => emit('choose', $event)
+const onUnchoose: Emits.Unchoose = ($event: any) => emit('unchoose', $event)
+const onClone: Emits.Clone = ($event: any) => emit('clone', $event)
+const onChange: Emits.Change = ($event: Custom.DraggableChange) => emit('change', $event)
 
 const listValue = computed({
   get() {
@@ -54,6 +49,11 @@ const listValue = computed({
     emit('update:modelValue', value)
   }
 })
+
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
 </script>
 
 <template>
@@ -63,7 +63,7 @@ const listValue = computed({
       scopedId,
       scopedName
     ]"
-    class="draggable-wrapper"
+    class="draggable-container"
   >
     <Draggable
       v-model="listValue"
@@ -116,7 +116,7 @@ const listValue = computed({
 
 <style lang="scss" scoped>
 .__i-draggable__.draggable {
-  &-wrapper {
+  &-container {
     display: contents;
 
     .draggable {

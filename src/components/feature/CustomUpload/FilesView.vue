@@ -4,8 +4,8 @@ import { type PropType, computed } from 'vue'
 import { CustomIcon, CustomImage, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 
-import type { FilesInfo } from './CustomUploadInfo'
-import { getIcon, getIconClass } from './CustomUploadInfo'
+import type { Custom } from './CustomUploadInfo'
+import { getIcon, getIconClass } from './variable'
 
 const props = defineProps({
   multiple: {
@@ -15,7 +15,7 @@ const props = defineProps({
     description: '是否可上傳多個檔案'
   },
   files: {
-    type: Array as PropType<FilesInfo>,
+    type: Array as PropType<Custom.FilesInfo>,
     required: false,
     default: null,
     description: '上傳類型'
@@ -72,7 +72,7 @@ const previewSrcList = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@mixin iconColor($type, $color) {
+@mixin icon-color($type, $color) {
   &-#{$type} {
     color: $color !important;
   }
@@ -118,9 +118,9 @@ const previewSrcList = computed(() => {
       color: #909399;
     }
   }
-  @include iconColor('word', #409eff);
-  @include iconColor('excel', #67c23a);
-  @include iconColor('powerpoint', #e6a23c);
+  @include icon-color('word', #409eff);
+  @include icon-color('excel', #67c23a);
+  @include icon-color('powerpoint', #e6a23c);
 
   &-info {
     width: 100%;

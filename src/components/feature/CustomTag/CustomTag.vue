@@ -4,25 +4,32 @@ import { ElTag } from 'element-plus'
 import { CustomIcon } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
-import { version, ElType, ElSize, FontIconType, props as tagProps } from './CustomTagInfo'
+import type { Emits } from './CustomTagInfo'
+import { version, props as tagProps } from './CustomTagInfo'
 
-const scopedId = getUuid('__i-tag__')
+const scopedName = '__i-tag__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(tagProps)
 
 const emit = defineEmits(['click'])
-const onClick = ($event: Event) => {
+const onClick: Emits.Click = ($event: Event) => {
   emit('click', $event)
 }
 </script>
 
 <template>
   <div
-    class="__tag-container"
-    :class="`CustomTag_${version} ${scopedId} size-${ElSize[props.size]}`"
+    class="tag-container"
+    :class="[
+      `CustomTag_${version}`,
+      scopedId,
+      scopedName,
+      `tag-size-${props.size}`
+    ]"
   >
     <ElTag
-      :type="ElType[props.type]"
+      :type="props.type"
       :hit="props.hit"
       :closable="props.closeable"
       :round="props.round"
@@ -31,16 +38,16 @@ const onClick = ($event: Event) => {
       @click="onClick"
     >
       <template v-if="props.label.length > 0" #default>
-        <div class="__tag-group" :class="`size-${ElSize[props.size]}`">
+        <div class="tag-group">
           <CustomIcon
             v-if="props.iconName.length > 0"
             class="icon"
             :class="`icon-${iconMove}`"
-            :size="ElSize[props.size]"
-            :type="FontIconType[props.iconType]"
+            :size="props.size"
+            :type="props.iconType"
             :name="props.iconName"
           />
-          <span class="__tag-label">{{ props.label }}</span>
+          <span class="tag-label" :class="`tag-label-size-${props.size}`">{{ props.label }}</span>
         </div>
       </template>
     </ElTag>
@@ -48,8 +55,8 @@ const onClick = ($event: Event) => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.__tag-container) {
-  &.size {
+.__i-tag__ :deep(.tag-container) {
+  &.tag-size {
     &-large {
       .el-tag {
         height: 36px;
@@ -70,37 +77,27 @@ const onClick = ($event: Event) => {
     }
   }
 }
-.__tag {
+
+@mixin icon-transform($class-name, $style, $hover-style) {
+  .icon-#{$class-name} {
+    transform: $style;
+  }
+  &:hover .icon-#{$class-name} {
+    transform: $hover-style;
+  }
+}
+
+.tag {
   &-container {
     width: fit-content;
     height: fit-content;
 
     .icon {
       transition-duration: 0.3s;
-      &-scale {
-        transform: scale(1.01);
-      }
-      &-rotate {
-        transform: rotateZ(0);
-      }
-      &-translate {
-        transform: translateX(0);
-      }
     }
-
-    &:hover {
-      .icon {
-        &-scale {
-          transform: scale(1.25);
-        }
-        &-rotate {
-          transform: rotateZ(-90deg);
-        }
-        &-translate {
-          transform: translateX(-4px);
-        }
-      }
-    }
+    @include icon-transform(scale, scale(1.01), scale(1.25));
+    @include icon-transform(rotate, rotateZ(0), rotateZ(-90deg));
+    @include icon-transform(translate, translateX(0), translateX(-4px));
   }
 
   &-group {
@@ -110,14 +107,14 @@ const onClick = ($event: Event) => {
     gap: 8px;
   }
 
-  &-label {
-    &.size-large {
+  &-label-size {
+    &-large {
       font-size: 1.3em;
     }
-    &.size-default {
+    &-default {
       font-size: 1.1em;
     }
-    &.size-small {
+    &-small {
       font-size: 1em;
     }
   }

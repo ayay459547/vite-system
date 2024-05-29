@@ -1,4 +1,4 @@
-import type { IconType } from '@/components'
+import type { IconProps } from '@/components'
 import type { RouterType } from '@/router/setting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 
@@ -17,7 +17,7 @@ interface BaseTree {
   title: string // 顯示文字
   systemType: RouterType[] // 路由類型
 
-  icon?: string | [IconType, string] // 第一層路由的圖示
+  icon?: string | [IconProps.Type, string] // 第一層路由的圖示
   meta?: Meta // 額外其他參數
 
   // 權限(2進制)

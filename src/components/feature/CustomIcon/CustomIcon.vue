@@ -23,7 +23,7 @@ const getIcon = computed(() => {
       `CustomIcon_${version}`,
       scopedId,
       scopedName,
-      `size-${props.size}`,
+      `icon-size-${props.size}`,
       `${props.iconClass}`,
     ]"
   >
@@ -36,17 +36,17 @@ const getIcon = computed(() => {
   &-container {
     width: fit-content;
     height: fit-content;
+  }
 
-    &.size {
-      &-large {
-        font-size: 1.5em;
-      }
-      &-default {
-        font-size: 1.3em;
-      }
-      &-small {
-        font-size: 1em;
-      }
+  &-size {
+    &-large {
+      font-size: 1.5em;
+    }
+    &-default {
+      font-size: 1.3em;
+    }
+    &-small {
+      font-size: 1em;
     }
   }
 }

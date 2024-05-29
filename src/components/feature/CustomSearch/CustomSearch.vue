@@ -7,7 +7,7 @@ import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge } from '@/components'
 import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
-import type { ModelValue } from './CustomSearchInfo'
+import type { Props } from './CustomSearchInfo'
 import { version, props as searchProps } from './CustomSearchInfo'
 
 const scopedId = getUuid('__i-search__')
@@ -38,11 +38,11 @@ const inpuValue = computed({
   get() {
     return props.modelValue
   },
-  set(value: ModelValue) {
+  set(value: Props.ModelValue) {
     emit('update:modelValue', value)
   }
 })
-// const onInputChange = (inpuValue: ModelValue) => {
+// const onInputChange = (inpuValue: Props.ModelValue) => {
 //   onVisibleClick(false)
 //   emit('change', inpuValue)
 // }

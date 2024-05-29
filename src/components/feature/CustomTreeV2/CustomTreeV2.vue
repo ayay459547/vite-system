@@ -9,60 +9,52 @@ import { getUuid } from '@/lib/lib_utils'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 
-// import type { CheckNode } from './CustomTreeV2Info'
+import type { Custom, Emits, Expose } from './CustomTreeV2Info'
 import { version, props as treeProps } from './CustomTreeV2Info'
 
-const scopedId = getUuid('__i-tree-v2__')
+const scopedName = '__i-tree-v2__'
+const scopedId = getUuid(scopedName)
 
 const props = defineProps(treeProps)
 
 const emit = defineEmits(['node-click', 'check-change', 'check'])
 
-type TreeNodeData = any
-
-type TreeKey = string | number
-
-const onNodeClick = (data: TreeNodeData, node: TreeNode, e: MouseEvent) => {
+const onNodeClick: Emits.NodeClick = (data: Custom.TreeNodeData, node: TreeNode, e: MouseEvent) => {
   emit('node-click', e, data, node)
 }
-const onCheckChange = (data: TreeNodeData, checked: boolean) => {
+const onCheckChange: Emits.CheckChange = (data: Custom.TreeNodeData, checked: boolean) => {
   emit('check-change', data, checked)
 }
-const onCheck = (nodeDate: any, checkedData: any) => {
+const onCheck: Emits.Check = (nodeDate: any, checkedData: any) => {
   emit('check', nodeDate, checkedData)
 }
 
 const elTreeV2Ref = ref<InstanceType<typeof ElTreeV2>>()
 
 // 取得資料
-const getCheckedNodes = (leafOnly?: boolean) => {
+const getCheckedNodes: Expose.GetCheckedNodes = (leafOnly?: boolean) => {
   return elTreeV2Ref.value!.getCheckedNodes(leafOnly ?? false)
 }
-const getCheckedKeys = (leafOnly?: boolean) => {
+const getCheckedKeys: Expose.GetCheckedKeys = (leafOnly?: boolean) => {
   return elTreeV2Ref.value!.getCheckedKeys(leafOnly ?? false)
 }
 
 // 設定勾選
-// const setCheckedNodes = (nodeList: Node[], leafOnly?: boolean) => {
-//   elTreeV2Ref.value!.setCheckedNodes(nodeList, leafOnly ?? false)
-// }
-
-const setCheckedKeys = (keyList: Array<TreeKey>) => {
+const setCheckedKeys: Expose.SetCheckedKeys = (keyList: Array<Custom.TreeKey>) => {
   elTreeV2Ref.value!.setCheckedKeys(keyList)
 }
 
-const resetChecked = () => {
+const resetChecked: Expose.ResetChecked = () => {
   elTreeV2Ref.value!.setCheckedKeys([])
 }
 
-const setChecked = (key: TreeKey, checked: boolean) => {
+const setChecked: Expose.SetChecked = (key: Custom.TreeKey, checked: boolean) => {
   elTreeV2Ref.value!.setChecked(key, checked)
 }
 
 defineExpose({
   getCheckedNodes,
   getCheckedKeys,
-  // setCheckedNodes,
   setCheckedKeys,
   resetChecked,
   setChecked
@@ -108,8 +100,12 @@ onUnmounted(() => {
 <template>
   <div
     ref="wrapRef"
-    :class="`CustomTree_${version} ${scopedId}`"
-    class="__tree-wrapper"
+    class="__tree-container"
+    :class="[
+      `CustomTree_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <ElTreeV2
       ref="elTreeV2Ref"
@@ -137,8 +133,8 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.__tree {
-  &-wrapper {
+.__i-tree-v2__.tree {
+  &-container {
     width: 100%;
     height: 100%;
   }

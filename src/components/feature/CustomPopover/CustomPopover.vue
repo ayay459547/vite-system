@@ -60,11 +60,4 @@ const tempValue = customRef((track, trigger) => {
   </ElPopover>
 </template>
 
-<style lang="scss" scoped>
-// .__i-popover__.popover {
-//   &-container {
-//     width: fit-content;
-//     height: fit-content;
-//   }
-// }
-</style>
+<style lang="scss" scoped></style>

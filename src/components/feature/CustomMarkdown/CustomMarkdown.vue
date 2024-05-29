@@ -17,30 +17,28 @@ onMounted(() => {
 
 <template>
   <div
-    class="markdown-wrapper"
+    class="markdown-container"
     :class="[
       `CustomMarkdown_${version}`,
       scopedId,
       scopedName
     ]"
   >
-    <v-md-preview class="markdown-container" :text="props.text"></v-md-preview>
+    <v-md-preview class="markdown-main" :text="props.text"></v-md-preview>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.__i-markdown__ :deep {
-  .markdown-container {
-    &.v-md-editor-preview {
-      .vuepress-markdown-body {
-        padding: 0 !important;
-      }
+.__i-markdown__ :deep(.markdown-main) {
+  &.v-md-editor-preview {
+    .vuepress-markdown-body {
+      padding: 0 !important;
     }
   }
 }
 
 .__i-markdown__.markdown {
-  &-wrapper {
+  &-container {
     width: 100%;
     height: 100%;
   }

@@ -22,7 +22,7 @@ const hasSlot = (prop: string): boolean => {
     :direction="props.direction"
     :border-style="props.borderStyle"
     :content-position="props.contentPosition"
-    class="divider-wrapper"
+    class="divider-container"
     :class="[
       `CustomDividerInfo_${version}`,
       scopedId,
@@ -37,7 +37,7 @@ const hasSlot = (prop: string): boolean => {
 
 <style lang="scss" scoped>
 .__i-divider__.divider {
-  &-wrapper {
+  &-container {
     width: 100%;
     // height: fit-content;
   }

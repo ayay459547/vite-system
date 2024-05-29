@@ -36,7 +36,7 @@ const hasSlot = (prop: string): boolean => {
     :append-to-body="props.appendToBody"
     :lock-scroll="props.lockScroll"
     :draggable="props.draggable"
-    class="dialog-wrapper"
+    class="dialog-container"
     :class="[
       `CustomDialog_${version}`,
       scopedId,
@@ -57,7 +57,7 @@ const hasSlot = (prop: string): boolean => {
 
 <style lang="scss" scoped>
 .__i-dialog__.dialog {
-  &-wrapper {
+  &-container {
     width: fit-content;
     height: fit-content;
   }
