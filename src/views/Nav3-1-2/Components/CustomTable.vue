@@ -704,7 +704,7 @@ const slotKeyList = computed(() => {
     align-items: center;
     gap: 8px;
     padding: 0 8px;
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     transition-duration: 0.3s;
     cursor: pointer;
     .icon {

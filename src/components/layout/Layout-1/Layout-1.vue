@@ -10,7 +10,11 @@ import SideContent from './SideContent/SideContent.vue'
 import HeaderContent from './HeaderContent/HeaderContent.vue'
 
 const props = defineProps({
-  isOpen: {
+  isNavOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  isNavHover: {
     type: Boolean as PropType<boolean>,
     default: false
   },
@@ -40,7 +44,7 @@ const props = defineProps({
       }
     }
   },
-  historyIsOpen: {
+  isHistoryOpen: {
     type: Boolean as PropType<boolean>,
     default: false
   },
@@ -69,19 +73,19 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['logout', 'update:isOpen', 'history-change', 'preference', 'change-page'])
+const emit = defineEmits(['logout', 'update:isNavOpen', 'history-show-change', 'preference'])
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
   get() {
-    return props.isOpen
+    return props.isNavOpen
   },
   set(value) {
-    emit('update:isOpen', value)
+    emit('update:isNavOpen', value)
   }
 })
 
 const onHistoryChange = (v: boolean) => {
-  emit('history-change', v)
+  emit('history-show-change', v)
 }
 
 const sideRef = ref()
@@ -133,12 +137,12 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     >
       <SideContent
         ref="sideRef"
-        v-model:is-open="tempIsOpen"
+        v-model:isNavOpen="tempIsOpen"
+        :isNavHover="props.isNavHover"
         :show-routes="props.showRoutes"
         :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
-        @close="emit('update:isOpen', false)"
-        @change-page="emit('change-page')"
+        @close="emit('update:isNavOpen', false)"
       >
         <template #logo="{ isShow }">
           <slot name="logo" :is-show="isShow"></slot>
@@ -153,11 +157,11 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       <div class="layout-header">
         <HeaderContent
           v-model:is-open="tempIsOpen"
-          :history-is-open="props.historyIsOpen"
+          :is-history-open="props.isHistoryOpen"
           :auth-data="props.authData"
           :breadcrumb-name="props.breadcrumbName"
           :breadcrumb-title="props.breadcrumbTitle"
-          @history-change="onHistoryChange"
+          @history-show-change="onHistoryChange"
           @logout="emit('logout')"
           @preference="emit('preference')"
           @router-change="onRouterChange"

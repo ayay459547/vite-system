@@ -3,20 +3,19 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 import GlobalView from '@/components/GlobalView.vue'
-import { useEnvStore } from '@/stores/stores_env'
 
 export default defineComponent({
   name: 'AppView',
   components: { GlobalView },
   setup() {
-    const envStore = useEnvStore()
-    const { system, version } = envStore
     const router = useRouter()
+    const toHome = () => {
+      router.push({ name: 'locatehome' })
+    }
 
     return {
-      system,
-      version,
-      router
+      router,
+      toHome
     }
   }
 })
@@ -25,17 +24,17 @@ export default defineComponent({
 <template>
   <div class="app-container">
     <GlobalView>
-      <template #logo>
-        <div class="menu-logo" @click="router.push({ name: 'locatehome' })">
+      <template #logo="{ env }">
+        <div class="menu-logo" @click="toHome">
           <img class="vue-img" src="@/assets/images/Vue-logo.png" alt="vue" />
-          <h2 class="vue-text">Demo</h2>
+          <h2 class="vue-text">{{ env.system }}</h2>
         </div>
       </template>
 
-      <template #menu-footer="{ isShow }">
+      <template #menu-footer="{ isShow, env }">
         <div class="menu-footer">
-          <span v-if="isShow">{{ `${system} ${version}` }}</span>
-          <span v-else>{{ `${version.split('-')[0]}` }}</span>
+          <span v-if="isShow">{{ `${env.system} ${env.version}` }}</span>
+          <span v-else>{{ `${env.version.split('-')[0]}` }}</span>
         </div>
       </template>
 

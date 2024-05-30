@@ -94,7 +94,7 @@
     "./src/**/*.vue",
     "./tests/**/*.ts",
     "./tests/**/*.tsx"
-  ],
+, "src/worker.js"  ],
   "exclude": [
     "node_modules",
     "dist",

@@ -19,7 +19,7 @@ const { i18nTest, i18nTranslate } = useHook({
 })
 
 const props = defineProps({
-  isOpen: {
+  isNavOpen: {
     type: Boolean as PropType<boolean>,
     default: false
   },
@@ -41,11 +41,8 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['change-page'])
-
 type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
 const onRouterLinkClick = (navigate: Navigate) => {
-  emit('change-page')
   navigate()
 }
 
@@ -55,7 +52,7 @@ const { getRouteIcon, getRouteTitle } = useRoutesHook({
 })
 
 // 第二層路由
-const level2IsOpen = ref<boolean>(false)
+const isLevel2Open = ref<boolean>(false)
 const level2Nav = shallowRef<Navigation>()
 const level2List = shallowRef<Navigation[]>([])
 
@@ -69,7 +66,7 @@ const changeMap = (name: string): void => {
 const setLevel2Router = (level1Router: Navigation): void => {
   const { leaves } = level1Router
 
-  level2IsOpen.value = true
+  isLevel2Open.value = true
   level2Nav.value = level1Router
   level2List.value = leaves
 
@@ -81,7 +78,7 @@ const setLevel2Router = (level1Router: Navigation): void => {
 }
 // 切換第二層是否打開
 const setOpen = (value: boolean) => {
-  level2IsOpen.value = value
+  isLevel2Open.value = value
 }
 // 點擊麵包屑切換第二層路由
 const breadCrumbSetLevel2 = (breadCrumb: string[]) => {
@@ -93,7 +90,7 @@ const breadCrumbSetLevel2 = (breadCrumb: string[]) => {
 
   if (!isEmpty(level1Router) && !isEmpty(level2Name)) {
     setLevel2Router(level1Router)
-    level2IsOpen.value = true
+    isLevel2Open.value = true
   }
   if (!isEmpty(level3Name) && !isEmpty(level2Name)) {
     level2OpenMap.value[level2Name] = true
@@ -112,8 +109,8 @@ defineExpose({
     <CustomScrollbar
       class="nav-level1-container"
       :class="[
-        `${props.isOpen ? 'nav-is-open' : 'nav-is-close'}`,
-        `${level2IsOpen ? 'is-close' : 'is-open'}`
+        `${props.isNavOpen ? 'nav-is-open' : 'nav-is-close'}`,
+        `${isLevel2Open ? 'is-close' : 'is-open'}`
       ]"
     >
       <nav class="nav-list level1">
@@ -154,13 +151,12 @@ defineExpose({
 
     <div class="nav-list level2">
       <SubNavigationView
-        v-model:level2-is-open="level2IsOpen"
+        v-model:isLevel2Open="isLevel2Open"
         :title="getRouteTitle(level2Nav)"
         :level2-list="level2List"
         :open-map="level2OpenMap"
         :current-route-name="props.currentRouteName"
         @change-map="changeMap"
-        @change-page="emit('change-page')"
       />
     </div>
   </div>

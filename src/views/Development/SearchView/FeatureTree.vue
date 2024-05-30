@@ -212,7 +212,7 @@ $base-left: 24px;
   &-item {
     &-block {
       padding: 12px;
-      background-color: #fff;
+      background-color: var(--el-bg-color);
       display: flex;
       justify-content: space-between;
       transition-duration: 0.2s;

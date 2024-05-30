@@ -5,7 +5,7 @@ import { computed, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
-import type { Options, Option } from '@/components'
+import type { Options } from '@/components'
 import { CustomButton, CustomTabs } from '@/components'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
@@ -49,8 +49,8 @@ const tabs: ComputedRef<Options> = computed(() => {
   return res
 })
 
-const removeHistory = (option: Option) => {
-  removeHistoryNavigation(`${option.value}`)
+const removeHistory = (routeName: string) => {
+  removeHistoryNavigation(`${routeName}`)
 }
 
 const clearHistory = () => {

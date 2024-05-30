@@ -65,6 +65,11 @@ const hasSlot = (prop: string): boolean => {
 :global(.__i-button__.el-button) {
   align-items: center;
 }
+:global(.el-button) {
+  &+.el-button {
+    margin-left: 0 !important;
+  }
+}
 
 @mixin icon-transform($class-name, $style, $hover-style) {
   .icon-#{$class-name} {

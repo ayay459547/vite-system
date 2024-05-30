@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, ref, inject, reactive, onMounted, nextTick } from 'vue'
+import { computed, ref, inject, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
 import type { AuthData, UseHook } from '@/declare/hook'
 import { CustomModal } from '@/components'
-import { useColorToneStore } from '@/stores/stores_colorTone'
 import { useLayoutStore } from '@/stores/stores_layout'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+import { tipLog } from '@/lib/lib_utils'
 
 import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
 import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
@@ -42,7 +42,13 @@ const props = defineProps({
       return []
     }
   },
-  historyIsOpen: {
+  breadcrumbTitle: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  },
+  isHistoryOpen: {
     type: Boolean as PropType<boolean>,
     default: false
   },
@@ -56,30 +62,17 @@ const props = defineProps({
         groups: []
       } as AuthData
     }
-  },
-  breadcrumbTitle: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
   }
 })
 
-const emit = defineEmits(['logout', 'history-change', 'change-page'])
+const emit = defineEmits([
+  'lang-change',
+  'logout',
+  'history-show-change'
+])
 
 const layoutStore = useLayoutStore()
-const { layout } = storeToRefs(layoutStore)
-
-// 色調
-const colorToneStore = useColorToneStore()
-const { isDark } = storeToRefs(colorToneStore)
-
-// layout1
-const navIsOpen = ref(false)
-onMounted(() => {
-  const _navIsOpen = localStorage.getItem('navIsOpen')
-  navIsOpen.value = _navIsOpen === 'true'
-})
+const { isDark, layout, isNavOpen, isNavHover } = storeToRefs(layoutStore)
 
 export type CurrentRouteName = {
   level1: string
@@ -103,7 +96,7 @@ const layoutAttr = computed(() => {
     currentNavigation: props.currentNavigation,
 
     currentRouteName: currentRouteName.value,
-    historyIsOpen: props.historyIsOpen,
+    isHistoryOpen: props.isHistoryOpen,
     authData: props.authData,
 
     breadcrumbName: props.breadcrumbName,
@@ -113,11 +106,10 @@ const layoutAttr = computed(() => {
 
 const layoutEvent = {
   logout: () => emit('logout'),
-  historyChange: ($event: boolean) => emit('history-change', $event),
+  historyShowChange: ($event: boolean) => emit('history-show-change', $event),
   preference: () => {
     modal.preference = true
-  },
-  changePage: () => emit('change-page')
+  }
 }
 
 // modal
@@ -140,6 +132,9 @@ const init = async () => {
       case 'layout2':
         layout2Ref.value.init()
         break
+      default:
+        tipLog('找不到對應的Layout')
+        break
     }
   }, 100)
 }
@@ -148,18 +143,22 @@ defineExpose({
   setModalView: async () => {
     await nextTick()
 
-    navIsOpen.value = false
-    emit('history-change', false)
+    isNavOpen.value = false
+    emit('history-show-change', false)
   },
   init
 })
 
-const onChangeLayout = () => {
-  init()
+const onLangChange = () => {
+  emit('lang-change')
 }
 
 const onHistoryChange = ($event: boolean) => {
-  emit('history-change', $event)
+  emit('history-show-change', $event)
+}
+
+const onLayoutChange = () => {
+  init()
 }
 </script>
 
@@ -173,9 +172,10 @@ const onHistoryChange = ($event: boolean) => {
         <UserPreference
           ref="preferenceRef"
           :is-dark="isDark"
-          :history-is-open="props.historyIsOpen"
-          @history-change="onHistoryChange"
-          @change-layout="onChangeLayout"
+          :is-history-open="props.isHistoryOpen"
+          @lang-change="onLangChange"
+          @history-show-change="onHistoryChange"
+          @layout-change="onLayoutChange"
         />
       </CustomModal>
     </div>
@@ -183,7 +183,8 @@ const onHistoryChange = ($event: boolean) => {
     <Layout1
       ref="layout1Ref"
       v-if="layout === 'layout1'"
-      v-model:is-open="navIsOpen"
+      v-model:isNavOpen="isNavOpen"
+      :isNavHover="isNavHover"
       v-bind="layoutAttr"
       v-on="layoutEvent"
     >

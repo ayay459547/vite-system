@@ -11,8 +11,7 @@ import {
   useSlots
 } from 'vue'
 
-import { aesDecrypt, swal, notification, message, isEmpty, scrollToEl, tipLog } from '@/lib/lib_utils'
-import throttle from '@/lib/lib_throttle'
+import { aesDecrypt, swal, notification, message, isEmpty, scrollToEl, tipLog, awaitTime } from '@/lib/lib_utils'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
@@ -32,14 +31,10 @@ import { datetimeFormat } from '@/lib/lib_day'
 
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { useEnvStore } from '@/stores/stores_env'
 import { storeToRefs } from 'pinia'
 
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
-
-// idb
-import { checkInitIdb } from '@/lib/lib_idb'
 
 // hook
 import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook'
@@ -78,7 +73,19 @@ const loading: UseHookReturn.Loading = (isOpen, message) => {
   }
 }
 // 系統參數
-const envStore = useEnvStore()
+const systemEnv = computed(() => {
+  const _env = (import.meta as any).env
+
+  return {
+    env: _env,
+    mode: _env.MODE,
+    system: _env.VITE_API_SYSTEM_TYPE,
+    version: _env.VITE_API_VERSION,
+    baseUrl: _env.VITE_API_BASE_URL,
+    // PRIVATE_KEY: _env.VITE_API_PRIVATE_KEY,
+    QUERY_KEY: _env.VITE_API_QUERY_KEY
+  }
+})
 
 const router = useRouter()
 
@@ -122,54 +129,39 @@ onMounted(() => {
 })
 
 const isLoading = ref(false)
-const componentIsShow = ref(true)
 
 // 路由更換時執行
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
-  if ([null, undefined, 'login'].includes(currentRoute.name as string)) return
-  openLoading()
+  isLoading.value = false
+
+  const { name, i18nModule = defaultModuleType } = currentNavigation?.value ?? {
+    name: '',
+    i18nModule: defaultModuleType
+  }
+
+  if ([null, undefined, name, 'login'].includes(currentRoute.name as string)) return
+
   setNavigationData(currentRoute)
+  await awaitTime(12)
 
-  await nextTick()
+  // 設定翻譯模組
+  setModuleType(i18nModule)
+  setWebInfo()
+  setModalView(currentRoute)
+
   setTimeout(() => {
-    setWebInfo()
-    setModalView(currentRoute)
-  }, 480)
-
-  closeLoading()
+    pageScrollTop()
+    isLoading.value = false
+  }, 320)
 
   setTimeout(() => {
     updateToken()
   }, 2400)
 }
-// 打開 Loading
-const openLoading = async () => {
-  await nextTick()
-  if (!isLoading.value) {
-    isLoading.value = true
-    componentIsShow.value = false
-  }
-}
-// 關閉 Loading
-const closeLoading = async () => {
-  if (isLoading.value) {
-    await nextTick()
-    setTimeout(() => {
-      componentIsShow.value = true
-    }, 160)
-
-    setTimeout(() => {
-      pageScrollTop()
-      isLoading.value = false
-    }, 320)
-  }
-}
-// 做節流 因為畫面更新 為觸發多次
-const throttleOnRouteChange = throttle(onRouteChange, 80) as typeof onRouteChange
 
 const route = useRoute()
 const routeName = computed<any>(() => {
-  throttleOnRouteChange(route)
+  onRouteChange(route)
   return route?.name ?? ''
 })
 
@@ -185,7 +177,7 @@ const setWebInfo = () => {
       }
       if (title ?? false) return title
     }
-    return envStore.system
+    return systemEnv.value.system
   })(currentNavigation.value)
   document.title = currentTitle
 
@@ -207,11 +199,7 @@ const setModalView = async (currentRoute: RouteLocationNormalized) => {
   const isModal = currentRoute?.query?.isModal ?? false
 
   if (isModal === 'true') {
-    layoutIsShow.value = false
-    await nextTick()
-
     systemLayoutRef.value?.setModalView()
-    layoutIsShow.value = true
   }
 }
 
@@ -233,18 +221,12 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
     // 當前路由
     setCurrentNavigation(currentRoute)
     // 歷史路由
-    if (historyIsOpen.value) {
+    if (isHistoryOpen.value) {
       setTimeout(() => {
         addHistoryNavigation(routeName, currentRoute)
-      }, 1200)
+      }, 800)
     }
   }
-}
-
-const initSystem = async () => {
-  await initSystemData()
-
-  setNavigationRoutes(routesPermission.value)
 }
 
 /**
@@ -252,28 +234,25 @@ const initSystem = async () => {
  * 用權限 設置路由選項
  */
 const layoutIsShow = ref(false)
-const initNavigationRoutes = async () => {
+const initNavigationRoutes = async (routeName?: string) => {
   layoutIsShow.value = false
-  checkInitIdb()
-
+  await nextTick()
   await initSystemData()
-
   setNavigationRoutes(routesPermission.value)
-  router.push({ name: 'locatehome' })
 
   await nextTick()
-  setTimeout(() => {
-    layoutIsShow.value = true
-  }, 120)
+  loading(false, 'loading')
 
-  // 給 900 毫秒 確保路由跳轉完成後 才執行
-  setTimeout(() => {
-    systemLayoutRef.value.init()
-  }, 900)
+  await awaitTime(24)
+  if (!isEmpty(routeName)) {
+    router.push({ name: routeName })
+  }
+  layoutIsShow.value = true
 
-  setTimeout(() => {
-    loading(false, 'loading')
-  }, 1200)
+  // 給 240 毫秒 確保路由跳轉完成後 才執行
+  await nextTick()
+  await awaitTime(240)
+  setLayoutInfo()
 }
 
 onBeforeMount(() => {
@@ -285,44 +264,39 @@ onMounted(() => {
 })
 
 // 路由切換
-const onRouterChange = async () => {
+const setLayoutInfo = async () => {
   await nextTick()
-
-  setTimeout(() => {
-    systemLayoutRef.value.init()
-  }, 100)
+  await awaitTime(480)
+  systemLayoutRef.value.init()
 }
 
 // 登出
 const logout = async () => {
   await nextTick()
   loading(true, i18nTranslate('logout', defaultModuleType))
+
   clearToken()
   removeCookie('loginTime')
-
-  await initNavigationRoutes()
-  router.push({ name: 'login' })
+  initNavigationRoutes('login')
 }
 // 登入
 const login = async (userId: number) => {
   await nextTick()
-  loading(true, i18nTranslate('systemInitialization', defaultModuleType))
+  loading(true, i18nTranslate('login', defaultModuleType))
 
   const loginTime = datetimeFormat(new Date(), 'YYYY-MM-DD_HH:mm:ss')
   setCookie('loginTime', loginTime)
   setToken(userId, loginTime)
-
-  await initNavigationRoutes()
-  router.push({ name: 'locatehome' })
+  initNavigationRoutes('locatehome')
 }
 
 // 歷史路由
-const historyIsOpen = ref(false)
-const historyChange = (v: boolean) => (historyIsOpen.value = v)
+const isHistoryOpen = ref(false)
+const historyShowChange = (v: boolean) => (isHistoryOpen.value = v)
 
 onMounted(() => {
-  const _historyIsOpen = localStorage.getItem('historyIsOpen')
-  historyIsOpen.value = _historyIsOpen === 'true'
+  const _isHistoryOpen = localStorage.getItem('isHistoryOpen')
+  isHistoryOpen.value = _isHistoryOpen === 'true'
 })
 
 // 向下傳送常用工具
@@ -383,7 +357,7 @@ provide<UseHook>('useHook', options => {
       return getPermission(permission)
     },
     env: () => {
-      return envStore
+      return systemEnv.value
     },
     auth: () => {
       return authData.value
@@ -394,7 +368,7 @@ provide<UseHook>('useHook', options => {
         Array.isArray(fromQuery.from) ? fromQuery.from.join(',') : fromQuery.from,
         Array.isArray(fromQuery.data) ? fromQuery.data.join(',') : fromQuery.data
       ]
-      const queryData = isEmpty(fromData) ? '' : aesDecrypt(fromData as string, envStore.QUERY_KEY)
+      const queryData = isEmpty(fromData) ? '' : aesDecrypt(fromData as string, systemEnv.value.QUERY_KEY)
 
       return {
         fromPage,
@@ -413,42 +387,36 @@ provide<UseHook>('useHook', options => {
       :is-show="layoutIsShow"
       :show-routes="navigationRoutes"
       :current-navigation="currentNavigation"
-      :current-route-name="routeName"
-      :breadcrumbName="breadcrumbName"
-      :history-is-open="historyIsOpen"
+      :breadcrumb-name="breadcrumbName"
+      :is-history-open="isHistoryOpen"
       :auth-data="authData"
       :breadcrumb-title="breadcrumbTitle"
       @logout="logout"
-      @change-locale="setWebInfo"
-      @history-change="historyChange"
-      @change-page="openLoading"
+      @lang-change="setWebInfo"
+      @history-show-change="historyShowChange"
     >
       <template #logo="{ isShow }">
-        <slot name="logo" :is-show="isShow"></slot>
+        <slot name="logo" :is-show="isShow" :env="systemEnv"></slot>
       </template>
       <template #menu-footer="{ isShow }">
-        <slot name="menu-footer" :is-show="isShow"></slot>
+        <slot name="menu-footer" :is-show="isShow" :env="systemEnv"></slot>
       </template>
 
       <template v-if="hasSlot('header-left')" #header-left>
-        <slot name="header-left"></slot>
+        <slot name="header-left" :env="systemEnv"></slot>
       </template>
       <template v-if="hasSlot('header-right')" #header-right>
-        <slot name="header-right"></slot>
+        <slot name="header-right" :env="systemEnv"></slot>
       </template>
 
       <template #content>
-        <PageContent
-          :history-is-open="historyIsOpen"
-          :history-navigation="historyNavigation"
-          :current-navigation="currentNavigation"
-        >
-          <template #tabs="{ isShow }">
+        <PageContent :is-history-open="isHistoryOpen">
+          <template #tabs>
             <NavigationTabs
-              v-if="isShow"
+              v-if="isHistoryOpen"
               :history-navigation="historyNavigation"
               :current-navigation="currentNavigation"
-              @router-change="onRouterChange"
+              @router-change="setLayoutInfo"
             />
           </template>
 
@@ -456,25 +424,23 @@ provide<UseHook>('useHook', options => {
             <div class="__layout-scroll-top__"></div>
             <RouterView v-slot="{ Component, route }">
               <component
-                v-if="componentIsShow && route.name === 'login'"
-                :key="route.name"
+                v-if="route.name === 'login'"
+                key="login"
                 :is="Component"
                 @login="login"
               />
               <template v-else>
                 <KeepAlive>
                   <component
-                    v-if="componentIsShow && (route?.meta?.keepAlive ?? false)"
+                    v-if="(route?.meta?.keepAlive ?? false)"
                     :key="route.name"
                     :is="Component"
-                    @init-system="initSystem"
                   />
                 </KeepAlive>
                 <component
-                  v-if="componentIsShow && !(route?.meta?.keepAlive ?? false)"
+                  v-if="!(route?.meta?.keepAlive ?? false)"
                   :key="route.name"
                   :is="Component"
-                  @init-system="initSystem"
                 />
               </template>
               <!-- 更換路由執行 -->

@@ -10,7 +10,11 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import NavigationView from './NavigationView.vue'
 
 const props = defineProps({
-  isOpen: {
+  isNavOpen: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  isNavHover: {
     type: Boolean as PropType<boolean>,
     default: false
   },
@@ -38,15 +42,15 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:isOpen', 'change-page'])
+const emit = defineEmits(['update:isNavOpen'])
 
 const tempIsOpen = computed<boolean>({
   get() {
-    return props.isOpen
+    return props.isNavOpen
   },
   set(value) {
-    localStorage.setItem('navIsOpen', `${value}`)
-    emit('update:isOpen', value)
+    localStorage.setItem('isNavOpen', `${value}`)
+    emit('update:isNavOpen', value)
   }
 })
 
@@ -91,7 +95,13 @@ defineExpose({
 </script>
 
 <template>
-  <div class="side-wrapper" :class="tempIsOpen ? 'is-open' : 'is-close'">
+  <div
+    class="side-wrapper"
+    :class="[
+      tempIsOpen ? 'is-open' : 'is-close',
+      props.isNavHover ? 'is-hover' : ''
+    ]"
+  >
     <div class="side-container">
       <div class="side-logo">
         <div class="side-logo-navigate open">
@@ -112,7 +122,6 @@ defineExpose({
           :is-open="tempIsOpen"
           :level1-list="props.showRoutes"
           :current-route-name="props.currentRouteName"
-          @change-page="emit('change-page')"
         />
       </div>
 
@@ -131,8 +140,8 @@ defineExpose({
 <style lang="scss" scoped>
 @import '../Layout-1.scss';
 
-@mixin navStyle($isOpen) {
-  @if ($isOpen) {
+@mixin navStyle($isNavOpen) {
+  @if ($isNavOpen) {
     min-width: $nav-width;
     transition-delay: 0.2s;
     .side-logo .open,
@@ -170,6 +179,7 @@ defineExpose({
     // 大於 992px 只能使用按鈕打開
     @media (min-width: 992px) {
       left: -$side-width;
+      &.is-hover,
       &:hover {
         @include navStyle(true);
       }

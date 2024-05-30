@@ -208,7 +208,7 @@ const submit = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     transition-duration: 0.3s;
     padding: 6px 0 0 16px;
     width: 100%;

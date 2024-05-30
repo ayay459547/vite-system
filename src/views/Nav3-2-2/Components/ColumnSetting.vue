@@ -230,7 +230,7 @@ onBeforeMount(async () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     transition-duration: 0.3s;
     padding-left: 16px;
     width: 100%;

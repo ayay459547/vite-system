@@ -1,20 +1,20 @@
-import fill from './Array/fill'
+// import fill from './Array/fill'
 import includes from './Array/includes'
-import map from './Array/map'
+// import map from './Array/map'
 
+// import keys from './Object/keys'
+// import values from './Object/values'
 import entries from './Object/entries'
-import keys from './Object/keys'
-import values from './Object/values'
 
 const injectList = [
   // Array
-  fill,
+  // fill,
   includes,
-  map,
   // Object
-  entries,
-  keys,
-  values
+  // map,
+  // keys,
+  // values,
+  entries
 ]
 
 injectList.forEach(injectItem => {

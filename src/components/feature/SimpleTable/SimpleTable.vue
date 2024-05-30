@@ -391,7 +391,7 @@ export default SimpleTable
   }
 
   &-body {
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     width: 100%;
     height: fit-content;
   }
@@ -406,7 +406,7 @@ export default SimpleTable
 
   &-row {
     display: flex;
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     transition-duration: 0.3s;
     border-bottom: 1px solid #ebeef5;
     content-visibility: auto;

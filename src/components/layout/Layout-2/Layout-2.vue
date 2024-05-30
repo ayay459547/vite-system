@@ -16,7 +16,7 @@ const props = defineProps<{
   currentNavigation: Navigation
   currentRouteName: CurrentRouteName
 
-  historyIsOpen: boolean
+  isHistoryOpen: boolean
   authData: AuthData
   breadcrumbName: string[]
   breadcrumbTitle: string[]
@@ -24,12 +24,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'historyChange', value: boolean): void
+  (e: 'historyShowChange', value: boolean): void
   (e: 'preference'): void
 }>()
 
 const onHistoryChange = (v: boolean) => {
-  emit('historyChange', v)
+  emit('historyShowChange', v)
 }
 
 // 第二層路由
@@ -86,11 +86,11 @@ defineExpose({
         :show-routes="props.showRoutes"
         :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
-        :history-is-open="props.historyIsOpen"
+        :is-history-open="props.isHistoryOpen"
         :auth-data="props.authData"
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
-        @history-change="onHistoryChange"
+        @history-show-change="onHistoryChange"
         @logout="emit('logout')"
         @preference="emit('preference')"
         @set-level2-router="setLevel2Router"

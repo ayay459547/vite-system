@@ -93,49 +93,53 @@ export const storeVersion = {
 }
 
 // 紀錄版本
-export const checkInitIdb = async () => {
-  try {
-    const storeList = await keysIDBVersion()
+export const checkInitIdb = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      try {
+        const storeList = await keysIDBVersion()
 
-    for (const storeName in storeVersion) {
-      const store = storeVersion[storeName]
-      const { version, createVersion, isDelete } = store
+        for (const storeName in storeVersion) {
+          const store = storeVersion[storeName]
+          const { version, createVersion, isDelete } = store
 
-      getIDBVersion(storeName).then(async info => {
-        if (
-          isEmpty(info) ||
-          info.version !== version ||
-          info.createVersion !== createVersion ||
-          info.isDelete !== isDelete
-        ) {
-          if (!isDelete) {
-            const clearKeys = await keys(storeName)
-            if (clearKeys.length > 0) {
-              clear(storeName)
+          getIDBVersion(storeName).then(async info => {
+            if (
+              isEmpty(info) ||
+              info.version !== version ||
+              info.createVersion !== createVersion ||
+              info.isDelete !== isDelete
+            ) {
+              if (!isDelete) {
+                const clearKeys = await keys(storeName)
+                if (clearKeys.length > 0) {
+                  clear(storeName)
+                }
+              }
+
+              setIDBVersion(storeName, {
+                storeName,
+                version,
+                createVersion,
+                isDelete
+              })
             }
-          }
-
-          setIDBVersion(storeName, {
-            storeName,
-            version,
-            createVersion,
-            isDelete
           })
         }
-      })
-    }
 
-    return storeList
-  } catch (e) {
-    console.log(e)
-    swal({
-      icon: 'error',
-      title: 'checkInit indexedDB error',
-      text: e
-    })
+        resolve(storeList)
+      } catch (e) {
+        console.log(e)
+        swal({
+          icon: 'error',
+          title: 'checkInit indexedDB error',
+          text: e
+        })
 
-    return []
-  }
+        reject([])
+      }
+    }, 0)
+  })
 }
 
 // iDB版本

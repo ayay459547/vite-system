@@ -17,7 +17,7 @@ const hasSlot = (prop: string): boolean => {
 
 const props = defineProps<{
   isOpen: boolean
-  historyIsOpen: boolean
+  isHistoryOpen: boolean
   authData: AuthData
   breadcrumbName: string[]
   breadcrumbTitle: string[]
@@ -26,14 +26,14 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void
   (e: 'logout'): void
-  (e: 'historyChange', value: boolean): void
+  (e: 'historyShowChange', value: boolean): void
   (e: 'preference'): void
   (e: 'routerChange'): void
   (e: 'setRouter', value: string[]): void
 }>()
 
 const onHistoryChange = ($event: boolean) => {
-  emit('historyChange', $event)
+  emit('historyShowChange', $event)
 }
 
 const tempIsOpen = computed<boolean>({
@@ -41,7 +41,7 @@ const tempIsOpen = computed<boolean>({
     return props.isOpen
   },
   set(value) {
-    localStorage.setItem('navIsOpen', `${value}`)
+    localStorage.setItem('isNavOpen', `${value}`)
     emit('update:isOpen', value)
   }
 })
@@ -78,8 +78,8 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       <div class="header-right-effect">
         <MenuUser
           :auth-data="props.authData"
-          :history-is-open="props.historyIsOpen"
-          @history-change="onHistoryChange"
+          :is-history-open="props.isHistoryOpen"
+          @history-show-change="onHistoryChange"
           @logout="emit('logout')"
           @preference="emit('preference')"
         />

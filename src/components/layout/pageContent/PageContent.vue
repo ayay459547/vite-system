@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 
 const props = defineProps({
-  historyIsOpen: {
+  isHistoryOpen: {
     type: Boolean as PropType<boolean>,
     required: true
   }
@@ -11,8 +11,8 @@ const props = defineProps({
 
 <template>
   <div class="view-wrapper">
-    <div class="view-history" :class="props.historyIsOpen ? 'is-open' : 'is-close'">
-      <slot name="tabs" :is-show="props.historyIsOpen"></slot>
+    <div class="view-history" :class="props.isHistoryOpen ? 'is-open' : 'is-close'">
+      <slot name="tabs"></slot>
     </div>
     <main class="view-container">
       <slot></slot>
@@ -48,9 +48,10 @@ const props = defineProps({
   }
   &-container {
     width: 100%;
+    height: 100%;
     flex: 1;
     border-radius: 6px;
-    background-color: $page-content-bg-color;
+    background-color: var(--el-bg-color);
     box-sizing: border-box;
     position: relative;
   }

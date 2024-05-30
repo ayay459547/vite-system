@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/stores_auth'
 
@@ -9,11 +9,19 @@ const authStore = useAuthStore()
 const { isCheckedStatus } = storeToRefs(authStore)
 
 const router = useRouter()
+const route = useRoute()
+
 watch(
   isCheckedStatus,
   (isCheck: boolean) => {
     if (isCheck) {
-      router.push({ name: 'locatehome' })
+      const routeName = route?.name ?? 'locatehome'
+
+      if (routeName === 'checkStatus') {
+        router.push({ name: 'locatehome' })
+      } else {
+        router.push({ name: routeName })
+      }
     }
   },
   { immediate: true }

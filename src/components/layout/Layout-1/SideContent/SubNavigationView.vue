@@ -11,7 +11,7 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const props = defineProps({
-  level2IsOpen: {
+  isLevel2Open: {
     type: Boolean as PropType<boolean>,
     default: false
   },
@@ -33,7 +33,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:level2IsOpen', 'change-map', 'change-page'])
+const emit = defineEmits(['update:isLevel2Open', 'change-map'])
 
 const navHeight = 40
 const useHook: UseHook = inject('useHook')
@@ -47,8 +47,8 @@ const { getRouteTitle } = useRoutesHook({
 })
 
 const tempIsOpen: WritableComputedRef<Boolean> = computed({
-  get: () => props.level2IsOpen,
-  set: value => emit('update:level2IsOpen', value)
+  get: () => props.isLevel2Open,
+  set: value => emit('update:isLevel2Open', value)
 })
 
 const titleClick = (): void => {
@@ -62,7 +62,6 @@ const activeRouteName = ref('')
 type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
 const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
   activeRouteName.value = routerName
-  emit('change-page')
   await Promise.all([navigate(), nextTick()])
   setTimeout(() => {
     activeRouteName.value = ''

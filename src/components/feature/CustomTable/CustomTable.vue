@@ -480,24 +480,24 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
   tableHeight.value = height
 }
 
-const _prependIsOpen = ref(false)
-const prependIsOpen = computed<boolean>({
+const _isPrependOpen = ref(false)
+const isPrependOpen = computed<boolean>({
   get() {
-    return _prependIsOpen.value
+    return _isPrependOpen.value
   },
   set(value) {
-    localStorage.setItem('prependIsOpen', `${value}`)
-    _prependIsOpen.value = value
+    localStorage.setItem('isPrependOpen', `${value}`)
+    _isPrependOpen.value = value
   }
 })
 onMounted(() => {
   setTimeout(() => {
-    const _prependIsOpen = localStorage.getItem('prependIsOpen')
-    if (isEmpty(_prependIsOpen)) {
-      localStorage.setItem('prependIsOpen', 'true')
-      prependIsOpen.value = true
+    const _isPrependOpen = localStorage.getItem('isPrependOpen')
+    if (isEmpty(_isPrependOpen)) {
+      localStorage.setItem('isPrependOpen', 'true')
+      isPrependOpen.value = true
     } else {
-      prependIsOpen.value = _prependIsOpen === 'true'
+      isPrependOpen.value = _isPrependOpen === 'true'
     }
   }, 60)
 })
@@ -508,22 +508,22 @@ onMounted(() => {
     <template v-if="hasSlot('prepend')">
       <div class="__table-prepend">
         <Transition name="fixed">
-          <div v-show="prependIsOpen" class="__table-prepend-content">
+          <div v-show="isPrependOpen" class="__table-prepend-content">
             <slot name="prepend"></slot>
           </div>
         </Transition>
 
         <CustomButton
-          :icon-name="prependIsOpen ? 'xmark' : 'angles-down'"
+          :icon-name="isPrependOpen ? 'xmark' : 'angles-down'"
           type="primary"
           class="__table-prepend-btn"
           :class="{
-            'is-open': prependIsOpen,
-            'is-close': !prependIsOpen
+            'is-open': isPrependOpen,
+            'is-close': !isPrependOpen
           }"
           circle
           plain
-          @click="prependIsOpen = !prependIsOpen"
+          @click="isPrependOpen = !isPrependOpen"
         />
       </div>
     </template>
@@ -892,7 +892,7 @@ $border-style: 1px solid #ebeef5;
     align-items: center;
     gap: 8px;
     padding: 0 6px;
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     transition-duration: 0.3s;
     cursor: pointer;
     .icon {

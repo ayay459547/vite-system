@@ -12,7 +12,7 @@ const props = defineProps<{
   currentNavigation: Navigation
   currentRouteName: CurrentRouteName
 
-  historyIsOpen: boolean
+  isHistoryOpen: boolean
   authData: AuthData
   breadcrumbName: string[]
   breadcrumbTitle: string[]
@@ -20,14 +20,14 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'historyChange', value: boolean): void
+  (e: 'historyShowChange', value: boolean): void
   (e: 'preference'): void
   (e: 'setLevel2Router', level2List: Navigation): void
   (e: 'routerChange'): void
 }>()
 
 const onHistoryChange = ($event: boolean) => {
-  emit('historyChange', $event)
+  emit('historyShowChange', $event)
 }
 
 const setLevel2Router = (level2Router: Navigation) => {
@@ -69,8 +69,8 @@ const setLevel2Router = (level2Router: Navigation) => {
       <div class="menu-right-effect">
         <MenuUser
           :auth-data="props.authData"
-          :history-is-open="props.historyIsOpen"
-          @history-change="onHistoryChange"
+          :is-history-open="props.isHistoryOpen"
+          @history-show-change="onHistoryChange"
           @logout="emit('logout')"
           @preference="emit('preference')"
         />

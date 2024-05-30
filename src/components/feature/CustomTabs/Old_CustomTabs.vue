@@ -267,7 +267,7 @@ $is-background: #f5f7fa;
     gap: 8px;
     cursor: pointer;
     padding: 8px 12px;
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     transition-duration: 0.3s;
     color: #303133;
     border: 1px solid #ececec {
@@ -281,7 +281,7 @@ $is-background: #f5f7fa;
 
       &.is-active,
       &:hover {
-        background-color: #fff;
+        background-color: var(--el-bg-color);
       }
     }
 
@@ -300,7 +300,7 @@ $is-background: #f5f7fa;
       height: 20px;
       font-size: 1em !important;
       border-radius: 50%;
-      background-color: #fff;
+      background-color: var(--el-bg-color);
       color: #e9e9e9;
       transition-duration: 0.3s;
       &:hover {

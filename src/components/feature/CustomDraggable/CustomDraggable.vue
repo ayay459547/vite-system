@@ -137,7 +137,7 @@ const hasSlot = (prop: string): boolean => {
     border-bottom: 1px solid #ffffff00;
 
   &-item {
-    background-color: #fff;
+    background-color: var(--el-bg-color);
     border-bottom: 1px solid #ebeef5;
 
     &.stripe {

@@ -7,7 +7,6 @@ import type { UseHook } from '@/declare/hook'
 import { CustomIcon, FormRadio } from '@/components'
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
-import { useColorToneStore } from '@/stores/stores_colorTone'
 import { useLayoutStore } from '@/stores/stores_layout'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
@@ -24,13 +23,17 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
-  historyIsOpen: {
+  isHistoryOpen: {
     type: Boolean as PropType<boolean>,
     default: false
   }
 })
 
-const emit = defineEmits(['historyChange', 'changeLayout'])
+const emit = defineEmits([
+  'lang-change',
+  'history-show-change',
+  'layout-change'
+])
 
 // 語言
 const localeStore = useLocaleStore()
@@ -41,6 +44,7 @@ const langValue = computed({
   },
   set(lang: string) {
     localeStore.currentLang = lang
+    emit('lang-change')
   }
 })
 
@@ -67,24 +71,6 @@ const browserValue = computed({
   }
 })
 
-// 色調
-const colorToneStore = useColorToneStore()
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const colorToneOptions = [
-  { label: 'light', value: 'light' },
-  { label: 'dark', value: 'dark' }
-]
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const colorTone = computed({
-  get() {
-    return props.isDark ? 'dark' : 'light'
-  },
-  set(colorTone: string) {
-    const _isDark = colorTone === 'dark'
-    colorToneStore.toggleDark(_isDark)
-  }
-})
-
 // 標籤連結
 const tagLinkOptions = [
   { label: 'show', value: true },
@@ -92,10 +78,10 @@ const tagLinkOptions = [
 ]
 const tagLinkValue = computed({
   get() {
-    return props.historyIsOpen
+    return props.isHistoryOpen
   },
   set(isShow: boolean) {
-    emit('historyChange', isShow)
+    emit('history-show-change', isShow)
   }
 })
 
@@ -111,6 +97,21 @@ onMounted(() => {
 const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
 
+// 色調
+const colorToneOptions = [
+  { label: 'light', value: 'light' },
+  { label: 'dark', value: 'dark' }
+]
+const colorTone = computed({
+  get() {
+    return props.isDark ? 'dark' : 'light'
+  },
+  set(colorTone: string) {
+    const _isDark = colorTone === 'dark'
+    layoutStore.toggleDark(_isDark)
+  }
+})
+
 const getLayoutView = (layoutNumber: string) => {
   switch (layoutNumber) {
     case '1':
@@ -122,108 +123,110 @@ const getLayoutView = (layoutNumber: string) => {
 
 const onClickLayout = (layoutValue: string) => {
   layoutStore.currentLayout = layoutValue
-  emit('changeLayout')
+  emit('layout-change')
 }
 </script>
 
 <template>
-  <div class="modal-container">
-    <div class="modal-list">
-      <!-- 語言設定 -->
-      <div class="modal-item">
-        <div class="modal-label">
-          <div class="icon">
-            <CustomIcon name="earth-americas" />
+  <div class="modal-container grid-row">
+    <div class="grid-col-xs-24 grid-col-xl-12">
+      <div class="modal-list">
+        <!-- 語言設定 -->
+        <div class="modal-item">
+          <div class="modal-label">
+            <div class="icon">
+              <CustomIcon name="earth-americas" />
+            </div>
+            <label>{{ i18nTranslate('language', defaultModuleType) }}</label>
           </div>
-          <label>{{ i18nTranslate('language', defaultModuleType) }}</label>
+
+          <div class="modal-select">
+            <FormRadio v-model="langValue" :options="langOptions">
+              <template #option="{ label }">
+                {{ i18nTranslate(label) }}
+              </template>
+            </FormRadio>
+          </div>
         </div>
 
-        <div class="modal-select">
-          <FormRadio v-model="langValue" :options="langOptions">
-            <template #option="{ label }">
-              {{ i18nTranslate(label) }}
-            </template>
-          </FormRadio>
+        <!-- 瀏覽器顯示模式 -->
+        <div class="modal-item">
+          <div class="modal-label">
+            <div class="icon">
+              <CustomIcon type="far" name="window-restore" />
+            </div>
+            <label>{{ i18nTranslate('browser') + i18nTranslate('mode') }}</label>
+          </div>
+
+          <div class="modal-select">
+            <FormRadio v-model="browserValue" :options="browserViewOptions">
+              <template #option="{ label }">
+                {{ i18nTranslate(label) }}
+              </template>
+            </FormRadio>
+          </div>
+        </div>
+
+        <!-- 色調 -->
+        <div class="modal-item">
+          <div class="modal-label">
+            <div class="icon">
+              <CustomIcon type="fas" name="palette"/>
+            </div>
+            <label>{{ `${i18nTranslate('colorTone')}` }}</label>
+          </div>
+
+          <div class="modal-select">
+            <FormRadio
+              v-model="colorTone"
+              :options="colorToneOptions"
+            >
+              <template #option="{ label }">
+                {{ i18nTranslate(label) }}
+              </template>
+            </FormRadio>
+          </div>
+        </div>
+
+        <!-- 是否顯示標籤頁碼 -->
+        <div class="modal-item">
+          <div class="modal-label">
+            <div class="icon">
+              <CustomIcon type="fas" name="hashtag" />
+            </div>
+            <label>{{ `${i18nTranslate('tagLink')}` }}</label>
+          </div>
+
+          <div class="modal-select">
+            <FormRadio v-model="tagLinkValue" :options="tagLinkOptions">
+              <template #option="{ label }">
+                {{ i18nTranslate(label) }}
+              </template>
+            </FormRadio>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- 瀏覽器顯示模式 -->
-      <div class="modal-item">
-        <div class="modal-label">
-          <div class="icon">
-            <CustomIcon type="far" name="window-restore" />
-          </div>
-          <label>{{ i18nTranslate('browser') + i18nTranslate('mode') }}</label>
+    <!-- 布局切換 -->
+    <div class="grid-col-xs-24 grid-col-xl-12">
+      <div class="modal-label">
+        <div class="icon">
+          <CustomIcon name="chalkboard-user" />
         </div>
-
-        <div class="modal-select">
-          <FormRadio v-model="browserValue" :options="browserViewOptions">
-            <template #option="{ label }">
-              {{ i18nTranslate(label) }}
-            </template>
-          </FormRadio>
-        </div>
+        <label>{{ i18nTranslate('layout', defaultModuleType) }}</label>
       </div>
 
-      <!-- 色調 -->
-      <!-- <div class="modal-item">
-        <div class="modal-label">
-          <div class="icon">
-            <CustomIcon type="fas" name="palette"/>
-          </div>
-          <label>{{ `${i18nTranslate('colorTone')}` }}</label>
-        </div>
-
-        <div class="modal-select">
-          <FormRadio
-            v-model="colorTone"
-            :options="colorToneOptions"
-          >
-            <template #option="{ label }">
-              {{ i18nTranslate(label) }}
-            </template>
-          </FormRadio>
-        </div>
-      </div> -->
-
-      <!-- 是否顯示標籤頁碼 -->
-      <div class="modal-item">
-        <div class="modal-label">
-          <div class="icon">
-            <CustomIcon type="fas" name="hashtag" />
-          </div>
-          <label>{{ `${i18nTranslate('tagLink')}` }}</label>
-        </div>
-
-        <div class="modal-select">
-          <FormRadio v-model="tagLinkValue" :options="tagLinkOptions">
-            <template #option="{ label }">
-              {{ i18nTranslate(label) }}
-            </template>
-          </FormRadio>
-        </div>
-      </div>
-
-      <!-- 布局切換 -->
-      <div class="modal-item">
-        <div class="modal-label">
-          <div class="icon">
-            <CustomIcon name="chalkboard-user" />
-          </div>
-          <label>{{ i18nTranslate('layout', defaultModuleType) }}</label>
-        </div>
-
-        <div class="modal-select">
-          <div
-            v-for="layoutOption in layoutStore.options"
-            :key="layoutOption.value"
-            :class="{ active: layout === layoutOption.value }"
-            class="layout cursor-pointer"
-            @click="onClickLayout(layoutOption.value)"
-          >
-            <div class="i-mb-sm">{{ i18nTranslate('layout', defaultModuleType) + layoutOption.label }}</div>
-            <component :is="getLayoutView(layoutOption.label)" />
-          </div>
+      <div class="modal-select">
+        <div
+          v-for="layoutOption in layoutStore.options"
+          :key="layoutOption.value"
+          :class="{ active: layout === layoutOption.value }"
+          class="layout cursor-pointer"
+          @click="onClickLayout(layoutOption.value)"
+        >
+          <div class="i-mb-sm">{{ i18nTranslate('layout', defaultModuleType) + layoutOption.label }}</div>
+          <component :is="getLayoutView(layoutOption.label)" />
         </div>
       </div>
     </div>

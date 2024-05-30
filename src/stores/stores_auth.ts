@@ -141,9 +141,7 @@ export const useAuthStore = defineStore('auth', () => {
       clearRoutesPermission()
     }
 
-    setTimeout(() => {
-      isCheckedStatus.value = true
-    }, 480)
+    isCheckedStatus.value = true
   }
 
   return {
