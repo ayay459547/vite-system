@@ -9,22 +9,22 @@ const { i18nTranslate } = useHook()
 
 const typeList = [
   {
-    key: 'normalWorkingTime',
+    value: 'normalWorkingTime',
     label: 'normalWorkingTime',
     color: '#cfccf6'
   },
   {
-    key: 'firstOverTime',
+    value: 'firstOverTime',
     label: 'firstOverTime',
     color: '#f3ffc6'
   },
   {
-    key: 'secondOverTime',
+    value: 'secondOverTime',
     label: 'secondOverTime',
     color: '#a7e8c4'
   },
   {
-    key: 'extendedWorkingTime',
+    value: 'extendedWorkingTime',
     label: 'extendedWorkingTime',
     color: '#f2b5c9'
   }
@@ -33,15 +33,20 @@ const typeList = [
 
 <template>
   <div class="page-container">
-    <h3 class="i-mb-md">WeekSchedule-test</h3>
-    <WeekSchedule :type-list="typeList">
-      <template #label="{ label }">
+    <WeekSchedule :options="typeList">
+      <template #title>
+        <h3>WeekSchedule-test</h3>
+      </template>
+      <template #options="{ label }">
         {{ i18nTranslate(label) }}
       </template>
     </WeekSchedule>
 
-    <WeekSchedule :type-list="typeList">
-      <template #label="{ label }">
+    <WeekSchedule :options="typeList">
+      <template #title>
+        <h3>WeekSchedule-test-2</h3>
+      </template>
+      <template #options="{ label }">
         {{ i18nTranslate(label) }}
       </template>
     </WeekSchedule>

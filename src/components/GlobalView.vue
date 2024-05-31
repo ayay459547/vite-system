@@ -132,7 +132,8 @@ const isLoading = ref(false)
 
 // 路由更換時執行
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
-  isLoading.value = false
+  openIsDisabled()
+  pageScrollTop()
 
   const { name, i18nModule = defaultModuleType } = currentNavigation?.value ?? {
     name: '',
@@ -146,13 +147,10 @@ const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
 
   // 設定翻譯模組
   setModuleType(i18nModule)
+  // 設定網頁資訊
   setWebInfo()
+  // 設定是否為 modal 模式
   setModalView(currentRoute)
-
-  setTimeout(() => {
-    pageScrollTop()
-    isLoading.value = false
-  }, 320)
 
   setTimeout(() => {
     updateToken()
@@ -190,6 +188,18 @@ const pageScrollTop = () => {
   if (el) {
     scrollToEl(el, { behavior: 'auto' })
   }
+}
+// 換頁時 暫時不行點擊任何東西
+const isDisabled = ref(false)
+let timeoutId: NodeJS.Timeout | null
+const openIsDisabled = () => {
+  if (timeoutId) {
+    clearInterval(timeoutId)
+  }
+  isDisabled.value = true
+  timeoutId = setTimeout(() => {
+    isDisabled.value = false
+  }, 480)
 }
 
 const systemLayoutRef = ref()
@@ -451,7 +461,7 @@ provide<UseHook>('useHook', options => {
       </template>
 
       <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
-      <div v-show="isLoading" class="is-disabled">
+      <div v-show="isDisabled" class="is-disabled">
         <span class="hidden-text">{{ routeName }}</span>
       </div>
     </SystemLayout>

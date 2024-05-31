@@ -100,7 +100,8 @@ const hasSlot = (prop: string): boolean => {
 
       <template #item="{ element, index }">
         <li
-          :class="[`draggable list-group-item ${props.rowClass}`, props.stripe ? 'stripe' : '']"
+          class="draggable __draggable-move__ list-group-item"
+          :class="[`${props.rowClass}`, props.stripe ? 'stripe' : '']"
           :style="props.rowStyle"
         >
           <slot name="item" :element="element" :index="index"></slot>

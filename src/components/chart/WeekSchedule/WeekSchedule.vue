@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { nextTick, reactive, ref, inject } from 'vue'
+import { nextTick, reactive, ref, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import throttle from '@/lib/lib_throttle'
 import { getType, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { CustomPopover, CustomButton } from '@/components'
+import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
 import type {
   DataPlanTime,
@@ -28,21 +29,29 @@ import {
 } from './planUtils'
 // import PlanItem from './PlanItem.vue'
 
-export type TypeItem = {
-  key: any
+export type option = {
   label: string
+  value: any
   color: string
 }
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const props = defineProps({
-  typeList: {
-    type: Array as PropType<TypeItem[]>,
-    required: false
+  title: {
+    type: String as PropType<string>,
+    required: false,
+    default: ''
+  },
+  options: {
+    type: Array as PropType<option[]>,
+    required: false,
+    default () {
+      return []
+    }
   },
   itemList: {
     type: Array as PropType<any[]>,
@@ -445,6 +454,7 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
 
 const containerRenderKey = ref(1)
 const updateSchedule = async () => {
+  console.log('updateSchedule')
   // 有暫時的工時分配
   if (tempPlanStyle.display === 'block') {
     const { start, startSecond, end, endSecond } = tempPlanTime
@@ -474,40 +484,112 @@ const updateInfo = reactive<{
   left: number
   top: number
   plan: PlanData
+
+  // 決定是否顯示用
+  mousedownLeft: number
+  mousedownTop: number
+  mouseupLeft: number
+  mouseupTop: number
 }>({
   isShow: false,
   left: 0,
   top: 0,
-  plan: null
-})
-const updateDataPlan = async ($event: MouseEvent, dayId: number, plan: PlanData) => {
-  if (updateInfo.isShow) {
-    updateInfo.isShow = false
-    await nextTick()
-  }
-  const { clientX, clientY } = $event
-  updateInfo.left = clientX
-  updateInfo.top = clientY
-  updateInfo.plan = plan
-  updateInfo.isShow = true
+  plan: null,
 
-  console.log('plan => ', plan)
-}
+  mousedownLeft: -1,
+  mousedownTop: -1,
+  mouseupLeft: -1,
+  mouseupTop: -1
+})
+
+// const _formTimeValue = ref([])
+// const formTimeValue = computed<any>({
+//   get () {
+//     console.log('get', _formTimeValue.value)
+//     return _formTimeValue.value
+//   },
+//   set (v) {
+//     console.log('set', v)
+//     _formTimeValue.value = v
+//   }
+// })
+const formTimeValue = computed<any>({
+  get () {
+    let res = []
+    if ([null, undefined].includes(updateInfo.plan)) {
+      res = ['00:00', '00:00']
+    } else {
+      const [start, end] = [
+        updateInfo.plan.time.start,
+        updateInfo.plan.time.end
+      ]
+      res = [`${start}`, `${end}`]
+    }
+    console.log('get', res)
+    return res
+  },
+  set (v: [string, string]) {
+    console.log('set', v)
+    const [_start, _end] = v
+    updateInfo.plan.time.start = _start
+    updateInfo.plan.time.end = _end
+  }
+})
+
 const closeUpdate = () => {
-  updateInfo.plan = null
   updateInfo.isShow = false
 }
+const openUpdate = ($event: MouseEvent, dayId: number, plan: PlanData, mouseEvent: string) => {
+  const { clientX, clientY } = $event
+
+  if (mouseEvent === 'mousedown') {
+    updateInfo.isShow = false
+
+    updateInfo.mousedownLeft = clientX
+    updateInfo.mousedownTop = clientY
+
+    updateInfo.mouseupLeft = -1
+    updateInfo.mouseupTop = -1
+  } else if (mouseEvent === 'mouseup') {
+    updateInfo.mouseupLeft = clientX
+    updateInfo.mouseupTop = clientY
+
+    console.log('mouseupLeft => ', (updateInfo.mousedownLeft - updateInfo.mouseupLeft))
+    console.log('mousedownTop => ', (updateInfo.mousedownTop - updateInfo.mouseupTop))
+    // 位置位移不超過3 = click
+    if (
+      Math.abs(updateInfo.mousedownLeft - updateInfo.mouseupLeft) < 3 &&
+      Math.abs(updateInfo.mousedownTop - updateInfo.mouseupTop) < 3
+    ) {
+      updateInfo.left = clientX
+      updateInfo.top = clientY
+      updateInfo.plan = plan
+      console.log('plan => ', plan)
+      updateInfo.isShow = true
+
+      const { time: planTime } = plan
+      const { id: uuid } = planTime
+      setLastUpdatePlan(dayId, uuid)
+      setOriginPlan(dayId, plan)
+    }
+  }
+}
+
 </script>
 
 <template>
   <div class="schedule">
     <!-- 類型 -->
     <div class="schedule-type">
+      <slot name="title">
+
+        <h3>{{ props.title }}</h3>
+      </slot>
       <div class="schedule-type-list">
-        <div v-for="typeItem in props.typeList" :key="typeItem.key" class="schedule-type-itme">
+        <div v-for="typeItem in props.options" :key="typeItem.value" class="schedule-type-itme">
           <div class="schedule-type-color" :style="{ backgroundColor: typeItem.color }"></div>
           <div class="schedule-type-label">
-            <slot name="label" :key="typeItem.key" :label="typeItem.label" :color="typeItem.color">
+            <slot name="options" :key="typeItem.value" :label="typeItem.label" :color="typeItem.color">
               {{ typeItem.label }}
             </slot>
           </div>
@@ -561,35 +643,34 @@ const closeUpdate = () => {
           <div class="schedule-list">
             <div v-for="(column, dayId) in 7" :key="planRenderKey[dayId]" class="schedule-item">
               <!-- 單一分配結果 -->
-              <template v-for="plan in planData[dayId]" :key="plan.time.id">
+              <div
+                v-for="plan in planData[dayId]" :key="plan.time.id"
+                class="schedule-data-plan"
+                :style="{
+                  ...plan.style,
+                  top: `${plan.style.top - 1}px`,
+                  height: `${plan.style.height}px`
+                }"
+                @mousedown="openUpdate($event, dayId, plan, 'mousedown')"
+                @mouseup="openUpdate($event, dayId, plan, 'mouseup')"
+              >
                 <div
-                  class="schedule-data-plan"
-                  :style="{
-                    ...plan.style,
-                    top: `${plan.style.top - 1}px`,
-                    height: `${plan.style.height}px`
-                  }"
-                  @mouseup="updateDataPlan($event, dayId, plan)"
-                  @mousedown="closeUpdate"
+                  class="schedule-data-plan-before"
+                  @mousedown="setStartPlan($event, dayId, plan)"
+                ></div>
+                <div
+                  class="schedule-data-plan-text"
+                  @mousedown="moveDataPlan($event, dayId, plan)"
                 >
-                  <div
-                    class="schedule-data-plan-before"
-                    @mousedown="setStartPlan($event, dayId, plan)"
-                  ></div>
-                  <div
-                    class="schedule-data-plan-text"
-                    @mousedown="moveDataPlan($event, dayId, plan)"
-                  >
-                    <span>{{ `${plan.time.start}` }}</span>
-                    <span> - </span>
-                    <span>{{ `${plan.time.end}` }}</span>
-                  </div>
-                  <div
-                    class="schedule-data-plan-after"
-                    @mousedown="setEndPlan($event, dayId, plan)"
-                  ></div>
+                  <span>{{ `${plan.time.start}` }}</span>
+                  <span> - </span>
+                  <span>{{ `${plan.time.end}` }}</span>
                 </div>
-              </template>
+                <div
+                  class="schedule-data-plan-after"
+                  @mousedown="setEndPlan($event, dayId, plan)"
+                ></div>
+              </div>
             </div>
           </div>
 
@@ -627,7 +708,7 @@ const closeUpdate = () => {
         v-model:visible="updateInfo.isShow"
         :width="320"
         placement="right"
-        :show-arrow="false"
+        :show-arrow="true"
       >
         <template #reference>
           <div></div>
@@ -637,7 +718,13 @@ const closeUpdate = () => {
             <span class="update-label">編輯時間區段</span>
             <CustomButton icon-name="close" text @click="closeUpdate" />
           </div>
-          <div class="schedule-update-body"></div>
+          <div class="schedule-update-body">
+            <FormTimePicker
+              v-model="formTimeValue"
+              is-range
+              format="HH:mm"
+            />
+          </div>
           <div class="schedule-update-footer">
             <CustomButton label="刪除此區間" type="danger" icon-name="close" icon-move="scale" />
             <CustomButton label="同步至整周" type="primary" icon-name="copy" icon-move="scale" />
@@ -654,6 +741,9 @@ $body-height: 960px;
 .schedule {
   // 類型
   &-type {
+    display: flex;
+    align-items: center;
+
     &-list {
       display: flex;
     }

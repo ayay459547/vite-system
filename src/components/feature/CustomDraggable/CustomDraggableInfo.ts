@@ -55,7 +55,7 @@ export const props = {
   handle: {
     type: String as PropType<Props.Handle>,
     required: false,
-    default: '.__draggable',
+    default: '.__draggable-move__',
     description: '指定可拖拉的元素(css選擇器)'
   },
   width: {

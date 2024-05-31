@@ -152,6 +152,21 @@ const baseRoutesName = baseRoutes.reduce((res, curr) => {
 const router = createRouter({
   history: createWebHistory((import.meta as any).env.BASE_URL),
   routes: [...baseRoutes, ...resRoutes]
+  // 無效
+  // scrollBehavior() {
+  //   // 切頁面時滾動到最上方
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       const el = document.querySelector('.__layout-scroll-top__')
+
+  //       if (![null, undefined].includes(el)) {
+  //         resolve({ el, top: 0, behavior: 'smooth' })
+  //       } else {
+  //         reject({ top: 0 })
+  //       }
+  //     }, 1000)
+  //   })
+  // }
 })
 
 // 暫存使用者想去的路由名稱
