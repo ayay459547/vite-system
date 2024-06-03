@@ -4,7 +4,7 @@ import { nextTick, reactive, ref, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import throttle from '@/lib/lib_throttle'
-import { getType, getUuid } from '@/lib/lib_utils'
+import { awaitTime, getType, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
@@ -25,7 +25,8 @@ import {
   twentyFourHourSecond,
   secondToTop,
   topToSecond,
-  secondToTime
+  secondToTime,
+  timeToSecond
 } from './planUtils'
 // import PlanItem from './PlanItem.vue'
 
@@ -453,6 +454,12 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
 }
 
 const containerRenderKey = ref(1)
+/**
+ * 更新 分配畫面
+ * 如果有暫時的工時分配 新增
+ * checkLastUpdatePlan()
+ * removeEvent()
+ */
 const updateSchedule = async () => {
   console.log('updateSchedule')
   // 有暫時的工時分配
@@ -484,6 +491,7 @@ const updateInfo = reactive<{
   left: number
   top: number
   plan: PlanData
+  dayId: number
 
   // 決定是否顯示用
   mousedownLeft: number
@@ -495,6 +503,7 @@ const updateInfo = reactive<{
   left: 0,
   top: 0,
   plan: null,
+  dayId: -1,
 
   mousedownLeft: -1,
   mousedownTop: -1,
@@ -539,7 +548,7 @@ const formTimeValue = computed<any>({
 const closeUpdate = () => {
   updateInfo.isShow = false
 }
-const openUpdate = ($event: MouseEvent, dayId: number, plan: PlanData, mouseEvent: string) => {
+const openUpdate = async ($event: MouseEvent, dayId: number, plan: PlanData, mouseEvent: string) => {
   const { clientX, clientY } = $event
 
   if (mouseEvent === 'mousedown') {
@@ -548,15 +557,15 @@ const openUpdate = ($event: MouseEvent, dayId: number, plan: PlanData, mouseEven
     updateInfo.mousedownLeft = clientX
     updateInfo.mousedownTop = clientY
 
-    updateInfo.mouseupLeft = -1
-    updateInfo.mouseupTop = -1
+    // updateInfo.mouseupLeft = -1
+    // updateInfo.mouseupTop = -1
   } else if (mouseEvent === 'mouseup') {
+    await nextTick()
+    console.log('updateInfo =>', updateInfo)
     updateInfo.mouseupLeft = clientX
     updateInfo.mouseupTop = clientY
 
-    console.log('mouseupLeft => ', (updateInfo.mousedownLeft - updateInfo.mouseupLeft))
-    console.log('mousedownTop => ', (updateInfo.mousedownTop - updateInfo.mouseupTop))
-    // 位置位移不超過3 = click
+    // 位置位移不超過3 => click
     if (
       Math.abs(updateInfo.mousedownLeft - updateInfo.mouseupLeft) < 3 &&
       Math.abs(updateInfo.mousedownTop - updateInfo.mouseupTop) < 3
@@ -564,15 +573,49 @@ const openUpdate = ($event: MouseEvent, dayId: number, plan: PlanData, mouseEven
       updateInfo.left = clientX
       updateInfo.top = clientY
       updateInfo.plan = plan
-      console.log('plan => ', plan)
+      updateInfo.dayId = dayId
       updateInfo.isShow = true
-
-      const { time: planTime } = plan
-      const { id: uuid } = planTime
-      setLastUpdatePlan(dayId, uuid)
-      setOriginPlan(dayId, plan)
     }
+
+    await nextTick()
+    // 更新畫面 + 確認重複 + 移除 mouse event
+    updateSchedule()
   }
+}
+/**
+ * 編輯時間
+ * 時間(HH:mm) => 秒數
+ * 秒數 => top
+ */
+const onTimePickerChange = async (time: string) => {
+  const [startTime, endTime] = time
+
+  const [startSecond, endSecond] = [
+    timeToSecond(startTime),
+    timeToSecond(endTime)
+  ]
+
+  console.log(lastUpdatePlan.value)
+  const { dayId, plan } = updateInfo
+
+  const { time: planTime, style: planStyle } = plan
+  const { id: uuid } = planTime
+  setLastUpdatePlan(dayId, uuid)
+  setOriginPlan(dayId, plan)
+
+  planTime.startSecond = startSecond
+  planTime.start = secondToTime(startSecond)
+
+  planTime.endSecond = endSecond
+  planTime.end = secondToTime(endSecond)
+
+  planStyle.top = secondToTop(planTime.startSecond)
+  planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
+  updateInfo.isShow = false
+
+  await nextTick()
+  await awaitTime(120)
+  updateSchedule()
 }
 
 </script>
@@ -651,8 +694,8 @@ const openUpdate = ($event: MouseEvent, dayId: number, plan: PlanData, mouseEven
                   top: `${plan.style.top - 1}px`,
                   height: `${plan.style.height}px`
                 }"
-                @mousedown="openUpdate($event, dayId, plan, 'mousedown')"
-                @mouseup="openUpdate($event, dayId, plan, 'mouseup')"
+                @mousedown.stop="openUpdate($event, dayId, plan, 'mousedown')"
+                @mouseup.stop="openUpdate($event, dayId, plan, 'mouseup')"
               >
                 <div
                   class="schedule-data-plan-before"
@@ -723,6 +766,7 @@ const openUpdate = ($event: MouseEvent, dayId: number, plan: PlanData, mouseEven
               v-model="formTimeValue"
               is-range
               format="HH:mm"
+              @change="onTimePickerChange($event)"
             />
           </div>
           <div class="schedule-update-footer">
@@ -925,7 +969,9 @@ $body-height: 960px;
     }
     &-body {
       // border: 2px solid skyblue;
-      height: 300px;
+      height: fit-content;
+      min-height: 100px;
+      padding: 24px 0;
     }
     &-footer {
       display: flex;

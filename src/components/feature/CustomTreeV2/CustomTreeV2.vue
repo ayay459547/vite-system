@@ -100,7 +100,7 @@ onUnmounted(() => {
 <template>
   <div
     ref="wrapRef"
-    class="__tree-container"
+    class="tree-container"
     :class="[
       `CustomTree_${version}`,
       scopedId,

@@ -55,3 +55,23 @@ export const secondToTime = (second: number): string => {
   const _minutes = Math.floor((tempSecond - _hour * oneHourSecond) / 60)
   return `${_hour}`.padStart(2, '0') + ':' + `${_minutes}`.padStart(2, '0')
 }
+
+/**
+ * 秒數 換算成 hh:mm
+ * 有限制在 0小時 ~ 24小時 的秒數
+ * @param {string}time
+ * @returns {string} hh:mm
+ */
+export const timeToSecond = (time: string): number => {
+  const [_hour, _minutes] = time.split(':')
+
+  const [hour, minutes] = [
+    Number.parseInt(_hour),
+    Number.parseInt(_minutes)
+  ]
+
+  const hourSecond = (isNaN(hour) ? 0 : hour) * oneHourSecond
+  const minutesSecond = (isNaN(minutes) ? 0 : minutes) * 60
+
+  return hourSecond + minutesSecond
+}
