@@ -10,7 +10,7 @@ import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 import type {
   PlanData,
   Origin
-} from './planType'
+} from '../planType'
 
 import {
   FPS,
@@ -21,7 +21,7 @@ import {
   topToSecond,
   secondToTime,
   timeToSecond
-} from './planUtils'
+} from '../planUtils'
 
 const props = defineProps({
   planData: {
@@ -34,10 +34,6 @@ const props = defineProps({
   },
   isCheck: {
     type: Boolean as PropType<boolean>,
-    required: true
-  },
-  dayId: {
-    type: Number as PropType<number>,
     required: true
   },
   originPlanMap: {
@@ -70,8 +66,8 @@ const moveDataPlan = ($event: MouseEvent) => {
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
 
-  emit('setLastUpdatePlan', props.dayId, uuid)
-  emit('setOriginPlan', props.dayId, plan.value)
+  emit('setLastUpdatePlan', uuid)
+  emit('setOriginPlan', plan.value)
 
   if (props.originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -113,7 +109,7 @@ const moveDataPlan = ($event: MouseEvent) => {
         planStyle.top = secondToTop(planTime.startSecond)
         planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
 
-        emit('updatePlanRenderKey', props.dayId)
+        emit('updatePlanRenderKey')
       }, _FPS, { isNoLeading: true })
     )
   }
@@ -123,8 +119,8 @@ const setStartPlan = ($event: MouseEvent) => {
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
 
-  emit('setLastUpdatePlan', props.dayId, uuid)
-  emit('setOriginPlan', props.dayId, plan.value)
+  emit('setLastUpdatePlan', uuid)
+  emit('setOriginPlan', plan.value)
 
   if (props.originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -155,7 +151,7 @@ const setStartPlan = ($event: MouseEvent) => {
         planStyle.top = secondToTop(planTime.startSecond)
         planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
 
-        emit('updatePlanRenderKey', props.dayId)
+        emit('updatePlanRenderKey')
       }, _FPS, { isNoLeading: true })
     )
   }
@@ -165,8 +161,8 @@ const setEndPlan = ($event: MouseEvent) => {
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
 
-  emit('setLastUpdatePlan', props.dayId, uuid)
-  emit('setOriginPlan', props.dayId, plan.value)
+  emit('setLastUpdatePlan', uuid)
+  emit('setOriginPlan', plan.value)
 
   if (props.originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -198,7 +194,7 @@ const setEndPlan = ($event: MouseEvent) => {
         planTime.end = secondToTime(planTime.endSecond)
         planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
 
-        emit('updatePlanRenderKey', props.dayId)
+        emit('updatePlanRenderKey')
       }, _FPS, { isNoLeading: true })
     )
   }
@@ -303,8 +299,8 @@ const closeUpdate = () => {
 
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
-  emit('setLastUpdatePlan', props.dayId, uuid)
-  emit('setOriginPlan', props.dayId, plan.value)
+  emit('setLastUpdatePlan', uuid)
+  emit('setOriginPlan', plan.value)
 
   planTime.startSecond = startSecond
   planTime.start = secondToTime(startSecond)
@@ -395,7 +391,7 @@ const closeUpdate = () => {
 .schedule {
   &-data-plan {
     position: absolute;
-    width: calc(100% - 5px);
+    width: calc(100% - 2px);
     min-height: 12px;
     border-radius: 4px;
     border: 1px solid #337ecc;
