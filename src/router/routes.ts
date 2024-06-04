@@ -99,6 +99,34 @@ const routes: Array<RouterTree> = [
             component: () => import('@/views/Test-new/Test-new.vue')
           },
           {
+            name: 'test-fund-1417',
+            title: '測試Fund-1417',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/test-fund-1417',
+            icon: 'file-circle-check',
+            component: () => import('@/views/Test-fund-1417/Test-fund-1417.vue')
+          },
+          {
+            name: 'test-fund-141',
+            title: '測試Fund-141',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/test-fund-141',
+            icon: 'file-circle-check',
+            component: () => import('@/views/Test-fund-141/Test-fund-141.vue')
+          },
+          {
             name: 'test-fund-122',
             title: '測試Fund-122',
             meta: {

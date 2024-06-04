@@ -259,3 +259,5 @@ export type { TimePickerType } from './form/FormTimePicker.vue'
 export { default as FormTimePicker } from './form/FormTimePicker.vue'
 
 export { default as FormList } from './form/FormList.vue'
+
+export { default as WebViewTable } from './views/WebViewTable/WebViewTable.vue'
