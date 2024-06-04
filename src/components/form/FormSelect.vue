@@ -274,7 +274,7 @@ defineExpose({
 </style>
 
 <style lang="scss">
-.el-select__popper {
-  z-index: var(--i-z-index-select-option) !important;
-}
+// .el-select__popper {
+//   z-index: var(--i-z-index-select-option) !important;
+// }
 </style>

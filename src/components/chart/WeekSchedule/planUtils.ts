@@ -1,8 +1,42 @@
+// 最快刷新的速度
 export const FPS = 80
-export const oneHourHeight = 40
-export const twentyFourHourHeight = 40 * 24
+// 表格高度
+export const tableHeight = 960
+// 1小時高度
+export const oneHourHeight = 960 / 24
+// 24小時高度
+export const twentyFourHourHeight = oneHourHeight * 24
+// 23:59 秒數的高度(趨近於24:00)
+export const maxHeight = twentyFourHourHeight
+
+// 1小時秒數
 export const oneHourSecond = 1 * 60 * 60
-export const twentyFourHourSecond = 24 * 60 * 60
+// 24小時秒數
+export const twentyFourHourSecond = oneHourSecond * 24
+// 23:59 秒數
+export const maxSecond = twentyFourHourSecond - 1
+
+/**
+ * 秒數限制 00:00 ~ 23:59 區間
+ * @param {number} second 秒數
+ * @returns {number} second
+ */
+export const secondFormat = (second: number): number => {
+  if (second <= 0) return 0
+  if (second >= maxSecond) return maxSecond
+  return second
+}
+
+/**
+ * 高度限制 00:00 ~ 23:59 區間
+ * @param {number} top 到00:00高度(px)
+ * @returns {number} second
+ */
+export const topFormat = (top: number): number => {
+  if (top <= 0) return 0
+  if (top >= maxHeight) return maxHeight
+  return top
+}
 
 /**
  * 秒 轉換 上邊距
@@ -12,12 +46,7 @@ export const twentyFourHourSecond = 24 * 60 * 60
  */
 export const secondToTop = (second: number): number => {
   const _percentage = second / oneHourSecond
-  const top = (_top => {
-    if (_top <= 0) return 0
-    if (_top >= twentyFourHourHeight) return twentyFourHourHeight
-    return _top
-  })(_percentage * oneHourHeight)
-
+  const top = topFormat(_percentage * oneHourHeight)
   return top
 }
 
@@ -29,12 +58,7 @@ export const secondToTop = (second: number): number => {
  */
 export const topToSecond = (top: number): number => {
   const _percentage = top / oneHourHeight
-  const second = (_second => {
-    if (_second <= 0) return 0
-    if (_second >= twentyFourHourSecond) return twentyFourHourSecond
-    return _second
-  })(_percentage * oneHourSecond)
-
+  const second = secondFormat(_percentage * oneHourSecond)
   return second
 }
 
@@ -45,14 +69,10 @@ export const topToSecond = (top: number): number => {
  * @returns {string} hh:mm
  */
 export const secondToTime = (second: number): string => {
-  const tempSecond = (_second => {
-    if (_second <= 0) return 0
-    if (_second >= twentyFourHourSecond) return twentyFourHourSecond
-    return _second
-  })(second)
+  const _second = secondFormat(second)
 
-  const _hour = Math.floor(tempSecond / oneHourSecond)
-  const _minutes = Math.floor((tempSecond - _hour * oneHourSecond) / 60)
+  const _hour = Math.floor(_second / oneHourSecond)
+  const _minutes = Math.floor((_second - _hour * oneHourSecond) / 60)
   return `${_hour}`.padStart(2, '0') + ':' + `${_minutes}`.padStart(2, '0')
 }
 
@@ -64,7 +84,6 @@ export const secondToTime = (second: number): string => {
  */
 export const timeToSecond = (time: string): number => {
   const [_hour, _minutes] = time.split(':')
-
   const [hour, minutes] = [
     Number.parseInt(_hour),
     Number.parseInt(_minutes)
@@ -72,6 +91,5 @@ export const timeToSecond = (time: string): number => {
 
   const hourSecond = (isNaN(hour) ? 0 : hour) * oneHourSecond
   const minutesSecond = (isNaN(minutes) ? 0 : minutes) * 60
-
   return hourSecond + minutesSecond
 }

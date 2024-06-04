@@ -20,9 +20,15 @@ import type {
 
 import {
   FPS,
+  tableHeight,
+  maxSecond,
   // oneHourHeight,
   oneHourSecond,
   twentyFourHourSecond,
+  // 限制 00:00 ~ 23:59 區間
+  secondFormat,
+  topFormat,
+  // 轉換用
   secondToTop,
   topToSecond,
   secondToTime,
@@ -39,6 +45,10 @@ export type option = {
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
+})
+
+const bodyHeight = computed(() => {
+  return `${tableHeight}px`
 })
 
 const props = defineProps({
@@ -257,18 +267,17 @@ const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
         const _moveY = mouseMoveY - mouseDownY
 
         const _startSecond = topToSecond(originTop + _moveY)
-
         planTime.startSecond =
           originEndSecond - _startSecond <= 0 // 時間 <= 0
             ? originEndSecond
             : _startSecond // 變化後 開始的秒數
-        planTime.start = secondToTime(planTime.startSecond)
 
+        planTime.start = secondToTime(planTime.startSecond)
         planStyle.top = secondToTop(planTime.startSecond)
         planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
 
         planRenderKey[dayId] += `${dayId}`
-      }, _FPS)
+      }, _FPS, { isNoLeading: true })
     )
   }
 }
@@ -305,12 +314,12 @@ const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
           _endSecond - originStartSecond <= 0 // 時間 <= 0
             ? originStartSecond
             : _endSecond // 變化後 結束的秒數
-        planTime.end = secondToTime(planTime.endSecond)
 
+        planTime.end = secondToTime(planTime.endSecond)
         planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
 
         planRenderKey[dayId] += `${dayId}`
-      }, _FPS)
+      }, _FPS, { isNoLeading: true })
     )
   }
 }
@@ -344,22 +353,24 @@ const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
         const _startSecond = topToSecond(originTop + _moveY)
         const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
+        planTime.endSecond =
+          _startSecond <= 0 // 如果開始 <= 0
+            ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
+            : _endSecond // 變化後 結束的秒數
+        planTime.end = secondToTime(planTime.endSecond)
+        if (planTime.endSecond === maxSecond) return
+
         planTime.startSecond =
           _endSecond >= twentyFourHourSecond // 如果結束 >= 24
             ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
             : _startSecond // 變化後 開始的秒數
         planTime.start = secondToTime(planTime.startSecond)
 
-        planTime.endSecond =
-          _startSecond <= 0 // 如果開始 <= 0
-            ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
-            : _endSecond // 變化後 結束的秒數
-        planTime.end = secondToTime(planTime.endSecond)
-
         planStyle.top = secondToTop(planTime.startSecond)
+        planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
 
         planRenderKey[dayId] += `${dayId}`
-      }, _FPS)
+      }, _FPS, { isNoLeading: true })
     )
   }
 }
@@ -409,24 +420,20 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
     const { top: containerTop, left: containerLeft } = containerEl.getBoundingClientRect()
     // 暫時工時分配: 開始
     const _startSecond = topToSecond(mouseDownY - containerTop)
-    tempPlanTime.startSecond = _startSecond
+    tempPlanTime.startSecond = secondFormat(_startSecond)
     tempPlanTime.start = secondToTime(_startSecond)
+
     // 暫時工時分配: 結束
-    const _twentyThreeHourSecond = twentyFourHourSecond - oneHourSecond
-    const _endSecond =
-      _startSecond > _twentyThreeHourSecond // 如果開始小時 > 23
-        ? twentyFourHourSecond // 結束 = 24: 給一小時會超過 24
-        : _startSecond + oneHourSecond // 開始 + 1: 預設先給一小時
-    tempPlanTime.endSecond = _endSecond
+    const _endSecond = _startSecond + oneHourSecond
+    tempPlanTime.endSecond = secondFormat(_endSecond)
     tempPlanTime.end = secondToTime(_endSecond)
 
-    // 高度 = 結束秒數對應的top - 開始秒數對應的top
-    tempPlanStyle.height = secondToTop(_endSecond - _startSecond)
-
-    // 滑鼠上邊界 - 表格上邊界
-    // top的距離
+    // 暫時工時分配 top = 滑鼠上邊界 - 表格上邊界
     const tempPlanTop = mouseDownY - containerTop
-    tempPlanStyle.top = tempPlanTop
+    tempPlanStyle.top = topFormat(tempPlanTop)
+
+    // 暫時工時分配 height = secondToTop(結束秒數 - 開始秒數)
+    tempPlanStyle.height = secondToTop(tempPlanTime.endSecond - tempPlanTime.startSecond)
 
     // 區塊左邊界 - 表格左邊界 + (空出一點距離)
     const { left: blockLeft } = blockEl.getBoundingClientRect()
@@ -445,7 +452,7 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
         tempPlanTime.end = secondToTime(_changeEndSecond)
 
         tempPlanStyle.height = _change
-      }, _FPS)
+      }, _FPS, { isNoLeading: true })
     )
 
     // 顯示暫時的工時分配
@@ -465,8 +472,9 @@ const updateSchedule = async () => {
   // 有暫時的工時分配
   if (tempPlanStyle.display === 'block') {
     const { start, startSecond, end, endSecond } = tempPlanTime
+    const uuid = getUuid()
     createDataPlan(currentDayId.value, {
-      id: getUuid(),
+      id: uuid,
       status: 'new',
       start,
       startSecond,
@@ -475,6 +483,8 @@ const updateSchedule = async () => {
     })
     // 隱藏暫時的工時分配
     tempPlanStyle.display = 'none'
+
+    setLastUpdatePlan(currentDayId.value, uuid)
   }
   checkLastUpdatePlan()
   removeEvent()
@@ -511,17 +521,6 @@ const updateInfo = reactive<{
   mouseupTop: -1
 })
 
-// const _formTimeValue = ref([])
-// const formTimeValue = computed<any>({
-//   get () {
-//     console.log('get', _formTimeValue.value)
-//     return _formTimeValue.value
-//   },
-//   set (v) {
-//     console.log('set', v)
-//     _formTimeValue.value = v
-//   }
-// })
 const formTimeValue = computed<any>({
   get () {
     let res = []
@@ -611,7 +610,7 @@ const onTimePickerChange = async (time: string) => {
 
   planStyle.top = secondToTop(planTime.startSecond)
   planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
-  updateInfo.isShow = false
+  // updateInfo.isShow = false
 
   await nextTick()
   await awaitTime(120)
@@ -748,10 +747,10 @@ const onTimePickerChange = async (time: string) => {
       }"
     >
       <CustomPopover
-        v-model:visible="updateInfo.isShow"
+        :visible="updateInfo.isShow"
         :width="320"
         placement="right"
-        :show-arrow="true"
+        :show-arrow="false"
       >
         <template #reference>
           <div></div>
@@ -781,7 +780,8 @@ const onTimePickerChange = async (time: string) => {
 
 <style lang="scss" scoped>
 $header-height: 30px;
-$body-height: 960px;
+$body-height: v-bind(bodyHeight);
+
 .schedule {
   // 類型
   &-type {
