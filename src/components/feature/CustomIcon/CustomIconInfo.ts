@@ -5,15 +5,23 @@ export const version = '1.0.0'
 
 export declare namespace Custom {
   type IconType = 'fas' | 'far' | 'fab'
+  type XIconType = '' | 'fluent' | 'ionicons4' | 'ionicons5' | 'antd' | 'material' | 'fa' | 'tabler' | 'carbon' | null
 }
 
 /**
+ * 預設使用 fontawesome 的 icon
  * icon 和 type, name 選一種給
+ *
+ * 如果有 xType 使用 xicons
  */
 export declare namespace Props {
+  // fontawesome
   type Icon = [Custom.IconType, string] | []
   type Type = Custom.IconType
   type Name = string
+  // xicons
+  type XType = Custom.XIconType
+
   type Size = CustomSize
   type IconClass = string
 }
@@ -32,6 +40,12 @@ export const props = {
     required: false,
     default: 'fas',
     description: '類型'
+  },
+  xType: {
+    type: [String, null] as PropType<Props.XType>,
+    required: false,
+    default: '',
+    description: 'XIcon類型'
   },
   name: {
     type: String as PropType<Props.Name>,

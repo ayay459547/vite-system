@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
+import XIcon from './Components/XIcon.vue'
 
 import { version, props as iconProps } from './CustomIconInfo'
 
@@ -27,7 +28,8 @@ const getIcon = computed(() => {
       `${props.iconClass}`,
     ]"
   >
-    <font-awesome-icon :icon="getIcon" />
+    <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />
+    <XIcon v-else :type="props.xType" :name="props.name" />
   </div>
 </template>
 

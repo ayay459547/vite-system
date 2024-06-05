@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { nextTick, reactive, ref, inject, computed } from 'vue'
+import { onMounted, reactive, ref, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { awaitTime, getType, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
@@ -117,9 +117,9 @@ const removeEvent = () => {
     <!-- 類型 -->
     <div class="schedule-type">
       <slot name="title">
-        <h3>{{ props.title }}</h3>
+        <h3 v-if="!isEmpty(props.title)">{{ props.title }}</h3>
       </slot>
-      <div class="schedule-type-list">
+      <div v-if="!isEmpty(props.options)" class="schedule-type-list">
         <div v-for="typeItem in props.options" :key="typeItem.value" class="schedule-type-itme">
           <div class="schedule-type-color" :style="{ backgroundColor: typeItem.color }"></div>
           <div class="schedule-type-label">
@@ -213,7 +213,7 @@ $body-height: v-bind(bodyHeight);
     min-width: 560px;
     height: fit-content;
     display: flex;
-    padding: 24px 12px 56px;
+    padding: 12px 12px 56px;
     user-select: none;
     position: relative;
   }

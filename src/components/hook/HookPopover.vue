@@ -144,7 +144,7 @@ defineExpose<Expose>({
           @touchstart="callEvent(callbackItem.event, callbackItem.disabled)"
         >
           <div style="width: fit-content">
-            <font-awesome-icon
+            <FontAwesomeIcon
               v-if="callbackItem.icon.length > 0"
               :icon="callbackItem.icon"
               style="width: 24px"

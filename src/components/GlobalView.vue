@@ -247,7 +247,14 @@ const layoutIsShow = ref(false)
 const initNavigationRoutes = async (routeName?: string) => {
   layoutIsShow.value = false
   await nextTick()
-  await initSystemData()
+
+  try {
+    await initSystemData()
+  } catch (e) {
+    console.log(e)
+    logout()
+  }
+
   setNavigationRoutes(routesPermission.value)
 
   await nextTick()

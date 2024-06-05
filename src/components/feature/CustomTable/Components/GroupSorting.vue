@@ -9,7 +9,9 @@ import {
   CustomButton,
   CustomDraggable,
   CustomInput,
-  CustomBadge
+  CustomBadge,
+  CustomIcon,
+  CustomTooltip
 } from '@/components'
 
 import type { Sorting, Order } from '../CustomTableInfo'
@@ -95,7 +97,7 @@ const submit = () => {
   <div class="__group-wrapper">
     <CustomPopover
       v-model:visible="visible"
-      :width="props.settingWidth + 120"
+      :width="props.settingWidth"
       trigger="click"
       placement="bottom-end"
       popper-style="padding: 4px;"
@@ -138,7 +140,21 @@ const submit = () => {
                       { label: i18nTranslate('empty'), value: 'none' },
                       { label: i18nTranslate('descending'), value: 'descending' }
                     ]"
-                  />
+                  >
+                    <template #options="{ value, label }">
+                      <CustomTooltip :show-after="200">
+                        <template #content>
+                          <span class="__column-item-text">{{ label }}</span>
+                        </template>
+                        <!-- 遞增 -->
+                        <CustomIcon v-if="value === 'ascending'" name="arrow-down-short-wide"/>
+                        <!-- 不排序 -->
+                        <CustomIcon v-else-if="value === 'none'" name="ban"/>
+                        <!-- 遞減 -->
+                        <CustomIcon v-else-if="value === 'descending'" name="arrow-down-wide-short"/>
+                      </CustomTooltip>
+                    </template>
+                  </CustomInput>
                 </div>
 
                 <div class="__column-item-right">
@@ -228,6 +244,11 @@ const submit = () => {
     }
     &.is-active {
       opacity: 1;
+    }
+
+    &-text {
+      font-size: 1.2em;
+      font-weight: 400;
     }
   }
 

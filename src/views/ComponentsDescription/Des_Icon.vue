@@ -17,6 +17,20 @@ const typeOptions = [
   { label: 'fab', value: 'fab' }
 ]
 const type = ref<IconProps.Type>('fab')
+
+const xTypeOptions = [
+  { label: 'null', value: '' },
+  { label: 'fluent', value: 'fluent' },
+  { label: 'ionicons4', value: 'ionicons4' },
+  { label: 'ionicons5', value: 'ionicons5' },
+  { label: 'antd', value: 'antd' },
+  { label: 'material', value: 'material' },
+  { label: 'fa', value: 'fa' },
+  { label: 'tabler', value: 'tabler' },
+  { label: 'carbon', value: 'carbon' }
+]
+const xType = ref<IconProps.XType>('')
+
 const name = ref('vuejs')
 
 const onClick = (iconType: IconProps.Type, iconName: string) => {
@@ -28,9 +42,11 @@ const onClick = (iconType: IconProps.Type, iconName: string) => {
 <template>
   <div class="page">
     <CustomInput v-model="type" label="類型" type="radio" :options="typeOptions" />
+    <CustomInput v-model="xType" label="xicon類型" type="radio" :options="xTypeOptions" />
+
     <CustomInput v-model="name" label="圖示名稱" type="text" />
     <div class="page-icon">
-      <CustomIcon :name="name" :type="type" />
+      <CustomIcon :name="name" :type="type" :x-type="xType" />
     </div>
 
     <h3 class="i-my-md">fas 填滿</h3>

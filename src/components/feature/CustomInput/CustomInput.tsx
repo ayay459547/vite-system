@@ -516,7 +516,7 @@ const CustomInput = defineComponent({
               onVisible-change={(e: boolean) => onEvent.value.onVisibleChange(e)}
             >
               {{
-                ...getSlot(['option', 'header', 'footer', 'prefix', 'empty'])
+                ...getSlot(['options', 'header', 'footer', 'prefix', 'empty'])
               }}
             </FormSelect>
           )
@@ -539,7 +539,7 @@ const CustomInput = defineComponent({
               onVisible-change={(e: boolean) => onEvent.value.onVisibleChange(e)}
             >
               {{
-                ...getSlot(['option', 'header', 'footer', 'prefix', 'empty'])
+                ...getSlot(['options', 'header', 'footer', 'prefix', 'empty'])
               }}
             </FormSelectV2>
           )
@@ -598,7 +598,7 @@ const CustomInput = defineComponent({
               errorMessage={errorMessage.value}
               onChange={(e: any) => onEvent.value.onChange(e)}
             >
-              {{ ...getSlot(['default', 'option']) }}
+              {{ ...getSlot(['default', 'options']) }}
             </FormCheckbox>
           )
         case 'radio':
@@ -612,7 +612,7 @@ const CustomInput = defineComponent({
               errorMessage={errorMessage.value}
               onChange={(e: any) => onEvent.value.onChange(e)}
             >
-              {{ ...getSlot(['option']) }}
+              {{ ...getSlot(['options']) }}
             </FormRadio>
           )
         case 'autocomplete':

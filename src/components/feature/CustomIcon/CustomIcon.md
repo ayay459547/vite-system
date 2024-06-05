@@ -27,12 +27,16 @@ const testName = 'folder-open'
 
 [https://fontawesome.com/search?o=r&m=free](https://fontawesome.com/search?o=r&m=free)
 
+### XIcon
+[https://www.xicons.org/#/](https://www.xicons.org/#/)
+
 ### Attributes ( props )
 
 | 屬姓名    | 說明       | 类型   | 默認值            |
 | --------- | ---------- | ------ | ----------------- |
 | icon      | 圖示       | Array  | []                |
 | type      | 圖示類型   | enum   | 'fas'             |
+| xType     | 圖示類型   | enum   | ''                |
 | name      | 圖示名稱   | string | 'circle-question' |
 | size      | 大小       | string | 'default'         |
 | iconClass | 圖示 class | string | ''                |

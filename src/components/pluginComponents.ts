@@ -33,7 +33,7 @@ VMdPreview.use(vuepressTheme, { Prism })
 const pluginComponents = {
   install(app: App): void {
     library.add(fas, fab, far)
-    app.component('font-awesome-icon', FontAwesomeIcon)
+    app.component('FontAwesomeIcon', FontAwesomeIcon)
     app.use(VMdPreview)
 
     app.component(ElCollapseTransition.name, ElCollapseTransition)
@@ -44,7 +44,7 @@ const pluginComponents = {
      */
     app.component('CustomIcon', CustomIcon)
     app.component('CustomButton', CustomButton)
-    app.component('CustomTable', CustomTable)
+    // app.component('CustomTable', CustomTable)
   }
 }
 
