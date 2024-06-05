@@ -307,7 +307,7 @@ const updatePlanRenderKey = () => {
 <template>
   <div
     class="schedule-day"
-    :key="`schedule-${props.dayId}-${renderKey}`"
+    :key="`schedule-day-${props.dayId}-${renderKey}`"
     @mouseup="updateSchedule"
   >
     <!-- 暫時分配 -->
@@ -327,7 +327,7 @@ const updatePlanRenderKey = () => {
     <!-- 單一分配結果 -->
     <PlanItem
       v-for="plan in planData"
-      :key="plan.time.id"
+      :key="`PlanItem-${plan.time.id}`"
       :planData="plan"
       :scheduleContainer="scheduleContainer"
       :isCheck="isCheck"

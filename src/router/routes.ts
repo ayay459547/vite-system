@@ -113,6 +113,20 @@ const routes: Array<RouterTree> = [
             component: () => import('@/views/Test-fund-1417/Test-fund-1417.vue')
           },
           {
+            name: 'test-fund-1417-v2',
+            title: '測試Fund-1417-v2',
+            meta: {
+              keepAlive: false,
+              status: 'completed',
+              startDate: '2023-11',
+              completedDate: '2023-11'
+            },
+            systemType: ['new'],
+            path: '/test-fund-1417-v2',
+            icon: 'file-circle-check',
+            component: () => import('@/views/Test-fund-1417-v2/Test-fund-1417-v2.vue')
+          },
+          {
             name: 'test-fund-141',
             title: '測試Fund-141',
             meta: {

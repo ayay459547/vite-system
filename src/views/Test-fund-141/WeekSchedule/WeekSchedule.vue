@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { onMounted, reactive, ref, inject, computed } from 'vue'
+import { onMounted, reactive, ref, inject, computed, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
+  PlanList,
   DataPlanTime,
   // DataPlanStyle,
   TempPlanTime,
@@ -26,7 +27,8 @@ import {
   // 轉換用
   secondToTop,
   topToSecond,
-  secondToTime
+  secondToTime,
+  timeToSecond
 } from './planUtils'
 
 import PlanDay from './Components/PlanDay.vue'
@@ -59,9 +61,12 @@ const props = defineProps({
       return []
     }
   },
-  itemList: {
-    type: Array as PropType<any[]>,
-    required: false
+  planList: {
+    type: Array as PropType<PlanList>,
+    required: false,
+    default () {
+      return []
+    }
   }
 })
 
@@ -94,6 +99,42 @@ const addDataPlan = (dayId: number, newPlanData: PlanData) => {
   planData[dayId].push(newPlanData)
 }
 
+const init = async (planList: PlanList) => {
+  await nextTick()
+  console.log('planList => ', planList)
+
+  planList.forEach(planItem => {
+    const { id, day, status, start, end } = planItem
+
+    const startSecond = timeToSecond(start)
+    const endSecond = timeToSecond(end)
+    addDataPlan(day, {
+      time: {
+        id,
+        status,
+        start,
+        startSecond,
+        end,
+        endSecond
+      },
+      style: {
+        top: secondToTop(startSecond),
+        height: secondToTop(endSecond - startSecond)
+      }
+    })
+    console.log(planItem)
+  })
+  updateSchedule()
+}
+
+onMounted(() => {
+  init(props.planList)
+})
+
+defineExpose({
+  init
+})
+
 /**
  * 更新 分配畫面
  * 如果有暫時的工時分配 新增
@@ -105,7 +146,6 @@ const updateSchedule = async () => {
 }
 
 const removeEvent = () => {
-
   // 從新渲染 代替 removeEventListener
   containerRenderKey.value++
 }
