@@ -16,7 +16,7 @@ import 'element-plus/theme-chalk/base.css'
 // feature
 import CustomIcon from './feature/CustomIcon/CustomIcon.vue'
 import CustomButton from './feature/CustomButton/CustomButton.vue'
-import CustomTable from './feature/CustomTable/CustomTable.vue'
+// import CustomTable fromss './feature/CustomTable/CustomTable.vue'
 
 // markdown
 import VMdPreview from '@kangc/v-md-editor/lib/preview'

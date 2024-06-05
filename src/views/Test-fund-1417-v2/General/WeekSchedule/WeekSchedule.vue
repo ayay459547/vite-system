@@ -1,52 +1,36 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { onMounted, reactive, ref, inject, computed, nextTick } from 'vue'
+import { onMounted, reactive, ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type {
-  PlanList,
-  DataPlanTime,
-  // DataPlanStyle,
-  TempPlanTime,
-  TempPlanStyle,
-  PlanData,
-  Origin
-} from './planType'
-
-import {
-  FPS,
-  tableHeight,
-  // oneHourHeight,
-  oneHourSecond,
-  // 限制 00:00 ~ 23:59 區間
-  secondFormat,
-  topFormat,
-  // 轉換用
-  secondToTop,
-  topToSecond,
-  secondToTime,
-  timeToSecond
-} from './planUtils'
+import type { PlanList } from './planType'
+import { tableHeight, secondToTop, timeToSecond } from './planUtils'
 
 import PlanDay from './Components/PlanDay.vue'
-
-export type option = {
-  label: string
-  value: any
-  color: string
-}
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const bodyHeight = computed(() => {
-  return `${tableHeight}px`
-})
+const bodyHeight = `${tableHeight}px`
+
+type option = {
+  label: string
+  value: any
+  color: string
+}
+type ScheduleItem = {
+  id?: string
+  day: number
+  status?: 'new' | 'update' | 'old'
+  start: string
+  end: string
+}
+type ScheduleList = Array<ScheduleItem>
 
 const props = defineProps({
   title: {
@@ -61,8 +45,8 @@ const props = defineProps({
       return []
     }
   },
-  planList: {
-    type: Array as PropType<PlanList>,
+  scheduleList: {
+    type: Array as PropType<ScheduleList>,
     required: false,
     default () {
       return []
@@ -80,10 +64,13 @@ const dayList = [
   { id: 6, label: 'saturday' }
 ]
 
+const isLoading = ref(true)
+
 const scheduleContainer = ref(null)
+const planDayMapRef = reactive({})
 
 // 工時分配資料
-const planData: Record<number, PlanData[]> = reactive({
+const planData: Record<number, PlanList> = reactive({
   0: [],
   1: [],
   2: [],
@@ -93,22 +80,25 @@ const planData: Record<number, PlanData[]> = reactive({
   6: []
 })
 
-const containerRenderKey = ref(1)
+/**
+ * 更新 分配畫面
+ * 從新渲染 代替 removeEventListener
+ */
+const renderKey = ref(1)
 
-const addDataPlan = (dayId: number, newPlanData: PlanData) => {
-  planData[dayId].push(newPlanData)
-}
+// 初始化
+const init = async (scheduleList: ScheduleList) => {
+  console.log('scheduleList => ', scheduleList)
 
-const init = async (planList: PlanList) => {
+  isLoading.value = true
   await nextTick()
-  console.log('planList => ', planList)
-
-  planList.forEach(planItem => {
-    const { id, day, status, start, end } = planItem
+  scheduleList.forEach(scheduleItem => {
+    const { id, day, status, start, end } = scheduleItem
 
     const startSecond = timeToSecond(start)
     const endSecond = timeToSecond(end)
-    addDataPlan(day, {
+    // 新增分配資料
+    planData[day].push({
       time: {
         id,
         status,
@@ -122,32 +112,32 @@ const init = async (planList: PlanList) => {
         height: secondToTop(endSecond - startSecond)
       }
     })
-    console.log(planItem)
   })
-  updateSchedule()
+
+  await awaitTime(80)
+  for (let dayId in planData) {
+    const planList = planData[dayId]
+    if (planDayMapRef[dayId]) {
+      planDayMapRef[dayId].init(planList)
+    }
+  }
+
+  await nextTick()
+  setTimeout(() => {
+    isLoading.value = false
+  }, 300)
 }
 
 onMounted(() => {
-  init(props.planList)
+  init(props.scheduleList)
 })
 
 defineExpose({
   init
 })
 
-/**
- * 更新 分配畫面
- * 如果有暫時的工時分配 新增
- * checkLastUpdatePlan()
- * removeEvent()
- */
-const updateSchedule = async () => {
-  removeEvent()
-}
-
-const removeEvent = () => {
-  // 從新渲染 代替 removeEventListener
-  containerRenderKey.value++
+const removeEvent = (n: number) => {
+  console.log('removeEvent', n)
 }
 
 </script>
@@ -172,7 +162,7 @@ const removeEvent = () => {
     </div>
 
     <!-- 工時安排 -->
-    <div class="schedule-wrapper" @mouseup="updateSchedule" @mouseleave="updateSchedule">
+    <div class="schedule-wrapper" @mouseleave="renderKey++">
       <!-- 左邊: 時間 -->
       <div class="schedule-time">
         <div class="schedule-time-zero">{{ '00:00' }}</div>
@@ -197,20 +187,22 @@ const removeEvent = () => {
           </li>
         </ul>
         <!-- 表格 -->
-        <div ref="scheduleContainer" class="schedule-container" :key="containerRenderKey">
-          <!-- 實際分配結果 -->
-          <div class="schedule-detail">
-            <!-- 每日分配結果 -->
-            <PlanDay
-              v-for="(column, dayId) in 7"
-              :key="dayId"
-              :dayId="dayId"
-              :planData="planData[dayId]"
-              :scheduleContainer="scheduleContainer"
-              @addDataPlan="addDataPlan"
-              @removeEvent="removeEvent"
-            />
-          </div>
+        <div ref="scheduleContainer" class="schedule-container" :key="renderKey">
+          <!-- 每日分配結果 -->
+          <PlanDay
+            v-for="(column, dayId) in 7"
+            :key="dayId"
+            :ref="
+              el => {
+                planDayMapRef[`${dayId}`] = el
+                return `${dayId}`
+              }
+            "
+            :dayId="dayId"
+            :planList="planData[dayId]"
+            :scheduleContainer="scheduleContainer"
+            @removeEvent="removeEvent(777)"
+          />
         </div>
       </div>
     </div>
@@ -300,17 +292,8 @@ $body-height: v-bind(bodyHeight);
     width: 100%;
     height: $body-height;
     position: relative;
-    border: 1px solid #dddddd;
-    display: grid;
-    grid-template-rows: repeat(24, 1fr);
-    grid-template-columns: repeat(7, 1fr);
-  }
-  &-detail {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
+    border-top: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
     display: flex;
   }
 }

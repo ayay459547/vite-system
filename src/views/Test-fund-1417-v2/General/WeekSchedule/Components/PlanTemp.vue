@@ -1,0 +1,157 @@
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import { reactive } from 'vue'
+
+import throttle from '@/lib/lib_throttle'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
+
+import type { TempPlanTime, TempPlanStyle } from '../planType'
+
+import {
+  FPS,
+  oneHourSecond,
+  // 轉換用
+  secondFormat,
+  secondToTop,
+  topToSecond,
+  secondToTime
+} from '../planUtils'
+
+const props = defineProps({
+  hourMapRef: {
+    type: Object as PropType<Record<string, any>>,
+    required: true
+  },
+  scheduleContainer: {
+    type: [Object, null] as PropType<any>,
+    required: true
+  }
+})
+
+const emit = defineEmits([
+  'createDataPlan'
+])
+
+// 暫時的工時分配
+const tempPlanTime = reactive<TempPlanTime>({
+  start: '00:00',
+  startSecond: 0,
+  end: '00:00',
+  endSecond: 0
+})
+const tempPlanStyle = reactive<TempPlanStyle>({
+  left: 0,
+  top: 0,
+  height: 0,
+  display: 'none'
+})
+
+// 建立暫時的工時分配
+const createTempPlan = ($event: MouseEvent, hour: number) => {
+  console.log('createTempPlan')
+  const { clientY: mouseDownY } = $event
+
+  // 表格
+  if (isEmpty(props.scheduleContainer)) return
+  const containerEl = props.scheduleContainer
+  // 小時 對應的格子
+  const blockEl = props.hourMapRef[`${hour}`]
+
+  if (containerEl && blockEl) {
+    const { top: containerTop } = containerEl.getBoundingClientRect()
+    // 暫時工時分配: 開始
+    const _tempY = mouseDownY - containerTop
+    const _startSecond = topToSecond(_tempY)
+    tempPlanTime.startSecond = secondFormat(_startSecond)
+    tempPlanTime.start = secondToTime(tempPlanTime.startSecond)
+
+    // 暫時工時分配: 結束
+    const _endSecond = _startSecond + oneHourSecond
+    tempPlanTime.endSecond = secondFormat(_endSecond)
+    tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
+
+    // 暫時工時分配 top = secondToTop(開始秒數)
+    tempPlanStyle.top = secondToTop(tempPlanTime.startSecond)
+    // 暫時工時分配 height = secondToTop(結束秒數 - 開始秒數)
+    tempPlanStyle.height = secondToTop(tempPlanTime.endSecond - tempPlanTime.startSecond)
+
+    props.scheduleContainer.addEventListener(
+      'mousemove',
+      throttle(function ($event: MouseEvent) {
+        const { clientY: mouseMoveY } = $event
+
+        // 變化高度
+        const _moveY = mouseMoveY - mouseDownY
+        const _change = _moveY < 0 ? 0 : _moveY
+        const _changeEndSecond = topToSecond(_tempY + _change)
+        tempPlanTime.endSecond = _changeEndSecond
+        tempPlanTime.end = secondToTime(_changeEndSecond)
+
+        tempPlanStyle.height = _change
+      }, FPS, { isNoLeading: true })
+    )
+
+    // 顯示暫時的工時分配
+    tempPlanStyle.display = 'block'
+  }
+}
+
+const checkCreateDataPlan = () => {
+  // 有暫時的工時分配
+  if (tempPlanStyle.display === 'block') {
+    const { start, startSecond, end, endSecond } = tempPlanTime
+    const uuid = getUuid()
+    emit('createDataPlan', {
+      id: uuid,
+      status: 'new',
+      start,
+      startSecond,
+      end,
+      endSecond
+    })
+
+    // 隱藏暫時的工時分配
+    tempPlanStyle.display = 'none'
+    return uuid
+  }
+  return null
+}
+
+defineExpose({
+  createTempPlan,
+  checkCreateDataPlan
+})
+
+</script>
+
+<template>
+  <div
+    class="schedule-temp-plan"
+    :style="{
+      display: tempPlanStyle.display,
+      top: `${tempPlanStyle.top - 1}px`,
+      height: `${tempPlanStyle.height}px`
+    }"
+  >
+    <span>{{ `${tempPlanTime.start}` }}</span>
+    <span> - </span>
+    <span>{{ `${tempPlanTime.end}` }}</span>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.schedule {
+  &-temp-plan {
+    width: calc(100% - 2px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+    min-height: 12px;
+    background-color: #eeeeee80;
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding-top: 2px;
+  }
+}
+</style>

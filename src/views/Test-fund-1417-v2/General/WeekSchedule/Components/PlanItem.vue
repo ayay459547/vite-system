@@ -3,12 +3,12 @@ import type { PropType } from 'vue'
 import { nextTick, reactive, computed } from 'vue'
 
 import throttle from '@/lib/lib_throttle'
-import { awaitTime, getType, isEmpty } from '@/lib/lib_utils'
+import { awaitTime, isEmpty } from '@/lib/lib_utils'
 
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
 import type {
-  PlanData,
+  PlanItem,
   Origin
 } from '../planType'
 
@@ -24,8 +24,8 @@ import {
 } from '../planUtils'
 
 const props = defineProps({
-  planData: {
-    type: Object as PropType<PlanData>,
+  planItem: {
+    type: Object as PropType<PlanItem>,
     required: true
   },
   scheduleContainer: {
@@ -42,22 +42,18 @@ const props = defineProps({
   }
 })
 
-const _FPS = 1000 / FPS
-
 const emit = defineEmits([
-  'updatePlanData',
-  'setLastUpdatePlan',
-  'setOriginPlan',
+  'update:PlanItem',
   'updatePlanRenderKey',
   'updateSchedule'
 ])
 
-const plan = computed<PlanData>({
+const plan = computed<PlanItem>({
   get() {
-    return props.planData
+    return props.planItem
   },
-  set (v: PlanData) {
-    emit('updatePlanData')
+  set (v: PlanItem) {
+    emit('update:PlanItem', v)
   }
 })
 
@@ -66,16 +62,12 @@ const moveDataPlan = ($event: MouseEvent) => {
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
 
-  emit('setLastUpdatePlan', uuid)
-  emit('setOriginPlan', plan.value)
-
   if (props.originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
 
     const originPlan = props.originPlanMap.get(uuid)
     const { originTop, originHeight, originStartSecond, originEndSecond } = originPlan
 
-    console.log('scheduleContainer => ',  props.scheduleContainer)
     if (isEmpty(props.scheduleContainer)) return
     // 滑鼠移動時執行
     props.scheduleContainer.addEventListener(
@@ -110,7 +102,7 @@ const moveDataPlan = ($event: MouseEvent) => {
         planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
 
         emit('updatePlanRenderKey')
-      }, _FPS, { isNoLeading: true })
+      }, FPS, { isNoLeading: true })
     )
   }
 }
@@ -118,9 +110,6 @@ const moveDataPlan = ($event: MouseEvent) => {
 const setStartPlan = ($event: MouseEvent) => {
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
-
-  emit('setLastUpdatePlan', uuid)
-  emit('setOriginPlan', plan.value)
 
   if (props.originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -152,7 +141,7 @@ const setStartPlan = ($event: MouseEvent) => {
         planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
 
         emit('updatePlanRenderKey')
-      }, _FPS, { isNoLeading: true })
+      }, FPS, { isNoLeading: true })
     )
   }
 }
@@ -160,9 +149,6 @@ const setStartPlan = ($event: MouseEvent) => {
 const setEndPlan = ($event: MouseEvent) => {
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
-
-  emit('setLastUpdatePlan', uuid)
-  emit('setOriginPlan', plan.value)
 
   if (props.originPlanMap.has(uuid)) {
     const { clientY: mouseDownY } = $event
@@ -195,7 +181,7 @@ const setEndPlan = ($event: MouseEvent) => {
         planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
 
         emit('updatePlanRenderKey')
-      }, _FPS, { isNoLeading: true })
+      }, FPS, { isNoLeading: true })
     )
   }
 }
@@ -224,10 +210,11 @@ const updateInfo = reactive<{
 
 
 const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
+  // console.log('openUpdate', mouseEvent)
   const { clientX, clientY } = $event
 
   if (mouseEvent === 'mousedown') {
-    updateInfo.isShow = false
+    // updateInfo.isShow = false
 
     updateInfo.mousedownLeft = clientX
     updateInfo.mousedownTop = clientY
@@ -236,11 +223,11 @@ const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
     // updateInfo.mouseupTop = -1
   } else if (mouseEvent === 'mouseup') {
     await nextTick()
-    console.log('updateInfo =>', updateInfo)
     updateInfo.mouseupLeft = clientX
     updateInfo.mouseupTop = clientY
 
     // 位置位移不超過3 => click
+    console.log('click => ', $event)
     if (
       Math.abs(updateInfo.mousedownLeft - updateInfo.mouseupLeft) < 3 &&
       Math.abs(updateInfo.mousedownTop - updateInfo.mouseupTop) < 3
@@ -249,11 +236,10 @@ const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
       updateInfo.top = clientY
       updateInfo.isShow = true
     }
-
     await nextTick()
-
+    console.log('updateInfo =>', updateInfo)
     // 更新畫面 + 確認重複 + 移除 mouse event
-    emit('updateSchedule')
+    // emit('updateSchedule')
   }
 }
 
@@ -298,9 +284,6 @@ const closeUpdate = () => {
   ]
 
   const { time: planTime, style: planStyle } = plan.value
-  const { id: uuid } = planTime
-  emit('setLastUpdatePlan', uuid)
-  emit('setOriginPlan', plan.value)
 
   planTime.startSecond = startSecond
   planTime.start = secondToTime(startSecond)

@@ -1,41 +1,28 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, nextTick, reactive, computed } from 'vue'
+import { ref, nextTick, reactive, onMounted } from 'vue'
 
-import throttle from '@/lib/lib_throttle'
-import { getUuid, awaitTime, getType, isEmpty } from '@/lib/lib_utils'
+import { getType, isEmpty } from '@/lib/lib_utils'
 
-import type {
-  DataPlanTime,
-  // DataPlanStyle,
-  TempPlanTime,
-  TempPlanStyle,
-  PlanData,
-  Origin
-} from '../planType'
+import type { DataPlanTime, PlanList, PlanItem, Origin } from '../planType'
 
 import {
   FPS,
-  maxSecond,
-  oneHourSecond,
-  twentyFourHourSecond,
   // 轉換用
-  secondFormat,
   secondToTop,
-  topToSecond,
-  secondToTime,
-  timeToSecond
+  secondToTime
 } from '../planUtils'
 
-import PlanItem from './PlanItem.vue'
+import PlanItemView from './PlanItem.vue'
+import PlanTemp from './PlanTemp.vue'
 
 const props = defineProps({
   dayId: {
     type: Number as PropType<number>,
     required: true
   },
-  planData: {
-    type: Object as PropType<PlanData[]>,
+  planList: {
+    type: Object as PropType<PlanItem[]>,
     required: true
   },
   scheduleContainer: {
@@ -46,15 +33,11 @@ const props = defineProps({
 
 const emit = defineEmits([
   'addDataPlan',
-  'updatePlanData',
-  'setLastUpdatePlan',
-  'setOriginPlan',
-  'updatePlanRenderKey',
   'updateSchedule',
   'removeEvent'
 ])
 
-const renderKey = ref(0)
+const renderKey =  ref(0)
 
 const _FPS = 1000 / FPS
 
@@ -62,81 +45,35 @@ const isCheck = ref(false)
 
 // 最後一次更新的分配
 const lastUpdatePlan = ref<string | null>(null)
-// 設置 最後一次更新的分配
-const setLastUpdatePlan = (uuid: string) => {
-  lastUpdatePlan.value = uuid
-}
-
 
 // 設置上一次分配結果
 // 如果已存在 分配回到原位
-const setOriginPlan = (plan: PlanData): void => {
+const setOriginPlan = (plan: PlanItem): void => {
   const planStyle = plan.style
   const { top, height } = planStyle
 
   const planTime = plan.time
   const { id: uuid, startSecond, endSecond } = planTime
 
-  const isExist = checkTimeIsExist(startSecond, endSecond, uuid)
-  // 如果已經存在 移到原位
-  if (isExist) {
-    moveOrigin(plan)
-  } else {
-    // 將原來的位置 更新成現在的位置
-    originPlanMap.set(uuid, {
-      // 原始樣式
-      originTop: top,
-      originHeight: height,
-      // 原始開始與結束時間
-      originStartSecond: startSecond,
-      originEndSecond: endSecond
-    })
-  }
+  // 將原來的位置 更新成現在的位置
+  originPlanMap.set(uuid, {
+    // 原始樣式
+    originTop: top,
+    originHeight: height,
+    // 原始開始與結束時間
+    originStartSecond: startSecond,
+    originEndSecond: endSecond
+  })
 }
 
-// 如果最後更新的分配有重複 移到原位
-// 如果確認中 無法對 分配進行修改
-const checkLastUpdatePlan = async () => {
-  const uuid = lastUpdatePlan.value
-
-  if (!isEmpty(uuid)) {
-    isCheck.value = true
-
-    const plan = props.planData.find(plan => plan.time.id === uuid)
-    delete plan.style.cursor
-    delete plan.style.zIndex
-
-    const { startSecond, endSecond } = plan.time
-
-    const isExist = checkTimeIsExist(startSecond, endSecond, uuid)
-    if (isExist) {
-      moveOrigin(plan)
-    }
-
-    updatePlanRenderKey()
-    emit('removeEvent')
-    await nextTick()
-
-    lastUpdatePlan.value = null
-    setTimeout(() => {
-      isCheck.value = false
-    }, _FPS * 10)
-  }
+// 當分配被點擊
+const onPlanItemClick = (uuid: string, planItem: PlanItem) => {
+  console.log('onPlanItemClick', planItem)
+  lastUpdatePlan.value = uuid
+  setOriginPlan(planItem)
 }
 
-// 暫時的工時分配
-const tempPlanTime = reactive<TempPlanTime>({
-  start: '00:00',
-  startSecond: 0,
-  end: '00:00',
-  endSecond: 0
-})
-const tempPlanStyle = reactive<TempPlanStyle>({
-  left: 0,
-  top: 0,
-  height: 0,
-  display: 'none'
-})
+const tempPlanList = reactive([])
 
 // 確認工時 是否存在
 const checkTimeIsExist = (
@@ -144,24 +81,24 @@ const checkTimeIsExist = (
   endSecond: number,
   filterId: Array<string> | string | null = null
 ): boolean => {
-  let planList = []
+  let _planList = []
   const filterIdType = getType(filterId)
 
   switch (filterIdType) {
     case 'Array':
-      planList = props.planData.filter(plan => !filterId.includes(plan.time.id))
+      _planList = tempPlanList.filter(plan => !filterId.includes(plan.time.id))
       break
     case 'String':
-      planList = props.planData.filter(plan => plan.time.id !== filterId)
+      _planList = tempPlanList.filter(plan => plan.time.id !== filterId)
       break
     case 'Null':
     default:
-      planList = props.planData
+      _planList = tempPlanList
       break
   }
 
   // 全部都不包含
-  return !planList.every(plan => {
+  return !_planList.every(plan => {
     // 開始和結束都 <= 開始
     // 開始和結束都 >= 結束
     const { startSecond: _startSecond, endSecond: _endSecond } = plan.time
@@ -172,10 +109,41 @@ const checkTimeIsExist = (
   })
 }
 
+// 如果最後更新的分配有重複 移到原位
+// 如果確認中 無法對 分配進行修改
+const checkLastUpdatePlan = async () => {
+  const uuid = lastUpdatePlan.value
+
+  if (!isEmpty(uuid)) {
+    isCheck.value = true
+
+    const plan = tempPlanList.find(plan => plan.time.id === uuid)
+    if (isEmpty(plan)) return
+    delete plan.style?.cursor
+    delete plan.style?.zIndex
+
+    const { startSecond, endSecond } = plan.time
+
+    const isExist = checkTimeIsExist(startSecond, endSecond, uuid)
+    if (isExist) {
+      moveOrigin(plan)
+    }
+
+    updatePlanRenderKey()
+    // emit('removeEvent')
+    await nextTick()
+
+    lastUpdatePlan.value = null
+    setTimeout(() => {
+      isCheck.value = false
+    }, _FPS * 10)
+  }
+}
+
 // 修改工時分配
 const originPlanMap = new Map<string, Origin>()
 // 移動到原來的位置
-const moveOrigin = (plan: PlanData) => {
+const moveOrigin = (plan: PlanItem) => {
   const planStyle = plan.style
   const planTime = plan.time
 
@@ -191,8 +159,9 @@ const moveOrigin = (plan: PlanData) => {
   planStyle.height = originHeight
 
   updatePlanRenderKey()
-  emit('removeEvent')
+  // emit('removeEvent')
 }
+
 
 // 建立工時分配
 const createDataPlan = (dataTime: DataPlanTime) => {
@@ -218,57 +187,16 @@ const createDataPlan = (dataTime: DataPlanTime) => {
     })
   }
 }
-const refMap = new Map()
 
-// 建立暫時的工時分配
+const planTempRef = ref()
 const createTempPlan = ($event: MouseEvent, hour: number) => {
-  console.log('createTempPlan')
-  const { clientY: mouseDownY } = $event
-
-  // 表格
-  if (isEmpty(props.scheduleContainer)) return
-  const containerEl = props.scheduleContainer
-  // 小時 對應的格子
-  const blockEl = refMap.get(`${hour}`)
-
-  if (containerEl && blockEl) {
-    const { top: containerTop } = containerEl.getBoundingClientRect()
-    // 暫時工時分配: 開始
-    const _tempY = mouseDownY - containerTop
-    const _startSecond = topToSecond(_tempY)
-    tempPlanTime.startSecond = secondFormat(_startSecond)
-    tempPlanTime.start = secondToTime(tempPlanTime.startSecond)
-
-    // 暫時工時分配: 結束
-    const _endSecond = _startSecond + oneHourSecond
-    tempPlanTime.endSecond = secondFormat(_endSecond)
-    tempPlanTime.end = secondToTime(tempPlanTime.endSecond)
-
-    // 暫時工時分配 top = secondToTop(開始秒數)
-    tempPlanStyle.top = secondToTop(tempPlanTime.startSecond)
-    // 暫時工時分配 height = secondToTop(結束秒數 - 開始秒數)
-    tempPlanStyle.height = secondToTop(tempPlanTime.endSecond - tempPlanTime.startSecond)
-
-    props.scheduleContainer.addEventListener(
-      'mousemove',
-      throttle(function ($event: MouseEvent) {
-        const { clientY: mouseMoveY } = $event
-
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
-        const _change = _moveY < 0 ? 0 : _moveY
-        const _changeEndSecond = topToSecond(_tempY + _change)
-        tempPlanTime.endSecond = _changeEndSecond
-        tempPlanTime.end = secondToTime(_changeEndSecond)
-
-        tempPlanStyle.height = _change
-      }, _FPS, { isNoLeading: true })
-    )
-
-    // 顯示暫時的工時分配
-    tempPlanStyle.display = 'block'
+  if (planTempRef.value) {
+    planTempRef.value.createTempPlan($event, hour)
   }
 }
+
+const hourMapRef = reactive({})
+
 /**
  * 更新 分配畫面
  * 如果有暫時的工時分配 新增
@@ -276,31 +204,39 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
  * removeEvent()
  */
  const updateSchedule = async () => {
-  console.log('updateSchedule', tempPlanStyle.display)
-  // 有暫時的工時分配
-  if (tempPlanStyle.display === 'block') {
-    const { start, startSecond, end, endSecond } = tempPlanTime
-    const uuid = getUuid()
-    createDataPlan({
-      id: uuid,
-      status: 'new',
-      start,
-      startSecond,
-      end,
-      endSecond
-    })
+  console.log('PlanDay => updateSchedule')
+  await nextTick()
 
-    // 隱藏暫時的工時分配
-    tempPlanStyle.display = 'none'
-    setLastUpdatePlan(uuid)
+  if (planTempRef.value) {
+    const newUuid = planTempRef.value.checkCreateDataPlan()
+    if (typeof newUuid === 'string') {
+      lastUpdatePlan.value = newUuid
+    }
   }
+
   checkLastUpdatePlan()
-  emit('removeEvent')
+  // emit('removeEvent')
 }
 
 const updatePlanRenderKey = () => {
   renderKey.value++
 }
+// 初始化
+const init = (planList: PlanList) => {
+  tempPlanList.splice(0)
+
+  planList.forEach(planItem => {
+    tempPlanList.push(planItem)
+  })
+}
+
+onMounted(() => {
+  init(props.planList)
+})
+
+defineExpose({
+  init
+})
 
 </script>
 
@@ -311,29 +247,24 @@ const updatePlanRenderKey = () => {
     @mouseup="updateSchedule"
   >
     <!-- 暫時分配 -->
-    <div
-      class="schedule-temp-plan"
-      :style="{
-        display: tempPlanStyle.display,
-        top: `${tempPlanStyle.top - 1}px`,
-        height: `${tempPlanStyle.height}px`
-      }"
-    >
-      <span>{{ `${tempPlanTime.start}` }}</span>
-      <span> - </span>
-      <span>{{ `${tempPlanTime.end}` }}</span>
-    </div>
+    <PlanTemp
+      ref="planTempRef"
+      :hourMapRef="hourMapRef"
+      :scheduleContainer="props.scheduleContainer"
+      @createDataPlan="createDataPlan"
+    />
 
     <!-- 單一分配結果 -->
-    <PlanItem
-      v-for="plan in planData"
-      :key="`PlanItem-${plan.time.id}`"
-      :planData="plan"
-      :scheduleContainer="scheduleContainer"
+    <PlanItemView
+      v-for="planItem in tempPlanList"
+      :key="`PlanItem-${planItem.time.id}`"
+      :planItem="planItem"
+      @update:planItem="(v: PlanItem) => console.log(v)"
+      :scheduleContainer="props.scheduleContainer"
       :isCheck="isCheck"
       :originPlanMap="originPlanMap"
-      @setLastUpdatePlan="setLastUpdatePlan"
-      @setOriginPlan="setOriginPlan"
+      @mousedown="onPlanItemClick(planItem.time.id, planItem)"
+      @mouseup.stop
       @updatePlanRenderKey="updatePlanRenderKey"
       @updateSchedule="updateSchedule"
     />
@@ -344,7 +275,7 @@ const updatePlanRenderKey = () => {
       :key="hour"
       :ref="
         el => {
-          refMap.set(`${hour}`, el)
+          hourMapRef[`${hour}`] = el
           return `${hour}`
         }
       "
@@ -366,19 +297,6 @@ const updatePlanRenderKey = () => {
     display: grid;
     grid-template-rows: repeat(24, 1fr);
     grid-template-columns: 1fr;
-  }
-
-  &-temp-plan {
-    width: calc(100% - 2px);
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: 4px;
-    min-height: 12px;
-    background-color: #eeeeee80;
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding-top: 2px;
   }
 
   &-block {

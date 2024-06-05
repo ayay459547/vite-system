@@ -1,23 +1,14 @@
 type BasePlanTime = {
   start: string
-  startSecond?: number
+  startSecond: number
   end: string
-  endSecond?: number
+  endSecond: number
 }
 
 type BasePlanStyle = {
   top: number
   height: number
 }
-
-export type PlanItem = {
-  id?: string
-  day: number
-  status?: 'new' | 'update' | 'old'
-  start: string
-  end: string
-}
-export type PlanList = Array<PlanItem>
 
 // 實際資料分配
 export type DataPlanTime = BasePlanTime & {

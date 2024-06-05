@@ -24,8 +24,8 @@ import i18nJson from './i18n_table.json'
  * 2.base64 轉 json
  * 3.重新寫入 i18n.json
  */
-import i18nXlsx from './i18n_table.xlsx?b64'
-console.log('i18nXlsx => ', i18nXlsx)
+// import i18nXlsx from './i18n_table.xlsx?b64'
+// console.log('i18nXlsx => ', i18nXlsx)
 
 export const getTranslateSrcFile = () => {
   const moduleList = i18nJson as any[]

@@ -19,7 +19,7 @@ import GeneralView from './General/GeneralView.vue'
 const useHook: UseHook = inject('useHook')
 const { redirectInfo } = useHook()
 
-const tab = ref('SpecifyMachine')
+const tab = ref('General')
 const tabs = [
   { i18nLabel: 'fund-1417-machine-title', label: '機台保養工時', value: 'SpecifyMachine' },
   { i18nLabel: 'fund-1417-specifyMachine-title', label: '特定機台工時設定', value: 'Machine' },
@@ -72,7 +72,7 @@ onMounted(() => {
   <div v-loading="isLoading" class="page">
     <div class="page-tabs">
       <!-- 切換 -->
-      <CustomTabs v-model="tab" :options="tabs" i18n-module="fund_common"/>
+      <CustomTabs v-model="tab" :options="tabs"/>
     </div>
 
     <div class="page-view">

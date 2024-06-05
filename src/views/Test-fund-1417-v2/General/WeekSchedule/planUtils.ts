@@ -1,5 +1,7 @@
 // 最快刷新的速度
-export const FPS = 80
+const _FPS = 80
+export const FPS = 1000 / _FPS
+
 // 表格高度
 export const tableHeight = 960
 // 1小時高度

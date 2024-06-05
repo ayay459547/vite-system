@@ -3,14 +3,14 @@ import { ref, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 // import { WeekSchedule } from '@/components'
-import { WeekSchedule } from './WeekSchedule/WeekSchedule.vue'
+import WeekSchedule from './WeekSchedule/WeekSchedule.vue'
 
 import {
   getGeneralWeekSchedule,
   getIsNeedSendRTDS
 } from './api'
 
-import { timeFormat } from '../planUtils.ts'
+import { timeFormat } from '../planUtils'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, swal } = useHook()
@@ -20,7 +20,7 @@ const isLoading = ref(true)
 const isNeedSendRTDS = ref(false)
 
 const weekSchedule = ref()
-const planList = ref([])
+const scheduleList = ref([])
 
 const init = async () => {
   isLoading.value = true
@@ -34,12 +34,12 @@ const init = async () => {
   if (generalWeekScheduleStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
-  planList.value = generalWeekScheduleData.map(row => {
+  scheduleList.value = generalWeekScheduleData.map(row => {
     const { id, dayOfWeek, startTime, endTime } = row
     return {
       id,
@@ -49,17 +49,17 @@ const init = async () => {
       end: timeFormat(endTime)
     }
   })
-  console.log(planList.value)
+  console.log(scheduleList.value)
   if (weekSchedule.value) {
-    weekSchedule.value.init([...planList.value])
+    weekSchedule.value.init([...scheduleList.value])
   }
 
   const { status: isNeedSendRTDSStatus, msg: isNeedSendRTDSMsg, data: isNeedSendRTDSData } = resIsNeedSendRTDS
   if (isNeedSendRTDSStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -79,7 +79,7 @@ onMounted(() => {
 
 <template>
   <div v-loading="isLoading" class="page-container">
-    <WeekSchedule ref="weekSchedule" :plan-list="planList"></WeekSchedule>
+    <WeekSchedule ref="weekSchedule" :schedule-list="scheduleList"></WeekSchedule>
   </div>
 </template>
 
