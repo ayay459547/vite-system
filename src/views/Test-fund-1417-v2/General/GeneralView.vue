@@ -2,7 +2,8 @@
 import { ref, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { WeekSchedule } from '@/components'
+// import { WeekSchedule } from '@/components'
+import { WeekSchedule } from './WeekSchedule/WeekSchedule.vue'
 
 import {
   getGeneralWeekSchedule,
