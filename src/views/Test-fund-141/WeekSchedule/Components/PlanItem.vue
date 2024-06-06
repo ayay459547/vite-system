@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { nextTick, reactive, computed } from 'vue'
 
 import throttle from '@/lib/lib_throttle'
-import { awaitTime, getType, isEmpty } from '@/lib/lib_utils'
+import { awaitTime, isEmpty } from '@/lib/lib_utils'
 
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
@@ -57,7 +57,7 @@ const plan = computed<PlanData>({
     return props.planData
   },
   set (v: PlanData) {
-    emit('updatePlanData')
+    emit('updatePlanData', v)
   }
 })
 

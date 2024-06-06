@@ -5,7 +5,7 @@ import { reactive } from 'vue'
 import throttle from '@/lib/lib_throttle'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 
-import type { TempPlanTime, TempPlanStyle } from '../planType'
+import type { PlanTime, PlanStyle, CheckTimeIsExist } from '../planType'
 
 import {
   FPS,
@@ -28,27 +28,25 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'createDataPlan'
-])
-
 // 暫時的工時分配
-const tempPlanTime = reactive<TempPlanTime>({
+const tempPlanTime = reactive<PlanTime>({
   start: '00:00',
   startSecond: 0,
   end: '00:00',
   endSecond: 0
 })
-const tempPlanStyle = reactive<TempPlanStyle>({
-  left: 0,
+const tempPlanStyle = reactive<PlanStyle>({
   top: 0,
   height: 0,
   display: 'none'
 })
 
+let mousemoveEvent = ($event: MouseEvent) => {
+  console.log($event)
+}
+
 // 建立暫時的工時分配
 const createTempPlan = ($event: MouseEvent, hour: number) => {
-  console.log('createTempPlan')
   const { clientY: mouseDownY } = $event
 
   // 表格
@@ -75,51 +73,67 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
     // 暫時工時分配 height = secondToTop(結束秒數 - 開始秒數)
     tempPlanStyle.height = secondToTop(tempPlanTime.endSecond - tempPlanTime.startSecond)
 
-    props.scheduleContainer.addEventListener(
-      'mousemove',
-      throttle(function ($event: MouseEvent) {
-        const { clientY: mouseMoveY } = $event
+    // 移動時變動 暫時的工時分配
+    const throttleMousemoveEvent = throttle<typeof mousemoveEvent>(function ($event: MouseEvent) {
+      const { clientY: mouseMoveY } = $event
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
-        const _change = _moveY < 0 ? 0 : _moveY
-        const _changeEndSecond = topToSecond(_tempY + _change)
-        tempPlanTime.endSecond = _changeEndSecond
-        tempPlanTime.end = secondToTime(_changeEndSecond)
+      // 變化高度
+      const _moveY = mouseMoveY - mouseDownY
+      const _change = _moveY < 0 ? 0 : _moveY
+      const _changeEndSecond = topToSecond(_tempY + _change)
+      tempPlanTime.endSecond = _changeEndSecond
+      tempPlanTime.end = secondToTime(_changeEndSecond)
 
-        tempPlanStyle.height = _change
-      }, FPS, { isNoLeading: true })
-    )
+      tempPlanStyle.height = _change
+    }, FPS, { isNoLeading: true })
+
+    mousemoveEvent = throttleMousemoveEvent
+    props.scheduleContainer.addEventListener('mousemove', mousemoveEvent)
 
     // 顯示暫時的工時分配
     tempPlanStyle.display = 'block'
   }
 }
 
-const checkCreateDataPlan = () => {
+// 確認有暫時分配 新增
+const checkCreatePlan = (checkTimeIsExist: CheckTimeIsExist) => {
+  // 移除 EventListener
+  props.scheduleContainer.removeEventListener('mousemove', mousemoveEvent)
+
   // 有暫時的工時分配
   if (tempPlanStyle.display === 'block') {
     const { start, startSecond, end, endSecond } = tempPlanTime
-    const uuid = getUuid()
-    emit('createDataPlan', {
-      id: uuid,
-      status: 'new',
-      start,
-      startSecond,
-      end,
-      endSecond
-    })
+
+    const isExist = checkTimeIsExist(startSecond, endSecond)
 
     // 隱藏暫時的工時分配
     tempPlanStyle.display = 'none'
-    return uuid
+
+    const uuid = getUuid()
+    return {
+      isExist,
+      newUuid: uuid,
+      planTime: {
+        id: uuid,
+        status: 'new',
+        start,
+        startSecond,
+        end,
+        endSecond
+      }
+    }
   }
-  return null
+
+  return {
+    isExist: true,
+    newUuid: null,
+    planTime: null
+  }
 }
 
 defineExpose({
   createTempPlan,
-  checkCreateDataPlan
+  checkCreatePlan
 })
 
 </script>
