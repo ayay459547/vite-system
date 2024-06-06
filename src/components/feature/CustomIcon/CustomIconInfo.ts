@@ -5,7 +5,17 @@ export const version = '1.0.0'
 
 export declare namespace Custom {
   type IconType = 'fas' | 'far' | 'fab'
-  type XIconType = '' | 'fluent' | 'ionicons4' | 'ionicons5' | 'antd' | 'material' | 'fa' | 'tabler' | 'carbon' | null
+  type XIconType =
+    | ''
+    | 'fluent'
+    | 'ionicons4'
+    | 'ionicons5'
+    | 'antd'
+    | 'material'
+    | 'fa'
+    | 'tabler'
+    | 'carbon'
+    | null
 }
 
 /**

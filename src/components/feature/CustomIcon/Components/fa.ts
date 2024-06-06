@@ -1,8 +1,4 @@
-import {
-  Uncharted,
-  ChartLine,
-  ChartArea
-} from '@vicons/fa'
+import { Uncharted, ChartLine, ChartArea } from '@vicons/fa'
 
 export default {
   Uncharted,

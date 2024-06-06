@@ -58,12 +58,12 @@ const emit = defineEmits(['change'])
 const columnList = ref<ColumnItem[]>([])
 
 const showColumnList = computed<Array<ColumnItem>>({
-  get () {
+  get() {
     return columnList.value.filter(item => {
       return !(item?.isOperations ?? false)
     })
   },
-  set (v: Array<ColumnItem>) {
+  set(v: Array<ColumnItem>) {
     setColumnList(v)
   }
 })
@@ -202,10 +202,7 @@ const onDragend = () => {
       popper-style="padding: 4px;"
     >
       <template #reference>
-        <CustomButton
-          icon-name="list-check"
-          :label="i18nTranslate('columnSetting', 'system')"
-        />
+        <CustomButton icon-name="list-check" :label="i18nTranslate('columnSetting', 'system')" />
       </template>
 
       <div>

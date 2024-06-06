@@ -7,10 +7,7 @@ import { awaitTime, isEmpty } from '@/lib/lib_utils'
 
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
-import type {
-  PlanData,
-  Origin
-} from '../planType'
+import type { PlanData, Origin } from '../planType'
 
 import {
   FPS,
@@ -56,7 +53,7 @@ const plan = computed<PlanData>({
   get() {
     return props.planData
   },
-  set (v: PlanData) {
+  set(v: PlanData) {
     emit('updatePlanData', v)
   }
 })
@@ -75,42 +72,46 @@ const moveDataPlan = ($event: MouseEvent) => {
     const originPlan = props.originPlanMap.get(uuid)
     const { originTop, originHeight, originStartSecond, originEndSecond } = originPlan
 
-    console.log('scheduleContainer => ',  props.scheduleContainer)
+    console.log('scheduleContainer => ', props.scheduleContainer)
     if (isEmpty(props.scheduleContainer)) return
     // 滑鼠移動時執行
     props.scheduleContainer.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        if (props.isCheck) return
+      throttle(
+        function ($event: MouseEvent) {
+          if (props.isCheck) return
 
-        const { clientY: mouseMoveY } = $event
-        planStyle.cursor = 'move'
-        planStyle.zIndex = 9
+          const { clientY: mouseMoveY } = $event
+          planStyle.cursor = 'move'
+          planStyle.zIndex = 9
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
 
-        const _startSecond = topToSecond(originTop + _moveY)
-        const _endSecond = topToSecond(originTop + originHeight + _moveY)
+          const _startSecond = topToSecond(originTop + _moveY)
+          const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
-        planTime.endSecond =
-          _startSecond <= 0 // 如果開始 <= 0
-            ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
-            : _endSecond // 變化後 結束的秒數
-        planTime.end = secondToTime(planTime.endSecond)
-        if (planTime.endSecond === maxSecond) return
+          planTime.endSecond =
+            _startSecond <= 0 // 如果開始 <= 0
+              ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
+              : _endSecond // 變化後 結束的秒數
+          planTime.end = secondToTime(planTime.endSecond)
+          if (planTime.endSecond === maxSecond) return
 
-        planTime.startSecond =
-          _endSecond >= twentyFourHourSecond // 如果結束 >= 24
-            ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
-            : _startSecond // 變化後 開始的秒數
-        planTime.start = secondToTime(planTime.startSecond)
+          planTime.startSecond =
+            _endSecond >= twentyFourHourSecond // 如果結束 >= 24
+              ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
+              : _startSecond // 變化後 開始的秒數
+          planTime.start = secondToTime(planTime.startSecond)
 
-        planStyle.top = secondToTop(planTime.startSecond)
-        planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
+          planStyle.top = secondToTop(planTime.startSecond)
+          planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
 
-        emit('updatePlanRenderKey')
-      }, _FPS, { isNoLeading: true })
+          emit('updatePlanRenderKey')
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
   }
 }
@@ -132,27 +133,31 @@ const setStartPlan = ($event: MouseEvent) => {
     // 滑鼠移動時執行
     props.scheduleContainer.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        if (props.isCheck) return
+      throttle(
+        function ($event: MouseEvent) {
+          if (props.isCheck) return
 
-        const { clientY: mouseMoveY } = $event
-        planStyle.zIndex = 9
+          const { clientY: mouseMoveY } = $event
+          planStyle.zIndex = 9
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
 
-        const _startSecond = topToSecond(originTop + _moveY)
-        planTime.startSecond =
-          originEndSecond - _startSecond <= 0 // 時間 <= 0
-            ? originEndSecond
-            : _startSecond // 變化後 開始的秒數
+          const _startSecond = topToSecond(originTop + _moveY)
+          planTime.startSecond =
+            originEndSecond - _startSecond <= 0 // 時間 <= 0
+              ? originEndSecond
+              : _startSecond // 變化後 開始的秒數
 
-        planTime.start = secondToTime(planTime.startSecond)
-        planStyle.top = secondToTop(planTime.startSecond)
-        planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
+          planTime.start = secondToTime(planTime.startSecond)
+          planStyle.top = secondToTop(planTime.startSecond)
+          planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
 
-        emit('updatePlanRenderKey')
-      }, _FPS, { isNoLeading: true })
+          emit('updatePlanRenderKey')
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
   }
 }
@@ -174,28 +179,32 @@ const setEndPlan = ($event: MouseEvent) => {
     // 滑鼠移動時執行
     props.scheduleContainer.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        if (props.isCheck) return
+      throttle(
+        function ($event: MouseEvent) {
+          if (props.isCheck) return
 
-        const { clientY: mouseMoveY } = $event
-        planStyle.cursor = 'move'
-        planStyle.zIndex = 9
+          const { clientY: mouseMoveY } = $event
+          planStyle.cursor = 'move'
+          planStyle.zIndex = 9
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
 
-        const _endSecond = topToSecond(originTop + originHeight + _moveY)
+          const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
-        planTime.endSecond =
-          _endSecond - originStartSecond <= 0 // 時間 <= 0
-            ? originStartSecond
-            : _endSecond // 變化後 結束的秒數
+          planTime.endSecond =
+            _endSecond - originStartSecond <= 0 // 時間 <= 0
+              ? originStartSecond
+              : _endSecond // 變化後 結束的秒數
 
-        planTime.end = secondToTime(planTime.endSecond)
-        planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
+          planTime.end = secondToTime(planTime.endSecond)
+          planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
 
-        emit('updatePlanRenderKey')
-      }, _FPS, { isNoLeading: true })
+          emit('updatePlanRenderKey')
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
   }
 }
@@ -221,7 +230,6 @@ const updateInfo = reactive<{
   mouseupLeft: -1,
   mouseupTop: -1
 })
-
 
 const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
   const { clientX, clientY } = $event
@@ -258,21 +266,18 @@ const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
 }
 
 const formTimeValue = computed<any>({
-  get () {
+  get() {
     let res = []
     if ([null, undefined].includes(plan.value)) {
       res = ['00:00', '00:00']
     } else {
-      const [start, end] = [
-        plan.value.time.start,
-        plan.value.time.end
-      ]
+      const [start, end] = [plan.value.time.start, plan.value.time.end]
       res = [`${start}`, `${end}`]
     }
     // console.log('get', res)
     return res
   },
-  set (v: [string, string]) {
+  set(v: [string, string]) {
     // console.log('set', v)
     const [_start, _end] = v
     plan.value.time.start = _start
@@ -289,13 +294,10 @@ const closeUpdate = () => {
  * 時間(HH:mm) => 秒數
  * 秒數 => top
  */
- const onTimePickerChange = async (time: string) => {
+const onTimePickerChange = async (time: string) => {
   const [startTime, endTime] = time
 
-  const [startSecond, endSecond] = [
-    timeToSecond(startTime),
-    timeToSecond(endTime)
-  ]
+  const [startSecond, endSecond] = [timeToSecond(startTime), timeToSecond(endTime)]
 
   const { time: planTime, style: planStyle } = plan.value
   const { id: uuid } = planTime
@@ -316,7 +318,6 @@ const closeUpdate = () => {
   await awaitTime(120)
   emit('updateSchedule')
 }
-
 </script>
 
 <template>
@@ -330,22 +331,13 @@ const closeUpdate = () => {
     @mousedown.stop="openUpdate($event, 'mousedown')"
     @mouseup.stop="openUpdate($event, 'mouseup')"
   >
-    <div
-      class="schedule-data-plan-before"
-      @mousedown="setStartPlan($event)"
-    ></div>
-    <div
-      class="schedule-data-plan-text"
-      @mousedown="moveDataPlan($event)"
-    >
+    <div class="schedule-data-plan-before" @mousedown="setStartPlan($event)"></div>
+    <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event)">
       <span>{{ `${plan.time.start}` }}</span>
       <span> - </span>
       <span>{{ `${plan.time.end}` }}</span>
     </div>
-    <div
-      class="schedule-data-plan-after"
-      @mousedown="setEndPlan($event)"
-    ></div>
+    <div class="schedule-data-plan-after" @mousedown="setEndPlan($event)"></div>
 
     <!-- 編輯 -->
     <div

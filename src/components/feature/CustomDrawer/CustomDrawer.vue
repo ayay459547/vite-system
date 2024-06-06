@@ -34,14 +34,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div
-    class="drawer-container"
-    :class="[
-      `CustomDrawer_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div class="drawer-container" :class="[`CustomDrawer_${version}`, scopedId, scopedName]">
     <ElDrawer
       v-model="tempValue"
       :direction="props.direction"

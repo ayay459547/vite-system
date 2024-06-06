@@ -46,11 +46,7 @@ const tempValue = customRef((track, trigger) => {
     :show-after="props.showAfter"
     effect="light"
     class="tooltip-container"
-    :class="[
-      `CustomTooltip_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomTooltip_${version}`, scopedId, scopedName]"
   >
     <template #default>
       <slot></slot>

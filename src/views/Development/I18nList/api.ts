@@ -51,17 +51,21 @@ export const getData = (params: any) => {
 
   const { key: sortKey, order: sortType } = sort
 
-  const filterList = object_reduce<any[]>({
-    keyword,
-    zhTw,
-    zhCn,
-    en
-  }, (res: Record<string, string>[], curr: string, key: string) => {
-    if (!isEmpty(curr)) {
-      res.push({ key, value: curr })
-    }
-    return res
-  }, []) as Record<string, string>[]
+  const filterList = object_reduce<any[]>(
+    {
+      keyword,
+      zhTw,
+      zhCn,
+      en
+    },
+    (res: Record<string, string>[], curr: string, key: string) => {
+      if (!isEmpty(curr)) {
+        res.push({ key, value: curr })
+      }
+      return res
+    },
+    []
+  ) as Record<string, string>[]
 
   const tempData = cutTableData(
     page,
@@ -108,17 +112,21 @@ export const getData = (params: any) => {
 export const getDataCount = (params: any): number => {
   const { keyword, zhTw, zhCn, en } = params
 
-  const filterList = object_reduce({
-    keyword,
-    zhTw,
-    zhCn,
-    en
-  }, (res: Record<string, string>[], curr: string, key: string) => {
-    if (!isEmpty(curr)) {
-      res.push({ key, value: curr })
-    }
-    return res
-  }, []) as Record<string, string>[]
+  const filterList = object_reduce(
+    {
+      keyword,
+      zhTw,
+      zhCn,
+      en
+    },
+    (res: Record<string, string>[], curr: string, key: string) => {
+      if (!isEmpty(curr)) {
+        res.push({ key, value: curr })
+      }
+      return res
+    },
+    []
+  ) as Record<string, string>[]
 
   return langData.filter(route => {
     if (isEmpty(filterList)) return true

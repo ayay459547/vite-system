@@ -13,7 +13,7 @@ export const columnSetting = {
       type: 'autocomplete',
       default: null,
       required: true,
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       fetchSuggestions: async (queryString: string, cb: (arg: any) => void) => {
         const { status, msg, data: list } = await getMachineList(queryString)
         if (status !== 'success') {
@@ -51,7 +51,7 @@ export const columnSetting = {
       type: 'select',
       default: '',
       required: true,
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       options: [
         { i18nLabel: 'sunday-abbreviation', label: '日', value: '7' },
         { i18nLabel: 'monday-abbreviation', label: '一', value: '1' },
@@ -67,7 +67,7 @@ export const columnSetting = {
       isValidate: false,
       type: 'select',
       default: '',
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       options: [
         { i18nLabel: 'all', label: '全部', value: '' },
         { i18nLabel: 'sunday-abbreviation', label: '日', value: '7' },
@@ -106,7 +106,7 @@ export const columnSetting = {
     form: {
       default: null,
       required: true,
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       type: 'timerange',
       format: 'HH:mm'
     }

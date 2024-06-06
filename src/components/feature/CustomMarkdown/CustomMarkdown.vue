@@ -16,14 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="markdown-container"
-    :class="[
-      `CustomMarkdown_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div class="markdown-container" :class="[`CustomMarkdown_${version}`, scopedId, scopedName]">
     <v-md-preview class="markdown-main" :text="props.text"></v-md-preview>
   </div>
 </template>

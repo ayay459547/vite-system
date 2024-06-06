@@ -38,22 +38,27 @@ const hasSlot = (prop: string): boolean => {
     :loading="props.loading"
     :style="props.style"
     class="button-container"
-    :class="[
-      `CustomButton_${version}`,
-      `button-size-${props.size}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomButton_${version}`, `button-size-${props.size}`, scopedId, scopedName]"
     @click="onClick"
   >
     <template v-if="!props.loading && props.iconName.length > 0" #icon>
-      <CustomIcon class="icon" :class="`icon-${iconMove}`" :size="props.iconSize" :type="props.iconType"
-        :name="props.iconName" :style="{ color: props.textColor }" />
+      <CustomIcon
+        class="icon"
+        :class="`icon-${iconMove}`"
+        :size="props.iconSize"
+        :type="props.iconType"
+        :name="props.iconName"
+        :style="{ color: props.textColor }"
+      />
     </template>
 
     <template v-if="props.label.length > 0 || hasSlot('default')" #default>
       <slot>
-        <span class="button-label" :class="`button-label-size-${props.iconSize}`" :style="{ color: props.textColor }">
+        <span
+          class="button-label"
+          :class="`button-label-size-${props.iconSize}`"
+          :style="{ color: props.textColor }"
+        >
           {{ props.label }}
         </span>
       </slot>
@@ -66,7 +71,7 @@ const hasSlot = (prop: string): boolean => {
   align-items: center;
 }
 :global(.el-button) {
-  &+.el-button {
+  & + .el-button {
     margin-left: 0 !important;
   }
 }

@@ -14,7 +14,7 @@ const isLoading = ref(true)
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
-  i18nModule: 'nodoc_common'
+  i18nModule: 'system'
 })
 
 const {

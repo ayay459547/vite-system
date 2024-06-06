@@ -13,12 +13,15 @@ export default {
   setup(props) {
     const scopedId = getUuid('__i-qrcode__')
 
-    const qrProps = object_filter<any>({
+    const qrProps = object_filter<any>(
+      {
         text: props.text,
         bgSrc: props.bgSrc,
         logoSrc: props.logoSrc,
         size: props.size
-      }, (prop: any) => !isEmpty(prop))
+      },
+      (prop: any) => !isEmpty(prop)
+    )
 
     const SimpleQRcode = () =>
       h(

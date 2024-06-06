@@ -124,7 +124,9 @@ const svg = `
           </CustomInput>
         </form>
 
-        <button class="login-button" @click="login">{{ i18nTranslate('login', defaultModuleType) }}</button>
+        <button class="login-button" @click="login">
+          {{ i18nTranslate('login', defaultModuleType) }}
+        </button>
       </div>
     </div>
   </div>

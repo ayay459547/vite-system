@@ -45,11 +45,7 @@ const tempValue = customRef((track, trigger) => {
     :show-arrow="props.showArrow"
     :offset="props.offset"
     class="popover-container"
-    :class="[
-      `CustomPopover_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomPopover_${version}`, scopedId, scopedName]"
   >
     <template #reference>
       <slot name="reference"></slot>

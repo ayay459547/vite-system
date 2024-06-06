@@ -5,8 +5,8 @@ import { inject, ref, onMounted, onBeforeMount, watch } from 'vue'
 import type { UseHook } from '@/declare/hook'
 // 引入組件
 import { CustomTabs } from '@/components'
- // 引入工具
- import { isEmpty } from '@/lib/lib_utils'
+// 引入工具
+import { isEmpty } from '@/lib/lib_utils'
 
 // 機台保養工時
 import SpecifyMachine from './SpecifyMachine/SpecifyMachine.vue'
@@ -35,7 +35,9 @@ const { fromPage, queryData } = redirectInfo()
 // Mount前先根據fromPage切換tab
 onBeforeMount(() => {
   switch (fromPage) {
-    case 'auto-32-SG': tab.value = 'SpecifyMachine'; break
+    case 'auto-32-SG':
+      tab.value = 'SpecifyMachine'
+      break
   }
 })
 const initTabTable = () => {
@@ -54,7 +56,9 @@ const initTabTable = () => {
   }
 }
 
-const tabRefChange = newRef => { if(newRef) initTabTable() }
+const tabRefChange = newRef => {
+  if (newRef) initTabTable()
+}
 watch(tabSpecifyMachine, tabRefChange)
 watch(tabMachine, tabRefChange)
 
@@ -65,21 +69,20 @@ onMounted(() => {
     isLoading.value = false
   }, 600)
 })
-
 </script>
 
 <template>
   <div v-loading="isLoading" class="page">
     <div class="page-tabs">
       <!-- 切換 -->
-      <CustomTabs v-model="tab" :options="tabs" i18n-module="system"/>
+      <CustomTabs v-model="tab" :options="tabs" i18n-module="system" />
     </div>
 
     <div class="page-view">
       <KeepAlive>
         <Transition name="fade" mode="out-in">
-          <SpecifyMachine v-if="tab === 'SpecifyMachine'" ref="tabSpecifyMachine"/>
-          <MachineView v-else-if="tab === 'Machine'" ref="tabMachine"/>
+          <SpecifyMachine v-if="tab === 'SpecifyMachine'" ref="tabSpecifyMachine" />
+          <MachineView v-else-if="tab === 'Machine'" ref="tabMachine" />
           <GeneralView v-else-if="tab === 'General'" />
         </Transition>
       </KeepAlive>

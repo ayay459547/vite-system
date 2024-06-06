@@ -25,11 +25,7 @@ const hasSlot = (prop: string): boolean => {
     :hidden="props.hidden"
     :type="props.type"
     class="badge-wrapper"
-    :class="[
-      `CustomBadge_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomBadge_${version}`, scopedId, scopedName]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot></slot>

@@ -101,11 +101,7 @@ onUnmounted(() => {
   <div
     ref="wrapRef"
     class="tree-container"
-    :class="[
-      `CustomTree_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomTree_${version}`, scopedId, scopedName]"
   >
     <ElTreeV2
       ref="elTreeV2Ref"

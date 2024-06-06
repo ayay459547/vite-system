@@ -73,11 +73,7 @@ defineExpose({
     :aria-label="props.ariaLabel"
     :aria-orientation="props.ariaOrientation"
     class="scroll-bar"
-    :class="[
-      `CustomScrollbar_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomScrollbar_${version}`, scopedId, scopedName]"
     @scroll="onScroll"
   >
     <template v-if="hasSlot('default')" #default>

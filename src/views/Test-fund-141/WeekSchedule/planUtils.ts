@@ -84,10 +84,7 @@ export const secondToTime = (second: number): string => {
  */
 export const timeToSecond = (time: string): number => {
   const [_hour, _minutes] = time.split(':')
-  const [hour, minutes] = [
-    Number.parseInt(_hour),
-    Number.parseInt(_minutes)
-  ]
+  const [hour, minutes] = [Number.parseInt(_hour), Number.parseInt(_minutes)]
 
   const hourSecond = (isNaN(hour) ? 0 : hour) * oneHourSecond
   const minutesSecond = (isNaN(minutes) ? 0 : minutes) * 60

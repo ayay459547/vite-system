@@ -10,7 +10,6 @@ export const DATA_ZOOM_Y_INSIDE_INDEX = 3
 export const DATA_ZOOM_AUTO_MOVE_SPEED = 0.2
 export const DATA_ZOOM_AUTO_MOVE_DETECT_AREA_WIDTH = 30
 
-
 export function renderAxisLabelItem(params, api) {
   const y = api.coord([0, api.value(0)])[1]
   if (y < params.coordSys.y + 5) {

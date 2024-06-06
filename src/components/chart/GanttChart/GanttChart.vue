@@ -301,7 +301,10 @@ export default defineComponent({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             formatter: function (value: any, index: number) {
               const [type, length] = value.split(',')
-              return `${type} (${numberFormat(parseInt(length), { isToLocaleString: true, type: 'none' })})`
+              return `${type} (${numberFormat(parseInt(length), {
+                isToLocaleString: true,
+                type: 'none'
+              })})`
             }
           },
           tooltip: {}

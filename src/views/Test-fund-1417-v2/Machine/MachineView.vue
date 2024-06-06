@@ -23,18 +23,20 @@ import UpdateModal from './Components/UpdateModal.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, swal, eventList, permission } = useHook({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 defineExpose({
-  setFilter: filter => {tableRef.value.setFilter(filter)}
+  setFilter: filter => {
+    tableRef.value.setFilter(filter)
+  }
 })
 
 // table
 const tableOptions: TableOptions = {
   title: '特定機台工時設定',
   i18nTitle: 'fund-1417-specifyMachine-title',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.0.9',
   settingKey: 'fund-1417-Machine',
   isSorting: true

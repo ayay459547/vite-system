@@ -71,7 +71,6 @@ const propsTreeV2 = {
   label: 'label',
   children: 'children'
 }
-
 </script>
 
 <template>
@@ -108,11 +107,7 @@ const propsTreeV2 = {
 
     <CustomDivider />
 
-    <CustomTree
-      style="max-width: 600px"
-      :data="treeData"
-      :props="propsTree"
-    />
+    <CustomTree style="max-width: 600px" :data="treeData" :props="propsTree" />
 
     <CustomDivider />
 

@@ -17,9 +17,13 @@ const worker = new Worker(new URL('./worker.js', import.meta.url), {
   type: 'module'
 })
 worker.postMessage('idb')
-worker.addEventListener('message', function(e) {
-  console.log('[workder]', e.data)
-}, false)
+worker.addEventListener(
+  'message',
+  function (e) {
+    console.log('[workder]', e.data)
+  },
+  false
+)
 // worker.terminate()
 
 // 去除 chrome 的touch事件警告

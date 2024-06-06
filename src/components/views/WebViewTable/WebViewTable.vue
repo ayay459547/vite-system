@@ -385,10 +385,10 @@ const customTableRef = ref()
  */
 const _isCustomTableInit = ref(false)
 const isCustomTableInit = computed({
-  get () {
+  get() {
     return _isCustomTableInit.value
   },
-  set (v: boolean) {
+  set(v: boolean) {
     _isCustomTableInit.value = v
     if (v) {
       init(null, '')

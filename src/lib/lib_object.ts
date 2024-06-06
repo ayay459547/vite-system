@@ -99,7 +99,7 @@ export const object_every = (that: That, callback: Function, thisArg?: any): boo
   thisArg = thisArg || window
 
   for (const key in that) {
-    if (hasOwnProperty(that, key) && callback.call(thisArg, that[key], key, that)) {
+    if (hasOwnProperty(that, key) && !callback.call(thisArg, that[key], key, that)) {
       return false
     }
   }
@@ -118,7 +118,12 @@ export const object_every = (that: That, callback: Function, thisArg?: any): boo
  *   return res
  * }, [])
  */
-export const object_reduce = <T extends any>(that: That, callback: Function, temp: any, thisArg?: any): T => {
+export const object_reduce = <T extends any>(
+  that: That,
+  callback: Function,
+  temp: any,
+  thisArg?: any
+): T => {
   thisArg = thisArg || window
 
   for (const key in that) {
@@ -128,4 +133,3 @@ export const object_reduce = <T extends any>(that: That, callback: Function, tem
   }
   return temp as T
 }
-

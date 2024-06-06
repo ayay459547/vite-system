@@ -97,10 +97,7 @@ defineExpose({
 <template>
   <div
     class="side-wrapper"
-    :class="[
-      tempIsOpen ? 'is-open' : 'is-close',
-      props.isNavHover ? 'is-hover' : ''
-    ]"
+    :class="[tempIsOpen ? 'is-open' : 'is-close', props.isNavHover ? 'is-hover' : '']"
   >
     <div class="side-container">
       <div class="side-logo">

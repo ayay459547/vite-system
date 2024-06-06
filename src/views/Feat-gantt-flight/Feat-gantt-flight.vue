@@ -235,11 +235,12 @@ function renderGanttItem(params, api) {
   }
 }
 
-
 // -------------
 //  Enable Drag
 // -------------
 function onDragSwitchClick(model, api, type) {
+  console.log({ model, api, type })
+
   _draggable = !_draggable
   myChart.setOption({
     dataZoom: [
@@ -389,7 +390,7 @@ function initDrag() {
     }
   }
   // This is some business logic, don't care about it.
-  
+
   function autoDataZoomWhenDraggingOutside(cursorX, cursorY) {
     // When cursor is outside the cartesian and being dragging,
     // auto move the dataZooms.
@@ -446,8 +447,8 @@ function initDrag() {
     return dist0 * dist1 <= 0
       ? 0 // cursor is in cartesian
       : dist0 < 0
-        ? dist0 // cursor is at left/top of cartesian
-        : dist1 // cursor is at right/bottom of cartesian
+      ? dist0 // cursor is at left/top of cartesian
+      : dist1 // cursor is at right/bottom of cartesian
   }
   function makeAnimator(callback) {
     let requestId
@@ -485,7 +486,6 @@ onMounted(() => {
   myChart.setOption(option, true)
   initDrag()
 })
-
 </script>
 
 <template>

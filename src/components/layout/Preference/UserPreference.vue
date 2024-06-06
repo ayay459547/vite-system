@@ -29,11 +29,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'lang-change',
-  'history-show-change',
-  'layout-change'
-])
+const emit = defineEmits(['lang-change', 'history-show-change', 'layout-change'])
 
 // 語言
 const localeStore = useLocaleStore()
@@ -171,16 +167,13 @@ const onClickLayout = (layoutValue: string) => {
         <div class="modal-item">
           <div class="modal-label">
             <div class="icon">
-              <CustomIcon type="fas" name="palette"/>
+              <CustomIcon type="fas" name="palette" />
             </div>
             <label>{{ `${i18nTranslate('colorTone')}` }}</label>
           </div>
 
           <div class="modal-select">
-            <FormRadio
-              v-model="colorTone"
-              :options="colorToneOptions"
-            >
+            <FormRadio v-model="colorTone" :options="colorToneOptions">
               <template #option="{ label }">
                 {{ i18nTranslate(label) }}
               </template>
@@ -225,7 +218,9 @@ const onClickLayout = (layoutValue: string) => {
           class="layout cursor-pointer"
           @click="onClickLayout(layoutOption.value)"
         >
-          <div class="i-mb-sm">{{ i18nTranslate('layout', defaultModuleType) + layoutOption.label }}</div>
+          <div class="i-mb-sm">
+            {{ i18nTranslate('layout', defaultModuleType) + layoutOption.label }}
+          </div>
           <component :is="getLayoutView(layoutOption.label)" />
         </div>
       </div>

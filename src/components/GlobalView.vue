@@ -11,7 +11,16 @@ import {
   useSlots
 } from 'vue'
 
-import { aesDecrypt, swal, notification, message, isEmpty, scrollToEl, tipLog, awaitTime } from '@/lib/lib_utils'
+import {
+  aesDecrypt,
+  swal,
+  notification,
+  message,
+  isEmpty,
+  scrollToEl,
+  tipLog,
+  awaitTime
+} from '@/lib/lib_utils'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
@@ -385,7 +394,9 @@ provide<UseHook>('useHook', options => {
         Array.isArray(fromQuery.from) ? fromQuery.from.join(',') : fromQuery.from,
         Array.isArray(fromQuery.data) ? fromQuery.data.join(',') : fromQuery.data
       ]
-      const queryData = isEmpty(fromData) ? '' : aesDecrypt(fromData as string, systemEnv.value.QUERY_KEY)
+      const queryData = isEmpty(fromData)
+        ? ''
+        : aesDecrypt(fromData as string, systemEnv.value.QUERY_KEY)
 
       return {
         fromPage,
@@ -440,16 +451,11 @@ provide<UseHook>('useHook', options => {
           <div v-loading="isLoading" class="layout-mask">
             <div class="__layout-scroll-top__"></div>
             <RouterView v-slot="{ Component, route }">
-              <component
-                v-if="route.name === 'login'"
-                key="login"
-                :is="Component"
-                @login="login"
-              />
+              <component v-if="route.name === 'login'" key="login" :is="Component" @login="login" />
               <template v-else>
                 <KeepAlive>
                   <component
-                    v-if="(route?.meta?.keepAlive ?? false)"
+                    v-if="route?.meta?.keepAlive ?? false"
                     :key="route.name"
                     :is="Component"
                   />

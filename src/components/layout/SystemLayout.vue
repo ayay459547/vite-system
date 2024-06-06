@@ -65,11 +65,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'lang-change',
-  'logout',
-  'history-show-change'
-])
+const emit = defineEmits(['lang-change', 'logout', 'history-show-change'])
 
 const layoutStore = useLayoutStore()
 const { isDark, layout, isNavOpen, isNavHover } = storeToRefs(layoutStore)

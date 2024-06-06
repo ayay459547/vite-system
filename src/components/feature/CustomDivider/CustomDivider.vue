@@ -23,11 +23,7 @@ const hasSlot = (prop: string): boolean => {
     :border-style="props.borderStyle"
     :content-position="props.contentPosition"
     class="divider-container"
-    :class="[
-      `CustomDividerInfo_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomDividerInfo_${version}`, scopedId, scopedName]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot></slot>

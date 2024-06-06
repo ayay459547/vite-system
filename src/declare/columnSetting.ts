@@ -31,7 +31,7 @@ export interface SettingData {
   columns: Array<ColumnItem>
 }
 
-export interface Option<T = (string | number | null | undefined)> extends Record<string, any> {
+export interface Option<T = string | number | null | undefined> extends Record<string, any> {
   label: string
   i18nLabel?: string
   value: T
@@ -40,4 +40,4 @@ export interface Option<T = (string | number | null | undefined)> extends Record
   data?: any
 }
 
-export type Options<T = (string | number | null | undefined)> = Array<Option<T>>
+export type Options<T = string | number | null | undefined> = Array<Option<T>>

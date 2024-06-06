@@ -893,9 +893,13 @@ export const useSimpleTableSetting = (
  * @returns {Array}
  */
 export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
-  return object_reduce(columns, (prev: Array<string>, curr: any, currKey: string) => {
-    return [...prev, currKey]
-  }, [])
+  return object_reduce(
+    columns,
+    (prev: Array<string>, curr: any, currKey: string) => {
+      return [...prev, currKey]
+    },
+    []
+  )
 }
 
 /**
@@ -911,16 +915,20 @@ export const formatColumns = (
   type: string,
   callback: (column: Record<string, any>, key: string) => Record<string, any>
 ): Record<string, any> => {
-  return object_reduce(columns, (res: Record<string, any>, column: Record<string, any>, key: string) => {
-    res[key] = { ...column }
-    const _column = res[key]
+  return object_reduce(
+    columns,
+    (res: Record<string, any>, column: Record<string, any>, key: string) => {
+      res[key] = { ...column }
+      const _column = res[key]
 
-    if (hasOwnProperty(column, type)) {
-      const newColumn = callback(column[type], key)
+      if (hasOwnProperty(column, type)) {
+        const newColumn = callback(column[type], key)
 
-      _column[type] = newColumn ?? column[type]
-    }
+        _column[type] = newColumn ?? column[type]
+      }
 
-    return res
-  }, {})
+      return res
+    },
+    {}
+  )
 }

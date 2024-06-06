@@ -34,11 +34,7 @@ const hasSlot = (prop: string): boolean => {
     v-model="tempValue"
     :accordion="props.accordion"
     class="collapse-container"
-    :class="[
-      `CustomCollapse_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomCollapse_${version}`, scopedId, scopedName]"
     @change="onChange"
   >
     <template v-if="props.options.length > 0">

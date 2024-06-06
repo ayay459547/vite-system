@@ -25,11 +25,7 @@ const hasSlot = (prop: string): boolean => {
     :body-class="props.bodyClass"
     :shadow="props.shadow"
     class="card-container"
-    :class="[
-      `CustomCard_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomCard_${version}`, scopedId, scopedName]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot name="default"></slot>

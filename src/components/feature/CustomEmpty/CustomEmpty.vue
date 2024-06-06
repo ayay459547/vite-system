@@ -18,19 +18,8 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div
-    class="empty-container"
-    :class="[
-      `CustomEmpty_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
-    <ElEmpty
-      :image="props.image"
-      :description="props.description"
-      :image-size="props.imageSize"
-    >
+  <div class="empty-container" :class="[`CustomEmpty_${version}`, scopedId, scopedName]">
+    <ElEmpty :image="props.image" :description="props.description" :image-size="props.imageSize">
       <template v-if="hasSlot('default')" #default>
         <slot></slot>
       </template>

@@ -37,11 +37,7 @@ const hasSlot = (prop: string): boolean => {
     :lock-scroll="props.lockScroll"
     :draggable="props.draggable"
     class="dialog-container"
-    :class="[
-      `CustomDialog_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomDialog_${version}`, scopedId, scopedName]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot name="default"></slot>

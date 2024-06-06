@@ -6,7 +6,7 @@ export const columnSetting = {
     label: '日期區間',
     i18nLabel: 'timeRange-date',
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       default: null,
       required: true,
       type: 'datetimerange',
@@ -53,7 +53,7 @@ export const columnSetting = {
     },
     form: {
       type: 'autocomplete',
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       default: null,
       required: true,
       fetchSuggestions: async (queryString: string, cb: (arg: any) => void) => {
@@ -93,7 +93,7 @@ export const columnSetting = {
       type: 'select',
       default: 'maintain',
       required: true,
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       options: [
         { i18nLabel: 'maintain', label: '保養維護', value: 'maintain' },
         { i18nLabel: 'overtime-weekday', label: '平日加班', value: 'overtime' },
@@ -105,7 +105,7 @@ export const columnSetting = {
       isValidate: false,
       type: 'select',
       default: '',
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       options: [
         { i18nLabel: 'all', label: '全部', value: '' },
         { i18nLabel: 'maintain', label: '保養維護', value: 'maintain' },
@@ -134,7 +134,7 @@ export const columnSetting = {
       sortable: false
     },
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       default: null,
       type: 'textarea',
       rows: 6

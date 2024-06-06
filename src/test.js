@@ -7,7 +7,8 @@ export const writeI18nJSON = () => {
   const localI18nVersion = localStorage.getItem('i18nVersion')
   const i18nVersion = import.meta.env.VITE_API_I18N_VERSION
 
-  const isChange = [null, undefined, ''].includes(localI18nVersion) || (localI18nVersion !== i18nVersion)
+  const isChange =
+    [null, undefined, ''].includes(localI18nVersion) || localI18nVersion !== i18nVersion
 
   if (isChange) {
     // 讀取 excel
@@ -15,12 +16,7 @@ export const writeI18nJSON = () => {
     const i18n = JSON.parse(JSON.stringify(b64))
 
     const wb = read(i18n)
-    const [
-      wsTranslate,
-      wsOptions,
-      wsLiveBoard,
-      wsPage
-    ] = [
+    const [wsTranslate, wsOptions, wsLiveBoard, wsPage] = [
       wb.Sheets[wb.SheetNames[0]],
       wb.Sheets[wb.SheetNames[1]],
       wb.Sheets[wb.SheetNames[2]],
@@ -34,7 +30,7 @@ export const writeI18nJSON = () => {
     ]
 
     // 將新的翻譯檔寫入
-    writeFileSync('./src/i18n.json', JSON.stringify(moduleList), { 'flag': 'w' })
+    writeFileSync('./src/i18n.json', JSON.stringify(moduleList), { flag: 'w' })
     localStorage.setItem('buildVersion', i18nVersion)
   }
 }

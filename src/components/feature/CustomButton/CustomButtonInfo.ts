@@ -20,7 +20,7 @@ export declare namespace Props {
   type IconSize = CustomSize
   type IconType = IconProps.Type
   type IconName = string
-  type IconMove = 'none' | 'translate'| 'rotate' | 'scale'
+  type IconMove = 'none' | 'translate' | 'rotate' | 'scale'
   type Style = string | Record<string, string>
 }
 

@@ -92,7 +92,7 @@ export declare namespace UseHookReturn {
   type Env = () => Record<string, any>
   type Auth = () => AuthData
   type RedirectInfo = () => {
-    fromPage: string,
+    fromPage: string
     queryData: any
   }
 }

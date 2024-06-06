@@ -20,11 +20,15 @@ const SimpleFilter = defineComponent({
     const scopedId = getUuid('__i-simple-filter__')
 
     const columnList = computed(() => {
-      return object_reduce<any[]>(props.columns, (res, curr) => {
-        res.push(curr)
+      return object_reduce<any[]>(
+        props.columns,
+        (res, curr) => {
+          res.push(curr)
 
-        return res
-      }, [])
+          return res
+        },
+        []
+      )
     })
 
     const getSlot = (key: string, column: Record<string, any>) => {
@@ -61,7 +65,7 @@ const SimpleFilter = defineComponent({
           visible={isVisible.value}
           placement={props.placement}
           width={props.width}
-          popper-style='padding: 0px;'
+          popper-style="padding: 0px;"
         >
           {{
             // v-slot:default
@@ -75,7 +79,7 @@ const SimpleFilter = defineComponent({
               >
                 <div class={styles['filter-header']}>
                   <CustomButton
-                    iconName='close'
+                    iconName="close"
                     text
                     onClick={(e: MouseEvent) => {
                       isVisible.value = false
@@ -98,8 +102,8 @@ const SimpleFilter = defineComponent({
 
                 <div class={styles['filter-footer']}>
                   <CustomButton
-                    iconName='chevron-left'
-                    iconMove='translate'
+                    iconName="chevron-left"
+                    iconMove="translate"
                     label={i18nTranslate('return')}
                     onClick={(e: MouseEvent) => {
                       isVisible.value = false
@@ -107,9 +111,9 @@ const SimpleFilter = defineComponent({
                     }}
                   />
                   <CustomButton
-                    iconName='arrow-rotate-left'
-                    iconMove='rotate'
-                    type='warning'
+                    iconName="arrow-rotate-left"
+                    iconMove="rotate"
+                    type="warning"
                     label={i18nTranslate('reset')}
                     onClick={(e: MouseEvent) => {
                       emit('reset')
@@ -117,9 +121,9 @@ const SimpleFilter = defineComponent({
                     }}
                   />
                   <CustomButton
-                    iconName='search'
-                    iconMove='scale'
-                    type='success'
+                    iconName="search"
+                    iconMove="scale"
+                    type="success"
                     label={i18nTranslate('search')}
                     onClick={(e: MouseEvent) => {
                       // isVisible.value = false
@@ -133,8 +137,8 @@ const SimpleFilter = defineComponent({
             // v-slot:reference
             reference: () => (
               <CustomButton
-                iconName='filter'
-                type='primary'
+                iconName="filter"
+                type="primary"
                 label={i18nTranslate('filter')}
                 onClick={(e: MouseEvent) => {
                   isVisible.value = !isVisible.value

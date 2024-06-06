@@ -96,15 +96,19 @@ const statusType = {
 }
 
 const checkboxOptions = computed(() => {
-  return object_reduce<any[]>(statusType, (res: any[], curr: any, status: string) => {
-    res.push({
-      label: i18nTranslate(curr.i18nLabel),
-      value: status,
-      color: curr.color
-    })
+  return object_reduce<any[]>(
+    statusType,
+    (res: any[], curr: any, status: string) => {
+      res.push({
+        label: i18nTranslate(curr.i18nLabel),
+        value: status,
+        color: curr.color
+      })
 
-    return res
-  }, [])
+      return res
+    },
+    []
+  )
 })
 
 const filter = ref<string[]>([])
@@ -615,15 +619,32 @@ const popoverValue = ref(false)
 <template>
   <div v-loading="isLoading" class="gantt-wrapper" :key="scopedId">
     <template v-if="!isEmpty(nextProps.tabs)">
-      <CustomModal v-model="modal.detail" :title="modal.title" width-size="large" height-size="large" click-outside
-        hidden-footer>
+      <CustomModal
+        v-model="modal.detail"
+        :title="modal.title"
+        width-size="large"
+        height-size="large"
+        click-outside
+        hidden-footer
+      >
         <div class="gantt-modal">
-          <ScheduleGantt date-format-x="MM-DD hh:mm" :level="props.level + 1" :title="modal.title"
-            :table-data="nextProps.tableData" :default-tab="nextProps.defaultTab" :tabs="nextProps.tabs" />
+          <ScheduleGantt
+            date-format-x="MM-DD hh:mm"
+            :level="props.level + 1"
+            :title="modal.title"
+            :table-data="nextProps.tableData"
+            :default-tab="nextProps.defaultTab"
+            :tabs="nextProps.tabs"
+          />
         </div>
       </CustomModal>
 
-      <CustomTabs v-model="tab" :options="props.tabs" i18n-module="system" @tab-change="onTabChange" />
+      <CustomTabs
+        v-model="tab"
+        :options="props.tabs"
+        i18n-module="system"
+        @tab-change="onTabChange"
+      />
     </template>
 
     <div class="gantt-header">
@@ -631,13 +652,28 @@ const popoverValue = ref(false)
 
       <div class="gantt-filter text-info">
         <CustomIcon name="magnifying-glass" />
-        <CustomInput v-model="filter" hidden-label type="select" :options="filterOptions" direction="row" multiple
-          filterable clearable :max-collapse-tags="1" @change="onFilterChange" />
+        <CustomInput
+          v-model="filter"
+          hidden-label
+          type="select"
+          :options="filterOptions"
+          direction="row"
+          multiple
+          filterable
+          clearable
+          :max-collapse-tags="1"
+          @change="onFilterChange"
+        />
       </div>
 
       <div class="gantt-status">
-        <CustomInput type="checkbox" hidden-label v-model="checkboxValue" :options="checkboxOptions"
-          @change="onCheckboxChange" />
+        <CustomInput
+          type="checkbox"
+          hidden-label
+          v-model="checkboxValue"
+          :options="checkboxOptions"
+          @change="onCheckboxChange"
+        />
       </div>
 
       <CustomPopover v-model:visible="popoverValue" :width="320" trigger="click" placement="left">
@@ -654,17 +690,29 @@ const popoverValue = ref(false)
       </CustomPopover>
     </div>
 
-    <div class="gantt-container" :style="{
-    width: '100%',
-    height: '100%',
-    minHeight: ganttHeight,
-    padding: '0 48px'
-  }">
-      <GanttChart v-if="props.tableData.length > 0" ref="ganttRef" :gantt-data="ganttData"
-        :min-x="ganttDateRange.startDate" :max-x="ganttDateRange.endDate" :date-format-x="props.dateFormatX"
-        :tooltip-callback="ganttTooltipCallback" :bar-text-callback="ganttTextCallback"
-        :bar-color-callback="ganttColorCallback" :tooltip-position-callback="ganttTooltipPositionCallback"
-        @type-click="onTypeClick" @item-click="onItemClick" />
+    <div
+      class="gantt-container"
+      :style="{
+        width: '100%',
+        height: '100%',
+        minHeight: ganttHeight,
+        padding: '0 48px'
+      }"
+    >
+      <GanttChart
+        v-if="props.tableData.length > 0"
+        ref="ganttRef"
+        :gantt-data="ganttData"
+        :min-x="ganttDateRange.startDate"
+        :max-x="ganttDateRange.endDate"
+        :date-format-x="props.dateFormatX"
+        :tooltip-callback="ganttTooltipCallback"
+        :bar-text-callback="ganttTextCallback"
+        :bar-color-callback="ganttColorCallback"
+        :tooltip-position-callback="ganttTooltipPositionCallback"
+        @type-click="onTypeClick"
+        @item-click="onItemClick"
+      />
 
       <div v-else>
         <CustomEmpty />

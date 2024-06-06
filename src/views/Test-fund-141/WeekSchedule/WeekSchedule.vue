@@ -60,7 +60,7 @@ const props = defineProps({
   options: {
     type: Array as PropType<option[]>,
     required: false,
-    default () {
+    default() {
       return []
     }
   },
@@ -257,27 +257,31 @@ const setStartPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
     // 滑鼠移動時執行
     scheduleContainer.value.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        if (isCheck) return
+      throttle(
+        function ($event: MouseEvent) {
+          if (isCheck) return
 
-        const { clientY: mouseMoveY } = $event
-        planStyle.zIndex = 9
+          const { clientY: mouseMoveY } = $event
+          planStyle.zIndex = 9
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
 
-        const _startSecond = topToSecond(originTop + _moveY)
-        planTime.startSecond =
-          originEndSecond - _startSecond <= 0 // 時間 <= 0
-            ? originEndSecond
-            : _startSecond // 變化後 開始的秒數
+          const _startSecond = topToSecond(originTop + _moveY)
+          planTime.startSecond =
+            originEndSecond - _startSecond <= 0 // 時間 <= 0
+              ? originEndSecond
+              : _startSecond // 變化後 開始的秒數
 
-        planTime.start = secondToTime(planTime.startSecond)
-        planStyle.top = secondToTop(planTime.startSecond)
-        planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
+          planTime.start = secondToTime(planTime.startSecond)
+          planStyle.top = secondToTop(planTime.startSecond)
+          planStyle.height = secondToTop(originEndSecond - planTime.startSecond)
 
-        planRenderKey[dayId] += `${dayId}`
-      }, _FPS, { isNoLeading: true })
+          planRenderKey[dayId] += `${dayId}`
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
   }
 }
@@ -298,28 +302,32 @@ const setEndPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
     // 滑鼠移動時執行
     scheduleContainer.value.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        if (isCheck) return
+      throttle(
+        function ($event: MouseEvent) {
+          if (isCheck) return
 
-        const { clientY: mouseMoveY } = $event
-        planStyle.cursor = 'move'
-        planStyle.zIndex = 9
+          const { clientY: mouseMoveY } = $event
+          planStyle.cursor = 'move'
+          planStyle.zIndex = 9
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
 
-        const _endSecond = topToSecond(originTop + originHeight + _moveY)
+          const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
-        planTime.endSecond =
-          _endSecond - originStartSecond <= 0 // 時間 <= 0
-            ? originStartSecond
-            : _endSecond // 變化後 結束的秒數
+          planTime.endSecond =
+            _endSecond - originStartSecond <= 0 // 時間 <= 0
+              ? originStartSecond
+              : _endSecond // 變化後 結束的秒數
 
-        planTime.end = secondToTime(planTime.endSecond)
-        planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
+          planTime.end = secondToTime(planTime.endSecond)
+          planStyle.height = secondToTop(planTime.endSecond - originStartSecond)
 
-        planRenderKey[dayId] += `${dayId}`
-      }, _FPS, { isNoLeading: true })
+          planRenderKey[dayId] += `${dayId}`
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
   }
 }
@@ -340,37 +348,41 @@ const moveDataPlan = ($event: MouseEvent, dayId: number, plan: PlanData) => {
     // 滑鼠移動時執行
     scheduleContainer.value.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        if (isCheck) return
+      throttle(
+        function ($event: MouseEvent) {
+          if (isCheck) return
 
-        const { clientY: mouseMoveY } = $event
-        planStyle.cursor = 'move'
-        planStyle.zIndex = 9
+          const { clientY: mouseMoveY } = $event
+          planStyle.cursor = 'move'
+          planStyle.zIndex = 9
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
 
-        const _startSecond = topToSecond(originTop + _moveY)
-        const _endSecond = topToSecond(originTop + originHeight + _moveY)
+          const _startSecond = topToSecond(originTop + _moveY)
+          const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
-        planTime.endSecond =
-          _startSecond <= 0 // 如果開始 <= 0
-            ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
-            : _endSecond // 變化後 結束的秒數
-        planTime.end = secondToTime(planTime.endSecond)
-        if (planTime.endSecond === maxSecond) return
+          planTime.endSecond =
+            _startSecond <= 0 // 如果開始 <= 0
+              ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
+              : _endSecond // 變化後 結束的秒數
+          planTime.end = secondToTime(planTime.endSecond)
+          if (planTime.endSecond === maxSecond) return
 
-        planTime.startSecond =
-          _endSecond >= twentyFourHourSecond // 如果結束 >= 24
-            ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
-            : _startSecond // 變化後 開始的秒數
-        planTime.start = secondToTime(planTime.startSecond)
+          planTime.startSecond =
+            _endSecond >= twentyFourHourSecond // 如果結束 >= 24
+              ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
+              : _startSecond // 變化後 開始的秒數
+          planTime.start = secondToTime(planTime.startSecond)
 
-        planStyle.top = secondToTop(planTime.startSecond)
-        planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
+          planStyle.top = secondToTop(planTime.startSecond)
+          planStyle.height = secondToTop(planTime.endSecond - planTime.startSecond)
 
-        planRenderKey[dayId] += `${dayId}`
-      }, _FPS, { isNoLeading: true })
+          planRenderKey[dayId] += `${dayId}`
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
   }
 }
@@ -441,18 +453,22 @@ const createTempPlan = ($event: MouseEvent, dayId: number, hour: number) => {
 
     scheduleContainer.value.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        const { clientY: mouseMoveY } = $event
+      throttle(
+        function ($event: MouseEvent) {
+          const { clientY: mouseMoveY } = $event
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
-        const _change = _moveY < 0 ? 0 : _moveY
-        const _changeEndSecond = topToSecond(tempPlanTop + _change)
-        tempPlanTime.endSecond = _changeEndSecond
-        tempPlanTime.end = secondToTime(_changeEndSecond)
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
+          const _change = _moveY < 0 ? 0 : _moveY
+          const _changeEndSecond = topToSecond(tempPlanTop + _change)
+          tempPlanTime.endSecond = _changeEndSecond
+          tempPlanTime.end = secondToTime(_changeEndSecond)
 
-        tempPlanStyle.height = _change
-      }, _FPS, { isNoLeading: true })
+          tempPlanStyle.height = _change
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
 
     // 顯示暫時的工時分配
@@ -522,21 +538,18 @@ const updateInfo = reactive<{
 })
 
 const formTimeValue = computed<any>({
-  get () {
+  get() {
     let res = []
     if ([null, undefined].includes(updateInfo.plan)) {
       res = ['00:00', '00:00']
     } else {
-      const [start, end] = [
-        updateInfo.plan.time.start,
-        updateInfo.plan.time.end
-      ]
+      const [start, end] = [updateInfo.plan.time.start, updateInfo.plan.time.end]
       res = [`${start}`, `${end}`]
     }
     console.log('get', res)
     return res
   },
-  set (v: [string, string]) {
+  set(v: [string, string]) {
     console.log('set', v)
     const [_start, _end] = v
     updateInfo.plan.time.start = _start
@@ -547,7 +560,12 @@ const formTimeValue = computed<any>({
 const closeUpdate = () => {
   updateInfo.isShow = false
 }
-const openUpdate = async ($event: MouseEvent, dayId: number, plan: PlanData, mouseEvent: string) => {
+const openUpdate = async (
+  $event: MouseEvent,
+  dayId: number,
+  plan: PlanData,
+  mouseEvent: string
+) => {
   const { clientX, clientY } = $event
 
   if (mouseEvent === 'mousedown') {
@@ -589,10 +607,7 @@ const openUpdate = async ($event: MouseEvent, dayId: number, plan: PlanData, mou
 const onTimePickerChange = async (time: string) => {
   const [startTime, endTime] = time
 
-  const [startSecond, endSecond] = [
-    timeToSecond(startTime),
-    timeToSecond(endTime)
-  ]
+  const [startSecond, endSecond] = [timeToSecond(startTime), timeToSecond(endTime)]
 
   console.log(lastUpdatePlan.value)
   const { dayId, plan } = updateInfo
@@ -616,7 +631,6 @@ const onTimePickerChange = async (time: string) => {
   await awaitTime(120)
   updateSchedule()
 }
-
 </script>
 
 <template>
@@ -624,14 +638,18 @@ const onTimePickerChange = async (time: string) => {
     <!-- 類型 -->
     <div class="schedule-type">
       <slot name="title">
-
         <h3>{{ props.title }}</h3>
       </slot>
       <div class="schedule-type-list">
         <div v-for="typeItem in props.options" :key="typeItem.value" class="schedule-type-itme">
           <div class="schedule-type-color" :style="{ backgroundColor: typeItem.color }"></div>
           <div class="schedule-type-label">
-            <slot name="options" :key="typeItem.value" :label="typeItem.label" :color="typeItem.color">
+            <slot
+              name="options"
+              :key="typeItem.value"
+              :label="typeItem.label"
+              :color="typeItem.color"
+            >
               {{ typeItem.label }}
             </slot>
           </div>
@@ -686,7 +704,8 @@ const onTimePickerChange = async (time: string) => {
             <div v-for="(column, dayId) in 7" :key="planRenderKey[dayId]" class="schedule-item">
               <!-- 單一分配結果 -->
               <div
-                v-for="plan in planData[dayId]" :key="plan.time.id"
+                v-for="plan in planData[dayId]"
+                :key="plan.time.id"
                 class="schedule-data-plan"
                 :style="{
                   ...plan.style,
@@ -700,10 +719,7 @@ const onTimePickerChange = async (time: string) => {
                   class="schedule-data-plan-before"
                   @mousedown="setStartPlan($event, dayId, plan)"
                 ></div>
-                <div
-                  class="schedule-data-plan-text"
-                  @mousedown="moveDataPlan($event, dayId, plan)"
-                >
+                <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event, dayId, plan)">
                   <span>{{ `${plan.time.start}` }}</span>
                   <span> - </span>
                   <span>{{ `${plan.time.end}` }}</span>

@@ -21,12 +21,7 @@ const onClick: Emits.Click = ($event: Event) => {
 <template>
   <div
     class="tag-container"
-    :class="[
-      `CustomTag_${version}`,
-      scopedId,
-      scopedName,
-      `tag-size-${props.size}`
-    ]"
+    :class="[`CustomTag_${version}`, scopedId, scopedName, `tag-size-${props.size}`]"
   >
     <ElTag
       :type="props.type"

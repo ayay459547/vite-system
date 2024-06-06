@@ -74,18 +74,22 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
     tempPlanStyle.height = secondToTop(tempPlanTime.endSecond - tempPlanTime.startSecond)
 
     // 移動時變動 暫時的工時分配
-    const throttleMousemoveEvent = throttle<typeof mousemoveEvent>(function ($event: MouseEvent) {
-      const { clientY: mouseMoveY } = $event
+    const throttleMousemoveEvent = throttle<typeof mousemoveEvent>(
+      function ($event: MouseEvent) {
+        const { clientY: mouseMoveY } = $event
 
-      // 變化高度
-      const _moveY = mouseMoveY - mouseDownY
-      const _change = _moveY < 0 ? 0 : _moveY
-      const _changeEndSecond = topToSecond(_tempY + _change)
-      tempPlanTime.endSecond = _changeEndSecond
-      tempPlanTime.end = secondToTime(_changeEndSecond)
+        // 變化高度
+        const _moveY = mouseMoveY - mouseDownY
+        const _change = _moveY < 0 ? 0 : _moveY
+        const _changeEndSecond = topToSecond(_tempY + _change)
+        tempPlanTime.endSecond = _changeEndSecond
+        tempPlanTime.end = secondToTime(_changeEndSecond)
 
-      tempPlanStyle.height = _change
-    }, FPS, { isNoLeading: true })
+        tempPlanStyle.height = _change
+      },
+      FPS,
+      { isNoLeading: true }
+    )
 
     mousemoveEvent = throttleMousemoveEvent
     props.scheduleContainer.addEventListener('mousemove', mousemoveEvent)
@@ -135,7 +139,6 @@ defineExpose({
   createTempPlan,
   checkCreatePlan
 })
-
 </script>
 
 <template>

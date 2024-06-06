@@ -18,7 +18,6 @@ const { i18nTranslate } = useHook({
 
 const bodyHeight = `${tableHeight}px`
 
-
 const props = defineProps({
   title: {
     type: String as PropType<string>,
@@ -28,14 +27,14 @@ const props = defineProps({
   options: {
     type: Array as PropType<Options>,
     required: false,
-    default () {
+    default() {
       return []
     }
   },
   scheduleList: {
     type: Array as PropType<ScheduleList>,
     required: false,
-    default () {
+    default() {
       return []
     }
   }
@@ -113,7 +112,6 @@ onMounted(() => {
 defineExpose({
   init
 })
-
 </script>
 
 <template>
@@ -127,7 +125,12 @@ defineExpose({
         <div v-for="typeItem in props.options" :key="typeItem.value" class="schedule-type-itme">
           <div class="schedule-type-color" :style="{ backgroundColor: typeItem.color }"></div>
           <div class="schedule-type-label">
-            <slot name="options" :key="typeItem.value" :label="typeItem.label" :color="typeItem.color">
+            <slot
+              name="options"
+              :key="typeItem.value"
+              :label="typeItem.label"
+              :color="typeItem.color"
+            >
               {{ typeItem.label }}
             </slot>
           </div>
@@ -179,7 +182,6 @@ defineExpose({
         </div>
       </div>
     </div>
-
   </div>
 </template>
 

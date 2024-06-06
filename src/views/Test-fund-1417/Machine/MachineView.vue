@@ -27,7 +27,9 @@ const { i18nTranslate, swal, eventList, permission } = useHook({
 })
 
 defineExpose({
-  setFilter: filter => {tableRef.value.setFilter(filter)}
+  setFilter: filter => {
+    tableRef.value.setFilter(filter)
+  }
 })
 
 // table

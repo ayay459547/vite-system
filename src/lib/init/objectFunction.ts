@@ -35,7 +35,7 @@ const objectFunction = {
     }
     return resObj
   },
-  $some (callback: Function, thisArg: any) {
+  $some(callback: Function, thisArg: any) {
     thisArg = thisArg || window
     for (const key in this) {
       if (this.hasOwnProperty(key) && callback.call(thisArg, this[key], key, this)) {
@@ -44,7 +44,7 @@ const objectFunction = {
     }
     return false
   },
-  $every (callback: Function, thisArg: any) {
+  $every(callback: Function, thisArg: any) {
     thisArg = thisArg || window
     for (const key in this) {
       if (this.hasOwnProperty(key) && !callback.call(thisArg, this[key], key, this)) {

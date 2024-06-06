@@ -59,13 +59,13 @@ onMounted(() => {
       type="line"
       :stroke-width="24"
       :striped="progress.percentage < 100"
-      :status="progress.percentage >= 80  ? 'exception' : ''"
+      :status="progress.percentage >= 80 ? 'exception' : ''"
       striped-flow
     />
 
     <div class="i-my-md"></div>
 
-    <CustomButton label="再一次" @click="testCustomProgress"/>
+    <CustomButton label="再一次" @click="testCustomProgress" />
 
     <CustomDivider />
 
@@ -92,7 +92,6 @@ onMounted(() => {
     </CustomInput>
 
     <CustomEmpty />
-
   </div>
 </template>
 

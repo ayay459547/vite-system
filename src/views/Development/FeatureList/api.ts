@@ -63,18 +63,22 @@ export const getData = (params: any) => {
 
   const { key: sortKey, order: sortType } = sort
 
-  const filterList = object_reduce<any[]>({
-    status,
-    title,
-    path,
-    mode,
-    breadcrumbTitle
-  }, (res: Record<string, string>[], curr: string, key: string) => {
-    if (!['', null, undefined].includes(curr)) {
-      res.push({ key, value: curr })
-    }
-    return res
-  }, []) as Record<string, string>[]
+  const filterList = object_reduce<any[]>(
+    {
+      status,
+      title,
+      path,
+      mode,
+      breadcrumbTitle
+    },
+    (res: Record<string, string>[], curr: string, key: string) => {
+      if (!['', null, undefined].includes(curr)) {
+        res.push({ key, value: curr })
+      }
+      return res
+    },
+    []
+  ) as Record<string, string>[]
 
   const tempData = cutTableData(
     page,
@@ -121,18 +125,22 @@ export const getData = (params: any) => {
 export const getDataCount = (params: any) => {
   const { status, title, path, mode, breadcrumbTitle } = params
 
-  const filterList = object_reduce<any[]>({
-    status,
-    title,
-    path,
-    mode,
-    breadcrumbTitle
-  }, (res: Record<string, string>[], curr: string, key: string) => {
-    if (!['', null, undefined].includes(curr)) {
-      res.push({ key, value: curr })
-    }
-    return res
-  }, []) as Record<string, string>[]
+  const filterList = object_reduce<any[]>(
+    {
+      status,
+      title,
+      path,
+      mode,
+      breadcrumbTitle
+    },
+    (res: Record<string, string>[], curr: string, key: string) => {
+      if (!['', null, undefined].includes(curr)) {
+        res.push({ key, value: curr })
+      }
+      return res
+    },
+    []
+  ) as Record<string, string>[]
 
   return routesData.filter(route => {
     return filterList.every(item => {

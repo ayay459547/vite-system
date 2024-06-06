@@ -48,6 +48,6 @@ https://element-plus.org/zh-CN/component/progress.html
 
 ### Slots
 
-| 插槽名    | 說明           |
-| --------- | -------------- |
-| default   | 顯示內容       |
+| 插槽名  | 說明     |
+| ------- | -------- |
+| default | 顯示內容 |

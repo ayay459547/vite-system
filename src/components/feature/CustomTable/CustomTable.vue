@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { useSlots, inject, ref, shallowRef, shallowReactive, computed, onMounted, nextTick } from 'vue'
+import {
+  useSlots,
+  inject,
+  ref,
+  shallowRef,
+  shallowReactive,
+  computed,
+  onMounted,
+  nextTick
+} from 'vue'
 import { ElPagination } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'

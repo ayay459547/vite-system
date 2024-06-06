@@ -1,4 +1,3 @@
-
 import { initials } from './fakeData'
 
 export const columnSetting = {

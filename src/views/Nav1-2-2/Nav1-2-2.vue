@@ -155,7 +155,7 @@ const options2 = [
         </template>
       </CustomTimeLine>
 
-      <CustomButton label="再一次" @click="testPushOptions"/>
+      <CustomButton label="再一次" @click="testPushOptions" />
 
       <CustomTimeLine :options="options2">
         <template #default="{ label }">

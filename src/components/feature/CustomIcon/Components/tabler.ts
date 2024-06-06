@@ -1,8 +1,4 @@
-import {
-  ChartArrowsVertical,
-  ChartDonut4,
-  ChartDonut
-} from '@vicons/tabler'
+import { ChartArrowsVertical, ChartDonut4, ChartDonut } from '@vicons/tabler'
 
 export default {
   ChartArrowsVertical,

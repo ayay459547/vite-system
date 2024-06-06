@@ -28,7 +28,10 @@ const onCheck: Emits.Check = (nodeDate: any, checkedData: any) => {
 const elTreeRef = ref<InstanceType<typeof ElTree>>()
 
 // 取得資料
-const getCheckedNodes: Expose.GetCheckedNodes = (leafOnly?: boolean, includeHalfChecked?: boolean) => {
+const getCheckedNodes: Expose.GetCheckedNodes = (
+  leafOnly?: boolean,
+  includeHalfChecked?: boolean
+) => {
   return elTreeRef.value!.getCheckedNodes(leafOnly ?? false, includeHalfChecked ?? false)
 }
 const getCheckedKeys: Expose.GetCheckedKeys = (leafOnly?: boolean) => {
@@ -40,7 +43,10 @@ const setCheckedNodes: Expose.SetCheckedNodes = (nodeList: Node[], leafOnly?: bo
   elTreeRef.value!.setCheckedNodes(nodeList, leafOnly ?? false)
 }
 
-const setCheckedKeys: Expose.SetCheckedKeys = (keyList: Array<string | number>, leafOnly?: boolean) => {
+const setCheckedKeys: Expose.SetCheckedKeys = (
+  keyList: Array<string | number>,
+  leafOnly?: boolean
+) => {
   elTreeRef.value!.setCheckedKeys(keyList, leafOnly ?? false)
 }
 
@@ -48,7 +54,11 @@ const resetChecked: Expose.ResetChecked = () => {
   elTreeRef.value!.setCheckedKeys([], false)
 }
 
-const setChecked: Expose.SetChecked = (checkNode: Custom.CheckNode, checked: boolean, deep: boolean) => {
+const setChecked: Expose.SetChecked = (
+  checkNode: Custom.CheckNode,
+  checked: boolean,
+  deep: boolean
+) => {
   elTreeRef.value!.setChecked(checkNode, checked ?? false, deep ?? false)
 }
 
@@ -77,11 +87,7 @@ const hasSlot = (prop: string): boolean => {
     :default-expand-all="props.defaultExpandAll"
     :show-checkbox="props.showCheckbox"
     class="tree-container"
-    :class="[
-      `CustomTree_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomTree_${version}`, scopedId, scopedName]"
     @node-click="onNodeClick"
     @check-change="onCheckChange"
     @check="onCheck"

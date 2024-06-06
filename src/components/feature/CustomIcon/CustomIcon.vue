@@ -25,7 +25,7 @@ const getIcon = computed(() => {
       scopedId,
       scopedName,
       `icon-size-${props.size}`,
-      `${props.iconClass}`,
+      `${props.iconClass}`
     ]"
   >
     <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />

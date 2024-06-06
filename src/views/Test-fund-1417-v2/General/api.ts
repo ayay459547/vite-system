@@ -206,7 +206,7 @@ export const getIsNeedSendRTDS = async (): Promise<ApiRes<boolean>> => {
       method: 'get'
     },
     {
-      isFakeData: false,
+      isFakeData: true,
       fakeData: {
         data: true,
         status: 'success'

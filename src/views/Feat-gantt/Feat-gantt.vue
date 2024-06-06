@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { CustomCharts } from '@/components'
 import { options } from './options'
-
-
 </script>
 
 <template>
   <div class="page">
     Feat-gantt
-    <CustomCharts :options="options"/>
+    <CustomCharts :options="options" />
   </div>
 </template>
 

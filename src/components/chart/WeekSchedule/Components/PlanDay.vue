@@ -32,7 +32,7 @@ const props = defineProps({
   }
 })
 
-const renderKey =  ref(0)
+const renderKey = ref(0)
 
 // 最後一個更新的區塊
 const lastChangePlan = ref('')
@@ -98,7 +98,7 @@ const planItemViewRef = reactive({})
 /**
  * 更新 分配畫面
  */
- const updateSchedule = async () => {
+const updateSchedule = async () => {
   await nextTick()
   // 如果不存在 => 新增
   if (planTempRef.value) {
@@ -110,7 +110,8 @@ const planItemViewRef = reactive({})
   }
   // 如果存在 => 變回原值
   if (!isEmpty(lastChangePlan.value) && planItemViewRef[lastChangePlan.value]) {
-    const { isExist, uuid, planTime } = planItemViewRef[lastChangePlan.value].checkUpdatePlan(checkTimeIsExist)
+    const { isExist, uuid, planTime } =
+      planItemViewRef[lastChangePlan.value].checkUpdatePlan(checkTimeIsExist)
     if (isExist) {
       const { originStart, originStartSecond, originEnd, originEndSecond } = originPlanMap[uuid]
 
@@ -150,7 +151,6 @@ defineExpose({
 
 // 小時的格子ref
 const hourMapRef = reactive({})
-
 </script>
 
 <template>

@@ -49,9 +49,12 @@ const { tableSetting, downloadExcel, getParams } = useTableSetting(
 
 const download = async ({ type }) => {
   let excelData = []
-  const apiParam = object_filter({
-    ...(getParams(tableRef.value) as any)
-  }, (item: any) => item !== null)
+  const apiParam = object_filter(
+    {
+      ...(getParams(tableRef.value) as any)
+    },
+    (item: any) => item !== null
+  )
 
   switch (type) {
     case 'all':
@@ -142,9 +145,12 @@ const init = async (props?: any) => {
 
   let apiParam = {}
   if (typeof props === 'object') {
-    apiParam = object_filter({
-      ...(getParams(tableRef.value) as any)
-    }, (item: any) => item !== null)
+    apiParam = object_filter(
+      {
+        ...(getParams(tableRef.value) as any)
+      },
+      (item: any) => item !== null
+    )
   }
 
   const [resData, resDataCount] = await Promise.all([getData(apiParam), getDataCount()])

@@ -127,7 +127,10 @@ const submit = () => {
             }"
           >
             <template #item="{ element }">
-              <div class="__column-item" :class="element.order !== 'none' ? 'is-active sorting-move' : ''">
+              <div
+                class="__column-item"
+                :class="element.order !== 'none' ? 'is-active sorting-move' : ''"
+              >
                 <div class="__column-item-left">
                   <CustomInput
                     :model-value="element.order"
@@ -147,11 +150,14 @@ const submit = () => {
                           <span class="__column-item-text">{{ label }}</span>
                         </template>
                         <!-- 遞增 -->
-                        <CustomIcon v-if="value === 'ascending'" name="arrow-down-short-wide"/>
+                        <CustomIcon v-if="value === 'ascending'" name="arrow-down-short-wide" />
                         <!-- 不排序 -->
-                        <CustomIcon v-else-if="value === 'none'" name="ban"/>
+                        <CustomIcon v-else-if="value === 'none'" name="ban" />
                         <!-- 遞減 -->
-                        <CustomIcon v-else-if="value === 'descending'" name="arrow-down-wide-short"/>
+                        <CustomIcon
+                          v-else-if="value === 'descending'"
+                          name="arrow-down-wide-short"
+                        />
                       </CustomTooltip>
                     </template>
                   </CustomInput>

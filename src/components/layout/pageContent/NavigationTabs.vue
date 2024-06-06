@@ -73,12 +73,7 @@ const RouterChange = (navigate: () => void) => {
 <template>
   <div class="history-wrapper">
     <div class="history-tabs">
-      <CustomTabs
-        :model-value="currentTab"
-        :options="tabs"
-        closable
-        @tab-remove="removeHistory"
-      >
+      <CustomTabs :model-value="currentTab" :options="tabs" closable @tab-remove="removeHistory">
         <template #label="slotProps">
           <RouterLink
             :to="slotProps.data.path"

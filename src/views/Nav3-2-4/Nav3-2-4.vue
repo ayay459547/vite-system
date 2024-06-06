@@ -17,10 +17,10 @@ import { CustomButton, CustomBadge, CustomEmpty, CustomTag } from '@/components'
       </div>
 
       <div class="flex-row i-ga-md">
-        <CustomTag label="Tag" icon-name="edit" size="large"/>
-        <CustomTag label="Tag" icon-name="edit" size="default"/>
-        <CustomTag label="Tag" icon-name="edit" size="small"/>
-        <CustomTag label="Tag"/>
+        <CustomTag label="Tag" icon-name="edit" size="large" />
+        <CustomTag label="Tag" icon-name="edit" size="default" />
+        <CustomTag label="Tag" icon-name="edit" size="small" />
+        <CustomTag label="Tag" />
       </div>
     </div>
   </div>

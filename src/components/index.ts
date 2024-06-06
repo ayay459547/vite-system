@@ -64,10 +64,7 @@ export type { Props as EmptyProps } from './feature/CustomEmpty/CustomEmptyInfo'
 export { default as CustomEmpty } from './feature/CustomEmpty/CustomEmpty.vue'
 
 // 圖示
-export type {
-  Custom as IconCustom,
-  Props as IconProps
-} from './feature/CustomIcon/CustomIconInfo'
+export type { Custom as IconCustom, Props as IconProps } from './feature/CustomIcon/CustomIconInfo'
 export { default as CustomIcon } from './feature/CustomIcon/CustomIcon.vue'
 
 // 圖片
@@ -170,17 +167,11 @@ export type {
 export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 // 分頁
-export type {
-  Props as TabsProps,
-  Emits as TabsEmits
-} from './feature/CustomTabs/CustomTabsInfo'
+export type { Props as TabsProps, Emits as TabsEmits } from './feature/CustomTabs/CustomTabsInfo'
 export { default as CustomTabs } from './feature/CustomTabs/CustomTabs.vue'
 
 // 類似按鈕的標籤
-export type {
-  Props as TagProps,
-  Emits as TagEmits
-} from './feature/CustomTag/CustomTagInfo'
+export type { Props as TagProps, Emits as TagEmits } from './feature/CustomTag/CustomTagInfo'
 export { default as CustomTag } from './feature/CustomTag/CustomTag.vue'
 
 // 時間線
@@ -200,7 +191,7 @@ export type {
   Props as TreeProps,
   Emits as TreeEmits,
   Expose as TreeExpose
- } from './feature/CustomTree/CustomTreeInfo'
+} from './feature/CustomTree/CustomTreeInfo'
 export { default as CustomTree } from './feature/CustomTree/CustomTree.vue'
 
 // 虛擬樹狀
@@ -209,7 +200,7 @@ export type {
   Props as TreeV2Props,
   Emits as TreeV2Emits,
   Expose as TreeV2Expose
- } from './feature/CustomTreeV2/CustomTreeV2Info'
+} from './feature/CustomTreeV2/CustomTreeV2Info'
 export { default as CustomTreeV2 } from './feature/CustomTreeV2/CustomTreeV2.vue'
 
 // 檔案上傳

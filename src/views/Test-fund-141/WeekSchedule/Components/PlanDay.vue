@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, nextTick, reactive, computed } from 'vue'
+import { ref, nextTick, reactive } from 'vue'
 
 import throttle from '@/lib/lib_throttle'
-import { getUuid, awaitTime, getType, isEmpty } from '@/lib/lib_utils'
+import { getUuid, getType, isEmpty } from '@/lib/lib_utils'
 
 import type {
   DataPlanTime,
@@ -16,15 +16,12 @@ import type {
 
 import {
   FPS,
-  maxSecond,
   oneHourSecond,
-  twentyFourHourSecond,
   // 轉換用
   secondFormat,
   secondToTop,
   topToSecond,
-  secondToTime,
-  timeToSecond
+  secondToTime
 } from '../planUtils'
 
 import PlanItem from './PlanItem.vue'
@@ -66,7 +63,6 @@ const lastUpdatePlan = ref<string | null>(null)
 const setLastUpdatePlan = (uuid: string) => {
   lastUpdatePlan.value = uuid
 }
-
 
 // 設置上一次分配結果
 // 如果已存在 分配回到原位
@@ -251,18 +247,22 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
 
     props.scheduleContainer.addEventListener(
       'mousemove',
-      throttle(function ($event: MouseEvent) {
-        const { clientY: mouseMoveY } = $event
+      throttle(
+        function ($event: MouseEvent) {
+          const { clientY: mouseMoveY } = $event
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
-        const _change = _moveY < 0 ? 0 : _moveY
-        const _changeEndSecond = topToSecond(_tempY + _change)
-        tempPlanTime.endSecond = _changeEndSecond
-        tempPlanTime.end = secondToTime(_changeEndSecond)
+          // 變化高度
+          const _moveY = mouseMoveY - mouseDownY
+          const _change = _moveY < 0 ? 0 : _moveY
+          const _changeEndSecond = topToSecond(_tempY + _change)
+          tempPlanTime.endSecond = _changeEndSecond
+          tempPlanTime.end = secondToTime(_changeEndSecond)
 
-        tempPlanStyle.height = _change
-      }, _FPS, { isNoLeading: true })
+          tempPlanStyle.height = _change
+        },
+        _FPS,
+        { isNoLeading: true }
+      )
     )
 
     // 顯示暫時的工時分配
@@ -275,7 +275,7 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
  * checkLastUpdatePlan()
  * removeEvent()
  */
- const updateSchedule = async () => {
+const updateSchedule = async () => {
   console.log('updateSchedule', tempPlanStyle.display)
   // 有暫時的工時分配
   if (tempPlanStyle.display === 'block') {
@@ -301,7 +301,6 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
 const updatePlanRenderKey = () => {
   renderKey.value++
 }
-
 </script>
 
 <template>

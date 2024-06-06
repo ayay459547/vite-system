@@ -4,12 +4,9 @@ import { ref, inject, onMounted, nextTick } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { WeekSchedule } from '@/components'
 
-import {
-  getGeneralWeekSchedule,
-  getIsNeedSendRTDS
-} from './api'
+import { getGeneralWeekSchedule, getIsNeedSendRTDS } from './api'
 
-import { timeFormat } from '../planUtils.ts'
+import { timeFormat } from '../planUtils'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, swal } = useHook()
@@ -29,12 +26,16 @@ const init = async () => {
     getIsNeedSendRTDS()
   ])
 
-  const { status: generalWeekScheduleStatus, msg: generalWeekScheduleMsg, data: generalWeekScheduleData } = resGeneralWeekSchedule
+  const {
+    status: generalWeekScheduleStatus,
+    msg: generalWeekScheduleMsg,
+    data: generalWeekScheduleData
+  } = resGeneralWeekSchedule
   if (generalWeekScheduleStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -53,12 +54,16 @@ const init = async () => {
     weekSchedule.value.init([...planList.value])
   }
 
-  const { status: isNeedSendRTDSStatus, msg: isNeedSendRTDSMsg, data: isNeedSendRTDSData } = resIsNeedSendRTDS
+  const {
+    status: isNeedSendRTDSStatus,
+    msg: isNeedSendRTDSMsg,
+    data: isNeedSendRTDSData
+  } = resIsNeedSendRTDS
   if (isNeedSendRTDSStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -73,7 +78,6 @@ const init = async () => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>

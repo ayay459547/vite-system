@@ -46,11 +46,7 @@ const hasSlot = (prop: string): boolean => {
     :hide-on-click-modal="props.hideOnClickModal"
     :preview-teleported="props.previewTeleported"
     class="image-container"
-    :class="[
-      `CustomImage_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="[`CustomImage_${version}`, scopedId, scopedName]"
     v-on="onEvent"
   >
     <template v-if="hasSlot('placeholder')" #placeholder>

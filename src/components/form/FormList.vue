@@ -212,16 +212,12 @@ onBeforeMount(() => {
 defineExpose({
   setCollapse
 })
-
 </script>
 
 <template>
   <div class="__form-list__ form-container hover-card-info" :class="scopedId">
-    <div
-      v-if="hasSlot('title') || !isEmpty(props.label)"
-      class="__form-list__ form-top"
-    >
-      <div  class="__form-list__ form-title">
+    <div v-if="hasSlot('title') || !isEmpty(props.label)" class="__form-list__ form-top">
+      <div class="__form-list__ form-title">
         <slot name="title" :label="props.label">
           <span>{{ props.label }}</span>
         </slot>
@@ -237,13 +233,7 @@ defineExpose({
             plain
             @click="setCollapse(false)"
           />
-          <CustomButton
-            v-else
-            icon-name="caret-down"
-            text
-            plain
-            @click="setCollapse(true)"
-          />
+          <CustomButton v-else icon-name="caret-down" text plain @click="setCollapse(true)" />
         </div>
       </template>
     </div>
@@ -341,7 +331,6 @@ defineExpose({
         />
       </div>
     </div>
-
   </div>
 </template>
 
@@ -373,7 +362,7 @@ defineExpose({
       transition-duration: 0.3s;
     }
 
-    &-content{
+    &-content {
       display: flex;
       flex-direction: column;
       width: 100%;
