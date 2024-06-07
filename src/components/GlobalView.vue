@@ -155,7 +155,6 @@ const isLoading = computed({
     // mask 一段時間 自動關閉
     if (v) {
       timeoutId = setTimeout(() => {
-        _isLoading.value = false
         isDisabled.value = false
       }, 300)
     }
@@ -193,6 +192,7 @@ const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
   // 設定是否為 modal 模式
   setModalView(currentRoute)
 
+  isLoading.value = false
   setTimeout(() => {
     updateToken()
   }, 2400)
