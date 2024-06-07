@@ -43,7 +43,7 @@ const init = async () => {
     const { id, dayOfWeek, startTime, endTime } = row
     return {
       id,
-      dayId: dayOfWeek === 7 ? 0 : dayOfWeek,
+      dayId: dayOfWeek,
       status: 'old',
       start: timeFormat(startTime),
       end: timeFormat(endTime)

@@ -30,7 +30,6 @@ $danger: #f56c6c !default;
 $white: #ffffff !default;
 
 $system-bg-color: #506d9c !default;
-$page-content-bg-color: #ffffff !default;
 
 // 依照 bootstrap 標準
 $extra-small: 576px;
@@ -45,5 +44,5 @@ html {
 }
 
 html.dark {
-  --color-test: #d3bfbf;
+  --color-test: #506d9c;
 }

@@ -86,7 +86,7 @@ onMounted(() => {
     <CustomDivider />
 
     <CustomInput v-model="checkboxValue" type="checkbox" :options="options">
-      <template #option="{ label, value, color, isChecked }">
+      <template #options="{ label, value, color, isChecked }">
         <div>{{ `${label} => ${value} => ${color} => ${isChecked}` }}</div>
       </template>
     </CustomInput>

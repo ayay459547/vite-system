@@ -10,6 +10,7 @@ import {
   nextTick,
   useSlots
 } from 'vue'
+import { useEventBus } from '@vueuse/core'
 
 import {
   aesDecrypt,
@@ -90,6 +91,7 @@ const systemEnv = computed(() => {
     mode: _env.MODE,
     system: _env.VITE_API_SYSTEM_TYPE,
     version: _env.VITE_API_VERSION,
+    buildVersion: _env.VITE_API_BUILD_VERSION,
     baseUrl: _env.VITE_API_BASE_URL,
     // PRIVATE_KEY: _env.VITE_API_PRIVATE_KEY,
     QUERY_KEY: _env.VITE_API_QUERY_KEY
@@ -137,25 +139,55 @@ onMounted(() => {
   setModuleType(defaultModuleType)
 })
 
-const isLoading = ref(false)
+// 切換頁面 打開遮罩
+// 暫時不行點擊任何東西
+const isDisabled = ref(false)
+let timeoutId: NodeJS.Timeout | null
+const _isLoading = ref(false)
+const isLoading = computed({
+  set (v: boolean) {
+    if (timeoutId) {
+      clearInterval(timeoutId)
+    }
+    _isLoading.value = v
+    isDisabled.value = v
+
+    // mask 一段時間 自動關閉
+    if (v) {
+      timeoutId = setTimeout(() => {
+        _isLoading.value = false
+        isDisabled.value = false
+      }, 300)
+    }
+  },
+  get () {
+    return _isLoading.value
+  }
+})
+
+const bus = useEventBus<string>('routerChange')
+const listener = (event: string) => {
+  switch (event) {
+    case 'routerChange':
+      isLoading.value = true
+      break
+  }
+}
+bus.on(listener)
 
 // 路由更換時執行
 const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
-  openIsDisabled()
+  bus.emit('routerChange')
   pageScrollTop()
 
-  const { name, i18nModule = defaultModuleType } = currentNavigation?.value ?? {
-    name: '',
-    i18nModule: defaultModuleType
-  }
-
+  const { name } = currentNavigation?.value ?? { name: '' }
   if ([null, undefined, name, 'login'].includes(currentRoute.name as string)) return
 
   setNavigationData(currentRoute)
   await awaitTime(12)
 
   // 設定翻譯模組
-  setModuleType(i18nModule)
+  // setModuleType(i18nModule)
   // 設定網頁資訊
   setWebInfo()
   // 設定是否為 modal 模式
@@ -197,18 +229,6 @@ const pageScrollTop = () => {
   if (el) {
     scrollToEl(el, { behavior: 'auto' })
   }
-}
-// 換頁時 暫時不行點擊任何東西
-const isDisabled = ref(false)
-let timeoutId: NodeJS.Timeout | null
-const openIsDisabled = () => {
-  if (timeoutId) {
-    clearInterval(timeoutId)
-  }
-  isDisabled.value = true
-  timeoutId = setTimeout(() => {
-    isDisabled.value = false
-  }, 480)
 }
 
 const systemLayoutRef = ref()
@@ -304,6 +324,9 @@ const logout = async () => {
   clearToken()
   removeCookie('loginTime')
   initNavigationRoutes('login')
+
+  // 移除 EventBus 監聽
+  bus.off(listener)
 }
 // 登入
 const login = async (userId: number) => {
@@ -314,6 +337,9 @@ const login = async (userId: number) => {
   setCookie('loginTime', loginTime)
   setToken(userId, loginTime)
   initNavigationRoutes('locatehome')
+
+  // 開啟 EventBus 監聽
+  bus.on(listener)
 }
 
 // 歷史路由

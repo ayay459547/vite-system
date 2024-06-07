@@ -133,12 +133,12 @@ const onClickLayout = (layoutValue: string) => {
             <div class="icon">
               <CustomIcon name="earth-americas" />
             </div>
-            <label>{{ i18nTranslate('language', defaultModuleType) }}</label>
+            <label>{{ i18nTranslate('language') }}</label>
           </div>
 
           <div class="modal-select">
             <FormRadio v-model="langValue" :options="langOptions">
-              <template #option="{ label }">
+              <template #options="{ label }">
                 {{ i18nTranslate(label) }}
               </template>
             </FormRadio>
@@ -156,7 +156,7 @@ const onClickLayout = (layoutValue: string) => {
 
           <div class="modal-select">
             <FormRadio v-model="browserValue" :options="browserViewOptions">
-              <template #option="{ label }">
+              <template #options="{ label }">
                 {{ i18nTranslate(label) }}
               </template>
             </FormRadio>
@@ -174,7 +174,7 @@ const onClickLayout = (layoutValue: string) => {
 
           <div class="modal-select">
             <FormRadio v-model="colorTone" :options="colorToneOptions">
-              <template #option="{ label }">
+              <template #options="{ label }">
                 {{ i18nTranslate(label) }}
               </template>
             </FormRadio>
@@ -192,7 +192,7 @@ const onClickLayout = (layoutValue: string) => {
 
           <div class="modal-select">
             <FormRadio v-model="tagLinkValue" :options="tagLinkOptions">
-              <template #option="{ label }">
+              <template #options="{ label }">
                 {{ i18nTranslate(label) }}
               </template>
             </FormRadio>
@@ -270,11 +270,11 @@ const onClickLayout = (layoutValue: string) => {
       transition-duration: 0.2s;
 
       &:hover {
-        background-color: lighten(#409eff, 30%);
+        background-color: var(--el-color-primary-light-7);
       }
 
       &.active {
-        border-color: lighten(#409eff, 10%);
+        border-color: var(--el-color-primary);
       }
     }
   }

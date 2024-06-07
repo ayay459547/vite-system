@@ -47,6 +47,7 @@ const hasSlot = (prop: string): boolean => {
         :class="`icon-${iconMove}`"
         :size="props.iconSize"
         :type="props.iconType"
+        :x-type="props.iconXType"
         :name="props.iconName"
         :style="{ color: props.textColor }"
       />

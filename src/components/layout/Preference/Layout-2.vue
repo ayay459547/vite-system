@@ -11,7 +11,7 @@
 </template>
 
 <style lang="scss" scoped>
-$border-style: 2px solid #000000;
+$border-style: 2px solid var(--el-text-color-primary);
 $layout-width: 260px;
 .layout {
   &-container {

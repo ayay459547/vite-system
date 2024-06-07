@@ -183,20 +183,20 @@ defineExpose<Expose>({
     align-items: center;
     cursor: pointer;
 
-    color: inherit;
-    background-color: inherit;
     transition-duration: 0.3s;
+    color: var(--el-text-color-primary);
+    background-color: var(--el-bg-color);
 
     &.active,
     &:hover {
-      color: #409eff;
-      background-color: #f5f7fa;
+      color: var(--el-menu-active-color);
+      background-color: var(--el-color-info-light-9);
     }
 
     &.disabled {
       cursor: not-allowed;
-      color: #999999;
-      background-color: #eeeeee;
+      color: var(--el-text-color-disabled);
+      background-color: var(--el-color-info-light-7);
     }
   }
 }

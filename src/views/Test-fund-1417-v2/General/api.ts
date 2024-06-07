@@ -116,6 +116,16 @@ export const getGeneralWeekSchedule = async (): Promise<ApiRes<any[]>> => {
             endTime: '10:0',
             positive: true,
             LAST_UPDATE_TIMESTAMP: '2024-02-22 00:00:00.0'
+          },
+          {
+            CREATE_DATE: '2024-02-22 00:00:00.0',
+            dayOfWeek: 6,
+            sendToRTDs: true,
+            startTime: '1:0',
+            id: 6,
+            endTime: '10:0',
+            positive: true,
+            LAST_UPDATE_TIMESTAMP: '2024-02-22 00:00:00.0'
           }
         ],
         status: 'success'

@@ -2,6 +2,7 @@
 import type { PropType, WritableComputedRef } from 'vue'
 import { computed, inject, ref, nextTick } from 'vue'
 import type { NavigationFailure } from 'vue-router'
+import { useEventBus } from '@vueuse/core'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
@@ -59,14 +60,21 @@ const changeMap = (name: string): void => emit('change-map', name)
 
 const activeRouteName = ref('')
 
+// GlobalView listener routerChange
+const bus = useEventBus<string>('routerChange')
+
 type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
-const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
+  const onRouterLinkClick = async (navigate: Navigate, routerName: string, active: boolean) => {
+  bus.emit('routerChange')
+  if (active) return //是現在的頁面則取消跳轉
+
   activeRouteName.value = routerName
   await Promise.all([navigate(), nextTick()])
   setTimeout(() => {
     activeRouteName.value = ''
   }, 0)
 }
+
 </script>
 
 <template>
@@ -117,7 +125,13 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
                   :class="{
                     active: [props.currentRouteName.level3, activeRouteName].includes(leaf.name)
                   }"
-                  @click="onRouterLinkClick(navigate, leaf.name)"
+                  @click="
+                    onRouterLinkClick(
+                      navigate,
+                      leaf.name,
+                      [props.currentRouteName.level3, activeRouteName].includes(leaf.name)
+                    )
+                  "
                 >
                   <!-- <div class="item-empty"></div> -->
                   <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
@@ -136,7 +150,13 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string) => {
               :class="{
                 active: [props.currentRouteName.level2, activeRouteName].includes(routerItem.name)
               }"
-              @click="onRouterLinkClick(navigate, routerItem.name)"
+              @click="
+                onRouterLinkClick(
+                  navigate,
+                  routerItem.name,
+                  [props.currentRouteName.level2, activeRouteName].includes(routerItem.name)
+                )
+              "
             >
               <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>

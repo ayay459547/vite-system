@@ -19,8 +19,9 @@ export declare namespace Props {
   type Dark = boolean
   type IconSize = CustomSize
   type IconType = IconProps.Type
+  type IconXType = IconProps.XType
   type IconName = string
-  type IconMove = 'none' | 'translate' | 'rotate' | 'scale'
+  type IconMove = 'none' | 'translate'| 'rotate' | 'scale'
   type Style = string | Record<string, string>
 }
 
@@ -109,11 +110,17 @@ export const props = {
     default: 'fas',
     description: '前綴圖示類型 參考 fontawesome'
   },
+  iconXType: {
+    type: String as PropType<Props.IconXType>,
+    required: false,
+    default: '',
+    description: '前綴圖示類型 參考 XIcon'
+  },
   iconName: {
     type: String as PropType<Props.IconName>,
     required: false,
     default: '',
-    description: '前綴圖示 參考 fontawesome'
+    description: '前綴圖示 參考 fontawesome/XIcon'
   },
   iconMove: {
     type: String as PropType<Props.IconMove>,

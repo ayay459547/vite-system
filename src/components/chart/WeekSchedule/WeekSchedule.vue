@@ -18,6 +18,7 @@ const { i18nTranslate } = useHook({
 
 const bodyHeight = `${tableHeight}px`
 
+
 const props = defineProps({
   title: {
     type: String as PropType<string>,
@@ -27,27 +28,27 @@ const props = defineProps({
   options: {
     type: Array as PropType<Options>,
     required: false,
-    default() {
+    default () {
       return []
     }
   },
   scheduleList: {
     type: Array as PropType<ScheduleList>,
     required: false,
-    default() {
+    default () {
       return []
     }
   }
 })
 
 const dayList = [
-  { id: 0, label: 'sunday' },
   { id: 1, label: 'monday' },
   { id: 2, label: 'tuesday' },
   { id: 3, label: 'wednesday' },
   { id: 4, label: 'thursday' },
   { id: 5, label: 'friday' },
-  { id: 6, label: 'saturday' }
+  { id: 6, label: 'saturday' },
+  { id: 7, label: 'sunday' }
 ]
 
 const isLoading = ref(true)
@@ -57,13 +58,13 @@ const planDayMapRef = reactive({})
 
 // 工時分配資料
 const planData: Record<number, PlanTime[]> = reactive({
-  0: [],
   1: [],
   2: [],
   3: [],
   4: [],
   5: [],
-  6: []
+  6: [],
+  7: []
 })
 
 /**
@@ -76,6 +77,12 @@ const renderKey = ref(1)
 const init = async (scheduleList: ScheduleList) => {
   isLoading.value = true
   await nextTick()
+  // 清除資料
+  for (let dayId in planData) {
+    planData[dayId].splice(0)
+  }
+
+  // 設定原始資料
   scheduleList.forEach(scheduleItem => {
     const { id, dayId, status, start, end } = scheduleItem
 
@@ -91,9 +98,11 @@ const init = async (scheduleList: ScheduleList) => {
     })
   })
 
+  // 原始資料設定在每天中
   await awaitTime(80)
   for (let dayId in planData) {
     const planList: PlanTime[] = getProxyData(planData[dayId])
+    console.log('planList => ', dayId, planList)
     if (planDayMapRef[dayId]) {
       planDayMapRef[dayId].init(planList)
     }
@@ -112,10 +121,11 @@ onMounted(() => {
 defineExpose({
   init
 })
+
 </script>
 
 <template>
-  <div class="schedule">
+  <div v-loading="isLoading" class="schedule">
     <!-- 類型 -->
     <div class="schedule-type">
       <slot name="title">
@@ -167,21 +177,22 @@ defineExpose({
         <div ref="scheduleContainer" class="schedule-container" :key="renderKey">
           <!-- 每日分配結果 -->
           <PlanDay
-            v-for="(column, dayId) in 7"
-            :key="`${dayId}`"
+            v-for="dayItem in dayList"
+            :key="`${dayItem.id}`"
             :ref="
               el => {
-                planDayMapRef[`${dayId}`] = el
-                return `${dayId}`
+                planDayMapRef[`${dayItem.id}`] = el
+                return `${dayItem.id}`
               }
             "
-            :dayId="dayId"
-            :planList="planData[dayId]"
+            :dayId="dayItem.id"
+            :planList="planData[dayItem.id]"
             :scheduleContainer="scheduleContainer"
           />
         </div>
       </div>
     </div>
+
   </div>
 </template>
 

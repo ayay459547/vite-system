@@ -538,7 +538,7 @@ onMounted(() => {
     </template>
 
     <div class="__table-setting">
-      <div class="setting-left grid-col-xs-24 grid-col-lg-24 grid-col-xl-9">
+      <div class="setting-left">
         <!-- 顯示更多 -->
         <template v-if="props.isLazyLoading">
           <div style="width: 180px; overflow: hidden">
@@ -599,7 +599,7 @@ onMounted(() => {
         <slot name="setting-left"></slot>
       </div>
 
-      <div class="setting-center grid-col-xs-24 grid-col-md-12 grid-col-xl-6">
+      <div class="setting-center">
         <slot name="setting-center">
           <span class="setting-center-title">
             <slot name="title">
@@ -609,7 +609,7 @@ onMounted(() => {
         </slot>
       </div>
 
-      <div class="setting-right grid-col-xs-24 grid-col-md-12 grid-col-xl-9">
+      <div class="setting-right">
         <slot name="setting-right"></slot>
         <ColumnSetting
           ref="columnSetting"
@@ -767,6 +767,7 @@ $border-style: 1px solid #ebeef5;
       width: 100%;
       height: 100%;
       padding: 6px;
+      overflow: auto;
     }
     &-btn {
       z-index: 1;
@@ -788,6 +789,7 @@ $border-style: 1px solid #ebeef5;
     height: fit-content;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: lighten($system-bg-color, 40%);
     padding: 6px;
     overflow: hidden {
@@ -816,8 +818,9 @@ $border-style: 1px solid #ebeef5;
       &-center,
       &-right {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        width: 100%;
+        width: fit-content;
         gap: 8px;
       }
 
@@ -835,7 +838,7 @@ $border-style: 1px solid #ebeef5;
         }
 
         @media (max-width: 1200px) {
-          justify-content: flex-start;
+          overflow: hidden;
         }
       }
       &-right {
