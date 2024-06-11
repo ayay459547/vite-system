@@ -3,7 +3,7 @@ import { ref, onMounted, inject } from 'vue'
 
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 import type { UseHook } from '@/declare/hook'
-import { CustomWatermark } from '@/components'
+import { CustomDividerView } from '@/components'
 import { useState, useEffect } from '@/lib/lib_hook'
 
 const useHook: UseHook = inject('useHook')
@@ -48,18 +48,10 @@ onMounted(() => {
 
 <template>
   <div class="page">
-    <h4>浮水印</h4>
-    <h5>{{ count }}</h5>
-    <div class="flex-row i-ga-md">
-      <button @click="setCount(count + 1)">Add Count</button>
-      <button @click="count = 666">Add Count read</button>
-    </div>
-
-    <div class="watermark">
-      <CustomWatermark image="https://element-plus.org/images/element-plus-logo.svg">
-        77777
-      </CustomWatermark>
-    </div>
+    <CustomDividerView>
+      <template #left>left</template>
+      <template #right>right</template>
+    </CustomDividerView>
   </div>
 </template>
 
@@ -71,9 +63,5 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 24px;
-}
-.watermark {
-  width: 100%;
-  height: 300px;
 }
 </style>

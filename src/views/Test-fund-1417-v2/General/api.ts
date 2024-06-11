@@ -1,5 +1,7 @@
 import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
+import { isEmpty } from '@/lib/lib_utils'
+import { fakeTableData } from './fakeData'
 
 export interface Params {
   dayOfWeek: string
@@ -57,6 +59,7 @@ export const formatTable = (row: ResponseData): TableData => {
 
 // 送出 api 需要參數
 export type FormParams = {
+  id?: string
   dayOfWeek: string
   positive: boolean
 
@@ -65,8 +68,8 @@ export type FormParams = {
   endHour: string
   endMinutes: string
 }
-export type DeleteParams = { id: string } & FormParams
 
+// 取得一週分配資料
 export const getGeneralWeekSchedule = async (): Promise<ApiRes<any[]>> => {
   // webfuno="fund_1417"
   // designatedview="iPASPWebView_fund_1417_gwt"
@@ -86,48 +89,7 @@ export const getGeneralWeekSchedule = async (): Promise<ApiRes<any[]>> => {
     {
       isFakeData: true,
       fakeData: {
-        data: [
-          {
-            CREATE_DATE: '2024-02-22 00:00:00.0',
-            dayOfWeek: 1,
-            sendToRTDs: false,
-            startTime: '12:0',
-            id: 3,
-            endTime: '13:0',
-            positive: false,
-            LAST_UPDATE_TIMESTAMP: '2024-02-22 00:00:00.0'
-          },
-          {
-            CREATE_DATE: '2024-02-22 00:00:00.0',
-            dayOfWeek: 2,
-            sendToRTDs: false,
-            startTime: '18:20',
-            id: 4,
-            endTime: '19:30',
-            positive: true,
-            LAST_UPDATE_TIMESTAMP: '2024-02-22 00:00:00.0'
-          },
-          {
-            CREATE_DATE: '2024-02-22 00:00:00.0',
-            dayOfWeek: 7,
-            sendToRTDs: true,
-            startTime: '5:0',
-            id: 5,
-            endTime: '10:0',
-            positive: true,
-            LAST_UPDATE_TIMESTAMP: '2024-02-22 00:00:00.0'
-          },
-          {
-            CREATE_DATE: '2024-02-22 00:00:00.0',
-            dayOfWeek: 6,
-            sendToRTDs: true,
-            startTime: '1:0',
-            id: 6,
-            endTime: '10:0',
-            positive: true,
-            LAST_UPDATE_TIMESTAMP: '2024-02-22 00:00:00.0'
-          }
-        ],
+        data: fakeTableData,
         status: 'success'
       },
       delay: 300
@@ -142,45 +104,142 @@ export const getGeneralWeekSchedule = async (): Promise<ApiRes<any[]>> => {
   }
 }
 
-// delete
-export const deleteData = async (rowData: TableData): Promise<ApiRes> => {
-  const { id = '', dayOfWeek = 0, startTime = '', endTime = '' } = rowData
+type PlanTime = {
+  uuid?: string
+  id?: string
+  dayId?: number
+  // 新增 | 修改 | 舊資料(無變更) | 刪除
+  status?: 'new' | 'update' | 'old' | 'delete'
 
-  const [startHour = '', startMinutes = ''] = startTime.split(':')
-  const [endHour = '', endMinutes = ''] = endTime.split(':')
+  start?: string
+  startSecond?: number
+  end?: string
+  endSecond?: number
+}
+type PlanList = Array<PlanTime>
 
-  const resData = await ajax<Api<null>>(
-    {
-      url: '/workingTime/deleteGeneralWorkingTimes',
-      method: 'post',
-      data: [
-        {
-          id: `${id}`,
-          dayOfWeek: `${dayOfWeek}`,
-          positive: true,
+// 儲存一週分配資料
+const planTimeFormat = (planTime: PlanTime): FormParams => {
+  const { dayId, start, end } = planTime
+  const [startHour = '', startMinutes = ''] = start.split(':')
+  const [endHour = '', endMinutes = ''] = end.split(':')
 
-          startHour,
-          startMinutes,
-          endHour,
-          endMinutes
-        }
-      ] as DeleteParams[]
-    },
-    {
-      isFakeData: false,
-      fakeData: {
-        data: null,
-        status: 'success'
+  return {
+    dayOfWeek: `${dayId}`,
+    positive: true,
+
+    startHour,
+    startMinutes,
+    endHour,
+    endMinutes
+  }
+}
+export const saveGeneralWeekSchedule = async (create: PlanList, update: PlanList, remove: PlanList): Promise<ApiRes> => {
+  const apiList = []
+
+  // 新增
+  if (create.length > 0) {
+    const createList: FormParams[] = create.map(planTime => {
+      return planTimeFormat(planTime)
+    })
+
+    apiList.push(ajax<Api<null>>(
+      {
+        url: '/workingTime/addGeneralWorkingTimes',
+        method: 'post',
+        data: createList
       },
-      delay: 300
-    }
-  )
-  const { status, msg } = resData
+      {
+        isFakeData: true,
+        fakeData: {
+          data: null,
+          status: 'error',
+          msg: 'addGeneralWorkingTimes'
+        },
+        isLog: false,
+        delay: 300
+      }
+    ))
+  }
+  // 修改
+  if (update.length > 0) {
+    const updateList: FormParams[] = update.map(planTime => {
+      return {
+        id: planTime.id,
+        ...planTimeFormat(planTime)
+      }
+    })
 
-  if (['success', true].includes(status)) {
-    return { status: 'success', msg }
+    apiList.push(ajax<Api<null>>(
+      {
+        url: '/workingTime/updateGeneralWorkingTimes',
+        method: 'post',
+        data: updateList
+      },
+      {
+        isFakeData: true,
+        fakeData: {
+          data: null,
+          status: 'error',
+          msg: 'updateGeneralWorkingTimes'
+        },
+        isLog: false,
+        delay: 300
+      }
+    ))
+  }
+  // 刪除
+  if (remove.length > 0) {
+    const removeList: FormParams[] = remove.map(planTime => {
+      return {
+        id: planTime.id,
+        ...planTimeFormat(planTime)
+      }
+    })
+
+    apiList.push(ajax<Api<null>>(
+      {
+        url: '/workingTime/deleteGeneralWorkingTimes',
+        method: 'post',
+        data: removeList
+      },
+      {
+        isFakeData: true,
+        fakeData: {
+          data: null,
+          status: 'error',
+          msg: 'deleteGeneralWorkingTimes'
+        },
+        isLog: false,
+        delay: 300
+      }
+    ))
+  }
+
+  // 送回結果
+  if (apiList.length > 0) {
+    const resList = await Promise.all(apiList)
+
+    const apiRes = resList.reduce((res, resData) => {
+      const { status, msg } = resData
+
+      if (!['success', true].includes(status)) {
+        res.status = 'error'
+      }
+
+      if (!isEmpty(msg)) {
+        res.msg.push(`${msg}`)
+      }
+
+      return res
+    }, { status: 'success', msg: [] })
+
+    return {
+      status: apiRes.status,
+      msg: apiRes.msg.join(' , ')
+    }
   } else {
-    return { status: 'error', msg }
+    return { status: 'success', msg: '' }
   }
 }
 
@@ -216,7 +275,7 @@ export const getIsNeedSendRTDS = async (): Promise<ApiRes<boolean>> => {
       method: 'get'
     },
     {
-      isFakeData: true,
+      isFakeData: false,
       fakeData: {
         data: true,
         status: 'success'

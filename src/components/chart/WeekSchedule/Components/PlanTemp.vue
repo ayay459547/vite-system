@@ -5,7 +5,7 @@ import { reactive } from 'vue'
 import throttle from '@/lib/lib_throttle'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 
-import type { PlanTime, PlanStyle, CheckTimeIsExist } from '../planType'
+import type { Custom } from '../WeekScheduleInfo'
 
 import {
   FPS,
@@ -29,13 +29,13 @@ const props = defineProps({
 })
 
 // 暫時的工時分配
-const tempPlanTime = reactive<PlanTime>({
+const tempPlanTime = reactive<Custom.PlanTime>({
   start: '00:00',
   startSecond: 0,
   end: '00:00',
   endSecond: 0
 })
-const tempPlanStyle = reactive<PlanStyle>({
+const tempPlanStyle = reactive<Custom.PlanStyle>({
   top: 0,
   height: 0,
   display: 'none'
@@ -74,22 +74,18 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
     tempPlanStyle.height = secondToTop(tempPlanTime.endSecond - tempPlanTime.startSecond)
 
     // 移動時變動 暫時的工時分配
-    const throttleMousemoveEvent = throttle<typeof mousemoveEvent>(
-      function ($event: MouseEvent) {
-        const { clientY: mouseMoveY } = $event
+    const throttleMousemoveEvent = throttle<typeof mousemoveEvent>(function ($event: MouseEvent) {
+      const { clientY: mouseMoveY } = $event
 
-        // 變化高度
-        const _moveY = mouseMoveY - mouseDownY
-        const _change = _moveY < 0 ? 0 : _moveY
-        const _changeEndSecond = topToSecond(_tempY + _change)
-        tempPlanTime.endSecond = _changeEndSecond
-        tempPlanTime.end = secondToTime(_changeEndSecond)
+      // 變化高度
+      const _moveY = mouseMoveY - mouseDownY
+      const _change = _moveY < 0 ? 0 : _moveY
+      const _changeEndSecond = topToSecond(_tempY + _change)
+      tempPlanTime.endSecond = _changeEndSecond
+      tempPlanTime.end = secondToTime(_changeEndSecond)
 
-        tempPlanStyle.height = _change
-      },
-      FPS,
-      { isNoLeading: true }
-    )
+      tempPlanStyle.height = _change
+    }, FPS, { isNoLeading: true })
 
     mousemoveEvent = throttleMousemoveEvent
     props.scheduleContainer.addEventListener('mousemove', mousemoveEvent)
@@ -100,7 +96,7 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
 }
 
 // 確認有暫時分配 新增
-const checkCreatePlan = (checkTimeIsExist: CheckTimeIsExist) => {
+const checkCreatePlan = (checkTimeIsExist: Custom.CheckTimeIsExist) => {
   // 移除 EventListener
   props.scheduleContainer.removeEventListener('mousemove', mousemoveEvent)
 
@@ -113,11 +109,12 @@ const checkCreatePlan = (checkTimeIsExist: CheckTimeIsExist) => {
     // 隱藏暫時的工時分配
     tempPlanStyle.display = 'none'
 
-    const uuid = getUuid()
+    const uuid = getUuid('new')
     return {
       isExist,
       newUuid: uuid,
       planTime: {
+        uuid,
         id: uuid,
         status: 'new',
         start,
@@ -139,6 +136,7 @@ defineExpose({
   createTempPlan,
   checkCreatePlan
 })
+
 </script>
 
 <template>

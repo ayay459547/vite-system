@@ -1,118 +1,63 @@
-import type { Api, ApiRes } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
-
-// 表單資料
-export type FormData = {
-  machine_Id: string
-  dayOfWeek: number | string
-  timeRange: [string, string] | null
+export interface Params {
+  machineId: string
+  machineName: string
+  areaName: string
+  machineNote: string
+  isStartDate_horizontal_LAST_UPDATE_TIMESTAMP: string
+  isEndDate_horizontal_LAST_UPDATE_TIMESTAMP: string
 }
-export type CreateFormData = {} & FormData
-export type UpdateFormData = { id: string } & FormData
 
-// 送出 api 需要參數
-export type FormParams = {
-  machine: {
-    pk: { id: string }
-  }
-  dayOfWeek: string
-  positive: boolean
-
-  startHour: string
-  startMinutes: string
-  endHour: string
-  endMinutes: string
+export interface ResponseData {
+  machineId?: string
+  machineName?: string
+  areaName?: string
+  machineNote?: string
+  horizontal_LAST_UPDATE_TIMESTAMP?: string
+  version?: number
+  isDummy?: number
 }
-export type CreateParams = {} & FormParams
-export type UpdateParams = { id: string } & FormParams
 
-// create
-export const createData = async (form: CreateFormData): Promise<ApiRes> => {
-  const { machine_Id = '', dayOfWeek, timeRange = ['', ''] } = form
+export interface ExcelData extends ResponseData {}
+export interface TableData extends ResponseData {}
 
-  const [start = '', end = ''] = timeRange
-  const [startHour = '', startMinutes = ''] = start.split(':')
-  const [endHour = '', endMinutes = ''] = end.split(':')
+export const formatParams = (params: any): Params => {
+  const {
+    machineId = '',
+    machineName = '',
+    areaName = '',
+    machineNote = '',
+    horizontal_LAST_UPDATE_TIMESTAMP = ['', '']
+  } = params
 
-  const resData = await ajax<Api<null>>(
-    {
-      url: '/workingTime/addMachineWorkingTimes',
-      method: 'post',
-      data: [
-        {
-          machine: {
-            pk: { id: machine_Id }
-          },
-          dayOfWeek: `${dayOfWeek}`,
-          positive: true,
+  const [isStartDate_horizontal_LAST_UPDATE_TIMESTAMP, isEndDate_horizontal_LAST_UPDATE_TIMESTAMP] =
+    Array.isArray(horizontal_LAST_UPDATE_TIMESTAMP) ? horizontal_LAST_UPDATE_TIMESTAMP : ['', '']
 
-          startHour,
-          startMinutes,
-          endHour,
-          endMinutes
-        }
-      ] as CreateParams[]
-    },
-    {
-      isFakeData: false,
-      fakeData: {
-        data: null,
-        status: 'success'
-      },
-      delay: 300
-    }
-  )
-  const { status, msg } = resData
-
-  if (['success', true].includes(status)) {
-    return { status: 'success', msg }
-  } else {
-    return { status: 'error', msg }
+  return {
+    machineId,
+    machineName,
+    areaName,
+    machineNote,
+    isStartDate_horizontal_LAST_UPDATE_TIMESTAMP,
+    isEndDate_horizontal_LAST_UPDATE_TIMESTAMP
   }
 }
 
-// update
-export const updateData = async (form: UpdateFormData): Promise<ApiRes> => {
-  const { id = '', machine_Id = '', dayOfWeek, timeRange = ['', ''] } = form
+const formatData = (row: ResponseData): ExcelData | TableData => {
+  const { machineId, machineName, areaName, machineNote, horizontal_LAST_UPDATE_TIMESTAMP } = row
 
-  const [start = '', end = ''] = timeRange
-  const [startHour = '', startMinutes = ''] = start.split(':')
-  const [endHour = '', endMinutes = ''] = end.split(':')
-
-  const resData = await ajax<Api<null>>(
-    {
-      url: '/workingTime/updateMachineWorkingTimes',
-      method: 'post',
-      data: [
-        {
-          machine: {
-            pk: { id: machine_Id }
-          },
-          id: `${id}`,
-          dayOfWeek: `${dayOfWeek}`,
-          positive: true,
-
-          startHour,
-          startMinutes,
-          endHour,
-          endMinutes
-        }
-      ] as UpdateParams[]
-    },
-    {
-      isFakeData: false,
-      fakeData: {
-        data: null,
-        status: 'success'
-      },
-      delay: 300
-    }
-  )
-  const { status, msg } = resData
-
-  if (['success', true].includes(status)) {
-    return { status: 'success', msg }
-  } else {
-    return { status: 'error', msg }
+  return {
+    machineId,
+    machineName,
+    areaName,
+    machineNote,
+    horizontal_LAST_UPDATE_TIMESTAMP
   }
+}
+
+export const formatExcel = (row: ResponseData): ExcelData => {
+  return formatData(row)
+}
+
+export const formatTable = (row: ResponseData): TableData => {
+  return formatData(row)
 }

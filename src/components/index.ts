@@ -44,6 +44,8 @@ export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue
 export type { Props as DividerProps } from './feature/CustomDivider/CustomDividerInfo'
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
+export { default as CustomDividerView } from './feature/CustomDividerView/CustomDividerView.vue'
+
 // 拖拉
 export type {
   Custom as DraggableCustom,

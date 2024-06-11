@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { onMounted, reactive, ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { isEmpty, getProxyData, awaitTime } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { ScheduleList, PlanTime, Options } from './planType'
+import type { Custom, Props } from './WeekScheduleInfo'
+import { props as weekScheduleProps } from './WeekScheduleInfo'
 import { tableHeight, timeToSecond } from './planUtils'
 
 import PlanDay from './Components/PlanDay.vue'
@@ -18,28 +18,7 @@ const { i18nTranslate } = useHook({
 
 const bodyHeight = `${tableHeight}px`
 
-
-const props = defineProps({
-  title: {
-    type: String as PropType<string>,
-    required: false,
-    default: ''
-  },
-  options: {
-    type: Array as PropType<Options>,
-    required: false,
-    default () {
-      return []
-    }
-  },
-  scheduleList: {
-    type: Array as PropType<ScheduleList>,
-    required: false,
-    default () {
-      return []
-    }
-  }
-})
+const props = defineProps(weekScheduleProps)
 
 const dayList = [
   { id: 1, label: 'monday' },
@@ -57,7 +36,7 @@ const scheduleContainer = ref(null)
 const planDayMapRef = reactive({})
 
 // 工時分配資料
-const planData: Record<number, PlanTime[]> = reactive({
+const planData: Record<number, Custom.PlanTime[]> = reactive({
   1: [],
   2: [],
   3: [],
@@ -74,7 +53,7 @@ const planData: Record<number, PlanTime[]> = reactive({
 const renderKey = ref(1)
 
 // 初始化
-const init = async (scheduleList: ScheduleList) => {
+const init = async (scheduleList: Props.ScheduleList) => {
   isLoading.value = true
   await nextTick()
   // 清除資料
@@ -88,6 +67,7 @@ const init = async (scheduleList: ScheduleList) => {
 
     // 新增分配資料
     planData[dayId].push({
+      uuid: getUuid('old'),
       id: `${id}`,
       dayId,
       status,
@@ -101,8 +81,7 @@ const init = async (scheduleList: ScheduleList) => {
   // 原始資料設定在每天中
   await awaitTime(80)
   for (let dayId in planData) {
-    const planList: PlanTime[] = getProxyData(planData[dayId])
-    console.log('planList => ', dayId, planList)
+    const planList: Custom.PlanTime[] = getProxyData(planData[dayId])
     if (planDayMapRef[dayId]) {
       planDayMapRef[dayId].init(planList)
     }
@@ -114,12 +93,48 @@ const init = async (scheduleList: ScheduleList) => {
   }, 300)
 }
 
+// 複製到其他天
+const copyPlan = (planTime: Custom.PlanTime) => {
+  for (let dayId in planData) {
+    if (planDayMapRef[dayId]) {
+      planDayMapRef[dayId].insertData(planTime)
+    }
+  }
+}
+
 onMounted(() => {
   init(props.scheduleList)
 })
 
+// 取資料
+const getData = async () => {
+  console.log('WeekSchedule getData')
+  await nextTick()
+
+  const createList = []
+  const updateList = []
+  const removeList = []
+
+  for (let dayId in planData) {
+    const planList: Custom.PlanTime[] = getProxyData(planData[dayId])
+    if (planDayMapRef[dayId]) {
+      const { create = [], update = [], remove = [] } = await planDayMapRef[dayId].getData(planList)
+      createList.push(...create)
+      updateList.push(...update)
+      removeList.push(...remove)
+    }
+  }
+
+  return {
+    create: createList,
+    update: updateList,
+    remove: removeList
+  }
+}
+
 defineExpose({
-  init
+  init,
+  getData
 })
 
 </script>
@@ -178,7 +193,7 @@ defineExpose({
           <!-- 每日分配結果 -->
           <PlanDay
             v-for="dayItem in dayList"
-            :key="`${dayItem.id}`"
+            :key="`PlanDay-${dayItem.id}`"
             :ref="
               el => {
                 planDayMapRef[`${dayItem.id}`] = el
@@ -188,6 +203,7 @@ defineExpose({
             :dayId="dayItem.id"
             :planList="planData[dayItem.id]"
             :scheduleContainer="scheduleContainer"
+            @copyPlan="copyPlan"
           />
         </div>
       </div>

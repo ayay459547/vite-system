@@ -635,6 +635,22 @@ const routes: Array<RouterTree> = [
     permission: totlaPermission,
     leaves: [
       {
+        name: 'nav4-6',
+        title: '分隔顯示',
+        meta: {
+          keepAlive: false,
+          status: 'completed',
+          startDate: '2024-01',
+          completedDate: '2024-01'
+        },
+        systemType: ['new'],
+        icon: 'v',
+        permission: totlaPermission,
+        path: '/nav4-6',
+        i18nModule: 'view',
+        component: () => import('@/views/Nav4-6/Nav4-6.vue')
+      },
+      {
         name: 'nav4-5',
         title: '虛擬select',
         meta: {

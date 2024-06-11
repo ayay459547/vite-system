@@ -1,168 +1,135 @@
 <script setup lang="ts">
-import { ref, onMounted, inject, reactive, computed } from 'vue'
+import { ref, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
-import { CustomButton, CustomIcon, CustomModal, WebViewTable } from '@/components'
+import { WeekSchedule, CustomButton } from '@/components'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
+import { isEmpty } from '@/lib/lib_utils'
 
-import type { TableOptions } from '@/lib/lib_columns'
-import type { TableData } from './api'
 import {
-  formatParams,
-  formatExcel,
-  formatTable,
-  deleteData,
-  sendRTDS,
-  getIsNeedSendRTDS
+  getMachineIdWeekSchedule,
+  saveMachineIdWeekSchedule,
+  getIsNeedSendRTDS,
+  sendRTDS
 } from './api'
-import { columnSetting } from './columns'
-import { fakeTableData } from './fakeData'
 
-import CreateModal from './Components/CreateModal.vue'
-import UpdateModal from './Components/UpdateModal.vue'
+import { timeFormat } from '../planUtils'
+
+import MachineInfo from './Components/MachineInfo.vue'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, swal, eventList, permission } = useHook({
-  i18nModule: 'system'
-})
+const { i18nTranslate, swal, permission } = useHook()
 
-defineExpose({
-  setFilter: filter => {
-    tableRef.value.setFilter(filter)
-  }
-})
+const isLoading = ref(true)
 
-// table
-const tableOptions: TableOptions = {
-  title: '特定機台工時設定',
-  i18nTitle: 'fund-1417-specifyMachine-title',
-  i18nModule: 'system',
-  version: '1.0.9',
-  settingKey: 'fund-1417-Machine',
-  isSorting: true
-}
-
-const isLoading = ref(false)
-const tableRef = ref(null)
 const isNeedSendRTDS = ref(false)
 
-const initData = async () => {
-  const { status, msg, data: resIsNeedSendRTDS } = await getIsNeedSendRTDS()
-  if (status !== 'success') {
+const weekSchedule = ref()
+const planList = ref([])
+
+// 儲存
+const saveWeekScheduleData = async () => {
+  isLoading.value = true
+
+  await nextTick()
+  if (weekSchedule.value && !isEmpty(currentMachineId.value)) {
+    const { create, update, remove } = await weekSchedule.value.getData()
+
+    const { status, msg } = await saveMachineIdWeekSchedule(create, update, remove, currentMachineId.value)
+    if (status === 'success') {
+      swal({
+        icon: 'success',
+        title: i18nTranslate('updateSuccess'),
+        showCancelButton: false
+      })
+
+      init()
+
+    } else {
+      swal({
+        icon: 'error',
+        title: i18nTranslate('updateFail'),
+        text: msg,
+        showCancelButton: false
+      })
+    }
+  }
+
+  isLoading.value = false
+}
+
+// 設定一週分配資訊
+const setWeekScheduleData = (planList: any[]) => {
+  if (weekSchedule.value) {
+    weekSchedule.value.init([...planList])
+  }
+}
+
+// 初始化
+const currentMachineId = ref('')
+const init = async (machindId?: string) => {
+  isLoading.value = true
+
+  const [resGeneralWeekSchedule, resIsNeedSendRTDS] = await Promise.all([
+    getMachineIdWeekSchedule(machindId ?? currentMachineId.value),
+    getIsNeedSendRTDS()
+  ])
+
+  const { status: generalWeekScheduleStatus, msg: generalWeekScheduleMsg, data: generalWeekScheduleData } = resGeneralWeekSchedule
+  if (generalWeekScheduleStatus !== 'success') {
     swal({
       icon: 'error',
       title: i18nTranslate('error-getData', 'system'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
+      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
-
-  isNeedSendRTDS.value = resIsNeedSendRTDS
-
-  tableRef.value?.init()
-}
-
-// modal
-const createRef = ref(null)
-const updateRef = ref(null)
-const modal = reactive({
-  create: false,
-  update: false
-})
-const updateData = ref<TableData | null>(null)
-const updateTitle = computed(() => {
-  const edit = i18nTranslate('edit')
-  return `${edit} ${updateData.value?.machine_Id ?? ''}`
-})
-
-// create
-const onCreateSubmit = async () => {
-  if (createRef.value) {
-    const status = await createRef.value?.submit()
-    if (status === 'success') {
-      modal.create = false
-      swal({
-        icon: 'success',
-        title: i18nTranslate('createSuccess'),
-        showCancelButton: false,
-        confirmButtonText: i18nTranslate('confirm')
-      })
-      initData()
-    }
-  }
-}
-
-// update
-const onUpdateSubmit = async () => {
-  if (updateRef.value) {
-    const status = await updateRef.value?.submit()
-    if (status === 'success') {
-      modal.update = false
-      swal({
-        icon: 'success',
-        title: i18nTranslate('editSuccess'),
-        showCancelButton: false,
-        confirmButtonText: i18nTranslate('confirm')
-      })
-      initData()
-    }
-  }
-}
-
-// operations
-const openPopover = (e: MouseEvent, rowData: TableData) => {
-  eventList(e, [
-    {
-      icon: ['fas', 'edit'],
-      label: i18nTranslate('edit'),
-      disabled: !userPermission.value.update,
-      event: () => {
-        updateData.value = rowData
-        modal.update = true
-      }
-    },
-    {
-      icon: ['fas', 'trash'],
-      label: i18nTranslate('delete'),
-      disabled: !userPermission.value.delete,
-      event: () => remove(rowData)
-    }
-  ])
-}
-
-// delete
-const remove = (rowData: TableData) => {
-  const text = ' ' + rowData.machine_Id
-  swal({
-    icon: 'warning',
-    title: i18nTranslate('deleteConfirm') + text,
-    confirmButtonText: i18nTranslate('confirm-yes'),
-    cancelButtonText: i18nTranslate('confirm-no')
-  }).then(async (result: SwalResult) => {
-    if (result.isConfirmed) {
-      isLoading.value = true
-      const { status, msg } = await deleteData(rowData)
-
-      if (status === 'success') {
-        swal({
-          icon: 'success',
-          title: i18nTranslate('deleteSuccess'),
-          showCancelButton: false,
-          confirmButtonText: i18nTranslate('confirm')
-        })
-        initData()
-      } else {
-        swal({
-          icon: 'error',
-          title: i18nTranslate('deleteFail'),
-          text: msg,
-          showCancelButton: false
-        })
-      }
-
-      isLoading.value = false
+  planList.value = generalWeekScheduleData.map(row => {
+    const { id, dayOfWeek, startTime, endTime } = row
+    return {
+      id,
+      dayId: dayOfWeek,
+      status: 'old',
+      start: timeFormat(startTime),
+      end: timeFormat(endTime)
     }
   })
+  console.log(planList.value)
+  setWeekScheduleData(planList.value)
+
+  const { status: isNeedSendRTDSStatus, msg: isNeedSendRTDSMsg, data: isNeedSendRTDSData } = resIsNeedSendRTDS
+  if (isNeedSendRTDSStatus !== 'success') {
+    swal({
+      icon: 'error',
+      title: i18nTranslate('error-getData', 'system'),
+      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'system'),
+      showCancelButton: false
+    })
+  }
+  isNeedSendRTDS.value = isNeedSendRTDSData
+
+  await nextTick()
+  setTimeout(() => {
+    isLoading.value = false
+  }, 300)
+}
+
+// 頁面權限
+const userPermission = ref<Permission>(getPermission(defaultPermission))
+onMounted(() => {
+  userPermission.value = permission('fund-1417')
+  init()
+})
+
+// 設定當前機台 初始化
+const setMachineWeekSchedule = (machineId: string) => {
+  currentMachineId.value = machineId
+  init(machineId)
+}
+
+// 複製指定機台的資料
+const copyMachineWeekSchedule = (machineId: string) => {
+  init(machineId)
 }
 
 const onRTDSClick = async () => {
@@ -183,11 +150,11 @@ const onRTDSClick = async () => {
           showCancelButton: false,
           confirmButtonText: i18nTranslate('confirm')
         })
-        initData()
+        init()
       } else {
         swal({
           icon: 'error',
-          title: i18nTranslate('updateFail'),
+          title: i18nTranslate('sendRTDS-error'),
           text: msg,
           showCancelButton: false
         })
@@ -198,58 +165,27 @@ const onRTDSClick = async () => {
   })
 }
 
-// 頁面權限
-const userPermission = ref<Permission>(getPermission(defaultPermission))
-onMounted(() => {
-  userPermission.value = permission('fund-1417')
-  initData()
-})
 </script>
 
 <template>
-  <div v-loading="isLoading" class="specify-machine">
-    <CustomModal
-      v-model="modal.create"
-      :title="i18nTranslate('create-operatingTimeForSpecifiedMachine')"
-      width-size="small"
-      height-size="small"
-      @submit="onCreateSubmit"
-    >
-      <CreateModal ref="createRef" />
-    </CustomModal>
+  <div class="GeneralView page-container">
+    <div class="page-left table">
+      <MachineInfo
+        @setMachineWeekSchedule="setMachineWeekSchedule"
+        @copyMachineWeekSchedule="copyMachineWeekSchedule"
+      />
+    </div>
 
-    <CustomModal
-      v-model="modal.update"
-      :title="updateTitle"
-      width-size="small"
-      height-size="small"
-      @submit="onUpdateSubmit"
-    >
-      <UpdateModal ref="updateRef" :data="updateData" />
-    </CustomModal>
-
-    <WebViewTable
-      ref="tableRef"
-      webfuno="fund_1417"
-      designatedview="iPASPWebView_fund_1417_mwt"
-      :table-options="tableOptions"
-      :column-setting="columnSetting"
-      :format-params="formatParams"
-      :format-excel="formatExcel"
-      :format-table="formatTable"
-      :fake-data="fakeTableData"
-    >
-      <template #prepend>
-        <div class="flex-row i-ga-xs">
+    <div v-loading="isLoading" class="page-right schedule">
+      <div class="page-header">
+        <div class="flex-row i-ga-md">
           <CustomButton
+            :label="i18nTranslate('save')"
             type="primary"
-            :label="i18nTranslate('create')"
-            icon-name="plus"
-            icon-move="rotate"
-            :disabled="!userPermission.create"
-            @click="modal.create = true"
+            icon-type="far"
+            icon-name="floppy-disk"
+            @click="saveWeekScheduleData"
           />
-
           <CustomButton
             :type="isNeedSendRTDS ? 'danger' : 'info'"
             :label="i18nTranslate('sendRTDS')"
@@ -259,27 +195,72 @@ onMounted(() => {
             @click="onRTDSClick"
           />
         </div>
-      </template>
 
-      <template #column-dayOfWeek="{ prop, data }">
-        <span>{{ i18nTranslate(columnSetting[prop].getValue(data)) }}</span>
-      </template>
+        <h3>{{ currentMachineId }}</h3>
 
-      <template #column-operations="scope">
-        <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
-          <CustomIcon name="ellipsis-vertical" />
+        <div class="flex-row i-ga-md">
+          <CustomButton
+            :label="i18nTranslate('clear')"
+            type="danger"
+            icon-type="far"
+            icon-name="circle-xmark"
+            @click="setWeekScheduleData([])"
+          />
+          <CustomButton
+            :label="i18nTranslate('refrush')"
+            icon-name="rotate"
+            icon-move="rotate"
+            @click="init()"
+          />
         </div>
-      </template>
-    </WebViewTable>
+      </div>
+      <div class="page-body">
+        <WeekSchedule
+          ref="weekSchedule"
+          :plan-list="planList"
+        ></WeekSchedule>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.specify-machine {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.GeneralView {
+  &.page {
+    &-container {
+      width: 100%;
+      height: fit-content;
+      min-height: 100%;
+      display: flex;
+      gap: 48px;
+    }
+  }
+  .page {
+    &-left,
+    &-right {
+      width: 100%;
+      // height: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      &.table { flex: 5; }
+      &.schedule { flex: 9; }
+    }
+
+    &-header {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+    }
+    &-body {
+      width: 100%;
+      height: 100%;
+      min-height: fit-content;
+      flex: 1;
+    }
+  }
 }
 </style>

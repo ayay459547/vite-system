@@ -4,10 +4,9 @@ import { nextTick, reactive, computed, ref } from 'vue'
 
 import throttle from '@/lib/lib_throttle'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
-
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
-import type { PlanTime, PlanStyle, Origin, CheckTimeIsExist } from '../planType'
+import type { Custom } from '../WeekScheduleInfo'
 
 import {
   FPS,
@@ -26,7 +25,7 @@ const props = defineProps({
     required: true
   },
   planTime: {
-    type: Object as PropType<PlanTime>,
+    type: Object as PropType<Custom.PlanTime>,
     required: true
   },
   scheduleContainer: {
@@ -34,28 +33,29 @@ const props = defineProps({
     required: true
   },
   // originPlan: {
-  //   type: [Object, undefined] as PropType<Origin | undefined>,
+  //   type: [Object, undefined] as PropType<Custom.Origin | undefined>,
   //   required: true
   // }
   originPlanMap: {
-    type: [Object, undefined] as PropType<Record<string, Origin>>,
+    type: [Object, undefined] as PropType<Record<string, Custom.Origin>>,
     required: true
   }
 })
 
-const emit = defineEmits(['update:planTime'])
+const emit = defineEmits(['update:planTime', 'copyPlan', 'removePlan'])
 
-const plan = computed<PlanTime>({
+const plan = computed<Custom.PlanTime>({
   get() {
     return props.planTime
   },
-  set(v: PlanTime) {
-    const _planTime = props.planTime as PlanTime
-    emit('update:planTime', { ..._planTime, ...v })
+  set (v: Custom.PlanTime) {
+    const _planTime = props.planTime as Custom.PlanTime
+    const status = _planTime.status === 'new' ? 'new' : v.status
+    emit('update:planTime', { ..._planTime, ...v, status })
   }
 })
 
-// 原來的位置 Origin
+// 原來的位置 Custom.Origin
 const origin = computed(() => {
   // const _originPlan = props.originPlan
   const _originPlan = props.originPlanMap[props.uuid]
@@ -80,7 +80,7 @@ const origin = computed(() => {
   }
 })
 
-const planStyle = computed<PlanStyle>(() => {
+const planStyle = computed<Custom.PlanStyle>(() => {
   const startSecond = plan.value.startSecond
   const endSecond = plan.value.endSecond
 
@@ -90,50 +90,53 @@ const planStyle = computed<PlanStyle>(() => {
   }
 })
 
+const isCheck = ref(false)
 // 改分配 時間 + 位置
 const isMove = ref(false)
 let moveEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const moveDataPlan = ($event: MouseEvent) => {
-  if (isEmpty(props.scheduleContainer)) return
+  if (isEmpty(props.scheduleContainer) || isCheck.value) return
   const { originStartSecond, originEndSecond, originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
-  const throttleMousemoveEvent = throttle<typeof moveEvent>(
-    function ($event: MouseEvent) {
-      const { clientY: mouseMoveY } = $event
-      isMove.value = true
+  const throttleMousemoveEvent = throttle<typeof moveEvent>(function ($event: MouseEvent) {
+    const { clientY: mouseMoveY } = $event
+    isMove.value = true
 
-      // 變化高度
-      const _moveY = mouseMoveY - mouseDownY
+    // 變化高度
+    const _moveY = mouseMoveY - mouseDownY
 
-      const _startSecond = topToSecond(originTop + _moveY)
-      const _endSecond = topToSecond(originTop + originHeight + _moveY)
+    const _startSecond = topToSecond(originTop + _moveY)
+    const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
-      const endSecond =
-        _startSecond <= 0 // 如果開始 <= 0
-          ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
-          : _endSecond // 變化後 結束的秒數
-      if (endSecond === maxSecond) return
+    const endSecond =
+      _startSecond <= 0 // 如果開始 <= 0
+        ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
+        : _endSecond // 變化後 結束的秒數
+    if (endSecond === maxSecond) return
 
-      const startSecond =
-        _endSecond >= twentyFourHourSecond // 如果結束 >= 24
-          ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
-          : _startSecond // 變化後 開始的秒數
+    const startSecond =
+      _endSecond >= twentyFourHourSecond // 如果結束 >= 24
+        ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
+        : _startSecond // 變化後 開始的秒數
 
-      // 設定新的資料
-      plan.value = {
-        start: secondToTime(startSecond),
-        startSecond,
-        end: secondToTime(endSecond),
-        endSecond
-      }
-    },
-    FPS,
-    { isNoLeading: true }
-  )
+    // 設定新的資料
+    plan.value = {
+      start: secondToTime(startSecond),
+      startSecond,
+      end: secondToTime(endSecond),
+      endSecond,
+      status: 'update'
+    }
+
+    // 移動編輯區
+    if (updateInfo.isShow) {
+      updateInfo.top = mouseMoveY
+    }
+  }, FPS, { isNoLeading: true })
 
   moveEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', moveEvent)
@@ -143,33 +146,30 @@ let setStartEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const setStartPlan = ($event: MouseEvent) => {
-  if (isEmpty(props.scheduleContainer)) return
+  if (isEmpty(props.scheduleContainer) || isCheck.value) return
   const { originEndSecond, originTop } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
-  const throttleMousemoveEvent = throttle<typeof setStartEvent>(
-    function ($event: MouseEvent) {
-      const { clientY: mouseMoveY } = $event
+  const throttleMousemoveEvent = throttle<typeof setStartEvent>(function ($event: MouseEvent) {
+    const { clientY: mouseMoveY } = $event
 
-      // 變化高度
-      const _moveY = mouseMoveY - mouseDownY
+    // 變化高度
+    const _moveY = mouseMoveY - mouseDownY
 
-      const _startSecond = topToSecond(originTop + _moveY)
-      const startSecond =
-        originEndSecond - _startSecond <= 0 // 時間 <= 0
-          ? originEndSecond
-          : _startSecond // 變化後 開始的秒數
+    const _startSecond = topToSecond(originTop + _moveY)
+    const startSecond =
+      originEndSecond - _startSecond <= 0 // 時間 <= 0
+        ? originEndSecond
+        : _startSecond // 變化後 開始的秒數
 
-      // 設定新的資料
-      plan.value = {
-        start: secondToTime(startSecond),
-        startSecond
-      }
-    },
-    FPS,
-    { isNoLeading: true }
-  )
+    // 設定新的資料
+    plan.value = {
+      start: secondToTime(startSecond),
+      startSecond,
+      status: 'update'
+    }
+  }, FPS, { isNoLeading: true })
 
   setStartEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', setStartEvent)
@@ -179,35 +179,31 @@ let setEndEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const setEndPlan = ($event: MouseEvent) => {
-  if (isEmpty(props.scheduleContainer)) return
+  if (isEmpty(props.scheduleContainer) || isCheck.value) return
   const { originStartSecond, originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
-  const throttleMousemoveEvent = throttle<typeof setEndEvent>(
-    function ($event: MouseEvent) {
-      const { clientY: mouseMoveY } = $event
-      isMove.value = true
+  const throttleMousemoveEvent = throttle<typeof setEndEvent>(function ($event: MouseEvent) {
+    const { clientY: mouseMoveY } = $event
 
-      // 變化高度
-      const _moveY = mouseMoveY - mouseDownY
+    // 變化高度
+    const _moveY = mouseMoveY - mouseDownY
 
-      const _endSecond = topToSecond(originTop + originHeight + _moveY)
+    const _endSecond = topToSecond(originTop + originHeight + _moveY)
 
-      const endSecond =
-        _endSecond - originStartSecond <= 0 // 時間 <= 0
-          ? originStartSecond
-          : _endSecond // 變化後 結束的秒數
+    const endSecond =
+      _endSecond - originStartSecond <= 0 // 時間 <= 0
+        ? originStartSecond
+        : _endSecond // 變化後 結束的秒數
 
-      // 設定新的資料
-      plan.value = {
-        end: secondToTime(endSecond),
-        endSecond
-      }
-    },
-    FPS,
-    { isNoLeading: true }
-  )
+    // 設定新的資料
+    plan.value = {
+      end: secondToTime(endSecond),
+      endSecond,
+      status: 'update'
+    }
+  }, FPS, { isNoLeading: true })
 
   setEndEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', setEndEvent)
@@ -234,6 +230,7 @@ const updateInfo = reactive<{
   mouseupLeft: -1,
   mouseupTop: -1
 })
+
 
 const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
   const { clientX, clientY } = $event
@@ -264,29 +261,56 @@ const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
 }
 
 const formTimeValue = computed<any>({
-  get() {
+  get () {
     let res = []
     if ([null, undefined].includes(plan.value)) {
       res = ['00:00', '00:00']
     } else {
-      const [start, end] = [plan.value.start, plan.value.end]
+      const [start, end] = [
+        plan.value.start,
+        plan.value.end
+      ]
       res = [`${start}`, `${end}`]
     }
     return res
   },
-  set(v: [string, string]) {
+  set (v: [string, string]) {
     const [start, end] = v
     plan.value = {
       start,
       startSecond: timeToSecond(start),
       end,
-      endSecond: timeToSecond(end)
+      endSecond: timeToSecond(end),
+      status: 'update'
     }
   }
 })
 
+// 關閉編輯
 const closeUpdate = () => {
   updateInfo.isShow = false
+}
+
+// 刪除分配
+const removePlan = async () => {
+  closeUpdate()
+
+  await nextTick()
+  if (plan.value.status !== 'new') {
+    plan.value = {
+      status: 'delete'
+    }
+  } else {
+    emit('removePlan')
+  }
+}
+
+// 複製分配
+const copyPlan = async () => {
+  closeUpdate()
+
+  await nextTick()
+  emit('copyPlan')
 }
 
 /**
@@ -294,21 +318,25 @@ const closeUpdate = () => {
  * 時間(HH:mm) => 秒數
  * 秒數 => top
  */
-const onTimePickerChange = async (time: string) => {
+ const onTimePickerChange = async (time: string) => {
   console.log(time)
+  isCheck.value = false
 }
 
-const checkUpdatePlan = (checkTimeIsExist: CheckTimeIsExist) => {
+const checkUpdatePlan = (checkTimeIsExist: Custom.CheckTimeIsExist) => {
+  isCheck.value = true
+
   // 移除 EventListener
   props.scheduleContainer.removeEventListener('mousemove', moveEvent)
   props.scheduleContainer.removeEventListener('mousemove', setStartEvent)
   props.scheduleContainer.removeEventListener('mousemove', setEndEvent)
   isMove.value = false
 
-  const planTime = getProxyData<PlanTime>(plan.value)
+  const planTime = getProxyData<Custom.PlanTime>(plan.value)
   const { startSecond, endSecond } = planTime
   const isExist = checkTimeIsExist(startSecond, endSecond, props.uuid)
 
+  isCheck.value = false
   return {
     isExist,
     uuid: props.uuid,
@@ -319,12 +347,16 @@ const checkUpdatePlan = (checkTimeIsExist: CheckTimeIsExist) => {
 defineExpose({
   checkUpdatePlan
 })
+
 </script>
 
 <template>
   <div
     class="schedule-data-plan"
-    :class="isMove ? 'schedule-is-move' : ''"
+    :class="[
+      isMove ? 'schedule-is-move' : '',
+      `schedule-status-${plan.status}`
+    ]"
     :style="{
       top: `${planStyle.top - 1}px`,
       height: `${planStyle.height}px`
@@ -332,13 +364,30 @@ defineExpose({
     @mousedown.stop="openUpdate($event, 'mousedown')"
     @mouseup="openUpdate($event, 'mouseup')"
   >
-    <div class="schedule-data-plan-before" @mousedown="setStartPlan($event)"></div>
-    <div class="schedule-data-plan-text" @mousedown="moveDataPlan($event)">
-      <span>{{ `${plan.start}` }}</span>
-      <span> - </span>
-      <span>{{ `${plan.end}` }}</span>
-    </div>
-    <div class="schedule-data-plan-after" @mousedown="setEndPlan($event)"></div>
+    <!-- 開始時間 -->
+    <span>{{ `${plan.start}` }}</span>
+    <div
+      class="schedule-data-plan-before"
+      @mousedown="setStartPlan($event)"
+      @mouseup="isCheck = true"
+    ></div>
+
+    <!-- 移動 -->
+    <div
+      class="schedule-data-plan-text"
+      @mousedown="moveDataPlan($event)"
+      @mouseup="isCheck = true"
+    ></div>
+    <!-- 狀態 -->
+    <!-- <span> {{ plan?.status ?? 'none' }} </span> -->
+
+    <!-- 結束時間 -->
+    <span>{{ `${plan.end}` }}</span>
+    <div
+      class="schedule-data-plan-after"
+      @mousedown="setEndPlan($event)"
+      @mouseup="isCheck = true"
+    ></div>
 
     <!-- 編輯 -->
     <div
@@ -371,8 +420,20 @@ defineExpose({
             />
           </div>
           <div class="schedule-update-footer">
-            <CustomButton label="刪除此區間" type="danger" icon-name="close" icon-move="scale" />
-            <CustomButton label="同步至整周" type="primary" icon-name="copy" icon-move="scale" />
+            <CustomButton
+              label="刪除此區間"
+              type="danger"
+              icon-name="close"
+              icon-move="scale"
+              @click="removePlan"
+            />
+            <CustomButton
+              label="同步至整周"
+              type="primary"
+              icon-name="copy"
+              icon-move="scale"
+              @click="copyPlan"
+            />
           </div>
         </div>
       </CustomPopover>
@@ -385,6 +446,9 @@ defineExpose({
   &-is-move {
     cursor: move !important;
     z-index: 9;
+  }
+  &-status-delete {
+    display: none !important;
   }
 
   &-data-plan {

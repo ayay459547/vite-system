@@ -2,17 +2,10 @@
 import type { PropType } from 'vue'
 import { ref, nextTick, reactive, onMounted } from 'vue'
 
-import { getType, isEmpty, getProxyData } from '@/lib/lib_utils'
+import { getType, getUuid, isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
 import { object_filter, object_every } from '@/lib/lib_object'
 
-import type { PlanTime, Origin, CheckTimeIsExist } from '../planType'
-
-// import {
-//   FPS,
-//   // 轉換用
-//   secondToTop,
-//   secondToTime
-// } from '../planUtils'
+import type { Custom } from '../WeekScheduleInfo'
 
 import PlanItemView from './PlanItem.vue'
 import PlanTemp from './PlanTemp.vue'
@@ -23,7 +16,7 @@ const props = defineProps({
     required: true
   },
   planList: {
-    type: Object as PropType<PlanTime[]>,
+    type: Object as PropType<Custom.PlanTime[]>,
     required: true
   },
   scheduleContainer: {
@@ -31,16 +24,16 @@ const props = defineProps({
     required: true
   }
 })
+const emit = defineEmits(['copyPlan'])
 
-const renderKey = ref(0)
+const renderKey =  ref(0)
 
 // 最後一個更新的區塊
 const lastChangePlan = ref('')
 // 當分配被點擊 設定原始位置
-const setOriginPlan = (uuid: string, planTime: PlanTime) => {
+const setOriginPlan = (uuid: string, planTime: Custom.PlanTime) => {
   const { start, startSecond, end, endSecond } = planTime
 
-  lastChangePlan.value = uuid
   // 將原來的位置 更新成現在的位置
   originPlanMap[uuid] = {
     // 原始開始與結束時間
@@ -51,19 +44,19 @@ const setOriginPlan = (uuid: string, planTime: PlanTime) => {
   }
 }
 
-const planTimeMap: Record<string, PlanTime> = reactive({})
+const planTimeMap: Record<string, Custom.PlanTime> = reactive({})
 
 // 確認工時 是否存在
-const checkTimeIsExist: CheckTimeIsExist = (startSecond, endSecond, filterId) => {
+const checkTimeIsExist: Custom.CheckTimeIsExist = (startSecond, endSecond, filterId) => {
   let _planTimeMap = {}
   const filterIdType = getType(filterId)
 
   switch (filterIdType) {
     case 'Array':
-      _planTimeMap = object_filter(planTimeMap, (plan: PlanTime) => !filterId.includes(plan.id))
+      _planTimeMap = object_filter(planTimeMap, (plan: Custom.PlanTime) => !filterId.includes(plan.uuid))
       break
     case 'String':
-      _planTimeMap = object_filter(planTimeMap, (plan: PlanTime) => plan.id !== filterId)
+      _planTimeMap = object_filter(planTimeMap, (plan: Custom.PlanTime) => plan.uuid !== filterId)
       break
     case 'Null':
     default:
@@ -71,19 +64,25 @@ const checkTimeIsExist: CheckTimeIsExist = (startSecond, endSecond, filterId) =>
       break
   }
 
-  return !object_every(_planTimeMap, (plan: PlanTime) => {
+  return !object_every(_planTimeMap, (plan: Custom.PlanTime) => {
     // 開始和結束都 <= 開始
     // 開始和結束都 >= 結束
-    const { startSecond: _startSecond, endSecond: _endSecond } = plan
+    const { startSecond: _startSecond, endSecond: _endSecond, status } = plan
     return (
       (startSecond <= _startSecond && endSecond <= _startSecond) ||
       (startSecond >= _endSecond && endSecond >= _endSecond)
-    )
+    ) || (status === 'delete')
   })
 }
 
+// 當分配被點擊時
+const onPlanMouseDown = (uuid: string, planTime: Custom.PlanTime) => {
+  setOriginPlan(uuid, planTime)
+  lastChangePlan.value = uuid
+}
+
 // 修改工時分配
-const originPlanMap: Record<string, Origin> = reactive({})
+const originPlanMap: Record<string, Custom.Origin> = reactive({})
 
 const planTempRef = ref()
 const createTempPlan = ($event: MouseEvent, hour: number) => {
@@ -98,24 +97,16 @@ const planItemViewRef = reactive({})
 /**
  * 更新 分配畫面
  */
-const updateSchedule = async () => {
+ const updateSchedule = async () => {
   await nextTick()
-  // 如果不存在 => 新增
-  if (planTempRef.value) {
-    const { isExist, newUuid, planTime } = planTempRef.value.checkCreatePlan(checkTimeIsExist)
-    if (!isExist && !isEmpty(newUuid)) {
-      planTimeMap[newUuid] = planTime
-      setOriginPlan(newUuid, planTime)
-    }
-  }
   // 如果存在 => 變回原值
-  if (!isEmpty(lastChangePlan.value) && planItemViewRef[lastChangePlan.value]) {
-    const { isExist, uuid, planTime } =
-      planItemViewRef[lastChangePlan.value].checkUpdatePlan(checkTimeIsExist)
+  if (!isEmpty(lastChangePlan.value) && planItemViewRef[`PlanItem-${lastChangePlan.value}`]) {
+    const { isExist, uuid, planTime } = planItemViewRef[`PlanItem-${lastChangePlan.value}`].checkUpdatePlan(checkTimeIsExist)
     if (isExist) {
       const { originStart, originStartSecond, originEnd, originEndSecond } = originPlanMap[uuid]
 
       planTimeMap[uuid] = {
+        ...planTime,
         start: originStart,
         startSecond: originStartSecond,
         end: originEnd,
@@ -123,22 +114,109 @@ const updateSchedule = async () => {
       }
     } else {
       setOriginPlan(uuid, planTime)
+      lastChangePlan.value = uuid
     }
     lastChangePlan.value = null
+  }
+
+  // 如果不存在 => 新增
+  if (planTempRef.value) {
+    const { isExist, newUuid, planTime } = planTempRef.value.checkCreatePlan(checkTimeIsExist)
+    if (!isExist && !isEmpty(newUuid)) {
+      planTimeMap[newUuid] = planTime
+      setOriginPlan(newUuid, planTime)
+      lastChangePlan.value = newUuid
+    }
   }
 }
 
 // 初始化
-const init = async (planList: PlanTime[]) => {
+const init = async (planList: Custom.PlanTime[]) => {
   for (let uuid in planTimeMap) {
     delete planTimeMap[uuid]
   }
   await nextTick()
 
   planList.forEach(planItem => {
-    const { id: uuid } = planItem
+    const { uuid } = planItem
+    setOriginPlan(uuid, planItem)
     planTimeMap[uuid] = planItem
   })
+}
+
+// 複製到其他天
+const copyPlan = async (planTime: Custom.PlanTime) => {
+  await nextTick()
+  emit('copyPlan', planTime)
+}
+
+// 接收複製後 插入資料
+const insertData = (planTime: Custom.PlanTime) => {
+  const { startSecond, endSecond } = planTime
+  const isExist = checkTimeIsExist(startSecond, endSecond)
+
+  if (!isExist) {
+    const uuid = getUuid('new')
+    const _planTime: Custom.PlanTime = {
+      ...planTime,
+      uuid,
+      id: uuid,
+      status: 'new'
+    }
+    planTimeMap[uuid] = _planTime
+    setOriginPlan(uuid, _planTime)
+  }
+}
+
+/**
+ * 刪除分配
+ * new 直接移除
+ * old 不移除 status => delete
+ */
+const removePlan = (uuid: string) => {
+  if (hasOwnProperty(planTimeMap, uuid)) {
+    delete planTimeMap[uuid]
+  }
+}
+
+// 取資料
+const getData = async () => {
+  await nextTick()
+
+  const createList = []
+  const updateList = []
+  const removeList = []
+
+  for (let uuid in planTimeMap) {
+    const planTime = getProxyData<Custom.PlanTime>(planTimeMap[uuid])
+    const { status } = planTime
+
+    const _planTime = {
+      ...planTime,
+      uuid,
+      dayId: props.dayId
+    }
+    switch (status) {
+      case 'new':
+        createList.push(_planTime)
+        break
+      case 'update':
+        updateList.push(_planTime)
+        break
+      case 'delete':
+        removeList.push(_planTime)
+        break
+      case 'old':
+      default:
+        break
+    }
+  }
+
+  return {
+    create: createList,
+    update: updateList,
+    remove: removeList
+  }
 }
 
 onMounted(() => {
@@ -146,11 +224,14 @@ onMounted(() => {
 })
 
 defineExpose({
-  init
+  init,
+  insertData,
+  getData
 })
 
 // 小時的格子ref
 const hourMapRef = reactive({})
+
 </script>
 
 <template>
@@ -173,16 +254,18 @@ const hourMapRef = reactive({})
       :key="`PlanItem-${uuid}`"
       :ref="
         el => {
-          planItemViewRef[`${uuid}`] = el
-          return `${uuid}`
+          planItemViewRef[`PlanItem-${uuid}`] = el
+          return `PlanItem-${uuid}`
         }
       "
       :planTime="planTime"
-      @update:planTime="(v: PlanTime) => { planTimeMap[uuid] = v }"
+      @update:planTime="(v: Custom.PlanTime) => { planTimeMap[uuid] = v }"
       :uuid="uuid"
       :scheduleContainer="props.scheduleContainer"
       :originPlanMap="originPlanMap"
-      @mousedown="lastChangePlan = uuid"
+      @mousedown="onPlanMouseDown(uuid, planTime)"
+      @copyPlan="copyPlan(planTime)"
+      @removePlan="removePlan(uuid)"
     />
 
     <!-- 背景表格 -->
