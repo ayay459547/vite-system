@@ -305,7 +305,7 @@ const onDragend = () => {
       cursor: pointer;
     }
     &:hover {
-      background-color: #f5f7fa;
+      background-color: var(--el-color-info-light-9);
     }
   }
 

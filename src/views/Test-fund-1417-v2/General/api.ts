@@ -87,7 +87,7 @@ export const getGeneralWeekSchedule = async (): Promise<ApiRes<any[]>> => {
       }
     },
     {
-      isFakeData: true,
+      isFakeData: false,
       fakeData: {
         data: fakeTableData,
         status: 'success'
@@ -135,59 +135,7 @@ const planTimeFormat = (planTime: PlanTime): FormParams => {
   }
 }
 export const saveGeneralWeekSchedule = async (create: PlanList, update: PlanList, remove: PlanList): Promise<ApiRes> => {
-  const apiList = []
-
-  // 新增
-  if (create.length > 0) {
-    const createList: FormParams[] = create.map(planTime => {
-      return planTimeFormat(planTime)
-    })
-
-    apiList.push(ajax<Api<null>>(
-      {
-        url: '/workingTime/addGeneralWorkingTimes',
-        method: 'post',
-        data: createList
-      },
-      {
-        isFakeData: true,
-        fakeData: {
-          data: null,
-          status: 'error',
-          msg: 'addGeneralWorkingTimes'
-        },
-        isLog: false,
-        delay: 300
-      }
-    ))
-  }
-  // 修改
-  if (update.length > 0) {
-    const updateList: FormParams[] = update.map(planTime => {
-      return {
-        id: planTime.id,
-        ...planTimeFormat(planTime)
-      }
-    })
-
-    apiList.push(ajax<Api<null>>(
-      {
-        url: '/workingTime/updateGeneralWorkingTimes',
-        method: 'post',
-        data: updateList
-      },
-      {
-        isFakeData: true,
-        fakeData: {
-          data: null,
-          status: 'error',
-          msg: 'updateGeneralWorkingTimes'
-        },
-        isLog: false,
-        delay: 300
-      }
-    ))
-  }
+  const resList = []
   // 刪除
   if (remove.length > 0) {
     const removeList: FormParams[] = remove.map(planTime => {
@@ -197,14 +145,14 @@ export const saveGeneralWeekSchedule = async (create: PlanList, update: PlanList
       }
     })
 
-    apiList.push(ajax<Api<null>>(
+    const res = await ajax<Api<null>>(
       {
         url: '/workingTime/deleteGeneralWorkingTimes',
         method: 'post',
         data: removeList
       },
       {
-        isFakeData: true,
+        isFakeData: false,
         fakeData: {
           data: null,
           status: 'error',
@@ -213,13 +161,67 @@ export const saveGeneralWeekSchedule = async (create: PlanList, update: PlanList
         isLog: false,
         delay: 300
       }
-    ))
+    )
+    resList.push(res)
+  }
+
+  // 修改
+  if (update.length > 0) {
+    const updateList: FormParams[] = update.map(planTime => {
+      return {
+        id: planTime.id,
+        ...planTimeFormat(planTime)
+      }
+    })
+
+    const res = await ajax<Api<null>>(
+      {
+        url: '/workingTime/updateGeneralWorkingTimes',
+        method: 'post',
+        data: updateList
+      },
+      {
+        isFakeData: false,
+        fakeData: {
+          data: null,
+          status: 'error',
+          msg: 'updateGeneralWorkingTimes'
+        },
+        isLog: false,
+        delay: 300
+      }
+    )
+    resList.push(res)
+  }
+
+  // 新增
+  if (create.length > 0) {
+    const createList: FormParams[] = create.map(planTime => {
+      return planTimeFormat(planTime)
+    })
+
+    const res = await ajax<Api<null>>(
+      {
+        url: '/workingTime/addGeneralWorkingTimes',
+        method: 'post',
+        data: createList
+      },
+      {
+        isFakeData: false,
+        fakeData: {
+          data: null,
+          status: 'error',
+          msg: 'addGeneralWorkingTimes'
+        },
+        isLog: false,
+        delay: 300
+      }
+    )
+    resList.push(res)
   }
 
   // 送回結果
-  if (apiList.length > 0) {
-    const resList = await Promise.all(apiList)
-
+  if (resList.length > 0) {
     const apiRes = resList.reduce((res, resData) => {
       const { status, msg } = resData
 

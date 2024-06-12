@@ -15,6 +15,12 @@ const props = defineProps({
     type: Number as PropType<number>,
     required: true
   },
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '不可點擊'
+  },
   planList: {
     type: Object as PropType<Custom.PlanTime[]>,
     required: true
@@ -98,6 +104,8 @@ const planItemViewRef = reactive({})
  * 更新 分配畫面
  */
  const updateSchedule = async () => {
+  if (props.disabled) return
+
   await nextTick()
   // 如果存在 => 變回原值
   if (!isEmpty(lastChangePlan.value) && planItemViewRef[`PlanItem-${lastChangePlan.value}`]) {
@@ -237,6 +245,7 @@ const hourMapRef = reactive({})
 <template>
   <div
     class="schedule-day"
+    :class="props.disabled ? 'is-disabled' : ''"
     :key="`schedule-day-${props.dayId}-${renderKey}`"
     @mouseup="updateSchedule"
     @mouseleave="updateSchedule"
@@ -296,10 +305,15 @@ const hourMapRef = reactive({})
     display: grid;
     grid-template-rows: repeat(24, 1fr);
     grid-template-columns: 1fr;
+
+    background-color: var(--el-bg-color);
+    &.is-disabled {
+      background-color: var(--el-color-info-light-8);
+    }
   }
 
   &-block {
-    border-right: 1px solid #dddddd;
+    border-right: 1px solid var(--el-color-info-light-5);
     display: flex;
     flex-direction: column;
     // transition-duration: 0.2s;
@@ -312,11 +326,11 @@ const hourMapRef = reactive({})
     // }
     .first-block {
       flex: 1;
-      border-bottom: 1px solid #eeeeee;
+      border-bottom: 1px solid var(--el-color-info-light-7);
     }
     .second-block {
       flex: 1;
-      border-bottom: 1px solid #dddddd;
+      border-bottom: 1px solid var(--el-color-info-light-5);
     }
   }
 }

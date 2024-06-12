@@ -163,8 +163,8 @@ defineExpose({
     left: 0;
     border-radius: 4px;
     min-height: 12px;
-    background-color: #eeeeee80;
-    border: 1px solid #dddddd;
+    background-color: #dddddd70;
+    border-top: 1px solid var(--el-color-info-light-5);
     text-align: center;
     padding-top: 2px;
   }

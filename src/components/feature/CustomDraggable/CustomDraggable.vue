@@ -142,7 +142,7 @@ const hasSlot = (prop: string): boolean => {
 
       &:hover,
       &:nth-child(even):hover {
-        background-color: #f5f7fa;
+        background-color: var(--el-color-info-light-9);
         transition-duration: 0.3s;
       }
     }

@@ -10,8 +10,6 @@ import type { Custom } from '../WeekScheduleInfo'
 
 import {
   FPS,
-  maxSecond,
-  twentyFourHourSecond,
   // 轉換用
   secondToTop,
   topToSecond,
@@ -98,7 +96,7 @@ let moveEvent = ($event: MouseEvent) => {
 }
 const moveDataPlan = ($event: MouseEvent) => {
   if (isEmpty(props.scheduleContainer) || isCheck.value) return
-  const { originStartSecond, originEndSecond, originTop, originHeight } = origin.value
+  const { originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
@@ -108,20 +106,8 @@ const moveDataPlan = ($event: MouseEvent) => {
 
     // 變化高度
     const _moveY = mouseMoveY - mouseDownY
-
-    const _startSecond = topToSecond(originTop + _moveY)
-    const _endSecond = topToSecond(originTop + originHeight + _moveY)
-
-    const endSecond =
-      _startSecond <= 0 // 如果開始 <= 0
-        ? _startSecond + (originEndSecond - originStartSecond) // 結束 = 開始 + 本身的秒數
-        : _endSecond // 變化後 結束的秒數
-    if (endSecond === maxSecond) return
-
-    const startSecond =
-      _endSecond >= twentyFourHourSecond // 如果結束 >= 24
-        ? _endSecond - (originEndSecond - originStartSecond) // 開始 = 結束 - 本身的秒數
-        : _startSecond // 變化後 開始的秒數
+    const startSecond = topToSecond(originTop + _moveY)
+    const endSecond = topToSecond(originTop + originHeight + _moveY)
 
     // 設定新的資料
     plan.value = {
@@ -147,7 +133,7 @@ let setStartEvent = ($event: MouseEvent) => {
 }
 const setStartPlan = ($event: MouseEvent) => {
   if (isEmpty(props.scheduleContainer) || isCheck.value) return
-  const { originEndSecond, originTop } = origin.value
+  const { originTop } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
@@ -156,12 +142,7 @@ const setStartPlan = ($event: MouseEvent) => {
 
     // 變化高度
     const _moveY = mouseMoveY - mouseDownY
-
-    const _startSecond = topToSecond(originTop + _moveY)
-    const startSecond =
-      originEndSecond - _startSecond <= 0 // 時間 <= 0
-        ? originEndSecond
-        : _startSecond // 變化後 開始的秒數
+    const startSecond = topToSecond(originTop + _moveY)
 
     // 設定新的資料
     plan.value = {
@@ -180,7 +161,7 @@ let setEndEvent = ($event: MouseEvent) => {
 }
 const setEndPlan = ($event: MouseEvent) => {
   if (isEmpty(props.scheduleContainer) || isCheck.value) return
-  const { originStartSecond, originTop, originHeight } = origin.value
+  const { originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
@@ -189,13 +170,7 @@ const setEndPlan = ($event: MouseEvent) => {
 
     // 變化高度
     const _moveY = mouseMoveY - mouseDownY
-
-    const _endSecond = topToSecond(originTop + originHeight + _moveY)
-
-    const endSecond =
-      _endSecond - originStartSecond <= 0 // 時間 <= 0
-        ? originStartSecond
-        : _endSecond // 變化後 結束的秒數
+    const endSecond = topToSecond(originTop + originHeight + _moveY)
 
     // 設定新的資料
     plan.value = {
@@ -364,25 +339,25 @@ defineExpose({
     @mousedown.stop="openUpdate($event, 'mousedown')"
     @mouseup="openUpdate($event, 'mouseup')"
   >
-    <!-- 開始時間 -->
-    <span>{{ `${plan.start}` }}</span>
     <div
       class="schedule-data-plan-before"
       @mousedown="setStartPlan($event)"
       @mouseup="isCheck = true"
     ></div>
-
     <!-- 移動 -->
     <div
       class="schedule-data-plan-text"
       @mousedown="moveDataPlan($event)"
       @mouseup="isCheck = true"
-    ></div>
-    <!-- 狀態 -->
-    <!-- <span> {{ plan?.status ?? 'none' }} </span> -->
-
-    <!-- 結束時間 -->
-    <span>{{ `${plan.end}` }}</span>
+    >
+      <!-- 開始時間 -->
+      <span>{{ `${plan.start}` }}</span>
+      <span> - </span>
+      <!-- 結束時間 -->
+      <span>{{ `${plan.end}` }}</span>
+      <!-- 狀態 -->
+      <!-- <span> {{ plan?.status ?? 'none' }} </span> -->
+    </div>
     <div
       class="schedule-data-plan-after"
       @mousedown="setEndPlan($event)"

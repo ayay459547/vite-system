@@ -169,7 +169,7 @@ defineExpose({
       <div class="schedule-time">
         <div class="schedule-time-zero">{{ '00:00' }}</div>
         <ul class="schedule-time-list">
-          <li v-for="hour in 24" :key="hour" class="schedule-time-item">
+          <li v-for="hour in 23" :key="hour" class="schedule-time-item">
             <div class="text">{{ `${hour}:00`.padStart(5, '0') }}</div>
           </li>
         </ul>
@@ -184,6 +184,7 @@ defineExpose({
             :ref="`day-${dayItem.id}`"
             :key="dayItem.id"
             class="schedule-day-item"
+            :class="[6, 7].includes(dayItem.id) ? 'text-danger' : ''"
           >
             {{ i18nTranslate(dayItem.label) }}
           </li>
@@ -266,7 +267,7 @@ $body-height: v-bind(bodyHeight);
       grid-template-rows: repeat(24, 1fr);
     }
     &-item {
-      color: #4d4d4d;
+      color: var(--el-text-color-primary);
       .text {
         transform: translateY(32px);
       }
@@ -285,8 +286,13 @@ $body-height: v-bind(bodyHeight);
       grid-template-columns: repeat(7, 1fr);
     }
     &-item {
-      @extend %flex-center;
-      color: #4d4d4d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: var(--el-text-color-primary);
     }
   }
 
@@ -294,8 +300,8 @@ $body-height: v-bind(bodyHeight);
     width: 100%;
     height: $body-height;
     position: relative;
-    border-top: 1px solid #dddddd;
-    border-left: 1px solid #dddddd;
+    border-top: 1px solid var(--el-color-info-light-5);
+    border-left: 1px solid var(--el-color-info-light-5);
     display: flex;
   }
 }

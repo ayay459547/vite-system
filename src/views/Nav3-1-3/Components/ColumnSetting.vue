@@ -241,7 +241,7 @@ onBeforeMount(async () => {
       line-height: 40px;
     }
     &:hover {
-      background-color: #f5f7fa;
+      background-color: var(--el-color-info-light-9);
     }
   }
 

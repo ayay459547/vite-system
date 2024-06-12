@@ -235,7 +235,7 @@ const submit = () => {
     padding: 6px 0 0 16px;
     width: 100%;
     &:hover {
-      background-color: #f5f7fa;
+      background-color: var(--el-color-info-light-9);
     }
 
     opacity: 0.7;

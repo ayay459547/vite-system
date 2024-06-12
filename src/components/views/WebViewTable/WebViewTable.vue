@@ -152,12 +152,18 @@ const props = defineProps({
       取代downloadExcel的特製表格下載方式
       ex: 子欄位、合併……
     `
+  },
+  isHiddenPrepend: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否在 隱藏 slot #prepend'
   }
 })
 
 const emit = defineEmits([
   // 'header-click',
-  // 'row-click',
+  'row-click',
   // 'excel',
   // 'columns-change',
   // 'sort-change',
@@ -192,6 +198,9 @@ const onSelectAll = (selection: any) => {
 }
 const onSelectionChange = (selection: any) => {
   emit('selection-change', selection)
+}
+const onRowClick = (row:any, column: any, event: any) => {
+  emit('row-click', row, column, event)
 }
 const onRowContextmenu = (row: any, column: any, event: Event) => {
   emit('row-contextmenu', row, column, event)
@@ -385,10 +394,10 @@ const customTableRef = ref()
  */
 const _isCustomTableInit = ref(false)
 const isCustomTableInit = computed({
-  get() {
+  get () {
     return _isCustomTableInit.value
   },
-  set(v: boolean) {
+  set (v: boolean) {
     _isCustomTableInit.value = v
     if (v) {
       init(null, '')
@@ -534,12 +543,13 @@ onMounted(() => {
       @select="onSelect"
       @select-all="onSelectAll"
       @selection-change="onSelectionChange"
+      @row-click="onRowClick"
       @row-contextmenu="onRowContextmenu"
       @show-change="throttleInit($event, 'table')"
       @load="throttleInit($event, 'table')"
       @init-finish="isCustomTableInit = true"
     >
-      <template #prepend>
+      <template v-if="!props.isHiddenPrepend" #prepend>
         <div class="flex-row i-ga-xs content-between">
           <slot name="prepend">
             <div></div>

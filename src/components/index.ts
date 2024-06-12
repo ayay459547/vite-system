@@ -44,6 +44,8 @@ export { default as CustomDialog } from './feature/CustomDialog/CustomDialog.vue
 export type { Props as DividerProps } from './feature/CustomDivider/CustomDividerInfo'
 export { default as CustomDivider } from './feature/CustomDivider/CustomDivider.vue'
 
+// 分隔檢視
+export type { Props as DividerViewProps } from './feature/CustomDividerView/CustomDividerViewInfo'
 export { default as CustomDividerView } from './feature/CustomDividerView/CustomDividerView.vue'
 
 // 拖拉

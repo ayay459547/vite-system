@@ -2,7 +2,7 @@
 import { ref, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
-import { WeekSchedule, CustomButton } from '@/components'
+import { WeekSchedule, CustomButton, CustomDividerView } from '@/components'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 
 import {
@@ -13,9 +13,12 @@ import {
 } from './api'
 
 import { timeFormat } from '../planUtils'
+import GeneralTable from './GeneralTable/GeneralTable.vue'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, swal, permission } = useHook()
+const { i18nTranslate, swal, permission } = useHook({
+  i18nModule: 'system'
+})
 
 const isLoading = ref(true)
 
@@ -63,6 +66,7 @@ const setWeekScheduleData = (planList: any[]) => {
 }
 
 // 初始化
+const tableRef = ref()
 const init = async () => {
   isLoading.value = true
 
@@ -75,8 +79,8 @@ const init = async () => {
   if (generalWeekScheduleStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'system'),
-      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'system'),
+      title: i18nTranslate('error-getData', 'iPASP_common'),
+      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
       showCancelButton: false
     })
   }
@@ -97,14 +101,16 @@ const init = async () => {
   if (isNeedSendRTDSStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'system'),
-      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'system'),
+      title: i18nTranslate('error-getData', 'iPASP_common'),
+      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
       showCancelButton: false
     })
   }
   isNeedSendRTDS.value = isNeedSendRTDSData
 
   await nextTick()
+  tableRef.value?.init()
+
   setTimeout(() => {
     isLoading.value = false
   }, 300)
@@ -154,47 +160,58 @@ const onRTDSClick = () => {
 
 <template>
   <div v-loading="isLoading" class="GeneralView page-container">
-    <div class="page-header">
-      <div class="flex-row i-ga-md">
-        <CustomButton
-          :label="i18nTranslate('save')"
-          type="primary"
-          icon-type="far"
-          icon-name="floppy-disk"
-          @click="saveWeekScheduleData"
-        />
-        <CustomButton
-          :type="isNeedSendRTDS ? 'danger' : 'info'"
-          :label="i18nTranslate('sendRTDS')"
-          icon-name="paper-plane"
-          icon-move="translate"
-          :disabled="!userPermission.execute"
-          @click="onRTDSClick"
-        />
-      </div>
+    <CustomDividerView position="right">
+      <template #left>
+        <div class="page-left">
+          <div class="page-header">
+            <div class="flex-row i-ga-md">
+              <CustomButton
+                :label="i18nTranslate('save')"
+                type="primary"
+                icon-type="far"
+                icon-name="floppy-disk"
+                @click="saveWeekScheduleData"
+              />
+              <CustomButton
+                :type="isNeedSendRTDS ? 'danger' : 'info'"
+                :label="i18nTranslate('sendRTDS')"
+                icon-name="paper-plane"
+                icon-move="translate"
+                :disabled="!userPermission.execute"
+                @click="onRTDSClick"
+              />
+            </div>
 
-      <div class="flex-row i-ga-md">
-        <CustomButton
-          :label="i18nTranslate('clear')"
-          type="danger"
-          icon-type="far"
-          icon-name="circle-xmark"
-          @click="setWeekScheduleData([])"
-        />
-        <CustomButton
-          :label="i18nTranslate('refrush')"
-          icon-name="rotate"
-          icon-move="rotate"
-          @click="init"
-        />
-      </div>
-    </div>
-    <div class="page-body">
-      <WeekSchedule
-        ref="weekSchedule"
-        :plan-list="planList"
-      ></WeekSchedule>
-    </div>
+            <div class="flex-row i-ga-md">
+              <CustomButton
+                :label="i18nTranslate('clear')"
+                type="danger"
+                icon-type="far"
+                icon-name="circle-xmark"
+                @click="setWeekScheduleData([])"
+              />
+              <CustomButton
+                :label="i18nTranslate('refrush')"
+                icon-name="rotate"
+                icon-move="rotate"
+                @click="init"
+              />
+            </div>
+          </div>
+          <div class="page-body">
+            <WeekSchedule
+              ref="weekSchedule"
+              :plan-list="planList"
+            ></WeekSchedule>
+          </div>
+        </div>
+      </template>
+      <template #right>
+        <div class="page-right">
+          <GeneralTable ref="tableRef" />
+        </div>
+      </template>
+    </CustomDividerView>
   </div>
 </template>
 
@@ -209,12 +226,22 @@ const onRTDSClick = () => {
     }
   }
   .page {
+    &-left,
+    &-right {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+    }
+
     &-header {
       width: 100%;
       height: fit-content;
       display: flex;
       gap: 16px;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
     &-body {
       width: 100%;

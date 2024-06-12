@@ -366,7 +366,7 @@ export default SimpleTable
   &-header {
     height: fit-content;
     display: flex;
-    background-color: #f5f7fa;
+    background-color: var(--el-color-info-light-9);
     border-bottom: 1px solid #ebeef5;
     z-index: 1;
     overflow-y: scroll;
@@ -417,7 +417,7 @@ export default SimpleTable
 
     &:hover,
     &:nth-child(even):hover {
-      background-color: #f5f7fa;
+      background-color: var(--el-color-info-light-9);
     }
   }
 

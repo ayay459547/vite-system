@@ -42,45 +42,44 @@ const copyMachineWeekSchedule = (row: TableData) => {
 </script>
 
 <template>
-  <div class="fill i-pb-xxl">
-    <WebViewTable
-      ref="webViewTableRef"
-      webfuno="fund_1413"
-      :table-options="tableOptions"
-      :column-setting="columnSetting"
-      :format-params="formatParams"
-      :format-excel="formatExcel"
-      :format-table="formatTable"
-      :fake-data="fakeTableData"
-    >
-      <template #header-operations="{ column }">
-        <div class="fill-y flex-row-center">{{ i18nTranslate(column.i18nLabel) }}</div>
-      </template>
-      <template #column-operations="scope">
-        <div class="fill-y flex-row-center i-ga-md">
-          <CustomTooltip :show-after="300">
-            <CustomButton
-              type="primary"
-              text
-              circle
-              icon-name="circle-right"
-              @click="setMachineWeekSchedule(scope.row)"
-            />
-            <template #content>{{ `${i18nTranslate('setting')} ${scope.row.machineId}` }}</template>
-          </CustomTooltip>
-          <CustomTooltip :show-after="300">
-            <CustomButton
-              text
-              circle
-              icon-name="copy"
-              @click="copyMachineWeekSchedule(scope.row)"
-            />
-            <template #content>{{ `${i18nTranslate('copy')} ${scope.row.machineId}` }}</template>
-          </CustomTooltip>
-        </div>
-      </template>
-    </WebViewTable>
-  </div>
+  <WebViewTable
+    ref="webViewTableRef"
+    webfuno="fund_1413"
+    :table-options="tableOptions"
+    :column-setting="columnSetting"
+    :format-params="formatParams"
+    :format-excel="formatExcel"
+    :format-table="formatTable"
+    :fake-data="fakeTableData"
+    is-hidden-prepend
+  >
+    <template #header-operations="{ column }">
+      <div class="fill-y flex-row-center">{{ i18nTranslate(column.i18nLabel) }}</div>
+    </template>
+    <template #column-operations="scope">
+      <div class="fill-y flex-row-center i-ga-md">
+        <CustomTooltip :show-after="300">
+          <CustomButton
+            type="primary"
+            text
+            circle
+            icon-name="circle-right"
+            @click="setMachineWeekSchedule(scope.row)"
+          />
+          <template #content>{{ `${i18nTranslate('setting')} ${scope.row.machineId}` }}</template>
+        </CustomTooltip>
+        <CustomTooltip :show-after="300">
+          <CustomButton
+            text
+            circle
+            icon-name="copy"
+            @click="copyMachineWeekSchedule(scope.row)"
+          />
+          <template #content>{{ `${i18nTranslate('copy')} ${scope.row.machineId}` }}</template>
+        </CustomTooltip>
+      </div>
+    </template>
+  </WebViewTable>
 </template>
 
 <style lang="scss" scoped></style>

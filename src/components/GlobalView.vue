@@ -142,21 +142,32 @@ onMounted(() => {
 // 切換頁面 打開遮罩
 // 暫時不行點擊任何東西
 const isDisabled = ref(false)
-let timeoutId: NodeJS.Timeout | null
+let disabledTimeoutId: NodeJS.Timeout | null
+let loadingTimeoutId: NodeJS.Timeout | null
+
 const _isLoading = ref(false)
 const isLoading = computed({
   set (v: boolean) {
-    if (timeoutId) {
-      clearInterval(timeoutId)
+    if (disabledTimeoutId) {
+      clearInterval(disabledTimeoutId)
+    }
+    if (loadingTimeoutId) {
+      clearInterval(loadingTimeoutId)
     }
     _isLoading.value = v
     isDisabled.value = v
 
-    // mask 一段時間 自動關閉
+    // isDisabled 一段時間 自動關閉
     if (v) {
-      timeoutId = setTimeout(() => {
+      disabledTimeoutId = setTimeout(() => {
         isDisabled.value = false
       }, 300)
+    }
+    // _isLoading 一段時間 自動關閉
+    if (v) {
+      loadingTimeoutId = setTimeout(() => {
+        _isLoading.value = false
+      }, 3200)
     }
   },
   get () {
@@ -295,9 +306,6 @@ const initNavigationRoutes = async (routeName?: string) => {
   }
   layoutIsShow.value = true
 
-  // 給 240 毫秒 確保路由跳轉完成後 才執行
-  await nextTick()
-  await awaitTime(240)
   setLayoutInfo()
 }
 
@@ -311,9 +319,12 @@ onMounted(() => {
 
 // 路由切換
 const setLayoutInfo = async () => {
+  // 給 480 毫秒 確保路由跳轉完成後 才執行
   await nextTick()
   await awaitTime(480)
-  systemLayoutRef.value.init()
+  if (systemLayoutRef.value) {
+    systemLayoutRef.value.init()
+  }
 }
 
 // 登出
