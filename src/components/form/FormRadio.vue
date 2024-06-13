@@ -110,10 +110,11 @@ const getStyle = (isSelected: boolean, color?: string) => {
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-radio__) {
   &.validate-error .el-radio__inner {
-    border: 1px solid $danger;
-    background-color: lighten($danger, 20%);
+    @include validate-error(radio);
   }
 }
 .__i-radio__ {

@@ -162,10 +162,12 @@ const getTextValue = (tempValue: ModelValue) => {
 </template>
 
 <style lang="scss" scoped>
+$tree-danger: #f56c6c;
+
 :deep(.i-checkbox) {
   &.validate-error .el-checkbox__inner {
-    border: 1px solid $danger;
-    background-color: lighten($danger, 20%);
+    border: 1px solid $tree-danger;
+    background-color: lighten($tree-danger, 20%);
   }
 }
 .input {
@@ -196,7 +198,7 @@ const getTextValue = (tempValue: ModelValue) => {
     top: 0;
   }
   &-required {
-    color: $danger;
+    color: var(--i-color-danger);
   }
 
   &-label {
@@ -210,7 +212,7 @@ const getTextValue = (tempValue: ModelValue) => {
   }
 
   &-error {
-    color: $danger;
+    color: var(--i-color-danger);
   }
 }
 </style>

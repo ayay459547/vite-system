@@ -163,7 +163,7 @@ defineExpose({
 
     &:hover,
     &.active {
-      color: $warning;
+      color: var(--el-color-warning);
       // background-color: lighten($system-bg-color, 18%);
     }
   }

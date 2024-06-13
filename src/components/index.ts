@@ -86,7 +86,11 @@ export type {
 export { default as CustomInput } from './feature/CustomInput/CustomInput'
 
 // 跳轉用組件
-// export { default as CustomLink } from './feature/CustomLink/CustomLink.vue'
+export type {
+  Custom as LinkCustom,
+  Props as LinkProps
+} from './feature/CustomLink/CustomLinkInfo'
+export { default as CustomLink } from './feature/CustomLink/CustomLink.vue'
 
 // .md
 export type { Props as MarkdownProps } from './feature/CustomMarkdown/CustomMarkdownInfo'

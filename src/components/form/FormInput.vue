@@ -251,6 +251,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-input__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
@@ -264,8 +266,7 @@ defineExpose({
     top: 0px;
   }
   &.validate-error .el-input__wrapper {
-    box-shadow: 0 0 0 1px $danger inset;
-    background-color: lighten($danger, 20%);
+    @include validate-error(input);
   }
 
   .el-input-group__prepend {

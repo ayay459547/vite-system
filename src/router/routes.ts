@@ -127,20 +127,6 @@ const routes: Array<RouterTree> = [
             component: () => import('@/views/Test-fund-1417-v2/Test-fund-1417-v2.vue')
           },
           {
-            name: 'test-fund-141',
-            title: '測試Fund-141',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-11',
-              completedDate: '2023-11'
-            },
-            systemType: ['new'],
-            path: '/test-fund-141',
-            icon: 'file-circle-check',
-            component: () => import('@/views/Test-fund-141/Test-fund-141.vue')
-          },
-          {
             name: 'test-fund-122',
             title: '測試Fund-122',
             meta: {
@@ -253,7 +239,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-1-5',
-            title: '卡片',
+            title: '卡片+拖拉+彈窗',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -264,34 +250,6 @@ const routes: Array<RouterTree> = [
             path: '/nav1-1-5',
             icon: 'info',
             component: () => import('@/views/Nav1-1-5/Nav1-1-5.vue')
-          },
-          {
-            name: 'nav1-1-6',
-            title: '拖拉',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-6',
-            icon: 'info',
-            component: () => import('@/views/Nav1-1-6/Nav1-1-6.vue')
-          },
-          {
-            name: 'nav1-1-7',
-            title: '彈窗',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav1-1-7',
-            icon: 'info',
-            component: () => import('@/views/Nav1-1-7/Nav1-1-7.vue')
           }
         ]
       },
@@ -318,7 +276,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-2-2',
-            title: '時間線測試',
+            title: '時間線測試+QRcode',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -357,20 +315,6 @@ const routes: Array<RouterTree> = [
             path: '/nav1-2-4',
             icon: 'face-laugh-beam',
             component: () => import('@/views/Nav1-2-4/Nav1-2-4.vue')
-          },
-          {
-            name: 'nav-1-2-5',
-            title: 'QRcode',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav-1-2-5',
-            icon: 'qrcode',
-            component: () => import('@/views/Nav1-2-5/Nav1-2-5.vue')
           }
         ]
       },

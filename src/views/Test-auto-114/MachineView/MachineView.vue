@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, shallowRef, onMounted, inject, nextTick, reactive } from 'vue'
+import { ref, inject, nextTick, reactive } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomModal } from '@/components'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
-import throttle from '@/lib/lib_throttle'
+import { WebViewTable, CustomButton, CustomModal } from '@/components'
+
 import type { TableOptions } from '@/lib/lib_columns'
 
-import type { TableData, FilterData } from './api'
-import { getTableData, getTableDataCount, getExcelData } from './api'
+import type { TableData } from './api'
+import { formatParams, formatExcel, formatTable } from './api'
 import { columnSetting } from './columns'
+import { fakeTableData } from './fakeData'
 
 import MachineRushOrder from './Components/MachineRushOrder.vue'
 
@@ -18,105 +18,25 @@ const { i18nTranslate } = useHook({
   i18nModule: 'system'
 })
 
-// filter
-const {
-  columns: filterColumn,
-  forms: filter,
-  activeForms: activeFilter,
-  getActiveForms: getFilter,
-  reset: resetFilter
-} = useFormSetting<FilterData>(columnSetting, 'filter')
-
-// table
-const tableData = shallowRef<TableData[]>([])
-const tableDataCount = ref(0)
-
 const tableOptions: TableOptions = {
-  title: '機台列表',
-  version: '1.0.1',
+  title: '站點列表',
+  version: '1.0.5',
   settingKey: 'auto-114-machine',
   isSorting: true
 }
-const { tableSetting, downloadExcel, getParams, changePage } = useTableSetting(
-  columnSetting,
-  'table',
-  tableOptions
-)
-
-const isLoading = ref(false)
-
-const download = async ({ type }) => {
-  isLoading.value = true
-  let params: any = null
-  switch (type) {
-    case 'all':
-      params = {
-        ...getParams(),
-        page: 1,
-        size: -1,
-        ...getFilter(false)
-      }
-      break
-    case 'page':
-      params = {
-        ...getParams(),
-        ...getFilter(false)
-      }
-      break
-  }
-  const tempData = await getExcelData(params)
-  downloadExcel(tempData)
-
-  isLoading.value = false
-}
-
-const initData = async (tableParams: any) => {
-  const filterData = getFilter(false)
-
-  const [resData, resDataCount] = await Promise.all([
-    getTableData({
-      ...tableParams,
-      ...filterData
-    }),
-    getTableDataCount(filterData)
-  ])
-
-  tableData.value = resData
-  tableDataCount.value = resDataCount
-}
-
-const init = async (params?: any, type?: string) => {
-  isLoading.value = true
-  if (type === 'input') {
-    changePage()
-  }
-  await nextTick()
-  const tableParams = type === 'table' ? params : getParams()
-
-  await initData(tableParams)
-
-  setTimeout(() => {
-    isLoading.value = false
-  }, 500)
-}
-const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
-
-onMounted(() => {
-  throttleInit(null, '')
-})
 
 // modal
 const modal = reactive({
   machineRushOrder: false
 })
 const currentMachine = ref<TableData>({
-  machineNo: '',
-  machineArea: '',
-  count: '',
-  machineStatus: ''
+  machineId: '',
+  areaName: '',
+  sum: '',
+  machineNote: ''
 })
 
-const onMachineNoClick = async (row: TableData) => {
+const onOrderNoClick = async (row: TableData) => {
   currentMachine.value = row
   await nextTick()
   modal.machineRushOrder = true
@@ -127,19 +47,28 @@ const onMachineRushOrderSubmit = async () => {
   const status = await machineRushOrderRef.value?.submit()
   if (status === 'success') {
     modal.machineRushOrder = false
+    init()
   }
 }
+
+const webViewTableRef = ref()
+const init = () => {
+  webViewTableRef.value?.init()
+}
+defineExpose({
+  init
+})
 </script>
 
 <template>
-  <div v-loading="isLoading" class="process-view">
+  <div class="process-view">
     <CustomModal
       v-model="modal.machineRushOrder"
-      :title="`機台插單作業 ${currentMachine.machineNo}`"
+      :title="`插單作業：機台 ${currentMachine.machineId}`"
       height-size="large"
       @submit="onMachineRushOrderSubmit"
     >
-      <MachineRushOrder ref="machineRushOrderRef" :order="currentMachine" />
+      <MachineRushOrder ref="machineRushOrderRef" :machine="currentMachine" />
       <template #footer>
         <div class="flex-row content-end i-ga-sm">
           <CustomButton
@@ -159,59 +88,27 @@ const onMachineRushOrderSubmit = async () => {
       </template>
     </CustomModal>
 
-    <CustomTable
-      :table-data="tableData"
-      :table-data-count="tableDataCount"
-      v-bind="tableSetting"
-      @excel="download"
-      @show-change="throttleInit($event, 'table')"
+    <WebViewTable
+      ref="webViewTableRef"
+      webfuno="auto_114"
+      designatedview="iPASPWebView_auto_114_machine"
+      :table-options="tableOptions"
+      :column-setting="columnSetting"
+      :format-params="formatParams"
+      :format-excel="formatExcel"
+      :format-table="formatTable"
+      :fake-data="fakeTableData"
     >
-      <template #prepend>
-        <div class="flex-row i-ga-xs content-end">
-          <GroupSearch
-            :columns="filterColumn"
-            class="grid-row"
-            @reset="resetFilter"
-            @submit="throttleInit()"
-          >
-            <template #search-all="{ prop }">
-              <CustomSearch
-                class="grid-col-xs-12 grid-col-md-8 grid-col-lg-6"
-                v-model="filter[prop]"
-                v-model:active="activeFilter[prop]"
-                v-bind="filterColumn[prop]"
-              />
-            </template>
-          </GroupSearch>
-
-          <CustomButton
-            :label="i18nTranslate('refrush')"
-            icon-name="rotate"
-            icon-move="rotate"
-            @click="throttleInit()"
-          />
-        </div>
-      </template>
-
-      <template #header-all="{ prop }">
-        <CustomSearch
-          v-model="filter[prop]"
-          v-model:active="activeFilter[prop]"
-          v-bind="filterColumn[prop]"
-          search
-          @change="throttleInit($event, 'input')"
-        />
-      </template>
-      <template #column-machineNo="{ data, row }">
+      <template #column-machineId="{ data, row }">
         <CustomButton
           :label="data"
-          icon-name="map-location-dot"
+          icon-name="file-pen"
           type="primary"
           text
-          @click="onMachineNoClick(row)"
+          @click="onOrderNoClick(row)"
         />
       </template>
-    </CustomTable>
+    </WebViewTable>
   </div>
 </template>
 

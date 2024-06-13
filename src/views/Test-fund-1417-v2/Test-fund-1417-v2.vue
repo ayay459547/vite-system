@@ -104,7 +104,7 @@ onMounted(() => {
   }
   &-view {
     flex: 1;
-    height: 100%;
+    height: calc(100% - 48px);
   }
 }
 </style>

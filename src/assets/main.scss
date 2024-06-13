@@ -1,6 +1,6 @@
 @forward 'element-plus/theme-chalk/src/dark/var.scss' with (
   $bg-color: (
-    'page': hsl(0, 0%, 33%),
+    'page': #545454,
     '': #4f4f4f,
     'overlay': #1d1e1f
   )
@@ -8,8 +8,10 @@
 // import dark theme
 @use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
 
-@use './styles/color-common' as *;
-
+// 顏色
+$system-bg-color: #506d9c !default;
+@use './styles/color' as *;
+// 通用
 @use './styles/common' as *;
 @use './styles/flex' as *;
 @use './styles/grid-system' as *;
@@ -20,29 +22,3 @@
 @use './styles/media' as *;
 
 @use './styles/utils' as *;
-
-// 系統基本顏色
-$info: #909399 !default;
-$primary: #409eff !default;
-$success: #67c23a !default;
-$warning: #e6a23c !default;
-$danger: #f56c6c !default;
-$white: #ffffff !default;
-
-$system-bg-color: #506d9c !default;
-
-// 依照 bootstrap 標準
-$extra-small: 576px;
-$small: 576px;
-$medium: 768px;
-$large: 992px;
-$x-large: 1200px;
-$xx-large: 1400px;
-
-html {
-  --color-test: #dddddd;
-}
-
-html.dark {
-  --color-test: #506d9c;
-}

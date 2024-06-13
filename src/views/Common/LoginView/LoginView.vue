@@ -149,7 +149,7 @@ const svg = `
     top: 0;
     left: 0;
     z-index: var(--i-z-index-login);
-    background-color: #ecf5ff;
+    background-color: var(--el-color-primary-light-9);
     @extend %flex-center;
   }
 
@@ -246,7 +246,7 @@ const svg = `
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #d9ecff;
+    background-color: var(--el-color-primary-light-8);
     padding: 36px;
     gap: 28px;
     position: absolute;
@@ -286,15 +286,14 @@ const svg = `
     width: 100%;
     padding: 16px;
     border: none;
-    background-color: #a0cfff;
+    background-color: var(--el-color-primary-light-5);
     color: inherit;
     border-radius: 6px;
     transition-duration: 0.3s;
     cursor: pointer;
 
     &:hover {
-      background-color: #409eff;
-      color: #fff;
+      background-color: var(--el-color-primary-light-3);
     }
   }
 }

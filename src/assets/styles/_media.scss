@@ -1,22 +1,23 @@
 @use 'sass:map';
 @use './utils' as utils;
 
+// $extra-small: 576px;
+// $small: 576px;
+// $medium: 768px;
+// $large: 992px;
+// $x-large: 1200px;
+// $xx-large: 1400px;
+
 $media-map: () !default;
 // 依照 bootstrap 標準
 $media-map: map.merge(
   (
-    // var(--i-media-xs);
-    'xs': 0px,
-    // var(--i-media-sm);
-    'sm': 576px,
-    // var(--i-media-md);
-    'md': 768px,
-    // var(--i-media-lg);
-    'lg': 992px,
-    // var(--i-media-xl);
-    'xl': 1200px,
-    // var(--i-media-xxl);
-    'xxl': 1400px
+    'xs': 0px, // var(--i-media-xs); 
+    'sm': 576px, // var(--i-media-sm);
+    'md': 768px, // var(--i-media-md);
+    'lg': 992px, // var(--i-media-lg);
+    'xl': 1200px, // var(--i-media-xl);
+    'xxl': 1400px // var(--i-media-xxl);
   ),
   $media-map
 );

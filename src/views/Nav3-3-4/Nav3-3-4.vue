@@ -638,7 +638,6 @@ const isShowChange = async () => {
 
 <style lang="scss" scoped>
 $feature-width: 270px;
-$bg-color: #ecf5ff;
 
 :deep(.page-table) {
   .cell {
@@ -692,7 +691,7 @@ $bg-color: #ecf5ff;
         height: 100%;
         padding: 16px;
         overflow-y: auto;
-        background-color: $bg-color;
+        background-color: var(--el-color-primary-light-9);
         border-radius: 0 0 6px 6px;
       }
       &-content {

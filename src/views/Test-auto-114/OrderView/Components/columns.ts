@@ -6,7 +6,7 @@ export const workReportColumnSetting = {
       align: 'center'
     }
   },
-  processNo: {
+  process_Id: {
     label: '站點編號',
     table: {
       minWidth: 180,
@@ -16,34 +16,20 @@ export const workReportColumnSetting = {
       type: 'select',
       default: null,
       validate: [],
-      options: [
-        { label: 'processNo-001', value: 'processNo-001' },
-        { label: 'processNo-002', value: 'processNo-002' },
-        { label: 'processNo-003', value: 'processNo-003' }
-      ],
+      options: [],
+      remote: true,
+      remoteShowSuffix: true,
+      filterable: true,
+      remoteMethod: () => {},
       hiddenLabel: true,
       required: true
     }
   },
-  orderNo: {
+  erpNo: {
     label: '插單單號',
     table: {
       minWidth: 180,
-      required: true
-    },
-    form: {
-      type: 'select',
-      default: null,
-      validate: [],
-      options: [
-        { label: 'orderNo-01', value: 'orderNo-01' },
-        { label: 'orderNo-02', value: 'orderNo-02' },
-        { label: 'orderNo-03', value: 'orderNo-03' },
-        { label: 'orderNo-04', value: 'orderNo-04' },
-        { label: 'orderNo-05', value: 'orderNo-05' }
-      ],
-      hiddenLabel: true,
-      required: true
+      required: false
     }
   },
   LAST_UPDATE_TIMESTAMP: {

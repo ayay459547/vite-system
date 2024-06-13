@@ -122,7 +122,7 @@ const hasSlot = (prop: string): boolean => {
 }
 .__i-draggable__ .ghost {
   opacity: 0.7;
-  background: #c8ebfb;
+  background: var(--el-color-primary-light-7);
 }
 
 .__i-draggable__ .list-group {
@@ -136,13 +136,13 @@ const hasSlot = (prop: string): boolean => {
 
     &.stripe {
       &:nth-child(even) {
-        background-color: #fafafa;
+        background-color: var(--el-color-info-light-9);
         transition-duration: 0.3s;
       }
 
       &:hover,
       &:nth-child(even):hover {
-        background-color: var(--el-color-info-light-9);
+        background-color: var(--el-color-info-light-8);
         transition-duration: 0.3s;
       }
     }

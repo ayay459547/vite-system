@@ -284,6 +284,8 @@ const getTextValue = (tempValue: ModelValue) => {
 </template>
 
 <style lang="scss" scoped>
+$test-danger: #f56c6c;
+
 :deep(.input-main) {
   .el-input__wrapper {
     transition-duration: 0.3s;
@@ -297,8 +299,8 @@ const getTextValue = (tempValue: ModelValue) => {
     top: 0px;
   }
   &.validate-error .el-input__wrapper {
-    box-shadow: 0 0 0 1px $danger inset;
-    background-color: lighten($danger, 20%);
+    box-shadow: 0 0 0 1px $test-danger inset;
+    background-color: lighten($test-danger, 20%);
   }
 }
 .input {
@@ -331,7 +333,7 @@ const getTextValue = (tempValue: ModelValue) => {
     top: 0;
   }
   &-required {
-    color: $danger;
+    color: $test-danger;
   }
 
   &-label {
@@ -346,7 +348,7 @@ const getTextValue = (tempValue: ModelValue) => {
   }
 
   &-error {
-    color: $danger;
+    color: $test-danger;
   }
 }
 </style>

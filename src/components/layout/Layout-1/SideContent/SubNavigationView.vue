@@ -249,7 +249,7 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
       width: 100%;
 
       &.active {
-        color: $warning;
+        color: var(--el-color-warning);
       }
       .item-title {
         width: 100%;

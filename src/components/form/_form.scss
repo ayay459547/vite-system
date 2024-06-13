@@ -1,0 +1,29 @@
+$form-danger: #f56c6c;
+
+@mixin validate-error ($type) {
+  @if (
+    $type == autocomplete or
+    $type == date-picker or
+    $type == input or
+    $type == select or
+    $type == select-v2 or
+    $type == time-picker
+  ) {
+    box-shadow: 0 0 0 1px $form-danger inset;
+    background-color: lighten($form-danger, 20%);
+
+  } @else if (
+    $type == checkbox or
+    $type == radio
+  ) {
+    border: 1px solid $form-danger;
+    background-color: lighten($form-danger, 20%);
+
+  } @else if (
+    $type == operator
+  ) {
+    box-shadow: 0 0 0 1px $form-danger inset !important;
+    background-color: lighten($form-danger, 20%);
+  }
+}
+// @include validate-error(type);

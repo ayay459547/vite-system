@@ -268,7 +268,7 @@ defineExpose({
       flex: 1;
       overflow: hidden;
       &.active {
-        color: $warning;
+        color: var(--el-color-warning);
       }
       .item-title {
         font-size: 1.4em;

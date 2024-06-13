@@ -313,6 +313,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-operator__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
@@ -327,8 +329,7 @@ defineExpose({
   }
   &.validate-error .el-input__wrapper,
   &.validate-error .el-input--suffix .el-input__wrapper {
-    box-shadow: 0 0 0 1px $danger inset !important;
-    background-color: lighten($danger, 20%);
+    @include validate-error(operator);
   }
   .el-input--suffix .el-input__wrapper {
     padding: 2px 11px;
@@ -338,7 +339,6 @@ defineExpose({
   }
   .el-input-group__prepend .el-select {
     margin: 0;
-    // min-width: 75px !important;
   }
 }
 

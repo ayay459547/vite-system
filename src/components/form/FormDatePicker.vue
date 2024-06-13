@@ -173,6 +173,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-date-picker__) {
   &.el-date-editor {
     width: 100% !important;
@@ -180,8 +182,7 @@ defineExpose({
     border-radius: 4px;
   }
   &.validate-error.el-date-editor {
-    box-shadow: 0 0 0 1px $danger inset;
-    background-color: lighten($danger, 20%);
+    @include validate-error(date-picker);
   }
 
   .el-input__wrapper {
@@ -196,8 +197,7 @@ defineExpose({
     top: 0px;
   }
   &.validate-error .el-input__wrapper {
-    box-shadow: 0 0 0 1px $danger inset;
-    background-color: lighten($danger, 20%);
+    @include validate-error(date-picker);
   }
 }
 

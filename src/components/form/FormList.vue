@@ -89,7 +89,8 @@ const props = defineProps({
   isCreate: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '是否可新增'
   },
   createPosition: {
     type: String as PropType<'center' | 'right' | 'left'>,
@@ -103,7 +104,8 @@ const props = defineProps({
   isRemove: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: false
+    default: false,
+    description: '是否可刪除'
   },
   isShowNo: {
     type: Boolean as PropType<boolean>,
@@ -118,10 +120,34 @@ const props = defineProps({
     description: `
       是否允許摺疊FormList, 僅顯示標題與摺疊鍵
     `
+  },
+  move: {
+    type: Function,
+    required: false,
+    default: null,
+    description: `
+      用於draggable的移動後回掉函式
+    `
+  },
+  setDisabled: {
+    type: Function,
+    required: false,
+    default: () => { return false },
+    description: `
+      用於判斷FormList Item是否禁止操作
+    `
   }
 })
 
 const emit = defineEmits(['add', 'remove', 'update:modelValue'])
+
+//Expose
+defineExpose({
+  setCollapse: (method?: string) => {
+    //展開或折疊FormList
+    setCollapseList(method)
+  }
+})
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -168,9 +194,16 @@ const remove = (rowIndex: number) => {
 const beforeColumn = reactive({})
 const afterColumn = reactive({})
 
-const isCollapseList = ref(true)
-const setCollapse = (isShow?: boolean) => {
-  isCollapseList.value = isShow
+const collapseList = ref(false)
+const setCollapseList = (method?:string) => {
+  switch (method) {
+    case 'open': collapseList.value = false
+      break
+    case 'close': collapseList.value = true
+      break
+    default: collapseList.value = !collapseList.value
+      break
+  }
 }
 
 onBeforeMount(() => {
@@ -208,16 +241,15 @@ onBeforeMount(() => {
   showTableColumns.value = _showTableColumns
 })
 
-//Expose
-defineExpose({
-  setCollapse
-})
 </script>
 
 <template>
   <div class="__form-list__ form-container hover-card-info" :class="scopedId">
-    <div v-if="hasSlot('title') || !isEmpty(props.label)" class="__form-list__ form-top">
-      <div class="__form-list__ form-title">
+    <div
+      v-if="hasSlot('title') || !isEmpty(props.label)"
+      class="__form-list__ form-top"
+    >
+      <div  class="__form-list__ form-title">
         <slot name="title" :label="props.label">
           <span>{{ props.label }}</span>
         </slot>
@@ -226,24 +258,31 @@ defineExpose({
       <template v-if="props.isCollapse">
         <div class="__form-list__">
           <CustomButton
-            v-if="isCollapseList"
+            v-if="collapseList"
+            icon-name="caret-down"
+            text
+            plain
+            @click="setCollapseList()"
+          />
+          <CustomButton
+            v-else
             icon-name="minus"
             size="small"
             text
             plain
-            @click="setCollapse(false)"
+            @click="setCollapseList()"
           />
-          <CustomButton v-else icon-name="caret-down" text plain @click="setCollapse(true)" />
         </div>
       </template>
     </div>
 
-    <div class="__form-list__ form-content" v-show="isCollapseList">
+    <div class="__form-list__ form-content" v-show="!collapseList">
       <SimpleTable
         v-model="tempValue"
         :item-key="props.itemKey"
         :is-draggable="isDraggable"
         :handle="`.form-item-move__${scopedId}`"
+        :move="props.move"
         :group="props.draggableGroup"
         :table-data="tempValue"
         :table-columns="showTableColumns"
@@ -296,7 +335,30 @@ defineExpose({
           </slot>
         </template>
         <template #column-row_operations="scope">
-          <div class="flex-row">
+          <div class="flex-row" v-if="props.setDisabled(scope.row)">
+            <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
+              <CustomButton
+                v-if="props.isDraggable"
+                disabled
+                type="info"
+                icon-name="right-left"
+                text
+                :class="`form-item-disable__${scopedId}`"
+                style="transform: rotateZ(90deg)"
+              />
+            </slot>
+            <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
+              <CustomButton
+                v-if="props.isRemove"
+                disabled
+                type="danger"
+                icon-name="trash-can"
+                text
+                @click="remove(scope.rowIndex)"
+              />
+            </slot>
+          </div>
+          <div class="flex-row" v-else>
             <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
               <CustomButton
                 v-if="props.isDraggable"
@@ -331,6 +393,7 @@ defineExpose({
         />
       </div>
     </div>
+
   </div>
 </template>
 
@@ -362,7 +425,7 @@ defineExpose({
       transition-duration: 0.3s;
     }
 
-    &-content {
+    &-content{
       display: flex;
       flex-direction: column;
       width: 100%;

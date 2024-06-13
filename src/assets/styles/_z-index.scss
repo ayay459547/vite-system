@@ -5,28 +5,17 @@
 $z-index-map: () !default;
 $z-index-map: map.merge(
   (
-    // var(--i-z-index-loading);
-    'loading': 3000,
-    // var(--i-z-index-global-disabled);
-    'global-disabled': 2080,
-    // 在下方已使用
-    'notification': 2050,
-    // 在下方已使用
-    'swal2': 2040,
-    // var(--i-z-index-select-option);
-    'select-option': 2050,
-    // var(--i-z-index-login);
-    'login': 2010,
-    // 對應 CustomModal 的 minModalIndex
-    'modal': 2005,
-    // var(--i-z-index-side);
-    'side': 2003,
-    // element-ul 設定的
-    'v-loading': 2000,
-    // var(--i-z-index-v-fixed);
-    'v-fixed': 99,
-    // var(--i-z-index-popover);
-    'popover': 1
+    'loading': 3000, // var(--i-z-index-loading);
+    'global-disabled': 2080, // var(--i-z-index-global-disabled);
+    'notification': 2050, // 在下方已使用
+    'swal2': 2040, // 在下方已使用
+    'select-option': 2050, // var(--i-z-index-select-option);
+    'login': 2010, // var(--i-z-index-login);
+    'modal': 2005, // 對應 CustomModal 的 minModalIndex
+    'side': 2003, // var(--i-z-index-side);
+    'v-loading': 2000, // element-ul 設定的
+    'v-fixed': 99, // var(--i-z-index-v-fixed);
+    'popover': 1 // var(--i-z-index-popover);
   ),
   $z-index-map
 );

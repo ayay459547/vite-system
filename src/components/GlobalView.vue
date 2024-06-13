@@ -293,6 +293,13 @@ const initNavigationRoutes = async (routeName?: string) => {
   } catch (e) {
     console.log(e)
     logout()
+
+    swal({
+      icon: 'error',
+      title: i18nTranslate('error-getData', 'iPASP_common'),
+      text: e ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      showCancelButton: false
+    })
   }
 
   setNavigationRoutes(routesPermission.value)

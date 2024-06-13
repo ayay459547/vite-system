@@ -243,6 +243,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-select__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
@@ -258,8 +260,7 @@ defineExpose({
   &.validate-error .is-filterable,
   &.validate-error .el-select__wrapper,
   &.validate-error .el-input__wrapper {
-    box-shadow: 0 0 0 1px $danger inset;
-    background-color: lighten($danger, 20%);
+    @include validate-error(select);
   }
 }
 .__i-select__ {

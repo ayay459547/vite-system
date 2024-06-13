@@ -1,156 +1,137 @@
-import type { Api } from '@/declare/ajax'
+import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal } from '@/lib/lib_utils'
-
-import { fakeTableData } from './fakeData'
+import type { RushOrders } from '../api'
 import { columnSetting } from './columns'
 
 export interface Params {
-  orderId: string
-  demandDate: string
+  id: string
+  acquiredDate: string
   routeId: string
-  isSettingsRushOrder: string
+  isAlreadySetRushOrder: string
 }
 
 interface CommonData {
-  orderId: string
-  demandDate: string
+  id: string
+  acquiredDate: string
   routeId: string
 }
 export interface FilterData extends CommonData {
-  isSettingsRushOrder: string
+  isAlreadySetRushOrder: string
 }
 export interface ResponseData extends CommonData {
-  isSettingsRushOrder: boolean
+  isAlreadySetRushOrder: string
 }
 export interface ExcelData extends CommonData {
-  isSettingsRushOrder: string
+  isAlreadySetRushOrder: string
 }
 export interface TableData extends CommonData {
-  isSettingsRushOrder: string
+  isAlreadySetRushOrder: string
 }
 
-const formatParams = (params: any): Params => {
-  const { orderId = '', demandDate = '', routeId = '', isSettingsRushOrder = '' } = params
+export const formatParams = (params: any): Params => {
+  const { id = '', acquiredDate = '', routeId = '', isAlreadySetRushOrder = '' } = params
 
   return {
-    orderId,
-    demandDate,
+    id,
+    acquiredDate,
     routeId,
-    isSettingsRushOrder
+    isAlreadySetRushOrder
   }
 }
 
-const getData = async (
-  callback: (row: ResponseData) => TableData,
-  params: any
-): Promise<TableData[]> => {
-  const {
-    page = 1,
-    size = 100,
-    // sort = { key: null, order: null },
-    // sortingList = [],
-    sortingMap = {}
-  } = params
+export const formatExcel = (row: ResponseData) => {
+  const { id = '', acquiredDate = '', routeId = '', isAlreadySetRushOrder = '' } = row
 
-  const resData = await ajax<Api<ResponseData[]>>(
+  return {
+    id,
+    acquiredDate,
+    routeId,
+    isAlreadySetRushOrder: columnSetting.isAlreadySetRushOrder.getValue(isAlreadySetRushOrder)
+  }
+}
+
+export const formatTable = (row: ResponseData) => {
+  const { id = '', acquiredDate = '', routeId = '', isAlreadySetRushOrder = '' } = row
+
+  return {
+    id,
+    acquiredDate,
+    routeId,
+    isAlreadySetRushOrder: columnSetting.isAlreadySetRushOrder.getValue(isAlreadySetRushOrder)
+  }
+}
+
+export type PlanRushOrders = Array<{
+  pk: {
+    sequence: number
+    machineId: string
+  }
+  process: {
+    pk: { id: string }
+  }
+  cust: {
+    id: string
+  }
+  erpNo: string
+  updateBy: string
+}>
+export type PlanMachineList<T> = Array<{
+  machineId: string
+  rushOrders: T
+}>
+/**
+ * 使用 getRushOrderList 取代
+ *
+ * 廢棄
+ * 取得機台列表 (已分配插單)
+ * @param {String} lotNo 訂單
+ * @returns {Array} options
+ */
+export const getPlanMachineList = async (
+  lotNo: string
+): Promise<ApiRes<PlanMachineList<RushOrders>>> => {
+  const resData = await ajax<Api<PlanMachineList<PlanRushOrders>>>(
     {
-      url: '/api/getOrder',
+      url: '/api/insertRushOrder/retrieveRushOrdersWithSpecificOrder',
       method: 'post',
-      data: {
-        ...formatParams(params),
-        page,
-        size,
-        sortingMap
-      } as Params
+      data: { erpNo: lotNo }
     },
     {
-      isFakeData: true,
+      isFakeData: false,
       fakeData: {
-        data: fakeTableData,
+        data: [],
         status: 'success'
       },
       delay: 300
     }
   )
-  const { data, status, msg } = resData
 
-  if (status === 'success') {
-    return (data as ResponseData[]).map(callback)
-  } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
-    })
-    return []
-  }
-}
+  const { data, status, msg = '請聯絡資訊人員' } = resData
 
-// excel
-export const getExcelData = async (params: any): Promise<ExcelData[]> => {
-  return getData(
-    row => {
-      const { orderId = '', demandDate = '', routeId = '', isSettingsRushOrder = false } = row
+  if (['success', true].includes(status)) {
+    return {
+      status: 'success',
+      data: data.map(item => {
+        const { machineId, rushOrders } = item
 
-      return {
-        orderId,
-        demandDate,
-        routeId,
-        isSettingsRushOrder: columnSetting.isSettingsRushOrder.getValue(isSettingsRushOrder)
-      }
-    },
-    { ...params }
-  )
-}
+        return {
+          machineId,
+          rushOrders: rushOrders.map(rushOrder => {
+            const { pk, process, erpNo = '', updateBy = '' } = rushOrder
 
-// table
-export const getTableData = async (params: any): Promise<TableData[]> => {
-  return getData(
-    row => {
-      const { orderId = '', demandDate = '', routeId = '', isSettingsRushOrder = false } = row
-
-      return {
-        orderId,
-        demandDate,
-        routeId,
-        isSettingsRushOrder: columnSetting.isSettingsRushOrder.getValue(isSettingsRushOrder)
-      }
-    },
-    { ...params }
-  )
-}
-
-export const getTableDataCount = async (params: any): Promise<number> => {
-  const resData = await ajax<Api<number>>(
-    {
-      url: '/api/getTableDataCount',
-      method: 'post',
-      data: {
-        ...formatParams(params)
-      } as Params
-    },
-    {
-      isFakeData: true,
-      fakeData: {
-        data: 1000,
-        status: 'success'
-      },
-      delay: 300
+            return {
+              sequence: pk?.sequence ?? 0,
+              erpNo,
+              processId: process?.pk?.id ?? '',
+              memo: '',
+              updateBy
+            }
+          })
+        }
+      }),
+      msg
     }
-  )
-  const { data, status, msg } = resData
-
-  if (status === 'success') {
-    return data
   } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
-    })
-    return 0
+    return { status: 'error', data: [], msg }
   }
 }

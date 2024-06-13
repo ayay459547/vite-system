@@ -168,6 +168,8 @@ const getTextValue = (tempValue: ModelValue) => {
 </template>
 
 <style lang="scss" scoped>
+$test-danger: #f56c6c;
+
 .input {
   &-container {
     width: 100%;
@@ -195,7 +197,7 @@ const getTextValue = (tempValue: ModelValue) => {
     top: 0;
   }
   &-required {
-    color: $danger;
+    color: $test-danger;
     display: inline-block;
     padding-right: 2px;
   }
@@ -211,7 +213,7 @@ const getTextValue = (tempValue: ModelValue) => {
   }
 
   &-error {
-    color: $danger;
+    color: $test-danger;
   }
 }
 </style>

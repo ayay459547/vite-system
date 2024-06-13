@@ -140,10 +140,11 @@ const scopedId = getUuid('__i-checkbox__')
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-checkbox__) {
   &.validate-error .el-checkbox__inner {
-    border: 1px solid $danger;
-    background-color: lighten($danger, 20%);
+    @include validate-error(checkbox);
   }
 }
 .__i-checkbox__ {

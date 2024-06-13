@@ -138,7 +138,7 @@ const setLevel2Router = (level2Router: Navigation) => {
       color: #ffffff;
 
       &:hover {
-        color: $warning;
+        color: var(--el-color-warning);
       }
     }
   }

@@ -100,7 +100,7 @@ onMounted(() => {
             class="grid-col-xs-12 grid-col-lg-8 grid-col-xl-6"
             v-model="filter[prop]"
             v-bind="filterColumn[prop]"
-            i18n-module="auto_common"
+            i18n-module="system"
           />
         </template>
         <template #search-status="{ prop }">

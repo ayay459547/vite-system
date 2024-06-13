@@ -200,6 +200,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 $base-left: 24px;
+
 .tree {
   &-list {
     width: 100%;
@@ -230,10 +231,10 @@ $base-left: 24px;
         background-color: #ebeef5;
       }
       &.__match {
-        background-color: lighten($warning, 25%);
+        background-color: var(--el-color-warning-light-7);
 
         &:hover {
-          background-color: lighten($warning, 15%);
+          background-color: var(--el-color-warning-light-8);
         }
       }
     }

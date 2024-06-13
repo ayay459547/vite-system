@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from 'vue'
+import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
-import { ElCard } from 'element-plus'
+import { ElCard, ElBacktop } from 'element-plus'
 
-import { CustomTimeLine, CustomTag, CustomButton } from '@/components'
+import { CustomTimeLine, CustomTag, CustomButton, SimpleQRcode, CustomSwitch } from '@/components'
 
 import { awaitTime, scrollToEl } from '@/lib/lib_utils'
+import { datetimeFormat } from '@/lib/lib_day'
 
 const options = [
   {
@@ -140,38 +142,82 @@ const options2 = [
     placement: 'top'
   }
 ]
+
+// qrcode
+const url = 'https://www.npmjs.com/package/vue-qr'
+const img = 'https://raw.githubusercontent.com/Binaryify/vue-qr/master/src/assets/result1.png'
+const bgimg = 'https://raw.githubusercontent.com/Binaryify/vue-qr/master/src/assets/result2.png'
+
+const now = ref('')
+
+onMounted(() => {
+  const date = '2028-11-12 12:45:32.0'
+
+  const res = datetimeFormat(date, 'YYYY-MM-DD')
+  console.log('res => ', res)
+
+  now.value = datetimeFormat(new Date(), 'YYYY-MM-DD A hh:mm:ss')
+})
+
+const switchValue = ref(false)
+
 </script>
 
 <template>
   <div class="nav-1-2-2">
-    <div class="flex-row i-ga-xxl">
-      <CustomTimeLine :options="options1">
-        <template #default="{ label }">
-          <ElCard>
-            <h3 class="test-card">{{ label }}</h3>
-            <h4>Update Github template</h4>
-            <p>Tom committed 2018/4/2 20:46</p>
-          </ElCard>
-        </template>
-      </CustomTimeLine>
+    <CustomTimeLine :options="options1">
+      <template #default="{ label }">
+        <ElCard>
+          <h3 class="test-card">{{ label }}</h3>
+          <h4>Update Github template</h4>
+          <p>Tom committed 2018/4/2 20:46</p>
+        </ElCard>
+      </template>
+    </CustomTimeLine>
 
-      <CustomButton label="再一次" @click="testPushOptions" />
+    <CustomButton label="再一次" @click="testPushOptions" />
 
-      <CustomTimeLine :options="options2">
-        <template #default="{ label }">
-          <ElCard>
-            <h3>{{ label }}</h3>
-          </ElCard>
-        </template>
-      </CustomTimeLine>
-    </div>
+    <CustomTimeLine :options="options2">
+      <template #default="{ label }">
+        <ElCard>
+          <h3>{{ label }}</h3>
+        </ElCard>
+      </template>
+    </CustomTimeLine>
 
     <div class="flex-column i-ga-md">
-      <CustomTag label="test" />
       <CustomTag label="test2" type="danger" icon-name="user" icon-move="translate" />
       <CustomTag label="test3" type="success" />
-      <CustomTag label="test4" type="info" />
     </div>
+
+    <div class="page">
+      <h3>QRcode測試</h3>
+
+      <div style="width: 200px; height: 200px">
+        <vue-qr :bgSrc="bgimg" :logoSrc="img" :text="url"></vue-qr>
+      </div>
+
+      <CustomSwitch v-model="switchValue" />
+
+      <SimpleQRcode :text="url" :bgSrc="bgimg" :logoSrc="img" />
+
+      <h4>{{ now }}</h4>
+    </div>
+
+    <ElBacktop :right="100" :bottom="100" :visibility-height="0"/>
+    <ElBacktop :bottom="100" :visibility-height="0">
+      <div
+        style="
+          height: 100%;
+          width: 100%;
+          background-color: var(--el-bg-color-overlay);
+          box-shadow: var(--el-box-shadow-lighter);
+          text-align: center;
+          line-height: 40px;
+          color: #1989fa;
+        "
+      >UP</div>
+  </ElBacktop>
   </div>
 </template>
 
@@ -179,10 +225,17 @@ const options2 = [
 .nav-1-2-2 {
   width: 100%;
   height: 100%;
-  padding: 32px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+}
 
+.page {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 16px;
 }
 </style>

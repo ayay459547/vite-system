@@ -132,7 +132,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       color: #535353;
 
       &:hover {
-        color: $primary;
+        color: var(--i-color-primary);
       }
     }
   }

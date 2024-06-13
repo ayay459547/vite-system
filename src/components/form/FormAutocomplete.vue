@@ -149,6 +149,8 @@ const scopedId = getUuid('__i-autocomplete__')
 </template>
 
 <style lang="scss" scoped>
+@use './_form.scss' as *;
+
 :deep(.__i-autocomplete__) {
   .el-input__wrapper {
     transition-duration: 0.3s;
@@ -162,8 +164,7 @@ const scopedId = getUuid('__i-autocomplete__')
     top: 0px;
   }
   &.validate-error .el-input__wrapper {
-    box-shadow: 0 0 0 1px $danger inset;
-    background-color: lighten($danger, 20%);
+    @include validate-error(autocomplete);
   }
 
   &.el-autocomplete {

@@ -3,27 +3,27 @@ import type { ResponseData } from './api'
 
 export const fakeTableData: Array<ResponseData> = [
   {
-    orderId: 'ORDER-1',
-    demandDate: '2024-02-06',
+    id: 'ORDER-1',
+    acquiredDate: '2024-02-06',
     routeId: 'R-01-A.0',
-    isSettingsRushOrder: true
+    isAlreadySetRushOrder: 'Y'
   },
   {
-    orderId: 'ORDER-2',
-    demandDate: '2024-02-06',
+    id: 'ORDER-2',
+    acquiredDate: '2024-02-06',
     routeId: 'R-01-A.0',
-    isSettingsRushOrder: false
+    isAlreadySetRushOrder: 'N'
   },
   {
-    orderId: 'ORDER-3',
-    demandDate: '2024-02-06',
+    id: 'ORDER-3',
+    acquiredDate: '2024-02-06',
     routeId: 'R-01-A.1',
-    isSettingsRushOrder: true
+    isAlreadySetRushOrder: 'Y'
   },
   {
-    orderId: 'ORDER-4',
-    demandDate: '2024-02-06',
+    id: 'ORDER-4',
+    acquiredDate: '2024-02-06',
     routeId: 'R-01-A.0',
-    isSettingsRushOrder: true
+    isAlreadySetRushOrder: 'Y'
   }
 ]

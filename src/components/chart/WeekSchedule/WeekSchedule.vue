@@ -245,7 +245,7 @@ $body-height: v-bind(bodyHeight);
   // 工時安排
   &-wrapper {
     width: 100%;
-    min-width: 560px;
+    min-width: 720px;
     height: fit-content;
     display: flex;
     padding: 12px 12px 56px;
