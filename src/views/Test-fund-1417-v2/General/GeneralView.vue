@@ -39,7 +39,7 @@ const saveWeekScheduleData = async () => {
     if (status === 'success') {
       swal({
         icon: 'success',
-        title: i18nTranslate('updateSuccess'),
+        title: i18nTranslate('update-success'),
         showCancelButton: false
       })
 
@@ -48,7 +48,7 @@ const saveWeekScheduleData = async () => {
     } else {
       swal({
         icon: 'error',
-        title: i18nTranslate('updateFail'),
+        title: i18nTranslate('update-fail'),
         text: msg,
         showCancelButton: false
       })
@@ -79,8 +79,8 @@ const init = async () => {
   if (generalWeekScheduleStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: generalWeekScheduleMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -101,8 +101,8 @@ const init = async () => {
   if (isNeedSendRTDSStatus !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: isNeedSendRTDSMsg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

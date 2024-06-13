@@ -38,11 +38,11 @@ const onDraggableMousedown = ($event: MouseEvent) => {
   beforeMoveWidth = defaultWidth.custom
 
   // 滑鼠移動時執行
-  const throttleMousemoveEvent = throttle<typeof moveEvent>(function ($event: MouseEvent) {
+  const throttleMousemoveEvent = throttle<typeof reSizeEvent>(function ($event: MouseEvent) {
     const { clientX: mouseMoveX } = $event
     // 變化高度
     const _moveX = mouseMoveX - mouseDownX
-    leftWidth.value = beforeMoveWidth + _moveX
+    currentLeftWidth.value = beforeMoveWidth + _moveX
   }, 16, { isNoLeading: true })
 
   reSizeEvent = throttleMousemoveEvent
@@ -53,7 +53,9 @@ const onDraggableMousedown = ($event: MouseEvent) => {
 }
 // 取消監聽事件
 const removeEvent = () => {
-  containerRef.value.removeEventListener('mousemove', reSizeEvent)
+  if (containerRef.value) {
+    containerRef.value.removeEventListener('mousemove', reSizeEvent)
+  }
   isMove.value = false
 }
 
@@ -102,7 +104,7 @@ const defaultWidth = reactive({
   right: 0,
   custom: 0
 })
-const leftWidth = computed({
+const currentLeftWidth = computed<any>({
   get () {
     switch (draggablePosition.value) {
       case 'left':
@@ -174,7 +176,7 @@ onMounted(() => {
       v-show="draggablePosition !== 'left'"
       class="divider-view-left"
       :class="{ 'is-move': isMove }"
-      :style="{ width: leftWidth }"
+      :style="{ width: currentLeftWidth }"
     >
       <CustomScrollbar>
         <slot name="left"></slot>

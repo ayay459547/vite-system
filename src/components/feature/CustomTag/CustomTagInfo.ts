@@ -28,7 +28,7 @@ export const props = {
   type: {
     type: String as PropType<Props.Type>,
     required: false,
-    default: 'default'
+    default: 'primary'
   },
   closeable: {
     type: Boolean as PropType<Props.Closeable>,

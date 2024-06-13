@@ -1,7 +1,7 @@
 export const columnSetting = {
   machineId: {
     label: '機台編號',
-    // i18nLabel: 'machineId',
+    i18nLabel: 'machine-id',
     table: {
       minWidth: 180,
       sortable: false
@@ -14,6 +14,7 @@ export const columnSetting = {
   },
   areaName: {
     label: '機台區域',
+    i18nLabel: 'machine-area',
     table: {
       minWidth: 180,
       sortable: false
@@ -38,6 +39,7 @@ export const columnSetting = {
   },
   machineNote: {
     label: '機台狀態',
+    i18nLabel: 'machine-note',
     table: {
       minWidth: 180,
       sortable: false

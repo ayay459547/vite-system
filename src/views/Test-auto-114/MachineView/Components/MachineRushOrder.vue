@@ -26,20 +26,20 @@ const props = defineProps({
     type: Object as PropType<TableData>,
     default: () => {
       return {
-        machineNo: '',
-        machineArea: '',
-        count: '',
-        machineStatus: ''
+        machineId: '',
+        areaName: '',
+        sum: '',
+        machineNote: ''
       }
     }
   }
 })
 
 const machine = ref<TableData>({
-  machineNo: '',
-  machineArea: '',
-  count: '',
-  machineStatus: ''
+  machineId: '',
+  areaName: '',
+  sum: '',
+  machineNote: ''
 })
 const initRushOrderData = () => {
   const rushOrderlist = [

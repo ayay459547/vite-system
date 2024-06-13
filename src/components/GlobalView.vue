@@ -296,8 +296,8 @@ const initNavigationRoutes = async (routeName?: string) => {
 
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: e ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: e ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

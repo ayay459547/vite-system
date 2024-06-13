@@ -69,8 +69,8 @@ const init = async () => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -189,13 +189,13 @@ defineExpose({
       if (status === 'success') {
         swal({
           icon: 'success',
-          title: i18nTranslate('updateSuccess'),
+          title: i18nTranslate('update-success'),
           showCancelButton: false
         })
       } else {
         swal({
           icon: 'error',
-          title: i18nTranslate('updateFail'),
+          title: i18nTranslate('update-fail'),
           text: msg,
           showCancelButton: false
         })

@@ -20,7 +20,7 @@ const collapseOptions = [
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const isDisabled = ref(true)
@@ -50,13 +50,13 @@ const submitFilesData = async () => {
       if (status === 'success') {
         swal({
           icon: 'success',
-          title: i18nTranslate('updateSuccess'),
+          title: i18nTranslate('update-success'),
           showCancelButton: false
         })
       } else {
         swal({
           icon: 'error',
-          title: i18nTranslate('updateFail'),
+          title: i18nTranslate('update-fail'),
           text: msg,
           showCancelButton: false
         })

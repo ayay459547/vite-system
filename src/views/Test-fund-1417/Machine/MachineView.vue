@@ -83,7 +83,7 @@ const onCreateSubmit = async () => {
       modal.create = false
       swal({
         icon: 'success',
-        title: i18nTranslate('createSuccess'),
+        title: i18nTranslate('create-success'),
         showCancelButton: false,
         confirmButtonText: i18nTranslate('confirm')
       })
@@ -100,7 +100,7 @@ const onUpdateSubmit = async () => {
       modal.update = false
       swal({
         icon: 'success',
-        title: i18nTranslate('editSuccess'),
+        title: i18nTranslate('edit-success'),
         showCancelButton: false,
         confirmButtonText: i18nTranslate('confirm')
       })
@@ -135,7 +135,7 @@ const remove = (rowData: TableData) => {
   const text = ' ' + rowData.machine_Id
   swal({
     icon: 'warning',
-    title: i18nTranslate('deleteConfirm') + text,
+    title: i18nTranslate('delete-confirm') + text,
     confirmButtonText: i18nTranslate('confirm-yes'),
     cancelButtonText: i18nTranslate('confirm-no')
   }).then(async (result: SwalResult) => {
@@ -146,7 +146,7 @@ const remove = (rowData: TableData) => {
       if (status === 'success') {
         swal({
           icon: 'success',
-          title: i18nTranslate('deleteSuccess'),
+          title: i18nTranslate('delete-success'),
           showCancelButton: false,
           confirmButtonText: i18nTranslate('confirm')
         })
@@ -154,7 +154,7 @@ const remove = (rowData: TableData) => {
       } else {
         swal({
           icon: 'error',
-          title: i18nTranslate('deleteFail'),
+          title: i18nTranslate('delete-fail'),
           text: msg,
           showCancelButton: false
         })
@@ -187,7 +187,7 @@ const onRTDSClick = async () => {
       } else {
         swal({
           icon: 'error',
-          title: i18nTranslate('updateFail'),
+          title: i18nTranslate('update-fail'),
           text: msg,
           showCancelButton: false
         })

@@ -4,7 +4,7 @@ import { swal } from '@/lib/lib_utils'
 export const columnSetting = {
   machine_Id: {
     label: '機台編號',
-    i18nLabel: 'machineId',
+    i18nLabel: 'machine-id',
     table: {
       minWidth: 200,
       sortable: false

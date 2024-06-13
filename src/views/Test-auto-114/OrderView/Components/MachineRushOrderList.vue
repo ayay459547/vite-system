@@ -112,8 +112,8 @@ const init = async (machineId: string) => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -187,8 +187,8 @@ const machineRemoteMethod = async (machineNo: string) => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -228,8 +228,8 @@ const processRemoteMethod = async (process: string) => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

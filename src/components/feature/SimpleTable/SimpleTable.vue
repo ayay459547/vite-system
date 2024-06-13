@@ -14,7 +14,7 @@ const getTranslate = (label: string, i18nLabel: string, i18nModule: string) => {
   const { i18nTranslate, i18nTest } = useHook()
 
   const module = i18nModule ?? propI18nModule
-  //i18nModule優先序 : columnSetting -> <SimpleTable> prop: i18nModule -> default: 'iPASP_common'
+  //i18nModule優先序 : columnSetting -> <SimpleTable> prop: i18nModule -> default: 'system'
   return i18nTest(i18nLabel, module) ? i18nTranslate(i18nLabel, module) : label
 }
 
@@ -295,7 +295,7 @@ const SimpleTable = (props: Props, context: any) => {
     handle = '.__draggable',
     itemKey = 'id',
     group = 'name',
-    i18nModule = 'iPASP_common',
+    i18nModule = 'system',
     hideHeader = false,
     move,
 
