@@ -1,4 +1,16 @@
 import type { Ref, DeepReadonly } from 'vue'
+import type{
+  UseRefHistoryOptions,
+  UseRefHistoryReturn,
+  UseThrottledRefHistoryOptions,
+  UseThrottledRefHistoryReturn
+} from '@vueuse/core'
+import {
+  useRefHistory as _useRefHistory,
+  useThrottledRefHistory as _useThrottledRefHistory
+} from '@vueuse/core'
+
+
 import {
   customRef,
   readonly,
@@ -289,4 +301,25 @@ export function useEffect<T>(callback: OnMountedCallback<T>, watchValue: any): v
       scope.stop()
     }
   })
+}
+
+/**
+ * @linkcode https://vueuse.org/core/useRefHistory/
+ * @param refValue ref(value) ref的值
+ * @param options 其他設定
+ * @returns ref(value) 變動歷史資訊
+ */
+export const useRefHistory = <T>(refValue: Ref<T>, options?: UseRefHistoryOptions<T, T> ): UseRefHistoryReturn<T, T> => {
+  return _useRefHistory(refValue, options)
+}
+
+/**
+ * @linkcode https://vueuse.org/core/useThrottledRefHistory/
+ * @description useRefHistory throttle
+ * @param refValue ref(value) ref的值
+ * @param options 其他設定
+ * @returns ref(value) 變動歷史資訊
+ */
+export const useThrottledRefHistory = <T>(refValue: Ref<T>, options?: UseThrottledRefHistoryOptions<T, T>): UseThrottledRefHistoryReturn<T, T> => {
+  return _useThrottledRefHistory(refValue, options)
 }
