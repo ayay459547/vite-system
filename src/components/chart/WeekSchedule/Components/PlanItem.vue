@@ -37,6 +37,10 @@ const props = defineProps({
   originPlanMap: {
     type: [Object, undefined] as PropType<Record<string, Custom.Origin>>,
     required: true
+  },
+  isEdit: {
+    type: Boolean as PropType<boolean>,
+    required: true
   }
 })
 
@@ -89,20 +93,21 @@ const planStyle = computed<Custom.PlanStyle>(() => {
 })
 
 const isCheck = ref(false)
+
 // 改分配 時間 + 位置
 const isMove = ref(false)
 let moveEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const moveDataPlan = ($event: MouseEvent) => {
-  if (isEmpty(props.scheduleContainer) || isCheck.value) return
+  if (isMove.value || isCheck.value || isEmpty(props.scheduleContainer)) return
   const { originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
   const throttleMousemoveEvent = throttle<typeof moveEvent>(function ($event: MouseEvent) {
-    const { clientY: mouseMoveY } = $event
     isMove.value = true
+    const { clientY: mouseMoveY } = $event
 
     // 變化高度
     const _moveY = mouseMoveY - mouseDownY
@@ -122,7 +127,7 @@ const moveDataPlan = ($event: MouseEvent) => {
     if (updateInfo.isShow) {
       updateInfo.top = mouseMoveY
     }
-  }, FPS, { isNoLeading: true })
+  }, FPS, { isNoLeading: true, isNoTrailing: true })
 
   moveEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', moveEvent)
@@ -132,12 +137,13 @@ let setStartEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const setStartPlan = ($event: MouseEvent) => {
-  if (isEmpty(props.scheduleContainer) || isCheck.value) return
+  if (isMove.value || isCheck.value || isEmpty(props.scheduleContainer)) return
   const { originTop } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
   const throttleMousemoveEvent = throttle<typeof setStartEvent>(function ($event: MouseEvent) {
+    isMove.value = true
     const { clientY: mouseMoveY } = $event
 
     // 變化高度
@@ -150,7 +156,7 @@ const setStartPlan = ($event: MouseEvent) => {
       startSecond,
       status: 'update'
     }
-  }, FPS, { isNoLeading: true })
+  }, FPS, { isNoLeading: true, isNoTrailing: true })
 
   setStartEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', setStartEvent)
@@ -160,12 +166,13 @@ let setEndEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const setEndPlan = ($event: MouseEvent) => {
-  if (isEmpty(props.scheduleContainer) || isCheck.value) return
+  if (isMove.value || isCheck.value || isEmpty(props.scheduleContainer)) return
   const { originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
   // 滑鼠移動時執行
   const throttleMousemoveEvent = throttle<typeof setEndEvent>(function ($event: MouseEvent) {
+    isMove.value = true
     const { clientY: mouseMoveY } = $event
 
     // 變化高度
@@ -178,7 +185,7 @@ const setEndPlan = ($event: MouseEvent) => {
       endSecond,
       status: 'update'
     }
-  }, FPS, { isNoLeading: true })
+  }, FPS, { isNoLeading: true, isNoTrailing: true })
 
   setEndEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', setEndEvent)
@@ -211,13 +218,9 @@ const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
   const { clientX, clientY } = $event
 
   if (mouseEvent === 'mousedown') {
-    // updateInfo.isShow = false
-
     updateInfo.mousedownLeft = clientX
     updateInfo.mousedownTop = clientY
 
-    // updateInfo.mouseupLeft = -1
-    // updateInfo.mouseupTop = -1
   } else if (mouseEvent === 'mouseup') {
     await nextTick()
     updateInfo.mouseupLeft = clientX
@@ -373,7 +376,7 @@ defineExpose({
       }"
     >
       <CustomPopover
-        :visible="updateInfo.isShow"
+        :visible="updateInfo.isShow && isEdit"
         :width="320"
         placement="right"
         :show-arrow="false"

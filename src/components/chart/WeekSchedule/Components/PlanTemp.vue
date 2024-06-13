@@ -85,7 +85,7 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
       tempPlanTime.end = secondToTime(_changeEndSecond)
 
       tempPlanStyle.height = _change
-    }, FPS, { isNoLeading: true })
+    }, FPS, { isNoLeading: true, isNoTrailing: true })
 
     mousemoveEvent = throttleMousemoveEvent
     props.scheduleContainer.addEventListener('mousemove', mousemoveEvent)

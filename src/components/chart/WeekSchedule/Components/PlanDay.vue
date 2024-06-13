@@ -19,7 +19,7 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,
-    description: '不可點擊'
+    description: '不可點擊 尚未對外開放'
   },
   planList: {
     type: Object as PropType<Custom.PlanTime[]>,
@@ -122,9 +122,8 @@ const planItemViewRef = reactive({})
       }
     } else {
       setOriginPlan(uuid, planTime)
-      lastChangePlan.value = uuid
     }
-    lastChangePlan.value = null
+    lastChangePlan.value = uuid
   }
 
   // 如果不存在 => 新增
@@ -272,6 +271,7 @@ const hourMapRef = reactive({})
       :uuid="uuid"
       :scheduleContainer="props.scheduleContainer"
       :originPlanMap="originPlanMap"
+      :isEdit="uuid === lastChangePlan"
       @mousedown="onPlanMouseDown(uuid, planTime)"
       @copyPlan="copyPlan(planTime)"
       @removePlan="removePlan(uuid)"
