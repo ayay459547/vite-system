@@ -157,15 +157,15 @@ onMounted(() => {
     border: solid 6px transparent;
   }
   &-asc {
-    border-bottom-color: #a8abb2;
+    border-bottom-color: var(--el-text-color-placeholder);
     &.is-active {
-      border-bottom-color: #409eff;
+      border-bottom-color: var(--el-color-primary);
     }
   }
   &-desc {
-    border-top-color: #a8abb2;
+    border-top-color: var(--el-text-color-placeholder);
     &.is-active {
-      border-top-color: #409eff;
+      border-top-color: var(--el-color-primary);
     }
   }
 }

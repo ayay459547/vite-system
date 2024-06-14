@@ -14,7 +14,7 @@ const getTranslate = (label: string, i18nLabel: string, i18nModule: string) => {
   const { i18nTranslate, i18nTest } = useHook()
 
   const module = i18nModule ?? propI18nModule
-  //i18nModule優先序 : columnSetting -> <SimpleTable> prop: i18nModule -> default: 'system'
+  //i18nModule優先序 : columnSetting -> <SimpleTable> prop: i18nModule -> default: 'iPASP_common'
   return i18nTest(i18nLabel, module) ? i18nTranslate(i18nLabel, module) : label
 }
 
@@ -295,7 +295,7 @@ const SimpleTable = (props: Props, context: any) => {
     handle = '.__draggable',
     itemKey = 'id',
     group = 'name',
-    i18nModule = 'system',
+    i18nModule = 'iPASP_common',
     hideHeader = false,
     move,
 
@@ -395,7 +395,7 @@ export default SimpleTable
 .__data-table {
   &-wrapper {
     border-radius: 6px;
-    border: 1px solid #ebeef5;
+    border: 1px solid var(--i-color-table-border);
     width: 100%;
     height: 100%;
     overflow-x: auto;
@@ -413,7 +413,7 @@ export default SimpleTable
     height: fit-content;
     display: flex;
     background-color: var(--el-color-info-light-9);
-    border-bottom: 1px solid #ebeef5;
+    border-bottom: 1px solid var(--el-table-border-color);
     z-index: 1;
     overflow-y: scroll;
   }
@@ -452,24 +452,24 @@ export default SimpleTable
 
   &-row {
     display: flex;
-    background-color: var(--el-bg-color);
+    background-color: var(--el-table-tr-bg-color);
     transition-duration: 0.3s;
-    border-bottom: 1px solid #ebeef5;
+    border-bottom: 1px solid var(--el-table-border-color);
     content-visibility: auto;
 
     &:nth-child(even) {
-      background-color: #fafafa;
+      background-color: var(--el-fill-color-lighter);
     }
 
     &:hover,
     &:nth-child(even):hover {
-      background-color: var(--el-color-info-light-9);
+      background-color: var(--el-table-row-hover-bg-color);
     }
   }
 
   &-column {
     flex: 1;
-    border-left: 1px solid #ebeef5;
+    border-left: 1px solid var(--el-table-border-color);
     padding: 8px;
     background-color: inherit;
 

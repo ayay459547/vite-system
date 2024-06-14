@@ -5,7 +5,7 @@ import { ref, inject, computed } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
-import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
+import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
@@ -53,17 +53,17 @@ const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits(['change', 'resize'])
 
 const columnList = ref<ColumnItem[]>([])
 
 const showColumnList = computed<Array<ColumnItem>>({
-  get() {
+  get () {
     return columnList.value.filter(item => {
       return !(item?.isOperations ?? false)
     })
   },
-  set(v: Array<ColumnItem>) {
+  set (v: Array<ColumnItem>) {
     setColumnList(v)
   }
 })
@@ -140,6 +140,11 @@ const resetSetting = async () => {
   updateSetting()
 }
 
+// 最適化所有欄位寬度
+const resizeColumns = () => {
+  emit('resize') // 通知Table調整寬度
+}
+
 /**
  * 當欄位寬度變動時 設新的寬度
  * @param props column 的 key
@@ -202,7 +207,10 @@ const onDragend = () => {
       popper-style="padding: 4px;"
     >
       <template #reference>
-        <CustomButton icon-name="list-check" :label="i18nTranslate('columnSetting', 'system')" />
+        <CustomButton
+          icon-name="list-check"
+          :label="i18nTranslate('columnSetting', 'system')"
+        />
       </template>
 
       <div>
@@ -237,10 +245,8 @@ const onDragend = () => {
                 </div>
 
                 <div class="__column-item-right">
-                  <CustomButton
-                    type="info"
-                    icon-name="right-left"
-                    text
+                  <CustomIcon
+                    name="right-left"
                     style="transform: rotateZ(90deg)"
                   />
                 </div>
@@ -250,6 +256,14 @@ const onDragend = () => {
         </div>
 
         <div class="__column-footer">
+          <CustomButton
+            :label="'調整全部欄寬' /*i18nTranslate('resize-header', 'system')*/"
+            type="info"
+            plain
+            icon-name="arrows-left-right-to-line"
+            @click="resizeColumns"
+          />
+
           <CustomButton
             :label="i18nTranslate('reset', 'system')"
             type="info"
@@ -280,10 +294,9 @@ const onDragend = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--el-bg-color);
-    transition-duration: 0.3s;
     padding-left: 16px;
     width: 100%;
+    cursor: move;
 
     &-left {
       width: calc(100% - 48px);
@@ -294,25 +307,18 @@ const onDragend = () => {
     &-right {
       width: 48px;
     }
-    .text {
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
 
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      cursor: pointer;
-    }
+    background-color: inherit;
+    transition-duration: 0.3s;
     &:hover {
-      background-color: var(--el-color-info-light-9);
+      background-color: var(--el-color-primary-light-9);
     }
   }
 
   &-footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 6px;
     padding: 4px;

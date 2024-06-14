@@ -138,7 +138,6 @@ defineExpose({
     position: relative;
 
     gap: 8px;
-    background-color: lighten($system-bg-color, 48%);
   }
 
   &-menu {

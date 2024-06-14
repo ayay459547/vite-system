@@ -90,10 +90,8 @@ const setLevel2Router = (level2Router: Navigation) => {
     align-items: center;
     padding: 0 8px;
     font-size: 1.2em;
-
-    background-color: lighten($system-bg-color, 5%);
-
-    color: #ffffff;
+    background-color: var(--i-color-menu);
+    color: var(--i-color-menu-color);
   }
 
   &-left {

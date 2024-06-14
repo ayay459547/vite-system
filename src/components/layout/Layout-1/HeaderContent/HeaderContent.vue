@@ -129,10 +129,10 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       white-space: nowrap;
 
       transition-duration: 0.3s;
-      color: #535353;
+      color: var(--i-color-menu);
 
       &:hover {
-        color: var(--i-color-primary);
+        color: var(--i-color-menu-hover);
       }
     }
   }

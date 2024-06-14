@@ -131,8 +131,8 @@ const hasSlot = (prop: string): boolean => {
   border-bottom: 1px solid #ffffff00;
 
   &-item {
-    background-color: var(--el-bg-color);
-    border-bottom: 1px solid #ebeef5;
+    background-color: inherit;
+    border-bottom: 1px solid var(--el-border-color);
 
     &.stripe {
       &:nth-child(even) {

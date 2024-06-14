@@ -185,7 +185,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
 </template>
 
 <style lang="scss" scoped>
-@import './Layout-1.scss';
+@use './Layout-1.scss' as *;
 
 .layout {
   &-wrapper {
@@ -195,6 +195,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
 
     display: flex;
     position: relative;
+    background: inherit;
   }
 
   &-left {
@@ -255,7 +256,6 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     display: flex;
     flex-direction: column;
     overflow: auto;
-    background-color: lighten($system-bg-color, 48%);
   }
   &-header {
     width: 100%;

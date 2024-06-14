@@ -163,7 +163,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@import '../Layout-1.scss';
+@use '../Layout-1.scss' as *;
 
 .nav {
   &-container {
@@ -239,7 +239,7 @@ defineExpose({
     color: #fff;
     font-weight: 600;
     letter-spacing: 1px;
-    background-color: $system-bg-color;
+    background-color: var(--i-color-menu);
     transition-duration: 0.3s;
 
     border-radius: 6px;
@@ -253,7 +253,7 @@ defineExpose({
     gap: 8px;
 
     &:hover {
-      background-color: lighten($system-bg-color, 5%);
+      background-color: var(--i-color-menu-hover);
 
       .item-title {
         transform: translateX(4px);

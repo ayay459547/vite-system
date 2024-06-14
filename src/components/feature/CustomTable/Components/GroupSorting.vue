@@ -127,15 +127,12 @@ const submit = () => {
             }"
           >
             <template #item="{ element }">
-              <div
-                class="__column-item"
-                :class="element.order !== 'none' ? 'is-active sorting-move' : ''"
-              >
+              <div class="__column-item sorting-move" :class="element.order !== 'none' ? 'is-active' : ''">
                 <div class="__column-item-left">
                   <CustomInput
                     :model-value="element.order"
-                    :validate-key="`GroupSorting:${element.key}`"
                     @update:model-value="setSortingValue($event, element.key)"
+                    :validate-key="`GroupSorting:${element.key}`"
                     :label="i18nTranslate(element?.i18nLabel ?? element.label)"
                     type="radio"
                     :options="[
@@ -150,14 +147,11 @@ const submit = () => {
                           <span class="__column-item-text">{{ label }}</span>
                         </template>
                         <!-- 遞增 -->
-                        <CustomIcon v-if="value === 'ascending'" name="arrow-down-short-wide" />
+                        <CustomIcon v-if="value === 'ascending'" name="arrow-down-short-wide"/>
                         <!-- 不排序 -->
-                        <CustomIcon v-else-if="value === 'none'" name="ban" />
+                        <CustomIcon v-else-if="value === 'none'" name="ban"/>
                         <!-- 遞減 -->
-                        <CustomIcon
-                          v-else-if="value === 'descending'"
-                          name="arrow-down-wide-short"
-                        />
+                        <CustomIcon v-else-if="value === 'descending'" name="arrow-down-wide-short"/>
                       </CustomTooltip>
                     </template>
                   </CustomInput>
@@ -168,11 +162,8 @@ const submit = () => {
                     :value="activeIndexMap[element.key]"
                     :hidden="activeIndexMap[element.key] <= 0"
                   >
-                    <CustomButton
-                      type="info"
-                      icon-name="right-left"
-                      text
-                      :disabled="element.order === 'none'"
+                    <CustomIcon
+                      name="right-left"
                       style="transform: rotateZ(90deg)"
                     />
                   </CustomBadge>
@@ -230,12 +221,14 @@ const submit = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--el-bg-color);
-    transition-duration: 0.3s;
     padding: 6px 0 0 16px;
     width: 100%;
+    cursor: move;
+
+    background-color: inherit;
+    transition-duration: 0.3s;
     &:hover {
-      background-color: var(--el-color-info-light-9);
+      background-color: var(--el-color-primary-light-9);
     }
 
     opacity: 0.7;
@@ -246,7 +239,7 @@ const submit = () => {
       overflow: hidden;
     }
     &-right {
-      width: 80px;
+      width: 48px;
     }
     &.is-active {
       opacity: 1;

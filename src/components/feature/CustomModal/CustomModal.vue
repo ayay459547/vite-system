@@ -666,7 +666,7 @@ onUnmounted(() => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--el-bg-color);
+    background-color: var(--i-color-system-page);
     box-shadow: 2px 2px 8px 1px #d6d6d6;
     transition-duration: 0.3s;
     min: {

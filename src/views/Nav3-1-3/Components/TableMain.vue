@@ -470,7 +470,7 @@ const svg = `
       border-collapse: separate;
       height: 100%;
       thead {
-        background-color: lighten($system-bg-color, 48%);
+        background-color: var(--i-color-table-thead);
         & > tr {
           background-color: inherit;
 
@@ -496,7 +496,7 @@ const svg = `
           width: 100%;
           height: 100%;
 
-          color: #535353;
+          color: var(--el-text-color-primary);
         }
       }
 

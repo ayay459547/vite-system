@@ -588,7 +588,7 @@ const slotKeyList = computed(() => {
   &-wrapper {
     width: 100%;
     height: 100%;
-    border: 1px solid #ebeef5;
+    border: 1px solid var(--i-color-table-border);
     border-radius: 6px;
     display: flex;
     flex-direction: column;
@@ -602,7 +602,7 @@ const slotKeyList = computed(() => {
 
   &-setting {
     height: fit-content;
-    background-color: lighten($system-bg-color, 40%);
+    background-color: var(--i-color-table-setting);
     overflow: hidden;
     overflow-x: scroll;
     width: 100%;

@@ -599,7 +599,7 @@ defineExpose({
       border-collapse: separate;
       height: 100%;
       thead {
-        background-color: lighten($system-bg-color, 48%);
+        background-color: var(--i-color-table-thead);
         & > tr {
           background-color: inherit;
 
@@ -625,7 +625,7 @@ defineExpose({
         align-items: center;
 
         height: 100%;
-        color: #535353;
+        color: var(--el-text-color-primary);
         & > div {
           width: 100%;
           height: 100%;

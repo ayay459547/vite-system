@@ -44,7 +44,7 @@ watch(
     top: 0;
     left: 0;
     z-index: var(--i-z-index-login);
-    background-color: #ecf5ff;
+    background-color: var(--el-color-primary-light-9);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -288,16 +288,14 @@ const checkTableColumns = (tempColumnList: ColumnItem[]) => {
 
   if (originColumnsKey.length !== settingColumnsKey.length) {
     tipLog('欄位數量不同', [
-      `table => ${props.title}`,
+      `table => ${props.title} (${props.settingKey})`,
       `原始欄位列表 => ${tempColumnList.map(item => item?.label ?? '').join(' , ')}`,
       `設定欄位列表 => ${props.tableColumns.map(item => item?.label ?? '').join(' , ')}`,
       '如果欄位有要新增 請變更 version'
     ])
-  } else if (
-    settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])
-  ) {
+  } else if (settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])) {
     tipLog('欄位異動', [
-      `table => ${props.title}`,
+      `table => ${props.title} (${props.settingKey})`,
       `原始欄位列表 => ${originColumnsKey}`,
       `設定欄位列表 => ${settingColumnsKey}`,
       '如果欄位有要異動 請變更 version'
@@ -612,6 +610,7 @@ onMounted(() => {
       <div class="setting-right">
         <slot name="setting-right"></slot>
         <ColumnSetting
+          v-show="!props.isHiddenColumnSetting"
           ref="columnSetting"
           :columns="props.tableColumns"
           :i18n-module="props.i18nModule"
@@ -736,7 +735,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-$border-style: 1px solid #ebeef5;
+$border-style: 1px solid var(--i-color-table-border);
+
 .__table {
   &-wrapper {
     width: 100%;
@@ -758,7 +758,7 @@ $border-style: 1px solid #ebeef5;
   &-prepend {
     height: fit-content;
     position: relative;
-    background-color: lighten($system-bg-color, 33%);
+    background-color: var(--i-color-table-prepend);
     border: $border-style {
       radius: 6px 6px 0 0;
     }
@@ -790,7 +790,7 @@ $border-style: 1px solid #ebeef5;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: lighten($system-bg-color, 40%);
+    background-color: var(--i-color-table-setting);
     padding: 6px;
     overflow: hidden {
       x: scroll;
@@ -809,7 +809,7 @@ $border-style: 1px solid #ebeef5;
 
     &:hover {
       &::-webkit-scrollbar-thumb {
-        background-color: #a2a2a272;
+        background-color: var(--el-color-info-light-7);
       }
     }
 
@@ -904,7 +904,7 @@ $border-style: 1px solid #ebeef5;
     align-items: center;
     gap: 8px;
     padding: 0 6px;
-    background-color: var(--el-bg-color);
+    background-color: inherit;
     transition-duration: 0.3s;
     cursor: pointer;
     .icon {

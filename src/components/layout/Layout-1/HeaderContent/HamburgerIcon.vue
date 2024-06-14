@@ -39,7 +39,7 @@ $bar-height: 4px;
   content: '';
   transition-duration: 0.5s;
   position: absolute;
-  background-color: $system-bg-color;
+  background-color: var(--i-color-system);
   border-radius: 6px;
   left: 0;
   top: $top;

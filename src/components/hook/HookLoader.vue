@@ -189,7 +189,7 @@ defineExpose<Expose>({
   &-bar {
     height: 10px;
     border-radius: 4px;
-    background-color: $system-bg-color;
+    background-color: var(--i-color-system);
     position: absolute;
     bottom: 1px;
     left: 1px;

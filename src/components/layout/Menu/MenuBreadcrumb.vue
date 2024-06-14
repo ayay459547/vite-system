@@ -98,6 +98,11 @@ const onBreadcrumbTextClick = (index: number) => {
   }
   &-path {
     cursor: pointer;
+    transition: 0.3s color;
+    color: var(--i-color-menu);
+    &:hover {
+      color: var(--i-color-menu-hover);
+    }
   }
 
   &-lg {

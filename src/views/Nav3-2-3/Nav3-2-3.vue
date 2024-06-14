@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { CustomDraggable } from '@/components'
+import { CustomDraggable, CustomButton, CustomBadge, CustomEmpty, CustomTag } from '@/components'
 
 const options = [
   { id: 1, name: 'test1' },
@@ -44,27 +44,49 @@ const clone = (original: any) => {
 
 <template>
   <div class="page">
-    <CustomDraggable
-      v-model="list"
-      :group="{ name: 'option', pull: 'clone', put: false }"
-      :clone="clone"
-    >
-      <template #item="{ element }">
-        <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
-      </template>
-    </CustomDraggable>
+    <div class="flex-row i-ga-xxl">
+      <CustomDraggable
+        v-model="list"
+        :group="{ name: 'option', pull: 'clone', put: false }"
+        :clone="clone"
+      >
+        <template #item="{ element }">
+          <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
+        </template>
+      </CustomDraggable>
 
-    <CustomDraggable v-model="list2" group="option">
-      <template #item="{ element }">
-        <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
-      </template>
-    </CustomDraggable>
+      <CustomDraggable v-model="list2" group="option">
+        <template #item="{ element }">
+          <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
+        </template>
+      </CustomDraggable>
 
-    <CustomDraggable v-model="list3">
-      <template #item="{ element }">
-        <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
-      </template>
-    </CustomDraggable>
+      <CustomDraggable v-model="list3">
+        <template #item="{ element }">
+          <div class="border-info i-pa-md fill-x">{{ element.name }}</div>
+        </template>
+      </CustomDraggable>
+    </div>
+
+    <div class="page-container">
+      <div class="fill-x flex-row i-mb-md">
+        <CustomBadge value="3">
+          <CustomButton label="test" />
+        </CustomBadge>
+      </div>
+
+      <div class="fill-x flex-row">7</div>
+      <div>
+        <CustomEmpty />
+      </div>
+
+      <div class="flex-row i-ga-md">
+        <CustomTag label="Tag" icon-name="edit" size="large" />
+        <CustomTag label="Tag" icon-name="edit" size="default" />
+        <CustomTag label="Tag" icon-name="edit" size="small" />
+        <CustomTag label="Tag" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,6 +96,13 @@ const clone = (original: any) => {
   height: 100%;
   padding: 16px;
   display: flex;
+  flex-direction: column;
   gap: 16px;
+
+  &-container {
+    width: 100%;
+    height: 100%;
+    min-height: fit-content;
+  }
 }
 </style>

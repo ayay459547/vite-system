@@ -190,7 +190,7 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
     align-items: center;
     gap: 28px;
     cursor: pointer;
-    color: #fff;
+    color: var(--i-color-menu-color);
 
     & > h3 {
       font-size: 1.4em;
@@ -200,7 +200,7 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
     }
 
     &:hover {
-      background-color: lighten($system-bg-color, 5%);
+      background-color: var(--i-color-menu-hover);
 
       & > h3 {
         transform: translateX(4px);
@@ -223,8 +223,8 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
   &-sub-item,
   &-item {
     width: 100%;
-    color: #fff;
-    background-color: $system-bg-color;
+    color: var(--i-color-menu-color);
+    background-color: var(--i-color-menu);
     transition-duration: 0.3s;
 
     border-radius: 6px;
@@ -235,7 +235,7 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
     cursor: pointer;
 
     &:hover {
-      background-color: lighten($system-bg-color, 5%);
+      background-color: var(--i-color-menu-hover);
       .item-title {
         transform: translateX(4px);
       }

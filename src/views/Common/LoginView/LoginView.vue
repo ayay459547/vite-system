@@ -92,7 +92,7 @@ const svg = `
   >
     <img class="login-img-lg" src="@/assets/images/common/login-lg.svg" alt="login" />
 
-    <div class="login-container card-primary">
+    <div class="login-container">
       <div class="login-form">
         <img class="login-img-xs" src="@/assets/images/common/login-xs.svg" alt="login" />
 
@@ -133,6 +133,8 @@ const svg = `
 </template>
 
 <style lang="scss" scoped>
+$gradient-color: var(--i-color-login-move);
+
 :deep(.login-form) {
   .el-input__wrapper {
     height: 48px !important;
@@ -149,7 +151,7 @@ const svg = `
     top: 0;
     left: 0;
     z-index: var(--i-z-index-login);
-    background-color: var(--el-color-primary-light-9);
+    background-color: var(--i-color-login-wrapper);
     @extend %flex-center;
   }
 
@@ -161,6 +163,7 @@ const svg = `
     position: relative;
     transform: translateX(50%);
     overflow: hidden;
+    box-shadow: 2px 2px 8px 1px var(--i-color-login-container);
 
     @media (max-width: 1200px) {
       transform: translateX(40%);
@@ -186,13 +189,13 @@ const svg = `
     &::before {
       top: -50%;
       left: -50%;
-      background: linear-gradient(0deg, transparent, #79bbff, #79bbff);
+      background: linear-gradient(0deg, transparent, $gradient-color, $gradient-color);
       transform-origin: bottom right;
     }
     &::after {
       top: 50%;
       left: 50%;
-      background: linear-gradient(180deg, transparent, #79bbff, #79bbff);
+      background: linear-gradient(180deg, transparent, $gradient-color, $gradient-color);
       transform-origin: top left;
     }
   }
@@ -246,7 +249,7 @@ const svg = `
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--el-color-primary-light-8);
+    background: linear-gradient(165deg, var(--i-color-login-form-start), 65%, var(--i-color-login-form-end));
     padding: 36px;
     gap: 28px;
     position: absolute;
@@ -286,14 +289,14 @@ const svg = `
     width: 100%;
     padding: 16px;
     border: none;
-    background-color: var(--el-color-primary-light-5);
+    background-color: var(--i-color-login-button);
     color: inherit;
     border-radius: 6px;
     transition-duration: 0.3s;
     cursor: pointer;
 
     &:hover {
-      background-color: var(--el-color-primary-light-3);
+      background-color: var(--i-color-login-button-hover);
     }
   }
 }

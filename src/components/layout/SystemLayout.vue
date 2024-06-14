@@ -237,5 +237,6 @@ const onLayoutChange = () => {
   display: contents;
   width: 100vw;
   height: 100vh;
+  background-color: var(--i-color-system-bg);
 }
 </style>

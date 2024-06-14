@@ -444,20 +444,6 @@ const routes: Array<RouterTree> = [
             component: () => import('@/views/Nav3-1-1/Nav3-1-1.vue')
           },
           {
-            name: 'nav3-1-2',
-            title: 'Clusterize.js虛擬列表',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav3-1-2',
-            icon: 'table-cells',
-            component: () => import('@/views/Nav3-1-2/Nav3-1-2.vue')
-          },
-          {
             name: 'nav3-1-3',
             title: '一般列表懶加載',
             meta: {
@@ -494,22 +480,8 @@ const routes: Array<RouterTree> = [
             component: () => import('@/views/Nav3-2-1/Nav3-2-1.vue')
           },
           {
-            name: 'nav3-2-2',
-            title: 'UxeTable取代ElTable',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav3-2-2',
-            icon: 'u',
-            component: () => import('@/views/Nav3-2-2/Nav3-2-2.vue')
-          },
-          {
             name: 'nav3-2-3',
-            title: '拖拉測試',
+            title: '拖拉測試+其他',
             meta: {
               keepAlive: false,
               status: 'completed',
@@ -520,20 +492,6 @@ const routes: Array<RouterTree> = [
             path: '/nav3-2-3',
             component: () => import('@/views/Nav3-2-3/Nav3-2-3.vue'),
             icon: 'table-columns'
-          },
-          {
-            name: 'nav3-2-4',
-            title: '選單3-2-4',
-            meta: {
-              keepAlive: false,
-              status: 'completed',
-              startDate: '2023-08',
-              completedDate: '2023-08'
-            },
-            systemType: ['new'],
-            path: '/nav3-2-4',
-            component: () => import('@/views/Nav3-2-4/Nav3-2-4.vue'),
-            icon: 'arrow-down-short-wide'
           }
         ]
       },
@@ -561,7 +519,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-3-4',
-            title: '選單3-3-4',
+            title: '多欄位自訂排序合併',
             systemType: ['new'],
             path: '/nav3-3-4',
             component: () => import('@/views/Nav3-3-4/Nav3-3-4.vue'),

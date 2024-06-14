@@ -133,7 +133,7 @@ defineExpose({
     padding: 8px;
 
     &.level2 {
-      background-color: lighten($system-bg-color, 8%);
+      background-color: var(--i-color-menu-sub);
 
       // &:hover {
       //   & ~ .level3 {
@@ -146,7 +146,7 @@ defineExpose({
       // transition-duration: 0.2s;
       transition-timing-function: linear;
       height: fit-content;
-      background-color: lighten($system-bg-color, 12%);
+      background-color: var(--i-color-menu-sub);
       overflow: hidden;
     }
   }
@@ -164,7 +164,6 @@ defineExpose({
     &:hover,
     &.active {
       color: var(--el-color-warning);
-      // background-color: lighten($system-bg-color, 18%);
     }
   }
 

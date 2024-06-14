@@ -3,31 +3,65 @@
 
 // 系統顏色
 $light-system: (
-  'system-bg': #506d9c,
-  'home-title': #5b79ab,
-  
-  'system-bg-lighten-5': #5b79ab,
-  'system-bg-lighten-8': #6582b0,
-  'system-bg-lighten-10': #6c87b3,
-  'system-bg-lighten-12': #728cb7,
-  'system-bg-lighten-15': #7c95bc,
-  'system-bg-lighten-33': #b9c6db,
-  'system-bg-lighten-40': #d1d9e7,
-  'system-bg-lighten-48': #eceff5
+  'system': #506d9c,
+  'system-bg': #eceff5,
+  'system-page': #ffffff,
+  'system-border': #7c95bc,
+
+  'login-wrapper': #ecf5ff,
+  'login-container': #a6d2ff,
+  'login-form-start': #d9ecff,
+  'login-form-end': #e5f2ff,
+  'login-move': #79bbff,
+  'login-button': #79bbff,
+  'login-button-hover': #a0cfff,
+
+  'menu': #506d9c,
+  'menu-sub': #5b79ab,
+  'menu-hover': #6582b0,
+  'menu-color': #ffffff,
+
+  'table-border': #ebeef5,
+  'table-prepend': #b9c6db,
+  'table-setting': #d1d9e7,
+  'table-thead': #eceff5,
+
+  'row-odd': #fcfcfc,
+  'row-odd-hover': #f2f4f8,
+  'row-even': #f7f7f7,
+  'row-even-hover': #f2f4f8,
+  'row-boder': #ebeef5
 );
 
 $dark-system: (
-  'system-bg': #383838,
-  'home-title': #98b3e0,
+  'system': #476596,
+  'system-bg': #aeaeae,
+  'system-page': #7e7e7e,
+  'system-border': #7c95bc,
 
-  'system-bg-lighten-5': #464646,
-  'system-bg-lighten-8': #575757,
-  'system-bg-lighten-10': #606060,
-  'system-bg-lighten-12': #6e6e6e,
-  'system-bg-lighten-15': #727272,
-  'system-bg-lighten-33': #868686,
-  'system-bg-lighten-40': #959595,
-  'system-bg-lighten-48': #9a9a9a
+  'login-wrapper': #646464,
+  'login-container': #9f9f9f,
+  'login-form-start': #000000,
+  'login-form-end': #9f9f9f,
+  'login-move': #adadad,
+  'login-button': #808080,
+  'login-button-hover': #6c6c6c,
+
+  'menu': #45608c,
+  'menu-sub': #516b98,
+  'menu-hover': #5d78a3,
+  'menu-color': #f0f0f0,
+
+  'table-border': #7e7e7e,
+  'table-prepend': #4e4e4e,
+  'table-setting': #4c4c4c,
+  'table-thead': #545454,
+
+  'row-odd': #535353,
+  'row-odd-hover': #606060,
+  'row-even': #595959,
+  'row-even-hover': #606060,
+  'row-boder': #959595
 );
 
 html {

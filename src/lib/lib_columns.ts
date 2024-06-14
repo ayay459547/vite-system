@@ -392,15 +392,16 @@ export interface TableOptions {
     order: null | 'ascending' | 'descending'
   }
   rowKey?: string
-  isSorting?: boolean
-  isHiddenExcel?: boolean
+  isSorting?: boolean // 是否可多欄位排序
+  isHiddenExcel?: boolean // 是否隱藏下載excel按鈕
+  isHiddenColumnSetting?: boolean // 是否隱藏欄位設定按鈕
   tableSize?: TableSize
   showType?: string | 'custom' | 'auto'
   selection?: boolean
   lazy?: boolean
-  load?: Function
+  load?: Function // 懶加載
   treeProps?: any
-  i18nModule?: ScopeKey
+  i18nModule?: ScopeKey // 翻譯模組
 }
 
 export interface TableSetting {
@@ -893,13 +894,9 @@ export const useSimpleTableSetting = (
  * @returns {Array}
  */
 export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
-  return object_reduce(
-    columns,
-    (prev: Array<string>, curr: any, currKey: string) => {
-      return [...prev, currKey]
-    },
-    []
-  )
+  return object_reduce(columns, (prev: Array<string>, curr: any, currKey: string) => {
+    return [...prev, currKey]
+  }, [])
 }
 
 /**
@@ -915,20 +912,16 @@ export const formatColumns = (
   type: string,
   callback: (column: Record<string, any>, key: string) => Record<string, any>
 ): Record<string, any> => {
-  return object_reduce(
-    columns,
-    (res: Record<string, any>, column: Record<string, any>, key: string) => {
-      res[key] = { ...column }
-      const _column = res[key]
+  return object_reduce(columns, (res: Record<string, any>, column: Record<string, any>, key: string) => {
+    res[key] = { ...column }
+    const _column = res[key]
 
-      if (hasOwnProperty(column, type)) {
-        const newColumn = callback(column[type], key)
+    if (hasOwnProperty(column, type)) {
+      const newColumn = callback(column[type], key)
 
-        _column[type] = newColumn ?? column[type]
-      }
+      _column[type] = newColumn ?? column[type]
+    }
 
-      return res
-    },
-    {}
-  )
+    return res
+  }, {})
 }

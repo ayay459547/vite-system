@@ -159,7 +159,7 @@ export default defineComponent({
     width: fit-content;
     height: fit-content;
     color: #fff;
-    background-color: lighten($system-bg-color, 5%);
+    background-color: var(--i-color-system);
     border-radius: 6px;
     padding: 0px 8px;
     cursor: default;

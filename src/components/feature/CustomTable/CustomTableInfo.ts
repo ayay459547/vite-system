@@ -263,6 +263,12 @@ export const props = {
     default: false,
     description: '是否有多欄位排序'
   },
+  isHiddenColumnSetting: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否隱藏欄位設定'
+  },
   selection: {
     type: Boolean as PropType<boolean>,
     required: false,

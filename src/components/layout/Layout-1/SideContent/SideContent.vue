@@ -135,7 +135,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@import '../Layout-1.scss';
+@use '../Layout-1.scss' as *;
 
 @mixin navStyle($isNavOpen) {
   @if ($isNavOpen) {
@@ -167,7 +167,6 @@ defineExpose({
   &-wrapper {
     width: 100%;
     height: 100%;
-    background-color: lighten($system-bg-color, 48%);
     padding: $nav-padding 0 $nav-padding $nav-padding;
     transition-duration: 0.3s;
     will-change: min-width;
@@ -189,7 +188,7 @@ defineExpose({
   &-container {
     width: 100%;
     height: 100%;
-    background-color: $system-bg-color;
+    background-color: var(--i-color-menu);
     align-items: center;
     display: flex;
     flex-direction: column;

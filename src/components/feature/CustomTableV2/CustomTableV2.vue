@@ -198,14 +198,14 @@ defineExpose({
 :deep(.__table-v2-container) {
   .el-table-v2__table {
     .el-table-v2__header .el-table-v2__header-cell {
-      background-color: lighten($system-bg-color, 48%);
-      border-right: 1px solid #ebeef5;
-      color: #535353;
+      background-color: var(--i-color-table-thead);
+      border-right: 1px solid var(--i-color-table-border);
+      color: var(--el-text-color-primary);
     }
 
     .el-table-v2__row {
       .el-table-v2__row-cell {
-        border-right: 1px solid #ebeef5;
+        border-right: 1px solid var(--i-color-table-border);
 
         & > div {
           width: 100%;
@@ -220,7 +220,7 @@ defineExpose({
     width: 100%;
     height: 100%;
     position: relative;
-    border: 2px solid #e9e9eb {
+    border: 2px solid var(--i-color-table-border) {
       radius: 6px;
     }
     overflow: hidden;
