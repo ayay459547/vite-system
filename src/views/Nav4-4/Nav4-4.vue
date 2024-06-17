@@ -3,7 +3,7 @@ import { ref, onMounted, inject } from 'vue'
 
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 import type { UseHook } from '@/declare/hook'
-import { CustomWatermark } from '@/components'
+import { CustomWatermark, CustomLockView } from '@/components'
 import { useState, useEffect } from '@/lib/lib_hook'
 
 const useHook: UseHook = inject('useHook')
@@ -44,6 +44,8 @@ onMounted(() => {
 
   testUseState()
 })
+
+const isLock = ref(true)
 </script>
 
 <template>
@@ -53,6 +55,36 @@ onMounted(() => {
     <div class="flex-row i-ga-md">
       <button @click="setCount(count + 1)">Add Count</button>
       <button @click="count = 666">Add Count read</button>
+      <button @click="isLock = !isLock">change Lock</button>
+    </div>
+
+    <div v-fixed="{ text: '測試', class: 'text-danger' }">
+      v-fixed
+    </div>
+
+    <div class="lock-view">
+      <CustomLockView :is-lock="isLock" description="你好啊">
+        <!-- <template #description>
+          <div @click="isLock = !isLock">點擊切換</div>
+        </template> -->
+        <div class="lock">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+          been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+          It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+          passages, and more recently with desktop publishing software like Aldus PageMaker including
+          versions of Lorem Ipsum.
+
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+          been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five
+          centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+          It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+          passages, and more recently with desktop publishing software like Aldus PageMaker including
+          versions of Lorem Ipsum.
+        </div>
+      </CustomLockView>
     </div>
 
     <div class="watermark">
@@ -72,8 +104,15 @@ onMounted(() => {
   flex-direction: column;
   gap: 24px;
 }
-.watermark {
+.watermark,
+.lock-view {
   width: 100%;
-  height: 300px;
+  min-height: 300px;
+}
+.lock {
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

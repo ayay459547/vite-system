@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
+import { ElTooltip } from 'element-plus'
 
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
@@ -20,6 +21,7 @@ export interface Options {
 
 export default defineComponent({
   name: 'vFixed',
+  components: [ElTooltip],
   props: {
     elAttr: {
       typs: Object as PropType<ElAttr>,
@@ -45,8 +47,8 @@ export default defineComponent({
   },
   data() {
     return {
-      timer: null,
       isShow: false,
+      timer: null,
       elRect: { left: 0, top: 0, width: 0, height: 0 },
       mousePos: { left: 0, top: 0 },
       throttleOnWheelChange: throttle(this.close, 150, { isNoLeading: true }) as (
@@ -139,18 +141,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <Transition name="fixed">
-    <div
-      v-show="isShow"
-      ref="fixed"
-      class="fixed-wrapper"
-      :class="options.class"
-      :style="bindStyle"
-      @wheel="throttleOnWheelChange"
-    >
-      <span class="fixed-text">{{ options.text }}</span>
-    </div>
-  </Transition>
+  <ElTooltip
+    v-model:visible="isShow"
+    placement="top"
+    trigger="hover"
+    show-arrow
+    :show-after="500"
+    effect="light"
+  >
+    <template #default>
+      <slot>default</slot>
+    </template>
+    <template #content>
+      <slot name="content">content</slot>
+    </template>
+  </ElTooltip>
 </template>
 
 <style lang="scss" scoped>
@@ -159,7 +164,6 @@ export default defineComponent({
     width: fit-content;
     height: fit-content;
     color: #fff;
-    background-color: var(--i-color-system);
     border-radius: 6px;
     padding: 0px 8px;
     cursor: default;

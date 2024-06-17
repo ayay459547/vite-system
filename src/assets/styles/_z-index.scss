@@ -8,8 +8,9 @@ $z-index-map: map.merge(
     'loading': 3000, // var(--i-z-index-loading);
     'global-disabled': 2080, // var(--i-z-index-global-disabled);
     'notification': 2050, // 在下方已使用
+    'tour': 2050, // var(--i-z-index-tour);
     'swal2': 2040, // 在下方已使用
-    'select-option': 2050, // var(--i-z-index-select-option);
+    'select-option': 2035, // var(--i-z-index-select-option);
     'login': 2010, // var(--i-z-index-login);
     'modal': 2005, // 對應 CustomModal 的 minModalIndex
     'side': 2003, // var(--i-z-index-side);

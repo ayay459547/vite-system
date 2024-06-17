@@ -538,7 +538,7 @@ const routes: Array<RouterTree> = [
     leaves: [
       {
         name: 'nav4-6',
-        title: '分隔顯示',
+        title: '分隔顯示+引導',
         meta: {
           keepAlive: false,
           status: 'completed',
@@ -618,7 +618,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav4-4',
-        title: '浮水印',
+        title: 'CustomWatermark+CustomLockedView+v-fixed',
         meta: {
           keepAlive: false,
           status: 'completed',

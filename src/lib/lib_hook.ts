@@ -3,11 +3,17 @@ import type{
   UseRefHistoryOptions,
   UseRefHistoryReturn,
   UseThrottledRefHistoryOptions,
-  UseThrottledRefHistoryReturn
+  UseThrottledRefHistoryReturn,
+  UseDraggableOptions,
+  UseDraggableReturn,
+  MouseInElementOptions,
+  UseMouseInElementReturn
 } from '@vueuse/core'
 import {
   useRefHistory as _useRefHistory,
-  useThrottledRefHistory as _useThrottledRefHistory
+  useThrottledRefHistory as _useThrottledRefHistory,
+  useDraggable as _useDraggable,
+  useMouseInElement as _useMouseInElement
 } from '@vueuse/core'
 
 
@@ -322,4 +328,26 @@ export const useRefHistory = <T>(refValue: Ref<T>, options?: UseRefHistoryOption
  */
 export const useThrottledRefHistory = <T>(refValue: Ref<T>, options?: UseThrottledRefHistoryOptions<T, T>): UseThrottledRefHistoryReturn<T, T> => {
   return _useThrottledRefHistory(refValue, options)
+}
+
+/**
+ * @linkcode https://vueuse.org/core/useDraggable/
+ * @description 拖拉資訊
+ * @param target element
+ * @param options 其他設定
+ * @returns 拖拉資訊
+ */
+export const useDraggable = (target: Ref, options?: UseDraggableOptions): UseDraggableReturn => {
+  return _useDraggable(target, options)
+}
+
+/**
+ * @linkcode https://vueuse.org/core/useMouseInElement/
+ * @description 監聽滑鼠是否在元素中
+ * @param target ref() ref的值
+ * @param options 其他設定
+ * @returns 監聽滑鼠是否在元素中
+ */
+export const useMouseInElement = (target: Ref, options?: MouseInElementOptions): UseMouseInElementReturn => {
+  return _useMouseInElement(target, options)
 }

@@ -92,6 +92,12 @@ export type {
 } from './feature/CustomLink/CustomLinkInfo'
 export { default as CustomLink } from './feature/CustomLink/CustomLink.vue'
 
+// 鎖定
+export type {
+  Props as LockViewProps
+} from './feature/CustomLockView/CustomLockViewInfo'
+export { default as CustomLockView } from './feature/CustomLockView/CustomLockView.vue'
+
 // .md
 export type { Props as MarkdownProps } from './feature/CustomMarkdown/CustomMarkdownInfo'
 export { default as CustomMarkdown } from './feature/CustomMarkdown/CustomMarkdown.vue'
@@ -192,6 +198,13 @@ export { default as CustomTimeLine } from './feature/CustomTimeLine/CustomTimeLi
 // 彈出 文字提示
 export type { Props as TooltipProps } from './feature/CustomTooltip/CustomTooltipInfo'
 export { default as CustomTooltip } from './feature/CustomTooltip/CustomTooltip.vue'
+
+// 引導
+export type {
+  Custom as TourCustom,
+  Props as TourProps
+} from './feature/CustomTour/CustomTourInfo'
+export { default as CustomTour } from './feature/CustomTour/CustomTour.vue'
 
 // 樹狀
 export type {
