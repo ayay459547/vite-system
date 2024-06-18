@@ -16,7 +16,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="markdown-container" :class="[`CustomMarkdown_${version}`, scopedId, scopedName]">
+  <div
+    class="markdown-container"
+    :class="[
+      `CustomMarkdown_${version}`,
+      scopedId,
+      scopedName
+    ]"
+  >
     <v-md-preview class="markdown-main" :text="props.text"></v-md-preview>
   </div>
 </template>
@@ -26,6 +33,21 @@ onMounted(() => {
   &.v-md-editor-preview {
     .vuepress-markdown-body {
       padding: 0 !important;
+      background-color: inherit !important;
+
+      color: inherit !important;
+      tr {
+        background-color: var(--i-color-row-odd);
+        &:hover {
+          background-color: var(--i-color-row-odd-hover);
+        }
+      }
+      tr:nth-child(2n) {
+        background-color: var(--i-color-row-even);
+        &:hover {
+          background-color: var(--i-color-row-even-hover);
+        }
+      }
     }
   }
 }

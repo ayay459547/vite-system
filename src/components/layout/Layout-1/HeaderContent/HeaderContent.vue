@@ -17,7 +17,6 @@ const hasSlot = (prop: string): boolean => {
 
 const props = defineProps<{
   isOpen: boolean
-  isHistoryOpen: boolean
   authData: AuthData
   breadcrumbName: string[]
   breadcrumbTitle: string[]
@@ -26,15 +25,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void
   (e: 'logout'): void
-  (e: 'historyShowChange', value: boolean): void
   (e: 'preference'): void
   (e: 'routerChange'): void
   (e: 'setRouter', value: string[]): void
 }>()
-
-const onHistoryChange = ($event: boolean) => {
-  emit('historyShowChange', $event)
-}
 
 const tempIsOpen = computed<boolean>({
   get() {
@@ -78,8 +72,6 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       <div class="header-right-effect">
         <MenuUser
           :auth-data="props.authData"
-          :is-history-open="props.isHistoryOpen"
-          @history-show-change="onHistoryChange"
           @logout="emit('logout')"
           @preference="emit('preference')"
         />
@@ -92,7 +84,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
 .header {
   &-container {
     width: 100%;
-    height: 56px;
+    height: 100%;
 
     display: flex;
     justify-content: space-between;

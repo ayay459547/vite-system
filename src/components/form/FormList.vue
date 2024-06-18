@@ -173,8 +173,8 @@ const add = () => {
 
   nextTick(() => {
     const lastRowClass = props.isDraggable
-      ? '.__list-group-item:last-child'
-      : '.__data-table-row:last-child'
+      ? '.draggable.list-group-item:last-child'
+      : '.draggable.data-table-row:last-child'
     const newEl = document.querySelector(`.${scopedId} ${lastRowClass}`)
     if (newEl) scrollToEl(newEl, { block: 'center' })
   })

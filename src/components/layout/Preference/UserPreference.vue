@@ -22,14 +22,10 @@ const props = defineProps({
   isDark: {
     type: Boolean as PropType<boolean>,
     default: false
-  },
-  isHistoryOpen: {
-    type: Boolean as PropType<boolean>,
-    default: false
   }
 })
 
-const emit = defineEmits(['lang-change', 'history-show-change', 'layout-change'])
+const emit = defineEmits(['lang-change', 'layout-change'])
 
 // 語言
 const localeStore = useLocaleStore()
@@ -64,20 +60,6 @@ const browserValue = computed({
     } else {
       document.documentElement.requestFullscreen()
     }
-  }
-})
-
-// 標籤連結
-const tagLinkOptions = [
-  { label: 'show', value: true },
-  { label: 'hidden', value: false }
-]
-const tagLinkValue = computed({
-  get() {
-    return props.isHistoryOpen
-  },
-  set(isShow: boolean) {
-    emit('history-show-change', isShow)
   }
 })
 
@@ -181,23 +163,6 @@ const onClickLayout = (layoutValue: string) => {
           </div>
         </div>
 
-        <!-- 是否顯示標籤頁碼 -->
-        <div class="modal-item">
-          <div class="modal-label">
-            <div class="icon">
-              <CustomIcon type="fas" name="hashtag" />
-            </div>
-            <label>{{ `${i18nTranslate('tagLink')}` }}</label>
-          </div>
-
-          <div class="modal-select">
-            <FormRadio v-model="tagLinkValue" :options="tagLinkOptions">
-              <template #options="{ label }">
-                {{ i18nTranslate(label) }}
-              </template>
-            </FormRadio>
-          </div>
-        </div>
       </div>
     </div>
 

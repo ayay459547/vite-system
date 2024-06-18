@@ -364,7 +364,6 @@ defineExpose({
               style="width: 100%; height: 50px"
               v-loading="true"
               element-loading-text="LOADING..."
-              element-loading-background="rgba(255, 255, 255, 0.8)"
             ></div>
             <div style="width: 100%; height: 30px"></div>
           </div>

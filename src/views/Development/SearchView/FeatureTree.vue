@@ -100,10 +100,6 @@ export default defineComponent({
         }
       }
     },
-    // 新增路由選項
-    addHistory(route: Navigation): void {
-      this.routesStore.addHistoryNavigation(route.name, route)
-    },
     newWindow(route: Navigation): void {
       const routeData = this.$router.resolve({
         name: route.name,
@@ -162,14 +158,13 @@ export default defineComponent({
         </div>
 
         <div v-if="!hasLeaves(route)" class="tree-item-operations-lg">
-          <CustomButton label="新增分頁" icon-name="plus" @click="addHistory(route)" />
           <CustomButton label="另開視窗" icon-name="window-restore" @click="newWindow(route)" />
           <CustomButton label="新開分頁" icon-name="up-right-from-square" @click="newPage(route)" />
         </div>
 
         <div v-if="!hasLeaves(route)" class="tree-item-operations-xs">
           <CustomTooltip>
-            <CustomButton icon-name="plus" @click="addHistory(route)" />
+            <CustomButton icon-name="plus" />
             <template #content>
               <span>{{ '新增選項' }}</span>
             </template>

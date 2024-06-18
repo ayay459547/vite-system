@@ -10,24 +10,12 @@ import {
   nextTick,
   useSlots
 } from 'vue'
-import { useEventBus } from '@vueuse/core'
 
-import {
-  aesDecrypt,
-  swal,
-  notification,
-  message,
-  isEmpty,
-  scrollToEl,
-  tipLog,
-  awaitTime
-} from '@/lib/lib_utils'
+import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
-
-import PageContent from '@/components/layout/PageContent/PageContent.vue'
-import NavigationTabs from '@/components/layout/PageContent/NavigationTabs.vue'
+import PageContent from '@/components/layout/PageContent.vue'
 
 // element ui plus config
 import { ElConfigProvider } from 'element-plus'
@@ -36,7 +24,7 @@ import { ElConfigProvider } from 'element-plus'
 import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
-import { setCookie, removeCookie, setToken, clearToken, updateToken } from '@/lib/lib_cookie'
+import { setCookie, removeCookie, setToken, clearToken } from '@/lib/lib_cookie'
 import { datetimeFormat } from '@/lib/lib_day'
 
 import { useAuthStore } from '@/stores/stores_auth'
@@ -98,8 +86,6 @@ const systemEnv = computed(() => {
   }
 })
 
-const router = useRouter()
-
 // store
 const localeStore = useLocaleStore()
 const locale = computed(() => localeStore.locale)
@@ -116,8 +102,7 @@ const {
 
   setBreadcrumbName,
   setBreadcrumbTitle,
-  setCurrentNavigation,
-  addHistoryNavigation
+  setCurrentNavigation
 } = routesStore
 
 const {
@@ -126,9 +111,7 @@ const {
 
   breadcrumbName,
   breadcrumbTitle,
-  currentNavigation,
-
-  historyNavigation
+  currentNavigation
 } = storeToRefs(routesStore)
 
 // 翻譯檔
@@ -139,81 +122,28 @@ onMounted(() => {
   setModuleType(defaultModuleType)
 })
 
-// 切換頁面 打開遮罩
-// 暫時不行點擊任何東西
-const isDisabled = ref(false)
-let disabledTimeoutId: NodeJS.Timeout | null
-let loadingTimeoutId: NodeJS.Timeout | null
+// 如果是另開視窗 將選單縮起來
+const setModalView = async (currentRoute: RouteLocationNormalized) => {
+  const isModal = currentRoute?.query?.isModal ?? 'false'
 
-const _isLoading = ref(false)
-const isLoading = computed({
-  set (v: boolean) {
-    if (disabledTimeoutId) {
-      clearInterval(disabledTimeoutId)
-    }
-    if (loadingTimeoutId) {
-      clearInterval(loadingTimeoutId)
-    }
-    _isLoading.value = v
-    isDisabled.value = v
-
-    // isDisabled 一段時間 自動關閉
-    if (v) {
-      disabledTimeoutId = setTimeout(() => {
-        isDisabled.value = false
-      }, 300)
-    }
-    // _isLoading 一段時間 自動關閉
-    if (v) {
-      loadingTimeoutId = setTimeout(() => {
-        _isLoading.value = false
-      }, 3200)
-    }
-  },
-  get () {
-    return _isLoading.value
-  }
-})
-
-const bus = useEventBus<string>('routerChange')
-const listener = (event: string) => {
-  switch (event) {
-    case 'routerChange':
-      isLoading.value = true
-      break
+  if (isModal === 'true') {
+    systemLayoutRef.value?.setModalView()
   }
 }
-bus.on(listener)
 
 // 路由更換時執行
-const onRouteChange = async (currentRoute: RouteLocationNormalized) => {
-  bus.emit('routerChange')
-  pageScrollTop()
-
+const routeChange = async (currentRoute: RouteLocationNormalized) => {
   const { name } = currentNavigation?.value ?? { name: '' }
   if ([null, undefined, name, 'login'].includes(currentRoute.name as string)) return
-
   setNavigationData(currentRoute)
-  await awaitTime(12)
+  await awaitTime(120)
 
-  // 設定翻譯模組
-  // setModuleType(i18nModule)
-  // 設定網頁資訊
+  // 設定網頁標籤名稱
   setWebInfo()
+
   // 設定是否為 modal 模式
   setModalView(currentRoute)
-
-  isLoading.value = false
-  setTimeout(() => {
-    updateToken()
-  }, 2400)
 }
-
-const route = useRoute()
-const routeName = computed<any>(() => {
-  onRouteChange(route)
-  return route?.name ?? ''
-})
 
 // 設定 網頁 title
 // 設定 使用中的翻譯檔模組
@@ -230,28 +160,9 @@ const setWebInfo = () => {
     return systemEnv.value.system
   })(currentNavigation.value)
   document.title = currentTitle
-
-  setModuleType(currentNavigation?.value?.i18nModule ?? defaultModuleType)
-}
-
-// 換頁時 scrollbar 移動到最上面
-const pageScrollTop = () => {
-  const el = document.querySelector('.__layout-scroll-top__')
-  if (el) {
-    scrollToEl(el, { behavior: 'auto' })
-  }
 }
 
 const systemLayoutRef = ref()
-
-// 如果是另開視窗 將選單縮起來
-const setModalView = async (currentRoute: RouteLocationNormalized) => {
-  const isModal = currentRoute?.query?.isModal ?? false
-
-  if (isModal === 'true') {
-    systemLayoutRef.value?.setModalView()
-  }
-}
 
 // 讀取當前路由變化 設置 麵包屑 + 當前路由 + 歷史紀錄
 const setNavigationData = (currentRoute: RouteLocationNormalized) => {
@@ -270,15 +181,11 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
     setBreadcrumbTitle(_breadcrumbTitle ?? [])
     // 當前路由
     setCurrentNavigation(currentRoute)
-    // 歷史路由
-    if (isHistoryOpen.value) {
-      setTimeout(() => {
-        addHistoryNavigation(routeName, currentRoute)
-      }, 800)
-    }
   }
 }
 
+
+const router = useRouter()
 /**
  * 初始化系統使用者 + 權限 + iDB
  * 用權限 設置路由選項
@@ -296,8 +203,8 @@ const initNavigationRoutes = async (routeName?: string) => {
 
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'system'),
-      text: e ?? i18nTranslate('warning-contactIT', 'system'),
+      title: i18nTranslate('error-getData', defaultModuleType),
+      text: e ?? i18nTranslate('warning-contactIT', defaultModuleType),
       showCancelButton: false
     })
   }
@@ -334,6 +241,7 @@ const setLayoutInfo = async () => {
   }
 }
 
+const pageContentRef = ref()
 // 登出
 const logout = async () => {
   await nextTick()
@@ -343,8 +251,9 @@ const logout = async () => {
   removeCookie('loginTime')
   initNavigationRoutes('login')
 
-  // 移除 EventBus 監聽
-  bus.off(listener)
+  if (pageContentRef.value) {
+    pageContentRef.value.busOff()
+  }
 }
 // 登入
 const login = async (userId: number) => {
@@ -356,22 +265,14 @@ const login = async (userId: number) => {
   setToken(userId, loginTime)
   initNavigationRoutes('locatehome')
 
-  // 開啟 EventBus 監聽
-  bus.on(listener)
+  if (pageContentRef.value) {
+    pageContentRef.value.busOn()
+  }
 }
-
-// 歷史路由
-const isHistoryOpen = ref(false)
-const historyShowChange = (v: boolean) => (isHistoryOpen.value = v)
-
-onMounted(() => {
-  const _isHistoryOpen = localStorage.getItem('isHistoryOpen')
-  isHistoryOpen.value = _isHistoryOpen === 'true'
-})
 
 // 向下傳送常用工具
 provide<UseHook>('useHook', options => {
-  const { i18nModule } = options ?? {}
+  const { i18nModule = defaultModuleType } = options ?? {}
 
   return {
     loading,
@@ -396,9 +297,9 @@ provide<UseHook>('useHook', options => {
     },
     swal: sweetAlertOptions => {
       return swal({
-        confirmButtonText: i18nTranslate('confirm-yes'),
+        confirmButtonText: i18nTranslate('confirm-yes', defaultModuleType),
+        cancelButtonText: i18nTranslate('confirm-no', defaultModuleType),
         showConfirmButton: true,
-        cancelButtonText: i18nTranslate('confirm-no'),
         showCancelButton: true,
         ...sweetAlertOptions
       })
@@ -433,14 +334,13 @@ provide<UseHook>('useHook', options => {
       return authData.value
     },
     redirectInfo: () => {
+      const route = useRoute()
       const fromQuery = route.query ?? {}
       const [fromPage = '', fromData = ''] = [
         Array.isArray(fromQuery.from) ? fromQuery.from.join(',') : fromQuery.from,
         Array.isArray(fromQuery.data) ? fromQuery.data.join(',') : fromQuery.data
       ]
-      const queryData = isEmpty(fromData)
-        ? ''
-        : aesDecrypt(fromData as string, systemEnv.value.QUERY_KEY)
+      const queryData = isEmpty(fromData) ? '' : aesDecrypt(fromData as string, systemEnv.value.QUERY_KEY)
 
       return {
         fromPage,
@@ -460,12 +360,10 @@ provide<UseHook>('useHook', options => {
       :show-routes="navigationRoutes"
       :current-navigation="currentNavigation"
       :breadcrumb-name="breadcrumbName"
-      :is-history-open="isHistoryOpen"
-      :auth-data="authData"
       :breadcrumb-title="breadcrumbTitle"
+      :auth-data="authData"
       @logout="logout"
       @lang-change="setWebInfo"
-      @history-show-change="historyShowChange"
     >
       <template #logo="{ isShow }">
         <slot name="logo" :is-show="isShow" :env="systemEnv"></slot>
@@ -482,45 +380,14 @@ provide<UseHook>('useHook', options => {
       </template>
 
       <template #content>
-        <PageContent :is-history-open="isHistoryOpen">
-          <template #tabs>
-            <NavigationTabs
-              v-if="isHistoryOpen"
-              :history-navigation="historyNavigation"
-              :current-navigation="currentNavigation"
-              @router-change="setLayoutInfo"
-            />
-          </template>
-
-          <div v-loading="isLoading" class="layout-mask">
-            <div class="__layout-scroll-top__"></div>
-            <RouterView v-slot="{ Component, route }">
-              <component v-if="route.name === 'login'" key="login" :is="Component" @login="login" />
-              <template v-else>
-                <KeepAlive>
-                  <component
-                    v-if="route?.meta?.keepAlive ?? false"
-                    :key="route.name"
-                    :is="Component"
-                  />
-                </KeepAlive>
-                <component
-                  v-if="!(route?.meta?.keepAlive ?? false)"
-                  :key="route.name"
-                  :is="Component"
-                />
-              </template>
-              <!-- 更換路由執行 -->
-              <!-- <div style="display: none;">{{ throttleOnRouteChange(route) }}</div> -->
-            </RouterView>
-          </div>
-        </PageContent>
+        <PageContent
+          ref="pageContentRef"
+          @routeChange="routeChange"
+          @login="login"
+          @setLayoutInfo="setLayoutInfo"
+          @initNavigationRoutes="initNavigationRoutes"
+        ></PageContent>
       </template>
-
-      <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
-      <div v-show="isDisabled" class="is-disabled">
-        <span class="hidden-text">{{ routeName }}</span>
-      </div>
     </SystemLayout>
 
     <!-- hook loading -->
@@ -538,25 +405,4 @@ provide<UseHook>('useHook', options => {
   </ElConfigProvider>
 </template>
 
-<style lang="scss" scoped>
-.layout {
-  &-mask {
-    width: 100%;
-    min-height: fit-content;
-    height: 100%;
-    position: absolute;
-    overflow: auto;
-  }
-
-  &-scroll-top {
-    width: 100%;
-  }
-}
-
-.is-disabled {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--i-z-index-global-disabled);
-}
-</style>
+<style lang="scss" scoped></style>

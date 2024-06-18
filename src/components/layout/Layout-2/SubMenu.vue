@@ -65,7 +65,7 @@ defineExpose({
             v-else
             class="menu-item"
             :class="{ active: props.currentRouteName.level2 === routerItem.name }"
-            :to="routerItem.path"
+            :to="{ name: routerItem.name }"
             v-slot="{ navigate }"
             @click="clearLevel3List"
           >
@@ -82,7 +82,7 @@ defineExpose({
           <RouterLink
             class="menu-item"
             :class="{ active: props.currentRouteName.level3 === leaf.name }"
-            :to="leaf.path"
+            :to="{ name: leaf.name }"
             v-slot="{ navigate }"
           >
             <div style="display: contents" @click="navigate">

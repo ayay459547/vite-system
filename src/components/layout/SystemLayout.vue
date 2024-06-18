@@ -48,10 +48,6 @@ const props = defineProps({
       return []
     }
   },
-  isHistoryOpen: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   authData: {
     type: Object as PropType<AuthData>,
     default: () => {
@@ -65,7 +61,10 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['lang-change', 'logout', 'history-show-change'])
+const emit = defineEmits([
+  'lang-change',
+  'logout'
+])
 
 const layoutStore = useLayoutStore()
 const { isDark, layout, isNavOpen, isNavHover } = storeToRefs(layoutStore)
@@ -92,7 +91,6 @@ const layoutAttr = computed(() => {
     currentNavigation: props.currentNavigation,
 
     currentRouteName: currentRouteName.value,
-    isHistoryOpen: props.isHistoryOpen,
     authData: props.authData,
 
     breadcrumbName: props.breadcrumbName,
@@ -101,8 +99,9 @@ const layoutAttr = computed(() => {
 })
 
 const layoutEvent = {
+  // 登出
   logout: () => emit('logout'),
-  historyShowChange: ($event: boolean) => emit('history-show-change', $event),
+  // 打開偏好設定
   preference: () => {
     modal.preference = true
   }
@@ -140,17 +139,12 @@ defineExpose({
     await nextTick()
 
     isNavOpen.value = false
-    emit('history-show-change', false)
   },
   init
 })
 
 const onLangChange = () => {
   emit('lang-change')
-}
-
-const onHistoryChange = ($event: boolean) => {
-  emit('history-show-change', $event)
 }
 
 const onLayoutChange = () => {
@@ -168,9 +162,7 @@ const onLayoutChange = () => {
         <UserPreference
           ref="preferenceRef"
           :is-dark="isDark"
-          :is-history-open="props.isHistoryOpen"
           @lang-change="onLangChange"
-          @history-show-change="onHistoryChange"
           @layout-change="onLayoutChange"
         />
       </CustomModal>
@@ -201,9 +193,6 @@ const onLayoutChange = () => {
       <template #content>
         <slot name="content"></slot>
       </template>
-      <template #default>
-        <slot></slot>
-      </template>
     </Layout1>
 
     <Layout2
@@ -225,18 +214,15 @@ const onLayoutChange = () => {
       <template #content>
         <slot name="content"></slot>
       </template>
-      <template #default>
-        <slot></slot>
-      </template>
     </Layout2>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .system-layout {
-  display: contents;
   width: 100vw;
   height: 100vh;
   background-color: var(--i-color-system-bg);
+  overflow: hidden;
 }
 </style>

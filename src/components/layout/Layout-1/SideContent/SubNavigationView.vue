@@ -2,7 +2,6 @@
 import type { PropType, WritableComputedRef } from 'vue'
 import { computed, inject, ref, nextTick } from 'vue'
 import type { NavigationFailure } from 'vue-router'
-import { useEventBus } from '@vueuse/core'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
@@ -60,12 +59,8 @@ const changeMap = (name: string): void => emit('change-map', name)
 
 const activeRouteName = ref('')
 
-// GlobalView listener routerChange
-const bus = useEventBus<string>('routerChange')
-
 type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
   const onRouterLinkClick = async (navigate: Navigate, routerName: string, active: boolean) => {
-  bus.emit('routerChange')
   if (active) return //是現在的頁面則取消跳轉
 
   activeRouteName.value = routerName
@@ -117,7 +112,7 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
                 v-for="leaf in routerItem.leaves"
                 class="nav-sub-item"
                 :key="leaf.name"
-                :to="leaf.path"
+                :to="{ name: leaf.name }"
                 v-slot="{ navigate }"
               >
                 <div
@@ -144,7 +139,12 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
           </template>
 
           <!-- 無子路由 -->
-          <RouterLink v-else :to="routerItem.path" class="nav-item" v-slot="{ navigate }">
+          <RouterLink
+            v-else
+            :to="{ name: routerItem.name }"
+            class="nav-item"
+            v-slot="{ navigate }"
+          >
             <div
               class="nav-item-left"
               :class="{

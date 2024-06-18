@@ -72,7 +72,8 @@ export const getInjectRoutes = (routes: RouterTree[]): RouterTree[] => {
   }
 
   return refactorRoutes<RouterTree>(leafNode => {
-    const isShow = checkTypeInInjectType(leafNode.systemType, injectType)
+    const systemType = leafNode?.meta?.systemType ?? []
+    const isShow = checkTypeInInjectType(systemType, injectType)
 
     return {
       refactorNode: { ...leafNode },

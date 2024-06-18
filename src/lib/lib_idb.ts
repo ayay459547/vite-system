@@ -51,7 +51,7 @@ async function keys(table: string) {
  * 有新增或刪除表時 idbVersion + 1
  * Table版本 > DB版本 => 加入新表
  */
-export const idbVersion = 2
+export const idbVersion = 3
 /**
  * 管理新增加的 store
  * 已存在的 store 不用創建
@@ -62,7 +62,7 @@ export const idbVersion = 2
  *   isDelete 是否刪除
  * }
  *
- * isDelete 變更為true 視為重新加入 需要變更 createVersion + idbVersion
+ * isDelete變更 需要變更 createVersion + idbVersion
  */
 export const storeVersion = {
   iDBVersion: {
@@ -78,7 +78,7 @@ export const storeVersion = {
   historyNavigation: {
     version: '1.0.0',
     createVersion: 1,
-    isDelete: false
+    isDelete: true
   },
   i18nInfo: {
     version: '1.0.0',
@@ -174,23 +174,6 @@ export async function clearColumnSetting() {
 }
 export async function keysColumnSetting() {
   return await keys('columnSetting')
-}
-
-// 歷史路由
-export async function getHistoryNavigation(key: string) {
-  return await get('historyNavigation', key)
-}
-export async function setHistoryNavigation(key: string, val: any) {
-  return await set('historyNavigation', key, val)
-}
-export async function delHistoryNavigation(key: string) {
-  return await del('historyNavigation', key)
-}
-export async function clearHistoryNavigation() {
-  return await clear('historyNavigation')
-}
-export async function keysHistoryNavigation() {
-  return await keys('historyNavigation')
 }
 
 // 翻譯檔

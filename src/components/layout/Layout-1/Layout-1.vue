@@ -44,10 +44,6 @@ const props = defineProps({
       }
     }
   },
-  isHistoryOpen: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   authData: {
     type: Object as PropType<AuthData>,
     default: () => {
@@ -73,7 +69,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['logout', 'update:isNavOpen', 'history-show-change', 'preference'])
+const emit = defineEmits(['logout', 'update:isNavOpen', 'preference'])
 
 const tempIsOpen: WritableComputedRef<boolean> = computed({
   get() {
@@ -83,10 +79,6 @@ const tempIsOpen: WritableComputedRef<boolean> = computed({
     emit('update:isNavOpen', value)
   }
 })
-
-const onHistoryChange = (v: boolean) => {
-  emit('history-show-change', v)
-}
 
 const sideRef = ref()
 
@@ -157,11 +149,9 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       <div class="layout-header">
         <HeaderContent
           v-model:is-open="tempIsOpen"
-          :is-history-open="props.isHistoryOpen"
           :auth-data="props.authData"
           :breadcrumb-name="props.breadcrumbName"
           :breadcrumb-title="props.breadcrumbTitle"
-          @history-show-change="onHistoryChange"
           @logout="emit('logout')"
           @preference="emit('preference')"
           @router-change="onRouterChange"
@@ -175,12 +165,11 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
           </template>
         </HeaderContent>
       </div>
+
       <div class="layout-view">
         <slot name="content"></slot>
       </div>
     </div>
-
-    <slot></slot>
   </div>
 </template>
 
@@ -189,9 +178,8 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
 
 .layout {
   &-wrapper {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
 
     display: flex;
     position: relative;
@@ -252,19 +240,15 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
         left: $nav-width;
       }
     }
-
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
+    overflow: hidden;
   }
   &-header {
     width: 100%;
-    height: fit-content;
+    height: $header-heigth;
   }
   &-view {
     width: 100%;
-    height: 100%;
-    flex: 1;
+    height: calc(100% - $header-heigth);
   }
 }
 </style>

@@ -133,7 +133,12 @@ defineExpose({
           </div>
 
           <!-- 無子路由 -->
-          <RouterLink v-else :to="level1Item.path" class="nav-item" v-slot="{ navigate }">
+          <RouterLink
+            v-else
+            :to="{ name: level1Item.name }"
+            class="nav-item"
+            v-slot="{ navigate }"
+          >
             <div
               class="nav-item-left"
               :class="{ active: props.currentRouteName.level1 === level1Item.name }"

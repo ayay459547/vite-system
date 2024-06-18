@@ -16,7 +16,6 @@ const props = defineProps<{
   currentNavigation: Navigation
   currentRouteName: CurrentRouteName
 
-  isHistoryOpen: boolean
   authData: AuthData
   breadcrumbName: string[]
   breadcrumbTitle: string[]
@@ -24,13 +23,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'logout'): void
-  (e: 'historyShowChange', value: boolean): void
   (e: 'preference'): void
 }>()
-
-const onHistoryChange = (v: boolean) => {
-  emit('historyShowChange', v)
-}
 
 // 第二層路由
 const level2Nav = shallowRef<Navigation>()
@@ -46,7 +40,25 @@ const setLevel2Router = async (level2Router: Navigation) => {
   level2List.value = leaves ?? []
 
   await nextTick()
-  subMenuRef.value.setOpen(true)
+  // subMenuRef.value.setOpen(true)
+}
+
+const resetMenu = (navigation?: Navigation) => {
+  subMenuRef.value.resetMenu(navigation)
+}
+
+const setRouter = (targetRoutePath: string[]) => {
+  if (targetRoutePath[0] === 'locatehome') return
+
+  const getNavigation = (leaves, target) => {
+    const navigation = leaves.find(route => target[0] === route.name)
+    target.shift()
+    if (isEmpty(target)) return navigation
+    else return getNavigation(navigation.leaves, target)
+  }
+
+  const targetNavigation = getNavigation(props.showRoutes, targetRoutePath)
+  resetMenu(targetNavigation)
 }
 
 const init = async () => {
@@ -56,7 +68,8 @@ const init = async () => {
   const currentLevel1 = props.showRoutes.find(level1Item => {
     return level1Item.name === props.currentRouteName.level1
   })
-  setLevel2Router(currentLevel1)
+
+  resetMenu(props.currentNavigation)
 
   const tempLevel2List = currentLevel1?.leaves ?? []
   const currentLevel2 = tempLevel2List.find(level2Item => {
@@ -86,15 +99,15 @@ defineExpose({
         :show-routes="props.showRoutes"
         :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
-        :is-history-open="props.isHistoryOpen"
         :auth-data="props.authData"
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
-        @history-show-change="onHistoryChange"
         @logout="emit('logout')"
         @preference="emit('preference')"
         @set-level2-router="setLevel2Router"
         @router-change="onRouterChange"
+        @reset-menu="resetMenu"
+        @set-router="setRouter"
       >
         <template #logo>
           <slot name="logo"></slot>
@@ -110,6 +123,7 @@ defineExpose({
       <div class="level2">
         <SubMenu
           ref="subMenuRef"
+          :show-routes="props.showRoutes"
           :current-navigation="props.currentNavigation"
           :level2-nav="level2Nav"
           :level2-list="level2List"
@@ -121,8 +135,6 @@ defineExpose({
     <div class="layout-view">
       <slot name="content"></slot>
     </div>
-
-    <slot></slot>
   </div>
 </template>
 

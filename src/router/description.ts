@@ -4,193 +4,160 @@ const descriptionRoutes: RouterTree[] = [
   {
     name: 'components-description',
     title: '組件說明',
-    systemType: ['development', 'test'],
-    icon: 'book',
+    meta: {
+      systemType: ['development', 'test'],
+      icon: 'book'
+    },
     leaves: [
       {
         name: 'description-1',
         title: '輸入框組件',
-        systemType: ['new'],
-        icon: 'wand-magic-sparkles',
+        meta: {
+          systemType: ['new']
+        },
         leaves: []
       },
       {
         name: 'description-2',
         title: '表格組件',
-        systemType: ['new'],
-        icon: 'wand-magic-sparkles',
+        meta: {
+          systemType: ['new']
+        },
         leaves: [
           {
             name: 'description-table',
             title: 'CustomTable',
+            component: () => import('@/views/ComponentsDescription/Des_Table.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-table',
-            component: () => import('@/views/ComponentsDescription/Des_Table.vue'),
-            icon: 'table'
+              systemType: ['development', 'test']
+            }
           }
         ]
       },
       {
         name: 'description-3',
         title: '常用組件',
-        systemType: ['new'],
-        icon: 'wand-magic-sparkles',
+        meta: {
+          systemType: ['new']
+        },
         leaves: [
           {
             name: 'description-button',
             title: 'CustomButton',
+            component: () => import('@/views/ComponentsDescription/Des_Button.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-button',
-            component: () => import('@/views/ComponentsDescription/Des_Button.vue'),
-            icon: 'hand-pointer'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-icon',
             title: 'CustomIcon',
+            component: () => import('@/views/ComponentsDescription/Des_Icon.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-icon',
-            component: () => import('@/views/ComponentsDescription/Des_Icon.vue'),
-            icon: 'flag'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-modal',
             title: 'CustomModal',
+            component: () => import('@/views/ComponentsDescription/Des_Modal.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-modal',
-            component: () => import('@/views/ComponentsDescription/Des_Modal.vue'),
-            icon: 'window-restore'
+              systemType: ['development', 'test']
+            }
           }
         ]
       },
       {
         name: 'description-4',
         title: '其他組件',
-        systemType: ['new'],
-        icon: 'wand-magic-sparkles',
+        meta: {
+          systemType: ['new']
+        },
         leaves: [
           {
             name: 'description-badge',
             title: 'CustomBadge',
+            component: () => import('@/views/ComponentsDescription/Des_Badge.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-badge',
-            component: () => import('@/views/ComponentsDescription/Des_Badge.vue'),
-            icon: 'medal'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-divider',
             title: 'CustomDivider',
+            component: () => import('@/views/ComponentsDescription/Des_Divider.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-divider',
-            component: () => import('@/views/ComponentsDescription/Des_Divider.vue'),
-            icon: 'slash'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-drawer',
             title: 'CustomDrawer',
+            component: () => import('@/views/ComponentsDescription/Des_Drawer.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-drawer',
-            component: () => import('@/views/ComponentsDescription/Des_Drawer.vue'),
-            icon: 'window-maximize'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-empty',
             title: 'CustomEmpty',
+            component: () => import('@/views/ComponentsDescription/Des_Empty.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-empty',
-            component: () => import('@/views/ComponentsDescription/Des_Empty.vue'),
-            icon: 'cube'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-image',
             title: 'CustomImage',
+            component: () => import('@/views/ComponentsDescription/Des_Image.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-image',
-            component: () => import('@/views/ComponentsDescription/Des_Image.vue'),
-            icon: 'images'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-popover',
             title: 'CustomPopover',
+            component: () => import('@/views/ComponentsDescription/Des_Popover.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-popver',
-            component: () => import('@/views/ComponentsDescription/Des_Popover.vue'),
-            icon: 'arrow-pointer'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-tooltip',
             title: 'CustomTooltip',
+            component: () => import('@/views/ComponentsDescription/Des_Tooltip.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-tooltip',
-            component: () => import('@/views/ComponentsDescription/Des_Tooltip.vue'),
-            icon: 'arrow-pointer'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-collapse',
             title: 'CustomCollapse',
+            component: () => import('@/views/ComponentsDescription/Des_Collapse.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-collapse',
-            component: () => import('@/views/ComponentsDescription/Des_Collapse.vue'),
-            icon: 'square-caret-down'
+              systemType: ['development', 'test']
+            }
           },
           {
             name: 'description-switch',
             title: 'CustomSwitch',
+            component: () => import('@/views/ComponentsDescription/Des_Switch.vue'),
             meta: {
               keepAlive: false,
-              status: 'completed'
-            },
-            systemType: ['development', 'test'],
-            path: '/description-switch',
-            component: () => import('@/views/ComponentsDescription/Des_Switch.vue'),
-            icon: 'toggle-off'
+              systemType: ['development', 'test']
+            }
           }
         ]
       }

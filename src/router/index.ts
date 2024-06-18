@@ -2,6 +2,7 @@ import { shallowRef } from 'vue'
 import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
+import { useEventBus } from '@vueuse/core'
 
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -31,16 +32,16 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
 
   const _treeToRoutes = (routes: RouterTree[], res: RouteRecordRaw[]): void => {
     routes.forEach(route => {
-      if (Object.prototype.hasOwnProperty.call(route, 'path')) {
-        const { title, name, meta, path, component } = route
+      if (Object.prototype.hasOwnProperty.call(route, 'component')) {
+        const { name, title, meta, component } = route
 
         const pushItem = {
-          path: `${systemUrl}${path}`,
           name,
+          path: `${systemUrl}/${name}`,
           component,
           meta: {
-            keepAlive: false,
             title,
+            keepAlive: false,
             ...meta
           },
           props: (route: RouteLocationNormalized) => {
@@ -71,7 +72,7 @@ const baseRoutes: Array<RouteRecordRaw> = [
     redirect: { name: 'locatehome' }
   },
   {
-    path: '/demo',
+    path: `/${systemUrl}`,
     redirect: { name: 'locatehome' }
   },
   {
@@ -152,21 +153,6 @@ const baseRoutesName = baseRoutes.reduce((res, curr) => {
 const router = createRouter({
   history: createWebHistory((import.meta as any).env.BASE_URL),
   routes: [...baseRoutes, ...resRoutes]
-  // 無效
-  // scrollBehavior() {
-  //   // 切頁面時滾動到最上方
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       const el = document.querySelector('.__layout-scroll-top__')
-
-  //       if (![null, undefined].includes(el)) {
-  //         resolve({ el, top: 0, behavior: 'smooth' })
-  //       } else {
-  //         reject({ top: 0 })
-  //       }
-  //     }, 1000)
-  //   })
-  // }
 })
 
 // 暫存使用者想去的路由名稱
@@ -174,6 +160,9 @@ const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
 router.beforeEach(
   (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+    const bus = useEventBus<string>('')
+    bus.emit('busRouterChange')
+
     // 使用者
     const authStore = useAuthStore()
     const { isLogin, isCheckedStatus } = storeToRefs(authStore)
@@ -191,7 +180,8 @@ router.beforeEach(
      * 3. 系統預設
      * 4. 0 (無權限)
      */
-    const pagePermission = [userPermission?.permission, defaultPermission, 0].find(
+    const _permission = userPermission?.meta?.permission
+    const pagePermission = [_permission, defaultPermission, 0].find(
       _permission => typeof _permission === 'number'
     )
 

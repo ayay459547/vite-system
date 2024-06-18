@@ -133,8 +133,9 @@ const getRouteIcon = (nav: Navigation | null | undefined): [IconProps.Type, stri
   // 如果是 locatehome
   if ([null, undefined].includes(nav)) return ['fas', 'list']
 
-  if (!isEmpty(nav.icon)) return getIcon(nav.icon)
-  return getLastTypeIcon(nav.systemType)
+  const meta = nav?.meta
+  if (!isEmpty(meta.icon)) return getIcon(meta.icon)
+  return getLastTypeIcon(meta.systemType)
 }
 
 /**
