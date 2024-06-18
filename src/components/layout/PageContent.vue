@@ -47,7 +47,7 @@ const isLoading = computed({
     if (v) {
       loadingTimeoutId = setTimeout(() => {
         _isLoading.value = false
-      }, 480)
+      }, 4800)
     }
   },
   get () {
@@ -62,7 +62,7 @@ const routeChange = (currentRoute: RouteLocationNormalized) => {
     // 換頁時 scrollbar 移動到最上面
     pageScrollTop()
 
-    isLoading.value = true
+    isLoading.value = false
   }, 320)
 }
 

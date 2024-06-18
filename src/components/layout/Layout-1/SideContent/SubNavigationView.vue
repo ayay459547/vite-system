@@ -60,7 +60,7 @@ const changeMap = (name: string): void => emit('change-map', name)
 const activeRouteName = ref('')
 
 type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
-  const onRouterLinkClick = async (navigate: Navigate, routerName: string, active: boolean) => {
+const onRouterLinkClick = async (navigate: Navigate, routerName: string, active: boolean) => {
   if (active) return //是現在的頁面則取消跳轉
 
   activeRouteName.value = routerName
@@ -89,7 +89,6 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
                 class="nav-item-left"
                 :class="{ active: props.currentRouteName.level2 === routerItem.name }"
               >
-                <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
                 <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
               </div>
 
@@ -128,8 +127,6 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
                     )
                   "
                 >
-                  <!-- <div class="item-empty"></div> -->
-                  <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
                   <span class="item-title">{{ getRouteTitle(leaf) }}</span>
                 </div>
 
@@ -158,7 +155,6 @@ type Navigate = (e?: MouseEvent) => Promise<void | NavigationFailure>
                 )
               "
             >
-              <!-- <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" /> -->
               <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
 
