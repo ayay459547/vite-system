@@ -20,7 +20,7 @@ const tableOptions: TableOptions = {
   i18nTitle: 'fund-1417-specifyMachine-title',
   i18nModule: 'system',
   version: '1.1.0',
-  settingKey: 'fund-1417-Machine',
+  settingKey: 'fund-1417-Machine-table',
   isSorting: true
 }
 

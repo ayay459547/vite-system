@@ -9,6 +9,8 @@ import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
 import { permission, hasPermission, defaultPermission } from '@/lib/lib_permission'
+import { tipLog } from '@/lib/lib_utils'
+import { updateToken } from '@/lib/lib_cookie'
 
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
@@ -30,10 +32,19 @@ const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
 const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
   const res = []
 
+  // 有重複的 name 給予提示
+  const nameSet = new Set()
+  const tipList = []
+
   const _treeToRoutes = (routes: RouterTree[], res: RouteRecordRaw[]): void => {
     routes.forEach(route => {
       if (Object.prototype.hasOwnProperty.call(route, 'component')) {
         const { name, title, meta, component } = route
+
+        if (nameSet.has(name)) {
+          tipList.push(`${name}(${title}): ${JSON.stringify(route)}`)
+        }
+        nameSet.add(name)
 
         const pushItem = {
           name,
@@ -57,6 +68,10 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
   }
 
   _treeToRoutes(routes, res)
+
+  if (tipList.length > 0) {
+    tipLog('Routes 中有重複的 name', tipList)
+  }
   return res
 }
 
@@ -162,6 +177,8 @@ router.beforeEach(
   (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const bus = useEventBus<string>('')
     bus.emit('busRouterChange')
+
+    updateToken((to?.name ?? 'busRouterChange') as string)
 
     // 使用者
     const authStore = useAuthStore()

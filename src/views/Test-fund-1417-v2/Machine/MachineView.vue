@@ -1,17 +1,34 @@
 <script setup lang="ts">
-import { ref, inject, onMounted, nextTick } from 'vue'
-
+// Composition API
+import { ref, inject, onMounted, nextTick, reactive } from 'vue'
+// 全域功能類型
 import type { UseHook, SwalResult } from '@/declare/hook'
-import { WeekSchedule, CustomButton, CustomDividerView } from '@/components'
+// 引入組件
+import type { TourProps } from '@/components'
+import {
+  WeekSchedule,
+  CustomButton,
+  CustomDividerView,
+  CustomInput,
+  CustomTour,
+  CustomLockView
+} from '@/components'
+
+// 權限
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
-import { isEmpty } from '@/lib/lib_utils'
+// 工具
+import { isEmpty, scrollToEl } from '@/lib/lib_utils'
+// 設定表格資料
+import { useFormSetting } from '@/lib/lib_columns'
 
 import {
   getMachineIdWeekSchedule,
   saveMachineIdWeekSchedule,
   getIsNeedSendRTDS,
-  sendRTDS
+  sendRTDS,
+  getMachineOptions
 } from './api'
+import { columnSetting } from './columns'
 
 import { timeFormat } from '../planUtils'
 import MachineTable from './MachineTable/MachineTable.vue'
@@ -31,33 +48,44 @@ const planList = ref([])
 
 // 儲存
 const saveWeekScheduleData = async () => {
-  isLoading.value = true
-
   await nextTick()
-  if (weekSchedule.value && !isEmpty(currentMachineId.value)) {
-    const { create, update, remove } = await weekSchedule.value.getData()
+  // 暫時以 currentMachineId 為主
+  await validateForm().then(async () => {
+    isLoading.value = true
+    if (weekSchedule.value && !isEmpty(currentMachineId.value)) {
+      const { create, update, remove } = await weekSchedule.value.getData()
 
-    const { status, msg } = await saveMachineIdWeekSchedule(create, update, remove, currentMachineId.value)
-    if (status === 'success') {
-      swal({
-        icon: 'success',
-        title: i18nTranslate('update-success'),
-        showCancelButton: false
-      })
+      const { status, msg } = await saveMachineIdWeekSchedule(create, update, remove, currentMachineId.value)
+      if (status === 'success') {
+        swal({
+          icon: 'success',
+          title: i18nTranslate('update-success'),
+          showCancelButton: false
+        })
+        init()
 
-      init()
-
-    } else {
-      swal({
-        icon: 'error',
-        title: i18nTranslate('update-fail'),
-        text: msg,
-        showCancelButton: false
-      })
+      } else {
+        swal({
+          icon: 'error',
+          title: i18nTranslate('update-fail'),
+          text: msg,
+          showCancelButton: false
+        })
+      }
     }
-  }
 
-  isLoading.value = false
+    isLoading.value = false
+  }).catch(errorList => {
+    const error = errorList.find(errorItem => {
+      return errorItem.el !== null
+    })
+    if (error) {
+      const el = error.getDom()
+      scrollToEl(el)
+    }
+
+    return 'error'
+  })
 }
 
 // 設定一週分配資訊
@@ -67,15 +95,32 @@ const setWeekScheduleData = (planList: any[]) => {
   }
 }
 
+// 選機台
+const options = reactive({
+  machineId: []
+})
+const {
+  columns: formColumn,
+  forms: form,
+  validate: validateForm
+} = useFormSetting<{ machineId: string[] }>(columnSetting, 'form')
+
 // 初始化
 const tableRef = ref()
 const currentMachineId = ref('')
 const init = async (machindId?: string) => {
   isLoading.value = true
 
-  const [resGeneralWeekSchedule, resIsNeedSendRTDS] = await Promise.all([
+  const formMachineId = machindId ?? currentMachineId.value
+  if (!isEmpty(formMachineId)) {
+    // reset()
+    form.machineId = [currentMachineId.value]
+  }
+
+  const [resGeneralWeekSchedule, resIsNeedSendRTDS, resMachine] = await Promise.all([
     getMachineIdWeekSchedule(machindId ?? currentMachineId.value),
-    getIsNeedSendRTDS()
+    getIsNeedSendRTDS(),
+    getMachineOptions()
   ])
 
   const { status: generalWeekScheduleStatus, msg: generalWeekScheduleMsg, data: generalWeekScheduleData } = resGeneralWeekSchedule
@@ -97,7 +142,6 @@ const init = async (machindId?: string) => {
       end: timeFormat(endTime)
     }
   })
-  console.log(planList.value)
   setWeekScheduleData(planList.value)
 
   const { status: isNeedSendRTDSStatus, msg: isNeedSendRTDSMsg, data: isNeedSendRTDSData } = resIsNeedSendRTDS
@@ -110,6 +154,18 @@ const init = async (machindId?: string) => {
     })
   }
   isNeedSendRTDS.value = isNeedSendRTDSData
+
+  // 機台區域
+  const { status: machineStatus, msg: machineMsg, data: machineOptions } = resMachine
+  if (machineStatus !== 'success') {
+    swal({
+      icon: 'error',
+      title: i18nTranslate('error-getData', 'system'),
+      text: machineMsg ?? i18nTranslate('warning-contactIT', 'system'),
+      showCancelButton: false
+    })
+  }
+  options.machineId = machineOptions
 
   await nextTick()
   tableRef.value?.init()
@@ -129,11 +185,6 @@ onMounted(() => {
 // 設定當前機台 初始化
 const setMachineWeekSchedule = (machineId: string) => {
   currentMachineId.value = machineId
-  init(machineId)
-}
-
-// 複製指定機台的資料
-const copyMachineWeekSchedule = (machineId: string) => {
   init(machineId)
 }
 
@@ -170,76 +221,112 @@ const onRTDSClick = async () => {
   })
 }
 
+// 引導
+const isOpenTour = ref(false)
+const steps: TourProps.Steps = [
+  {
+    target: '.GeneralView .el-table__body-wrapper',
+    title: '機台列表',
+    description: '查看資料'
+  },
+  {
+    target: '.GeneralView .el-table__row .el-table__cell',
+    title: '機台編號',
+    description: '確認編號'
+  },
+  {
+    target: '.GeneralView .el-table__row .el-table-fixed-column--right',
+    title: '選擇機台',
+    description: '點擊箭頭'
+  }
+]
+
 </script>
 
 <template>
   <div class="GeneralView page-container">
-    <CustomDividerView :left-width="600">
+    <!-- 引導 -->
+    <CustomTour v-model="isOpenTour" :steps="steps"></CustomTour>
+
+    <!-- 機台工時 -->
+    <CustomDividerView :left-width="460">
       <template #left>
         <!-- 選機台 -->
         <div class="page-left">
-          <MachineInfo
-            @setMachineWeekSchedule="setMachineWeekSchedule"
-            @copyMachineWeekSchedule="copyMachineWeekSchedule"
-          />
+          <MachineInfo @setMachineWeekSchedule="setMachineWeekSchedule"/>
         </div>
       </template>
       <template #right>
-        <div class="fill i-pa-md">
           <!-- 分配 + 表格 -->
           <CustomDividerView position="right">
             <template #left>
-              <div v-loading="isLoading" class="page-right">
-                <div class="page-header">
-                  <div class="flex-row i-ga-md">
+              <div class="fill i-pa-md">
+                <!-- 鎖定遮罩 -->
+                <CustomLockView :is-lock="isEmpty(currentMachineId)">
+                  <template #description>
                     <CustomButton
-                      :label="i18nTranslate('save')"
+                      label="請先選擇機台"
+                      size="large"
+                      icon-name="print"
                       type="primary"
-                      icon-type="far"
-                      icon-name="floppy-disk"
-                      @click="saveWeekScheduleData"
+                      @click="isOpenTour = true"
                     />
-                    <CustomButton
-                      :type="isNeedSendRTDS ? 'danger' : 'info'"
-                      :label="i18nTranslate('sendRTDS')"
-                      icon-name="paper-plane"
-                      icon-move="translate"
-                      :disabled="!userPermission.execute"
-                      @click="onRTDSClick"
-                    />
-                  </div>
+                  </template>
+                  <!-- 分配 -->
+                  <div v-loading="isLoading" class="page-right">
+                    <div class="page-header">
+                      <div class="flex-row i-ga-md">
+                        <CustomButton
+                          :label="i18nTranslate('save')"
+                          type="primary"
+                          icon-type="far"
+                          icon-name="floppy-disk"
+                          @click="saveWeekScheduleData"
+                        />
+                        <CustomButton
+                          :type="isNeedSendRTDS ? 'danger' : 'info'"
+                          :label="i18nTranslate('sendRTDS')"
+                          icon-name="paper-plane"
+                          icon-move="translate"
+                          :disabled="!userPermission.execute"
+                          @click="onRTDSClick"
+                        />
+                      </div>
 
-                  <h3>{{ currentMachineId }}</h3>
+                      <div class="page-machine">
+                        <CustomInput v-model="form.machineId" v-bind="formColumn.machineId" :options="options.machineId" />
+                      </div>
 
-                  <div class="flex-row i-ga-md">
-                    <CustomButton
-                      :label="i18nTranslate('clear')"
-                      type="danger"
-                      icon-type="far"
-                      icon-name="circle-xmark"
-                      @click="setWeekScheduleData([])"
-                    />
-                    <CustomButton
-                      :label="i18nTranslate('refrush')"
-                      icon-name="rotate"
-                      icon-move="rotate"
-                      @click="init()"
-                    />
+                      <div class="flex-row i-ga-md">
+                        <CustomButton
+                          :label="i18nTranslate('clear')"
+                          type="danger"
+                          icon-type="far"
+                          icon-name="circle-xmark"
+                          @click="setWeekScheduleData([])"
+                        />
+                        <CustomButton
+                          :label="i18nTranslate('refrush')"
+                          icon-name="rotate"
+                          icon-move="rotate"
+                          @click="init()"
+                        />
+                      </div>
+                    </div>
+                    <div class="page-body">
+                      <WeekSchedule
+                        ref="weekSchedule"
+                        :plan-list="planList"
+                      ></WeekSchedule>
+                    </div>
                   </div>
-                </div>
-                <div class="page-body">
-                  <WeekSchedule
-                    ref="weekSchedule"
-                    :plan-list="planList"
-                  ></WeekSchedule>
-                </div>
+                </CustomLockView>
               </div>
             </template>
             <template #right>
               <MachineTable ref="tableRef" />
             </template>
           </CustomDividerView>
-        </div>
       </template>
     </CustomDividerView>
   </div>
@@ -262,7 +349,6 @@ const onRTDSClick = async () => {
       height: 100%;
       display: flex;
       flex-direction: column;
-      padding: 12px;
     }
 
     &-header {
@@ -271,8 +357,12 @@ const onRTDSClick = async () => {
       display: flex;
       gap: 16px;
       justify-content: space-between;
-      flex-wrap: wrap;
     }
+    &-machine {
+      flex: 1;
+      min-width: 240px;
+    }
+
     &-body {
       width: 100%;
       height: 100%;

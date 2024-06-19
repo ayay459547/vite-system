@@ -78,6 +78,11 @@ html.dark {
   }
 }
 
+.swal2-popup {
+  background-color: var(--i-color-system-page);
+  color: var(--el-menu-text-color);
+}
+
 // 系統基本顏色
 $color-map: (
   'info': #909399, // var(--i-color-info);

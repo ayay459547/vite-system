@@ -10,7 +10,7 @@ export declare namespace Custom {
 
   type Step = {
     // Dom 元素
-    target?: () => HTMLElement | HTMLElement | string
+    target?: HTMLElement | string | (() => HTMLElement)
     title?: string // 標題
     description?: string // 說明
     showArrow?: boolean // 是否顯示箭頭

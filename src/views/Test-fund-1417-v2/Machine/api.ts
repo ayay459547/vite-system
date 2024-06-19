@@ -1,6 +1,7 @@
 import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { isEmpty } from '@/lib/lib_utils'
+import type { Options } from '@/components'
 import { fakeTableData } from './fakeData'
 
 export interface Params {
@@ -301,5 +302,42 @@ export const getIsNeedSendRTDS = async (): Promise<ApiRes<boolean>> => {
     return { status: 'success', data, msg }
   } else {
     return { status: 'error', data: true, msg }
+  }
+}
+
+// 取得機台編號
+export const getMachineOptions = async (): Promise<ApiRes<Options>> => {
+  const resData = await ajax<Api<Array<{ pk: { id: string } }>>>(
+    {
+      // baseURL: '/rt-aps-rest',
+      url: '/ma/machine/retrieveMachinesFromOM2MWeb',
+      method: 'post',
+      data: {
+        showDummy: 'true'
+      }
+    },
+    {
+      isFakeData: false,
+      fakeData: {
+        data: [],
+        status: 'success'
+      },
+      delay: 300
+    }
+  )
+  const { status, data, msg } = resData
+
+  if (['success', true].includes(status)) {
+    return {
+      status: 'success',
+      data: data.map(machineInfo => {
+        const machineId = machineInfo.pk.id
+
+        return { label: machineId, value: machineId, data: machineInfo }
+      }),
+      msg
+    }
+  } else {
+    return { status: 'error', data: [], msg }
   }
 }

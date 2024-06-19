@@ -108,27 +108,39 @@ onMounted(() => {
 
 // 取資料
 const getData = async () => {
-  console.log('WeekSchedule getData')
   await nextTick()
 
   const createList = []
   const updateList = []
   const removeList = []
+  const oldList = []
+  const allList = []
 
   for (let dayId in planData) {
     const planList: Custom.PlanTime[] = getProxyData(planData[dayId])
     if (planDayMapRef[dayId]) {
-      const { create = [], update = [], remove = [] } = await planDayMapRef[dayId].getData(planList)
+      const {
+        create = [],
+        update = [],
+        remove = [],
+        old = [],
+        all = []
+      } = await planDayMapRef[dayId].getData(planList)
+
       createList.push(...create)
       updateList.push(...update)
       removeList.push(...remove)
+      oldList.push(...old)
+      allList.push(...all)
     }
   }
 
   return {
     create: createList,
     update: updateList,
-    remove: removeList
+    remove: removeList,
+    old: oldList,
+    all: allList
   }
 }
 

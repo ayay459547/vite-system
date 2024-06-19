@@ -233,8 +233,8 @@ onMounted(() => {
 
 // 路由切換
 const setLayoutInfo = async () => {
-  // 給 480 毫秒 確保路由跳轉完成後 才執行
   await nextTick()
+  // 給 480 毫秒 確保路由跳轉完成後 才執行
   await awaitTime(480)
   if (systemLayoutRef.value) {
     systemLayoutRef.value.init()
@@ -311,7 +311,7 @@ provide<UseHook>('useHook', options => {
         // 與路由守衛相同邏輯
         const userPermission = navigationMap.value.get(routeName)
         // pagePermission
-        const pagePermission = [userPermission?.permission, defaultPermission, 0].find(
+        const pagePermission = [userPermission?.meta?.permission, defaultPermission, 0].find(
           _permission => typeof _permission === 'number'
         )
 
@@ -321,7 +321,8 @@ provide<UseHook>('useHook', options => {
         return _pagePermission
       }
 
-      const { permission = 0 } = currentNavigation?.value ?? {}
+      const { meta } = currentNavigation?.value ?? { meta: { permission: 0 } }
+      const { permission = 0 } = meta
       const _pagePermission = getPermission(permission)
       tipLog(`${currentNavigation?.value} 權限`, [currentNavigation?.value, _pagePermission])
 

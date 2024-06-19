@@ -193,6 +193,8 @@ const getData = async () => {
   const createList = []
   const updateList = []
   const removeList = []
+  const oldList = []
+  const allList = []
 
   for (let uuid in planTimeMap) {
     const planTime = getProxyData<Custom.PlanTime>(planTimeMap[uuid])
@@ -214,15 +216,18 @@ const getData = async () => {
         removeList.push(_planTime)
         break
       case 'old':
-      default:
+        oldList.push(_planTime)
         break
     }
+    allList.push(_planTime)
   }
 
   return {
     create: createList,
     update: updateList,
-    remove: removeList
+    remove: removeList,
+    old: oldList,
+    all: allList
   }
 }
 

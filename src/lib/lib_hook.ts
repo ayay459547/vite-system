@@ -6,6 +6,8 @@ import type{
   UseThrottledRefHistoryReturn,
   UseDraggableOptions,
   UseDraggableReturn,
+  UseMouseOptions,
+  UseMouseReturn,
   MouseInElementOptions,
   UseMouseInElementReturn
 } from '@vueuse/core'
@@ -13,6 +15,7 @@ import {
   useRefHistory as _useRefHistory,
   useThrottledRefHistory as _useThrottledRefHistory,
   useDraggable as _useDraggable,
+  useMouse as _useMouse,
   useMouseInElement as _useMouseInElement
 } from '@vueuse/core'
 
@@ -321,7 +324,7 @@ export const useRefHistory = <T>(refValue: Ref<T>, options?: UseRefHistoryOption
 
 /**
  * @linkcode https://vueuse.org/core/useThrottledRefHistory/
- * @description useRefHistory throttle
+ * @description useRefHistory 節流
  * @param refValue ref(value) ref的值
  * @param options 其他設定
  * @returns ref(value) 變動歷史資訊
@@ -331,22 +334,33 @@ export const useThrottledRefHistory = <T>(refValue: Ref<T>, options?: UseThrottl
 }
 
 /**
- * @linkcode https://vueuse.org/core/useDraggable/
- * @description 拖拉資訊
- * @param target element
+ * @linkcode http://www.vueusejs.com/core/useDraggable/
+ * @description 使元素可拖拉
+ * @param target ref() ref的值
  * @param options 其他設定
- * @returns 拖拉資訊
+ * @returns UseDraggableReturn
  */
 export const useDraggable = (target: Ref, options?: UseDraggableOptions): UseDraggableReturn => {
   return _useDraggable(target, options)
 }
 
 /**
- * @linkcode https://vueuse.org/core/useMouseInElement/
- * @description 監聽滑鼠是否在元素中
+ * @linkcode http://www.vueusejs.com/core/useMouseInElement/
+ * @description useMouseInElement
  * @param target ref() ref的值
  * @param options 其他設定
- * @returns 監聽滑鼠是否在元素中
+ * @returns ref(value) 變動歷史資訊
+ */
+export const useMouse = (options?: UseMouseOptions): UseMouseReturn => {
+  return _useMouse(options)
+}
+
+/**
+ * @linkcode http://www.vueusejs.com/core/useMouseInElement/
+ * @description useMouseInElement
+ * @param target ref() ref的值
+ * @param options 其他設定
+ * @returns ref(value) 變動歷史資訊
  */
 export const useMouseInElement = (target: Ref, options?: MouseInElementOptions): UseMouseInElementReturn => {
   return _useMouseInElement(target, options)

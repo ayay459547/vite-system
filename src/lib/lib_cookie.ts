@@ -89,11 +89,8 @@ export const clearToken = () => {
   removeCookie('token')
 }
 
-/**
- * 更新token(登入)狀態
- * 更新時機：換路由、送api
- */
-export const updateToken = () => {
+let queue: any = null
+const _updateToken = () => {
   const loginTime = getCookie('loginTime')
   const token = getToken(loginTime)
 
@@ -102,4 +99,23 @@ export const updateToken = () => {
   if (!Number.isNaN(userId) && userId > 0) {
     setToken(userId, loginTime)
   }
+}
+/**
+ * 更新token(登入)狀態
+ * 更新時機：換路由、送api
+ */
+export const updateToken = (type?: string) => {
+  if (queue === null) {
+    queue = []
+    _updateToken()
+  }
+  queue.push(type ?? 'updateToken')
+
+  setTimeout(() => {
+    if (queue.length > 0) {
+      queue.splice(0)
+
+      _updateToken()
+    }
+  }, 60 * 1000)
 }

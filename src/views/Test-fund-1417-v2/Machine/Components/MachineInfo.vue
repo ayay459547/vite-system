@@ -2,7 +2,7 @@
 // Composition API
 import { inject } from 'vue'
 // 引入組件
-import { WebViewTable, CustomButton, CustomTooltip } from '@/components'
+import { WebViewTable, CustomLink, CustomButton, CustomTooltip } from '@/components'
 // 全域功能類型
 import type { UseHook } from '@/declare/hook'
 
@@ -12,7 +12,7 @@ import type { TableOptions } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'
 // 引入欄位設定
-import { columnSetting } from './columns'
+import { columnSetting, linkSetting } from './columns'
 // 引入假資料
 import { fakeTableData } from './fakeData'
 
@@ -26,19 +26,18 @@ const tableOptions: TableOptions = {
   title: '機台資訊呈現',
   i18nTitle: 'fund-1413-title',
   i18nModule: 'system',
-  version: '1.0.2',
-  settingKey: 'fund-1417-Machine',
+  version: '1.1.0',
+  settingKey: 'fund-1417-Machine-info',
   isSorting: true,
-  isHiddenExcel: true
+  isHiddenExcel: true,
+  isHiddenColumnSetting: true
 }
 
-const emit = defineEmits(['setMachineWeekSchedule', 'copyMachineWeekSchedule'])
+const emit = defineEmits(['setMachineWeekSchedule'])
 const setMachineWeekSchedule = (row: TableData) => {
   emit('setMachineWeekSchedule', row.machineId)
 }
-const copyMachineWeekSchedule = (row: TableData) => {
-  emit('copyMachineWeekSchedule', row.machineId)
-}
+
 </script>
 
 <template>
@@ -53,6 +52,19 @@ const copyMachineWeekSchedule = (row: TableData) => {
     :fake-data="fakeTableData"
     is-hidden-prepend
   >
+    <!-- Redirect Link -->
+    <template
+      v-for="(item, columnKey) in linkSetting" :key="columnKey"
+      #[`column-${columnKey}`]="{data}"
+    >
+      <CustomLink
+        v-if="data"
+        :label="data"
+        :data="data"
+        v-bind="item"
+      />
+    </template>
+
     <template #header-operations="{ column }">
       <div class="fill-y flex-row-center">{{ i18nTranslate(column.i18nLabel) }}</div>
     </template>
@@ -67,15 +79,6 @@ const copyMachineWeekSchedule = (row: TableData) => {
             @click="setMachineWeekSchedule(scope.row)"
           />
           <template #content>{{ `${i18nTranslate('setting')} ${scope.row.machineId}` }}</template>
-        </CustomTooltip>
-        <CustomTooltip :show-after="300">
-          <CustomButton
-            text
-            circle
-            icon-name="copy"
-            @click="copyMachineWeekSchedule(scope.row)"
-          />
-          <template #content>{{ `${i18nTranslate('copy')} ${scope.row.machineId}` }}</template>
         </CustomTooltip>
       </div>
     </template>

@@ -34,7 +34,14 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div class="drawer-container" :class="[`CustomDrawer_${version}`, scopedId, scopedName]">
+  <div
+    class="drawer-container"
+    :class="[
+      `CustomDrawer_${version}`,
+      scopedId,
+      scopedName
+    ]"
+  >
     <ElDrawer
       v-model="tempValue"
       :direction="props.direction"
@@ -68,6 +75,10 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
+:global(.el-overlay) {
+  z-index: var(--i-z-index-drawer);
+}
+
 // :deep() 需要一個根節點
 .__i-drawer__ :deep(.el-drawer) {
   &.drawer-main {

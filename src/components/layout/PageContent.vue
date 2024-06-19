@@ -9,7 +9,8 @@ import { scrollToEl } from '@/lib/lib_utils'
 const emit = defineEmits([
   'routeChange',
   'login',
-  'setLayoutInfo'
+  'setLayoutInfo',
+  'initNavigationRoutes'
 ])
 
 const pageScrollTop = () => {
