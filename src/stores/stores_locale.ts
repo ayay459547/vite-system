@@ -46,7 +46,7 @@ export const useLocaleStore = defineStore('locale', () => {
       localStorage.setItem('locale', type)
     },
     get: () => {
-      return t('userLanguage')
+      return t('locale-language')
     }
   })
 

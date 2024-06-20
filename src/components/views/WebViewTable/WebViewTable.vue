@@ -64,7 +64,9 @@ const props = defineProps({
   tableOptions: {
     type: Object as PropType<TableOptions>,
     required: true,
-    description: 'CustomTable 參數設定'
+    description: `CustomTable 參數設定
+      CustomTable Props 最後會加在 tableSetting 中
+    `
   },
   columnSetting: {
     type: Object as PropType<Record<any, any>>,
@@ -129,19 +131,6 @@ const props = defineProps({
     required: false,
     default: true,
     description: '是否在 onMounted 初始化'
-  },
-  //customTable Props
-  rowKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'id',
-    description: '每行資料的key 預設是id'
-  },
-  spanMethod: {
-    type: Function as PropType<any>,
-    required: false,
-    default: null,
-    description: '資料跨欄'
   },
   //Custom Download Excel
   downloadExcel: {
@@ -534,8 +523,6 @@ onMounted(() => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
-      :row-key="props.rowKey"
-      :spanMethod="props.spanMethod"
       :is-lazy-loading="islazyLoading"
       :lazy-loading-status="lazyLoadingStatus"
       @excel="download"
@@ -600,7 +587,7 @@ onMounted(() => {
             </GroupSearch>
 
             <CustomButton
-              :label="i18nTranslate('refrush')"
+              :label="i18nTranslate('refrush', defaultModuleType)"
               icon-name="rotate"
               icon-move="rotate"
               @click="throttleInit(null, 'input')"

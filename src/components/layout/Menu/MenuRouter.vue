@@ -60,7 +60,7 @@ const openRouterList = (e: MouseEvent) => {
   <div class="router-container" @click="openRouterList">
     <div class="router-md">
       <CustomIcon :icon="['fas', 'list']" />
-      <span>{{ i18nTranslate('systemModule') }}</span>
+      <span>{{ i18nTranslate('system-module') }}</span>
     </div>
 
     <div class="router-xs">
@@ -68,7 +68,7 @@ const openRouterList = (e: MouseEvent) => {
         <CustomIcon :icon="['fas', 'list']" />
 
         <template #content>
-          <span>{{ i18nTranslate('systemModule') }}</span>
+          <span>{{ i18nTranslate('system-module') }}</span>
         </template>
       </CustomTooltip>
     </div>

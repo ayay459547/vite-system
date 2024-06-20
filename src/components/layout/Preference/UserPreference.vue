@@ -44,7 +44,7 @@ const langValue = computed({
 const browserView = ref('windows')
 const browserViewOptions = [
   { label: 'windows', value: 'windows' },
-  { label: 'fullScreen', value: 'fullScreen' }
+  { label: 'full-screen', value: 'full-screen' }
 ]
 const browserValue = computed({
   get() {
@@ -65,7 +65,7 @@ const browserValue = computed({
 
 onMounted(() => {
   if (document.fullscreenElement) {
-    browserView.value = 'fullScreen'
+    browserView.value = 'full-screen'
   } else {
     browserView.value = 'windows'
   }
@@ -151,7 +151,7 @@ const onClickLayout = (layoutValue: string) => {
             <div class="icon">
               <CustomIcon type="fas" name="palette" />
             </div>
-            <label>{{ `${i18nTranslate('colorTone')}` }}</label>
+            <label>{{ `${i18nTranslate('color-tone')}` }}</label>
           </div>
 
           <div class="modal-select">

@@ -35,7 +35,7 @@ const openLangType = (e: MouseEvent) => {
   <div class="lang-container" @click="openLangType">
     <div class="lang-md">
       <CustomIcon name="earth-americas" />
-      <span>{{ i18nTranslate('userLanguage', defaultModuleType) }}</span>
+      <span>{{ i18nTranslate('locale-language', defaultModuleType) }}</span>
     </div>
 
     <div class="lang-xs">
@@ -43,7 +43,7 @@ const openLangType = (e: MouseEvent) => {
         <CustomIcon name="earth-americas" />
 
         <template #content>
-          <span>{{ i18nTranslate('userLanguage', defaultModuleType) }}</span>
+          <span>{{ i18nTranslate('locale-language', defaultModuleType) }}</span>
         </template>
       </CustomTooltip>
     </div>

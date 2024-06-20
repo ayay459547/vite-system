@@ -50,39 +50,89 @@ export interface Token {
   userId: number
 }
 
-export const getToken = (loginTime?: string): Token | null => {
+/**
+ * 測試用 以後要拔掉
+ */
+let timer: any = null
+const checkToken = (isCheck: boolean) => {
+  const loginTime = getCookie('loginTime')
   const _token = getCookie('token')
-  if (['', null, undefined].includes(_token)) return null
-
-  const temp = aesDecrypt(_token, `${privateKey}:${loginTime ?? '0000-00-00_00:00:00'}`)
-  // if (['', null, undefined].includes(temp)) return null
-
-  // const userData = JSON.parse(temp)
-
-  const userData = {
-    uid: '',
-    date: new Date(),
-    userId: Number.parseInt(temp)
+  const temp = aesDecrypt(_token, `${privateKey}__${loginTime}`)
+  const log = () => {
+    console.groupCollapsed('[init] TEST')
+    console.log('now:', new Date())
+    console.log('token:', _token)
+    console.log('loginTime:', loginTime)
+    console.log('userId:', temp)
+    console.groupEnd()
   }
-  return userData
+  log()
+
+  if (timer && !isCheck) {
+    clearInterval(timer)
+  }
+  if (isCheck) {
+    timer = setInterval(() => {
+      log()
+    }, 5 * 60 * 1000)
+  }
+}
+// @ts-ignore TEST 每5分鐘檢查登入狀態資訊
+window.checkToken = checkToken
+
+/**
+ * 取得登入資訊
+ * @param loginTime YYYY-MM-DD_HH:mm:ss
+ * @returns 使用者資訊
+ */
+export const getToken = (loginTime?: string): Token | null => {
+  try {
+    const _token = getCookie('token')
+    if (['', null, undefined].includes(_token)) {
+      throw `getToken _token = ${_token}`
+    }
+
+    const temp = aesDecrypt(_token, `${privateKey}__${loginTime}`)
+    const userId = Number.parseInt(temp)
+    if (Number.isNaN(userId)) {
+      throw `isNaN data = ${temp}`
+    }
+
+    const userData = {
+      uid: '',
+      date: new Date(),
+      userId
+    }
+    return userData
+  } catch (e) {
+    console.log(e)
+    return null
+  }
 }
 
-export const setToken = (userId: number, loginTime?: string) => {
-  // const temp = {
-  //   uuid: `${getUuid()}`,
-  //   date: new Date(),
-  //   userId
-  // }
-  // const _token = JSON.stringify(temp)
-  const _token = `${userId}`
+/**
+ * 設定登入資訊
+ * @param userId 使用者ID
+ * @param loginTime YYYY-MM-DD_HH:mm:ss
+ */
+export const setToken = (userId: number, loginTime: string) => {
+  try {
+    if (['', null, undefined].includes(loginTime)) {
+      throw `setToken loginTime = ${loginTime}`
+    }
 
-  // 設定 60 分鐘
-  const minutes = 60
-  const time = new Date(new Date().getTime() + minutes * 60 * 1000)
+    const _token = `${userId}`
+    const minutes = 20 // 設定 20 分鐘
+    const time = new Date(new Date().getTime() + minutes * 60 * 1000)
 
-  setCookie('token', aesEncrypt(_token, `${privateKey}:${loginTime ?? '0000-00-00_00:00:00'}`), {
-    expires: time
-  })
+    console.log('setToken => ',  { _token, minutes, time })
+
+    setCookie('token', aesEncrypt(_token, `${privateKey}__${loginTime}`), {
+      expires: time
+    })
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export const clearToken = () => {

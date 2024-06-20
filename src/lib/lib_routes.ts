@@ -145,7 +145,7 @@ const getRouteIcon = (nav: Navigation | null | undefined): [IconProps.Type, stri
  * @returns {String} 文字
  */
 const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18nTest }): string => {
-  if ([null, undefined].includes(nav)) return i18nTranslate('systemModule') as unknown as string
+  if ([null, undefined].includes(nav)) return i18nTranslate('system-module') as unknown as string
 
   if (i18nTest(nav.name)) return i18nTranslate(nav.name) as unknown as string
   return nav.title

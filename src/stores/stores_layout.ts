@@ -19,7 +19,7 @@ export const useLayoutStore = defineStore('layout', () => {
 
   // 色調
   const isDark = useDark({
-    storageKey: 'colorTone',
+    storageKey: 'color-tone',
     valueDark: 'dark',
     valueLight: ''
   })

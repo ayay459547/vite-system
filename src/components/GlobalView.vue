@@ -228,7 +228,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  loading(true, i18nTranslate('systemInitialization', defaultModuleType))
+  loading(true, i18nTranslate('system-initialization', defaultModuleType))
 })
 
 // 路由切換

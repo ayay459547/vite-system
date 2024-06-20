@@ -544,7 +544,7 @@ onMounted(() => {
               v-model="pageSize"
               validate-key="CustomTable:pageSize"
               type="select"
-              :label="i18nTranslate('loadCount', defaultModuleType)"
+              :label="i18nTranslate('load-count', defaultModuleType)"
               :options="lazyLoadSizeOptions"
               direction="row"
               @change="onSizeChange"
@@ -552,7 +552,7 @@ onMounted(() => {
           </div>
           <div>
             <label>{{
-              `${i18nTranslate('dataCount', defaultModuleType)}：${props.tableDataCount}`
+              `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}`
             }}</label>
           </div>
         </template>
@@ -563,7 +563,7 @@ onMounted(() => {
               v-model="pageSize"
               validate-key="CustomTable:pageSize"
               type="select"
-              :label="i18nTranslate('showCount', defaultModuleType)"
+              :label="i18nTranslate('show-count', defaultModuleType)"
               :options="sizeOptions"
               direction="row"
               @change="onSizeChange"
@@ -586,11 +586,11 @@ onMounted(() => {
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon" />
-              <div class="text">{{ i18nTranslate('allData', defaultModuleType) }}</div>
+              <div class="text">{{ i18nTranslate('all-data', defaultModuleType) }}</div>
             </div>
             <div class="__excel-item" @click="onExcelClick('page')">
               <CustomIcon type="far" name="file-lines" class="icon" />
-              <div class="text">{{ i18nTranslate('pageData', defaultModuleType) }}</div>
+              <div class="text">{{ i18nTranslate('page-data', defaultModuleType) }}</div>
             </div>
           </div>
         </CustomPopover>

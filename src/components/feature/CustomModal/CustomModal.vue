@@ -388,7 +388,7 @@ const clickOutside = () => {
 
 const onCloseAllClick = () => {
   swal({
-    title: '確定所有關閉視窗',
+    title: i18nTranslate('closeAll-confirm', defaultModuleType),
     icon: 'question'
   }).then(async (result: SwalResult) => {
     if (result.isConfirmed) {
@@ -489,7 +489,7 @@ onUnmounted(() => {
                 <CustomButton icon-name="close" text @click="close" />
                 <template #content>
                   <CustomButton
-                    :label="i18nTranslate('closeAll')"
+                    :label="i18nTranslate('closeAll', defaultModuleType)"
                     type="danger"
                     icon-name="close"
                     @click="onCloseAllClick"
@@ -526,7 +526,7 @@ onUnmounted(() => {
                 <div class="modal-footer-btn">
                   <CustomButton
                     v-if="!props.hiddenCancel"
-                    :label="i18nTranslate('cancel')"
+                    :label="i18nTranslate('cancel', defaultModuleType)"
                     icon-name="angle-left"
                     icon-move="translate"
                     @click="cancel"
@@ -534,7 +534,7 @@ onUnmounted(() => {
                   <CustomButton
                     v-if="!props.hiddenSubmit"
                     type="success"
-                    :label="i18nTranslate('confirm')"
+                    :label="i18nTranslate('confirm', defaultModuleType)"
                     icon-name="check"
                     icon-move="scale"
                     @click="submit"

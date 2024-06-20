@@ -1,21 +1,30 @@
 <script lang="ts">
+import type { Component } from 'vue'
 import { h, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import { CustomDraggable } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props } from './SimpleTableInfo'
 import { version, props as simpleTableProps } from './SimpleTableInfo'
 
-let propI18nModule //<SimpleTable> prop: i18nModule
-const getTranslate = (label: string, i18nLabel: string, i18nModule: string) => {
-  const useHook: UseHook = inject('useHook')
-  const { i18nTranslate, i18nTest } = useHook()
+let propI18nModule: ScopeKey = defaultModuleType
+const getTranslate = (label: string, i18nLabel: string, i18nModule?: string) => {
+  if (isEmpty(i18nLabel)) return label
 
-  const module = i18nModule ?? propI18nModule
-  //i18nModule優先序 : columnSetting -> <SimpleTable> prop: i18nModule -> default: 'iPASP_common'
-  return i18nTest(i18nLabel, module) ? i18nTranslate(i18nLabel, module) : label
+  const useHook: UseHook = inject('useHook')
+  const { i18nTranslate } = useHook()
+  /**
+   * i18nModule優先序
+   * 1.columnSetting.i18nModule
+   * 2.prop.i18nModule
+   * 3.defaultModuleType (預設)
+   */
+  const module = (i18nModule ?? propI18nModule) as ScopeKey
+  return i18nTranslate(i18nLabel, module)
 }
 
 function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHeader: boolean) {
@@ -286,7 +295,7 @@ const bodyNode = (
   }
 }
 
-const SimpleTable = (props: Props, context: any) => {
+const SimpleTable = (props: Props, context: any): Component => {
   const { slots = {}, emit } = context
 
   const {
@@ -295,7 +304,7 @@ const SimpleTable = (props: Props, context: any) => {
     handle = '.__draggable',
     itemKey = 'id',
     group = 'name',
-    i18nModule = 'iPASP_common',
+    i18nModule = defaultModuleType,
     hideHeader = false,
     move,
 
@@ -303,7 +312,7 @@ const SimpleTable = (props: Props, context: any) => {
     tableColumns = []
   } = props
 
-  propI18nModule = i18nModule //透過模組傳遞的prop設定i18nModule
+  propI18nModule = i18nModule // 透過模組傳遞的prop設定i18nModule
 
   return h<Props>(
     (props, context) => {
@@ -390,6 +399,10 @@ SimpleTable.emits = ['update:modelValue']
 
 export default SimpleTable
 </script>
+
+<!-- <template>
+  <component :is="SimpleTable"></component>
+</template> -->
 
 <style lang="scss">
 .__data-table {

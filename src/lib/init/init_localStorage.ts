@@ -28,5 +28,5 @@ if (isChange) {
   localStorage.setItem('system', system)
   localStorage.setItem('version', systemVersion)
   // 預設色調 淺色
-  localStorage.setItem('colorTone', 'light')
+  localStorage.setItem('color-tone', 'light')
 }

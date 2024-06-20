@@ -137,7 +137,7 @@ const submit = () => {
                     type="radio"
                     :options="[
                       { label: i18nTranslate('ascending'), value: 'ascending' },
-                      { label: i18nTranslate('empty'), value: 'none' },
+                      { label: i18nTranslate('none-var'), value: 'none' },
                       { label: i18nTranslate('descending'), value: 'descending' }
                     ]"
                   >
