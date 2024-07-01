@@ -43,7 +43,7 @@ import { useGlobalI18n } from '@/i18n/i18n_excel'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { getPermission, defaultPermission } from '@/lib/lib_permission'
+import { getPermission } from '@/lib/lib_permission'
 
 // slot
 const slots = useSlots()
@@ -89,7 +89,7 @@ const systemEnv = computed(() => {
 // store
 const localeStore = useLocaleStore()
 const locale = computed(() => localeStore.locale)
-// @ts-ignore 更換語言
+// @ts-ignore TEST 更換語言
 window.changeLang = localeStore.changeLang
 
 const authStore = useAuthStore()
@@ -309,11 +309,8 @@ provide<UseHook>('useHook', options => {
     permission: (routeName = null) => {
       if (!isEmpty(routeName)) {
         // 與路由守衛相同邏輯
-        const userPermission = navigationMap.value.get(routeName)
-        // pagePermission
-        const pagePermission = [userPermission?.meta?.permission, defaultPermission, 0].find(
-          _permission => typeof _permission === 'number'
-        )
+        const routerPermission = navigationMap.value.get(routeName)
+        const pagePermission = routerPermission?.permission ?? 0
 
         const _pagePermission = getPermission(pagePermission)
         tipLog(`${routeName} 權限`, [routeName, _pagePermission])

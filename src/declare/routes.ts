@@ -15,9 +15,7 @@ interface Meta {
   // i18n Excel檔案(i18n.xlsx) 對應的模組
   i18nModule?: ScopeKey
 
-  // 權限(2進制)
-  // 如果後端沒有對應權限 給指定路由預設權限
-  // 沒給指定路由就使用預設權限
+  // 路由預設權限 (2進制)
   permission?: number
 
   // 備註
@@ -28,6 +26,11 @@ interface BaseTree {
   name: string // 路由名稱 唯一值，不能重複
   title: string // 顯示文字
   meta?: Meta // 額外其他參數
+
+  // 權限(2進制)
+  // 如果後端沒有對應權限 給指定路由預設權限
+  // 沒給指定路由就使用預設權限
+  permission?: number // 系統初始化後 最後的權限大小
 }
 interface RootTree extends BaseTree {
   leaves?: RouterTree[] // 子路由設定

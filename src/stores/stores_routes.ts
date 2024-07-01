@@ -1,5 +1,5 @@
 import type { ComputedRef, ShallowRef } from 'vue'
-import { shallowRef, computed, shallowReactive, onBeforeMount } from 'vue'
+import { shallowRef, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
@@ -46,7 +46,6 @@ export const useRoutesStore = defineStore('routes', () => {
   const setNavigationRoutes = (routesPermission: Map<string, number>) => {
     // 已經設定過的權限
     const permissionMap = new Map<string, number>()
-
     /**
      * 後端資料
      * 1. 後端資料
@@ -78,6 +77,7 @@ export const useRoutesStore = defineStore('routes', () => {
      * 1. 後端資料
      * 2. 路由設定
      * 3. 系統預設
+     * 4. 0 (無權限)
      */
     const _getRouterPermission = (route: Navigation, nodeName: string): number => {
       if (!permissionMap.has(nodeName)) {
@@ -87,7 +87,9 @@ export const useRoutesStore = defineStore('routes', () => {
           // 路由設定
           route?.meta?.permission,
           // 系統預設
-          defaultPermission
+          defaultPermission,
+          // 無權限
+          0
         ].find(_permission => typeof _permission === 'number')
 
         permissionMap.set(nodeName, nodePermission)
@@ -101,8 +103,8 @@ export const useRoutesStore = defineStore('routes', () => {
         name: leafNodeName = '',
         title: leafNodeTitle = ''
       } = leafNode
-
       const nextNode: Navigation = {...leafNode}
+
       if (parentsNode === null) {
         nextNode.breadcrumbName = [leafNodeName]
         nextNode.breadcrumbTitle = [leafNodeTitle]
@@ -117,6 +119,7 @@ export const useRoutesStore = defineStore('routes', () => {
        * 設定 權限的總和
        */
       const routerPermission = _getRouterPermission(leafNode, leafNodeName)
+      nextNode.meta.permission = routerPermission
 
       /**
        * 設置搜尋用 map
