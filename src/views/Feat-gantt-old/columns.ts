@@ -199,7 +199,7 @@ export const columnSetting = {
   },
   startDate: {
     label: '預計開工時間',
-    i18nLabel: 'estimatedStartTime',
+    i18nLabel: 'estimate-startTime',
     table: {
       minWidth: 200,
       sortable: false
@@ -207,7 +207,7 @@ export const columnSetting = {
   },
   endDate: {
     label: '預計完工時間',
-    i18nLabel: 'estimatedEndTime',
+    i18nLabel: 'estimate-endTime',
     table: {
       minWidth: 200,
       sortable: false
