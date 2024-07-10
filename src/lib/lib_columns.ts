@@ -1,53 +1,30 @@
-import type { ComponentPublicInstance, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { reactive, shallowReactive, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
-import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
 
-import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
-import type { ColumnItem, SettingData } from '@/declare/columnSetting'
+import type { TableParams, Sort } from '@/components'
+import type {
+  InputRefItem,
+  // FormColumnsItem,
+  FormSetting,
+  FormListSetting,
+  ColumnItem,
+  SettingData,
+  TableRef,
+  TableOptions,
+  TableSetting,
+  // TableColumnsItem,
+  SimpleTableSetting
+  // SimpleTableColumnsItem
+} from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'
 import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
 
-import type { ValidateType } from './lib_validate'
-
-export interface ColumnTypeSetting<T, K extends string> {
-  [key: string]: {
-    [keyType in K | 'label']: T | string
-  }
-}
-
-export interface FormSetting<T> {
-  refMap: Record<string, any>
-  defaultValue: T
-  columns: Record<string, any>
-  forms: T
-  activeForms: Record<string, boolean>
-  resetForms: (defaultValue?: Partial<T> | any) => void
-  reset: (defaultValue?: Partial<T> | any) => void
-  getActiveForms: (isShowEmpty: boolean) => Partial<T>
-  validate: () => Promise<Array<any>>
-  handleReset: () => void
-}
-
-export interface InputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
-
-export interface FormColumnsItem {
-  ref?: (el: InputRefItem) => void
-  key?: string
-  validateKey?: string
-  clearable?: boolean
-  default?: any
-  validate?: ValidateType[] | ValidateType
-  required?: boolean
-  resizable?: boolean
-  showOverflowTooltip?: boolean
-  label?: string
-}
 /**
  * @author Caleb
  * @description 取得多欄輸入框用的參數
@@ -217,17 +194,6 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
   }
 }
 
-export interface FormListSetting<T> {
-  refMap: Record<string, any>
-  defaultValue: T
-  columns: Record<string, any>
-  forms: Ref<Array<T>>
-  reset: () => void
-  validate: () => Promise<Array<any>>
-  add: (value?: any) => void
-  remove: (rowIndex: number) => void
-  clear: () => void
-}
 /**
  * @author Caleb
  * @description 取得多欄多列輸入框用的參數
@@ -378,85 +344,6 @@ export const useFormListSetting = <T>(
   }
 }
 
-export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
-
-export interface TableOptions {
-  title: string
-  i18nTitle?: string
-  version: string
-  settingKey: string
-  page?: number
-  size?: number
-  sort?: {
-    key: null | string
-    order: null | 'ascending' | 'descending'
-  }
-  rowKey?: string
-  isSorting?: boolean // 是否可多欄位排序
-  isHiddenExcel?: boolean // 是否隱藏下載excel按鈕
-  isHiddenColumnSetting?: boolean // 是否隱藏欄位設定按鈕
-  tableSize?: TableSize
-  showType?: string | 'custom' | 'auto'
-  selection?: boolean
-  lazy?: boolean
-  load?: Function // 懶加載
-  treeProps?: any
-  i18nModule?: ScopeKey // 翻譯模組
-}
-
-export interface TableSetting {
-  tableRef: Ref<TableRef>
-  tableSetting: {
-    ref: (el: TableRef) => void
-    title: string
-    i18nTitle?: string
-    version: string
-    settingKey: string
-    params: TableParams
-    page?: number
-    pageSize?: number
-    // 單一欄位的 sortable (原版)
-    // 暫時不用 先保留功能
-    sort?: Sort
-    // 多欄位用的 isSorting (爆改版)
-    isSorting?: boolean
-    tableColumns: any[]
-    tableSize?: TableSize
-    isHiddenExcel: boolean
-    i18nModule?: ScopeKey
-    // 其他 table 的 props
-  } & Record<string, any>
-  downloadExcel: (tableData: Record<string, any>[]) => void
-  resetScroll: (tableRef?: TableRef) => void
-  toggleSelection: (rows: any[], tableRef?: TableRef) => void
-  getSelectionRows: () => any[]
-  getParams: (tableRef?: TableRef) => TableParams | null
-  setParams: (params: TableParams, tableRef?: TableRef) => void
-  changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
-}
-
-export interface TableColumnsItem {
-  key?: string
-  prop?: string
-  slotKey?: string
-  label?: string
-  width?: number
-  minWidth?: number
-  align?: 'left' | 'center' | 'right'
-  fixed?: 'left' | 'right'
-  isShow?: boolean
-  // 客製化排序
-  isSorting?: boolean
-  order?: string | 'ascending' | 'descending' | 'none'
-  orderIndex?: number
-  // element ui 排序
-  sortable?: boolean | 'custom'
-  // 是否為特殊欄位
-  isOperations?: boolean
-
-  title?: string
-}
-
 /**
  * @author Caleb
  * @description 取的 Columns 設定 Table用的資料
@@ -484,6 +371,7 @@ export const useTableSetting = (
     },
     isSorting = false,
     isHiddenExcel = false,
+    isHiddenColumnSetting = false,
     tableSize = '',
     selection = false,
     i18nModule = defaultModuleType
@@ -500,14 +388,16 @@ export const useTableSetting = (
         prop: childkey,
         slotKey: childkey,
         label: child?.label ?? '',
-        i18nLabel: child?.i18nLabel ?? child?.label ?? childkey,
+        i18nLabel: child?.i18nLabel ?? (child?.label ?? childkey),
         title: child?.label ?? '',
         minWidth: 150,
         // element ui 單排用
         sortable: !_isOperations,
         // 專案用 多排
-        isSorting: !_isOperations ? child?.isSorting ?? true : false, // 是否顯示排序
+        isSorting: !_isOperations ? (child?.isSorting ?? true) : false, // 是否顯示排序
         order: child?.isSorting ?? 'none', // ascending | descending | none
+        // 專案用 特殊查詢
+        isCondition: child?.isCondition ?? false,
         ...child
       })
     })
@@ -526,17 +416,19 @@ export const useTableSetting = (
       slotKey: key,
       isOperations: _isOperations,
       label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
+      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
       title: column?.label ?? '',
       isShow: column?.isShow ?? true,
       minWidth: 150,
       // element ui 單排用
-      sortable: !_isOperations ? column[type]?.sortable ?? false : false,
+      sortable: !_isOperations ? (column[type]?.sortable ?? false) : false,
       // 專案用 多排
-      isSorting: !_isOperations ? column[type]?.isSorting ?? true : false, // 是否顯示排序
+      isSorting: !_isOperations ? (column[type]?.isSorting ?? true) : false, // 是否顯示排序
       // 專案用 多排 預設值
       order: column[type]?.order ?? 'none', // ascending | descending | none
       orderIndex: column[type]?.orderIndex ?? -1,
+      // 專案用 特殊查詢
+      isCondition: column[type]?.isCondition ?? false,
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
@@ -685,6 +577,7 @@ export const useTableSetting = (
       tableColumns: resColumns,
       tableSize,
       isHiddenExcel,
+      isHiddenColumnSetting,
       selection,
       i18nModule
     },
@@ -763,21 +656,7 @@ export const useTableSetting = (
   }
 }
 
-export interface SimpleTableSetting {
-  title: string
-  tableColumns: any[]
-  downloadExcel: (tableData: Record<string, any>[]) => void
-}
-export interface SimpleTableColumnsItem {
-  key: string
-  prop: string
-  slotKey: string
-  width?: number
-  minWidth?: number
-  label: string
-  i18nLabel?: string
-  title: string
-}
+
 /**
  * @author Caleb
  * @description 取的 Columns 設定 SimpleTable + TableV2 用的資料

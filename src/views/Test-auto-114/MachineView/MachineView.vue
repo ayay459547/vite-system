@@ -4,7 +4,7 @@ import { ref, inject, nextTick, reactive } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { WebViewTable, CustomButton, CustomModal } from '@/components'
 
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'

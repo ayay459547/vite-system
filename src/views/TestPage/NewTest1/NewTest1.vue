@@ -12,7 +12,7 @@ import {
 } from '@/components'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 
 import { columnSetting } from './columns'
 import type { TableData } from './api'

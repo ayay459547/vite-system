@@ -17,7 +17,7 @@ import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/li
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 
 // import i18nMessage from './i18n'
 import type { TableData } from './api'

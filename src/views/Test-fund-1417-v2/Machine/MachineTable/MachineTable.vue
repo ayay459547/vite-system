@@ -4,7 +4,7 @@ import { ref, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { WebViewTable } from '@/components'
 
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 import { formatParams, formatExcel, formatTable } from './api'
 import { columnSetting } from './columns'
 import { fakeTableData } from './fakeData'

@@ -6,7 +6,7 @@ import { WebViewTable, CustomTabs, CustomButton, CustomModal, CustomEmpty, Custo
 
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 import { columnSetting, linkSetting } from './columns'
 import { fakeTableData } from './fakeData'
 // 先選機台的插單

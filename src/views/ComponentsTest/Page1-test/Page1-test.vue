@@ -6,7 +6,7 @@ import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components
 import { useLocalI18n } from '@/lib/lib_hook'
 import { deepClone } from '@/lib/lib_utils'
 import { useTableSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'

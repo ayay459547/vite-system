@@ -8,7 +8,7 @@ import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components
 import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { getPermission } from '@/lib/lib_permission'
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 import { object_filter } from '@/lib/lib_object'
 
 import type { TableData } from './api'

@@ -7,7 +7,7 @@ import { WebViewTable, CustomLink, CustomButton, CustomTooltip } from '@/compone
 import type { UseHook } from '@/declare/hook'
 
 // 引入表格設定類型
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 // 引入資料格式化
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'

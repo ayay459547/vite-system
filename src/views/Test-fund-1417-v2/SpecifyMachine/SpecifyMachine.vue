@@ -5,7 +5,7 @@ import type { UseHook, SwalResult } from '@/declare/hook'
 import { CustomButton, CustomIcon, CustomModal, WebViewTable } from '@/components'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 import type { TableData } from './api'
 import {
   formatParams,

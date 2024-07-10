@@ -15,7 +15,7 @@ import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
+import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomSwitch, CustomTooltip } from '@/components'
 
 // 欄位設定
 import ColumnSetting from './Components/ColumnSetting.vue'
@@ -592,6 +592,9 @@ onMounted(() => {
     isPrependOpen.value = _isPrependOpen === 'true'
   }
 })
+
+// 是否啟用特殊欄位搜尋
+const isCondition = ref(false)
 </script>
 
 <template>
@@ -621,37 +624,55 @@ onMounted(() => {
 
     <div class="__table-setting">
       <div class="setting-left">
+        <CustomTooltip placement="top">
+          <template #content>
+            <div>
+              <span v-if="isCondition">關閉特殊搜尋</span>
+              <span v-else>啟用特殊搜尋</span>
+            </div>
+          </template>
+          <CustomSwitch v-model="isCondition" />
+        </CustomTooltip>
+
         <!-- 顯示更多 -->
         <template v-if="props.isLazyLoading">
-          <div style="width: 180px; overflow: hidden">
-            <CustomInput
-              v-model="pageSize"
-              validate-key="CustomTable:pageSize"
-              type="select"
-              :label="i18nTranslate('load-count', defaultModuleType)"
-              :options="lazyLoadSizeOptions"
-              direction="row"
-              @change="onSizeChange"
-            />
+          <div style="width: 100px; overflow: hidden">
+            <CustomTooltip placement="top">
+              <template #content>
+                <div>{{ i18nTranslate('load-count', defaultModuleType) }}</div>
+              </template>
+              <CustomInput
+                v-model="pageSize"
+                validate-key="CustomTable:pageSize"
+                type="select"
+                :options="lazyLoadSizeOptions"
+                hidden-label
+                @change="onSizeChange"
+              />
+            </CustomTooltip>
           </div>
           <div>
-            <label>{{
-              `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}`
-            }}</label>
+            <label>
+              {{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}
+            </label>
           </div>
         </template>
         <!-- 分頁 -->
         <template v-else>
-          <div style="width: 180px; overflow: hidden">
-            <CustomInput
-              v-model="pageSize"
-              validate-key="CustomTable:pageSize"
-              type="select"
-              :label="i18nTranslate('show-count', defaultModuleType)"
-              :options="sizeOptions"
-              direction="row"
-              @change="onSizeChange"
-            />
+          <div style="width: 100px; overflow: hidden">
+            <CustomTooltip placement="top">
+              <template #content>
+                <div>{{ i18nTranslate('show-count', defaultModuleType) }}</div>
+              </template>
+              <CustomInput
+                v-model="pageSize"
+                validate-key="CustomTable:pageSize"
+                type="select"
+                :options="sizeOptions"
+                hidden-label
+                @change="onSizeChange"
+              />
+            </CustomTooltip>
           </div>
         </template>
 

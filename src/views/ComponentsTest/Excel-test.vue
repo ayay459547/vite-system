@@ -15,7 +15,7 @@ import {
   CustomTooltip
 } from '@/components'
 import { downloadFile } from '@/lib/lib_utils'
-import type { TableOptions } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 
 // WordTest.docx
 import path from '@/assets/file/WordTest.docx?url'
