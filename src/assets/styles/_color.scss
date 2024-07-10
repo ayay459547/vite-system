@@ -2,29 +2,16 @@
 @use './utils' as utils;
 
 // 系統顏色
-$light-system: (
+$light-color: (
   'system': #506d9c,
   'system-bg': #eceff5,
   'system-page': #ffffff,
   'system-border': #7c95bc,
 
-  'login-wrapper': #ecf5ff,
-  'login-container': #a6d2ff,
-  'login-form-start': #d9ecff,
-  'login-form-end': #e5f2ff,
-  'login-move': #79bbff,
-  'login-button': #79bbff,
-  'login-button-hover': #a0cfff,
-
   'menu': #506d9c,
   'menu-sub': #5b79ab,
   'menu-hover': #6582b0,
   'menu-color': #ffffff,
-
-  'table-border': #ebeef5,
-  'table-prepend': #b9c6db,
-  'table-setting': #d1d9e7,
-  'table-thead': #eceff5,
 
   'row-odd': #fcfcfc,
   'row-odd-hover': #f2f4f8,
@@ -33,29 +20,16 @@ $light-system: (
   'row-boder': #ebeef5
 );
 
-$dark-system: (
+$dark-color: (
   'system': #476596,
-  'system-bg': #aeaeae,
-  'system-page': #6d6d6d,
+  'system-bg': #262727,
+  'system-page': #0A0A0A,
   'system-border': #7c95bc,
-
-  'login-wrapper': #646464,
-  'login-container': #9f9f9f,
-  'login-form-start': #000000,
-  'login-form-end': #9f9f9f,
-  'login-move': #adadad,
-  'login-button': #808080,
-  'login-button-hover': #6c6c6c,
 
   'menu': #45608c,
   'menu-sub': #516b98,
   'menu-hover': #5d78a3,
   'menu-color': #f0f0f0,
-
-  'table-border': #7e7e7e,
-  'table-prepend': #4e4e4e,
-  'table-setting': #4c4c4c,
-  'table-thead': #545454,
 
   'row-odd': #535353,
   'row-odd-hover': #606060,
@@ -66,14 +40,14 @@ $dark-system: (
 
 html {
   // var(--i-color-system-bg)
-  @each $type, $color in $light-system {
+  @each $type, $color in $light-color {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 
 html.dark {
   // var(--i-color-system-bg)
-  @each $type, $color in $dark-system {
+  @each $type, $color in $dark-color {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }

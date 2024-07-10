@@ -2,10 +2,13 @@
 import * as echarts from 'echarts'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import { storeToRefs } from 'pinia'
+
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 import { isEmpty, getUuid, numberFormat } from '@/lib/lib_utils'
 import { datetimeFormat } from '@/lib/lib_day'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { version, props as ganttChartProps } from './GanttChartInfo'
 
@@ -83,9 +86,13 @@ export default defineComponent({
 
       const chartDom = document.getElementsByClassName(`main-${scopedId}`)[0]
 
+      // 色調
+      const layoutStore = useLayoutStore()
+      const { isDark } = storeToRefs(layoutStore)
+
       const showCount = 15
       if (isEmpty(myChart)) {
-        myChart = echarts.init(chartDom as HTMLElement)
+        myChart = echarts.init(chartDom as HTMLElement, isDark.value ? 'dark' : '')
       }
       _yEnd = getYScrollStart(_typeData.length, showCount)
 
@@ -195,7 +202,7 @@ export default defineComponent({
           bottom: 40,
           left: props.left,
           right: 35,
-          backgroundColor: '#fff',
+          // backgroundColor: '#fff',
           borderWidth: 0
         },
         xAxis: [

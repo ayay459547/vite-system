@@ -54,7 +54,8 @@ const setMachineWeekSchedule = (row: TableData) => {
   >
     <!-- Redirect Link -->
     <template
-      v-for="(item, columnKey) in linkSetting" :key="columnKey"
+      v-for="(item, columnKey) in linkSetting"
+      :key="columnKey"
       #[`column-${columnKey}`]="{data}"
     >
       <CustomLink

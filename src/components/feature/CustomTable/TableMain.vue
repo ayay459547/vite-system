@@ -396,7 +396,7 @@ defineExpose({
         <!-- 顯示行數 -->
         <template v-if="props.isShowNo">
           <ElTableColumn
-            width="80"
+            width="60"
             :align="'center'"
             key="__data-no"
             prop="__data-no"
@@ -658,15 +658,26 @@ defineExpose({
       // border 生效
       border-collapse: collapse;
       // border-collapse: separate;
-      .el-table__row--striped {
-        background: var(--el-fill-color-lighter);
+      .el-table__row {
+        background-color: var(--i-color-table-odd);
+        &:hover {
+          background-color: var(--i-color-table-odd-hover);
+        }
       }
+      .el-table__row--striped {
+        background-color: var(--i-color-table-even);
+        &:hover {
+          background-color: var(--i-color-table-even-hover);
+        }
+      }
+
       .el-table__row,
       .el-table__row--striped {
         content-visibility: auto;
+
         &:hover {
           transition-duration: 0.2s;
-          background-color: var(--el-table-row-hover-bg-color);
+          // background-color: var(--el-table-row-hover-bg-color);
         }
       }
       .el-table__row .el-table__cell {
@@ -676,6 +687,10 @@ defineExpose({
           content-visibility: auto;
         }
       }
+    }
+
+    .el-table__body-wrapper {
+      background-color: var(--i-color-table-body);
     }
 
     .el-table__append-wrapper {
@@ -731,6 +746,45 @@ defineExpose({
       bottom: 0;
       background-color: #ff000000;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+@use '@/assets/styles/utils' as utils;
+
+$light-color: (
+  'table-thead': #eceff5,
+  'table-body': #FFFFFF,
+
+  'table-odd': #fcfcfc,
+  'table-odd-hover': #f2f4f8,
+  'table-even': #f7f7f7,
+  'table-even-hover': #f2f4f8
+);
+
+$dark-color: (
+  'table-thead': #262727,
+  'table-body': #303030,
+
+  'table-odd': #303030,
+  'table-odd-hover': #424243,
+  'table-even': #39393A,
+  'table-even-hover': #424243
+);
+
+// 顏色設定
+html {
+  // var(--i-color-table-thead)
+  @each $type, $color in $light-color {
+    @include utils.set-css-var-value(('color', $type), $color);
+  }
+}
+
+html.dark {
+  // var(--i-color-table-thead)
+  @each $type, $color in $dark-color {
+    @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 </style>

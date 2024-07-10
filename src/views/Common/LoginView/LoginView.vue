@@ -301,3 +301,42 @@ $gradient-color: var(--i-color-login-move);
   }
 }
 </style>
+
+<style lang="scss">
+@use '@/assets/styles/utils' as utils;
+
+$light-color: (
+  'login-wrapper': #ecf5ff,
+  'login-container': #a6d2ff,
+  'login-form-start': #d9ecff,
+  'login-form-end': #e5f2ff,
+  'login-move': #79bbff,
+  'login-button': #79bbff,
+  'login-button-hover': #a0cfff
+);
+
+$dark-color: (
+  'login-wrapper': #646464,
+  'login-container': #9f9f9f,
+  'login-form-start': #000000,
+  'login-form-end': #9f9f9f,
+  'login-move': #adadad,
+  'login-button': #808080,
+  'login-button-hover': #6c6c6c
+);
+
+// 顏色設定
+html {
+  // var(--i-color-system-bg)
+  @each $type, $color in $light-color {
+    @include utils.set-css-var-value(('color', $type), $color);
+  }
+}
+
+html.dark {
+  // var(--i-color-system-bg)
+  @each $type, $color in $dark-color {
+    @include utils.set-css-var-value(('color', $type), $color);
+  }
+}
+</style>

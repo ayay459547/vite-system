@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Composition API
-import { useSlots, inject } from 'vue'
+import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 引入類型
@@ -22,10 +22,6 @@ const scopedId = getUuid(scopedName)
 
 const props = defineProps(linkProps)
 
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
 const router = useRouter()
 const newWindow = (link: any) => {
 
@@ -68,7 +64,7 @@ const newWindow = (link: any) => {
   }
 }
 
-const getI18nTranslate = link => {
+const getI18nTranslate = (link: any) => {
   if (i18nTest(link?.i18nDescription)) return i18nTranslate(link?.i18nDescription)
   if (link?.description) return link.description
 
@@ -90,10 +86,7 @@ const getI18nTranslate = link => {
       :offset="10"
       :show-after="200"
     >
-      <template v-if="hasSlot('default')">
-        <slot name="default"></slot>
-      </template>
-      <template v-else>
+      <slot>
         <div class='tooltip-default'>
           <CustomIcon
             class="tooltip-default-icon"
@@ -104,21 +97,19 @@ const getI18nTranslate = link => {
             {{ props.label }}
           </div>
         </div>
-      </template>
+      </slot>
 
       <template #content>
         <div class="tooltip-options">
           <template v-for="(link) in props.options" :key="link">
-            <div>
-              <ElLink
-                :type="props.type"
-                :underline="props.underline"
-                :disabled="link?.disabled"
-                @click="newWindow(link)"
-              >
-                {{ getI18nTranslate(link) }}
-              </ElLink>
-            </div>
+            <ElLink
+              :type="props.type"
+              :underline="props.underline"
+              :disabled="link?.disabled"
+              @click="newWindow(link)"
+            >
+              {{ getI18nTranslate(link) }}
+            </ElLink>
           </template>
         </div>
       </template>
@@ -136,14 +127,16 @@ const getI18nTranslate = link => {
     &-icon {
       color: #409eff;
     }
-    // &-text {
-    // }
   }
+}
+
+.tooltip {
   &-options {
     display: flex;
     flex-direction: column;
-    padding: 4px;
-    gap: 4px;
+    align-items: flex-start;
+    padding: 2px;
+    gap: 6px;
   }
 }
 </style>

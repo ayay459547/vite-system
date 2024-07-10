@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import * as echarts from 'echarts'
 import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+
+import { useLayoutStore } from '@/stores/stores_layout'
 import { fakeData } from './fakeData'
 import {
   // 常數
@@ -109,7 +112,7 @@ function makeOption() {
       bottom: 20,
       left: 100,
       right: 20,
-      backgroundColor: '#fff',
+      // backgroundColor: '#fff',
       borderWidth: 0
     },
     xAxis: {
@@ -478,8 +481,12 @@ function initDrag() {
 
 onMounted(() => {
   _rawData = fakeData
+  // 色調
+  const layoutStore = useLayoutStore()
+  const { isDark } = storeToRefs(layoutStore)
+
   const chartDom = document.getElementsByClassName('charts__flight')[0]
-  myChart = echarts.init(chartDom as HTMLElement)
+  myChart = echarts.init(chartDom as HTMLElement, isDark.value ? 'dark' : '')
 
   console.log(myChart)
   option = makeOption()

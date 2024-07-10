@@ -99,9 +99,9 @@ const onBreadcrumbTextClick = (index: number) => {
   &-path {
     cursor: pointer;
     transition: 0.3s color;
-    color: var(--i-color-menu);
+    color: var(--i-color-breadcrumb-text);
     &:hover {
-      color: var(--i-color-menu-hover);
+      color: var(--i-color-breadcrumb-text-hover);
     }
   }
 
@@ -156,6 +156,35 @@ const onBreadcrumbTextClick = (index: number) => {
     &-xs {
       display: block;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+@use '@/assets/styles/utils' as utils;
+
+$light-color: (
+  'breadcrumb-text': #506D9C,
+  'breadcrumb-text-hover': #6582B0
+);
+
+$dark-color: (
+  'breadcrumb-text': #E5EAF3,
+  'breadcrumb-text-hover': #CFD3DC
+);
+
+// 顏色設定
+html {
+  // var(--i-color-breadcrumb-text)
+  @each $type, $color in $light-color {
+    @include utils.set-css-var-value(('color', $type), $color);
+  }
+}
+
+html.dark {
+  // var(--i-color-breadcrumb-text)
+  @each $type, $color in $dark-color {
+    @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 </style>

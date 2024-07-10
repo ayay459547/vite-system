@@ -3,10 +3,13 @@ import * as echarts from 'echarts'
 import type { EChartsOption } from 'echarts/types/dist/shared'
 import type { PropType } from 'vue'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
+
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { useLayoutStore } from '@/stores/stores_layout'
 
 export default defineComponent({
   name: 'CustomCharts',
@@ -49,12 +52,17 @@ export default defineComponent({
     }, 200)
 
     const scopedId = getUuid('charts')
+
+    // 色調
+    const layoutStore = useLayoutStore()
+    const { isDark } = storeToRefs(layoutStore)
+
     const init = () => {
       const chartDom = document.getElementsByClassName(`${props.domKey}-charts__${scopedId}`)[0]
       if (isEmpty(props.options) || isEmpty(chartDom)) return
 
       if (isEmpty(myChart) && chartDom.clientWidth > 0 && chartDom.clientHeight > 0) {
-        myChart = echarts.init(chartDom as HTMLElement)
+        myChart = echarts.init(chartDom as HTMLElement, isDark.value ? 'dark' : '')
       }
 
       const _options = props.options()

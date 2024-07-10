@@ -21,7 +21,7 @@ export const useLayoutStore = defineStore('layout', () => {
   const isDark = useDark({
     storageKey: 'color-tone',
     valueDark: 'dark',
-    valueLight: ''
+    valueLight: 'light'
   })
   const toggleDark = useToggle(isDark)
 

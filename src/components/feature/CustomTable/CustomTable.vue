@@ -76,6 +76,7 @@ const emit = defineEmits([
 const loading = ref(true)
 const renderKey = ref(1)
 const isRender = ref(false)
+const isResizing = ref(false)
 
 // 點擊 excel
 const excelIsShow = ref(false)
@@ -204,6 +205,83 @@ const initSortingList = async () => {
   await awaitTime(120)
 }
 
+//Header 欄位寬度最適化:調整子元素寬度
+const setElementWidth = (curElement: any) => {
+  const length = curElement.children.length
+  if (length === 0) {
+    //最底層元素設置為fit-content
+    curElement.classList.add('__table-sorting-column-resizing-child')
+    return curElement.scrollWidth
+  }
+
+  const childrenList = []
+  //取得元素內的子元素列表
+  for (let i = 0; i < length; i++) {
+    childrenList.push(curElement.children.item(i))
+  }
+  //設置每個元素的最適寬度
+  const maxWidth = childrenList.reduce((curMaxWidth, childElement) => {
+    const childeWidth = setElementWidth(childElement)
+    return childeWidth > curMaxWidth ? childeWidth : curMaxWidth
+  }, 0)
+
+  //配合子元素寬度設置為min-content
+  curElement.classList.add('__table-sorting-column-resizing-parent')
+  return maxWidth > curElement.scrollWidth ? maxWidth : curElement.scrollWidth
+  // return curElement.scrollWidth
+}
+//Header 欄位寬度最適化
+const optimizeColumnWidth = async (column: any) => {
+  //開始計算最適化寬度
+  isResizing.value = true
+  await nextTick()
+
+  const headerKey = column?.key //欄位Key值
+  const element = document.getElementById('header-' + headerKey) //由Key取得對應欄位元素
+  if (!element) return
+
+  const isSorting = props.isSorting && (column?.isSorting ?? true) //有無sorting按鍵
+  const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) //設置元素與其子元素最適寬度
+
+  //結束計算最適化寬度
+  isResizing.value = false
+  await nextTick()
+
+  columnSetting.value?.setColumnWidth(headerKey, newWidth) //欄位設定套用最適化寬度
+  await initShowColumns({ isLoading: false }) //重新渲染欄位, isLoading:false 不使用isLoading
+}
+
+//Header All 欄位寬度最適化
+const optimizeAllColumnWidth = async () => {
+  //開始計算最適化寬度
+  isResizing.value = true
+  await nextTick()
+
+  const isSortingMap = new Map()
+  showColumns.forEach(column => {
+    isSortingMap.set(column.key, column?.isSorting ?? true)
+  })
+
+  slotKeyList.value.forEach(headerKey => {
+    const element = document.getElementById('header-' + headerKey) //由Key取得對應欄位元素
+    if (element) {
+      const isSorting = props.isSorting && isSortingMap.get(headerKey) //有無sorting按鍵
+      const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) //設置元素與其子元素最適寬度
+      if (columnSetting.value) {
+        columnSetting.value.setColumnWidth(headerKey, newWidth) //欄位設定套用最適化寬度
+      }
+    }
+  })
+
+  //結束計算最適化寬度
+  isResizing.value = false
+  await nextTick()
+
+  //重新渲染欄位
+  await initShowColumns()
+}
+
+//Emit
 const onRowClick: RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
 }
@@ -303,8 +381,15 @@ const checkTableColumns = (tempColumnList: ColumnItem[]) => {
   }
 }
 
-const initShowColumns = async () => {
-  loading.value = true
+const initShowColumns = async (setting?: any) => {
+  const {
+    //預設的Setting各項參數
+    isLoading = true
+    // scrollElement = null,
+    // columnKey = null
+  } = setting ?? {} //param沒有傳入則用空物件替代
+
+  loading.value = isLoading //是否使用Loading, 不輸入函數則預設為使用
 
   if (columnSetting.value) {
     await columnSetting.value.checkColumnSetting()
@@ -336,6 +421,7 @@ const initShowColumns = async () => {
 
     showColumns.splice(0)
     showColumns.push(...resColumns)
+
     renderKey.value++
     emit('columns-change', showColumns)
   }
@@ -404,7 +490,7 @@ defineExpose({
       currentPage.value = page
     }
     if (!isEmpty(size)) {
-      const _index = (isLazyLoading => {
+      const _index = ((isLazyLoading: boolean) => {
         if (isLazyLoading) {
           return lazyLoadSizeOptions.findIndex(option => {
             option.value === size
@@ -498,15 +584,13 @@ const isPrependOpen = computed<boolean>({
   }
 })
 onMounted(() => {
-  setTimeout(() => {
-    const _isPrependOpen = localStorage.getItem('isPrependOpen')
-    if (isEmpty(_isPrependOpen)) {
-      localStorage.setItem('isPrependOpen', 'true')
-      isPrependOpen.value = true
-    } else {
-      isPrependOpen.value = _isPrependOpen === 'true'
-    }
-  }, 60)
+  const _isPrependOpen = localStorage.getItem('isPrependOpen')
+  if (isEmpty(_isPrependOpen)) {
+    localStorage.setItem('isPrependOpen', 'true')
+    isPrependOpen.value = true
+  } else {
+    isPrependOpen.value = _isPrependOpen === 'true'
+  }
 })
 </script>
 
@@ -571,6 +655,7 @@ onMounted(() => {
           </div>
         </template>
 
+        <!-- Excel -->
         <CustomPopover
           v-if="!props.isHiddenExcel"
           v-model:visible="excelIsShow"
@@ -582,7 +667,6 @@ onMounted(() => {
           <template #reference>
             <CustomButton icon-name="file-excel" label="Excel" />
           </template>
-
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon" />
@@ -619,6 +703,7 @@ onMounted(() => {
           :setting-width="props.settingWidth"
           :setting-height="`${tableHeight - 40}px`"
           @change="initShowColumns"
+          @resize="optimizeAllColumnWidth"
         />
 
         <GroupSorting
@@ -683,9 +768,11 @@ onMounted(() => {
           #[getHeaderSlot(slotKey)]="scope"
         >
           <div
+            :id="`header-${scope.column.key}`"
             class="__table-sorting-column"
             :class="{
-              'has-sorting': props.isSorting && (scope.column?.isSorting ?? true)
+              'has-sorting': props.isSorting && (scope.column?.isSorting ?? true),
+              resize: isResizing
             }"
           >
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
@@ -700,6 +787,12 @@ onMounted(() => {
             :prop="scope.prop"
             @change="onSortingChange"
           />
+
+          <!-- resizer: 調整寬度用不佔位元素 -->
+          <div
+            class="__table-sorting-column-resizer"
+            @dblclick="optimizeColumnWidth(scope.column)"
+          ></div>
         </template>
 
         <template
@@ -759,7 +852,8 @@ $border-style: 1px solid var(--i-color-table-border);
     height: fit-content;
     position: relative;
     background-color: var(--i-color-table-prepend);
-    border: $border-style {
+    border: {
+      bottom: $border-style;
       radius: 6px 6px 0 0;
     }
 
@@ -861,6 +955,30 @@ $border-style: 1px solid var(--i-color-table-border);
     &.has-sorting {
       width: calc(100% - 28px);
     }
+
+    &.resize {
+      width: 1px; //先最小化以取得scrollWidth
+      white-space: nowrap; //強制不換行以取得scrollWidth
+    }
+
+    &-resizer {
+      //定位在欄位右側的不佔位Resizer
+      width: 7px;
+      height: calc(100%);
+      right: 0px;
+      transform: translateX(2px);
+      position: absolute;
+    }
+
+    &-resizing {
+      //僅在resize時使用的Class，層級最優先
+      &-child {
+        width: fit-content !important;
+      }
+      &-parent {
+        width: min-content !important;
+      }
+    }
   }
 
   &-pagination {
@@ -870,6 +988,7 @@ $border-style: 1px solid var(--i-color-table-border);
     min-height: 40px;
     padding: 6px;
     gap: 6px;
+    background-color: var(--i-color-table-footer);
 
     @media (max-width: 992px) {
       justify-content: center;
@@ -918,6 +1037,39 @@ $border-style: 1px solid var(--i-color-table-border);
     &:hover {
       background-color: var(--el-color-info-light-9);
     }
+  }
+}
+</style>
+
+<style lang="scss">
+@use '@/assets/styles/utils' as utils;
+
+$light-color: (
+  'table-border': #EBEEF5,
+  'table-prepend': #B9C6DB,
+  'table-setting': #D1D9E7,
+  'table-footer': #F5F7FA
+);
+
+$dark-color: (
+  'table-border': #363637,
+  'table-prepend': #141414,
+  'table-setting': #1D1D1D,
+  'table-footer': #39393A
+);
+
+// 顏色設定
+html {
+  // var(--i-color-table-border)
+  @each $type, $color in $light-color {
+    @include utils.set-css-var-value(('color', $type), $color);
+  }
+}
+
+html.dark {
+  // var(--i-color-table-border)
+  @each $type, $color in $dark-color {
+    @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 </style>

@@ -30,6 +30,15 @@ const routes: Array<RouterTree> = [
     leaves: [
       {
         name: 'test-feat',
+        title: '測試TSX',
+        meta: {
+          systemType: ['new'],
+          permission: totlaPermission,
+        },
+        component: () => import('@/views/TSX/TSX.vue')
+      },
+      {
+        name: 'test-feat',
         title: '測試新功能',
         meta: {
           systemType: ['new'],
@@ -455,8 +464,7 @@ const routes: Array<RouterTree> = [
           keepAlive: false,
           systemType: ['new'],
           icon: 'v',
-          permission: totlaPermission,
-          i18nModule: 'view'
+          permission: totlaPermission
         }
       },
       {
@@ -467,8 +475,7 @@ const routes: Array<RouterTree> = [
           keepAlive: false,
           systemType: ['new'],
           icon: 'v',
-          permission: totlaPermission,
-          i18nModule: 'view'
+          permission: totlaPermission
         }
       },
       {
@@ -479,8 +486,7 @@ const routes: Array<RouterTree> = [
           keepAlive: false,
           systemType: ['new'],
           icon: 's',
-          permission: totlaPermission,
-          i18nModule: 'system'
+          permission: totlaPermission
         }
       },
       {
@@ -491,8 +497,7 @@ const routes: Array<RouterTree> = [
           keepAlive: false,
           systemType: ['new'],
           icon: 't',
-          permission: totlaPermission,
-          i18nModule: 'test'
+          permission: totlaPermission
         }
       },
       {
@@ -503,8 +508,7 @@ const routes: Array<RouterTree> = [
           keepAlive: false,
           systemType: ['new'],
           icon: 'v',
-          permission: totlaPermission,
-          i18nModule: 'view'
+          permission: totlaPermission
         }
       },
       {
@@ -515,8 +519,7 @@ const routes: Array<RouterTree> = [
           keepAlive: false,
           systemType: ['new'],
           icon: 'water',
-          permission: totlaPermission,
-          i18nModule: 'view'
+          permission: totlaPermission
         }
       }
     ]
