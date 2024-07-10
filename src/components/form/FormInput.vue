@@ -4,8 +4,9 @@ import { computed, useSlots, ref, onMounted, inject } from 'vue'
 import { ElInput } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import type { NumberFormatType } from '@/lib/lib_utils'
-import { isEmpty, numberFormat, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import type { NumberFormatType } from '@/lib/lib_format'
+import { numberFormat } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 type ModelValue = string | number | null

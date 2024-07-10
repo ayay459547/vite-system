@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { ValidateType } from '@/lib/lib_validate'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
-import { datetimeFormat } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 
 const { t } = useI18n()
 
@@ -184,9 +184,9 @@ const getTextValue = (tempValue: ModelValue) => {
 
   if (Array.isArray(tempValue)) {
     const [value1, value2] = tempValue
-    return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(value2, props.format)}`
+    return `${formatDatetime(value1, props.format)} ~ ${formatDatetime(value2, props.format)}`
   } else {
-    return datetimeFormat(tempValue, props.format)
+    return formatDatetime(tempValue, props.format)
   }
 }
 </script>

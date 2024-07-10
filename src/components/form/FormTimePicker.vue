@@ -6,7 +6,7 @@ import type { Dayjs } from 'dayjs'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
-import { datetimeFormat } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type TimePickerType = 'time' | 'timerange'
@@ -136,11 +136,11 @@ const onEvent = {
     let _value = value
     if (Array.isArray(value)) {
       _value = [
-        datetimeFormat(`${value[0]}`, props.format),
-        datetimeFormat(`${value[1]}`, props.format)
+        formatDatetime(`${value[0]}`, props.format),
+        formatDatetime(`${value[1]}`, props.format)
       ]
     } else if (!isEmpty(value)) {
-      _value = datetimeFormat(`${value}`, props.format)
+      _value = formatDatetime(`${value}`, props.format)
     }
 
     inputValue.value = _value
@@ -155,20 +155,20 @@ const scope = effectScope()
 const updateValue = (value: ModelValue) => {
   if (props.isRange || props.type === 'timerange') {
     const today = new Date()
-    let _start = datetimeFormat(today, 'YYYY-MM-DD 00:00:00')
-    let _end = datetimeFormat(today, 'YYYY-MM-DD 23:59:59')
+    let _start = formatDatetime(today, 'YYYY-MM-DD 00:00:00')
+    let _end = formatDatetime(today, 'YYYY-MM-DD 23:59:59')
 
     if (Array.isArray(value)) {
       const [value1 = '00:00:00', value2 = '23:59:59'] = value
 
       if (!isEmpty(value1) && !isEmpty(value2)) {
-        _start = datetimeFormat(today, `YYYY-MM-DD ${value1}`)
-        _end = datetimeFormat(today, `YYYY-MM-DD ${value2}`)
+        _start = formatDatetime(today, `YYYY-MM-DD ${value1}`)
+        _end = formatDatetime(today, `YYYY-MM-DD ${value2}`)
       }
       const defaultRange = [_start, _end]
       _inputValue.value = defaultRange
     } else if (!isEmpty(value)) {
-      _inputValue.value = datetimeFormat(today, `${value}`)
+      _inputValue.value = formatDatetime(today, `${value}`)
     }
   }
 }

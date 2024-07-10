@@ -1,14 +1,14 @@
 <script lang="ts">
 import * as echarts from 'echarts'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import { storeToRefs } from 'pinia'
 
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-import { isEmpty, getUuid, numberFormat } from '@/lib/lib_utils'
-import { datetimeFormat } from '@/lib/lib_day'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { numberFormat, formatDatetime } from '@/lib/lib_format'
+import { useLayoutStore } from '@/stores/stores_layout'
 
 import { version, props as ganttChartProps } from './GanttChartInfo'
 
@@ -125,10 +125,10 @@ export default defineComponent({
               title: '',
               yAxisIndex: false
             },
-            brush: {
-              title: '',
-              type: ['lineX', 'clear']
-            },
+            // brush: {
+            //   title: '',
+            //   type: ['lineX', 'clear']
+            // },
             saveAsImage: {
               title: '',
               name: 'gantt-charts'
@@ -222,14 +222,14 @@ export default defineComponent({
               align: 'center',
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               formatter: function (value: string, index: number) {
-                return datetimeFormat(value, 'YYYY-MM')
+                return formatDatetime(value, 'YYYY-MM')
               }
             },
             axisPointer: {
               label: {
                 formatter: function (value: any) {
                   const { value: time } = value
-                  return datetimeFormat(time, 'YYYY-MM')
+                  return formatDatetime(time, 'YYYY-MM')
                 }
               }
             }
@@ -250,14 +250,14 @@ export default defineComponent({
               align: 'center',
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               formatter: function (value: string, index: number) {
-                return datetimeFormat(value, 'MM-DD')
+                return formatDatetime(value, 'MM-DD')
               }
             },
             axisPointer: {
               label: {
                 formatter: function (value: any) {
                   const { value: time } = value
-                  return datetimeFormat(time, 'MM-DD')
+                  return formatDatetime(time, 'MM-DD')
                 }
               }
             }
@@ -278,14 +278,14 @@ export default defineComponent({
               align: 'center',
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               formatter: function (value: string, index: number) {
-                return datetimeFormat(value, 'dddd')
+                return formatDatetime(value, 'dddd')
               }
             },
             axisPointer: {
               label: {
                 formatter: function (value: any) {
                   const { value: time } = value
-                  return datetimeFormat(time, 'dddd')
+                  return formatDatetime(time, 'dddd')
                 }
               }
             }
@@ -342,13 +342,13 @@ export default defineComponent({
               extraCssText: 'width: 300px;',
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               formatter: function (params: any, api: any) {
-                const start = datetimeFormat(
+                const start = formatDatetime(
                   params.value[GANTT_START_TIME_INDEX],
-                  'YYYY/MM/DD hh:mm:ss'
+                  'YYYY/MM/DD HH:mm:ss'
                 )
-                const end = datetimeFormat(
+                const end = formatDatetime(
                   params.value[GANTT_COMPLETE_TIME_INDEX],
-                  'YYYY/MM/DD hh:mm:ss'
+                  'YYYY/MM/DD HH:mm:ss'
                 )
 
                 const title = params.value[GANTT_TITLE_INDEX]

@@ -6,11 +6,11 @@ $z-index-map: () !default;
 $z-index-map: map.merge(
   (
     'loading': 3000, // var(--i-z-index-loading);
+    'select-option': 2090, // var(--i-z-index-select-option);
     'global-disabled': 2080, // var(--i-z-index-global-disabled);
     'notification': 2050, // 在下方已使用
     'tour': 2050, // var(--i-z-index-tour);
     'swal2': 2040, // 在下方已使用
-    'select-option': 2035, // var(--i-z-index-select-option);
     'drawer': 2020, // var(--i-z-index-drawer);
     'login': 2010, // var(--i-z-index-login);
     'modal': 2005, // 對應 CustomModal 的 minModalIndex

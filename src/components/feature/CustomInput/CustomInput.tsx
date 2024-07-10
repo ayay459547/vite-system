@@ -15,7 +15,7 @@ import {
 } from '@/components'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
-import { datetimeFormat } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 
@@ -377,12 +377,12 @@ const CustomInput = defineComponent({
         case 'monthrange':
           if (Array.isArray(inputValue.value)) {
             const [value1, value2] = inputValue.value
-            return `${datetimeFormat(value1, props.format)} ~ ${datetimeFormat(
+            return `${formatDatetime(value1, props.format)} ~ ${formatDatetime(
               value2,
               props.format
             )}`
           } else {
-            return datetimeFormat(inputValue.value, props.format)
+            return formatDatetime(inputValue.value, props.format)
           }
         case 'time':
         case 'timerange':

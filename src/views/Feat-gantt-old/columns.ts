@@ -1,11 +1,11 @@
-import { datetimeFormat } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 
 const getDefaultDate = () => {
   const [start, end] = [new Date(), new Date()]
   start.setTime(start.getTime() - 3600 * 1000 * 24 * 1)
   end.setTime(end.getTime() + 3600 * 1000 * 24 * 1)
 
-  return [datetimeFormat(start, 'YYYY-MM-DD'), datetimeFormat(end, 'YYYY-MM-DD')]
+  return [formatDatetime(start, 'YYYY-MM-DD'), formatDatetime(end, 'YYYY-MM-DD')]
 }
 
 export const columnSetting = {

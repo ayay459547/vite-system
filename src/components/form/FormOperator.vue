@@ -5,7 +5,8 @@ import { ElInput, ElSelect, ElOption } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import type { Options } from '@/components'
-import { isEmpty, numberFormat, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { numberFormat } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null

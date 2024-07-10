@@ -406,7 +406,7 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
   const start = (page - 1) * size
   const end = start + size
 
-  if (size <= -1) data.slice(start)
+  if (size <= -1) return data.slice(start)
   return data.slice(start, end)
 }
 

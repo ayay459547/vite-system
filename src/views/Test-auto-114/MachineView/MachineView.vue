@@ -79,7 +79,7 @@ defineExpose({
           />
           <CustomButton
             type="success"
-            :label="`${i18nTranslate('settings')}${i18nTranslate('rushOrder')}`"
+            :label="`${i18nTranslate('setting')}${i18nTranslate('rushOrder')}`"
             icon-name="check"
             icon-move="scale"
             @click="onMachineRushOrderSubmit"

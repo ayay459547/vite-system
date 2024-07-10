@@ -25,7 +25,7 @@ import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
 import { setCookie, removeCookie, setToken, clearToken } from '@/lib/lib_cookie'
-import { datetimeFormat } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -260,7 +260,7 @@ const login = async (userId: number) => {
   await nextTick()
   loading(true, i18nTranslate('login', defaultModuleType))
 
-  const loginTime = datetimeFormat(new Date(), 'YYYY-MM-DD_HH:mm:ss')
+  const loginTime = formatDatetime(new Date(), 'YYYY-MM-DD_HH:mm:ss')
   setCookie('loginTime', loginTime)
   setToken(userId, loginTime)
   initNavigationRoutes('locatehome')

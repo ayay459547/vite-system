@@ -14,7 +14,8 @@ import {
   CustomModal
 } from '@/components'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
-import { datetimeFormat, getMilliseconds } from '@/lib/lib_day'
+import { getMilliseconds } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 import { object_forEach, object_reduce } from '@/lib/lib_object'
 
 import type { TableData } from '../api'
@@ -226,7 +227,7 @@ const setGanttData = (
         ganttDateRange.startMilliseconds === null ||
         startMilliseconds < ganttDateRange.startMilliseconds
       ) {
-        ganttDateRange.startDate = datetimeFormat(item.startDate, 'YYYY-MM-DD HH:mm')
+        ganttDateRange.startDate = formatDatetime(item.startDate, 'YYYY-MM-DD HH:mm')
         // ganttDateRange.startDate = item.startDate
         ganttDateRange.startMilliseconds = startMilliseconds
       }
@@ -234,7 +235,7 @@ const setGanttData = (
         ganttDateRange.endMilliseconds === null ||
         endMilliseconds > ganttDateRange.endMilliseconds
       ) {
-        ganttDateRange.endDate = datetimeFormat(item.endDate, 'YYYY-MM-DD HH:mm')
+        ganttDateRange.endDate = formatDatetime(item.endDate, 'YYYY-MM-DD HH:mm')
         // ganttDateRange.endDate = item.endDate
         ganttDateRange.endMilliseconds = endMilliseconds
       }

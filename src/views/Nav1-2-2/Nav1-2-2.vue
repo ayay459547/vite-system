@@ -7,7 +7,7 @@ import { ElCard, ElBacktop } from 'element-plus'
 import { CustomTimeLine, CustomTag, CustomButton, SimpleQRcode, CustomSwitch } from '@/components'
 
 import { awaitTime, scrollToEl } from '@/lib/lib_utils'
-import { datetimeFormat } from '@/lib/lib_day'
+import { formatDatetime } from '@/lib/lib_format'
 
 const options = [
   {
@@ -153,10 +153,10 @@ const now = ref('')
 onMounted(() => {
   const date = '2028-11-12 12:45:32.0'
 
-  const res = datetimeFormat(date, 'YYYY-MM-DD')
+  const res = formatDatetime(date, 'YYYY-MM-DD')
   console.log('res => ', res)
 
-  now.value = datetimeFormat(new Date(), 'YYYY-MM-DD A hh:mm:ss')
+  now.value = formatDatetime(new Date(), 'YYYY-MM-DD A hh:mm:ss')
 })
 
 const switchValue = ref(false)
