@@ -33,7 +33,7 @@ const routes: Array<RouterTree> = [
         title: '測試TSX',
         meta: {
           systemType: ['new'],
-          permission: totlaPermission,
+          permission: totlaPermission
         },
         component: () => import('@/views/TSX/TSX.vue')
       },

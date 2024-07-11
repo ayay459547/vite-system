@@ -44,17 +44,20 @@ export const columnSetting = {
   test: {
     label: '多欄測試',
     table: {
-      sortable: false,
+      // sortable: false,,
+      isSorting: false,
       children: {
         state: {
           label: '狀態',
           width: 160,
-          align: 'center'
+          align: 'center',
+          isSorting: false
         },
         city: {
           label: '城市',
           width: 250,
-          align: 'left'
+          align: 'left',
+          isSorting: false
         }
       }
     }

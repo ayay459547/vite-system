@@ -33,15 +33,11 @@ refactorRoutes<Navigation>((leafNode, parentsNode) => {
     nextNode.breadcrumbName = [...parentsNode.breadcrumbName, leafNode.name]
     nextNode.breadcrumbTitle = [...parentsNode.breadcrumbTitle, leafNode.title]
   }
-  const { status = 'new', startDate = '', completedDate = '' } = nextNode?.meta ?? {}
 
-  if (!['', null, undefined].includes(nextNode.path)) {
+  if (!['', null, undefined].includes(nextNode.name)) {
     routesData.push({
-      status,
-      startDate,
-      completedDate,
       title: nextNode.title,
-      path: `${systemUrl}${nextNode.path}`,
+      path: `${systemUrl}${nextNode.name}`,
       name: nextNode.breadcrumbName[0],
       mode: nextNode.breadcrumbTitle[0],
       breadcrumbTitle: nextNode.breadcrumbTitle.join(' / ')

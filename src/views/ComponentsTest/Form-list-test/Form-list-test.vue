@@ -8,13 +8,17 @@ import { scrollToEl } from '@/lib/lib_utils'
 import { columnSetting } from './columns'
 
 const testData = reactive<Form[]>([
-  { name: 'Tom', date: '', age: '12', address: 'address1' },
-  { name: '', date: '', age: '65', address: 'address2' },
-  { name: '', date: '', age: '42', address: 'address3' },
-  { name: '', date: '', age: '23', address: 'address4' }
+  // { name: 'Tom', date: '', age: '12', address: 'address1' },
+  // { name: '', date: '', age: '65', address: 'address2' },
+  // { name: '', date: '', age: '42', address: 'address3' },
+  // { name: '', date: '', age: '23', address: 'address4' }
 ])
 
 interface Form {
+  columnType?: string
+  filterType?: string
+  filterValue?: string
+
   key?: string
   name?: string
   date?: string
@@ -76,6 +80,27 @@ const sortList = () => {
         <template #header-all="{ column }">
           <div class="text-danger i-pr-xs">*</div>
           <div>{{ column.label }}</div>
+        </template>
+        <template #column-columnType="{ rowIndex }">
+          <CustomInput
+            v-model="formList[rowIndex].columnType"
+            v-bind="formColumn.columnType"
+          ></CustomInput>
+        </template>
+        <template #column-filterType="{ rowIndex }">
+          <CustomInput
+            v-model="formList[rowIndex].filterType"
+            v-bind="formColumn.filterType"
+          ></CustomInput>
+        </template>
+        <template #column-filterValue="{ rowIndex }">
+          <CustomInput
+            v-model="formList[rowIndex].filterValue"
+            v-bind="formColumn.filterValue"
+            :disabled="[
+              'isBlank', 'notBlank', 'isNull', 'notBlank'
+            ].includes(formList[rowIndex].filterType)"
+          ></CustomInput>
         </template>
 
         <template #column-name="{ rowIndex }">

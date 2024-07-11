@@ -27,7 +27,7 @@ worker.addEventListener(
 // worker.terminate()
 
 // 去除 chrome 的touch事件警告
-import './lib/init/passiveEvents'
+import './lib/init/init_passiveEvents'
 
 // vue
 import { createApp, h } from 'vue'

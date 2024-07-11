@@ -39,7 +39,8 @@ const tableDataCount = ref(0)
 const tableOptions: TableOptions = {
   title: pageTranslate('testTable'),
   version: '1.0.0',
-  settingKey: 'nav1-1-1'
+  settingKey: 'nav1-1-1',
+  isSorting: true
 }
 const { tableSetting, downloadExcel, getParams } = useTableSetting(
   columnSetting,
@@ -168,24 +169,6 @@ onMounted(() => {
 
 <template>
   <div v-loading="isLoading" class="page">
-    <div class="flex-row content-between">
-      <CustomButton
-        type="primary"
-        :label="i18nTranslate('create')"
-        icon-name="plus"
-        icon-move="scale"
-        :disabled="!userPermission.create"
-        @click="model.create = true"
-      />
-
-      <CustomButton
-        :label="i18nTranslate('refrush')"
-        icon-name="rotate"
-        icon-move="rotate"
-        @click="init()"
-      />
-    </div>
-
     <CustomModal
       v-model="model.create"
       height-size="small"
@@ -209,6 +192,26 @@ onMounted(() => {
         }
       "
     >
+      <template #prepend>
+        <div class="flex-row content-between">
+          <CustomButton
+            type="primary"
+            :label="i18nTranslate('create')"
+            icon-name="plus"
+            icon-move="scale"
+            :disabled="!userPermission.create"
+            @click="model.create = true"
+          />
+
+          <CustomButton
+            :label="i18nTranslate('refrush')"
+            icon-name="rotate"
+            icon-move="rotate"
+            @click="init()"
+          />
+        </div>
+      </template>
+
       <template #column-operations="scope">
         <div class="flex-row content-center cursor-pointer" @click="openPopover($event, scope.row)">
           <CustomIcon name="ellipsis-vertical" />

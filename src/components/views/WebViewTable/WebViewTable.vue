@@ -4,7 +4,7 @@ import { ref, shallowRef, onMounted, useSlots, nextTick, computed, inject } from
 
 import type { UseHook } from '@/declare/hook'
 import type { LazyLoadingStatus } from '@/components'
-import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput } from '@/components'
+import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, CustomTooltip } from '@/components'
 import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
@@ -543,16 +543,20 @@ onMounted(() => {
           </slot>
 
           <div class="flex-row i-ga-xs">
-            <div style="width: 180px; overflow: hidden">
-              <CustomInput
-                v-model="viewType"
-                validate-key="WebViewTable:viewType"
-                type="select"
-                :label="i18nTranslate('顯示模式', defaultModuleType)"
-                :options="viewTypeOptions"
-                direction="row"
-                @change="onViewTypeChange"
-              />
+            <div style="width: 120px; overflow: hidden">
+              <CustomTooltip placement="top">
+                <template #content>
+                  <div>{{ i18nTranslate('顯示模式', defaultModuleType) }}</div>
+                </template>
+                <CustomInput
+                  v-model="viewType"
+                  validate-key="WebViewTable:viewType"
+                  type="select"
+                  :options="viewTypeOptions"
+                  hidden-label
+                  @change="onViewTypeChange"
+                />
+              </CustomTooltip>
             </div>
 
             <GroupSearch

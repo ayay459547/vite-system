@@ -15,7 +15,7 @@ import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomSwitch, CustomTooltip } from '@/components'
+import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'
 
 // 欄位設定
 import ColumnSetting from './Components/ColumnSetting.vue'
@@ -23,6 +23,9 @@ import ColumnSetting from './Components/ColumnSetting.vue'
 import ColumnSorting from './Components/ColumnSorting.vue'
 // 群組排序
 import GroupSorting from './Components/GroupSorting.vue'
+// 多欄位多條件查詢
+// import GroupFilter from './Components/GroupFilter.vue'
+
 import TableMain from './TableMain.vue'
 
 import type {
@@ -593,8 +596,6 @@ onMounted(() => {
   }
 })
 
-// 是否啟用特殊欄位搜尋
-const isCondition = ref(false)
 </script>
 
 <template>
@@ -624,19 +625,9 @@ const isCondition = ref(false)
 
     <div class="__table-setting">
       <div class="setting-left">
-        <CustomTooltip placement="top">
-          <template #content>
-            <div>
-              <span v-if="isCondition">關閉特殊搜尋</span>
-              <span v-else>啟用特殊搜尋</span>
-            </div>
-          </template>
-          <CustomSwitch v-model="isCondition" />
-        </CustomTooltip>
-
         <!-- 顯示更多 -->
         <template v-if="props.isLazyLoading">
-          <div style="width: 100px; overflow: hidden">
+          <div style="width: 120px; overflow: hidden">
             <CustomTooltip placement="top">
               <template #content>
                 <div>{{ i18nTranslate('load-count', defaultModuleType) }}</div>
@@ -659,7 +650,7 @@ const isCondition = ref(false)
         </template>
         <!-- 分頁 -->
         <template v-else>
-          <div style="width: 100px; overflow: hidden">
+          <div style="width: 120px; overflow: hidden">
             <CustomTooltip placement="top">
               <template #content>
                 <div>{{ i18nTranslate('show-count', defaultModuleType) }}</div>

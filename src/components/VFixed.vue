@@ -21,7 +21,9 @@ export interface Options {
 
 export default defineComponent({
   name: 'vFixed',
-  components: [ElTooltip],
+  components: {
+    ElTooltip
+  },
   props: {
     elAttr: {
       typs: Object as PropType<ElAttr>,

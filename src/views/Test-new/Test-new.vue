@@ -10,7 +10,8 @@ import {
   CustomSearch,
   GroupSearch
 } from '@/components'
-import { type TableOptions, useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting'
 import throttle from '@/lib/lib_throttle'
 
 import { columnSetting } from './columns'

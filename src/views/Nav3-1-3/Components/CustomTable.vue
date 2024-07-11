@@ -3,7 +3,7 @@ import { useSlots, ref, reactive, computed, onMounted } from 'vue'
 import { type TableColumnCtx, ElPagination } from 'element-plus'
 
 import { tipLog, isEmpty } from '@/lib/lib_utils'
-import type { TableColumnsItem } from '@/lib/lib_columns'
+import type { TableColumnsItem } from '@/declare/columnSetting'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon } from '@/components'
 
