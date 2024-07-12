@@ -4,6 +4,7 @@ import { computed, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import {
   CustomPopover,
   CustomButton,
@@ -20,7 +21,7 @@ const props = defineProps({
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: 'system',
+    default: defaultModuleType,
     description: 'i18nModule'
   },
   modelValue: {
@@ -105,7 +106,7 @@ const submit = () => {
       <template #reference>
         <CustomButton
           icon-name="arrow-down-short-wide"
-          :label="i18nTranslate('sorting', 'system')"
+          :label="i18nTranslate('sorting', defaultModuleType)"
         />
       </template>
 
@@ -175,7 +176,7 @@ const submit = () => {
 
         <div class="__column-reset">
           <CustomButton
-            :label="i18nTranslate('reset', 'system')"
+            :label="i18nTranslate('reset', defaultModuleType)"
             type="info"
             plain
             icon-name="repeat"
@@ -183,7 +184,7 @@ const submit = () => {
           />
 
           <CustomButton
-            :label="i18nTranslate('confirm', 'system')"
+            :label="i18nTranslate('confirm', defaultModuleType)"
             type="success"
             plain
             icon-name="check"
@@ -248,6 +249,7 @@ const submit = () => {
     &-text {
       font-size: 1.2em;
       font-weight: 400;
+      color: var(--el-text-color-primary);
     }
   }
 

@@ -309,7 +309,6 @@ export const getIsNeedSendRTDS = async (): Promise<ApiRes<boolean>> => {
 export const getMachineOptions = async (): Promise<ApiRes<Options>> => {
   const resData = await ajax<Api<Array<{ pk: { id: string } }>>>(
     {
-      // baseURL: '/rt-aps-rest',
       url: '/ma/machine/retrieveMachinesFromOM2MWeb',
       method: 'post',
       data: {

@@ -5,6 +5,7 @@ import { ref, inject, computed } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
@@ -15,7 +16,7 @@ const props = defineProps({
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: 'system',
+    default: defaultModuleType,
     description: 'i18nModule'
   },
   columns: {
@@ -209,7 +210,7 @@ const onDragend = () => {
       <template #reference>
         <CustomButton
           icon-name="list-check"
-          :label="i18nTranslate('columnSetting', 'system')"
+          :label="i18nTranslate('columnSetting', defaultModuleType)"
         />
       </template>
 
@@ -257,7 +258,7 @@ const onDragend = () => {
 
         <div class="__column-footer">
           <CustomButton
-            :label="'調整全部欄寬' /*i18nTranslate('resize-header', 'system')*/"
+            :label="'調整全部欄寬' /*i18nTranslate('resize-header', defaultModuleType)*/"
             type="info"
             plain
             icon-name="arrows-left-right-to-line"
@@ -265,7 +266,7 @@ const onDragend = () => {
           />
 
           <CustomButton
-            :label="i18nTranslate('reset', 'system')"
+            :label="i18nTranslate('reset', defaultModuleType)"
             type="info"
             plain
             icon-name="repeat"
