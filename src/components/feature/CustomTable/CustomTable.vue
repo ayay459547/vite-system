@@ -23,9 +23,6 @@ import ColumnSetting from './Components/ColumnSetting.vue'
 import ColumnSorting from './Components/ColumnSorting.vue'
 // 群組排序
 import GroupSorting from './Components/GroupSorting.vue'
-// 多欄位多條件查詢
-// import GroupFilter from './Components/GroupFilter.vue'
-
 import TableMain from './TableMain.vue'
 
 import type {
@@ -595,7 +592,6 @@ onMounted(() => {
     isPrependOpen.value = _isPrependOpen === 'true'
   }
 })
-
 </script>
 
 <template>
@@ -628,7 +624,7 @@ onMounted(() => {
         <!-- 顯示更多 -->
         <template v-if="props.isLazyLoading">
           <div style="width: 120px; overflow: hidden">
-            <CustomTooltip placement="top">
+            <CustomTooltip placement="top" :show-after="300">
               <template #content>
                 <div>{{ i18nTranslate('load-count', defaultModuleType) }}</div>
               </template>
@@ -651,7 +647,7 @@ onMounted(() => {
         <!-- 分頁 -->
         <template v-else>
           <div style="width: 120px; overflow: hidden">
-            <CustomTooltip placement="top">
+            <CustomTooltip placement="top" :show-after="300">
               <template #content>
                 <div>{{ i18nTranslate('show-count', defaultModuleType) }}</div>
               </template>
