@@ -201,7 +201,9 @@ const {
   forms: filter,
   activeForms: activeFilter,
   getActiveForms: getFilter,
-  reset: resetFilter
+  reset: resetFilter,
+  conditions: filterConditions,
+  getConditionFilter
 } = useFormSetting<FilterData>(props.columnSetting, props.filterKey)
 
 const setFilter = (_filter: FilterData) => {
@@ -216,8 +218,14 @@ const setFilter = (_filter: FilterData) => {
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
-const { tableSetting, downloadExcel, getParams, changePage, getSelectionRows, toggleSelection } =
-  useTableSetting(props.columnSetting, props.tableKey, props.tableOptions)
+const {
+  tableSetting,
+  downloadExcel,
+  getParams,
+  changePage,
+  getSelectionRows,
+  toggleSelection
+} = useTableSetting(props.columnSetting, props.tableKey, props.tableOptions)
 
 const isLoading = ref(false)
 
@@ -253,6 +261,9 @@ const download = async ({ type }) => {
   let params = props.formatParams({ ...filterData })
   // 排序格式化
   const _sortingMap = props.formatSorting(sortingMap)
+  // 條件搜尋
+  const conditions = getConditionFilter()
+  console.log('conditions => ', conditions)
 
   switch (type) {
     // 下載全部資料
@@ -262,6 +273,7 @@ const download = async ({ type }) => {
         page: 1,
         size: -1,
         sortingMap: _sortingMap,
+        // filter: conditions,
         ...webViewParams
       }
       break
@@ -273,6 +285,7 @@ const download = async ({ type }) => {
           page: 1,
           size: tableDataCount.value,
           sortingMap: _sortingMap,
+          // filter: conditions,
           ...webViewParams
         }
         // 下載 當前分頁資料
@@ -321,9 +334,11 @@ const initData = async (tableParams: any) => {
     baseURL: props.baseurl
   })
 
-  // 後端指定參數
+  // 客製化 api
   const webViewParams = props.apiurl
+    // 不給參數
     ? {}
+    // 後端指定參數
     : getWebViewParams({
         webfuno: props.webfuno,
         funoviewsuffix: props.funoviewsuffix,
@@ -336,7 +351,9 @@ const initData = async (tableParams: any) => {
   const params = props.formatParams({ ...filterData })
   // 排序格式化
   const _sortingMap = props.formatSorting(sortingMap)
-
+  // 條件搜尋
+  const conditions = getConditionFilter()
+  console.log('conditions => ', conditions)
   const [
     resData, // api 取得資料
     resDataCount // api 取得資料筆數
@@ -346,6 +363,7 @@ const initData = async (tableParams: any) => {
       page, // 頁數
       size, // 顯示資料數
       sortingMap: _sortingMap, // 排序
+      // filter: conditions,
       ...webViewParams // 後端指定參數
     },
     props.formatTable, // 表格資料格式化
@@ -625,11 +643,14 @@ onMounted(() => {
               v-if="hasOwnProperty(filter, scope.prop)"
               v-model="filter[scope.prop]"
               v-model:active="activeFilter[scope.prop]"
+              v-model:conditions="filterConditions[scope.prop]"
               :i18nModule="i18nModule"
               v-bind="filterColumn[scope.prop]"
               :label="i18nTranslate(scope.column?.i18nLabel)"
               search
+              :column-id="scope.prop"
               @change="throttleInit($event, 'input')"
+              @submit="throttleInit($event, 'input')"
             />
             <span v-else>{{ i18nTranslate(scope.column?.i18nLabel) }}</span>
           </div>
