@@ -2,12 +2,16 @@ import type { PropType } from 'vue'
 
 import type { PopoverProps } from '@/components'
 import { props as inputProps } from '@/components/feature/CustomInput/CustomInputInfo'
+import type { Conditions as _Conditions } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 
 export declare namespace Props {
   type ModelValue = any
   type Active = boolean
+  type IsCondition = boolean
+  type ColumnId = string
+  type Conditions = _Conditions
   type Width = string | number
   type Placement = PopoverProps.Placement
   type Search = boolean
@@ -26,6 +30,22 @@ export const props = {
       是否啟用
       是: 拿到顯示的值
       否: 拿到 null`
+  },
+  isCondition: {
+    type: Boolean as PropType<Props.IsCondition>,
+    required: false,
+    default: false,
+    description: '是否為條件搜尋'
+  },
+  columnId: {
+    type: String as PropType<Props.ColumnId>,
+    default: '',
+    description: 'key'
+  },
+  conditions: {
+    type: Array as PropType<Props.Conditions>,
+    default: true,
+    description: '條件搜尋列表'
   },
   width: {
     type: [String, Number] as PropType<Props.Width>,

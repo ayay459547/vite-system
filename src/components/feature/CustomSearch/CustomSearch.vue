@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, useSlots, inject } from 'vue'
+import { computed, ref, nextTick, useSlots, inject, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+import { useFormListSetting } from '@/lib/lib_columns'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
-import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge } from '@/components'
-import { isEmpty, getUuid, hasOwnProperty } from '@/lib/lib_utils'
+import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge, CustomTooltip, FormCheckbox, FormList } from '@/components'
+import { isEmpty, getUuid, hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { conditionOptions } from '@/variable'
 
 import type { Props } from './CustomSearchInfo'
 import { version, props as searchProps } from './CustomSearchInfo'
@@ -17,6 +20,7 @@ const props = defineProps(searchProps)
 const emit = defineEmits([
   'update:modelValue',
   'update:active',
+  'update:conditions',
   'open',
   'close',
   'focus',
@@ -26,7 +30,8 @@ const emit = defineEmits([
   'input',
   'remove-tag',
   'visible-change',
-  'select'
+  'select',
+  'submit'
 ])
 
 const useHook: UseHook = inject('useHook')
@@ -106,42 +111,6 @@ const onVisibleClick = async (_isVisible: boolean) => {
   }, 0)
 }
 
-const isDot = computed(() => {
-  if (!isActive.value || isEmpty(inpuValue.value)) return false
-
-  switch (props.type) {
-    case 'text':
-    case 'textarea':
-    case 'password':
-    case 'autocomplete':
-    case 'select':
-    case 'select-v2':
-    case 'year':
-    case 'month':
-    case 'date':
-    case 'dates':
-    case 'datetime':
-    case 'week':
-    case 'datetimerange':
-    case 'daterange':
-    case 'monthrange':
-    case 'time':
-    case 'timerange':
-    case 'checkbox':
-    case 'radio':
-      return !isEmpty(inpuValue.value)
-    case 'operator': {
-      return (
-        Array.isArray(inpuValue.value) &&
-        !isEmpty(inpuValue.value[0]) &&
-        !isEmpty(inpuValue.value[1])
-      )
-    }
-    default:
-      return false
-  }
-})
-
 const bindAttributes = computed(() => {
   return {
     // 專案客製化屬性
@@ -194,6 +163,158 @@ const bindAttributes = computed(() => {
   }
 })
 
+// 條件搜尋
+const _isConditionFilter = ref(false)
+const isConditionFilter = computed({
+  get () {
+    return _isConditionFilter.value
+  },
+  set (v: boolean) {
+    if (v) {
+      onVisibleClick(true)
+    }
+    _isConditionFilter.value = v
+  }
+})
+
+const columnSetting = {
+  conditionType: {
+    label: '篩選類型',
+    table: {
+      width: 150
+    },
+    filter: {
+      type: 'select',
+      options: conditionOptions,
+      default: '',
+      validate: [],
+      required: true,
+      hiddenErrorMessage: true,
+      hiddenLabel: true
+    }
+  },
+  filterValue: {
+    label: '篩選值',
+    table: {
+      minWidth: 180
+    },
+    filter: {
+      default: '',
+      validate: [],
+      required: true,
+      hiddenErrorMessage: true,
+      hiddenLabel: true
+    }
+  }
+}
+
+const noValueList = ['isBlank', 'notBlank', 'isNull', 'notBlank']
+
+interface Form {
+  columnType?: string
+  conditionType?: string
+  filterValue?: string
+}
+
+const {
+  // defaultValue,
+  columns: formColumn,
+  forms: formList,
+  validate: validateForm,
+  add,
+  remove
+} = useFormListSetting<Form>(columnSetting, 'filter', [])
+
+const reset = () => {
+  formList.value.splice(0)
+  add()
+}
+
+const addItem = () => {
+  validateForm().then(() => {
+    add()
+  })
+}
+
+onMounted(() => {
+  add()
+})
+
+const conditionList = computed(() => {
+  return formList.value.reduce((res, formItem) => {
+    const { conditionType, filterValue } = formItem
+    const isNoValue = noValueList.includes(conditionType)
+
+    if (
+      !isEmpty(conditionType) &&
+      (!isNoValue ? !isEmpty(filterValue) : true)
+    ) {
+      res.push({
+        columnId: props.columnId,
+        condition: conditionType,
+        value: isNoValue ? '' : filterValue
+      })
+    }
+    return res
+  }, [])
+})
+const submit = () => {
+  if (isConditionFilter.value) {
+    console.log('conditionList => ', conditionList.value)
+    validateForm().then(() => {
+      emit('update:conditions', getProxyData(conditionList.value))
+      emit('submit')
+      onVisibleClick(!isVisible.value)
+    })
+  }
+}
+
+// 是否有filter生效
+const isDot = computed(() => {
+  if (!isActive.value) return false
+
+  let isInputEmpty = false
+
+  switch (props.type) {
+    case 'text':
+    case 'textarea':
+    case 'password':
+    case 'autocomplete':
+    case 'select':
+    case 'select-v2':
+    case 'year':
+    case 'month':
+    case 'date':
+    case 'dates':
+    case 'datetime':
+    case 'week':
+    case 'datetimerange':
+    case 'daterange':
+    case 'monthrange':
+    case 'time':
+    case 'timerange':
+    case 'checkbox':
+    case 'radio':
+      isInputEmpty = isEmpty(inpuValue.value)
+      break
+    case 'operator':
+      isInputEmpty = !(
+        Array.isArray(inpuValue.value) &&
+        !isEmpty(inpuValue.value[0]) &&
+        !isEmpty(inpuValue.value[1])
+      )
+      break
+    default:
+      isInputEmpty = true
+      break
+  }
+
+  return !isInputEmpty || (
+    isConditionFilter.value && props.conditions.length > 0
+  )
+})
+
+// 事件
 const onEvent = {
   focus: (e: FocusEvent): void => {
     emit('focus', e)
@@ -201,7 +322,10 @@ const onEvent = {
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => {
     emit('blur', e)
-    onVisibleClick(false)
+
+    if (!isConditionFilter.value) {
+      onVisibleClick(false)
+    }
   },
   change: (value: string | number): void => emit('change', value),
   input: (value: string | number): void => emit('input', value),
@@ -253,8 +377,12 @@ const translateLabel = computed(() => {
           <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
         </slot>
 
-        <CustomPopover :visible="isVisible" :width="props.width" :placement="props.placement">
-          <div>
+        <CustomPopover
+          :visible="isVisible"
+          :width="isConditionFilter ? 500 : 350"
+          placement="bottom"
+        >
+          <div class="__search-detail">
             <div class="__search-title">
               <slot name="search-label">
                 <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
@@ -262,17 +390,89 @@ const translateLabel = computed(() => {
               <CustomSwitch v-model="isActive" />
             </div>
 
-            <CustomInput
-              ref="iconSearchRef"
-              v-model="inpuValue"
-              v-bind="bindAttributes"
-              v-on="onEvent"
-            >
-              <template v-for="slotName in slotList" :key="slotName" #[slotName]>
-                <slot :name="slotName"></slot>
-              </template>
-            </CustomInput>
+            <div class="__search-input">
+              <CustomInput
+                ref="iconSearchRef"
+                v-model="inpuValue"
+                v-bind="bindAttributes"
+                v-on="onEvent"
+                :disabled="!isActive"
+              >
+                <template v-for="slotName in slotList" :key="slotName" #[slotName]>
+                  <slot :name="slotName"></slot>
+                </template>
+              </CustomInput>
+
+              <div style="width: fit-content;">
+                <CustomTooltip placement="right">
+                  <template #content>
+                    <div>{{ i18nTranslate('進階設定', defaultModuleType) }}</div>
+                  </template>
+                  <FormCheckbox
+                    v-show="props.isCondition"
+                    v-model="isConditionFilter"
+                    :disabled="!isActive"
+                  />
+                </CustomTooltip>
+              </div>
+            </div>
+
+            <template v-if="isConditionFilter && props.isCondition && isActive">
+              <div class="i-py-xs">
+                <FormList
+                  v-model="formList"
+                  :label="'進階設定'"
+                  :table-data="formList"
+                  :column-setting="columnSetting"
+                  item-key="key"
+                  is-create
+                  is-remove
+                  :min="1"
+                  @add="addItem"
+                  @remove="remove"
+                >
+                  <template #header-all="{ column }">
+                    <div class="text-danger i-pr-xs">*</div>
+                    <div>{{ column.label }}</div>
+                  </template>
+                  <template #column-conditionType="{ rowIndex }">
+                    <CustomInput
+                      v-model="formList[rowIndex].conditionType"
+                      v-bind="formColumn.conditionType"
+                    ></CustomInput>
+                  </template>
+                  <template #column-filterValue="{ rowIndex }">
+                    <CustomInput
+                      v-if="!noValueList.includes(formList[rowIndex].conditionType)"
+                      v-model="formList[rowIndex].filterValue"
+                      v-bind="formColumn.filterValue"
+                    ></CustomInput>
+                    <div v-else></div>
+                  </template>
+                </FormList>
+              </div>
+
+              <div class="__search-footer">
+                <CustomButton
+                  :label="i18nTranslate('reset', defaultModuleType)"
+                  type="info"
+                  plain
+                  icon-name="repeat"
+                  @click="reset"
+                />
+
+                <CustomButton
+                  type="primary"
+                  plain
+                  :label="i18nTranslate('confirm', defaultModuleType)"
+                  icon-name="check"
+                  icon-move="scale"
+                  @click="submit"
+                />
+              </div>
+            </template>
           </div>
+
           <template #reference>
             <div @click="onVisibleClick(!isVisible)">
               <CustomBadge v-if="isDot" is-dot>
@@ -299,6 +499,14 @@ const translateLabel = computed(() => {
         </template>
       </CustomInput>
     </template>
+
+    <Teleport to="body">
+      <div
+        v-if="isVisible && props.isCondition"
+        class="__search-close"
+        @click="onVisibleClick(false)"
+      ></div>
+    </Teleport>
   </div>
 </template>
 
@@ -310,12 +518,46 @@ const translateLabel = computed(() => {
     height: fit-content;
   }
 
-  &-title {
+  &-title,
+  &-input {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
     // padding: 0 2px;
+  }
+
+  &-detail,
+  &-btn {
+    z-index: var(--i-z-index-search-detail);
+  }
+  &-detail {
+    height: fit-content;
+    max-height: 50vh;
+    overflow: auto;
+    padding-right: 8px;
+  }
+  &-btn {
+    transform: translateY(4px);
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px;
+  }
+
+  &-close {
+    position: fixed;
+    z-index: var(--i-z-index-search-close);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    // pointer-events: none;
   }
 }
 </style>

@@ -185,7 +185,7 @@ const submit = () => {
 
           <CustomButton
             :label="i18nTranslate('confirm', defaultModuleType)"
-            type="success"
+            type="primary"
             plain
             icon-name="check"
             icon-move="scale"

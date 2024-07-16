@@ -12,6 +12,7 @@ import type {
   // FormColumnsItem,
   FormSetting,
   FormListSetting,
+  Conditions,
   ColumnItem,
   SettingData,
   TableRef,
@@ -36,9 +37,15 @@ import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
  */
 export const useFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
   const resColumns = {}
+  // 輸入框資料
   const resForms = reactive<Record<string, any>>({})
+  // 搜尋: 是否啟用
   const resActiveForms = reactive<Record<string, boolean>>({})
 
+  // 搜尋: 多條件
+  const resConditions = reactive<Record<string, Conditions>>({})
+
+  // ref
   const refMap = shallowReactive<Record<string, any>>({})
 
   const getColumnData = (
@@ -65,6 +72,8 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       showOverflowTooltip: false,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
+      // 條件搜尋
+      isCondition: column?.isCondition ?? false,
       ...column[type]
     }
   }
@@ -76,7 +85,10 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       resColumns[key] = temp
 
       resForms[key] = temp.default
+
       resActiveForms[key] = true
+
+      resConditions[key] = []
 
       defaultValue[key] = temp.default
     }
@@ -93,6 +105,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
     columns: resColumns,
     forms: resForms as T,
     activeForms: resActiveForms,
+    conditions: resConditions,
     // 驗證不會 reset
     resetForms: (defaultValue?: Partial<T> | any) => {
       object_forEach(resForms, (value: any, key: string) => {
@@ -190,6 +203,15 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
           refMap[key].handleReset()
         }
       })
+    },
+    // 取得多條件搜尋的資訊
+    getConditionFilter: () => {
+      return object_reduce(resConditions, (res: Conditions, value: any, key: string) => {
+        if (resActiveForms[key] && !isEmpty(value)) {
+          res.push(...value)
+        }
+        return res
+      }, [])
     }
   }
 }
@@ -396,8 +418,6 @@ export const useTableSetting = (
         // 專案用 多排
         isSorting: !_isOperations ? (child?.isSorting ?? true) : false, // 是否顯示排序
         order: child?.isSorting ?? 'none', // ascending | descending | none
-        // 專案用 特殊查詢
-        isCondition: child?.isCondition ?? false,
         ...child
       })
     })
@@ -427,8 +447,6 @@ export const useTableSetting = (
       // 專案用 多排 預設值
       order: column[type]?.order ?? 'none', // ascending | descending | none
       orderIndex: column[type]?.orderIndex ?? -1,
-      // 專案用 特殊查詢
-      isCondition: column[type]?.isCondition ?? false,
       columns: getChildrenData(column[type]?.children ?? {}),
       ...column[type]
     }
