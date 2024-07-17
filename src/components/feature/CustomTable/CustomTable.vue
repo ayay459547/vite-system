@@ -104,7 +104,7 @@ const lazyLoadSizeOptions = [
   { value: 500, label: '500' },
   { value: 1000, label: '1000' },
   { value: 5000, label: '5000' },
-  { value: -1, label: '全部' }
+  { value: -1, label: '全部', i18nLabel: 'all' }
 ]
 
 const onSizeChange = (v: number) => {
@@ -631,6 +631,7 @@ onMounted(() => {
               <CustomInput
                 v-model="pageSize"
                 validate-key="CustomTable:pageSize"
+                :i18n-module="defaultModuleType"
                 type="select"
                 :options="lazyLoadSizeOptions"
                 hidden-label

@@ -8,7 +8,7 @@ import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, Cust
 import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
-import { hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { hasOwnProperty, getProxyData, isEmpty } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
@@ -258,45 +258,33 @@ const download = async ({ type }) => {
 
   const filterData = getFilter(false)
   // 參數格式化
-  let params = props.formatParams({ ...filterData })
+  const _params = props.formatParams({ ...filterData })
   // 排序格式化
   const _sortingMap = props.formatSorting(sortingMap)
   // 條件搜尋
   const conditions = getConditionFilter()
-  console.log('conditions => ', conditions)
 
+  const params: any = {
+    ..._params,
+    page,
+    size,
+    sortingMap: _sortingMap,
+    ...webViewParams
+  }
+  if (!isEmpty(conditions)) {
+    params.filter = conditions
+  }
   switch (type) {
     // 下載全部資料
     case 'all':
-      params = {
-        ...params,
-        page: 1,
-        size: -1,
-        sortingMap: _sortingMap,
-        // filter: conditions,
-        ...webViewParams
-      }
+      params.page = 1
+      params.size = -1
       break
     case 'page':
       // 懶加載 下載 1 ~ 目前看到的資料
       if (islazyLoading.value) {
-        params = {
-          ...params,
-          page: 1,
-          size: tableDataCount.value,
-          sortingMap: _sortingMap,
-          // filter: conditions,
-          ...webViewParams
-        }
+        params.size = tableDataCount.value
         // 下載 當前分頁資料
-      } else {
-        params = {
-          ...params,
-          page,
-          size,
-          sortingMap: _sortingMap,
-          ...webViewParams
-        }
       }
       break
   }
@@ -348,24 +336,28 @@ const initData = async (tableParams: any) => {
   // 過濾條件
   const filterData = getFilter(false)
   // 參數格式化
-  const params = props.formatParams({ ...filterData })
+  const _params = props.formatParams({ ...filterData })
   // 排序格式化
   const _sortingMap = props.formatSorting(sortingMap)
   // 條件搜尋
   const conditions = getConditionFilter()
-  console.log('conditions => ', conditions)
+
+  const params: any = {
+    ..._params,
+    page,
+    size,
+    sortingMap: _sortingMap,
+    ...webViewParams
+  }
+  if (!isEmpty(conditions)) {
+    params.filter = conditions
+  }
+
   const [
     resData, // api 取得資料
     resDataCount // api 取得資料筆數
   ] = await getTableData(
-    {
-      ...params, // 參數
-      page, // 頁數
-      size, // 顯示資料數
-      sortingMap: _sortingMap, // 排序
-      // filter: conditions,
-      ...webViewParams // 後端指定參數
-    },
+    params,
     props.formatTable, // 表格資料格式化
     props.fakeData, // 假資料
     props.useFakeData, // 是否使用假資料
@@ -498,9 +490,10 @@ const tableSlotKeyList = computed(() => {
 type ViewType = 'pagination' | 'loadMore'
 const viewType = ref<ViewType>('pagination')
 const viewTypeOptions = [
-  { label: '分頁顯示', value: 'pagination' },
-  { label: '載入更多', value: 'loadMore' }
+  { label: '分頁顯示', value: 'pagination', i18nLabel: 'show-mode-page' },
+  { label: '載入更多', value: 'loadMore', i18nLabel: 'show-mode-more' }
 ]
+
 const islazyLoading = computed(() => {
   return viewType.value === 'loadMore'
 })
@@ -564,11 +557,12 @@ onMounted(() => {
             <div style="width: 120px; overflow: hidden">
               <CustomTooltip placement="top">
                 <template #content>
-                  <div>{{ i18nTranslate('顯示模式', defaultModuleType) }}</div>
+                  <div>{{ i18nTranslate('show-mode', defaultModuleType) }}</div>
                 </template>
                 <CustomInput
                   v-model="viewType"
                   validate-key="WebViewTable:viewType"
+                  :i18n-module="defaultModuleType"
                   type="select"
                   :options="viewTypeOptions"
                   hidden-label

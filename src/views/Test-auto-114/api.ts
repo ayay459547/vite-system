@@ -55,7 +55,7 @@ export const getProcessList = async (
 }
 
 /**
- * 取得訂單列表
+ * 取得訂單資訊
  * @param {String} processId 製程
  * @param {String} lotNo 訂單
  * @returns {Array} options

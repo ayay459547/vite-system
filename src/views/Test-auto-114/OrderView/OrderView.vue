@@ -26,7 +26,7 @@ const tabs = [
 ]
 
 const tableOptions: TableOptions = {
-  title: '訂單列表',
+  title: '訂單資訊',
   version: '1.0.3',
   settingKey: 'auto-114-order',
   isSorting: true

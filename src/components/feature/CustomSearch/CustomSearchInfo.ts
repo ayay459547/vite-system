@@ -44,7 +44,9 @@ export const props = {
   },
   conditions: {
     type: Array as PropType<Props.Conditions>,
-    default: true,
+    default () {
+      return []
+    },
     description: '條件搜尋列表'
   },
   width: {
