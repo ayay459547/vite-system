@@ -57,7 +57,14 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="[`CustomDraggable_${version}`, scopedId, scopedName]" class="draggable-container">
+  <div
+    :class="[
+      `CustomDraggable_${version}`,
+      scopedId,
+      scopedName
+    ]"
+    class="draggable-container"
+  >
     <Draggable
       v-model="listValue"
       :handle="props.handle"

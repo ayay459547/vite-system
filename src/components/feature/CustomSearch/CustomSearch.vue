@@ -208,7 +208,7 @@ const columnSetting = {
   }
 }
 
-const noValueList = ['isBlank', 'notBlank', 'isNull', 'notBlank']
+const noValueList = ['isBlank', 'notBlank', 'isNull', 'notNull']
 
 interface Form {
   columnType?: string

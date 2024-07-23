@@ -6,7 +6,7 @@ $z-index-map: () !default;
 $z-index-map: map.merge(
   (
     'loading': 3000, // var(--i-z-index-loading);
-    'select-option': 2800, // var(--i-z-index-select-option);
+    'select-option': 2990, // var(--i-z-index-select-option);
     'global-disabled': 2080, // var(--i-z-index-global-disabled);
     'notification': 2050, // 在下方已使用
     'tour': 2050, // var(--i-z-index-tour);

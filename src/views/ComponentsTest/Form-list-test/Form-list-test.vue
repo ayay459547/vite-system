@@ -98,7 +98,7 @@ const sortList = () => {
             v-model="formList[rowIndex].filterValue"
             v-bind="formColumn.filterValue"
             :disabled="[
-              'isBlank', 'notBlank', 'isNull', 'notBlank'
+              'isBlank', 'notBlank', 'isNull', 'notNull'
             ].includes(formList[rowIndex].filterType)"
           ></CustomInput>
         </template>
