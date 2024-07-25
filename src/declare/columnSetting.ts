@@ -30,11 +30,14 @@ export interface FormSetting<T> {
   columns: Record<string, any>
   forms: T
   activeForms: Record<string, boolean>
+  activeConditions: Record<string, boolean>
+  conditions: Record<string, Conditions>
   resetForms: (defaultValue?: Partial<T> | any) => void
   reset: (defaultValue?: Partial<T> | any) => void
   getActiveForms: (isShowEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
   handleReset: () => void
+  getConditionFilter: () => Conditions
 }
 
 export interface FormListSetting<T> {
@@ -77,6 +80,13 @@ export interface ColumnItem {
   // 是否為特殊查詢
   isCondition?: boolean
 }
+
+export interface Condition {
+  conditionType: string
+  filterValue: string
+}
+export type Conditions = Array<Condition>
+
 
 export interface TableRef extends Element, ComponentPublicInstance, CustomTableExpose {}
 

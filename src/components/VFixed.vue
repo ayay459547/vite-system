@@ -1,23 +1,8 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
+import type { Placement } from 'element-plus'
 import { ElTooltip } from 'element-plus'
-
-import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
-
-export interface ElAttr {
-  left?: number
-  top?: number
-  width?: number
-  height?: number
-}
-
-export interface Options {
-  text?: string
-  class?: string | Record<string, any> | any[]
-  style?: string | Record<string, any>
-}
 
 export default defineComponent({
   name: 'vFixed',
@@ -25,156 +10,110 @@ export default defineComponent({
     ElTooltip
   },
   props: {
-    elAttr: {
-      typs: Object as PropType<ElAttr>,
-      default() {
-        return {
-          left: 0,
-          top: 0,
-          width: 0,
-          height: 0
-        }
-      }
+    content: {
+      type: String as PropType<string>,
+      required: false,
+      default: '',
+      description: '文字'
     },
-    options: {
-      typs: Object as PropType<Options>,
-      default() {
-        return {
-          text: '',
-          class: '',
-          style: ''
-        }
-      }
+    placement: {
+      type: String as PropType<Placement>,
+      required: false,
+      default: 'top',
+      description: '出現位置'
+    },
+    offset: {
+      type: Number as PropType<number>,
+      required: false,
+      default: 6,
+      description: '偏移量'
+    },
+    el: {
+      type: Object as PropType<Element>,
+      required: false,
+      default () {
+        return document.querySelector('body > div')
+      },
+      description: 'hover Element'
+    },
+    elStyle: {
+      type: [String, Object] as PropType<string | Record<string, any>>,
+      required: false,
+      default: '',
+      description: 'style'
+    },
+    elClass: {
+      type: [String, Object, Array] as PropType<string | Record<string, any> | any[]>,
+      required: false,
+      default: '',
+      description: 'class'
     }
   },
   data() {
     return {
-      isShow: false,
-      timer: null,
-      elRect: { left: 0, top: 0, width: 0, height: 0 },
-      mousePos: { left: 0, top: 0 },
-      throttleOnWheelChange: throttle(this.close, 150, { isNoLeading: true }) as (
-        payload: WheelEvent
-      ) => void,
-      // eslint-disable-next-line no-undef
-      debounceSetMousePos: debounce(this.setMousePos, 100) as EventListenerOrEventListenerObject
+      isShow: false
     }
   },
   computed: {
-    bindStyle({ elAttr, options }) {
-      const { left, top, width, height } = elAttr
-      const { style } = options
-      const padding = 6
-
-      if (typeof style === 'object') {
-        return {
-          ...style,
-          left: `${left - padding}px`,
-          top: `${top - padding + 2}px`,
-          width: `${padding * 2 + width}px`,
-          height: `${padding + height}px`
-        }
-      } else {
-        return (
-          `
-          left: ${left - padding}px;
-          top: ${top - padding + 2}px;
-          width: ${padding * 2 + width}px;
-          height: ${padding + height}px;
-        ` + style
-        )
+    virtualTriggering ({ el }) {
+      const elType = Object.prototype.toString.call(el)
+      return elType === '[object HTMLDivElement]'
+    },
+    isVisible: {
+      get () {
+        return this.isShow
+      },
+      set (v: boolean) {
+        this.isShow = v
       }
     }
   },
   methods: {
     open() {
       this.isShow = true
-      this.openTimer()
     },
     close() {
       this.isShow = false
-      this.mousePos.left = 0
-      this.mousePos.top = 0
-      this.closeTimer()
-    },
-    // 滑鼠超出範圍 關閉fixed
-    setMousePos(e: MouseEvent) {
-      this.mousePos.left = e.clientX
-      this.mousePos.top = e.clientY
-    },
-    openTimer(tolerance = 10) {
-      this.timer = setInterval(() => {
-        const { left, top, width, height } = this.elRect
-        const { left: mouseLeft, top: mouseTop } = this.mousePos
-
-        if (
-          mouseLeft + tolerance < left ||
-          mouseLeft > left + width + tolerance ||
-          mouseTop + tolerance < top ||
-          mouseTop > top + height + tolerance
-        ) {
-          this.close()
-        }
-      }, 480)
-    },
-    closeTimer() {
-      clearInterval(this.timer)
     }
   },
   mounted() {
     this.open()
-    window.addEventListener('mousemove', this.debounceSetMousePos)
-
-    setTimeout(() => {
-      const tempEl = this.$refs.fixed as Element | null
-      if (tempEl) {
-        const clientRect = tempEl.getBoundingClientRect()
-        this.elRect.left = clientRect.left
-        this.elRect.top = clientRect.top
-        this.elRect.width = clientRect.width
-        this.elRect.height = clientRect.height
-      }
-    }, 100)
   },
   unmounted() {
-    window.removeEventListener('mousemove', this.debounceSetMousePos)
+    this.close()
   }
 })
 </script>
 
 <template>
-  <ElTooltip
-    v-model:visible="isShow"
-    placement="top"
-    trigger="hover"
-    show-arrow
-    :show-after="500"
-    effect="light"
-  >
-    <template #default>
-      <slot>default</slot>
-    </template>
-    <template #content>
-      <slot name="content">content</slot>
-    </template>
-  </ElTooltip>
+  <div class="__i_v-fixed__ v-fixed">
+    <ElTooltip
+      ref="tooltipRef"
+      v-model:visible="isVisible"
+      :placement="placement"
+      :offset="6"
+      :effect="'light'"
+      :show-after="200"
+      :persistent="false"
+      :virtual-ref="el"
+      :virtual-triggering="virtualTriggering"
+    >
+      <div></div>
+      <template #content>
+        <div :style="elStyle" :class="elClass">
+          <span class="v-fixed-content">{{ content }}</span>
+        </div>
+      </template>
+    </ElTooltip>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.fixed {
-  &-wrapper {
-    width: fit-content;
-    height: fit-content;
-    color: #fff;
-    border-radius: 6px;
-    padding: 0px 8px;
-    cursor: default;
-    position: fixed;
-    z-index: var(--i-z-index-v-fixed);
-    white-space: nowrap;
-    min-width: fit-content;
-    // pointer-events: none;
-    @extend %flex-center;
+.v-fixed {
+  width: fit-content;
+
+  &-content {
+    font-size: 1.3em;
   }
 }
 </style>

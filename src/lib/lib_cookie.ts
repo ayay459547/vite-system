@@ -54,7 +54,8 @@ export interface Token {
  * 測試用 以後要拔掉
  */
 let timer: any = null
-const checkToken = (isCheck: boolean) => {
+let isCheck: boolean = false
+const checkToken = (isCheckToken: boolean) => {
   const loginTime = getCookie('loginTime')
   const _token = getCookie('token')
   const temp = aesDecrypt(_token, `${privateKey}__${loginTime}`)
@@ -67,6 +68,9 @@ const checkToken = (isCheck: boolean) => {
     console.groupEnd()
   }
   log()
+  if (typeof isCheckToken === 'boolean') {
+    isCheck = isCheckToken
+  }
 
   if (timer && !isCheck) {
     clearInterval(timer)
@@ -125,7 +129,9 @@ export const setToken = (userId: number, loginTime: string) => {
     const minutes = 20 // 設定 20 分鐘
     const time = new Date(new Date().getTime() + minutes * 60 * 1000)
 
-    console.log('setToken => ',  { _token, minutes, time })
+    if (isCheck) {
+      console.log('setToken => ',  { _token, minutes, time })
+    }
 
     setCookie('token', aesEncrypt(_token, `${privateKey}__${loginTime}`), {
       expires: time

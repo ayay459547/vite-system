@@ -4,6 +4,7 @@ import { ref, useSlots, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { CustomDrawer, CustomButton } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { version, props as groupSearchProps } from './GroupSearchInfo'
 
@@ -15,7 +16,7 @@ const isShow = ref(false)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: 'system'
+  i18nModule: defaultModuleType
 })
 
 const emit = defineEmits(['reset', 'submit'])

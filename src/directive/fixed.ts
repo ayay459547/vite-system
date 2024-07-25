@@ -3,6 +3,8 @@ import { createApp } from 'vue'
 // import debounce from '@/lib/lib_debounce'
 import vClickOutside from 'click-outside-vue3'
 import VFixed from '@/components/VFixed.vue'
+import type { Placement } from 'element-plus'
+import { awaitTime } from '@/lib/lib_utils'
 
 const mouseenter = 'mouseenter'
 const mouseleave = 'mouseleave'
@@ -24,11 +26,14 @@ export const vFixed = {
 
 const fixedSet = new Set<{
   app: App
+  vm: any
   el: Element
 }>()
 
 type Options = {
-  text: string | Function
+  content: string
+  placement: Placement
+  offset: number
   style?: string | Record<string, any>
   class?: string | Record<string, any> | any[]
 }
@@ -40,36 +45,33 @@ type Options = {
  *                 style: style 類型(string, object)
  */
 function createHandler(this: Element, options: Options) {
-  const clientRect = this.getBoundingClientRect()
-  const { text: tempText, style: textStyle = '', class: textClass = '' } = options
+  const {
+    content = '',
+    placement = 'top',
+    offset = 6,
+    style: elStyle = '',
+    class: elClass = ''
+  } = options
 
-  const text = (tempText => {
-    if (typeof tempText === 'function') return tempText()
-    return tempText
-  })(tempText)
-
-  const newEl = document.createElement('div')
-  this.appendChild(newEl)
+  const bodyEl = document.createElement('body')
+  const fixedEl = document.createElement('div')
+  bodyEl.appendChild(fixedEl)
 
   const app = createApp(VFixed, {
-    elAttr: {
-      left: clientRect.left,
-      top: clientRect.top,
-      width: clientRect.width,
-      height: clientRect.height
-    },
-    options: {
-      text,
-      style: textStyle,
-      class: textClass
-    }
+    content,
+    placement,
+    offset,
+    el: this,
+    elStyle,
+    elClass
   })
 
-  app.use(vClickOutside).mount(newEl)
+  const vm = app.use(vClickOutside).mount(fixedEl)
 
   fixedSet.add({
     app,
-    el: newEl
+    vm,
+    el: fixedEl
   })
 }
 
@@ -82,15 +84,26 @@ function removeHandler(this: Element) {
       if (tempSize === fixedSet.size) {
         clearFixedApp()
       }
-    }, 3000)
+    }, 500)
   }
 }
 
-const clearFixedApp = () => {
-  fixedSet.forEach(element => {
-    const { app, el } = element
+const clearFixedApp = async () => {
+  fixedSet.forEach(async element => {
+    const { app, vm, el } = element
+    vm.close()
+
+    await awaitTime(300)
     app.unmount()
     el.remove()
   })
   fixedSet.clear()
+
+  await awaitTime(500)
+  const els = document.querySelectorAll('.__i_v-fixed__')
+  if (els.length > 0) {
+    els.forEach(el => {
+      el.remove()
+    })
+  }
 }

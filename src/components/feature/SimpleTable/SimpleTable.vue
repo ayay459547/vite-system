@@ -27,6 +27,83 @@ const getTranslate = (label: string, i18nLabel: string, i18nModule?: string) => 
   return i18nTranslate(i18nLabel, module)
 }
 
+
+type GetRowCallbackAttrOptions = {
+  rowData: any
+  rowIndex: number
+  rowClassName: Props.RowClassName
+  rowStyle: Props.RowStyle
+}
+type GetRowCallbackAttrRes = {
+  rowClass: string
+  rowStyle: Record<string, any>
+}
+function getRowCallbackAttr(options: GetRowCallbackAttrOptions): GetRowCallbackAttrRes {
+  const { rowData, rowIndex, rowClassName, rowStyle } = options
+
+  let _rowClass = ''
+  if (typeof rowClassName === 'function') {
+    _rowClass = rowClassName({
+      row: rowData,
+      rowIndex
+    }, [])
+  }
+
+  let _rowStyle = {}
+  if (typeof rowStyle === 'function') {
+    _rowStyle = rowStyle({
+      row: rowData,
+      rowIndex
+    }, [])
+  }
+
+  return {
+    rowClass: _rowClass,
+    rowStyle: _rowStyle
+  }
+}
+
+type GetCellCallbackAttrOptions = {
+  rowData: any
+  rowIndex: number
+  column: any
+  columnIndex: number
+  cellClassName: Props.CellClassName
+  cellStyle: Props.CellStyle
+}
+type GetCellCallbackAttrRes = {
+  cellClass: string
+  cellStyle: Record<string, any>
+}
+function getCellCallbackAttr(options: GetCellCallbackAttrOptions): GetCellCallbackAttrRes {
+  const { rowData, rowIndex, column, columnIndex, cellClassName, cellStyle } = options
+
+  let _cellClass = ''
+  if (typeof cellClassName === 'function') {
+    _cellClass = cellClassName({
+      row: rowData,
+      column,
+      rowIndex,
+      columnIndex
+    }, [])
+  }
+
+  let _cellStyle = {}
+  if (typeof cellStyle === 'function') {
+    _cellStyle = cellStyle({
+      row: rowData,
+      column,
+      rowIndex,
+      columnIndex
+    }, [])
+  }
+
+  return {
+    cellClass: _cellClass,
+    cellStyle: _cellStyle
+  }
+}
+
 function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHeader: boolean) {
   let temp = null
   if (isHeader) {
@@ -46,6 +123,7 @@ function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHead
 }
 
 const columnNode = (
+  props: Props,
   slots: Record<string, any>,
   column: Array<any>,
   rowItem: any,
@@ -59,8 +137,8 @@ const columnNode = (
       width = 0,
       minWidth = 0,
       align = 'left',
-      // class: columnClass = '',
-      style: columnStyle = '',
+      class: columnClass = '',
+      style: columnStyle = {},
       key: columnKey = '',
       prop = '',
       slotKey = '',
@@ -71,48 +149,23 @@ const columnNode = (
 
     const columnNode = getColumnSlotNode(slots, slotKey, isHeader)
 
-    // let showClass = null
-    // if (typeof columnClass === 'string') {
-    //   showClass = {
-    //     'column-class': true
-    //   }
-    // } else if(Object.prototype.toString.call(columnClass) === '[object Object]') {
-    //   showClass = {...columnClass}
-    // } else {
-    //   showClass = {}
-    // }
+    const { cellClass, cellStyle } = getCellCallbackAttr({
+      rowData: rowItem,
+      rowIndex,
+      column,
+      columnIndex,
+      cellClassName: props.cellClassName,
+      cellStyle: props.cellStyle
+    })
 
-    let showStyle = null
-    if (typeof columnStyle === 'string') {
-      showStyle = columnStyle
+    let showClass: any = []
+    if (typeof columnClass === 'string' && columnClass.length > 0) {
+      showClass.push(columnClass)
+    }
 
-      if (width > 0) {
-        showStyle += `
-          max-width: ${width}px;
-          min-width: ${width}px;
-        `
-      }
-      if (minWidth > 0) {
-        showStyle += `
-          width: ${minWidth}px;
-          min-width: ${width}px;
-        `
-      }
-
-      showStyle += 'display: flex; align-items: center;'
-      switch (align) {
-        case 'left':
-          showStyle += 'justify-content: flex-start;'
-          break
-        case 'center':
-          showStyle += 'justify-content: center;'
-          break
-        case 'right':
-          showStyle += 'justify-content: flex-end;'
-          break
-      }
-    } else if (Object.prototype.toString.call(columnStyle) === '[object Object]') {
-      showStyle = { ...columnStyle }
+    let showStyle = {...cellStyle}
+    if (Object.prototype.toString.call(columnStyle) === '[object Object]') {
+      showStyle = {...columnStyle, ...cellStyle}
 
       if (width > 0) {
         showStyle['max-width'] = `${width}px`
@@ -136,8 +189,6 @@ const columnNode = (
           showStyle['justify-content'] = 'flex-end'
           break
       }
-    } else {
-      showStyle = {}
     }
 
     const defaultRender = isHeader ? getTranslate(label, i18nLabel, i18nModule) : rowItem[prop]
@@ -145,9 +196,11 @@ const columnNode = (
     return h(
       'div',
       {
-        class: {
-          '__data-table-column': true
-        },
+        class: [
+          '__data-table-column',
+          cellClass,
+          ...showClass
+        ],
         style: showStyle
         // key: columnKey
       },
@@ -167,6 +220,7 @@ const columnNode = (
 }
 
 const rowNode = (
+  props: Props,
   slots: Record<string, any>,
   column: Array<any>,
   tableData: Array<any>,
@@ -184,18 +238,32 @@ const rowNode = (
       {
         class: '__data-table-header'
       },
-      columnNode(slots, column, {}, true)
+      columnNode(props, slots, column, {}, true)
     )
-    // 渲染 資料 的 row
+
+  // 渲染 資料 的 row
   } else {
     return tableData.map((rowData: any, rowIndex: number) => {
+      const { rowClass, rowStyle } = getRowCallbackAttr({
+        rowData,
+        rowIndex,
+        rowClassName: props.rowClassName,
+        rowStyle: props.rowStyle
+      })
+
       return h(
         'div',
         {
           key: rowData.key ? rowData.key : rowIndex,
-          class: '__data-table-row'
+          class: [
+            '__data-table-row',
+            `key:${rowData.key}`,
+            rowClass
+          ],
+          style: rowStyle
         },
         columnNode(
+          props,
           slots,
           column,
           {
@@ -209,8 +277,8 @@ const rowNode = (
   }
 }
 
-const headerNode = (slots: Record<string, any>, column: Array<any>) => {
-  return rowNode(slots, column, [], {
+const headerNode = (props: Props, slots: Record<string, any>, column: Array<any>) => {
+  return rowNode(props, slots, column, [], {
     isHeader: true,
     isDraggable: false
   })
@@ -270,6 +338,7 @@ const bodyNode = (
         item: (scope: any) => {
           const { element: rowData, index: rowIndex } = scope
           return columnNode(
+            props,
             slots,
             column,
             {
@@ -287,7 +356,7 @@ const bodyNode = (
       {
         class: '__data-table-body'
       },
-      rowNode(slots, column, tableData, {
+      rowNode(props, slots, column, tableData, {
         isHeader: false,
         isDraggable
       })
@@ -302,14 +371,19 @@ const SimpleTable = (props: Props, context: any): Component => {
     modelValue = [],
     isDraggable = false,
     handle = '.__draggable',
-    itemKey = 'id',
     group = 'name',
-    i18nModule = defaultModuleType,
-    hideHeader = false,
+    itemKey = 'id',
     move,
+    hideHeader = false,
+    i18nModule = defaultModuleType,
 
     tableData = [],
-    tableColumns = []
+    tableColumns = [],
+
+    rowClassName = null,
+    rowStyle = null,
+    cellClassName = null,
+    cellStyle = null
   } = props
 
   propI18nModule = i18nModule // 透過模組傳遞的prop設定i18nModule
@@ -355,7 +429,7 @@ const SimpleTable = (props: Props, context: any): Component => {
                 ]
               )
             ] : [
-              headerNode(slots, tableColumns),
+              headerNode(props, slots, tableColumns),
               h(
                 'div',
                 {
@@ -383,11 +457,19 @@ const SimpleTable = (props: Props, context: any): Component => {
       modelValue,
       isDraggable,
       handle,
-      itemKey,
       group,
+      itemKey,
       move,
+      hideHeader,
+      i18nModule,
+
       tableData,
-      tableColumns
+      tableColumns,
+
+      rowClassName,
+      rowStyle,
+      cellClassName,
+      cellStyle
     },
     slots
   )
@@ -425,7 +507,8 @@ export default SimpleTable
   &-header {
     height: fit-content;
     display: flex;
-    background-color: var(--el-color-info-light-9);
+    background-color: var(--i-color-table-thead);
+    color: var(--el-table-header-text-color);
     border-bottom: 1px solid var(--el-table-border-color);
     z-index: 1;
     overflow-y: scroll;
@@ -465,18 +548,18 @@ export default SimpleTable
 
   &-row {
     display: flex;
-    background-color: var(--el-table-tr-bg-color);
+    background-color: var(--i-color-table-odd);
     transition-duration: 0.3s;
     border-bottom: 1px solid var(--el-table-border-color);
     content-visibility: auto;
-
-    &:nth-child(even) {
-      background-color: var(--el-fill-color-lighter);
+    &:hover {
+      background-color: var(--i-color-table-odd-hover);
     }
-
-    &:hover,
+    &:nth-child(even) {
+      background-color: var(--i-color-table-even);
+    }
     &:nth-child(even):hover {
-      background-color: var(--el-table-row-hover-bg-color);
+      background-color: var(--i-color-table-even-hover);
     }
   }
 

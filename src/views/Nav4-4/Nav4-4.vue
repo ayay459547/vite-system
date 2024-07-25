@@ -58,8 +58,13 @@ const isLock = ref(true)
       <button @click="isLock = !isLock">change Lock</button>
     </div>
 
-    <div v-fixed="{ text: '測試', class: 'text-danger' }">
-      v-fixed
+    <div>
+      <div
+        style="width: fit-content"
+        v-fixed="{ content: '測試', class: 'text-danger' }"
+      >
+        v-fixed
+      </div>
     </div>
 
     <div class="lock-view">

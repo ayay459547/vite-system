@@ -92,13 +92,13 @@ export declare namespace UseHookReturn {
   type Env = () => Record<string, any>
   type Auth = () => AuthData
   type RedirectInfo = () => {
-    fromPage: string
+    fromPage: string,
     queryData: any
   }
 }
 
 export declare type UseHookOptions = {
-  i18nModule: ScopeKey
+  i18nModule?: ScopeKey
 }
 
 export declare type UseHook = (options?: UseHookOptions) => {
