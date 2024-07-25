@@ -20,8 +20,6 @@ const props = defineProps(searchProps)
 const emit = defineEmits([
   'update:modelValue',
   'update:active',
-  'update:activeConditions',
-  'update:conditions',
   'open',
   'close',
   'focus',
@@ -164,158 +162,6 @@ const bindAttributes = computed(() => {
   }
 })
 
-// 條件搜尋
-const isActiveConditions = computed({
-  get () {
-    return props.activeConditions
-  },
-  set (value: boolean) {
-    if (value) {
-      onVisibleClick(true)
-    } else {
-      emit('change', inpuValue.value)
-    }
-    emit('update:activeConditions', value)
-  }
-})
-
-const columnSetting = {
-  conditionType: {
-    label: '篩選類型',
-    table: {
-      width: 150
-    },
-    filter: {
-      type: 'select',
-      options: conditionOptions,
-      default: '',
-      validate: [],
-      required: true,
-      hiddenErrorMessage: true,
-      hiddenLabel: true
-    }
-  },
-  filterValue: {
-    label: '篩選值',
-    table: {
-      minWidth: 180
-    },
-    filter: {
-      default: '',
-      validate: [],
-      required: true,
-      hiddenErrorMessage: true,
-      hiddenLabel: true
-    }
-  }
-}
-
-const noValueList = ['isBlank', 'notBlank', 'isNull', 'notNull']
-
-interface Form {
-  columnType?: string
-  conditionType?: string
-  filterValue?: string
-}
-
-const {
-  // defaultValue,
-  columns: formColumn,
-  forms: formList,
-  validate: validateForm,
-  add,
-  remove
-} = useFormListSetting<Form>(columnSetting, 'filter', [])
-
-const reset = () => {
-  formList.value.splice(0)
-  add()
-}
-
-const addItem = () => {
-  validateForm().then(() => {
-    add()
-  })
-}
-
-onMounted(() => {
-  add()
-})
-
-const conditionList = computed(() => {
-  return formList.value.reduce((res, formItem) => {
-    const { conditionType, filterValue } = formItem
-    const isNoValue = noValueList.includes(conditionType)
-
-    if (
-      !isEmpty(conditionType) &&
-      (!isNoValue ? !isEmpty(filterValue) : true)
-    ) {
-      res.push({
-        columnId: props.columnId,
-        condition: conditionType,
-        value: isNoValue ? '' : filterValue
-      })
-    }
-    return res
-  }, [])
-})
-const submit = () => {
-  if (isActiveConditions.value) {
-    validateForm().then(() => {
-      emit('update:conditions', getProxyData(conditionList.value))
-      emit('submit')
-      onVisibleClick(!isVisible.value)
-    })
-  }
-}
-
-// 是否有filter生效
-const isDot = computed(() => {
-  if (!isActive.value) return false
-
-  let isInputEmpty = false
-
-  switch (props.type) {
-    case 'text':
-    case 'textarea':
-    case 'password':
-    case 'autocomplete':
-    case 'select':
-    case 'select-v2':
-    case 'year':
-    case 'month':
-    case 'date':
-    case 'dates':
-    case 'datetime':
-    case 'week':
-    case 'datetimerange':
-    case 'daterange':
-    case 'monthrange':
-    case 'time':
-    case 'timerange':
-    case 'checkbox':
-    case 'radio':
-      isInputEmpty = isEmpty(inpuValue.value)
-      break
-    case 'operator':
-      isInputEmpty = !(
-        Array.isArray(inpuValue.value) &&
-        !isEmpty(inpuValue.value[0]) &&
-        !isEmpty(inpuValue.value[1])
-      )
-      break
-    default:
-      isInputEmpty = true
-      break
-  }
-
-  return !isInputEmpty || (
-    isActiveConditions.value && props.conditions.length > 0
-  )
-})
-
-// 事件
 const onEvent = {
   focus: (e: FocusEvent): void => {
     emit('focus', e)
@@ -323,10 +169,7 @@ const onEvent = {
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => {
     emit('blur', e)
-
-    if (!isActiveConditions.value) {
-      onVisibleClick(false)
-    }
+    onVisibleClick(false)
   },
   change: (value: string | number): void => emit('change', value),
   input: (value: string | number): void => emit('input', value),
@@ -384,12 +227,8 @@ const popverWidth = computed(() => {
           <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
         </slot>
 
-        <CustomPopover
-          :visible="isVisible"
-          :width="popverWidth"
-          placement="bottom"
-        >
-          <div class="__search-detail">
+        <CustomPopover :visible="isVisible" :width="props.width" :placement="props.placement">
+          <div>
             <div class="__search-title">
               <slot name="search-label">
                 <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
@@ -397,87 +236,16 @@ const popverWidth = computed(() => {
               <CustomSwitch v-model="isActive" />
             </div>
 
-            <div class="__search-input">
-              <CustomInput
-                ref="iconSearchRef"
-                v-model="inpuValue"
-                v-bind="bindAttributes"
-                v-on="onEvent"
-                :disabled="!isActive"
-              >
-                <template v-for="slotName in slotList" :key="slotName" #[slotName]>
-                  <slot :name="slotName"></slot>
-                </template>
-              </CustomInput>
-
-              <div style="width: fit-content;">
-                <CustomTooltip placement="right">
-                  <template #content>
-                    <div>{{ i18nTranslate('進階設定', defaultModuleType) }}</div>
-                  </template>
-                  <FormCheckbox
-                    v-show="props.isCondition"
-                    v-model="isActiveConditions"
-                    :disabled="!isActive"
-                  />
-                </CustomTooltip>
-              </div>
-            </div>
-
-            <template v-if="isActiveConditions && props.isCondition && isActive">
-              <div class="i-py-xs">
-                <FormList
-                  v-model="formList"
-                  :label="'進階設定'"
-                  :table-data="formList"
-                  :column-setting="columnSetting"
-                  item-key="key"
-                  is-create
-                  is-remove
-                  :min="1"
-                  @add="addItem"
-                  @remove="remove"
-                >
-                  <template #header-all="{ column }">
-                    <div class="text-danger i-pr-xs">*</div>
-                    <div>{{ column.label }}</div>
-                  </template>
-                  <template #column-conditionType="{ rowIndex }">
-                    <CustomInput
-                      v-model="formList[rowIndex].conditionType"
-                      v-bind="formColumn.conditionType"
-                    ></CustomInput>
-                  </template>
-                  <template #column-filterValue="{ rowIndex }">
-                    <CustomInput
-                      v-if="!noValueList.includes(formList[rowIndex].conditionType)"
-                      v-model="formList[rowIndex].filterValue"
-                      v-bind="formColumn.filterValue"
-                    ></CustomInput>
-                    <div v-else></div>
-                  </template>
-                </FormList>
-              </div>
-
-              <div class="__search-footer">
-                <CustomButton
-                  :label="i18nTranslate('reset', defaultModuleType)"
-                  type="info"
-                  plain
-                  icon-name="repeat"
-                  @click="reset"
-                />
-
-                <CustomButton
-                  type="primary"
-                  plain
-                  :label="i18nTranslate('confirm', defaultModuleType)"
-                  icon-name="check"
-                  icon-move="scale"
-                  @click="submit"
-                />
-              </div>
-            </template>
+            <CustomInput
+              ref="iconSearchRef"
+              v-model="inpuValue"
+              v-bind="bindAttributes"
+              v-on="onEvent"
+            >
+              <template v-for="slotName in slotList" :key="slotName" #[slotName]>
+                <slot :name="slotName"></slot>
+              </template>
+            </CustomInput>
           </div>
 
           <template #reference>

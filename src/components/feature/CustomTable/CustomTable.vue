@@ -23,9 +23,6 @@ import ColumnSetting from './Components/ColumnSetting.vue'
 import ColumnSorting from './Components/ColumnSorting.vue'
 // 群組排序
 import GroupSorting from './Components/GroupSorting.vue'
-// 多欄位多條件查詢
-// import GroupFilter from './Components/GroupFilter.vue'
-
 import TableMain from './TableMain.vue'
 
 import type {
@@ -107,7 +104,7 @@ const lazyLoadSizeOptions = [
   { value: 500, label: '500' },
   { value: 1000, label: '1000' },
   { value: 5000, label: '5000' },
-  { value: -1, label: '全部' }
+  { value: -1, label: '全部', i18nLabel: 'all' }
 ]
 
 const onSizeChange = (v: number) => {
@@ -595,7 +592,6 @@ onMounted(() => {
     isPrependOpen.value = _isPrependOpen === 'true'
   }
 })
-
 </script>
 
 <template>
@@ -628,13 +624,14 @@ onMounted(() => {
         <!-- 顯示更多 -->
         <template v-if="props.isLazyLoading">
           <div style="width: 120px; overflow: hidden">
-            <CustomTooltip placement="top">
+            <CustomTooltip placement="top" :show-after="300">
               <template #content>
                 <div>{{ i18nTranslate('load-count', defaultModuleType) }}</div>
               </template>
               <CustomInput
                 v-model="pageSize"
                 validate-key="CustomTable:pageSize"
+                :i18n-module="defaultModuleType"
                 type="select"
                 :options="lazyLoadSizeOptions"
                 hidden-label
@@ -651,7 +648,7 @@ onMounted(() => {
         <!-- 分頁 -->
         <template v-else>
           <div style="width: 120px; overflow: hidden">
-            <CustomTooltip placement="top">
+            <CustomTooltip placement="top" :show-after="300">
               <template #content>
                 <div>{{ i18nTranslate('show-count', defaultModuleType) }}</div>
               </template>

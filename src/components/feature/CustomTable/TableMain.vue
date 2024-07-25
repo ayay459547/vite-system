@@ -462,10 +462,10 @@ defineExpose({
                     ></slot>
                   </div>
                 </template>
-                <template v-else-if="hasSlot(`header-${child.slotKey}-all}`)" #header="scope">
+                <template v-else-if="hasSlot(`header-${child.slotKey}-all`)" #header="scope">
                   <div :class="child.sortable ? 'header-slot' : ''">
                     <slot
-                      :name="`header-${column.slotKey}-all}`"
+                      :name="`header-${column.slotKey}-all`"
                       :label="child.label"
                       :row-index="scope.$index"
                       :column="child"
@@ -499,9 +499,9 @@ defineExpose({
                     :prop="child.prop"
                   ></slot>
                 </template>
-                <template v-else-if="hasSlot(`column-${column.slotKey}-all}`)" #default="scope">
+                <template v-else-if="hasSlot(`column-${column.slotKey}-all`)" #default="scope">
                   <slot
-                    :name="`column-${column.slotKey}-all}`"
+                    :name="`column-${column.slotKey}-all`"
                     :label="child.label"
                     :data="scope.row[child.key]"
                     :row="scope.row"
@@ -510,9 +510,9 @@ defineExpose({
                     :prop="child.prop"
                   ></slot>
                 </template>
-                <template v-else-if="hasSlot(`column-all}`)" #default="scope">
+                <template v-else-if="hasSlot(`column-all`)" #default="scope">
                   <slot
-                    :name="`column-all}`"
+                    :name="`column-all`"
                     :label="child.label"
                     :data="scope.row[child.key]"
                     :row="scope.row"

@@ -20,5 +20,5 @@ export const conditionOptions = [
   { label: 'is blank', value: 'isBlank' },
   { label: 'not blank', value: 'notBlank' },
   { label: 'is null', value: 'isNull' },
-  { label: 'not null', value: 'notBlank' }
+  { label: 'not null', value: 'notNull' }
 ]

@@ -4,9 +4,10 @@ import { ref, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { useFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
-import { CustomIcon, CustomInput } from '@/components'
+import { CustomIcon, CustomInput, CustomImage } from '@/components'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
+import LogoImage from '@/assets/images/Vue-logo.png?url'
 import { loginSystem } from './api'
 
 const useHook: UseHook = inject('useHook')
@@ -97,8 +98,8 @@ const svg = `
         <img class="login-img-xs" src="@/assets/images/common/login-xs.svg" alt="login" />
 
         <div class="login-logo">
-          <img src="@/assets/images/Vue-logo.png" alt="vue" />
-          <!-- <h1>{{ i18nTranslate('login', defaultModuleType) }}</h1> -->
+          <CustomImage :src="LogoImage" alt="vue" />
+          <!-- <img src="@/assets/images/Vue-logo.png" alt="vue" /> -->
         </div>
 
         <CustomInput
@@ -265,6 +266,7 @@ $gradient-color: var(--i-color-login-move);
 
   &-logo {
     width: 140px;
+    height: 140px;
     display: block;
 
     @media (max-width: 992px) {

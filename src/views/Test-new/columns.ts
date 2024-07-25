@@ -5,7 +5,8 @@ export const columnSetting = {
     table: {
       width: 180,
       align: 'left',
-      fixed: 'left'
+      fixed: 'left',
+      isCondition: true
     },
     form: {
       type: 'text',

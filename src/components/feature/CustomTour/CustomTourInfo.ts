@@ -1,4 +1,5 @@
-import type { PropType } from 'vue'
+import type { PropType, Ref } from 'vue'
+import type { ElTourStep } from 'element-plus'
 
 export const version = '1.0.0'
 
@@ -8,9 +9,9 @@ export declare namespace Custom {
     |'left' | 'left-start' | 'left-end'
     |'right' | 'right-start' | 'right-end'
 
-  type Step = {
+  type Step = typeof ElTourStep | {
     // Dom 元素
-    target?: HTMLElement | string | (() => HTMLElement)
+    target?: HTMLElement | string | (() => HTMLElement) | Ref<any>
     title?: string // 標題
     description?: string // 說明
     showArrow?: boolean // 是否顯示箭頭

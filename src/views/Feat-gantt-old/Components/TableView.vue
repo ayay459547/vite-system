@@ -24,8 +24,8 @@ const props = defineProps({
 })
 
 const tableOptions: TableOptions = {
-  title: '甘特圖資料預覽',
-  i18nTitle: 'auto-33-vue-title',
+  title: '甘特圖資料',
+  i18nTitle: 'auto-33-title',
   i18nModule: 'system',
   version: '1.0.3',
   settingKey: 'auto-33'
@@ -86,7 +86,7 @@ const isVisible = ref(false)
     <template #reference>
       <CustomButton
         icon-name="table-list"
-        :label="i18nTranslate('preview-scheduleInformation')"
+        :label="i18nTranslate('auto-33-title')"
         @click.stop="isVisible = !isVisible"
       />
     </template>

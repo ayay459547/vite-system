@@ -27,7 +27,6 @@ export const getUrlParams = (params: UrlParams) => {
   const { url = '/api/ipaspTable/retrieveIpaspTableFromView', baseURL = '' } = params
 
   if (!isEmpty(baseURL)) return { url, baseURL }
-
   return { url }
 }
 

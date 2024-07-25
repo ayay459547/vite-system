@@ -255,12 +255,7 @@ const rowNode = (
         'div',
         {
           key: rowData.key ? rowData.key : rowIndex,
-          class: [
-            '__data-table-row',
-            `key:${rowData.key}`,
-            rowClass
-          ],
-          style: rowStyle
+          class: '__data-table-row'
         },
         columnNode(
           props,

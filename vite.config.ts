@@ -44,11 +44,6 @@ export default defineConfig(({ command, mode }) => {
         // this plugin handles ?b64 tags
         name: 'vite-b64-plugin',
         transform(code, id) {
-          // if (!id.match(/\?b64$/)) return
-          // const path = id.replace(/\?b64/, '')
-          // const data = readFileSync(path, 'base64')
-          // return `export default '${data}'`
-
           if (!id.match(/\?b64$/)) return
           const path = id.replace(/\?b64/, '')
           const b64 = readFileSync(path, 'base64')
@@ -72,7 +67,6 @@ export default defineConfig(({ command, mode }) => {
           writeFileSync(jsonPath, JSON.stringify(moduleList), { flag: 'w' })
           console.log('writeI18nJSON => ', jsonPath)
 
-          // return `export default '${b64}'`
           return `export default JSON.parse('${JSON.stringify({
             excelPath: path,
             jsonPath

@@ -12,7 +12,10 @@ export const columnSetting = {
       required: true
     },
     filter: {
-      default: null
+      width: 250,
+      isValidate: false,
+      default: null,
+      isCondition: true
     }
   },
   name: {
@@ -28,7 +31,10 @@ export const columnSetting = {
       required: true
     },
     filter: {
-      default: null
+      width: 250,
+      isValidate: false,
+      default: null,
+      isCondition: true
     }
   },
   location: {
@@ -43,7 +49,10 @@ export const columnSetting = {
       required: true
     },
     filter: {
-      default: null
+      width: 250,
+      isValidate: false,
+      default: null,
+      isCondition: true
     }
   },
   statusRemarks: {
@@ -57,7 +66,10 @@ export const columnSetting = {
       required: false
     },
     filter: {
-      default: null
+      width: 250,
+      isValidate: false,
+      default: null,
+      isCondition: true
     }
   },
   leadTime: {
@@ -71,7 +83,10 @@ export const columnSetting = {
       required: true
     },
     filter: {
-      default: null
+      width: 250,
+      isValidate: false,
+      default: null,
+      isCondition: true
     }
   },
   productionCapacity: {

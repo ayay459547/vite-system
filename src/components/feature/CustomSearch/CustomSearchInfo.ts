@@ -36,24 +36,6 @@ export const props = {
       是: 拿到顯示的值
       否: 拿到 null`
   },
-  isCondition: {
-    type: Boolean as PropType<Props.IsCondition>,
-    required: false,
-    default: false,
-    description: '是否為條件搜尋'
-  },
-  activeConditions: {
-    type: Boolean as PropType<Props.Active>,
-    default: false,
-    description: '是否啟用條件搜尋 checkbox'
-  },
-  conditions: {
-    type: Array as PropType<Props.Conditions>,
-    default () {
-      return []
-    },
-    description: '條件搜尋列表'
-  },
   width: {
     type: [String, Number] as PropType<Props.Width>,
     required: false,

@@ -10,10 +10,80 @@
   <title>Demo</title>
 </head>
 
-<body>
-  <div id="app"></div>
+<style type="text/css">
+.app-table {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  transition-duration: 3s;
+  opacity: 0;
+}
+.app-table table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.3em;
+  border-top: 1px solid #337ecc;
+  border-left: 1px solid #337ecc;
+  border-right: 1px solid #337ecc;
+}
 
-  <script type="module" src="/src/main.ts"></script>
+.app-table thead {
+  background-color: #a0cfff;
+}
+.app-table tbody tr {
+  transition-duration: 0.2s;
+}
+.app-table tbody tr:nth-child(odd) {
+  background-color: #d9ecff;
+}
+.app-table tbody tr:nth-child(even) {
+  background-color: #ecf5ff;
+}
+.app-table tbody tr:hover {
+  background-color: #c6e2ff;
+}
+
+.app-table thead th,
+.app-table tbody td {
+  border-bottom: 1px solid #337ecc;
+  padding: 24px 64px;
+  text-align: left;
+  white-space: nowrap;
+}
+.app-table .td-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.app-table img {
+  height: 48px;
+}
+.app-table .app-navigator {
+  font-size: 1.3em;
+  font-weight: 600;
+  padding: 0 8px 12px;
+}
+</style>
+
+<body>
+  <div id="app">
+    <div class="app-table browser-version">
+      <table>
+        <thead>
+          <tr>
+            <th>Browser</th>
+            <th>Version</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <script>
     (function () {
       const Demo = `
@@ -35,11 +105,7 @@
       }
 
       // 確認瀏覽器版本
-      function checkBrowserVerison() {
-        var userAgent = navigator.userAgent
-        
-        console.log('browser version：', userAgent)
-      }
+      console.log('browser version：', navigator.userAgent)
 
       checkBuildVerison()
       checkBrowserVerison()
@@ -48,6 +114,80 @@
     })()
 
   </script>
+
+  <script type="module" src="/src/main.ts"></script>
+  
+  <script>
+    (function () {
+      // 瀏覽版本支援對應表
+      const versionTable = document.querySelector('.app-table.browser-version')
+      if (![null, undefined, ''].includes(versionTable)) {
+        const elNavigator = versionTable.querySelector('.app-navigator')
+        elNavigator.innerHTML = `${navigator.appVersion}`
+
+        const browserList = [
+          {
+            name: 'Chrome',
+            img: '/browser/chrome.png',
+            version: 'Chrome ≥ 85',
+            download: 'https://www.google.com/intl/en/chrome/'
+          },
+          {
+            name: 'Edge',
+            img: '/browser/edge.png',
+            version: 'Edge ≥ 85',
+            download: 'https://www.microsoft.com/en-us/edge/download/'
+          },
+          {
+            name: 'Firefox',
+            img: '/browser/firefox.png',
+            version: 'Firefox ≥ 79',
+            download: 'https://www.mozilla.org/en-US/firefox/new/'
+          },
+          {
+            name: 'Safari',
+            img: '/browser/safari.png',
+            version: 'Safari ≥ 14.1',
+            download: 'https://www.apple.com/lae/safari/'
+          },
+          {
+            name: 'Opera',
+            img: '/browser/opera.png',
+            version: 'Opera ≥ 85',
+            download: 'https://www.opera.com/'
+          },
+          {
+            name: 'Arc',
+            img: '/browser/arc.png',
+            version: 'Arc ≥ 85',
+            download: 'https://arc.net/'
+          },
+        ]
+
+        browserList.forEach(browserItem => {
+          const { name, img, version, download } = browserItem
+
+          const tr = document.createElement('tr')
+          tr.innerHTML = `
+            <td class="td-center">
+              <img src="${img}" alt="">
+              <span>${name}</span>
+            </td>
+            <td>${version}</td>
+            <td>
+              <a href="${download}" target="_blank">${name}</a>
+            </td>
+          `
+          versionTable.querySelector('tbody').appendChild(tr)
+        })
+
+        setTimeout(() => {
+          versionTable.style.opacity = '1'
+        }, 3000)
+      }
+    })()
+  </script>
+
 </body>
 
 </html>
