@@ -1,4 +1,5 @@
 import checkSystemVersionDiff from './checkSystemVersion'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
 const buildVersion = (import.meta as any).env.VITE_API_BUILD_VERSION
 
@@ -10,6 +11,15 @@ if (buildVersion !== oldBuildVersion) {
 
   // @ts-ignore
   location.reload(true)
+  if (hasOwnProperty(window, 'caches')) {
+    window.caches.keys().then(keyList => {
+        return Promise.all(
+          keyList.map(key => caches.delete(key))
+        )
+      }
+    )
+  }
+
 }
 
 /**

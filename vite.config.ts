@@ -49,12 +49,12 @@ export default defineConfig(({ command, mode }) => {
           const b64 = readFileSync(path, 'base64')
           const i18n = JSON.parse(JSON.stringify(b64))
 
-          const wb = read(i18n)
+          const workBook = read(i18n)
           const [wsTranslate] = [
-            wb.Sheets[wb.SheetNames[0]]
-            // wb.Sheets[wb.SheetNames[1]],
-            // wb.Sheets[wb.SheetNames[2]],
-            // wb.Sheets[wb.SheetNames[3]]
+            workBook.Sheets[workBook.SheetNames[0]]
+            // workBook.Sheets[workBook.SheetNames[1]],
+            // workBook.Sheets[workBook.SheetNames[2]],
+            // workBook.Sheets[workBook.SheetNames[3]]
           ]
           const moduleList = [
             ...utils.sheet_to_json(wsTranslate)
