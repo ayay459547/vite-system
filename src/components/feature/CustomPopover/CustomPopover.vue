@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { customRef, ref } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { ElPopover } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
 import { version, props as popoverProps } from './CustomPopoverInfo'
 
@@ -17,21 +17,20 @@ const emit = defineEmits<{
 
 const tempVisible = ref(false)
 
-const tempValue = customRef((track, trigger) => {
-  return {
-    get() {
-      track() // 追蹤數據改變
-      if (!isEmpty(props.visible) && typeof props.visible === 'boolean') return props.visible
-
-      return tempVisible.value
-    },
-    set(value: boolean) {
-      tempVisible.value = value
-      emit('update:visible', value)
-      trigger() // 通知 vue 重新解析
-    }
+const tempValue = computed({
+  get() {
+    return typeof props.visible === 'boolean' ? props.visible : tempVisible.value
+  },
+  set(value: boolean) {
+    tempVisible.value = value
+    emit('update:visible', value)
   }
 })
+
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return hasOwnProperty(slots, prop)
+}
 </script>
 
 <template>
@@ -44,10 +43,16 @@ const tempValue = customRef((track, trigger) => {
     :popper-style="props.popperStyle"
     :show-arrow="props.showArrow"
     :offset="props.offset"
+    :virtual-ref="props.virtualRef"
+    :virtual-triggering="props.virtualTriggering"
     class="popover-container"
-    :class="[`CustomPopover_${version}`, scopedId, scopedName]"
+    :class="[
+      `CustomPopover_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
-    <template #reference>
+    <template v-if="hasSlot('reference')" #reference>
       <slot name="reference"></slot>
     </template>
     <template #default>

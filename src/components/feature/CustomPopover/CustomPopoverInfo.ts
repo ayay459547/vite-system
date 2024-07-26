@@ -23,6 +23,8 @@ export declare namespace Props {
   type PopperStyle = string
   type ShowArrow = boolean
   type Offset = number
+  type VirtualRef = HTMLElement
+  type VirtualTriggering = boolean
 }
 
 export const props = {
@@ -73,5 +75,17 @@ export const props = {
     required: false,
     default: 0,
     description: '定位偏移量'
+  },
+  virtualRef: {
+    type: [Object, null] as PropType<Props.VirtualRef>,
+    required: false,
+    default: null,
+    description: 'virtual-ref'
+  },
+  virtualTriggering: {
+    type: Boolean as PropType<Props.VirtualTriggering>,
+    required: false,
+    default: false,
+    description: 'virtual-triggering'
   }
 }

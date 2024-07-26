@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { customRef, ref } from 'vue'
+import { ref, computed } from 'vue'
 import { ElTooltip } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as tooltipProps } from './CustomTooltipInfo'
 
@@ -17,19 +17,13 @@ const emit = defineEmits<{
 
 const tempVisible = ref(false)
 
-const tempValue = customRef((track, trigger) => {
-  return {
-    get() {
-      track() // 追蹤數據改變
-      if (!isEmpty(props.visible) && typeof props.visible === 'boolean') return props.visible
-
-      return tempVisible.value
-    },
-    set(value: boolean) {
-      tempVisible.value = value
-      emit('update:visible', value)
-      trigger() // 通知 vue 重新解析
-    }
+const tempValue = computed({
+  get() {
+    return typeof props.visible === 'boolean' ? props.visible : tempVisible.value
+  },
+  set(value: boolean) {
+    tempVisible.value = value
+    emit('update:visible', value)
   }
 })
 </script>
@@ -44,9 +38,16 @@ const tempValue = customRef((track, trigger) => {
     :offset="props.offset"
     :enterable="props.enterable"
     :show-after="props.showAfter"
+    :virtual-ref="props.virtualRef"
+    :virtual-triggering="props.virtualTriggering"
+    :popper-options="props.popperOptions"
     effect="light"
     class="tooltip-container"
-    :class="[`CustomTooltip_${version}`, scopedId, scopedName]"
+    :class="[
+      `CustomTooltip_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <template #default>
       <slot></slot>

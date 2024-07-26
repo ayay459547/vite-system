@@ -21,6 +21,9 @@ export declare namespace Props {
   type PopperClass = string
   type ShowArrow = boolean
   type Offset = number
+  type VirtualRef = HTMLElement
+  type VirtualTriggering = boolean
+  type PopperOptions = Record<string, any>
 }
 
 export const props = {
@@ -70,6 +73,26 @@ export const props = {
     type: Number as PropType<Props.Offset>,
     required: false,
     default: 0,
+    description: '觸發後多久顯示內容，單位毫秒'
+  },
+  virtualRef: {
+    type: Object as PropType<Props.VirtualRef>,
+    required: false,
+    default: undefined,
+    description: '觸發後多久顯示內容，單位毫秒'
+  },
+  virtualTriggering: {
+    type: Boolean as PropType<Props.VirtualTriggering>,
+    required: false,
+    default: false,
+    description: '觸發後多久顯示內容，單位毫秒'
+  },
+  popperOptions: {
+    type: Object as PropType<Props.PopperOptions>,
+    required: false,
+    default () {
+      return {}
+    },
     description: '觸發後多久顯示內容，單位毫秒'
   }
 }

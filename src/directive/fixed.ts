@@ -40,9 +40,11 @@ type Options = {
 /**
  * 事件監聽事件
  * @param {Object} options
- *                 text: 文字內容
- *                 class: class 類型(string, object, array)
- *                 style: style 類型(string, object)
+ *  content: 文字
+ *  placement 出現位置
+ *  offset 偏移量
+ *  class: class 類型(string, object, array)
+ *  style: style 類型(string, object)
  */
 function createHandler(this: Element, options: Options) {
   const {

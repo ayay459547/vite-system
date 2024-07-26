@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
+
 <head>
   <meta http-equiv="pragram" content="no-cache">
-    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="expires" content="0">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="expires" content="0">
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,6 +71,8 @@
 <body>
   <div id="app">
     <div class="app-table browser-version">
+      <div class="app-navigator"></div>
+
       <table>
         <thead>
           <tr>
@@ -86,11 +89,9 @@
 
   <script>
     (function () {
-      const Demo = `
-      Demo
-      `
+      const demo = 'Demo'
       console.groupCollapsed('[init] Demo')
-      console.log(Demo)
+      console.log(demo)
 
       // 確認打包版本
       function checkBuildVerison() {
@@ -100,7 +101,7 @@
           localStorage.setItem('buildVersion', 'v2000-01-01.1')
           location.reload(true)
         }
-        
+
         console.log('build version：', buildVersion)
       }
 
@@ -108,22 +109,21 @@
       console.log('browser version：', navigator.userAgent)
 
       checkBuildVerison()
-      checkBrowserVerison()
-      
       console.groupEnd()
     })()
-
   </script>
-
-  <script type="module" src="/src/main.ts"></script>
   
+  <script type="module" src="/src/main.ts"></script>
+
   <script>
     (function () {
       // 瀏覽版本支援對應表
       const versionTable = document.querySelector('.app-table.browser-version')
       if (![null, undefined, ''].includes(versionTable)) {
         const elNavigator = versionTable.querySelector('.app-navigator')
-        elNavigator.innerHTML = `${navigator.appVersion}`
+        elNavigator.innerHTML = `
+          <div>${navigator.userAgent}</div>
+        `
 
         const browserList = [
           {
@@ -161,7 +161,7 @@
             img: '/browser/arc.png',
             version: 'Arc ≥ 85',
             download: 'https://arc.net/'
-          },
+          }
         ]
 
         browserList.forEach(browserItem => {
