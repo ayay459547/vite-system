@@ -7,7 +7,7 @@ import { defineStore } from 'pinia'
 import { ref, shallowRef, computed, shallowReactive } from 'vue'
 
 import { permission } from '@/lib/lib_permission'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, swal } from '@/lib/lib_utils'
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
@@ -125,7 +125,16 @@ export const useAuthStore = defineStore('auth', () => {
 
     if (!isEmpty(userId)) {
       // 使用 token 初始化使用者資料
-      const resData = await getAuthData(userId)
+      const { status, msg, data: resData } = await getAuthData(userId)
+      if (status !== 'success') {
+        swal({
+          icon: 'error',
+          title: 'API error',
+          text: msg ?? '',
+          showCancelButton: false
+        })
+      }
+
       const { user, roleFunction } = resData
 
       authId = user.id

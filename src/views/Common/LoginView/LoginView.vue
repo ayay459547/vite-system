@@ -11,7 +11,7 @@ import LogoImage from '@/assets/images/Vue-logo.png?url'
 import { loginSystem } from './api'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
+const { i18nTranslate, swal } = useHook({
   i18nModule: defaultModuleType
 })
 const emit = defineEmits(['login'])
@@ -25,8 +25,18 @@ const login = ($event: MouseEvent | KeyboardEvent) => {
   validateForm()
     .then(async () => {
       const { account, password } = form
+
       isLoading.value = true
-      const userId = await loginSystem(account, password)
+
+      const { status, msg, data: userId } = await loginSystem(account, password)
+      if (status !== 'success') {
+        swal({
+          icon: 'error',
+          title: i18nTranslate('error-getData', 'system'),
+          text: msg ?? i18nTranslate('warning-contactIT', 'system'),
+          showCancelButton: false
+        })
+      }
 
       if (!isEmpty(userId)) {
         emit('login', userId)

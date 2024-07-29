@@ -1,6 +1,5 @@
-import type { Api } from '@/declare/ajax'
+import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal } from '@/lib/lib_utils'
 import type { AuthData, PermissionData } from '@/declare/hook'
 
 import { fakeUserData, allPermissionData } from './fakeData'
@@ -50,7 +49,7 @@ export const defaultAuthData = {
   groups: [{ id: null, fullName: null }]
 }
 
-export const getAuthData = async (token: number): Promise<AuthData> => {
+export const getAuthData = async (token: number): Promise<ApiRes<AuthData>> => {
   const resData = await ajax<Api<AuthData>>(
     {
       baseURL: '/rest-common',
@@ -62,7 +61,7 @@ export const getAuthData = async (token: number): Promise<AuthData> => {
       }
     },
     {
-      isFakeData: true,
+      isFakeData: false,
       fakeData: {
         data: fakeUserData,
         status: 'success'
@@ -72,15 +71,9 @@ export const getAuthData = async (token: number): Promise<AuthData> => {
   )
   const { data, status, msg } = resData
 
-  if (status === 'success') {
-    return data
+  if (['success', true].includes(status)) {
+    return { status: 'success', data, msg }
   } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
-    })
-    return defaultAuthData
+    return { status: 'error', data: defaultAuthData, msg }
   }
 }
