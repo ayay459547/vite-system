@@ -106,7 +106,7 @@ export const getPlanMachineList = async (
     }
   )
 
-  const { data, status, msg = '請聯絡資訊人員' } = resData
+  const { data, status, msg } = resData
 
   if (['success', true].includes(status)) {
     return {

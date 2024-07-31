@@ -61,7 +61,7 @@ const props = defineProps({
       return [
         // { label: '=', value: 'equal' },
         // { label: '>', value: 'greatterThan' },
-        // { label: '>=', value: 'greaterThanOrEqualTo' },
+        // { label: '>=', value: 'greatterThanOrEqualTo' },
         // { label: '<', value: 'lessThan' },
         // { label: '<=', value: 'lessThanOrEqualTo' },
         // { label: '<>', value: 'notEqual' }

@@ -272,7 +272,7 @@ export const rushOrderFromWeb = async (rushOrderData: RushOrderData): Promise<Ap
     }
   )
 
-  const { status, msg = '請聯絡資訊人員' } = resData
+  const { status, msg } = resData
 
   if (['success', true].includes(status)) {
     return { status: 'success', msg }

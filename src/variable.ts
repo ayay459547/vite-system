@@ -3,7 +3,7 @@ export const operatorOptions = [
   { label: '=', value: 'equal' },
   { label: '<>', value: 'notEqual' },
   { label: '>', value: 'greatterThan' },
-  { label: '>=', value: 'greaterThanOrEqualTo' },
+  { label: '>=', value: 'greatterThanOrEqualTo' },
   { label: '<', value: 'lessThan' },
   { label: '<=', value: 'lessThanOrEqualTo' }
 ]
@@ -14,7 +14,7 @@ export const conditionOptions = [
   { label: '=', value: 'equal' },
   { label: '!=', value: 'notEqual' },
   { label: '>', value: 'greatterThan' },
-  { label: '>=', value: 'greaterThanOrEqualTo' },
+  { label: '>=', value: 'greatterThanOrEqualTo' },
   { label: '<', value: 'lessThan' },
   { label: '<=', value: 'lessThanOrEqualTo' },
   { label: 'is blank', value: 'isBlank' },

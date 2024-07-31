@@ -20,7 +20,7 @@
 | -------------------- | ------------ |
 | equal                | =            |
 | greatterThan         | >            |
-| greaterThanOrEqualTo | >=           |
+| greatterThanOrEqualTo | >=           |
 | lessThan             | <            |
 | lessThanOrEqualTo    | <=           |
 | notEqual             | <>           |
