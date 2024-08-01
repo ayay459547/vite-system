@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal } from '@/lib/lib_utils'
+import { message } from '@/lib/lib_utils'
 import type { Sort } from '@/components'
 
 export type Params = {
@@ -99,16 +99,15 @@ export const getExcelData = async (params: any) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data
   } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
+    message({
+      type: 'error',
+      message: msg ?? 'getData Error',
+      duration: 10000
     })
 
     return []
@@ -146,16 +145,15 @@ export const getData = async (params: any) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data
   } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
+    message({
+      type: 'error',
+      message: msg ?? 'getData Error',
+      duration: 10000
     })
 
     return []
@@ -179,16 +177,15 @@ export const getDataCount = async () => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data
   } else {
-    swal({
-      icon: 'error',
-      title: '取得資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
+    message({
+      type: 'error',
+      message: msg ?? 'getData Error',
+      duration: 10000
     })
 
     return 0

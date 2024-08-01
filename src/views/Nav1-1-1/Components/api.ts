@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal } from '@/lib/lib_utils'
+import { message } from '@/lib/lib_utils'
 import type { TableData } from '../api'
 
 export const createData = async (postData: TableData) => {
@@ -20,21 +20,21 @@ export const createData = async (postData: TableData) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
-    swal({
-      icon: 'success',
-      title: '新增成功'
+    message({
+      type: 'success',
+      message: msg ?? 'Create Success',
+      duration: 10000
     })
 
     return data
   } else {
-    swal({
-      icon: 'error',
-      title: '新增資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
+    message({
+      type: 'error',
+      message: msg ?? 'Create Error',
+      duration: 10000
     })
 
     return 0
@@ -58,21 +58,21 @@ export const updateData = async (postData: TableData) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
-    swal({
-      icon: 'success',
-      title: '更新成功'
+    message({
+      type: 'success',
+      message: msg ?? 'Update Success',
+      duration: 10000
     })
 
     return data
   } else {
-    swal({
-      icon: 'error',
-      title: '新增資料失敗',
-      text: msg ?? '請聯絡資訊人員',
-      showCancelButton: false
+    message({
+      type: 'error',
+      message: msg ?? 'Update Error',
+      duration: 10000
     })
 
     return 0

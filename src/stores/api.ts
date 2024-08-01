@@ -69,7 +69,7 @@ export const getAuthData = async (token: number): Promise<ApiRes<AuthData>> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return { status: 'success', data, msg }

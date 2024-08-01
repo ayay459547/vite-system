@@ -93,7 +93,7 @@ export const getVersionOptions = async (): Promise<Options> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data.map(version => {
@@ -145,7 +145,7 @@ export const getData = async (params: any): Promise<ResponseData[]> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data

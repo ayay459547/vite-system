@@ -103,7 +103,7 @@ export const getMachineIdWeekSchedule = async (machineId: string): Promise<ApiRe
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return { status: 'success', data, msg }
@@ -296,7 +296,7 @@ export const getIsNeedSendRTDS = async (): Promise<ApiRes<boolean>> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return { status: 'success', data, msg }

@@ -1,5 +1,5 @@
 import { getMachineList } from './api'
-import { swal } from '@/lib/lib_utils'
+import { message } from '@/lib/lib_utils'
 
 export const columnSetting = {
   dateTimeRange: {
@@ -59,18 +59,16 @@ export const columnSetting = {
       fetchSuggestions: async (queryString: string, cb: (arg: any) => void) => {
         const { status, msg, data: list } = await getMachineList(queryString)
         if (status !== 'success') {
-          swal({
-            icon: 'error',
-            title: 'API error',
-            text: msg,
-            showCancelButton: false
+          message({
+            type: 'error',
+            message: msg ?? 'Get Machine Error',
+            duration: 10000
           })
         }
 
         cb(
           list.map(item => {
             const { id } = item
-
             return { label: id, value: id }
           })
         )

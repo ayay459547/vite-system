@@ -58,6 +58,7 @@ export const columnSetting = {
   },
   operations: {
     label: '操作',
+    i18nLabel: 'operationCommands',
     table: {
       width: 60,
       align: 'center',

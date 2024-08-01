@@ -1,6 +1,6 @@
 import type { Api, ViewParams } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal, isEmpty } from '@/lib/lib_utils'
+import { message, isEmpty } from '@/lib/lib_utils'
 
 export interface Params extends ViewParams {
   [key: string]: any
@@ -66,11 +66,10 @@ const getData = async (
   if (status === 'success') {
     return [(data as any[]).map(callback), dataSize]
   } else {
-    swal({
-      icon: 'error',
-      title: 'API error',
-      text: msg ?? '',
-      showCancelButton: false
+    message({
+      type: 'error',
+      message: msg ?? `url: ${url}`,
+      duration: 10000
     })
     return [[], 0]
   }

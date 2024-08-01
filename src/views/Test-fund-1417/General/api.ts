@@ -160,7 +160,7 @@ export const getIsNeedSendRTDS = async (): Promise<boolean> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data

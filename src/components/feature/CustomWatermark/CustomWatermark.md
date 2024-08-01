@@ -15,7 +15,15 @@ const subFont = {
   color: 'rgba(255,0,0,1)'
 }
 
-const subWatermark: SubWatermark[] = []
+const subWatermark: SubWatermark[] = [
+  {
+    width: 40,
+    height: 40,
+    image: '/src/assets/images/AAicon-qrcodeuse.png',
+    shift: [170, 130, -7]
+  },
+  { content: 'RTDS', font: subFont, shift: [110, 0, 0] }
+]
 </script>
 
 <template>
@@ -27,9 +35,18 @@ const subWatermark: SubWatermark[] = []
       :gap="[100, 40]"
       :offset="[0, 40]"
       :font="mainFont"
-      image="https://element-plus.org/images/element-plus-logo.svg"
+      :sub="subWatermark"
     >
-      TEST
+      <CustomWatermark
+        :width="100"
+        :height="100"
+        :rotate="0"
+        :gap="[50, 40]"
+        :offset="[0, 40]"
+        :size-fit="'children'"
+      >
+        <div style=" width:600px; height:400px ; background-color: white;"></div>
+      </CustomWatermark>
     </CustomWatermark>
   </div>
 </template>

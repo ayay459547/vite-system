@@ -115,7 +115,7 @@ export const getData = async (params: any): Promise<ApiRes<TableData[]>> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return { status: 'success', data, msg }

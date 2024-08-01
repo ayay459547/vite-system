@@ -106,7 +106,7 @@ export const getPlanMachineList = async (
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return {

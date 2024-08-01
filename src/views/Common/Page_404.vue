@@ -1,10 +1,12 @@
 <script setup lang="ts">
+// Composition API
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 
+import { CustomWatermark } from '@/components'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 
-const imgStyle = ref('')
+// const imgStyle = ref('')
 const titleStyle = ref('')
 
 const setImgStyle = (e: MouseEvent) => {
@@ -12,8 +14,8 @@ const setImgStyle = (e: MouseEvent) => {
   const diffX = centerPoint.x - clientX
   const diffY = centerPoint.y - clientY
 
-  imgStyle.value = `transform: translateX(${diffX / 5}px) translateY(${diffY / 5}px);`
-  titleStyle.value = `transform: translateX(${diffX / 12}px) translateY(${diffY / 12}px);`
+  // imgStyle.value = `transform: translateX(${diffX / 5}px) translateY(${diffY / 5}px);`
+  titleStyle.value = `transform: translateX(${diffX / 32}px) translateY(${diffY / 32}px);`
 }
 const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) => void
 
@@ -44,10 +46,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="container" class="page" @mousemove="throttleSetImgStyle">
-    <h1 class="page-title" :style="titleStyle">頁面不存在</h1>
-    <img class="page-img" src="@/assets/images/common/page404.svg" alt="404" />
-  </div>
+  <CustomWatermark :z-index="0">
+    <div ref="container" class="page" @mousemove="throttleSetImgStyle">
+      <div class="page-circle"></div>
+      <h1 class="page-title" :style="titleStyle">頁面不存在</h1>
+
+      <img class="page-img" src="@/assets/images/common/page404.svg" alt="404" />
+    </div>
+  </CustomWatermark>
 </template>
 
 <style lang="scss" scoped>
@@ -61,18 +67,31 @@ onUnmounted(() => {
   @extend %flex-center;
 
   &-title {
+    position: absolute;
+    bottom: 22%;
     transition-duration: 0.3s;
     font-size: 5em;
     word-spacing: 6px;
+    z-index: 3;
+  }
+
+  &-circle {
+    aspect-ratio: 1 / 1;
+    height: 55%;
+    border-radius: 30%;
+    background-color: var(--el-bg-color);
+    transform: translateY(-10%);
     z-index: 1;
   }
 
   &-img {
     transition-duration: 0.3s;
-    width: 70%;
+    height: 50%;
+    width: 50%;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    top: 12%;
+    right: 25%;
+    z-index: 2;
   }
 }
 </style>

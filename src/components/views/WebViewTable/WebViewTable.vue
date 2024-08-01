@@ -8,7 +8,7 @@ import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, Cust
 import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
-import { hasOwnProperty, getProxyData, isEmpty } from '@/lib/lib_utils'
+import { hasOwnProperty, getProxyData } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
@@ -202,6 +202,7 @@ const {
   activeForms: activeFilter,
   getActiveForms: getFilter,
   reset: resetFilter,
+  activeConditions: activeConditions,
   conditions: filterConditions,
   getConditionFilter
 } = useFormSetting<FilterData>(props.columnSetting, props.filterKey)
@@ -266,24 +267,29 @@ const download = async ({ type }) => {
 
   const params: any = {
     ..._params,
-    page,
-    size,
+    // page,
+    // size,
+    paging: {
+      page,
+      size
+    },
+    advanced: conditions,
     sortingMap: _sortingMap,
     ...webViewParams
   }
-  if (!isEmpty(conditions)) {
-    params.filter = conditions
-  }
+
   switch (type) {
     // 下載全部資料
     case 'all':
-      params.page = 1
-      params.size = -1
+      params.paging = {
+        page: 1,
+        size: -1
+      }
       break
     case 'page':
       // 懶加載 下載 1 ~ 目前看到的資料
       if (islazyLoading.value) {
-        params.size = tableDataCount.value
+        params.paging.size = tableDataCount.value
         // 下載 當前分頁資料
       }
       break
@@ -344,13 +350,15 @@ const initData = async (tableParams: any) => {
 
   const params: any = {
     ..._params,
-    page,
-    size,
+    // page,
+    // size,
+    paging: {
+      page,
+      size
+    },
+    advanced: conditions,
     sortingMap: _sortingMap,
     ...webViewParams
-  }
-  if (!isEmpty(conditions)) {
-    params.filter = conditions
   }
 
   const [
@@ -637,6 +645,7 @@ onMounted(() => {
               v-if="hasOwnProperty(filter, scope.prop)"
               v-model="filter[scope.prop]"
               v-model:active="activeFilter[scope.prop]"
+              v-model:activeConditions="activeConditions[scope.prop]"
               v-model:conditions="filterConditions[scope.prop]"
               :i18nModule="i18nModule"
               v-bind="filterColumn[scope.prop]"

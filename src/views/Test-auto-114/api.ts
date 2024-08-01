@@ -36,7 +36,7 @@ export const getProcessList = async (
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
   if (['success', true].includes(status)) {
     return {
       status: 'success',
@@ -85,7 +85,7 @@ export const getErpNoList = async (
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return {
@@ -142,7 +142,7 @@ export const getMachineList = async (
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return {
@@ -225,7 +225,7 @@ export const getRushOrderList = async (
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (['success', true].includes(status)) {
     return { status: 'success', data, msg }

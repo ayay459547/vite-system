@@ -44,7 +44,7 @@ const getData = async (
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return (data as ResponseData[]).map(callback)
@@ -123,7 +123,7 @@ export const getTableDataCount = async (params: any): Promise<number> => {
       delay: 300
     }
   )
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data

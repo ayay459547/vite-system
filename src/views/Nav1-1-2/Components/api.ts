@@ -63,7 +63,7 @@ export const getData = async (userId: number) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data[0] ?? {}

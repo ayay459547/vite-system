@@ -57,7 +57,7 @@ export const getExcelData = async (params: any) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data
@@ -151,7 +151,7 @@ export const getData = async (params: any) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data
@@ -228,7 +228,7 @@ export const getDataCount = async (params: any) => {
     }
   )
 
-  const { data, status, msg } = resData
+  const { status, msg, data } = resData
 
   if (status === 'success') {
     return data

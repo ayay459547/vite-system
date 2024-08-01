@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Composition API
 import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
