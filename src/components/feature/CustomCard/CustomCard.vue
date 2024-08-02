@@ -2,9 +2,9 @@
 import { useSlots } from 'vue'
 import { ElCard } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
-import { version, props as cardProps } from './CustomCardInfo'
+import { version, props as cardProps } from './CustomCardInfo.ts'
 
 const scopedName = '__i-card__'
 const scopedId = getUuid(scopedName)

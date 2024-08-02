@@ -6,8 +6,8 @@ import { ElCard, ElBacktop } from 'element-plus'
 
 import { CustomTimeLine, CustomTag, CustomButton, SimpleQRcode, CustomSwitch } from '@/components'
 
-import { awaitTime, scrollToEl } from '@/lib/lib_utils'
-import { formatDatetime } from '@/lib/lib_format'
+import { awaitTime, scrollToEl } from '@/lib/lib_utils.ts'
+import { formatDatetime } from '@/lib/lib_format.ts'
 
 const options = [
   {

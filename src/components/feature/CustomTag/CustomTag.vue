@@ -2,10 +2,10 @@
 import { ElTag } from 'element-plus'
 
 import { CustomIcon } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
-import type { Emits } from './CustomTagInfo'
-import { version, props as tagProps } from './CustomTagInfo'
+import type { Emits } from './CustomTagInfo.ts'
+import { version, props as tagProps } from './CustomTagInfo.ts'
 
 const scopedName = '__i-tag__'
 const scopedId = getUuid(scopedName)

@@ -2,9 +2,9 @@
 import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomTabs } from '@/components'
-import { useLocalI18n } from '@/lib/lib_hook'
+import { useLocalI18n } from '@/lib/lib_hook.ts'
 
 const { t: testT } = useI18n()
 

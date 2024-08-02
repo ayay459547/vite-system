@@ -2,11 +2,11 @@
 import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
 import { CustomTable, CustomInput, CustomIcon } from '@/components'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 
 import FilterView from './FilterView.vue'
 

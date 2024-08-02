@@ -4,10 +4,10 @@ import { inject } from 'vue'
 // 引入組件
 import { WebViewTable, CustomLink, CustomButton, CustomTooltip } from '@/components'
 // 全域功能類型
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 
 // 引入表格設定類型
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 // 引入資料格式化
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'

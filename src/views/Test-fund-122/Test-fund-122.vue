@@ -2,7 +2,7 @@
 import { ref, shallowRef, inject, reactive, onMounted, computed, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import {
   CustomButton,
   CustomTable,
@@ -12,12 +12,12 @@ import {
   GroupSearch,
   CustomSearch
 } from '@/components'
-import { useLocalI18n } from '@/lib/lib_hook'
-import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
-import throttle from '@/lib/lib_throttle'
+import { useLocalI18n } from '@/lib/lib_hook.ts'
+import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
+import throttle from '@/lib/lib_throttle.ts'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission'
-import type { TableOptions } from '@/declare/columnSetting'
+import { getPermission } from '@/lib/lib_permission.ts'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 
 // import i18nMessage from './i18n'
 import type { TableData } from './api'

@@ -17,8 +17,8 @@ validate: 驗證輸入框
 
 ```vue
 <script setup lang="ts">
-import { getFormSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { getFormSetting } from '@/lib/lib_columns.ts'
+import { scrollToEl } from '@/lib/lib_utils.ts'
 import {
   FormInput,
   FormDatePicker,

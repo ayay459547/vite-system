@@ -1,5 +1,5 @@
-import type { Api, ApiRes, ViewParams } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
+import type { Api, ApiRes, ViewParams } from '@/declare/ajax.ts'
+import { ajax } from '@/lib/lib_ajax.ts'
 import { fakeGanttData } from './fakeData'
 
 export interface Params extends ViewParams {

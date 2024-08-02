@@ -2,10 +2,10 @@
 import { useSlots } from 'vue'
 import { ElImage } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
 
-import type { Emits } from './CustomImageInfo'
-import { version, props as imageProps } from './CustomImageInfo'
+import type { Emits } from './CustomImageInfo.ts'
+import { version, props as imageProps } from './CustomImageInfo.ts'
 
 const scopedName = '__i-image__'
 const scopedId = getUuid(scopedName)

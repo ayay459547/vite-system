@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import { CustomSearch, CustomDrawer, CustomButton, GroupSearch } from '@/components'
-import { useFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns.ts'
 
 type Form = {
   text: string

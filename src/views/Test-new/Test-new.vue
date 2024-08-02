@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook.ts'
 import {
   CustomIcon,
   CustomModal,
@@ -10,9 +10,9 @@ import {
   CustomSearch,
   GroupSearch
 } from '@/components'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
-import throttle from '@/lib/lib_throttle'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
+import type { TableOptions } from '@/declare/columnSetting.ts'
+import throttle from '@/lib/lib_throttle.ts'
 
 import { columnSetting } from './columns'
 import type { TableData } from './api'

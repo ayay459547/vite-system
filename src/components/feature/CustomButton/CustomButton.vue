@@ -3,10 +3,10 @@ import { useSlots } from 'vue'
 import { ElButton } from 'element-plus'
 
 import { CustomIcon } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
-import type { Emits } from './CustomButtonInfo'
-import { version, props as buttonProps } from './CustomButtonInfo'
+import type { Emits } from './CustomButtonInfo.ts'
+import { version, props as buttonProps } from './CustomButtonInfo.ts'
 
 const scopedName = '__i-button__'
 const scopedId = getUuid(scopedName)

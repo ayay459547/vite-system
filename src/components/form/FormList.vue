@@ -2,11 +2,11 @@
 import type { PropType } from 'vue'
 import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { SimpleTable, CustomButton } from '@/components'
-import { useSimpleTableSetting } from '@/lib/lib_columns'
-import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { useSimpleTableSetting } from '@/lib/lib_columns.ts'
+import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({

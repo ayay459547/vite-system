@@ -9,8 +9,8 @@ import {
   CustomTreeV2
 } from '@/components'
 
-import { useFormSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { useFormSetting } from '@/lib/lib_columns.ts'
+import { scrollToEl } from '@/lib/lib_utils.ts'
 
 import { ref } from 'vue'
 

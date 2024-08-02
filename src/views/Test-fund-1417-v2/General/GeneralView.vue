@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, inject, onMounted, nextTick } from 'vue'
 
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook.ts'
 import { WeekSchedule, CustomButton, CustomDividerView } from '@/components'
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
 
 import {
   getGeneralWeekSchedule,

@@ -4,12 +4,12 @@ import { ref, computed, inject } from 'vue'
 import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { ElTabs, ElTabPane } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
-import { getUuid } from '@/lib/lib_utils'
+import type { UseHook } from '@/declare/hook.ts'
+import { getUuid } from '@/lib/lib_utils.ts'
 
 import type { Option } from '@/components'
-import type { Props } from './CustomTabsInfo'
-import { version, props as tabsProps } from './CustomTabsInfo'
+import type { Props } from './CustomTabsInfo.ts'
+import { version, props as tabsProps } from './CustomTabsInfo.ts'
 
 const scopedName = '__i-tabs__'
 const scopedId = getUuid(scopedName)

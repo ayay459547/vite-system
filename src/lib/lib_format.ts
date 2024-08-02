@@ -1,5 +1,5 @@
 import dayjs from '@/lib/lib_day'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 export type OperatorOptions = {
   operatorPrefix?: string

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import { ajax } from '@/lib/lib_ajax'
+import { ajax } from '@/lib/lib_ajax.ts'
 import { CustomTable } from '@/components'
 
 interface Todos {

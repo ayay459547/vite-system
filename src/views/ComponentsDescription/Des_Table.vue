@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
 import type { TableParams, PropsTableColumn } from '@/components'
 import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components'
-import type { TableOptions } from '@/declare/columnSetting'
-import { useTableSetting } from '@/lib/lib_columns'
+import type { TableOptions } from '@/declare/columnSetting.ts'
+import { useTableSetting } from '@/lib/lib_columns.ts'
 
 const columnSetting = {
   name: {

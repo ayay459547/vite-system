@@ -3,13 +3,13 @@ import type { PropType } from 'vue'
 import { ref, shallowRef, inject } from 'vue'
 import type { NavigationFailure } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook'
-import type { Navigation } from '@/declare/routes'
-import { useRoutesHook } from '@/lib/lib_routes'
+import type { UseHook } from '@/declare/hook.ts'
+import type { Navigation } from '@/declare/routes.ts'
+import { useRoutesHook } from '@/lib/lib_routes.ts'
 import { CustomIcon, CustomScrollbar } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { defaultModuleType } from '@/i18n/i18n_setting'
-import { isEmpty } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 import SubNavigationView from './SubNavigationView.vue'
 

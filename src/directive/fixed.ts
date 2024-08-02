@@ -1,10 +1,10 @@
 import type { App } from 'vue'
 import { createApp } from 'vue'
-// import debounce from '@/lib/lib_debounce'
+// import debounce from '@/lib/lib_debounce.ts'
 import vClickOutside from 'click-outside-vue3'
 import VFixed from '@/components/VFixed.vue'
 import type { Placement } from 'element-plus'
-import { awaitTime } from '@/lib/lib_utils'
+import { awaitTime } from '@/lib/lib_utils.ts'
 
 const mouseenter = 'mouseenter'
 const mouseleave = 'mouseleave'

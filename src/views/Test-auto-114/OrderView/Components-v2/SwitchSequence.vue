@@ -3,8 +3,8 @@ import type { PropType } from 'vue'
 import { onMounted } from 'vue'
 
 import { FormList } from '@/components'
-import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
-import { isEmpty } from '@/lib/lib_utils'
+import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns.ts'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 import { switchSequenceColumnSetting } from './columns'
 

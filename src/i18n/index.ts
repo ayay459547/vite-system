@@ -1,5 +1,5 @@
 import { createI18n } from 'vue-i18n'
-import { object_reduce } from '@/lib/lib_object'
+import { object_reduce } from '@/lib/lib_object.ts'
 
 export type LangMap = Record<
   string,

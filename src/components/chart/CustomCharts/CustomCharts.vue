@@ -5,11 +5,11 @@ import type { PropType } from 'vue'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
-import { useLayoutStore } from '@/stores/stores_layout'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
+import throttle from '@/lib/lib_throttle.ts'
+import debounce from '@/lib/lib_debounce.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
+import { useLayoutStore } from '@/stores/stores_layout.ts'
 
 export default defineComponent({
   name: 'CustomCharts',

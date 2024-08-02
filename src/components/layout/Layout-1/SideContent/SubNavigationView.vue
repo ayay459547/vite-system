@@ -3,12 +3,12 @@ import type { PropType, WritableComputedRef } from 'vue'
 import { computed, inject, ref, nextTick } from 'vue'
 import type { NavigationFailure } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook'
-import type { Navigation } from '@/declare/routes'
+import type { UseHook } from '@/declare/hook.ts'
+import type { Navigation } from '@/declare/routes.ts'
 import { CustomIcon, CustomScrollbar } from '@/components'
-import { useRoutesHook } from '@/lib/lib_routes'
+import { useRoutesHook } from '@/lib/lib_routes.ts'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 const props = defineProps({
   isLevel2Open: {

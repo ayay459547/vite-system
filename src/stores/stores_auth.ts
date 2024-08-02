@@ -6,12 +6,12 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef, computed, shallowReactive } from 'vue'
 
-import { permission } from '@/lib/lib_permission'
-import { isEmpty, swal } from '@/lib/lib_utils'
-import { getRouterLeafLayer } from '@/lib/lib_routes'
+import { permission } from '@/lib/lib_permission.ts'
+import { isEmpty, swal } from '@/lib/lib_utils.ts'
+import { getRouterLeafLayer } from '@/lib/lib_routes.ts'
 import routes from '@/router/routes'
-import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
-import type { AuthData, PermissionData } from '@/declare/hook'
+import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie.ts'
+import type { AuthData, PermissionData } from '@/declare/hook.ts'
 
 import { defaultAuthData, getAuthData } from './api'
 

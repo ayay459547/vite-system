@@ -3,9 +3,9 @@ import type { PropType } from 'vue'
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelectV2 } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/declare/hook.ts'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
 

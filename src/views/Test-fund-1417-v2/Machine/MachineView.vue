@@ -2,7 +2,7 @@
 // Composition API
 import { ref, inject, onMounted, nextTick, reactive } from 'vue'
 // 全域功能類型
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook.ts'
 // 引入組件
 import type { TourProps } from '@/components'
 import {
@@ -15,11 +15,11 @@ import {
 } from '@/components'
 
 // 權限
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
 // 工具
-import { isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { isEmpty, scrollToEl } from '@/lib/lib_utils.ts'
 // 設定表格資料
-import { useFormSetting } from '@/lib/lib_columns'
+import { useFormSetting } from '@/lib/lib_columns.ts'
 
 import {
   getMachineIdWeekSchedule,

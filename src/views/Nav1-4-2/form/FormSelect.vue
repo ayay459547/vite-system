@@ -4,7 +4,7 @@ import { computed, useSlots, ref, nextTick } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 import { useField } from 'vee-validate'
 
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils.ts'
 
 export type Options = Array<{
   label: string

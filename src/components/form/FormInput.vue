@@ -3,11 +3,11 @@ import type { PropType } from 'vue'
 import { computed, useSlots, ref, onMounted, inject } from 'vue'
 import { ElInput } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
-import type { NumberFormatType } from '@/lib/lib_format'
-import { numberFormat } from '@/lib/lib_format'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/declare/hook.ts'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
+import type { NumberFormatType } from '@/lib/lib_format.ts'
+import { numberFormat } from '@/lib/lib_format.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 type ModelValue = string | number | null
 

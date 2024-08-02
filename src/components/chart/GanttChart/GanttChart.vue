@@ -3,14 +3,14 @@ import * as echarts from 'echarts'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
-import { numberFormat, formatDatetime } from '@/lib/lib_format'
-import { useLayoutStore } from '@/stores/stores_layout'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
+import throttle from '@/lib/lib_throttle.ts'
+import debounce from '@/lib/lib_debounce.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
+import { numberFormat, formatDatetime } from '@/lib/lib_format.ts'
+import { useLayoutStore } from '@/stores/stores_layout.ts'
 
-import { version, props as ganttChartProps } from './GanttChartInfo'
+import { version, props as ganttChartProps } from './GanttChartInfo.ts'
 
 export default defineComponent({
   name: 'GanttChart',

@@ -2,10 +2,10 @@
 import type { PropType } from 'vue'
 import { ref, inject, nextTick, reactive, onMounted } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { FormList, CustomInput, CustomButton } from '@/components'
-import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
-import { isEmpty, scrollToEl } from '@/lib/lib_utils'
+import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns.ts'
+import { isEmpty, scrollToEl } from '@/lib/lib_utils.ts'
 
 import { workReportColumnSetting } from './columns'
 import type { RushOrders } from '../../api'

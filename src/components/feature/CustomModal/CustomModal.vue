@@ -13,16 +13,16 @@ import {
 } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook, SwalResult } from '@/declare/hook'
-import { useBoundingClientRect } from '@/lib/lib_hook'
+import type { UseHook, SwalResult } from '@/declare/hook.ts'
+import { useBoundingClientRect } from '@/lib/lib_hook.ts'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
-import throttle from '@/lib/lib_throttle'
+import { getUuid } from '@/lib/lib_utils.ts'
+import throttle from '@/lib/lib_throttle.ts'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
-import type { Props } from './CustomModalInfo'
-import { version, props as modalProps, minModalIndex } from './CustomModalInfo'
+import type { Props } from './CustomModalInfo.ts'
+import { version, props as modalProps, minModalIndex } from './CustomModalInfo.ts'
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({

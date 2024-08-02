@@ -2,11 +2,11 @@
 // Composition API
 import { ref, onMounted, reactive, inject, nextTick } from 'vue'
 // 引入類型
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook.ts'
 // 引入組件
 import { CustomModal, CustomTabs, CustomEmpty, CustomButton } from '@/components'
 // 引入權限
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
 // 插單:機台角度
 import MachineView from './MachineView/MachineView.vue'
 // 插單:訂單角度

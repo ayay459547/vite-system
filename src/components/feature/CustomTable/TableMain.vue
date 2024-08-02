@@ -4,10 +4,10 @@ import { useSlots, ref, onMounted, onUnmounted, computed, watch, effectScope, ne
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
+import throttle from '@/lib/lib_throttle.ts'
 import { CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 import type {
   Sort,

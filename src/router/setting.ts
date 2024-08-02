@@ -1,6 +1,6 @@
-import type { RouterTree } from '@/declare/routes'
+import type { RouterTree } from '@/declare/routes.ts'
 import type { IconProps } from '@/components'
-import { refactorRoutes } from '@/lib/lib_routes'
+import { refactorRoutes } from '@/lib/lib_routes.ts'
 
 const mode = (import.meta as any).env.MODE
 

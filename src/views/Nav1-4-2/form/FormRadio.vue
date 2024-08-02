@@ -3,7 +3,7 @@ import { type PropType, computed, ref } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
 import { useField } from 'vee-validate'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 export type Options = Array<{
   label: string

@@ -2,10 +2,10 @@
 import { useSlots, computed } from 'vue'
 import { ElTour, ElTourStep } from 'element-plus'
 
-import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils.ts'
 
-import type { Props } from './CustomTourInfo'
-import { version, props as tourProps } from './CustomTourInfo'
+import type { Props } from './CustomTourInfo.ts'
+import { version, props as tourProps } from './CustomTourInfo.ts'
 
 const scopedName = '__i-tour__'
 const scopedId = getUuid(scopedName)

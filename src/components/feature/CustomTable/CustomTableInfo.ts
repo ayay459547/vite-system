@@ -1,9 +1,9 @@
 import type { PropType } from 'vue'
 import type { TableColumnCtx } from 'element-plus'
 
-import type { TableColumnsItem } from '@/declare/columnSetting'
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { TableColumnsItem } from '@/declare/columnSetting.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 export const version = '1.0.0'
 

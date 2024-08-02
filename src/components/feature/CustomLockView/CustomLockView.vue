@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 import { CustomIcon } from '@/components'
 
-import { version, props as lockViewProps } from './CustomLockViewInfo'
+import { version, props as lockViewProps } from './CustomLockViewInfo.ts'
 
 const scopedName = '__i-lock-view__'
 const scopedId = getUuid(scopedName)

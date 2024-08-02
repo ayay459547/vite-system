@@ -2,15 +2,15 @@
 import type { Ref, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
+import type { UseHook } from '@/declare/hook.ts'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
+import throttle from '@/lib/lib_throttle.ts'
+import debounce from '@/lib/lib_debounce.ts'
 import { CustomIcon } from '@/components'
-import { scrollToEl, getUuid } from '@/lib/lib_utils'
+import { scrollToEl, getUuid } from '@/lib/lib_utils.ts'
 
-import type { ModelValue, Option } from './Old_CustomTabsInfo'
-import { version, props as tabsProps } from './Old_CustomTabsInfo'
+import type { ModelValue, Option } from './Old_CustomTabsInfo.ts'
+import { version, props as tabsProps } from './Old_CustomTabsInfo.ts'
 
 const scopedId = getUuid('__i-tabs__')
 

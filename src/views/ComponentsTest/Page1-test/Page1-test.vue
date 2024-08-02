@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
 
-import { useLocalI18n } from '@/lib/lib_hook'
-import { deepClone } from '@/lib/lib_utils'
-import { useTableSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import { useLocalI18n } from '@/lib/lib_hook.ts'
+import { deepClone } from '@/lib/lib_utils.ts'
+import { useTableSetting } from '@/lib/lib_columns.ts'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
@@ -17,7 +17,7 @@ import UpdateModal from './Components/UpdateModal.vue'
 
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission'
+import { getPermission } from '@/lib/lib_permission.ts'
 
 // import i18nMessage from './i18n'
 

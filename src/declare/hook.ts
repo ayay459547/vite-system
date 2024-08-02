@@ -7,8 +7,8 @@ import type {
 } from 'element-plus'
 
 import type { IconProps } from '@/components'
-import type { Permission as PagePermission } from '@/lib/lib_permission'
-import type { ScopeKey } from '@/i18n/i18n_setting'
+import type { Permission as PagePermission } from '@/lib/lib_permission.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting.ts'
 
 // 使用者
 export declare interface User {

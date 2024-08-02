@@ -4,14 +4,14 @@ import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 引入類型
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 // 引入組件原型
 import { ElLink } from 'element-plus'
 import { CustomTooltip, CustomIcon } from '@/components'
 // 工具包
-import { aesEncrypt, getUuid } from '@/lib/lib_utils'
+import { aesEncrypt, getUuid } from '@/lib/lib_utils.ts'
 // 組件參數設定
-import { version, props as linkProps } from './CustomLinkInfo'
+import { version, props as linkProps } from './CustomLinkInfo.ts'
 
 // 接收 GlobalView.vue 的 useHook
 const useHook: UseHook = inject('useHook')

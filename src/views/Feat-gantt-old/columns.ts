@@ -1,4 +1,4 @@
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format.ts'
 
 const getDefaultDate = () => {
   const [start, end] = [new Date(), new Date()]

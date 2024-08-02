@@ -2,7 +2,7 @@
 import { type PropType, computed } from 'vue'
 
 import { CustomIcon, CustomImage, CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 import type { Custom } from './CustomUploadInfo'
 import { getIcon, getIconClass } from './variable'

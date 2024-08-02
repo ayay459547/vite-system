@@ -4,7 +4,7 @@ import { useEventBus } from '@vueuse/core'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute } from 'vue-router'
 
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl } from '@/lib/lib_utils.ts'
 
 const emit = defineEmits([
   'routeChange',

@@ -33,12 +33,12 @@ import {
 import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
+import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
+import throttle from '@/lib/lib_throttle.ts'
 
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ScopeKey } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
 export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean

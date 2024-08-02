@@ -8,7 +8,7 @@
     "./src/**/*.vue",
     "./tests/**/*.ts",
     "./tests/**/*.tsx"
-, "src/worker.js"  ],
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "ignoreDeprecations": "5.0",

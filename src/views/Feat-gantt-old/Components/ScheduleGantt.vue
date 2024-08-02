@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { reactive, computed, ref, onMounted, nextTick, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import type { Options, Option } from '@/components'
 import {
   GanttChart,
@@ -13,10 +13,10 @@ import {
   CustomPopover,
   CustomModal
 } from '@/components'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
 import { getMilliseconds } from '@/lib/lib_day'
-import { formatDatetime } from '@/lib/lib_format'
-import { object_forEach, object_reduce } from '@/lib/lib_object'
+import { formatDatetime } from '@/lib/lib_format.ts'
+import { object_forEach, object_reduce } from '@/lib/lib_object.ts'
 
 import type { TableData } from '../api'
 import type {

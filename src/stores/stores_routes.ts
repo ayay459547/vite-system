@@ -2,11 +2,11 @@ import type { ComputedRef, ShallowRef } from 'vue'
 import { shallowRef, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { Navigation } from '@/declare/routes'
-import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
+import type { Navigation } from '@/declare/routes.ts'
+import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes.ts'
 import routes from '@/router/routes'
 
-import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission'
+import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission.ts'
 
 export const useRoutesStore = defineStore('routes', () => {
   // 全部的路由

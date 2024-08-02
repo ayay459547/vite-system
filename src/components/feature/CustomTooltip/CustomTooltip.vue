@@ -2,9 +2,9 @@
 import { ref, computed } from 'vue'
 import { ElTooltip } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
-import { version, props as tooltipProps } from './CustomTooltipInfo'
+import { version, props as tooltipProps } from './CustomTooltipInfo.ts'
 
 const scopedName = '__i-tooltip__'
 const scopedId = getUuid(scopedName)

@@ -2,11 +2,11 @@
 // Composition API
 import { inject, ref, onMounted, onBeforeMount, watch } from 'vue'
 // 引入類型
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 // 引入組件
 import { CustomTabs } from '@/components'
 // 引入工具
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 // 機台保養工時
 import SpecifyMachine from './SpecifyMachine/SpecifyMachine.vue'

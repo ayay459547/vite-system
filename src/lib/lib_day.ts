@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 // import uch from 'dayjs/plugin/utc'
 dayjs.extend(duration)
 

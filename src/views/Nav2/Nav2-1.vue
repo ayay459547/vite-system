@@ -3,7 +3,7 @@ import { ref, onMounted, reactive } from 'vue'
 
 import { CustomInput, CustomDivider, CustomEmpty, CustomProgress, CustomButton } from '@/components'
 
-import { awaitTime } from '@/lib/lib_utils'
+import { awaitTime } from '@/lib/lib_utils.ts'
 
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { inject, computed } from 'vue'
 
-import type { UseHook, AuthData } from '@/declare/hook'
+import type { UseHook, AuthData } from '@/declare/hook.ts'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { getCookie } from '@/lib/lib_cookie'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { getCookie } from '@/lib/lib_cookie.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 const useHook: UseHook = inject('useHook')
 const { eventList, i18nTranslate } = useHook({

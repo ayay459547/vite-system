@@ -1,6 +1,6 @@
 import type { IconProps } from '@/components'
 import type { RouterType } from '@/router/setting'
-// import type { ScopeKey } from '@/i18n/i18n_setting'
+// import type { ScopeKey } from '@/i18n/i18n_setting.ts'
 
 interface Meta {
   // 是否放在 <KeepAlive></KeepAlive> 中

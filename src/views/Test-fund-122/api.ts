@@ -1,6 +1,6 @@
-import type { Api } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
-import { isEmpty, swal, deepClone, reverse } from '@/lib/lib_utils'
+import type { Api } from '@/declare/ajax.ts'
+import { ajax } from '@/lib/lib_ajax.ts'
+import { isEmpty, swal, deepClone, reverse } from '@/lib/lib_utils.ts'
 
 import { fakeTableData } from './fakeData'
 

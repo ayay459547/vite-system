@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { ElDescriptions, ElDescriptionsItem, ElTag, ElSteps, ElStep } from 'element-plus'
 
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 import { getData } from './api'
 

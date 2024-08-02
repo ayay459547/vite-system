@@ -1,6 +1,6 @@
-import type { Api } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
-import { swal, isEmpty } from '@/lib/lib_utils'
+import type { Api } from '@/declare/ajax.ts'
+import { ajax } from '@/lib/lib_ajax.ts'
+import { swal, isEmpty } from '@/lib/lib_utils.ts'
 
 // 表單資料
 export type FormData = {

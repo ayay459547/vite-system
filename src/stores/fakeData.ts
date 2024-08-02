@@ -1,4 +1,4 @@
-import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
+import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes.ts'
 import routes from '@/router/routes'
 
 export const fakePermissionData = [

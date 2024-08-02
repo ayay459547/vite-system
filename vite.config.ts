@@ -115,6 +115,13 @@ export default defineConfig(({ command, mode }) => {
           target: 'ws://localhost:5174',
           ws: true
         }
+      },
+      warmup: {
+        clientFiles: [
+          './src/components/form/*.vue',
+          './src/components/feature/**/*.vue',
+          './src/components/feature/**/*.ts'
+        ]
       }
       // https: {
       //   key: fs.readFileSync('RootCA-key.pem'),
@@ -122,7 +129,7 @@ export default defineConfig(({ command, mode }) => {
       // }
     },
     resolve: {
-      // extensions: ['.js', '.ts', '.vue'],
+      extensions: ['.js', '.ts', '.tsx', '.json'],
       alias: {
         '@': fileURLToPath(new URL('./src', (import.meta as any).url)),
         $: fileURLToPath(new URL('./public', (import.meta as any).url)),

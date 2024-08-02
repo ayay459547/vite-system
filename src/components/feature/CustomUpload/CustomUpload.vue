@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick, inject, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
 import {
   getFileType,
   byteConvert,
   // readExcel,
   readImage
-} from '@/lib/lib_files'
-import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+} from '@/lib/lib_files.ts'
+import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
-import type { Custom, Emits, Expose } from './CustomUploadInfo'
-import { version, props as uploadProps } from './CustomUploadInfo'
-import { getFileTypeList, getIconClass } from './variable'
+import type { Custom, Emits, Expose } from './CustomUploadInfo.ts'
+import { version, props as uploadProps } from './CustomUploadInfo.ts'
+import { getFileTypeList, getIconClass } from './variable.ts'
 
 import FilesView from './FilesView.vue'
 

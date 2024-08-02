@@ -1,5 +1,5 @@
-import type { Api, ApiRes } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
+import type { Api, ApiRes } from '@/declare/ajax.ts'
+import { ajax } from '@/lib/lib_ajax.ts'
 
 export interface Params {
   dayOfWeek: string

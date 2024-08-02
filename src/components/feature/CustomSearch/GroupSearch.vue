@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, useSlots, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomDrawer, CustomButton } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { getUuid } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
-import { version, props as groupSearchProps } from './GroupSearchInfo'
+import { version, props as groupSearchProps } from './GroupSearchInfo.ts'
 
 const scopedId = getUuid('__i-group-search__')
 

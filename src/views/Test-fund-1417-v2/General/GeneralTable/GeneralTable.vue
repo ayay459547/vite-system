@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { WebViewTable } from '@/components'
 
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 import { formatParams, formatExcel, formatTable } from './api'
 import { columnSetting } from './columns'
 import { fakeTableData } from './fakeData'

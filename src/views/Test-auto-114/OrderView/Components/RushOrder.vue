@@ -2,10 +2,10 @@
 import type { PropType } from 'vue'
 import { reactive, onMounted, inject, nextTick, ref, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomButton, CustomEmpty } from '@/components'
-import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 import type { ResValidate } from './MachineRushOrderList.vue'
 import MachineRushOrderList from './MachineRushOrderList.vue'

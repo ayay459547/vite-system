@@ -1,6 +1,6 @@
-import type { Api, ViewParams } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
-import { message, isEmpty } from '@/lib/lib_utils'
+import type { Api, ViewParams } from '@/declare/ajax.ts'
+import { ajax } from '@/lib/lib_ajax.ts'
+import { message, isEmpty } from '@/lib/lib_utils.ts'
 
 export interface Params extends ViewParams {
   [key: string]: any

@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { ref, nextTick, reactive, onMounted } from 'vue'
 
-import { getType, getUuid, isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
-import { object_filter, object_every } from '@/lib/lib_object'
+import { getType, getUuid, isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils.ts'
+import { object_filter, object_every } from '@/lib/lib_object.ts'
 
 import type { Custom } from '../WeekScheduleInfo'
 

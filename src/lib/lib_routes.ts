@@ -1,10 +1,10 @@
 import { useI18n } from 'vue-i18n'
 
-import type { UseHookReturn } from '@/declare/hook'
-import type { RouterTree, Navigation } from '@/declare/routes'
+import type { UseHookReturn } from '@/declare/hook.ts'
+import type { RouterTree, Navigation } from '@/declare/routes.ts'
 import type { IconProps } from '@/components'
 import { type RouterType, routerTypeIcon } from '@/router/setting'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 /**
  * @author Caleb

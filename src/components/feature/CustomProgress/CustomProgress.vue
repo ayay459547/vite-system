@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ElProgress } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
-import { version, props as progressProps } from './CustomProgressInfo'
+import { version, props as progressProps } from './CustomProgressInfo.ts'
 
 const scopedName = '__i-popover__'
 const scopedId = getUuid(scopedName)

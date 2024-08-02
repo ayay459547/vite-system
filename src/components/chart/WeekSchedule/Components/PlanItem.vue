@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { nextTick, reactive, computed, ref } from 'vue'
 
-import throttle from '@/lib/lib_throttle'
-import { isEmpty, getProxyData } from '@/lib/lib_utils'
+import throttle from '@/lib/lib_throttle.ts'
+import { isEmpty, getProxyData } from '@/lib/lib_utils.ts'
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
 import type { Custom } from '../WeekScheduleInfo'

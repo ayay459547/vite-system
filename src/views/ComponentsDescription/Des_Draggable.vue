@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 
 import markdown from '@/components/feature/CustomDraggable/CustomDraggable.md?raw'
 import { CustomDivider, CustomMarkdown, CustomButton, CustomDraggable } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
 const list1Default = [
   { id: '1', value: 'test-1' },

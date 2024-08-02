@@ -1,6 +1,6 @@
-import type { Api, ApiRes } from '@/declare/ajax'
-import { ajax } from '@/lib/lib_ajax'
-import type { AuthData, PermissionData } from '@/declare/hook'
+import type { Api, ApiRes } from '@/declare/ajax.ts'
+import { ajax } from '@/lib/lib_ajax.ts'
+import type { AuthData, PermissionData } from '@/declare/hook.ts'
 
 import { fakeUserData, allPermissionData } from './fakeData'
 

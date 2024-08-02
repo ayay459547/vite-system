@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, inject, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomUpload, CustomButton, CustomCollapse, SimpleTable, CustomEmpty } from '@/components'
-import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils'
-import { useSimpleTableSetting } from '@/lib/lib_columns'
+import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils.ts'
+import { useSimpleTableSetting } from '@/lib/lib_columns.ts'
 
 import { type UploadFileRes, uploadFile, updateInsertRushOrder } from './api'
 import { previewColumnSetting, checkColumnSetting } from './columns'

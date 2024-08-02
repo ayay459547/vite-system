@@ -11,10 +11,10 @@ import {
 } from 'vue'
 import { ElPagination } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
-import type { ColumnItem } from '@/declare/columnSetting'
-import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/declare/hook.ts'
+import type { ColumnItem } from '@/declare/columnSetting.ts'
+import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'
 
 // 欄位設定
@@ -41,8 +41,8 @@ import type {
   SelectAll,
   SelectionChange,
   RowContextmenu
-} from './CustomTableInfo'
-import { version, props as tableProps } from './CustomTableInfo'
+} from './CustomTableInfo.ts'
+import { version, props as tableProps } from './CustomTableInfo.ts'
 
 const scopedId = getUuid('__i-table__')
 

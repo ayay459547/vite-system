@@ -1,4 +1,4 @@
-import type { RouterTree } from '@/declare/routes'
+import type { RouterTree } from '@/declare/routes.ts'
 
 const descriptionRoutes: RouterTree[] = [
   {

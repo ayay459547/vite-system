@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import Swal from 'sweetalert2'
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomButton, CustomTooltip, CustomPopover } from '@/components'
 import { ElTooltip, ElButton } from 'element-plus'
 

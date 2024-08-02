@@ -2,9 +2,9 @@
 import { useSlots } from 'vue'
 import { ElDivider } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils.ts'
 
-import { version, props as dividerProps } from './CustomDividerInfo'
+import { version, props as dividerProps } from './CustomDividerInfo.ts'
 
 const scopedName = '__i-divider__'
 const scopedId = getUuid(scopedName)

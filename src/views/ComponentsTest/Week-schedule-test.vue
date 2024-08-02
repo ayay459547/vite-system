@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { WeekSchedule } from '@/components'
 
 const useHook: UseHook = inject('useHook')

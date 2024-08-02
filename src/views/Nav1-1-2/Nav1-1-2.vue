@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, shallowRef, reactive, inject, onMounted, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
-import { useLocalI18n } from '@/lib/lib_hook'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import { useLocalI18n } from '@/lib/lib_hook.ts'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'

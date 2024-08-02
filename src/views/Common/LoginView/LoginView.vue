@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
-import { useFormSetting } from '@/lib/lib_columns'
-import { isEmpty } from '@/lib/lib_utils'
+import type { UseHook } from '@/declare/hook.ts'
+import { useFormSetting } from '@/lib/lib_columns.ts'
+import { isEmpty } from '@/lib/lib_utils.ts'
 import { CustomIcon, CustomInput, CustomImage } from '@/components'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 import LogoImage from '@/assets/images/Vue-logo.png?url'
 import { loginSystem } from './api'

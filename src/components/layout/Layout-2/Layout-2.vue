@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, shallowRef, nextTick } from 'vue'
 
-import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook'
+import type { Navigation } from '@/declare/routes.ts'
+import type { AuthData } from '@/declare/hook.ts'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils.ts'
 
 import MenuContent from './MenuContent.vue'
 import SubMenu from './SubMenu.vue'

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, inject, nextTick, reactive } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { WebViewTable, CustomButton, CustomModal } from '@/components'
 
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'

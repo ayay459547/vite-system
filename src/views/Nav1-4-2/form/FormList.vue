@@ -2,10 +2,10 @@
 import type { PropType } from 'vue'
 import { ref, reactive, inject, onBeforeMount, nextTick, useSlots, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { SimpleTable, CustomButton } from '@/components'
-import { useSimpleTableSetting } from '@/lib/lib_columns'
-import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils'
+import { useSimpleTableSetting } from '@/lib/lib_columns.ts'
+import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils.ts'
 
 // slot
 const slots = useSlots()

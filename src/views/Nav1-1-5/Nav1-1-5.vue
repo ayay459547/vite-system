@@ -3,7 +3,7 @@ import { ElCard } from 'element-plus'
 import { ref, onMounted } from 'vue'
 
 import { CustomScrollbar, CustomButton, CustomDivider, CustomDialog, CustomModal } from '@/components'
-import { useBoundingClientRect } from '@/lib/lib_hook'
+import { useBoundingClientRect } from '@/lib/lib_hook.ts'
 
 import TestKeepAlive from './TestKeepAlive.vue'
 

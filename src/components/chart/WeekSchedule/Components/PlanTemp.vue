@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { reactive } from 'vue'
 
-import throttle from '@/lib/lib_throttle'
-import { getUuid, isEmpty } from '@/lib/lib_utils'
+import throttle from '@/lib/lib_throttle.ts'
+import { getUuid, isEmpty } from '@/lib/lib_utils.ts'
 
 import type { Custom } from '../WeekScheduleInfo'
 

@@ -2,13 +2,13 @@
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook'
-import type { Navigation } from '@/declare/routes'
+import type { UseHook } from '@/declare/hook.ts'
+import type { Navigation } from '@/declare/routes.ts'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { hasOwnProperty } from '@/lib/lib_utils'
-import { useRoutesHook } from '@/lib/lib_routes'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { hasOwnProperty } from '@/lib/lib_utils.ts'
+import { useRoutesHook } from '@/lib/lib_routes.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList } = useHook({

@@ -4,7 +4,7 @@ import {
   // getUuid,
   aesEncrypt,
   aesDecrypt
-} from '@/lib/lib_utils'
+} from '@/lib/lib_utils.ts'
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 

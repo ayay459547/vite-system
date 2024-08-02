@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook'
+import type { Navigation } from '@/declare/routes.ts'
+import type { AuthData } from '@/declare/hook.ts'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'

@@ -1,5 +1,5 @@
 import { getMachineList } from './api'
-import { message } from '@/lib/lib_utils'
+import { message } from '@/lib/lib_utils.ts'
 
 export const columnSetting = {
   machine_Id: {

@@ -1,7 +1,7 @@
 import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
 import { useField } from 'vee-validate'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import {
   FormInput,
   FormSelect,
@@ -13,14 +13,14 @@ import {
   FormAutocomplete,
   FormOperator
 } from '@/components'
-import { defaultModuleType } from '@/i18n/i18n_setting'
-import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
-import { formatDatetime } from '@/lib/lib_format'
-import type { VeeRes, ValidateType } from '@/lib/lib_validate'
-import validateFun from '@/lib/lib_validate'
+import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils.ts'
+import { formatDatetime } from '@/lib/lib_format.ts'
+import type { VeeRes, ValidateType } from '@/lib/lib_validate.ts'
+import validateFun from '@/lib/lib_validate.ts'
 
-import type { ModelValue } from './CustomInputInfo'
-import { version, props as inputProps } from './CustomInputInfo'
+import type { ModelValue } from './CustomInputInfo.ts'
+import { version, props as inputProps } from './CustomInputInfo.ts'
 
 import styles from './CustomInput.module.scss'
 

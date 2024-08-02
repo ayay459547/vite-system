@@ -2,8 +2,8 @@
 import { inject, ref } from 'vue'
 import ExcelJs from 'exceljs'
 
-import type { UseHook } from '@/declare/hook'
-import { useTableSetting } from '@/lib/lib_columns'
+import type { UseHook } from '@/declare/hook.ts'
+import { useTableSetting } from '@/lib/lib_columns.ts'
 import type { IconProps, ButtonProps, TooltipProps } from '@/components'
 import {
   CustomButton,
@@ -14,8 +14,8 @@ import {
   CustomTable,
   CustomTooltip
 } from '@/components'
-import { downloadFile } from '@/lib/lib_utils'
-import type { TableOptions } from '@/declare/columnSetting'
+import { downloadFile } from '@/lib/lib_utils.ts'
+import type { TableOptions } from '@/declare/columnSetting.ts'
 
 // WordTest.docx
 import path from '@/assets/file/WordTest.docx?url'

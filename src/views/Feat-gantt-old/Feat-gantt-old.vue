@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, inject, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook.ts'
 import { SimpleFilter, CustomInput, CustomButton } from '@/components'
-import { useFormSetting } from '@/lib/lib_columns'
-import throttle from '@/lib/lib_throttle'
+import { useFormSetting } from '@/lib/lib_columns.ts'
+import throttle from '@/lib/lib_throttle.ts'
 
 import { columnSetting } from './columns'
 import { type TableData, getData } from './api'

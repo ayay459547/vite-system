@@ -2,8 +2,8 @@ import {
   // properties,
   langMap
 } from '@/i18n'
-import { cutTableData, isEmpty } from '@/lib/lib_utils'
-import { object_forEach, object_reduce } from '@/lib/lib_object'
+import { cutTableData, isEmpty } from '@/lib/lib_utils.ts'
+import { object_forEach, object_reduce } from '@/lib/lib_object.ts'
 
 export type TableData = {
   keyword: string

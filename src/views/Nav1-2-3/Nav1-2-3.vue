@@ -2,8 +2,8 @@
 import { reactive } from 'vue'
 
 import { FormList, CustomInput } from '@/components'
-import { useFormListSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { useFormListSetting } from '@/lib/lib_columns.ts'
+import { scrollToEl } from '@/lib/lib_utils.ts'
 
 import { columnSetting } from './columns'
 
