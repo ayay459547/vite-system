@@ -4,7 +4,7 @@ import { computed, ref, nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes.ts'
 import { CustomIcon } from '@/components'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import NavigationView from './NavigationView.vue'

@@ -4,8 +4,8 @@ import { useSlots, ref, onMounted, onUnmounted } from 'vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components'
 
 import type { Sort } from './CustomTable.vue'

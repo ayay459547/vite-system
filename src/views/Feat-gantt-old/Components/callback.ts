@@ -1,4 +1,4 @@
-import { hasOwnProperty } from '@/lib/lib_utils.ts'
+import { hasOwnProperty } from '@/lib/lib_utils'
 import { getMilliseconds } from '@/lib/lib_day'
 
 import type { TableData } from '../api'

@@ -249,7 +249,7 @@ export const numberFormat = <T extends number | string>(
  * @param {Object} options 自訂選項
  * @returns {Promise}
  */
-export const swal = (options: SweetAlertOptions<any, any>): Promise<any> => {
+export const swal = (options: SweetAlertOptions): Promise<any> => {
   const defaultOPtions = {
     // icon 類型
     // info, warning, success, error, question

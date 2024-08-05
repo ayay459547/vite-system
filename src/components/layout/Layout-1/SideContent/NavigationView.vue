@@ -5,11 +5,11 @@ import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook.ts'
 import type { Navigation } from '@/declare/routes.ts'
-import { useRoutesHook } from '@/lib/lib_routes.ts'
+import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomScrollbar } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+import { isEmpty } from '@/lib/lib_utils'
 
 import SubNavigationView from './SubNavigationView.vue'
 
@@ -203,16 +203,19 @@ defineExpose({
 
   &-level1 {
     &-container {
+      & {
+        overflow: hidden {
+          y: auto;
+        }
+        transition-duration: 0.3s;
+      }
+
       &.nav-is-close {
         opacity: 1;
       }
       &.nav-is-open.is-close {
         opacity: 0.2;
       }
-      overflow: hidden {
-        y: auto;
-      }
-      transition-duration: 0.3s;
 
       &.is-close {
         min-width: $side-width - $nav-padding * 2;

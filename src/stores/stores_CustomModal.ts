@@ -1,7 +1,7 @@
 import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 
 export const useCustomModalStore = defineStore('customModal', () => {
   // 正在使用的 modal 要浮在最上面

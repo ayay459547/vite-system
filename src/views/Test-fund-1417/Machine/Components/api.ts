@@ -1,5 +1,5 @@
 import type { Api, ApiRes } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
+import { ajax } from '@/lib/lib_ajax'
 
 // 表單資料
 export type FormData = {

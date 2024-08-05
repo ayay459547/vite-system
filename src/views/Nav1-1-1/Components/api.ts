@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
-import { message } from '@/lib/lib_utils.ts'
+import { ajax } from '@/lib/lib_ajax'
+import { message } from '@/lib/lib_utils'
 import type { TableData } from '../api'
 
 export const createData = async (postData: TableData) => {

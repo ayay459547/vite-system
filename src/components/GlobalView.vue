@@ -11,7 +11,7 @@ import {
   useSlots
 } from 'vue'
 
-import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils.ts'
+import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils'
 
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
@@ -24,8 +24,8 @@ import { ElConfigProvider } from 'element-plus'
 import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
-import { setCookie, removeCookie, setToken, clearToken } from '@/lib/lib_cookie.ts'
-import { formatDatetime } from '@/lib/lib_format.ts'
+import { setCookie, removeCookie, setToken, clearToken } from '@/lib/lib_cookie'
+import { formatDatetime } from '@/lib/lib_format'
 
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -40,10 +40,10 @@ import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useGlobalI18n } from '@/i18n/i18n_excel'
-import type { ScopeKey } from '@/i18n/i18n_setting.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { getPermission } from '@/lib/lib_permission.ts'
+import { getPermission } from '@/lib/lib_permission'
 
 // slot
 const slots = useSlots()

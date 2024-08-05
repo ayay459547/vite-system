@@ -4,7 +4,7 @@ import type { UseHookReturn } from '@/declare/hook.ts'
 import type { RouterTree, Navigation } from '@/declare/routes.ts'
 import type { IconProps } from '@/components'
 import { type RouterType, routerTypeIcon } from '@/router/setting'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 
 /**
  * @author Caleb

@@ -1,5 +1,5 @@
 import dbPromise from './init/init_idb'
-import { isEmpty, swal } from '@/lib/lib_utils.ts'
+import { isEmpty, swal } from '@/lib/lib_utils'
 
 async function get(table: string, key: string) {
   try {

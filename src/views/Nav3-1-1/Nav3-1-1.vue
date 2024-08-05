@@ -2,7 +2,7 @@
 import { ref, onBeforeMount, reactive } from 'vue'
 
 import { CustomInput, CustomButton } from '@/components'
-import { useTableSetting } from '@/lib/lib_columns.ts'
+import { useTableSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting.ts'
 
 // 手寫 lazy-loading 虛擬列表

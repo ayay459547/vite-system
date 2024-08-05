@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useFormSetting } from '@/lib/lib_columns.ts'
-import { scrollToEl, isEmpty } from '@/lib/lib_utils.ts'
+import { useFormSetting } from '@/lib/lib_columns'
+import { scrollToEl, isEmpty } from '@/lib/lib_utils'
 import { CustomInput, CustomButton } from '@/components'
 
 const columnSetting = {

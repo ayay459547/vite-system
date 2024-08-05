@@ -3,8 +3,8 @@ import type { PropType } from 'vue'
 import { computed, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
-import type { ScopeKey } from '@/i18n/i18n_setting.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import {
   CustomPopover,
   CustomButton,
@@ -232,9 +232,11 @@ const submit = () => {
       background-color: var(--el-color-primary-light-9);
     }
 
-    opacity: 0.7;
-    transition-duration: 0.3s;
-    font-weight: 600 !important;
+    & {
+      opacity: 0.7;
+      font-weight: 600 !important;
+    }
+
     &-left {
       width: 100%;
       overflow: hidden;

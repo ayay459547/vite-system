@@ -3,8 +3,8 @@ import { type PropType, ref, onBeforeMount } from 'vue'
 
 import type { ColumnItem, SettingData } from '@/declare/columnSetting.ts'
 import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
-import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb.ts'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
+import { isEmpty } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from './CustomTable.vue'
 

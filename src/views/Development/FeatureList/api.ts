@@ -1,8 +1,8 @@
 import type { Navigation } from '@/declare/routes.ts'
-import { refactorRoutes } from '@/lib/lib_routes.ts'
+import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
-import { cutTableData } from '@/lib/lib_utils.ts'
-import { object_reduce } from '@/lib/lib_object.ts'
+import { cutTableData } from '@/lib/lib_utils'
+import { object_reduce } from '@/lib/lib_object'
 
 export type TableData = {
   status: 'completed' | 'inProgress' | 'new'

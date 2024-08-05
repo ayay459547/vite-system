@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
-import { swal } from '@/lib/lib_utils.ts'
+import { ajax } from '@/lib/lib_ajax'
+import { swal } from '@/lib/lib_utils'
 
 export interface Params {
   dayOfWeek: string

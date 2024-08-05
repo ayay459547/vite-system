@@ -4,11 +4,11 @@ import { ref, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting.ts'
-import type { ScopeKey } from '@/i18n/i18n_setting.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
-import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb.ts'
-import { isEmpty, getProxyData } from '@/lib/lib_utils.ts'
+import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
+import { isEmpty, getProxyData } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from '../CustomTableInfo'
 
@@ -309,8 +309,11 @@ const onDragend = () => {
       width: 48px;
     }
 
-    background-color: inherit;
-    transition-duration: 0.3s;
+    & {
+      background-color: inherit;
+      transition-duration: 0.3s;
+    }
+
     &:hover {
       background-color: var(--el-color-primary-light-9);
     }

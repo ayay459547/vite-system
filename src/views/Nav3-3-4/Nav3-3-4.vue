@@ -14,8 +14,8 @@ import {
   CustomIcon,
   CustomSearch
 } from '@/components'
-import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils.ts'
-import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
+import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils'
+import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import dayjs from '@/lib/lib_day'
 
 import type { TableData, Search } from './api'

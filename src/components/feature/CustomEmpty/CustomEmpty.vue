@@ -2,9 +2,9 @@
 import { useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import { version, props as emptyProps } from './CustomEmptyInfo.ts'
+import { version, props as emptyProps } from './CustomEmptyInfo'
 
 const scopedName = '__i-empty__'
 const scopedId = getUuid(scopedName)

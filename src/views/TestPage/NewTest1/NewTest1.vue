@@ -10,8 +10,8 @@ import {
   CustomSearch,
   GroupSearch
 } from '@/components'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import throttle from '@/lib/lib_throttle'
 import type { TableOptions } from '@/declare/columnSetting.ts'
 
 import { columnSetting } from './columns'

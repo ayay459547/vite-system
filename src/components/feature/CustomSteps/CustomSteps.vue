@@ -2,9 +2,9 @@
 import { useSlots } from 'vue'
 import { ElSteps, ElStep } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils.ts'
+import { getUuid } from '@/lib/lib_utils'
 
-import { version, props as stopsProps } from './CustomStepsInfo.ts'
+import { version, props as stopsProps } from './CustomStepsInfo'
 
 const scopedId = getUuid('__i-steps__')
 

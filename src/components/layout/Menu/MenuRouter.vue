@@ -6,9 +6,9 @@ import type { UseHook } from '@/declare/hook.ts'
 import type { Navigation } from '@/declare/routes.ts'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { hasOwnProperty } from '@/lib/lib_utils.ts'
-import { useRoutesHook } from '@/lib/lib_routes.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { hasOwnProperty } from '@/lib/lib_utils'
+import { useRoutesHook } from '@/lib/lib_routes'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList } = useHook({

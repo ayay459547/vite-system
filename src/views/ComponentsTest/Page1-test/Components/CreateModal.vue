@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useFormSetting } from '@/lib/lib_columns.ts'
-import { scrollToEl } from '@/lib/lib_utils.ts'
+import { useFormSetting } from '@/lib/lib_columns'
+import { scrollToEl } from '@/lib/lib_utils'
 import { CustomInput } from '@/components'
 
 import type { TableData } from '../api'

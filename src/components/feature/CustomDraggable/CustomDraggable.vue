@@ -2,10 +2,10 @@
 import { computed, useSlots } from 'vue'
 import Draggable from 'vuedraggable'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import type { Custom, Emits } from './CustomDraggableInfo.ts'
-import { version, props as draggableProps } from './CustomDraggableInfo.ts'
+import type { Custom, Emits } from './CustomDraggableInfo'
+import { version, props as draggableProps } from './CustomDraggableInfo'
 
 const scopedName = '__i-draggable__'
 const scopedId = getUuid(scopedName)

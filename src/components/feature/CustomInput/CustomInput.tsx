@@ -13,14 +13,14 @@ import {
   FormAutocomplete,
   FormOperator
 } from '@/components'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
-import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils.ts'
-import { formatDatetime } from '@/lib/lib_format.ts'
-import type { VeeRes, ValidateType } from '@/lib/lib_validate.ts'
-import validateFun from '@/lib/lib_validate.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
+import { formatDatetime } from '@/lib/lib_format'
+import type { VeeRes, ValidateType } from '@/lib/lib_validate'
+import validateFun from '@/lib/lib_validate'
 
-import type { ModelValue } from './CustomInputInfo.ts'
-import { version, props as inputProps } from './CustomInputInfo.ts'
+import type { ModelValue } from './CustomInputInfo'
+import { version, props as inputProps } from './CustomInputInfo'
 
 import styles from './CustomInput.module.scss'
 
@@ -56,6 +56,7 @@ const CustomInput = defineComponent({
     //   }
     // })
 
+    // i18nTranslate
     const getTranslateLabel = (object: any) => {
       const label = i18nTest(object.i18nLabel)
         ? i18nTranslate(object.i18nLabel)
@@ -77,6 +78,19 @@ const CustomInput = defineComponent({
     })
     const translateOptions = computed(() => {
       return getTranslateOptions(props.options)
+    })
+
+    const getTranslateShortCuts = (shortcuts: Array<any>) => {
+      if (isEmpty(shortcuts)) return []
+      return shortcuts.map(shortcut => {
+        return {
+          text: i18nTest(shortcut.i18nLabel) ? i18nTranslate(shortcut.i18nLabel) : shortcut.text,
+          value: shortcut.value
+        }
+      })
+    }
+    const translateShortCuts = computed(() => {
+      return getTranslateShortCuts(props.shortcuts)
     })
 
     const validateCount = ref(0)
@@ -560,6 +574,7 @@ const CustomInput = defineComponent({
               // v-bind 綁定屬性
               {...bindAttributes.value}
               type={props.type}
+              shortcuts={translateShortCuts.value}
               errorMessage={errorMessage.value}
               // v-on 接收事件
               onFocus={(e: any) => onEvent.value.onFocus(e)}
@@ -714,7 +729,7 @@ const CustomInput = defineComponent({
         )}
 
         <div class={styles['__input-main']}>
-          {props.text ? <div class="i-pt-xs">{getTextValue.value}</div> : renderInput()}
+          {props.text ? <div class='i-pt-xs'>{getTextValue.value}</div> : renderInput()}
           {props.isValidate && !props.hiddenErrorMessage && (
             <span class={styles['__input-error']}>{i18nErrorMessage.value}</span>
           )}

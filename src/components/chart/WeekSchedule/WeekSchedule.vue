@@ -2,8 +2,8 @@
 import { onMounted, reactive, ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
-import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Custom, Props } from './WeekScheduleInfo'
 import { props as weekScheduleProps } from './WeekScheduleInfo'

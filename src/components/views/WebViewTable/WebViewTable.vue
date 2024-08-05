@@ -6,10 +6,10 @@ import type { UseHook } from '@/declare/hook.ts'
 import type { LazyLoadingStatus } from '@/components'
 import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, CustomTooltip } from '@/components'
 import type { TableOptions } from '@/declare/columnSetting.ts'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
-import throttle from '@/lib/lib_throttle.ts'
-import { hasOwnProperty, getProxyData } from '@/lib/lib_utils.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import throttle from '@/lib/lib_throttle'
+import { hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
   FakeData,

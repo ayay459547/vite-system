@@ -4,7 +4,7 @@ import { ref, shallowRef, onMounted } from 'vue'
 
 import type { EventOptions, EventItem } from '@/declare/hook.ts'
 import { CustomPopover } from '@/components'
-import throttle from '@/lib/lib_throttle.ts'
+import throttle from '@/lib/lib_throttle'
 
 type Placement =
   | 'top'

@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue'
 
 import { CustomTable, CustomInput, CustomButton } from '@/components'
-import { useTableSetting } from '@/lib/lib_columns.ts'
+import { useTableSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting.ts'
 
 const columnSetting = {

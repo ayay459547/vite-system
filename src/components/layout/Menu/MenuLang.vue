@@ -5,7 +5,7 @@ import type { UseHook, EventItem } from '@/declare/hook.ts'
 import { options as langOptions } from '@/i18n'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { useLocaleStore } from '@/stores/stores_locale'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList } = useHook({

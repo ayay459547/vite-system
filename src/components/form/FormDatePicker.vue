@@ -4,8 +4,8 @@ import { computed, useSlots, ref, inject } from 'vue'
 import { ElDatePicker } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook.ts'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type DatePickerType =
   | 'year'

@@ -1,5 +1,5 @@
 import type { Api, ApiRes } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
+import { ajax } from '@/lib/lib_ajax'
 
 export type UploadFileRes = {
   conflictList: Array<any>

@@ -4,8 +4,8 @@ import { ref, reactive, inject, onBeforeMount, nextTick, useSlots, computed } fr
 
 import type { UseHook } from '@/declare/hook.ts'
 import { SimpleTable, CustomButton } from '@/components'
-import { useSimpleTableSetting } from '@/lib/lib_columns.ts'
-import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils.ts'
+import { useSimpleTableSetting } from '@/lib/lib_columns'
+import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils'
 
 // slot
 const slots = useSlots()

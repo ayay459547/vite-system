@@ -6,7 +6,7 @@ import type { UseHook, SwalResult } from '@/declare/hook.ts'
 // 引入組件
 import { CustomModal, CustomTabs, CustomEmpty, CustomButton } from '@/components'
 // 引入權限
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 // 插單:機台角度
 import MachineView from './MachineView/MachineView.vue'
 // 插單:訂單角度

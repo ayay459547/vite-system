@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { useLayoutStore } from '@/stores/stores_layout.ts'
+import { useLayoutStore } from '@/stores/stores_layout'
 import { fakeData } from './fakeData'
 import {
   // 常數

@@ -2,9 +2,9 @@
 import { type PropType, ref, computed, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
-import { useTableSetting } from '@/lib/lib_columns.ts'
+import { useTableSetting } from '@/lib/lib_columns'
 import { CustomPopover, CustomButton, CustomTable } from '@/components'
-import { cutTableData } from '@/lib/lib_utils.ts'
+import { cutTableData } from '@/lib/lib_utils'
 
 import type { TableOptions } from '@/declare/columnSetting.ts'
 import { columnSetting } from '../columns'

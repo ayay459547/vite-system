@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, inject } from 'vue'
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 
 import type { UseHook } from '@/declare/hook.ts'
 

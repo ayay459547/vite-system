@@ -2,12 +2,12 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 
 import { CustomIcon, CustomScrollbar } from '@/components'
-import { useBoundingClientRect } from '@/lib/lib_hook.ts'
-import { getUuid, isEmpty } from '@/lib/lib_utils.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import { useBoundingClientRect } from '@/lib/lib_hook'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
+import throttle from '@/lib/lib_throttle'
 
-import type { Props } from './CustomDividerViewInfo.ts'
-import { version, props as dividerViewProps } from './CustomDividerViewInfo.ts'
+import type { Props } from './CustomDividerViewInfo'
+import { version, props as dividerViewProps } from './CustomDividerViewInfo'
 
 const scopedName = '__i-divider-view__'
 const scopedId = getUuid(scopedName)

@@ -2,7 +2,7 @@
 import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
 import { CustomTable, CustomInput } from '@/components'
-import { useTableSetting, useFormSetting } from '@/lib/lib_columns.ts'
+import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting.ts'
 
 import { columnSetting } from './columns'

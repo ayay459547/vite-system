@@ -6,7 +6,7 @@ import type { UseHook } from '@/declare/hook.ts'
 // 引入組件
 import { CustomTabs } from '@/components'
 // 引入工具
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 
 // 機台保養工時
 import SpecifyMachine from './SpecifyMachine/SpecifyMachine.vue'

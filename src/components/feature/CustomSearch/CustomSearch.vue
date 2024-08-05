@@ -3,15 +3,15 @@ import { computed, ref, nextTick, useSlots, inject, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
-import { useFormListSetting } from '@/lib/lib_columns.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+import { useFormListSetting } from '@/lib/lib_columns'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge, CustomTooltip, FormCheckbox, FormList } from '@/components'
-import { isEmpty, getUuid, hasOwnProperty, getProxyData } from '@/lib/lib_utils.ts'
-import { conditionOptions } from '@/variable.ts'
+import { isEmpty, getUuid, hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { conditionOptions } from '@/variable'
 
-import type { Props } from './CustomSearchInfo.ts'
-import { version, props as searchProps } from './CustomSearchInfo.ts'
+import type { Props } from './CustomSearchInfo'
+import { version, props as searchProps } from './CustomSearchInfo'
 
 const scopedId = getUuid('__i-search__')
 

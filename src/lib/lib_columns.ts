@@ -3,7 +3,7 @@ import { reactive, shallowReactive, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
 import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files.ts'
 
 import type { TableParams, Sort } from '@/components'
@@ -22,9 +22,9 @@ import type {
   SimpleTableSetting
   // SimpleTableColumnsItem
 } from '@/declare/columnSetting.ts'
-import { getColumnSetting } from '@/lib/lib_idb.ts'
-import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils.ts'
-import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object.ts'
+import { getColumnSetting } from '@/lib/lib_idb'
+import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
 
 /**
  * @author Caleb

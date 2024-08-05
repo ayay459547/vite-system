@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, onMounted } from 'vue'
-import { swal } from '@/lib/lib_utils.ts'
+import { swal } from '@/lib/lib_utils'
 
 const props = defineProps({
   data: {

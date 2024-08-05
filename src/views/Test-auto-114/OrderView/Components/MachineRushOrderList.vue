@@ -4,8 +4,8 @@ import { ref, inject, nextTick, reactive, onMounted } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
 import { FormList, CustomInput, CustomButton } from '@/components'
-import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns.ts'
-import { isEmpty, scrollToEl } from '@/lib/lib_utils.ts'
+import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
+import { isEmpty, scrollToEl } from '@/lib/lib_utils'
 
 import { workReportColumnSetting } from './columns'
 import type { RushOrders } from '../../api'

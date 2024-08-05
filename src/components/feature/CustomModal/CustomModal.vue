@@ -14,15 +14,15 @@ import {
 import { storeToRefs } from 'pinia'
 
 import type { UseHook, SwalResult } from '@/declare/hook.ts'
-import { useBoundingClientRect } from '@/lib/lib_hook.ts'
+import { useBoundingClientRect } from '@/lib/lib_hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
-import { getUuid } from '@/lib/lib_utils.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import { getUuid } from '@/lib/lib_utils'
+import throttle from '@/lib/lib_throttle'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { Props } from './CustomModalInfo.ts'
-import { version, props as modalProps, minModalIndex } from './CustomModalInfo.ts'
+import type { Props } from './CustomModalInfo'
+import { version, props as modalProps, minModalIndex } from './CustomModalInfo'
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
@@ -625,6 +625,13 @@ onUnmounted(() => {
       }
     }
     &.height {
+      & {
+        max: {
+        width: 100%;
+        height: 100%;
+      }
+
+      }
       &-fill {
         height: 100%;
       }
@@ -652,10 +659,6 @@ onUnmounted(() => {
       &-fitContent {
         height: fit-content;
       }
-    }
-    max: {
-      width: 100%;
-      height: 100%;
     }
   }
 

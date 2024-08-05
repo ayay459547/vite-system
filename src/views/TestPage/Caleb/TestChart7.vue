@@ -7,7 +7,7 @@ import { downloadMatrix } from '@/lib/lib_files.ts'
 
 // import { storeToRefs } from 'pinia'
 // import { useRoutesStore } from '@/stores/stores_routes'
-// import { getPermission } from '@/lib/lib_permission.ts'
+// import { getPermission } from '@/lib/lib_permission'
 
 const useHook: UseHook = inject('useHook')
 const { permission, loading } = useHook()

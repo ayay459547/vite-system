@@ -1,5 +1,5 @@
 import type { Api, ApiRes } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
+import { ajax } from '@/lib/lib_ajax'
 import type { RushOrders } from '../api'
 import { columnSetting } from './columns'
 

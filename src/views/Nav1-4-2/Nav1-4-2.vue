@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import { useFormSetting } from '@/lib/lib_columns.ts'
-import { scrollToEl } from '@/lib/lib_utils.ts'
+import { useFormSetting } from '@/lib/lib_columns'
+import { scrollToEl } from '@/lib/lib_utils'
 import { CustomIcon, CustomButton, CustomInput, CustomSearch } from '@/components'
 
 // import FormInput from './form/FormInput.vue'

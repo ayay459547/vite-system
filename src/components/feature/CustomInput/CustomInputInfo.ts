@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-import type { ScopeKey } from '@/i18n/i18n_setting.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
-import type { ValidateType } from '@/lib/lib_validate.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ValidateType } from '@/lib/lib_validate'
 import type { Option } from '@/components'
 
 import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'

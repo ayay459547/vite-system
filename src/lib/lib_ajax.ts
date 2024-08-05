@@ -3,8 +3,8 @@ import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } fr
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax.ts'
-import { hasOwnProperty, isEmpty, swal } from '@/lib/lib_utils.ts'
-import { updateToken } from '@/lib/lib_cookie.ts'
+import { hasOwnProperty, isEmpty, swal } from '@/lib/lib_utils'
+import { updateToken } from '@/lib/lib_cookie'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
 const connectApi = (import.meta as any).env.VITE_API_CONNECT_API

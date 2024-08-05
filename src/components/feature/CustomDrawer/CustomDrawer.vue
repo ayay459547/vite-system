@@ -2,10 +2,10 @@
 import { computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils.ts'
+import { getUuid } from '@/lib/lib_utils'
 
-import type { Emits } from './CustomDrawerInfo.ts'
-import { version, props as drawerProps } from './CustomDrawerInfo.ts'
+import type { Emits } from './CustomDrawerInfo'
+import { version, props as drawerProps } from './CustomDrawerInfo'
 
 const scopedName = '__i-drawer__'
 const scopedId = getUuid(scopedName)

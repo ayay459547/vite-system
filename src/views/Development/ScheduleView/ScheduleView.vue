@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CustomTimeLine, CustomIcon, SimpleTable, CustomButton } from '@/components'
-import { useSimpleTableSetting } from '@/lib/lib_columns.ts'
-import { isEmpty, downloadFile } from '@/lib/lib_utils.ts'
+import { useSimpleTableSetting } from '@/lib/lib_columns'
+import { isEmpty, downloadFile } from '@/lib/lib_utils'
 
 import { columnSetting } from './columns'
 

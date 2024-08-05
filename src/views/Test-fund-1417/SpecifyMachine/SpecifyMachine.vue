@@ -3,7 +3,7 @@ import { ref, onMounted, inject, reactive, computed } from 'vue'
 
 import type { UseHook, SwalResult } from '@/declare/hook.ts'
 import { CustomButton, CustomIcon, CustomModal, WebViewTable } from '@/components'
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 
 import type { TableOptions } from '@/declare/columnSetting.ts'
 import type { TableData } from './api'

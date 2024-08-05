@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 
 import { CustomMarkdown, CustomButton, CustomUpload } from '@/components'
-import { isEmpty, downloadFile, swal } from '@/lib/lib_utils.ts'
+import { isEmpty, downloadFile, swal } from '@/lib/lib_utils'
 
 // Excel轉JSON.xlsx
 import path from '@/assets/file/ExcelToJSON.xlsx?url'

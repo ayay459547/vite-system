@@ -2,7 +2,7 @@
 import { type PropType, computed } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 export type Options = Array<{
   label: string

@@ -8,9 +8,9 @@ import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes.ts'
 import routes from '@/router/routes'
-import { permission, hasPermission } from '@/lib/lib_permission.ts'
-import { tipLog } from '@/lib/lib_utils.ts'
-import { updateToken } from '@/lib/lib_cookie.ts'
+import { permission, hasPermission } from '@/lib/lib_permission'
+import { tipLog } from '@/lib/lib_utils'
+import { updateToken } from '@/lib/lib_cookie'
 
 import { commonRoutes } from './Common'
 

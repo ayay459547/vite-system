@@ -2,9 +2,9 @@
 import { computed, ref, useSlots } from 'vue'
 import { ElPopover } from 'element-plus'
 
-import { getUuid, hasOwnProperty } from '@/lib/lib_utils.ts'
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
-import { version, props as popoverProps } from './CustomPopoverInfo.ts'
+import { version, props as popoverProps } from './CustomPopoverInfo'
 
 const scopedName = '__i-popover__'
 const scopedId = getUuid(scopedName)

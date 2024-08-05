@@ -2,9 +2,9 @@
 import { useSlots } from 'vue'
 import { ElTimeline, ElTimelineItem } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils.ts'
+import { getUuid } from '@/lib/lib_utils'
 
-import { version, props as timeLineProps } from './CustomTimeLineInfo.ts'
+import { version, props as timeLineProps } from './CustomTimeLineInfo'
 
 const scopedName = '__i-time-line__'
 const scopedId = getUuid(scopedName)

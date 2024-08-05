@@ -4,8 +4,8 @@ import { ref, onMounted, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
 import { FormList, CustomInput, CustomButton } from '@/components'
-import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns.ts'
-import { scrollToEl, isEmpty } from '@/lib/lib_utils.ts'
+import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
+import { scrollToEl, isEmpty } from '@/lib/lib_utils'
 import type { TableData } from '../api'
 import { workReportColumnSetting } from './columns'
 

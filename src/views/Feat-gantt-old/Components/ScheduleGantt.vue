@@ -13,10 +13,10 @@ import {
   CustomPopover,
   CustomModal
 } from '@/components'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { getMilliseconds } from '@/lib/lib_day'
-import { formatDatetime } from '@/lib/lib_format.ts'
-import { object_forEach, object_reduce } from '@/lib/lib_object.ts'
+import { formatDatetime } from '@/lib/lib_format'
+import { object_forEach, object_reduce } from '@/lib/lib_object'
 
 import type { TableData } from '../api'
 import type {

@@ -2,10 +2,10 @@
 import { useSlots, ref } from 'vue'
 import { ElScrollbar } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils.ts'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import type { Custom, Emits, Expose } from './CustomScrollbarInfo.ts'
-import { version, props as scrollbarProps } from './CustomScrollbarInfo.ts'
+import type { Custom, Emits, Expose } from './CustomScrollbarInfo'
+import { version, props as scrollbarProps } from './CustomScrollbarInfo'
 
 const scopedName = '__i-scroll-bar__'
 const scopedId = getUuid(scopedName)

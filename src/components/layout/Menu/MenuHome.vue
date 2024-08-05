@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook.ts'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({

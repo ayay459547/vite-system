@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
-import { swal, cutTableData } from '@/lib/lib_utils.ts'
+import { ajax } from '@/lib/lib_ajax'
+import { swal, cutTableData } from '@/lib/lib_utils'
 import type { Sort } from '@/components'
 
 import { fakeData } from './fakeData'

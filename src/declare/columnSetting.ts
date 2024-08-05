@@ -1,7 +1,7 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
 import type { FormInputExpose, CustomTableExpose, TableParams, Sort, TableSize } from '@/components'
-import type { ScopeKey } from '@/i18n/i18n_setting.ts'
-import type { ValidateType } from '@/lib/lib_validate.ts'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import type { ValidateType } from '@/lib/lib_validate'
 
 export interface InputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
 

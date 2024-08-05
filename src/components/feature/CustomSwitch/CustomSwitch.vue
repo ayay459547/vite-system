@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import { ElSwitch } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils.ts'
+import { getUuid } from '@/lib/lib_utils'
 
-import type { Props, Emits } from './CustomSwitchInfo.ts'
-import { version, props as switchProps } from './CustomSwitchInfo.ts'
+import type { Props, Emits } from './CustomSwitchInfo'
+import { version, props as switchProps } from './CustomSwitchInfo'
 
 const scopedId = getUuid('__i-switch__')
 

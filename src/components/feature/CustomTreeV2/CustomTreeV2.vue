@@ -5,12 +5,12 @@ import type { TreeNode } from 'element-plus'
 import { ElTreeV2 } from 'element-plus'
 // import type Node from 'element-plus/es/components/tree/src/model/node'
 
-import { getUuid } from '@/lib/lib_utils.ts'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import { getUuid } from '@/lib/lib_utils'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 
-import type { Custom, Emits, Expose } from './CustomTreeV2Info.ts'
-import { version, props as treeProps } from './CustomTreeV2Info.ts'
+import type { Custom, Emits, Expose } from './CustomTreeV2Info'
+import { version, props as treeProps } from './CustomTreeV2Info'
 
 const scopedName = '__i-tree-v2__'
 const scopedId = getUuid(scopedName)

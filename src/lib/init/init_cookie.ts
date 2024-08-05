@@ -1,5 +1,5 @@
 import checkSystemVersionDiff from './checkSystemVersion.ts'
-import { removeCookie } from '@/lib/lib_cookie.ts'
+import { removeCookie } from '@/lib/lib_cookie'
 
 /**
  * cookie 刷新

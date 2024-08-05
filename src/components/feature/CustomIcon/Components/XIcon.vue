@@ -3,7 +3,7 @@ import type { PropType, ComponentOptionsMixin, Component } from 'vue'
 import { h } from 'vue'
 import { Icon } from '@vicons/utils'
 
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils.ts'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 
 import fluent from './fluent'
 import ionicons4 from './ionicons4'

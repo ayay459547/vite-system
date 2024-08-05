@@ -4,10 +4,10 @@ import { useSlots, ref, onMounted, onUnmounted, computed, watch, effectScope, ne
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 
 import type {
   Sort,
@@ -651,13 +651,15 @@ defineExpose({
     }
 
     .el-table__body {
+      // border 生效
+      border-collapse: collapse;
+      // border-collapse: separate;
+
       // fix table x scroll
       &-wrapper {
         width: calc(100% + 1px);
       }
-      // border 生效
-      border-collapse: collapse;
-      // border-collapse: separate;
+
       .el-table__row {
         background-color: var(--i-color-table-odd);
         &:hover {

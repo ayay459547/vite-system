@@ -1,5 +1,5 @@
 /* 讓 object 有類似 array 的方法 */
-import { hasOwnProperty } from '@/lib/lib_utils.ts'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
 type That = Object | Array<any> | Record<string, any>
 

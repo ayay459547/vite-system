@@ -1,4 +1,4 @@
-// import { checkInitIdb } from '@/lib/lib_idb.ts'
+// import { checkInitIdb } from '@/lib/lib_idb'
 
 self.addEventListener(
   'message',

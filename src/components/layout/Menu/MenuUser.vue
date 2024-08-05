@@ -3,8 +3,8 @@ import { inject, computed } from 'vue'
 
 import type { UseHook, AuthData } from '@/declare/hook.ts'
 import { CustomIcon, CustomTooltip } from '@/components'
-import { getCookie } from '@/lib/lib_cookie.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { getCookie } from '@/lib/lib_cookie'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const useHook: UseHook = inject('useHook')
 const { eventList, i18nTranslate } = useHook({

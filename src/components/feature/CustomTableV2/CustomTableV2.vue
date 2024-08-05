@@ -3,11 +3,11 @@ import { ref, useSlots, onMounted, onUnmounted } from 'vue'
 import type { ElTableV2 as ElTableV2Type, TableV2Instance } from 'element-plus'
 import { ElTableV2 } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
-import throttle from '@/lib/lib_throttle.ts'
-import { getUuid } from '@/lib/lib_utils.ts'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
+import { getUuid } from '@/lib/lib_utils'
 
-import { version, props as tableV2Props } from './CustomTableV2Info.ts'
+import { version, props as tableV2Props } from './CustomTableV2Info'
 
 const scopedId = getUuid('__i-table-v2__')
 

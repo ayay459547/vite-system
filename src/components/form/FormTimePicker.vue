@@ -5,9 +5,9 @@ import { ElTimePicker } from 'element-plus'
 import type { Dayjs } from 'dayjs'
 
 import type { UseHook } from '@/declare/hook.ts'
-import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
-import { formatDatetime } from '@/lib/lib_format.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { formatDatetime } from '@/lib/lib_format'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export type TimePickerType = 'time' | 'timerange'
 export declare type GetDisabledHours = (role: string, comparingDate?: Dayjs) => number[]

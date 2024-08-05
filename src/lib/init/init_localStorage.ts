@@ -1,5 +1,5 @@
 import checkSystemVersionDiff from './checkSystemVersion'
-import { hasOwnProperty } from '@/lib/lib_utils.ts'
+import { hasOwnProperty } from '@/lib/lib_utils'
 
 const buildVersion = (import.meta as any).env.VITE_API_BUILD_VERSION
 

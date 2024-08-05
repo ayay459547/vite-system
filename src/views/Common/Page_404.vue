@@ -3,8 +3,8 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 
 import { CustomWatermark } from '@/components'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle.ts'
-import throttle from '@/lib/lib_throttle.ts'
+import type { ResizeObserverCallback } from '@/lib/lib_throttle'
+import throttle from '@/lib/lib_throttle'
 
 // const imgStyle = ref('')
 const titleStyle = ref('')

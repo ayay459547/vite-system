@@ -9,9 +9,9 @@ import type { UseHook } from '@/declare/hook.ts'
 import { ElLink } from 'element-plus'
 import { CustomTooltip, CustomIcon } from '@/components'
 // 工具包
-import { aesEncrypt, getUuid } from '@/lib/lib_utils.ts'
+import { aesEncrypt, getUuid } from '@/lib/lib_utils'
 // 組件參數設定
-import { version, props as linkProps } from './CustomLinkInfo.ts'
+import { version, props as linkProps } from './CustomLinkInfo'
 
 // 接收 GlobalView.vue 的 useHook
 const useHook: UseHook = inject('useHook')

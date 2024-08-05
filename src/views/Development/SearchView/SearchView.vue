@@ -4,10 +4,10 @@ import { type ComputedRef, computed, provide, inject } from 'vue'
 import type { UseHook } from '@/declare/hook.ts'
 import type { Navigation } from '@/declare/routes.ts'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { useFormSetting } from '@/lib/lib_columns.ts'
+import { useFormSetting } from '@/lib/lib_columns'
 import { CustomInput, CustomIcon, CustomButton } from '@/components'
-import { scrollToEl } from '@/lib/lib_utils.ts'
-import debounce from '@/lib/lib_debounce.ts'
+import { scrollToEl } from '@/lib/lib_utils'
+import debounce from '@/lib/lib_debounce'
 
 import FeatureTree from './FeatureTree.vue'
 

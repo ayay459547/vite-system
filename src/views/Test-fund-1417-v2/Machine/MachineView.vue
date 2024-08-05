@@ -15,11 +15,11 @@ import {
 } from '@/components'
 
 // 權限
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission.ts'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 // 工具
-import { isEmpty, scrollToEl } from '@/lib/lib_utils.ts'
+import { isEmpty, scrollToEl } from '@/lib/lib_utils'
 // 設定表格資料
-import { useFormSetting } from '@/lib/lib_columns.ts'
+import { useFormSetting } from '@/lib/lib_columns'
 
 import {
   getMachineIdWeekSchedule,

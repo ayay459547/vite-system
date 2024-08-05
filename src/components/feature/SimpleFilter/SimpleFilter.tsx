@@ -2,12 +2,12 @@ import { defineComponent, inject, computed, ref } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
 import { CustomButton, CustomPopover } from '@/components'
-import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
-import { object_reduce } from '@/lib/lib_object.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { object_reduce } from '@/lib/lib_object'
 
 import styles from './SimpleFilter.module.scss'
 
-import { version, props as simpleFilterProps } from './SimpleFilterInfo.ts'
+import { version, props as simpleFilterProps } from './SimpleFilterInfo'
 
 const SimpleFilter = defineComponent({
   name: 'SimpleFilter',

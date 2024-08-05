@@ -1,6 +1,6 @@
 import type { Api, ApiRes } from '@/declare/ajax.ts'
-import { ajax } from '@/lib/lib_ajax.ts'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { ajax } from '@/lib/lib_ajax'
+import { isEmpty } from '@/lib/lib_utils'
 import { fakeTableData } from './fakeData'
 
 export interface Params {

@@ -3,9 +3,9 @@ import { onMounted, shallowRef, ref } from 'vue'
 
 import type { Navigation } from '@/declare/routes.ts'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { useRoutesHook } from '@/lib/lib_routes.ts'
+import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 
 const { getRouteIcon, getRouteTitle } = useRoutesHook()
 

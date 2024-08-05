@@ -3,7 +3,7 @@ import { type PropType, computed, ref } from 'vue'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import { useField } from 'vee-validate'
 
-import { isEmpty } from '@/lib/lib_utils.ts'
+import { isEmpty } from '@/lib/lib_utils'
 
 type ModelValue = Array<string | number | null>
 

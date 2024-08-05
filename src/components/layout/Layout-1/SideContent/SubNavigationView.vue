@@ -6,9 +6,9 @@ import type { NavigationFailure } from 'vue-router'
 import type { UseHook } from '@/declare/hook.ts'
 import type { Navigation } from '@/declare/routes.ts'
 import { CustomIcon, CustomScrollbar } from '@/components'
-import { useRoutesHook } from '@/lib/lib_routes.ts'
+import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 const props = defineProps({
   isLevel2Open: {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getUuid, isEmpty } from '@/lib/lib_utils.ts'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
 import XIcon from './Components/XIcon.vue'
 
-import { version, props as iconProps } from './CustomIconInfo.ts'
+import { version, props as iconProps } from './CustomIconInfo'
 
 const scopedName = '__i-icon__'
 const scopedId = getUuid(scopedName)

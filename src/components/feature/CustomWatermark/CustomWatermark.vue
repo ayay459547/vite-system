@@ -2,9 +2,9 @@
 import { useSlots } from 'vue'
 import { ElWatermark } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils.ts'
+import { getUuid } from '@/lib/lib_utils'
 
-import { version, props as watermarkProps } from './CustomWatermarkInfo.ts'
+import { version, props as watermarkProps } from './CustomWatermarkInfo'
 
 const scopedId = getUuid('__i-watermark__')
 

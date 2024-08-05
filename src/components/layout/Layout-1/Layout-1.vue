@@ -240,7 +240,10 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
         left: $nav-width;
       }
     }
-    overflow: hidden;
+
+    & {
+      overflow: hidden;
+    }
   }
   &-header {
     width: 100%;

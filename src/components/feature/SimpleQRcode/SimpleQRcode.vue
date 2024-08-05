@@ -2,10 +2,10 @@
 import { h } from 'vue'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils.ts'
-import { object_filter } from '@/lib/lib_object.ts'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { object_filter } from '@/lib/lib_object'
 
-import { version, props as qrCodeProps } from './SimpleQRcodeInfo.ts'
+import { version, props as qrCodeProps } from './SimpleQRcodeInfo'
 
 export default {
   props: qrCodeProps,

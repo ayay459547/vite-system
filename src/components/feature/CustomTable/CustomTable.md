@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { CustomTable } from '@/components'
 
-import { getTableSetting } from '@/lib/lib_columns.ts'
+import { getTableSetting } from '@/lib/lib_columns'
 
 const tableData1 = [
   { name: '小名', age: 13, address: '台北市大安區' },

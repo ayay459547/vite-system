@@ -1,5 +1,5 @@
 import { getMachineList } from './api'
-import { message } from '@/lib/lib_utils.ts'
+import { message } from '@/lib/lib_utils'
 
 export const columnSetting = {
   dateTimeRange: {

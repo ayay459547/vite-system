@@ -4,12 +4,12 @@ import { h, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook.ts'
 import { CustomDraggable } from '@/components'
-import { getUuid, isEmpty } from '@/lib/lib_utils.ts'
-import type { ScopeKey } from '@/i18n/i18n_setting.ts'
-import { defaultModuleType } from '@/i18n/i18n_setting.ts'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { Props } from './SimpleTableInfo.ts'
-import { version, props as simpleTableProps } from './SimpleTableInfo.ts'
+import type { Props } from './SimpleTableInfo'
+import { version, props as simpleTableProps } from './SimpleTableInfo'
 
 let propI18nModule: ScopeKey = defaultModuleType
 const getTranslate = (label: string, i18nLabel: string, i18nModule?: string) => {
