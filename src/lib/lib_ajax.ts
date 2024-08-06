@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } fr
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax'
-import { hasOwnProperty, isEmpty, swal } from '@/lib/lib_utils'
+import { hasOwnProperty, isEmpty, swal, message } from '@/lib/lib_utils'
 import { updateToken } from '@/lib/lib_cookie'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
@@ -31,7 +31,7 @@ const fakeApi = <ResData>(
   })
 }
 
-const timeout = 1000 * 60 * 30
+const timeout = 3000 * 60 * 30
 const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): PromiseLike<ResData> => {
   const instance = axios.create({
     baseURL: baseUrl,
@@ -49,6 +49,11 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     },
     (error: any) => {
       console.log('request error', error)
+      message({
+        type: 'error',
+        message: error,
+        duration: 10000
+      })
     }
   )
 
@@ -58,6 +63,12 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     },
     (error: any) => {
       console.log('response error', error)
+      message({
+        type: 'error',
+        message: error,
+        duration: 10000
+      })
+
       const apiUrl = error?.request?.responseURL ?? ''
       const status = error?.response?.status ?? ''
 
@@ -197,7 +208,14 @@ export class IWebScoket {
       this.isError = false
     } else {
       this.isReConnect = true
-      console.log(`reconnect ( ${this.connectUrl} ) after ${delay} second`)
+      const msg = `reconnect ${this.connectUrl} after ${delay} second`
+      message({
+        type: 'warning',
+        message: msg,
+        duration: delay
+      })
+      console.log(msg)
+
       this.timer = setTimeout(() => {
         this.init(this.config)
       }, delay)
@@ -209,7 +227,13 @@ export class IWebScoket {
     if (!isEmpty(onopen)) {
       onopen()
     } else {
-      console.log(`connect ( ${this.connectUrl} ) success`)
+      const msg = `connect ${this.connectUrl} success`
+      message({
+        type: 'success',
+        message: msg,
+        duration: 3000
+      })
+      console.log(msg)
     }
     this.connectCount++
 
@@ -219,7 +243,13 @@ export class IWebScoket {
     if (!isEmpty(onclose)) {
       onclose()
     } else {
-      console.log(`close ( ${this.connectUrl} ) connect`)
+      const msg = `close ${this.connectUrl} connect`
+      message({
+        type: 'info',
+        message: msg,
+        duration: 3000
+      })
+      console.log(msg)
     }
 
     this.isReConnect = false
@@ -229,7 +259,7 @@ export class IWebScoket {
       if (this.isError) {
         this.#reconnect(60000)
       } else {
-        this.#reconnect(1000)
+        this.#reconnect(3000)
       }
     }
   }
@@ -238,12 +268,18 @@ export class IWebScoket {
     if (!isEmpty(onerror) && this.connectCount > 0) {
       onerror()
     } else {
-      console.log(`connect ( ${this.connectUrl} ) error`)
+      const msg = `connect ${this.connectUrl} error`
+      message({
+        type: 'error',
+        message: msg,
+        duration: 3000
+      })
+      console.log(msg)
     }
     this.isError = true
   }
   #onmessage(msg: MessageEvent) {
-    console.log(`get ( ${this.connectUrl} ) message`, msg)
+    console.log(`get ${this.connectUrl} message`, msg)
     return msg
   }
 
@@ -277,7 +313,6 @@ export class IWebScoket {
    */
   init(config: WebSocketConfig) {
     if (isEmpty(config)) return
-    // console.log('init WebSocket')
 
     const { baseWs, baseUrl, url, onopen, onclose, onerror, onmessage } = config
 
@@ -322,7 +357,7 @@ export class IWebScoket {
       if (this.socket.readyState === 1) {
         this.sendMessageCount = 0
         clearTimeout(_timer)
-        console.log(`send ( ${this.connectUrl} ) `, data)
+        console.log(`send ${this.connectUrl} `, data)
         this.socket.send(data)
       } else {
         // 無法送出訊息 重新送出10次

@@ -683,10 +683,12 @@ defineExpose({
         }
       }
       .el-table__row .el-table__cell {
+        padding: 8px 0;
         background-color: inherit;
         transition: background-color 0.1s ease-out;
         & > .cell {
-          content-visibility: auto;
+          // content-visibility: auto;
+          overflow: visible;
         }
       }
     }

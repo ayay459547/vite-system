@@ -1,5 +1,6 @@
 import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
+import { formatDateTimeRange } from '@/lib/lib_format'
 
 export interface Params {
   machine_Id: string
@@ -37,7 +38,7 @@ export interface TableData extends CommonData {
 export interface ExcelData extends TableData {}
 
 export const formatParams = (params: any): Params => {
-  const { machine_Id = '', type = '', startDateTime = ['', ''], endDateTime = ['', ''] } = params
+  const { machine_Id = '', type = '', startDateTime, endDateTime } = params
 
   const formatType = (value: any) => {
     switch (value) {
@@ -55,10 +56,8 @@ export const formatParams = (params: any): Params => {
   return {
     machine_Id,
     type: formatType(type),
-    isStartDate_startDateTime: startDateTime[0],
-    isEndDate_startDateTime: startDateTime[1],
-    isStartDate_endDateTime: endDateTime[0],
-    isEndDate_endDateTime: endDateTime[1]
+    ...formatDateTimeRange('startDateTime', startDateTime),
+    ...formatDateTimeRange('endDateTime', endDateTime)
   }
 }
 

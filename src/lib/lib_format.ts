@@ -1,12 +1,11 @@
 import dayjs from '@/lib/lib_day'
 import { isEmpty } from '@/lib/lib_utils'
 
-export type OperatorOptions = {
+export type FormatOperatorOptions = {
   operatorPrefix?: string
   selectPrefix?: string
   returnType?: 'object' | 'array' | 'string'
 }
-
 /**
  * @author Caleb
  * @description 運算 (配合 WebViewTable 通用api格式)
@@ -18,10 +17,10 @@ export type OperatorOptions = {
  * @param {Any} value 值(陣列才有效)
  * @returns {Object} 格式化後的資料
  */
-export const formatOperator = <T>(key: string, value: any, options?: OperatorOptions): T | any => {
+export const formatOperator = <T>(key: string, value: any, options?: FormatOperatorOptions): T | any => {
   const {
-    operatorPrefix = 'operator',
-    selectPrefix = 'select',
+    operatorPrefix = 'operator_',
+    selectPrefix = 'select_',
     returnType = 'object'
   } = options ?? {}
 
@@ -31,8 +30,8 @@ export const formatOperator = <T>(key: string, value: any, options?: OperatorOpt
   ] = Array.isArray(value) ? value : []
 
   const entries = [
-    [`${operatorPrefix}_${key}`, _operator],
-    [`${selectPrefix}_${key}`, _select]
+    [`${operatorPrefix}${key}`, _operator],
+    [`${selectPrefix}${key}`, _select]
   ]
 
   switch (returnType) {
@@ -42,11 +41,15 @@ export const formatOperator = <T>(key: string, value: any, options?: OperatorOpt
       return `${_operator},${_select}`
     case 'object':
     default:
-        return Object.fromEntries(entries)
-
+      return Object.fromEntries(entries)
   }
 }
 
+type FormatDateTimeRangeOptions = {
+  startPrefix?: string
+  endPrefix?: string
+  returnType?: 'object' | 'array' | 'string'
+}
 /**
  * @author Caleb
  * @description 日期 (配合 WebViewTable 通用api格式)
@@ -58,12 +61,32 @@ export const formatOperator = <T>(key: string, value: any, options?: OperatorOpt
  * @param {Any} value 值(陣列才有效)
  * @returns {Object} 格式化後的資料
  */
-export const formatDateTimeRange = (key: string, value: any): Record<string, any> => {
+export const formatDateTimeRange = <T>(key: string, value: any, options?: FormatDateTimeRangeOptions): T | any => {
+  const {
+    startPrefix = 'isStartDate_',
+    endPrefix = 'isEndDate_',
+    returnType = 'object'
+  } = options ?? {}
+
+  const [
+    _startDate = '',
+    _endDate = ''
+  ] = Array.isArray(value) ? value : []
+
   const entries = [
-    [`isStartDate_${key}`, value[0]],
-    [`isEndDate_${key}`, value[1]]
+    [`${startPrefix}${key}`, _startDate],
+    [`${endPrefix}${key}`, _endDate]
   ]
-  return Object.fromEntries(entries)
+
+  switch (returnType) {
+    case 'array':
+      return [_startDate, _endDate]
+    case 'string':
+      return `${_startDate},${_endDate}`
+    case 'object':
+    default:
+      return Object.fromEntries(entries)
+  }
 }
 
 /**

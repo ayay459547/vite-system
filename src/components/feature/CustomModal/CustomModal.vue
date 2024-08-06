@@ -446,12 +446,10 @@ onUnmounted(() => {
         `CustomModal_${version}`,
         scopedId,
         scopedName,
-        containerIsShow ? 'is-show' : 'is-close'
+        containerIsShow ? 'is-show' : 'is-close',
+        props.modal ? 'is-modal' : ''
       ]"
-      :style="`
-        ${props.modal ? 'display: block;' : 'display: contents;'}
-        z-index: ${modalCurrentIndex};
-      `"
+      :style="{ zIndex: modalCurrentIndex }"
     >
       <div
         class="modal-wrapper"
@@ -565,6 +563,7 @@ onUnmounted(() => {
     left: 0;
     top: 0;
     transform: none;
+    display: contents;
 
     transition-duration: 0.3s;
     &.is-close {
@@ -572,6 +571,9 @@ onUnmounted(() => {
     }
     &.is-show {
       background-color: #00000066;
+    }
+    &.is-modal {
+      display: block
     }
   }
 
@@ -627,11 +629,11 @@ onUnmounted(() => {
     &.height {
       & {
         max: {
-        width: 100%;
-        height: 100%;
+          width: 100%;
+          height: 100%;
+        }
       }
 
-      }
       &-fill {
         height: 100%;
       }

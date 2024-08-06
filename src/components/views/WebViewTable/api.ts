@@ -68,7 +68,7 @@ const getData = async (
   } else {
     message({
       type: 'error',
-      message: msg ?? `url: ${url}`,
+      message: msg ?? (status ?? 'api error'),
       duration: 10000
     })
     return [[], 0]

@@ -79,3 +79,8 @@ li {
   transition-duration: 0.3s;
   border-radius: 10px;
 }
+
+div:where(.swal2-icon) {
+  box-sizing: content-box !important;
+  margin: 2.5em auto .6em !important;
+}

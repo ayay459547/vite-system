@@ -1,3 +1,5 @@
+import { formatDateTimeRange } from '@/lib/lib_format'
+
 export interface Params {
   machineId: string
   machineName: string
@@ -26,19 +28,15 @@ export const formatParams = (params: any): Params => {
     machineName = '',
     areaName = '',
     machineNote = '',
-    horizontal_LAST_UPDATE_TIMESTAMP = ['', '']
+    horizontal_LAST_UPDATE_TIMESTAMP
   } = params
-
-  const [isStartDate_horizontal_LAST_UPDATE_TIMESTAMP, isEndDate_horizontal_LAST_UPDATE_TIMESTAMP] =
-    Array.isArray(horizontal_LAST_UPDATE_TIMESTAMP) ? horizontal_LAST_UPDATE_TIMESTAMP : ['', '']
 
   return {
     machineId,
     machineName,
     areaName,
     machineNote,
-    isStartDate_horizontal_LAST_UPDATE_TIMESTAMP,
-    isEndDate_horizontal_LAST_UPDATE_TIMESTAMP
+    ...formatDateTimeRange('horizontal_LAST_UPDATE_TIMESTAMP', horizontal_LAST_UPDATE_TIMESTAMP)
   }
 }
 
