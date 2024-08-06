@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, ref, reactive, onMounted, nextTick, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 
 import {
   type DraggableCustom,

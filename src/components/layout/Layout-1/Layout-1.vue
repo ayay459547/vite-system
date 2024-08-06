@@ -2,8 +2,8 @@
 import type { PropType, WritableComputedRef } from 'vue'
 import { computed, nextTick, ref } from 'vue'
 
-import type { Navigation } from '@/declare/routes.ts'
-import type { AuthData } from '@/declare/hook.ts'
+import type { Navigation } from '@/declare/routes'
+import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import SideContent from './SideContent/SideContent.vue'

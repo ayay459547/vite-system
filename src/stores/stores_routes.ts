@@ -2,7 +2,7 @@ import type { ComputedRef, ShallowRef } from 'vue'
 import { shallowRef, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { Navigation } from '@/declare/routes.ts'
+import type { Navigation } from '@/declare/routes'
 import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 

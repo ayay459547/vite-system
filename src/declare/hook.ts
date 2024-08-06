@@ -85,7 +85,7 @@ export declare namespace UseHookReturn {
   type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
   type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
   type EventList = (click: MouseEvent, eventList?: Array<EventItem>, options?: EventOptions) => void
-  type Swal = (sweetAlertOptions: SweetAlertOptions<any, any>) => Promise<SweetAlertResult<any>>
+  type Swal = (sweetAlertOptions: SweetAlertOptions) => Promise<SweetAlertResult<any>>
   type Notification = (notificationProps: Partial<NotificationProps>) => NotificationHandle
   type Message = (messageOptions: Partial<MessageOptions>) => MessageHandler
   type Permission = (permissionTotal?: string | null) => PagePermission

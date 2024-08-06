@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, inject, nextTick, reactive } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { WebViewTable, CustomTabs, CustomButton, CustomModal, CustomEmpty, CustomLink } from '@/components'
 
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'
-import type { TableOptions } from '@/declare/columnSetting.ts'
+import type { TableOptions } from '@/declare/columnSetting'
 import { columnSetting, linkSetting } from './columns'
 import { fakeTableData } from './fakeData'
 // 先選機台的插單

@@ -2,7 +2,7 @@ import { ref, shallowRef } from 'vue'
 import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
-// import { read, utils } from '@/lib/lib_files.ts'
+// import { read, utils } from '@/lib/lib_files'
 import type { I18nTranslate, I18nTest } from '@/lib/lib_hook'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'

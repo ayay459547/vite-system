@@ -35,7 +35,7 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 
 // hook
-import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook.ts'
+import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook'
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 

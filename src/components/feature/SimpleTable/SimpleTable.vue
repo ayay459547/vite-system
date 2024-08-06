@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import { h, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomDraggable } from '@/components'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 import type { ScopeKey } from '@/i18n/i18n_setting'

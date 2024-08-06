@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelect, ElOption } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

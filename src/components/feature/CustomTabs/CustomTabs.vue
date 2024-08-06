@@ -4,7 +4,7 @@ import { ref, computed, inject } from 'vue'
 import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { ElTabs, ElTabPane } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { getUuid } from '@/lib/lib_utils'
 
 import type { Option } from '@/components'

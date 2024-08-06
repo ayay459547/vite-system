@@ -2,7 +2,7 @@
 import { ref, onMounted, inject } from 'vue'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, permission } = useHook()

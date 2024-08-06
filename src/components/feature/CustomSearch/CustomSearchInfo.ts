@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 
 import type { PopoverProps } from '@/components'
 import { props as inputProps } from '@/components/feature/CustomInput/CustomInputInfo'
-import type { Conditions as _Conditions } from '@/declare/columnSetting.ts'
+import type { Conditions as _Conditions } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 

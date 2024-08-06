@@ -1,4 +1,4 @@
-import type { Api } from '@/declare/ajax.ts'
+import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal, cutTableData } from '@/lib/lib_utils'
 import { object_every } from '@/lib/lib_object'

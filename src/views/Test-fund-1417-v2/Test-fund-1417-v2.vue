@@ -2,7 +2,7 @@
 // Composition API
 import { inject, ref, onMounted, onBeforeMount, watch } from 'vue'
 // 引入類型
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 // 引入組件
 import { CustomTabs } from '@/components'
 // 引入工具

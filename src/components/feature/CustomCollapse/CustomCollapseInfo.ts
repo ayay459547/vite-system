@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { Option } from '@/declare/columnSetting.ts'
+import type { Option } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 

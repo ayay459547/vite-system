@@ -2,7 +2,7 @@
 import type { Ref, WritableComputedRef } from 'vue'
 import { ref, computed, onMounted, onUnmounted, watch, effectScope, nextTick, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'

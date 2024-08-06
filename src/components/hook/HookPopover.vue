@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, shallowRef, onMounted } from 'vue'
 
-import type { EventOptions, EventItem } from '@/declare/hook.ts'
+import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
 import throttle from '@/lib/lib_throttle'
 

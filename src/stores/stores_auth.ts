@@ -11,7 +11,7 @@ import { isEmpty, swal } from '@/lib/lib_utils'
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
-import type { AuthData, PermissionData } from '@/declare/hook.ts'
+import type { AuthData, PermissionData } from '@/declare/hook'
 
 import { defaultAuthData, getAuthData } from './api'
 

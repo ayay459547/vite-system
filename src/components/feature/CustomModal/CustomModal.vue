@@ -13,7 +13,7 @@ import {
 } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook, SwalResult } from '@/declare/hook.ts'
+import type { UseHook, SwalResult } from '@/declare/hook'
 import { useBoundingClientRect } from '@/lib/lib_hook'
 import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
 import { getUuid } from '@/lib/lib_utils'

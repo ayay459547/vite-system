@@ -2,10 +2,10 @@
 import type { PropType } from 'vue'
 import { ref, shallowRef, onMounted, useSlots, nextTick, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import type { LazyLoadingStatus } from '@/components'
 import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, CustomTooltip } from '@/components'
-import type { TableOptions } from '@/declare/columnSetting.ts'
+import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { hasOwnProperty, getProxyData } from '@/lib/lib_utils'

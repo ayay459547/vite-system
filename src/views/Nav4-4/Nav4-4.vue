@@ -2,7 +2,7 @@
 import { ref, onMounted, inject } from 'vue'
 
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomWatermark, CustomLockView } from '@/components'
 import { useState, useEffect } from '@/lib/lib_hook'
 

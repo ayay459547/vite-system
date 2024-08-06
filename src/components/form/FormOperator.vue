@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed, customRef, useSlots, ref, onMounted, inject, nextTick } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import type { Options } from '@/components'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { numberFormat } from '@/lib/lib_format'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { useFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils'
 import { CustomIcon, CustomInput, CustomImage } from '@/components'

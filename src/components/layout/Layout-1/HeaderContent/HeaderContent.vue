@@ -4,7 +4,7 @@ import { computed, useSlots } from 'vue'
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 // import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
-import type { AuthData } from '@/declare/hook.ts'
+import type { AuthData } from '@/declare/hook'
 // import MenuLang from '@/components/layout/Menu/MenuLang.vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'

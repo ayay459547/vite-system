@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

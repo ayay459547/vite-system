@@ -1,4 +1,4 @@
-import checkSystemVersionDiff from './checkSystemVersion.ts'
+import checkSystemVersionDiff from './checkSystemVersion'
 import { removeCookie } from '@/lib/lib_cookie'
 
 /**

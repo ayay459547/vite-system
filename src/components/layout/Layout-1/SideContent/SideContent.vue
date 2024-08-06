@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { computed, ref, nextTick } from 'vue'
 
-import type { Navigation } from '@/declare/routes.ts'
+import type { Navigation } from '@/declare/routes'
 import { CustomIcon } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'

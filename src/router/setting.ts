@@ -1,4 +1,4 @@
-import type { RouterTree } from '@/declare/routes.ts'
+import type { RouterTree } from '@/declare/routes'
 import type { IconProps } from '@/components'
 import { refactorRoutes } from '@/lib/lib_routes'
 

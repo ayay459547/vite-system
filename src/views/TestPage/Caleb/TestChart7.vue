@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomCharts } from '@/components'
-import { downloadMatrix } from '@/lib/lib_files.ts'
+import { downloadMatrix } from '@/lib/lib_files'
 
 // import { storeToRefs } from 'pinia'
 // import { useRoutesStore } from '@/stores/stores_routes'

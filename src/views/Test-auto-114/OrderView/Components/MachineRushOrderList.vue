@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, inject, nextTick, reactive, onMounted } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { FormList, CustomInput, CustomButton } from '@/components'
 import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
 import { isEmpty, scrollToEl } from '@/lib/lib_utils'

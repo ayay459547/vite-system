@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { ref, inject, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
-import type { ColumnItem, SettingData } from '@/declare/columnSetting.ts'
+import type { UseHook } from '@/declare/hook'
+import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'

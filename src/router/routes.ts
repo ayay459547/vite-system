@@ -1,4 +1,4 @@
-import type { RouterTree } from '@/declare/routes.ts'
+import type { RouterTree } from '@/declare/routes'
 import { totlaPermission } from '@/lib/lib_permission'
 
 import { getInjectRoutes } from './setting'

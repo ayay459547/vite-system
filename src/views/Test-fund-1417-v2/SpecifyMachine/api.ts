@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax.ts'
+import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export interface Params {

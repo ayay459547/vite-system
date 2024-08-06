@@ -1,7 +1,7 @@
 import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
 import { useField } from 'vee-validate'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
   FormSelect,
@@ -48,13 +48,6 @@ const CustomInput = defineComponent({
     const { i18nTranslate, i18nTest } = useHook({
       i18nModule: props.i18nModule
     })
-
-    // const inputValue = computed({
-    //   get: () => props.modelValue,
-    //   set: (value: ModelValue) => {
-    //     emit('update:modelValue', value)
-    //   }
-    // })
 
     // i18nTranslate
     const getTranslateLabel = (object: any) => {
@@ -142,6 +135,14 @@ const CustomInput = defineComponent({
       return true
     }
 
+    const inputValue = computed({
+      get: () => props.modelValue,
+      set: (value: ModelValue) => {
+        validateValue.value = value
+        emit('update:modelValue', value)
+      }
+    })
+
     /**
      * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
      * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
@@ -150,14 +151,14 @@ const CustomInput = defineComponent({
      */
     const {
       errorMessage, // 錯誤訊息
-      value: inputValue, // 值
+      value: validateValue, // 值
       handleChange, // 換值
       handleReset, // 重置
       validate // 驗證
     } = useField<any>(props.validateKey, validateField, {
-      // validateOnValueUpdate: true
-      // initialValue: inputValue,
-      // valueProp: inputValue
+      validateOnValueUpdate: true,
+      initialValue: inputValue,
+      valueProp: inputValue
     })
 
     const i18nErrorMessage = computed(() => {

@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { inject, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomIcon, FormRadio } from '@/components'
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'

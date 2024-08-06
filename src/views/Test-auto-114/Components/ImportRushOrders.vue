@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomUpload, CustomButton, CustomCollapse, SimpleTable, CustomEmpty } from '@/components'
 import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils'
 import { useSimpleTableSetting } from '@/lib/lib_columns'

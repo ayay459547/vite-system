@@ -2,8 +2,8 @@
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook.ts'
-import type { Navigation } from '@/declare/routes.ts'
+import type { UseHook } from '@/declare/hook'
+import type { Navigation } from '@/declare/routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { CustomIcon, CustomTooltip } from '@/components'
 import { hasOwnProperty } from '@/lib/lib_utils'

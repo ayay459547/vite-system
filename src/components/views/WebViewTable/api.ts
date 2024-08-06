@@ -1,4 +1,4 @@
-import type { Api, ViewParams } from '@/declare/ajax.ts'
+import type { Api, ViewParams } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { message, isEmpty } from '@/lib/lib_utils'
 

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, onBeforeMount } from 'vue'
 
-import type { ColumnItem, SettingData } from '@/declare/columnSetting.ts'
+import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import { CustomButton, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty } from '@/lib/lib_utils'

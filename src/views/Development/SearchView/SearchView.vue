@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { type ComputedRef, computed, provide, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
-import type { Navigation } from '@/declare/routes.ts'
+import type { UseHook } from '@/declare/hook'
+import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { useFormSetting } from '@/lib/lib_columns'
 import { CustomInput, CustomIcon, CustomButton } from '@/components'

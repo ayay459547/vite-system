@@ -2,7 +2,7 @@
 import { computed, ref, nextTick, useSlots, inject, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { useFormListSetting } from '@/lib/lib_columns'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'

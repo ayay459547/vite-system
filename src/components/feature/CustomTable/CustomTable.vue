@@ -11,8 +11,8 @@ import {
 } from 'vue'
 import { ElPagination } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook.ts'
-import type { ColumnItem } from '@/declare/columnSetting.ts'
+import type { UseHook } from '@/declare/hook'
+import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'

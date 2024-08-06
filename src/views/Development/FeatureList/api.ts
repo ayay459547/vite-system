@@ -1,4 +1,4 @@
-import type { Navigation } from '@/declare/routes.ts'
+import type { Navigation } from '@/declare/routes'
 import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { cutTableData } from '@/lib/lib_utils'

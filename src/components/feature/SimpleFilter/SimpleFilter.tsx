@@ -1,6 +1,6 @@
 import { defineComponent, inject, computed, ref } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { CustomButton, CustomPopover } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { object_reduce } from '@/lib/lib_object'

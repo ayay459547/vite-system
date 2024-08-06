@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'

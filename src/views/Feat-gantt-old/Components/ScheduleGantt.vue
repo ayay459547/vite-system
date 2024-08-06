@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { reactive, computed, ref, onMounted, nextTick, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import type { Options, Option } from '@/components'
 import {
   GanttChart,

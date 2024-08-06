@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 引入類型
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 // 引入組件原型
 import { ElLink } from 'element-plus'
 import { CustomTooltip, CustomIcon } from '@/components'

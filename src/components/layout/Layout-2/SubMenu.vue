@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, shallowRef, ref } from 'vue'
 
-import type { Navigation } from '@/declare/routes.ts'
+import type { Navigation } from '@/declare/routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomButton } from '@/components'

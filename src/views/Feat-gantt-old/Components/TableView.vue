@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook.ts'
+import type { UseHook } from '@/declare/hook'
 import { useTableSetting } from '@/lib/lib_columns'
 import { CustomPopover, CustomButton, CustomTable } from '@/components'
 import { cutTableData } from '@/lib/lib_utils'
 
-import type { TableOptions } from '@/declare/columnSetting.ts'
+import type { TableOptions } from '@/declare/columnSetting'
 import { columnSetting } from '../columns'
 
 const useHook: UseHook = inject('useHook')
