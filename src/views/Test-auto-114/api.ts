@@ -200,19 +200,20 @@ export const getRushOrderList = async (
       url: '/api/ipaspTable/retrieveIpaspTableFromView',
       method: 'post',
       data: {
-        erpNo: lotNo,
-        machine_Id: machine,
-        // sequence: '',
-        // process_Id: '',
-        // LAST_UPDATE_TIMESTAMP: '',
-        // updateBy: '',
-        // cust_id: '',
+        webfuno: 'auto_114',
+        designatedview: 'iPASPWebView_auto_114_machine_setting',
         sortingMap: {
           machine_Id: 'Asc',
           sequence: 'Asc'
         },
-        webfuno: 'auto_114',
-        designatedview: 'iPASPWebView_auto_114_machine_setting'
+        erpNo: lotNo,
+        machine_Id: machine
+
+        // sequence: '',
+        // process_Id: '',
+        // LAST_UPDATE_TIMESTAMP: '',
+        // updateBy: '',
+        // cust_id: ''
       } as Params
     },
     {

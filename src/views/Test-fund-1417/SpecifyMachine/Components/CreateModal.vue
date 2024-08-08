@@ -72,26 +72,32 @@ defineExpose({
 </script>
 
 <template>
-  <div v-loading="isLoading" class="modal grid-row">
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.dateTimeRange"
-      v-bind="formColumn.dateTimeRange"
-    />
+  <div v-loading="isLoading" class="modal">
+    <div class="grid-row">
+      <CustomInput
+        class="grid-col-xs-24"
+        v-model="form.dateTimeRange"
+        v-bind="formColumn.dateTimeRange"
+      />
 
-    <CustomInput
-      class="grid-col-xs-24 grid-col-md-12"
-      v-model="form.machine_Id"
-      v-bind="formColumn.machine_Id"
-    />
+      <CustomInput
+        class="grid-col-xs-24 grid-col-md-12"
+        v-model="form.machine_Id"
+        v-bind="formColumn.machine_Id"
+      />
 
-    <CustomInput
-      class="grid-col-xs-24 grid-col-md-12"
-      v-model="form.type"
-      v-bind="formColumn.type"
-    />
+      <CustomInput
+        class="grid-col-xs-24 grid-col-md-12"
+        v-model="form.type"
+        v-bind="formColumn.type"
+      />
 
-    <CustomInput class="grid-col-xs-24" v-model="form.note" v-bind="formColumn.note" />
+      <CustomInput
+        class="grid-col-xs-24"
+        v-model="form.note"
+        v-bind="formColumn.note"
+      />
+    </div>
   </div>
 </template>
 
@@ -99,6 +105,7 @@ defineExpose({
 .modal {
   width: 100%;
   height: fit-content;
+  min-height: 100%;
   padding: 16px 24px;
 }
 </style>

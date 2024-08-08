@@ -191,7 +191,13 @@ onBeforeMount(async () => {
               <div class="text">{{ element.label }}</div>
             </div>
 
-            <CustomButton type="info" icon-name="bars" text class="setting-move" />
+            <CustomButton
+              type="info"
+              icon-x-type="tabler"
+              icon-name="ArrowsUpDown"
+              text
+              class="setting-move"
+            />
           </div>
         </template>
 

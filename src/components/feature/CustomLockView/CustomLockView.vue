@@ -20,8 +20,8 @@ const props = defineProps(lockViewProps)
       scopedName
     ]"
   >
-  <Transition name="fixed" mode="out-in">
-    <div v-show="props.isLock" class="lock-view-container">
+    <Transition name="fixed" mode="out-in">
+      <div v-show="props.isLock" class="lock-view-container">
         <!-- 遮罩 -->
         <div class="lock-view-mask"></div>
 

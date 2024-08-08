@@ -1,4 +1,12 @@
-import { defineComponent, inject, computed, ref, renderSlot, nextTick, onMounted } from 'vue'
+import {
+  defineComponent,
+  inject,
+  computed,
+  ref,
+  renderSlot,
+  nextTick,
+  onMounted
+} from 'vue'
 import { useField } from 'vee-validate'
 
 import type { UseHook } from '@/declare/hook'
@@ -154,12 +162,22 @@ const CustomInput = defineComponent({
       value: validateValue, // 值
       handleChange, // 換值
       handleReset, // 重置
-      validate // 驗證
+      validate: _validate // 驗證
     } = useField<any>(props.validateKey, validateField, {
-      validateOnValueUpdate: true,
-      initialValue: inputValue,
-      valueProp: inputValue
+      validateOnValueUpdate: true
+      // initialValue: inputValue,
+      // valueProp: inputValue
     })
+
+    const validate = async () => {
+      // 驗證前 需確認驗證值 與 輸入值相同
+      if (validateValue.value !== inputValue.value) {
+        validateValue.value = inputValue.value
+      }
+      await nextTick()
+
+      return _validate()
+    }
 
     const i18nErrorMessage = computed(() => {
       const keyword = errorMessage?.value ?? ''
@@ -187,6 +205,7 @@ const CustomInput = defineComponent({
         collapseTags: props.multiple,
         collapseTagsTooltip: props.multiple,
         filterable: props.filterable,
+        reserveKeyword: props.reserveKeyword,
         allowCreate: props.allowCreate,
         defaultFirstOption: props.defaultFirstOption,
         // datePicker

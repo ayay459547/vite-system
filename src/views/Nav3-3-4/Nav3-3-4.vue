@@ -567,7 +567,10 @@ const isShowChange = async () => {
                     <div class="flex-row-center content-between fill i-pa-md cursor-pointer">
                       <label class="cursor-pointer">{{ `${index + 1}. ${element.value}` }}</label>
 
-                      <CustomIcon name="bars" />
+                      <CustomIcon
+                        x-type="tabler"
+                        name="ArrowsUpDown"
+                      />
                     </div>
                   </template>
                 </CustomDraggable>

@@ -4,7 +4,7 @@ import { inject, ref, onMounted, onBeforeMount, watch } from 'vue'
 // 引入類型
 import type { UseHook } from '@/declare/hook'
 // 引入組件
-import { CustomTabs } from '@/components'
+import { CustomTabs, CustomEmpty } from '@/components'
 // 引入工具
 import { isEmpty } from '@/lib/lib_utils'
 
@@ -84,6 +84,7 @@ onMounted(() => {
           <SpecifyMachine v-if="tab === 'SpecifyMachine'" ref="tabSpecifyMachine" />
           <MachineView v-else-if="tab === 'Machine'" ref="tabMachine" />
           <GeneralView v-else-if="tab === 'General'" />
+          <CustomEmpty v-else />
         </Transition>
       </KeepAlive>
     </div>

@@ -66,6 +66,11 @@ li {
   list-style: none;
 }
 
+b,
+strong {
+  font-size: 1.1em;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

@@ -55,28 +55,38 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="modal grid-row">
-    <CustomInput
-      class="grid-col-xs-24 grid-col-md-8"
-      v-model="form.column1"
-      v-bind="formColumn.column1"
-    />
+  <div class="modal">
+    <div class="grid-row">
+      <CustomInput
+        class="grid-col-xs-24 grid-col-md-8"
+        v-model="form.column1"
+        v-bind="formColumn.column1"
+      />
 
-    <CustomInput
-      class="grid-col-xs-24 grid-col-md-8"
-      v-model="form.column2"
-      v-bind="formColumn.column2"
-    />
+      <CustomInput
+        class="grid-col-xs-24 grid-col-md-8"
+        v-model="form.column2"
+        v-bind="formColumn.column2"
+      />
 
-    <CustomInput
-      class="grid-col-xs-24 grid-col-md-8"
-      v-model="form.column3"
-      v-bind="formColumn.column3"
-    />
+      <CustomInput
+        class="grid-col-xs-24 grid-col-md-8"
+        v-model="form.column3"
+        v-bind="formColumn.column3"
+      />
 
-    <CustomInput class="grid-col-xs-24" v-model="form.column4" v-bind="formColumn.column4" />
+      <CustomInput
+        class="grid-col-xs-24"
+        v-model="form.column4"
+        v-bind="formColumn.column4"
+      />
 
-    <CustomInput class="grid-col-xs-24" v-model="form.column5" v-bind="formColumn.column5" />
+      <CustomInput
+        class="grid-col-xs-24"
+        v-model="form.column5"
+        v-bind="formColumn.column5"
+      />
+    </div>
   </div>
 </template>
 
@@ -84,6 +94,7 @@ onMounted(() => {
 .modal {
   width: 100%;
   height: fit-content;
+  min-height: 100%;
   padding: 16px 24px;
 }
 </style>

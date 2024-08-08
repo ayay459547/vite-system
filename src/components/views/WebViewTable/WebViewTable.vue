@@ -8,7 +8,7 @@ import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, Cust
 import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
-import { hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { hasOwnProperty, getProxyData, isEmpty } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
@@ -19,7 +19,13 @@ import type {
   FormatTable,
   FormatSorting
 } from './api'
-import { getUrlParams, getWebViewParams, getTableData, getExcelData } from './api'
+import {
+  webViewUrl,
+  getUrlParams,
+  getWebViewParams,
+  getTableData,
+  getExcelData
+} from './api'
 
 const props = defineProps({
   baseurl: {
@@ -247,15 +253,14 @@ const download = async ({ type }) => {
     url: props.apiurl,
     baseURL: props.baseurl
   })
+  const isWebView = webViewUrl === urlParams.url
 
-  // 後端指定參數
-  const webViewParams = props.apiurl
-    ? {}
-    : getWebViewParams({
-        webfuno: props.webfuno,
-        funoviewsuffix: props.funoviewsuffix,
-        designatedview: props.designatedview
-      })
+  // 客製化 api
+  const webViewParams = getWebViewParams({
+    webfuno: props.webfuno,
+    funoviewsuffix: props.funoviewsuffix,
+    designatedview: props.designatedview
+  }, isWebView)
 
   const filterData = getFilter(false)
   // 參數格式化
@@ -264,6 +269,12 @@ const download = async ({ type }) => {
   const _sortingMap = props.formatSorting(sortingMap)
   // 條件搜尋
   const conditions = getConditionFilter()
+
+  // 防呆
+  if (isWebView && isEmpty(webViewParams)) {
+    isLoading.value = false
+    return
+  }
 
   const params: any = {
     ..._params,
@@ -327,17 +338,14 @@ const initData = async (tableParams: any) => {
     url: props.apiurl,
     baseURL: props.baseurl
   })
+  const isWebView = webViewUrl === urlParams.url
 
   // 客製化 api
-  const webViewParams = props.apiurl
-    // 不給參數
-    ? {}
-    // 後端指定參數
-    : getWebViewParams({
-        webfuno: props.webfuno,
-        funoviewsuffix: props.funoviewsuffix,
-        designatedview: props.designatedview
-      })
+  const webViewParams = getWebViewParams({
+    webfuno: props.webfuno,
+    funoviewsuffix: props.funoviewsuffix,
+    designatedview: props.designatedview
+  }, isWebView)
 
   // 過濾條件
   const filterData = getFilter(false)
@@ -347,6 +355,12 @@ const initData = async (tableParams: any) => {
   const _sortingMap = props.formatSorting(sortingMap)
   // 條件搜尋
   const conditions = getConditionFilter()
+
+  // 防呆
+  if (isWebView && isEmpty(webViewParams)) {
+    isLoading.value = false
+    return
+  }
 
   const params: any = {
     ..._params,

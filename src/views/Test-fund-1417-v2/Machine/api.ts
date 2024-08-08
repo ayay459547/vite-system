@@ -85,13 +85,13 @@ export const getMachineIdWeekSchedule = async (machineId: string): Promise<ApiRe
       url: '/api/ipaspTable/retrieveIpaspTableFromView',
       method: 'post',
       data: {
-        machine_Id: machineId,
+        // webViewParams
+        webfuno: 'fund_1417',
+        designatedview: 'iPASPWebView_fund_1417_mwt',
         page: 1,
         size: -1,
         sortingMap: {},
-        // webViewParams
-        webfuno: 'fund_1417',
-        designatedview: 'iPASPWebView_fund_1417_mwt'
+        machine_Id: machineId
       }
     },
     {

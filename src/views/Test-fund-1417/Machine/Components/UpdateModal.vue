@@ -100,12 +100,14 @@ defineExpose({
 </script>
 
 <template>
-  <div v-loading="isLoading" class="modal grid-row">
-    <CustomInput class="grid-col-xs-24" v-model="form.machine_Id" v-bind="formColumn.machine_Id" />
+  <div v-loading="isLoading" class="modal">
+    <div class="grid-row">
+      <CustomInput class="grid-col-xs-24" v-model="form.machine_Id" v-bind="formColumn.machine_Id" />
 
-    <CustomInput class="grid-col-xs-24" v-model="form.dayOfWeek" v-bind="formColumn.dayOfWeek" />
+      <CustomInput class="grid-col-xs-24" v-model="form.dayOfWeek" v-bind="formColumn.dayOfWeek" />
 
-    <CustomInput class="grid-col-xs-24" v-model="form.timeRange" v-bind="formColumn.timeRange" />
+      <CustomInput class="grid-col-xs-24" v-model="form.timeRange" v-bind="formColumn.timeRange" />
+    </div>
   </div>
 </template>
 
@@ -113,6 +115,7 @@ defineExpose({
 .modal {
   width: 100%;
   height: fit-content;
+  min-height: 100%;
   padding: 16px 24px;
 }
 </style>

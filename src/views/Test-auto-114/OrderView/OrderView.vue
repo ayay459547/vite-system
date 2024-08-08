@@ -104,9 +104,7 @@ defineExpose({
               ref="machineViewRef"
               :order="currentOrder"
             />
-            <template v-else>
-              <CustomEmpty />
-            </template>
+            <CustomEmpty v-else />
           </Transition>
         </div>
       </div>

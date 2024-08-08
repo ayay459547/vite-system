@@ -43,9 +43,9 @@ export const getTranslateSrcFile = () => {
 
         // 切割 模組用翻譯
         resModuleLangMap[scopeKey][i18nKey] = {
-          en,
           zhTw: zh_TW,
-          zhCn: zh_CN
+          zhCn: zh_CN,
+          en
         }
       }
 

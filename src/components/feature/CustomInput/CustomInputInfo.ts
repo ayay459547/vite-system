@@ -153,8 +153,8 @@ const custom = {
     required: false,
     default: null,
     description: `
-     提供翻譯檔參照用的 i18nLabel
-     翻譯結果有效時會把原先的 label 替換掉
+      提供翻譯檔參照用的 i18nLabel
+      翻譯結果有效時會把原先的 label 替換掉
     `
   }
 }
@@ -260,6 +260,14 @@ const elSelect = {
     default: false,
     description: '是否可輸入文字過濾'
   },
+  reserveKeyword: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: `
+      當 multiple === true && filterable === true
+      是否在選中一個選項後保留當前的搜尋關鍵字`
+  },
   allowCreate: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -289,7 +297,18 @@ const elDatePicker = {
   },
   shortcuts: {
     type: Array as PropType<Shortcuts[]>,
-    required: false
+    required: false,
+    description: `
+      預設時間範圍選項
+      [
+        {
+          text: 選項文字
+          i18nLabel: i18nKey
+          value: 時間範圍
+        } 
+        , ...
+      ]
+    `
   }
 }
 

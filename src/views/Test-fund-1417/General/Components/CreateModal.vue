@@ -53,21 +53,23 @@ defineExpose({
 </script>
 
 <template>
-  <div v-loading="isLoading" class="modal grid-row">
-    <CustomInput
-      class="grid-col-xs-24"
-      i18n-module="system"
-      v-model="form.dayOfWeek"
-      v-bind="formColumn.dayOfWeek"
-      :label="i18nTranslate(formColumn.dayOfWeek.i18nLabel)"
-    />
+  <div v-loading="isLoading" class="modal">
+    <div class="grid-row">
+      <CustomInput
+        class="grid-col-xs-24"
+        i18n-module="system"
+        v-model="form.dayOfWeek"
+        v-bind="formColumn.dayOfWeek"
+        :label="i18nTranslate(formColumn.dayOfWeek.i18nLabel)"
+      />
 
-    <CustomInput
-      class="grid-col-xs-24"
-      v-model="form.timeRange"
-      v-bind="formColumn.timeRange"
-      :label="i18nTranslate(formColumn.timeRange.i18nLabel)"
-    />
+      <CustomInput
+        class="grid-col-xs-24"
+        v-model="form.timeRange"
+        v-bind="formColumn.timeRange"
+        :label="i18nTranslate(formColumn.timeRange.i18nLabel)"
+      />
+    </div>
   </div>
 </template>
 
@@ -75,6 +77,7 @@ defineExpose({
 .modal {
   width: 100%;
   height: fit-content;
+  min-height: 100%;
   padding: 16px 24px;
 }
 </style>

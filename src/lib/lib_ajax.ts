@@ -31,7 +31,7 @@ const fakeApi = <ResData>(
   })
 }
 
-const timeout = 3000 * 60 * 30
+const timeout = 1000 * 60 * 30
 const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): PromiseLike<ResData> => {
   const instance = axios.create({
     baseURL: baseUrl,
@@ -63,11 +63,11 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     },
     (error: any) => {
       console.log('response error', error)
-      message({
-        type: 'error',
-        message: error,
-        duration: 10000
-      })
+      // message({
+      //   type: 'error',
+      //   message: error,
+      //   duration: 10000
+      // })
 
       const apiUrl = error?.request?.responseURL ?? ''
       const status = error?.response?.status ?? ''
@@ -259,7 +259,7 @@ export class IWebScoket {
       if (this.isError) {
         this.#reconnect(60000)
       } else {
-        this.#reconnect(3000)
+        this.#reconnect(1000)
       }
     }
   }

@@ -23,18 +23,33 @@ export type UrlParams = {
   url: string
 }
 
+// 通用api url
+export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
+
 export const getUrlParams = (params: UrlParams) => {
-  const { url = '/api/ipaspTable/retrieveIpaspTableFromView', baseURL = '' } = params
+  const { url = webViewUrl, baseURL = '' } = params
 
   if (!isEmpty(baseURL)) return { url, baseURL }
   return { url }
 }
 
-export const getWebViewParams = (params: ViewParams) => {
+export const getWebViewParams = (params: ViewParams, isWebView: boolean) => {
   const { webfuno = '', funoviewsuffix = '', designatedview = '' } = params
 
-  if (!isEmpty(designatedview)) return { designatedview }
+  // 不是 view 不給參數
+  if (!isWebView) return {}
 
+  // view 後端指定參數
+  if (isEmpty(webfuno) && isEmpty(designatedview)) {
+    message({
+      type: 'error',
+      message: 'webfuno and designatedview is empty',
+      duration: 10000
+    })
+    return {}
+  }
+
+  if (!isEmpty(designatedview)) return { designatedview }
   return { webfuno, funoviewsuffix }
 }
 

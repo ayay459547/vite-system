@@ -164,8 +164,8 @@ const submit = () => {
                     :hidden="activeIndexMap[element.key] <= 0"
                   >
                     <CustomIcon
-                      name="right-left"
-                      style="transform: rotateZ(90deg)"
+                      x-type="tabler"
+                      name="ArrowsUpDown"
                     />
                   </CustomBadge>
                 </div>
@@ -242,7 +242,7 @@ const submit = () => {
       overflow: hidden;
     }
     &-right {
-      width: 48px;
+      width: 40px;
     }
     &.is-active {
       opacity: 1;

@@ -247,8 +247,8 @@ const onDragend = () => {
 
                 <div class="__column-item-right">
                   <CustomIcon
-                    name="right-left"
-                    style="transform: rotateZ(90deg)"
+                    x-type="tabler"
+                    name="ArrowsUpDown"
                   />
                 </div>
               </div>
@@ -306,7 +306,7 @@ const onDragend = () => {
       overflow: hidden;
     }
     &-right {
-      width: 48px;
+      width: 40px;
     }
 
     & {

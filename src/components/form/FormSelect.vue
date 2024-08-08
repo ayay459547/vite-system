@@ -81,6 +81,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     default: false
   },
+  reserveKeyword: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   allowCreate: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -117,6 +121,7 @@ const bindAttributes = computed(() => {
     collapseTags: props.multiple,
     collapseTagsTooltip: props.multiple,
     filterable: props.filterable,
+    reserveKeyword: props.reserveKeyword,
     allowCreate: props.allowCreate,
     defaultFirstOption: props.defaultFirstOption
   }

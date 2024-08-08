@@ -23,7 +23,7 @@ import type {
   // SimpleTableColumnsItem
 } from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'
-import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty, message } from '@/lib/lib_utils'
 import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
 
 /**
@@ -177,8 +177,8 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
 
       await Promise.all(validateList)
         .then(resList => {
-          resList.forEach((resItme, resIndex) => {
-            const { errors, valid } = resItme
+          resList.forEach((resItem, resIndex) => {
+            const { errors, valid } = resItem
             const validateRes = {
               ...validateInput[resIndex],
               errors,
@@ -192,6 +192,11 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
           })
         })
         .catch(errors => {
+          message({
+            type: 'error',
+            message: errors,
+            duration: 10000
+          })
           throw new Error(errors)
         })
 
@@ -332,8 +337,8 @@ export const useFormListSetting = <T>(
 
       await Promise.all(validateList)
         .then(resList => {
-          resList.forEach((resItme, resIndex) => {
-            const { errors, valid } = resItme
+          resList.forEach((resItem, resIndex) => {
+            const { errors, valid } = resItem
             const validateRes = {
               ...validateInput[resIndex],
               errors,
@@ -348,6 +353,11 @@ export const useFormListSetting = <T>(
           })
         })
         .catch(errors => {
+          message({
+            type: 'error',
+            message: errors,
+            duration: 10000
+          })
           throw new Error(errors)
         })
 

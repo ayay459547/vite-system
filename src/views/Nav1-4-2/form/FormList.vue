@@ -207,7 +207,13 @@ onBeforeMount(() => {
       <template #column-row_operations="{ rowIndex }">
         <div class="flex-row">
           <CustomButton type="danger" icon-name="trash-can" text @click="remove(rowIndex)" />
-          <CustomButton type="info" icon-name="bars" text class="form-item-move" />
+          <CustomButton
+            type="info"
+            icon-x-type="tabler"
+            icon-name="ArrowsUpDown"
+            text
+            class="form-item-move"
+          />
         </div>
       </template>
     </SimpleTable>

@@ -78,12 +78,12 @@ export const getGeneralWeekSchedule = async (): Promise<ApiRes<any[]>> => {
       url: '/api/ipaspTable/retrieveIpaspTableFromView',
       method: 'post',
       data: {
-        page: 1,
-        size: -1,
-        sortingMap: {},
         // webViewParams
         webfuno: 'fund_1417',
-        designatedview: 'iPASPWebView_fund_1417_gwt'
+        designatedview: 'iPASPWebView_fund_1417_gwt',
+        page: 1,
+        size: -1,
+        sortingMap: {}
       }
     },
     {
