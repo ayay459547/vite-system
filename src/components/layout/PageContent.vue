@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeMount } from 'vue'
-import { useEventBus } from '@vueuse/core'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute } from 'vue-router'
 
+import { useEventBus } from '@/lib/lib_hook'
 import { scrollToEl } from '@/lib/lib_utils'
 
 const emit = defineEmits([
@@ -73,7 +73,7 @@ const routeName = computed<any>(() => {
   return route?.name ?? ''
 })
 
-const bus = useEventBus<string>('')
+const bus = useEventBus<string>('router')
 const listener = (event: string) => {
   switch (event) {
     case 'busRouterChange':

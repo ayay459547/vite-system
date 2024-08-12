@@ -593,6 +593,10 @@ defineExpose({
     // 修 table 寬度自適應
     position: absolute;
     width: 100%;
+    .el-table__header-wrapper {
+      background-color: var(--i-color-table-thead);
+    }
+
     .el-table__header {
       table-layout: fixed;
       border-collapse: separate;
@@ -628,7 +632,6 @@ defineExpose({
         & > div {
           width: 100%;
           height: 100%;
-
           color: inherit;
 
           display: flex;
@@ -769,7 +772,7 @@ $light-color: (
 
 $dark-color: (
   'table-thead': #262727,
-  'table-body': #303030,
+  'table-body': #141414,
 
   'table-odd': #303030,
   'table-odd-hover': #424243,

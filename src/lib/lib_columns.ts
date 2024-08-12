@@ -420,7 +420,7 @@ export const useTableSetting = (
   } = options
 
   // 設定 table 用的 column
-  const getChildrenData = (columns: Record<string, any>): Array<any> => {
+  const getChildrenData = (columns: Record<string, any>, parentKey: string): Array<any> => {
     const resChildren = []
 
     object_forEach(columns, (child: Record<string, any>, childkey: string) => {
@@ -438,6 +438,8 @@ export const useTableSetting = (
         // 專案用 多排
         isSorting: !_isOperations ? (child?.isSorting ?? true) : false, // 是否顯示排序
         order: child?.isSorting ?? 'none', // ascending | descending | none
+        //
+        parentKey,
         ...child
       })
     })
@@ -467,7 +469,7 @@ export const useTableSetting = (
       // 專案用 多排 預設值
       order: column[type]?.order ?? 'none', // ascending | descending | none
       orderIndex: column[type]?.orderIndex ?? -1,
-      columns: getChildrenData(column[type]?.children ?? {}),
+      columns: getChildrenData(column[type]?.children ?? {}, key),
       ...column[type]
     }
   }

@@ -181,7 +181,7 @@ const isActiveConditions = computed({
 
 const columnSetting = {
   conditionType: {
-    label: '篩選類型',
+    label: '查詢條件',
     table: {
       width: 150
     },
@@ -196,7 +196,7 @@ const columnSetting = {
     }
   },
   filterValue: {
-    label: '篩選值',
+    label: '查詢值',
     table: {
       minWidth: 180
     },

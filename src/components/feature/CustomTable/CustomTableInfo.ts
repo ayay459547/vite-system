@@ -3,7 +3,6 @@ import type { TableColumnCtx } from 'element-plus'
 
 import type { TableColumnsItem } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export const version = '1.0.0'
 
@@ -85,7 +84,7 @@ export const props = {
   i18nModule: {
     type: String as PropType<ScopeKey>,
     required: false,
-    default: defaultModuleType,
+    default: 'iPASP_common',
     description: 'i18nModule'
   },
   title: {
@@ -262,6 +261,12 @@ export const props = {
     required: false,
     default: false,
     description: '是否有多欄位排序'
+  },
+  isCondition: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否有特殊查詢'
   },
   isHiddenColumnSetting: {
     type: Boolean as PropType<boolean>,

@@ -15,6 +15,7 @@ import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
 import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+import { object_findIndex } from '@/lib/lib_object'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'
 
 // 欄位設定
@@ -49,7 +50,7 @@ const scopedId = getUuid('__i-table__')
 const props = defineProps(tableProps)
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
+const { i18nTranslate, message } = useHook({
   i18nModule: props?.i18nModule ?? defaultModuleType
 })
 
@@ -76,7 +77,7 @@ const emit = defineEmits([
 const loading = ref(true)
 const renderKey = ref(1)
 const isRender = ref(false)
-const isResizing = ref(false)
+// const isResizing = ref(false)
 
 // 點擊 excel
 const excelIsShow = ref(false)
@@ -205,55 +206,129 @@ const initSortingList = async () => {
   await awaitTime(120)
 }
 
-//Header 欄位寬度最適化:調整子元素寬度
-const setElementWidth = (curElement: any) => {
-  const length = curElement.children.length
-  if (length === 0) {
-    //最底層元素設置為fit-content
-    curElement.classList.add('__table-sorting-column-resizing-child')
-    return curElement.scrollWidth
-  }
+// Header 欄位寬度最適化:調整子元素寬度
+// const setElementWidth = (curElement: any) => {
+//   const length = curElement.children.length
+//   if (length === 0) {
+//     // 最底層元素設置為fit-content
+//     curElement.classList.add('__table-sorting-column-resizing-child')
+//     return curElement.scrollWidth
+//   }
 
-  const childrenList = []
-  //取得元素內的子元素列表
-  for (let i = 0; i < length; i++) {
-    childrenList.push(curElement.children.item(i))
-  }
-  //設置每個元素的最適寬度
-  const maxWidth = childrenList.reduce((curMaxWidth, childElement) => {
-    const childeWidth = setElementWidth(childElement)
-    return childeWidth > curMaxWidth ? childeWidth : curMaxWidth
-  }, 0)
+//   const childrenList = []
+//   // 取得元素內的子元素列表
+//   for (let i = 0; i < length; i++) {
+//     childrenList.push(curElement.children.item(i))
+//   }
+//   // 設置每個元素的最適寬度
+//   const maxWidth = childrenList.reduce((curMaxWidth, childElement) => {
+//     const childeWidth = setElementWidth(childElement)
+//     return childeWidth > curMaxWidth ? childeWidth : curMaxWidth
+//   }, 0)
 
-  //配合子元素寬度設置為min-content
-  curElement.classList.add('__table-sorting-column-resizing-parent')
-  return maxWidth > curElement.scrollWidth ? maxWidth : curElement.scrollWidth
-  // return curElement.scrollWidth
+//   // 配合子元素寬度設置為min-content
+//   curElement.classList.add('__table-sorting-column-resizing-parent')
+//   return maxWidth > curElement.scrollWidth ? maxWidth : curElement.scrollWidth
+//   // return curElement.scrollWidth
+// }
+
+// 基本計算 尚未有子欄位為計算
+const setElementWidth = (column: any, trIndex: number): Promise<any> => {
+  const headerKey = column?.key // 欄位Key值
+  const originWidth = column?.width ?? 100
+  // console.log('setElementWidth => ', column)
+
+  return new Promise((resolve, reject) => {
+    try {
+      let newWidth = originWidth
+      // 針對全部行數 取最大寬度
+      setTimeout(async () => {
+        // headerElements type: NodeList
+        const headreElements = document.querySelectorAll(`.${scopedId} tr:nth-child(${trIndex}) th`) // 所有 header column
+
+        // 找出對應的 index
+        const resizingIndex = object_findIndex<string>(headreElements, (thElement: Element) => {
+          const columnElement = thElement.querySelector('div[resizing-key]')
+
+          if (isEmpty(columnElement)) return false
+          return `${headerKey}` === columnElement.getAttribute('resizing-key')
+        })
+
+        await nextTick()
+        if (!isEmpty(resizingIndex)) {
+          const cellIndex = Number.parseInt(resizingIndex) + 1
+          const headerColumnElement = document.querySelectorAll(`.${scopedId} tr:nth-child(${trIndex}) th:nth-child(${cellIndex})`)
+          const bodyColumnElements = document.querySelectorAll(`.${scopedId} tr td:nth-child(${cellIndex})`)
+
+          const columnElements = [...headerColumnElement, ...bodyColumnElements]
+          columnElements.forEach(element => {
+            element.classList.add('__is-resizing__') // 添加類別
+          })
+          await nextTick()
+
+          newWidth = columnElements.reduce((maxWidth: number, curElement: Element) => {
+            const cellElements = curElement.querySelector('.cell')
+            const curWidth = !isEmpty(cellElements) ? cellElements?.scrollWidth : 0
+            const childWidth = 0 // 尚未計算子欄位寬度
+            return Math.max(curWidth + 18, childWidth, maxWidth)
+          }, 0)
+
+          // columnElements.forEach(element => {
+          //   element.classList.remove('__is-resizing__') // 移除類別
+          // })
+          // await nextTick()
+          columnSetting.value?.setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
+        }
+        resolve(newWidth)
+      }, 0)
+    } catch (e) {
+      message({
+        type: 'error',
+        message: e,
+        duration: 10000
+      })
+      reject(originWidth)
+    }
+  })
 }
-//Header 欄位寬度最適化
-const optimizeColumnWidth = async (column: any) => {
-  //開始計算最適化寬度
+
+// Column 欄位寬度最適化
+const optimizeColumnWidth = (column: any) => {
+  setElementWidth(column, 1).then(() => {
+    // 重新渲染欄位
+    initShowColumns({ isLoading: true })
+  })
+
+  /*
+  // 開始計算最適化寬度
   isResizing.value = true
   await nextTick()
 
-  const headerKey = column?.key //欄位Key值
-  const element = document.getElementById('header-' + headerKey) //由Key取得對應欄位元素
+  const headerKey = column?.key // 欄位Key值
+  const element = document.getElementById('header-' + headerKey) // 由Key取得對應欄位元素
   if (!element) return
 
-  const isSorting = props.isSorting && (column?.isSorting ?? true) //有無sorting按鍵
-  const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) //設置元素與其子元素最適寬度
+  const isSorting = props.isSorting && (column?.isSorting ?? true) // 有無sorting按鍵
+  const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) // 設置元素與其子元素最適寬度
 
-  //結束計算最適化寬度
+  // 結束計算最適化寬度
   isResizing.value = false
   await nextTick()
 
-  columnSetting.value?.setColumnWidth(headerKey, newWidth) //欄位設定套用最適化寬度
-  await initShowColumns({ isLoading: false }) //重新渲染欄位, isLoading:false 不使用isLoading
+  columnSetting.value?.setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
+  await initShowColumns({ isLoading: false }) // 重新渲染欄位, isLoading:false 不使用isLoading
+  */
 }
 
-//Header All 欄位寬度最適化
-const optimizeAllColumnWidth = async () => {
-  //開始計算最適化寬度
+// Column All 欄位寬度最適化
+const optimizeAllColumnWidth = () => {
+  Promise.all(showColumns.map(column => setElementWidth(column, 1))).then(() => {
+    // 重新渲染欄位
+    initShowColumns({ isLoading: true })
+  })
+
+  /*
+  // 開始計算最適化寬度
   isResizing.value = true
   await nextTick()
 
@@ -263,25 +338,26 @@ const optimizeAllColumnWidth = async () => {
   })
 
   slotKeyList.value.forEach(headerKey => {
-    const element = document.getElementById('header-' + headerKey) //由Key取得對應欄位元素
+    const element = document.getElementById('header-' + headerKey) // 由Key取得對應欄位元素
     if (element) {
-      const isSorting = props.isSorting && isSortingMap.get(headerKey) //有無sorting按鍵
-      const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) //設置元素與其子元素最適寬度
+      const isSorting = props.isSorting && isSortingMap.get(headerKey) // 有無sorting按鍵
+      const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) // 設置元素與其子元素最適寬度
       if (columnSetting.value) {
-        columnSetting.value.setColumnWidth(headerKey, newWidth) //欄位設定套用最適化寬度
+        columnSetting.value.setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
       }
     }
   })
 
-  //結束計算最適化寬度
+  // 結束計算最適化寬度
   isResizing.value = false
   await nextTick()
 
-  //重新渲染欄位
+  // 重新渲染欄位
   await initShowColumns()
+  */
 }
 
-//Emit
+// Emit
 const onRowClick: RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
 }
@@ -360,7 +436,10 @@ const showData = computed(() => {
 const columnSetting = ref(null)
 const showColumns = shallowReactive([...props.tableColumns])
 
+// 確認欄位 (只有開發階段 給予提示)
+const mode = (import.meta as any).env.MODE
 const checkTableColumns = (tempColumnList: ColumnItem[]) => {
+  if (mode !== 'development') return mode
   const originColumnsKey = tempColumnList.map(item => item.key)
   const settingColumnsKey = props.tableColumns.map(item => item.key)
 
@@ -409,10 +488,7 @@ const initShowColumns = async (setting?: any) => {
         })
 
         if (showColumn) {
-          resColumn.push({
-            ...showColumn,
-            ...tempColumn
-          })
+          resColumn.push({...showColumn, ...tempColumn})
         }
       }
 
@@ -779,10 +855,14 @@ onMounted(() => {
           <div
             :id="`header-${scope.column.key}`"
             class="__table-sorting-column"
-            :class="{
-              'has-sorting': props.isSorting && (scope.column?.isSorting ?? true),
-              resize: isResizing
-            }"
+            :class="[
+              `__header-${scope.column.key}`,
+              {
+                'has-sorting': props.isSorting && (scope.column?.isSorting ?? true)
+                // resize: isResizing
+              }
+            ]"
+            :resizing-key="scope.column.key"
           >
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
               <label>{{ scope.label }}</label>
@@ -807,9 +887,9 @@ onMounted(() => {
         <template
           v-for="slotKey in slotKeyList"
           :key="`${slotKey}`"
-          #[getColumnSlot(`${slotKey}`)]="scope"
+          #[getColumnSlot(slotKey)]="scope"
         >
-          <slot :name="getColumnSlot(`${slotKey}`)" v-bind="scope"></slot>
+          <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>
         </template>
       </TableMain>
     </div>
@@ -966,26 +1046,29 @@ $border-style: 1px solid var(--i-color-table-border);
     }
 
     &.resize {
-      width: 1px; //先最小化以取得scrollWidth
-      white-space: nowrap; //強制不換行以取得scrollWidth
+      width: 1px; // 先最小化以取得scrollWidth
+      white-space: nowrap; // 強制不換行以取得scrollWidth
     }
 
     &-resizer {
-      //定位在欄位右側的不佔位Resizer
+      // 定位在欄位右側的不佔位Resizer
       width: 7px;
       height: calc(100%);
       right: 0px;
       transform: translateX(2px);
       position: absolute;
+      cursor: col-resize;
+      // background-color: #dddddd;
     }
 
     &-resizing {
       //僅在resize時使用的Class，層級最優先
-      &-child {
-        width: fit-content !important;
-      }
+      &-child,
       &-parent {
         width: min-content !important;
+        overflow: hidden;
+        white-space: nowrap;
+        // text-overflow: ellipsis;
       }
     }
   }
@@ -1052,6 +1135,20 @@ $border-style: 1px solid var(--i-color-table-border);
 
 <style lang="scss">
 @use '@/assets/styles/utils' as utils;
+
+// 自動計算欄位寬度
+table .__is-resizing__ > div.cell {
+  &,
+  & :where(label, span, div, a) {
+    color: var(--el-text-color-secondary);
+    // background-color: lightgreen;
+    width: fit-content !important;
+    word-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+  }
+}
 
 $light-color: (
   'table-border': #EBEEF5,

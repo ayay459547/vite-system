@@ -2,8 +2,8 @@ import { shallowRef } from 'vue'
 import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { useEventBus } from '@vueuse/core'
 
+import { useEventBus } from '@/lib/lib_hook'
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
@@ -94,7 +94,7 @@ const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
 router.beforeEach(
   (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-    const bus = useEventBus<string>('')
+    const bus = useEventBus<string>('router')
     bus.emit('busRouterChange')
 
     updateToken((to?.name ?? 'busRouterChange') as string)
@@ -115,7 +115,7 @@ router.beforeEach(
      * 3. 系統預設
      * 4. 0 (無權限)
      */
-    const pagePermission = routerPermission?.meta?.permission ?? 0
+    const pagePermission = routerPermission?.permission ?? 0
 
     // 尚未確認登入狀態
     if (!isCheckedStatus.value) {
