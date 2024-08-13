@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax'
@@ -47,12 +47,27 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     (config: InternalAxiosRequestConfig<any>) => {
       return config
     },
-    (error: any) => {
-      console.log('request error', error)
+    (error: AxiosError<any>) => {
+      const title = 'Request Error'
+      console.log(`${title} => `, error)
       message({
         type: 'error',
-        message: error,
-        duration: 10000
+        message: title,
+        duration: 5000
+      })
+
+      const apiUrl = error?.request?.responseURL ?? ''
+      swal({
+        icon: 'error',
+        reverseButtons: true,
+        title,
+        showConfirmButton: false,
+        showCancelButton: false,
+        showDenyButton: false,
+        html: `<div>
+          <div>${apiUrl}</div>
+          <div>${error.message}</div>
+        </div>`
       })
     }
   )
@@ -61,28 +76,29 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     (res: AxiosResponse<any, any>) => {
       return res.data
     },
-    (error: any) => {
-      console.log('response error', error)
-      // message({
-      //   type: 'error',
-      //   message: error,
-      //   duration: 10000
-      // })
+    (error: AxiosError<any>) => {
+      const title = 'Response Error'
+      console.log(`${title} => `, error)
+      message({
+        type: 'error',
+        message: title,
+        duration: 5000
+      })
 
       const apiUrl = error?.request?.responseURL ?? ''
       const status = error?.response?.status ?? ''
-
       swal({
         icon: 'error',
         reverseButtons: true,
-        title: `Api Error ${status}`,
+        title,
         showConfirmButton: false,
         showCancelButton: false,
         showDenyButton: false,
-        text: `
-        ${error.message}
-        ${apiUrl}
-        `
+        html: `<div>
+          <div>${apiUrl}</div>
+          <div>${error.message}</div>
+          <b>${status}</b>
+        </div>`
       })
     }
   )

@@ -32,6 +32,7 @@ export declare namespace Props {
   type RowClass = string
   type RowStyle = Record<string, string>
   type Tag = string
+  type Disabled = Function | boolean | undefined
   type Clone = Function
   type Move = Function | undefined
   type ComponentData = Record<any, any> | null
@@ -124,6 +125,12 @@ export const props = {
     required: false,
     default: undefined,
     description: '移動後的回調函數'
+  },
+  disabled: {
+    type: [Function, Boolean, undefined] as PropType<Props.Disabled>,
+    required: false,
+    default: false,
+    description: '定義是否可移動'
   },
   // componentData: {
   //   type: [Object, null] as PropType<Props.ComponentData>,

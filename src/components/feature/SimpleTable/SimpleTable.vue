@@ -1,9 +1,9 @@
 <script lang="ts">
 import type { Component } from 'vue'
-import { h, inject } from 'vue'
+import { h, inject, defineComponent } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomDraggable } from '@/components'
+import { CustomDraggable, CustomScrollbar } from '@/components'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -11,35 +11,18 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { Props } from './SimpleTableInfo'
 import { version, props as simpleTableProps } from './SimpleTableInfo'
 
-let propI18nModule: ScopeKey = defaultModuleType
-const getTranslate = (label: string, i18nLabel: string, i18nModule?: string) => {
-  if (isEmpty(i18nLabel)) return label
-
-  const useHook: UseHook = inject('useHook')
-  const { i18nTranslate } = useHook()
-  /**
-   * i18nModule優先序
-   * 1.columnSetting.i18nModule
-   * 2.prop.i18nModule
-   * 3.defaultModuleType (預設)
-   */
-  const module = (i18nModule ?? propI18nModule) as ScopeKey
-  return i18nTranslate(i18nLabel, module)
-}
-
-
 type GetRowCallbackAttrOptions = {
   rowData: any
   rowIndex: number
   rowClassName: Props.RowClassName
-  rowStyle: Props.RowStyle
+  rowStyleCallback: Props.RowStyle
 }
 type GetRowCallbackAttrRes = {
   rowClass: string
   rowStyle: Record<string, any>
 }
 function getRowCallbackAttr(options: GetRowCallbackAttrOptions): GetRowCallbackAttrRes {
-  const { rowData, rowIndex, rowClassName, rowStyle } = options
+  const { rowData, rowIndex, rowClassName, rowStyleCallback } = options
 
   let _rowClass = ''
   if (typeof rowClassName === 'function') {
@@ -50,8 +33,8 @@ function getRowCallbackAttr(options: GetRowCallbackAttrOptions): GetRowCallbackA
   }
 
   let _rowStyle = {}
-  if (typeof rowStyle === 'function') {
-    _rowStyle = rowStyle({
+  if (typeof rowStyleCallback === 'function') {
+    _rowStyle = rowStyleCallback({
       row: rowData,
       rowIndex
     }, [])
@@ -69,14 +52,14 @@ type GetCellCallbackAttrOptions = {
   column: any
   columnIndex: number
   cellClassName: Props.CellClassName
-  cellStyle: Props.CellStyle
+  cellStyleCallback: Props.CellStyle
 }
 type GetCellCallbackAttrRes = {
   cellClass: string
   cellStyle: Record<string, any>
 }
 function getCellCallbackAttr(options: GetCellCallbackAttrOptions): GetCellCallbackAttrRes {
-  const { rowData, rowIndex, column, columnIndex, cellClassName, cellStyle } = options
+  const { rowData, rowIndex, column, columnIndex, cellClassName, cellStyleCallback } = options
 
   let _cellClass = ''
   if (typeof cellClassName === 'function') {
@@ -89,8 +72,8 @@ function getCellCallbackAttr(options: GetCellCallbackAttrOptions): GetCellCallba
   }
 
   let _cellStyle = {}
-  if (typeof cellStyle === 'function') {
-    _cellStyle = cellStyle({
+  if (typeof cellStyleCallback === 'function') {
+    _cellStyle = cellStyleCallback({
       row: rowData,
       column,
       rowIndex,
@@ -122,369 +105,263 @@ function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHead
   return null
 }
 
-const columnNode = (
-  props: Props,
-  slots: Record<string, any>,
-  column: Array<any>,
-  rowItem: any,
-  isHeader: boolean
-) => {
-  return column.map(columnItem => {
-    const {
-      label = '',
-      i18nLabel = '',
-      i18nModule,
-      width = 0,
-      minWidth = 0,
-      align = 'left',
-      class: columnClass = '',
-      style: columnStyle = {},
-      key: columnKey = '',
-      prop = '',
-      slotKey = '',
-      index: columnIndex = 0
-    } = columnItem
+// SimpleTable.props = simpleTableProps
+// SimpleTable.emits = ['update:modelValue']
 
-    const { index: rowIndex = 0 } = rowItem
+export default defineComponent({
+  name: 'SimpleTable',
+  props: simpleTableProps,
+  emits: ['update:modelValue'],
+  setup(props: Props, context: any) {
+    const SimpleTable = (): Component => {
+      const { slots = {}, emit } = context
 
-    const columnNode = getColumnSlotNode(slots, slotKey, isHeader)
+      const {
+        // modelValue = [],
+        isDraggable = false,
+        handle = '.__draggable',
+        group = 'name',
+        itemKey = 'id',
+        move,
+        disabled,
+        hideHeader = false,
+        i18nModule = defaultModuleType,
 
-    const { cellClass, cellStyle } = getCellCallbackAttr({
-      rowData: rowItem,
-      rowIndex,
-      column,
-      columnIndex,
-      cellClassName: props.cellClassName,
-      cellStyle: props.cellStyle
-    })
+        tableData = [],
+        tableColumns = [],
 
-    let showClass: any = []
-    if (typeof columnClass === 'string' && columnClass.length > 0) {
-      showClass.push(columnClass)
-    }
+        rowClassName = null,
+        rowStyle: rowStyleCallback = null,
+        cellClassName = null,
+        cellStyle: cellStyleCallback = null
+      } = props
 
-    let showStyle = {...cellStyle}
-    if (Object.prototype.toString.call(columnStyle) === '[object Object]') {
-      showStyle = {...columnStyle, ...cellStyle}
+      const useHook: UseHook = inject('useHook')
+      const { i18nTranslate } = useHook({ i18nModule })
 
-      if (width > 0) {
-        showStyle['max-width'] = `${width}px`
-        showStyle['min-width'] = `${width}px`
-      }
-      if (minWidth > 0) {
-        showStyle['width'] = `${minWidth}px`
-        showStyle['min-width'] = `${width}px`
+      const getTranslate = (label: string, i18nLabel: string, columnI18nModule?: string) => {
+        if (isEmpty(i18nLabel)) return label
+        /**
+         * i18nModule優先序
+         * 1.columnSetting.i18nModule
+         * 2.prop.i18nModule
+         * 3.defaultModuleType (預設)
+         */
+        const _i18nModule = (columnI18nModule ?? i18nModule) as ScopeKey
+        return i18nTranslate(i18nLabel, _i18nModule)
       }
 
-      showStyle['display'] = 'flex'
-      showStyle['align-items'] = 'center'
-      switch (align) {
-        case 'left':
-          showStyle['justify-content'] = 'flex-start'
-          break
-        case 'center':
-          showStyle['justify-content'] = 'center'
-          break
-        case 'right':
-          showStyle['justify-content'] = 'flex-end'
-          break
-      }
-    }
+      const renderColumnNode = (rowItem: any, isHeader: boolean) => {
+        return tableColumns.map(columnItem => {
+          const {
+            label = '',
+            i18nLabel = '',
+            i18nModule,
+            width = 0,
+            minWidth = 0,
+            align = 'left',
+            class: columnClass = '',
+            style: columnStyle = {},
+            key: columnKey = '',
+            prop = '',
+            slotKey = '',
+            index: columnIndex = 0
+          } = columnItem
 
-    const defaultRender = isHeader ? getTranslate(label, i18nLabel, i18nModule) : rowItem[prop]
+          const { index: rowIndex = 0 } = rowItem
 
-    return h(
-      'div',
-      {
-        class: [
-          '__data-table-column',
-          cellClass,
-          ...showClass
-        ],
-        style: showStyle
-        // key: columnKey
-      },
-      ![undefined, null].includes(columnNode)
-        ? columnNode({
-            key: columnKey,
-            prop: columnKey,
-            row: rowItem,
-            column: { ...columnItem },
+          const columnNode = getColumnSlotNode(slots, slotKey, isHeader)
+
+          const { cellClass, cellStyle } = getCellCallbackAttr({
+            rowData: rowItem,
             rowIndex,
+            column: { ...columnItem },
             columnIndex,
-            data: defaultRender
+            cellClassName,
+            cellStyleCallback
           })
-        : defaultRender
-    )
-  })
-}
 
-const rowNode = (
-  props: Props,
-  slots: Record<string, any>,
-  column: Array<any>,
-  tableData: Array<any>,
-  options: {
-    isHeader: boolean
-    isDraggable: boolean
-  }
-) => {
-  const { isHeader = false } = options
+          let showClass: any = []
+          if (typeof columnClass === 'string' && columnClass.length > 0) {
+            showClass.push(columnClass)
+          }
 
-  // 渲染 header 的 row
-  if (isHeader) {
-    return h(
-      'div',
-      {
-        class: '__data-table-header'
-      },
-      columnNode(props, slots, column, {}, true)
-    )
+          let showStyle = {...cellStyle}
+          if (Object.prototype.toString.call(columnStyle) === '[object Object]') {
+            showStyle = {...columnStyle, ...cellStyle}
 
-  // 渲染 資料 的 row
-  } else {
-    return tableData.map((rowData: any, rowIndex: number) => {
-      const { rowClass, rowStyle } = getRowCallbackAttr({
-        rowData,
-        rowIndex,
-        rowClassName: props.rowClassName,
-        rowStyle: props.rowStyle
-      })
+            if (width > 0) {
+              showStyle['max-width'] = `${width}px`
+              showStyle['min-width'] = `${width}px`
+            }
+            if (minWidth > 0) {
+              showStyle['width'] = `${minWidth}px`
+              showStyle['min-width'] = `${width}px`
+            }
 
-      return h(
-        'div',
-        {
-          key: rowData.key ? rowData.key : rowIndex,
-          class: [
-            '__data-table-row',
-            `key:${rowData.key}`,
-            rowClass
-          ],
-          style: rowStyle
-        },
-        columnNode(
-          props,
-          slots,
-          column,
-          {
-            ...rowData,
-            index: rowIndex
-          },
-          false
-        )
-      )
-    })
-  }
-}
+            showStyle['display'] = 'flex'
+            showStyle['align-items'] = 'center'
+            switch (align) {
+              case 'left':
+                showStyle['justify-content'] = 'flex-start'
+                break
+              case 'center':
+                showStyle['justify-content'] = 'center'
+                break
+              case 'right':
+                showStyle['justify-content'] = 'flex-end'
+                break
+            }
+          }
 
-const headerNode = (props: Props, slots: Record<string, any>, column: Array<any>) => {
-  return rowNode(props, slots, column, [], {
-    isHeader: true,
-    isDraggable: false
-  })
-}
+          const defaultRender = isHeader ? getTranslate(label, i18nLabel, i18nModule) : rowItem[prop]
 
-const scopedId = getUuid('__i-simple-table__')
-
-const bodyNode = (
-  slots: Record<string, any>,
-  column: Array<any>,
-  options: {
-    props: Props
-    emit: Function
-    tableData: any[]
-    isDraggable: boolean
-    handle: string
-    itemKey: string
-    group: string
-    move: Function
-  }
-) => {
-  const { props, emit, tableData, isDraggable, handle, itemKey, group, move } = options
-
-  if (tableData.length === 0) {
-    return h(
-      'div',
-      {
-        class: '__data-table-body',
-        style: 'padding: 12px 16px; font-size: 1.2em'
-      },
-      h(
-        'div',
-        {
-          class: '__data-table-emtpy'
-        },
-        '無資料'
-      )
-    )
-  }
-
-  // 可拖拉
-  if (isDraggable) {
-    return h(
-      CustomDraggable,
-      {
-        class: '__data-table-body',
-        modelValue: props.tableData,
-        'onUpdate:modelValue': value => {
-          emit('update:modelValue', value)
-        },
-        handle,
-        itemKey,
-        group,
-        move
-      },
-      {
-        item: (scope: any) => {
-          const { element: rowData, index: rowIndex } = scope
-          return columnNode(
-            props,
-            slots,
-            column,
+          return h('div',
             {
-              ...rowData,
-              index: rowIndex
+              class: [
+                '__data-table-column',
+                cellClass,
+                ...showClass
+              ],
+              style: showStyle
+              // key: columnKey
             },
-            false
+            ![undefined, null].includes(columnNode)
+              ? columnNode({
+                  key: columnKey,
+                  prop: columnKey,
+                  row: rowItem,
+                  column: { ...columnItem },
+                  rowIndex,
+                  columnIndex,
+                  data: defaultRender
+                })
+              : defaultRender
+          )
+        })
+      }
+
+      const rowNode = (options: { isHeader: boolean }) => {
+        const { isHeader = false } = options
+
+        // 渲染 header 的 row
+        if (isHeader) {
+          return h('div', { class: '__data-table-header' }, renderColumnNode({}, true))
+
+        // 渲染 資料 的 row
+        } else {
+          return tableData.map((rowData: any, rowIndex: number) => {
+            const { rowClass, rowStyle } = getRowCallbackAttr({
+              rowData,
+              rowIndex,
+              rowClassName,
+              rowStyleCallback
+            })
+
+            return h('div',
+              {
+                key: rowData.key ? rowData.key : rowIndex,
+                class: [
+                  '__data-table-row',
+                  `key:${rowData.key}`,
+                  rowClass
+                ],
+                style: rowStyle
+              },
+              renderColumnNode({...rowData, index: rowIndex}, false)
+            )
+          })
+        }
+      }
+
+      const headerNode = () => {
+        return rowNode({ isHeader: true })
+      }
+
+      const scopedId = getUuid('__i-simple-table__')
+
+      const bodyNode = () => {
+        if (tableData.length === 0) {
+          return h('div',
+            {
+              class: '__data-table-body',
+              style: 'padding: 12px 16px; font-size: 1.2em'
+            },
+            h('div', { class: '__data-table-emtpy' }, i18nTranslate('noData'))
+          )
+        }
+
+        // 可拖拉
+        if (isDraggable) {
+          return h(CustomDraggable,
+            {
+              class: '__data-table-body',
+              modelValue: tableData,
+              'onUpdate:modelValue': value => {
+                emit('update:modelValue', value)
+              },
+              handle,
+              itemKey,
+              group,
+              move,
+              disabled
+            },
+            {
+              // slot
+              item: (scope: any) => {
+                const { element: rowData, index: rowIndex } = scope
+                return renderColumnNode({...rowData, index: rowIndex}, false)
+              }
+            }
+          )
+        } else {
+          return h('div',
+            { class: '__data-table-body' },
+            rowNode({ isHeader: false })
           )
         }
       }
-    )
-  } else {
-    return h(
-      'div',
-      {
-        class: '__data-table-body'
-      },
-      rowNode(props, slots, column, tableData, {
-        isHeader: false,
-        isDraggable
-      })
-    )
-  }
-}
 
-const SimpleTable = (props: Props, context: any): Component => {
-  const { slots = {}, emit } = context
+      const bodyContainerNode = () => {
+        return h('div',
+          { class: ['__data-table-body-container'] },
+          [ bodyNode() ]
+        )
+      }
 
-  const {
-    modelValue = [],
-    isDraggable = false,
-    handle = '.__draggable',
-    group = 'name',
-    itemKey = 'id',
-    move,
-    hideHeader = false,
-    i18nModule = defaultModuleType,
-
-    tableData = [],
-    tableColumns = [],
-
-    rowClassName = null,
-    rowStyle = null,
-    cellClassName = null,
-    cellStyle = null
-  } = props
-
-  propI18nModule = i18nModule // 透過模組傳遞的prop設定i18nModule
-
-  return h<Props>(
-    (props, context) => {
-      const { slots = {} } = context
-      const { tableColumns, tableData, isDraggable } = props
-      // console.log('props => ', props)
-      // console.log('context => ', context)
-
-      // const tableStyle = props['table-style']
-      // const tableClass = props['table-class']
-      return h(
-        'div',
-        {
-          class: ['__data-table-wrapper', `SimpleTable_${version}`, `${scopedId}`]
-          // style: { ...tableStyle }
-        },
-        [
-          h(
-            'div',
-            {
-              class: ['__data-table-container']
-            },
-            hideHeader ? [
-              h(
-                'div',
-                {
-                  class: ['__data-table-body-container']
-                },
-                [
-                  bodyNode(slots, tableColumns, {
-                    props,
-                    emit,
-                    tableData,
-                    isDraggable,
-                    handle,
-                    itemKey,
-                    group,
-                    move
-                  })
-                ]
-              )
-            ] : [
-              headerNode(props, slots, tableColumns),
-              h(
-                'div',
-                {
-                  class: ['__data-table-body-container']
-                },
-                [
-                  bodyNode(slots, tableColumns, {
-                    props,
-                    emit,
-                    tableData,
-                    isDraggable,
-                    handle,
-                    itemKey,
-                    group,
-                    move
-                  })
-                ]
-              )
+      return h<Props>(() => {
+        return h('div',
+          {
+            class: [
+              '__data-table-wrapper',
+              `SimpleTable_${version}`,
+              `${scopedId}`
             ]
-          )
-        ]
-      )
-    },
-    {
-      modelValue,
-      isDraggable,
-      handle,
-      group,
-      itemKey,
-      move,
-      hideHeader,
-      i18nModule,
+          },
+          [
+            h(CustomScrollbar, {}, {
+                default: () => {
+                  return h('div',
+                    { class: ['__data-table-container'] },
+                    [
+                      hideHeader ?
+                        bodyContainerNode() :
+                        headerNode(tableColumns),
+                        bodyContainerNode()
+                    ]
+                  )
+                }
+              }
+            )
+          ]
+        )
+      })
+    }
 
-      tableData,
-      tableColumns,
-
-      rowClassName,
-      rowStyle,
-      cellClassName,
-      cellStyle
-    },
-    slots
-  )
-}
-
-SimpleTable.props = simpleTableProps
-
-SimpleTable.emits = ['update:modelValue']
-
-export default SimpleTable
+    return SimpleTable
+  }
+})
 </script>
-
-<!-- <template>
-  <component :is="SimpleTable"></component>
-</template> -->
 
 <style lang="scss">
 .__data-table {
@@ -493,7 +370,7 @@ export default SimpleTable
     border: 1px solid var(--i-color-table-border);
     width: 100%;
     height: 100%;
-    overflow-x: auto;
+    // overflow: auto;
   }
 
   &-container {
@@ -511,7 +388,8 @@ export default SimpleTable
     color: var(--el-table-header-text-color);
     border-bottom: 1px solid var(--el-table-border-color);
     z-index: 1;
-    overflow-y: scroll;
+    position: sticky;
+    top: 0;
   }
 
   &-body-container {
@@ -522,15 +400,13 @@ export default SimpleTable
       width: fit-content;
       height: fit-content;
     }
-    position: relative;
-    overflow-y: scroll;
   }
 
-  &-header::-webkit-scrollbar-track,
-  &-body-container::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px #ffffff00;
-    border-radius: 6px;
-  }
+  // &-header::-webkit-scrollbar-track,
+  // &-body-container::-webkit-scrollbar-track {
+  //   box-shadow: inset 0 0 5px #ffffff00;
+  //   border-radius: 6px;
+  // }
 
   &-body {
     background-color: var(--el-bg-color);

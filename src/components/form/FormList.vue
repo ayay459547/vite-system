@@ -125,9 +125,13 @@ const props = defineProps({
     type: Function,
     required: false,
     default: null,
-    description: `
-      用於draggable的移動後回掉函式
-    `
+    description: '用於draggable的移動後回掉函式'
+  },
+  disabled: {
+    type: Function,
+    required: false,
+    default: null,
+    description: '用於定義draggable是否可移動'
   },
   setDisabled: {
     type: Function,
@@ -283,6 +287,7 @@ onBeforeMount(() => {
         :is-draggable="isDraggable"
         :handle="`.form-item-move__${scopedId}`"
         :move="props.move"
+        :disabled="props.disabled"
         :group="props.draggableGroup"
         :table-data="tempValue"
         :table-columns="showTableColumns"
@@ -335,50 +340,52 @@ onBeforeMount(() => {
           </slot>
         </template>
         <template #column-row_operations="scope">
-          <div class="flex-row" v-if="props.setDisabled(scope.row)">
-            <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
-              <CustomButton
-                v-if="props.isDraggable"
-                disabled
-                type="info"
-                icon-name="right-left"
-                text
-                :class="`form-item-disable__${scopedId}`"
-                style="transform: rotateZ(90deg)"
-              />
-            </slot>
-            <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
-              <CustomButton
-                v-if="props.isRemove"
-                disabled
-                type="danger"
-                icon-name="trash-can"
-                text
-                @click="remove(scope.rowIndex)"
-              />
-            </slot>
-          </div>
-          <div class="flex-row" v-else>
-            <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
-              <CustomButton
-                v-if="props.isDraggable"
-                type="info"
-                icon-name="right-left"
-                text
-                :class="`form-item-move__${scopedId}`"
-                style="transform: rotateZ(90deg)"
-              />
-            </slot>
-            <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
-              <CustomButton
-                v-if="props.isRemove"
-                type="danger"
-                icon-name="trash-can"
-                text
-                @click="remove(scope.rowIndex)"
-              />
-            </slot>
-          </div>
+          <KeepAlive>
+            <div class="flex-row" v-if="props.setDisabled(scope.row)">
+              <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
+                <CustomButton
+                  v-if="props.isDraggable"
+                  disabled
+                  type="info"
+                  icon-name="right-left"
+                  text
+                  :class="`form-item-disable__${scopedId}`"
+                  style="transform: rotateZ(90deg)"
+                />
+              </slot>
+              <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
+                <CustomButton
+                  v-if="props.isRemove"
+                  disabled
+                  type="danger"
+                  icon-name="trash-can"
+                  text
+                  @click="remove(scope.rowIndex)"
+                />
+              </slot>
+            </div>
+            <div class="flex-row" v-else>
+              <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
+                <CustomButton
+                  v-if="props.isDraggable"
+                  type="info"
+                  icon-x-type="tabler"
+                  icon-name="ArrowsUpDown"
+                  text
+                  :class="`form-item-move__${scopedId}`"
+                />
+              </slot>
+              <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
+                <CustomButton
+                  v-if="props.isRemove"
+                  type="danger"
+                  icon-name="trash-can"
+                  text
+                  @click="remove(scope.rowIndex)"
+                />
+              </slot>
+            </div>
+          </KeepAlive>
         </template>
       </SimpleTable>
 
