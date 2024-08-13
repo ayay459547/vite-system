@@ -115,45 +115,52 @@ const initNavigationRoutes = (routeName: string) => {
   <div class="view-wrapper">
     <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
     <div v-show="isDisabled" class="is-disabled">{{ routeName }}</div>
-    <main v-loading="isLoading" class="view-container">
+    <main class="view-container">
       <!-- 滾動到最上方 -->
       <div class="__layout-scroll-top__"></div>
 
       <!-- 頁面功能 -->
-      <RouterView v-slot="{ Component, route }">
-        <component
-          v-if="route.name === 'login'"
-          key="login"
-          :is="Component"
-          @login="login"
-        />
-        <component
-          v-else-if="route.name === 'locatehome'"
-          key="locatehome"
-          :is="Component"
-          @router-change="setLayoutInfo"
-        />
-        <component
-          v-else-if="route.name === 'nodoc-21'"
-          key="nodoc-21"
-          :is="Component"
-          @init-system="initNavigationRoutes('nodoc-21')"
-        />
-        <template v-else>
-          <KeepAlive>
+      <Suspense>
+        <template #default>
+          <RouterView v-slot="{ Component, route }">
             <component
-              v-if="(route?.meta?.keepAlive ?? false)"
-              :key="route.name"
+              v-if="route.name === 'login'"
+              key="login"
               :is="Component"
+              @login="login"
             />
-          </KeepAlive>
-          <component
-            v-if="!(route?.meta?.keepAlive ?? false)"
-            :key="route.name"
-            :is="Component"
-          />
+            <component
+              v-else-if="route.name === 'locatehome'"
+              key="locatehome"
+              :is="Component"
+              @router-change="setLayoutInfo"
+            />
+            <component
+              v-else-if="route.name === 'nodoc-21'"
+              key="nodoc-21"
+              :is="Component"
+              @init-system="initNavigationRoutes('nodoc-21')"
+            />
+            <template v-else>
+              <KeepAlive>
+                <component
+                  v-if="(route?.meta?.keepAlive ?? false)"
+                  :key="route.name"
+                  :is="Component"
+                />
+              </KeepAlive>
+              <component
+                v-if="!(route?.meta?.keepAlive ?? false)"
+                :key="route.name"
+                :is="Component"
+              />
+            </template>
+          </RouterView>
         </template>
-      </RouterView>
+        <template #fallback>
+          <div v-loading="true" class="fill">Loading...</div>
+        </template>
+      </Suspense>
     </main>
   </div>
 </template>

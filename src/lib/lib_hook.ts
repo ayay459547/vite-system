@@ -1,4 +1,5 @@
 import type { Ref, DeepReadonly } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import type{
   MaybeElementRef,
   UseRefHistoryOptions, UseRefHistoryReturn,
@@ -19,7 +20,6 @@ import {
   useEventBus as _useEventBus
 } from '@vueuse/core'
 
-
 import {
   customRef,
   readonly,
@@ -32,6 +32,9 @@ import {
 } from 'vue'
 import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
+
+import FixView from '@/views/Common/FixView.vue'
+import Page_404 from '@/views/Common/Page_404.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
@@ -191,6 +194,22 @@ export function useBoundingClientRect(
     contentRect: contentRect,
     updateContentRect
   }
+}
+
+/**
+ * @author Caleb
+ * @description 懶加載組件
+ * @param {Function} loader () => import('@/components/MyAsyncComponent.vue')
+ */
+export const useAsyncComponent = (loader: () => Promise<any>) => {
+  return defineAsyncComponent({
+    loader,
+    loadingComponent: FixView, // 自定義加載組件
+    errorComponent: Page_404, // 自定義錯誤組件
+    delay: 2000, // 延遲顯示加載組件
+    timeout: 3000, // 超過時間顯示錯誤組件
+    suspensible: true // Suspense
+  })
 }
 
 /**
