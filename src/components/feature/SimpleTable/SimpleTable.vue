@@ -127,8 +127,8 @@ export default defineComponent({
         hideHeader = false,
         i18nModule = defaultModuleType,
 
-        tableData = [],
-        tableColumns = [],
+        // tableData = [],
+        // tableColumns = [],
 
         rowClassName = null,
         rowStyle: rowStyleCallback = null,
@@ -152,7 +152,7 @@ export default defineComponent({
       }
 
       const renderColumnNode = (rowItem: any, isHeader: boolean) => {
-        return tableColumns.map(columnItem => {
+        return props.tableColumns.map((columnItem: any) => {
           const {
             label = '',
             i18nLabel = '',
@@ -250,7 +250,7 @@ export default defineComponent({
 
         // 渲染 資料 的 row
         } else {
-          return tableData.map((rowData: any, rowIndex: number) => {
+          return props.tableData.map((rowData: any, rowIndex: number) => {
             const { rowClass, rowStyle } = getRowCallbackAttr({
               rowData,
               rowIndex,
@@ -281,7 +281,7 @@ export default defineComponent({
       const scopedId = getUuid('__i-simple-table__')
 
       const bodyNode = () => {
-        if (tableData.length === 0) {
+        if (props.tableData.length === 0) {
           return h('div',
             {
               class: '__data-table-body',
@@ -296,7 +296,7 @@ export default defineComponent({
           return h(CustomDraggable,
             {
               class: '__data-table-body',
-              modelValue: tableData,
+              modelValue: props.tableData,
               'onUpdate:modelValue': value => {
                 emit('update:modelValue', value)
               },
@@ -346,7 +346,7 @@ export default defineComponent({
                     [
                       hideHeader ?
                         bodyContainerNode() :
-                        headerNode(tableColumns),
+                        headerNode(),
                         bodyContainerNode()
                     ]
                   )

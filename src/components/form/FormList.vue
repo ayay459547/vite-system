@@ -281,113 +281,115 @@ onBeforeMount(() => {
     </div>
 
     <div class="__form-list__ form-content" v-show="!collapseList">
-      <SimpleTable
-        v-model="tempValue"
-        :item-key="props.itemKey"
-        :is-draggable="isDraggable"
-        :handle="`.form-item-move__${scopedId}`"
-        :move="props.move"
-        :disabled="props.disabled"
-        :group="props.draggableGroup"
-        :table-data="tempValue"
-        :table-columns="showTableColumns"
-      >
-        <template #header-all="{ key, rowIndex, data, column: _column }">
-          <slot name="header-all" :label="data" :row-index="rowIndex" :column="_column" :prop="key">
-            <div v-show="_column.required" class="text-danger i-pr-xs">*</div>
-            <div>{{ _column.label }}</div>
-          </slot>
-        </template>
-        <template
-          v-for="column in tableColumns"
-          :key="column.prop"
-          v-slot:[getHeaderSlot(column.slotKey)]="{ key, rowIndex, data, column: _column }"
+      <div class="__form-list__ form-table">
+        <SimpleTable
+          v-model="tempValue"
+          :item-key="props.itemKey"
+          :is-draggable="isDraggable"
+          :handle="`.form-item-move__${scopedId}`"
+          :move="props.move"
+          :disabled="props.disabled"
+          :group="props.draggableGroup"
+          :table-data="tempValue"
+          :table-columns="showTableColumns"
         >
-          <slot
-            :name="getHeaderSlot(column.slotKey)"
-            :label="data"
-            :row-index="rowIndex"
-            :column="_column"
-            :prop="key"
-          ></slot>
-        </template>
+          <template #header-all="{ key, rowIndex, data, column: _column }">
+            <slot name="header-all" :label="data" :row-index="rowIndex" :column="_column" :prop="key">
+              <div v-show="_column.required" class="text-danger i-pr-xs">*</div>
+              <div>{{ _column.label }}</div>
+            </slot>
+          </template>
+          <template
+            v-for="column in tableColumns"
+            :key="column.prop"
+            v-slot:[getHeaderSlot(column.slotKey)]="{ key, rowIndex, data, column: _column }"
+          >
+            <slot
+              :name="getHeaderSlot(column.slotKey)"
+              :label="data"
+              :row-index="rowIndex"
+              :column="_column"
+              :prop="key"
+            ></slot>
+          </template>
 
-        <template
-          v-for="column in tableColumns"
-          :key="column.prop"
-          v-slot:[getColumnSlot(column.slotKey)]="{ key, row, rowIndex, data, column: _column }"
-        >
-          <slot
-            :name="getColumnSlot(column.slotKey)"
-            :data="data"
-            :row="row"
-            :row-index="rowIndex"
-            :column="_column"
-            :prop="key"
-          ></slot>
-        </template>
+          <template
+            v-for="column in tableColumns"
+            :key="column.prop"
+            v-slot:[getColumnSlot(column.slotKey)]="{ key, row, rowIndex, data, column: _column }"
+          >
+            <slot
+              :name="getColumnSlot(column.slotKey)"
+              :data="data"
+              :row="row"
+              :row-index="rowIndex"
+              :column="_column"
+              :prop="key"
+            ></slot>
+          </template>
 
-        <template #header-row_index="{ data }">
-          <label>{{ data }}</label>
-        </template>
-        <template #column-row_index="{ rowIndex }">
-          <span>{{ rowIndex + 1 }}</span>
-        </template>
-        <template #header-row_operations="scope">
-          <slot name="column-operations" v-bind="scope">
-            <span>{{ i18nTranslate('operationCommands') }}</span>
-            <!-- <span>{{ scope.data }}</span> -->
-          </slot>
-        </template>
-        <template #column-row_operations="scope">
-          <KeepAlive>
-            <div class="flex-row" v-if="props.setDisabled(scope.row)">
-              <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
-                <CustomButton
-                  v-if="props.isDraggable"
-                  disabled
-                  type="info"
-                  icon-name="right-left"
-                  text
-                  :class="`form-item-disable__${scopedId}`"
-                  style="transform: rotateZ(90deg)"
-                />
-              </slot>
-              <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
-                <CustomButton
-                  v-if="props.isRemove"
-                  disabled
-                  type="danger"
-                  icon-name="trash-can"
-                  text
-                  @click="remove(scope.rowIndex)"
-                />
-              </slot>
-            </div>
-            <div class="flex-row" v-else>
-              <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
-                <CustomButton
-                  v-if="props.isDraggable"
-                  type="info"
-                  icon-x-type="tabler"
-                  icon-name="ArrowsUpDown"
-                  text
-                  :class="`form-item-move__${scopedId}`"
-                />
-              </slot>
-              <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
-                <CustomButton
-                  v-if="props.isRemove"
-                  type="danger"
-                  icon-name="trash-can"
-                  text
-                  @click="remove(scope.rowIndex)"
-                />
-              </slot>
-            </div>
-          </KeepAlive>
-        </template>
-      </SimpleTable>
+          <template #header-row_index="{ data }">
+            <label>{{ data }}</label>
+          </template>
+          <template #column-row_index="{ rowIndex }">
+            <span>{{ rowIndex + 1 }}</span>
+          </template>
+          <template #header-row_operations="scope">
+            <slot name="column-operations" v-bind="scope">
+              <span>{{ i18nTranslate('operationCommands') }}</span>
+              <!-- <span>{{ scope.data }}</span> -->
+            </slot>
+          </template>
+          <template #column-row_operations="scope">
+            <KeepAlive>
+              <div class="flex-row" v-if="props.setDisabled(scope.row)">
+                <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
+                  <CustomButton
+                    v-if="props.isDraggable"
+                    disabled
+                    type="info"
+                    icon-name="right-left"
+                    text
+                    :class="`form-item-disable__${scopedId}`"
+                    style="transform: rotateZ(90deg)"
+                  />
+                </slot>
+                <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
+                  <CustomButton
+                    v-if="props.isRemove"
+                    disabled
+                    type="danger"
+                    icon-name="trash-can"
+                    text
+                    @click="remove(scope.rowIndex)"
+                  />
+                </slot>
+              </div>
+              <div class="flex-row" v-else>
+                <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
+                  <CustomButton
+                    v-if="props.isDraggable"
+                    type="info"
+                    icon-x-type="tabler"
+                    icon-name="ArrowsUpDown"
+                    text
+                    :class="`form-item-move__${scopedId}`"
+                  />
+                </slot>
+                <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
+                  <CustomButton
+                    v-if="props.isRemove"
+                    type="danger"
+                    icon-name="trash-can"
+                    text
+                    @click="remove(scope.rowIndex)"
+                  />
+                </slot>
+              </div>
+            </KeepAlive>
+          </template>
+        </SimpleTable>
+      </div>
 
       <div :class="`__form-list__ form-create ${props.createPosition}`">
         <CustomButton
@@ -438,6 +440,13 @@ onBeforeMount(() => {
       width: 100%;
       height: 100%;
       gap: 8px;
+    }
+
+    &-table {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
     }
 
     &-create {

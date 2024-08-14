@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 
 import { FormList, CustomInput } from '@/components'
 import { useFormListSetting } from '@/lib/lib_columns'
@@ -47,7 +47,9 @@ const submit = () => {
       })
       if (error) {
         const el = error.getDom()
-        scrollToEl(el)
+        scrollToEl(el, {
+          block: 'center'
+        })
       }
     })
 }
@@ -61,6 +63,10 @@ const sortList = () => {
     })
   }, 1000)
 }
+
+onMounted(() => {
+  add()
+})
 </script>
 
 <template>

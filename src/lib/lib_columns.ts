@@ -696,7 +696,6 @@ export const useTableSetting = (
   }
 }
 
-
 /**
  * @author Caleb
  * @description 取的 Columns 設定 SimpleTable + TableV2 用的資料

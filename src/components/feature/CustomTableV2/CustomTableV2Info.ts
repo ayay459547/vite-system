@@ -53,13 +53,13 @@ export const props = {
   cache: {
     type: Number as PropType<number>,
     required: false,
-    default: 12,
+    default: 6,
     description: '預先加載資料行數'
   },
   fixed: {
     type: Boolean as PropType<boolean>,
     required: false,
-    default: true,
+    default: false,
     description: '寬度欄位是否固定 還是自適應'
   }
 }

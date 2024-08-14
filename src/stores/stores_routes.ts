@@ -119,7 +119,7 @@ export const useRoutesStore = defineStore('routes', () => {
        * 設定 權限的總和
        */
       const routerPermission = _getRouterPermission(leafNode, leafNodeName)
-      nextNode.meta.permission = routerPermission
+      nextNode.permission = routerPermission
 
       /**
        * 設置搜尋用 map

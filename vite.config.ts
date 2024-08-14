@@ -16,8 +16,13 @@ import eslintPlugin from 'vite-plugin-eslint'
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const buildVersion = env.VITE_API_BUILD_VERSION
-  const Timestamp = new Date().getTime()
-  console.log(buildVersion, ' => ', command)
+  const timestamp = new Date().getTime()
+  console.log({
+    buildVersion,
+    mode,
+    command,
+    timestamp
+  })
 
   return {
     base: './',
@@ -29,9 +34,9 @@ export default defineConfig(({ command, mode }) => {
       // outDir: path.resolve(__dirname, ''),
       rollupOptions: {
         output: {
-          chunkFileNames: `static/js/[name].[hash].${buildVersion}.${Timestamp}.js`,
-          entryFileNames: `static/js/[name].[hash].${buildVersion}.${Timestamp}.js`,
-          assetFileNames: `static/[ext]/[name].[hash].${buildVersion}.${Timestamp}.[ext]`
+          chunkFileNames: `static/js/[name].[hash].${buildVersion}.${timestamp}.js`,
+          entryFileNames: `static/js/[name].[hash].${buildVersion}.${timestamp}.js`,
+          assetFileNames: `static/[ext]/[name].[hash].${buildVersion}.${timestamp}.[ext]`
         }
       },
       minify: 'esbuild'
@@ -44,7 +49,7 @@ export default defineConfig(({ command, mode }) => {
         // this plugin handles ?b64 tags
         name: 'vite-b64-plugin',
         transform(code, id) {
-          if (!id.match(/\?b64$/)) return
+          if (!id.match(/\?b64$/) || mode !== 'development') return
           const path = id.replace(/\?b64/, '')
           const b64 = readFileSync(path, 'base64')
           const i18n = JSON.parse(JSON.stringify(b64))
@@ -142,6 +147,9 @@ export default defineConfig(({ command, mode }) => {
           additionalData: '@use "@/assets/main.scss" as *;'
         }
       }
+    },
+    optimizeDeps: {
+      // include: ['element-plus']
     }
   }
 })

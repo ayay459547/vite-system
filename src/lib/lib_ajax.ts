@@ -65,8 +65,8 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
         showCancelButton: false,
         showDenyButton: false,
         html: `<div>
-          <div>${apiUrl}</div>
-          <div>${error.message}</div>
+          <div>url: ${apiUrl}</div>
+          <div>message: ${error.message}</div>
         </div>`
       })
     }
@@ -95,9 +95,9 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
         showCancelButton: false,
         showDenyButton: false,
         html: `<div>
-          <div>${apiUrl}</div>
-          <div>${error.message}</div>
-          <b>${status}</b>
+          <div>url: ${apiUrl}</div>
+          <div>message: ${error.message}</div>
+          <div>status: ${status}</div>
         </div>`
       })
     }

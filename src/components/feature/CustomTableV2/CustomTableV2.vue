@@ -171,6 +171,7 @@ defineExpose({
                   :prop="scope.column.prop"
                   :label="scope.column.label"
                 ></slot>
+                <div v-else>{{ scope.rowData[column.slotKey] }}</div>
               </div>
             </template>
           </template>
@@ -203,13 +204,11 @@ defineExpose({
       color: var(--el-text-color-primary);
     }
 
-    .el-table-v2__row {
-      .el-table-v2__row-cell {
-        border-right: 1px solid var(--i-color-table-border);
+    .el-table-v2__row, .el-table-v2__row-cell {
+      border-right: 1px solid var(--i-color-table-border);
 
-        & > div {
-          width: 100%;
-        }
+      & > div {
+        width: 100%;
       }
     }
   }
