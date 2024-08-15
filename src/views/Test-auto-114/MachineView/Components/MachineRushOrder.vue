@@ -35,7 +35,7 @@ const props = defineProps({
   }
 })
 
-const machine = ref<TableData>({
+const currentMachine = ref<TableData>({
   machineId: '',
   areaName: '',
   sum: '',
@@ -65,11 +65,11 @@ const initRushOrderData = () => {
 }
 
 onMounted(() => {
-  machine.value = props.machine
+  currentMachine.value = props.machine
 
   initRushOrderData()
 
-  console.log('machine => ', machine.value)
+  console.log('machine => ', currentMachine.value)
 })
 
 const { tableColumns } = useSimpleTableSetting(workReportColumnSetting, 'table')

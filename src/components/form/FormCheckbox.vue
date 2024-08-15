@@ -147,7 +147,8 @@ const scopedId = getUuid('__i-checkbox__')
     @include validate-error(checkbox);
   }
 }
-.__i-checkbox__ {
+
+:where(.__i-checkbox__) {
   width: 100%;
   height: fit-content;
 }

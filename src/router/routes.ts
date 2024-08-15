@@ -15,13 +15,13 @@ export function FixView() {
 import descriptionRoutes from './description'
 // 開發用頁面
 import developmentRoutes from './development'
-// 測試用頁面
-import testRoutes from './test'
+// Test 用頁面
+import testRoutes from './Test'
 
 const routes: Array<RouterTree> = [
   {
-    name: 'test-system-feature',
-    title: '功能測試',
+    name: 'Test-system-feature',
+    title: 'Feature Test',
     meta: {
       systemType: ['new'],
       icon: 'table',
@@ -29,8 +29,8 @@ const routes: Array<RouterTree> = [
     },
     leaves: [
       {
-        name: 'test-feat',
-        title: '測試TSX',
+        name: 'Test-feat',
+        title: 'Test TSX',
         meta: {
           systemType: ['new'],
           permission: totlaPermission
@@ -38,8 +38,8 @@ const routes: Array<RouterTree> = [
         component: () => import('@/views/TSX/TSX.vue')
       },
       {
-        name: 'test-feat',
-        title: '測試新功能',
+        name: 'Test-feat',
+        title: 'Test New Feature',
         meta: {
           systemType: ['new'],
           permission: totlaPermission
@@ -47,7 +47,7 @@ const routes: Array<RouterTree> = [
         leaves: [
           {
             name: 'feat-gantt',
-            title: '甘特圖(新)',
+            title: 'Chart TEST',
             component: () => import('@/views/Feat-gantt/Feat-gantt.vue'),
             meta: {
               keepAlive: false,
@@ -57,7 +57,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'feat-gantt-old',
-            title: '甘特圖(舊)',
+            title: 'Gantt Old',
             component: () => import('@/views/Feat-gantt-old/Feat-gantt-old.vue'),
             meta: {
               keepAlive: false,
@@ -67,7 +67,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'feat-gantt-flight',
-            title: '飛機航班甘特圖',
+            title: 'Flight Gantt',
             component: () => import('@/views/Feat-gantt-flight/Feat-gantt-flight.vue'),
             meta: {
               keepAlive: false,
@@ -78,8 +78,8 @@ const routes: Array<RouterTree> = [
         ]
       },
       {
-        name: 'test-fund',
-        title: 'test-fund',
+        name: 'Test-fund',
+        title: 'Test-fund',
         meta: {
           keepAlive: false,
           systemType: ['new'],
@@ -87,8 +87,8 @@ const routes: Array<RouterTree> = [
         },
         leaves: [
           {
-            name: 'test-new',
-            title: '測試表格',
+            name: 'Test-new',
+            title: 'Test Table',
             component: () => import('@/views/Test-new/Test-new.vue'),
             meta: {
               keepAlive: false,
@@ -97,8 +97,8 @@ const routes: Array<RouterTree> = [
             }
           },
           {
-            name: 'test-fund-1417',
-            title: '測試Fund-1417',
+            name: 'Test-fund-1417',
+            title: 'Test Fund-1417',
             component: () => import('@/views/Test-fund-1417/Test-fund-1417.vue'),
             meta: {
               keepAlive: false,
@@ -107,8 +107,8 @@ const routes: Array<RouterTree> = [
             }
           },
           {
-            name: 'test-fund-1417-v2',
-            title: '測試Fund-1417-v2',
+            name: 'Test-fund-1417-v2',
+            title: 'Test Fund-1417-v2',
             component: () => import('@/views/Test-fund-1417-v2/Test-fund-1417-v2.vue'),
             meta: {
               keepAlive: false,
@@ -117,8 +117,8 @@ const routes: Array<RouterTree> = [
             }
           },
           {
-            name: 'test-fund-122',
-            title: '測試Fund-122',
+            name: 'Test-fund-122',
+            title: 'Test Fund-122',
             component: () => import('@/views/Test-fund-122/Test-fund-122.vue'),
             meta: {
               keepAlive: false,
@@ -129,17 +129,37 @@ const routes: Array<RouterTree> = [
         ]
       },
       {
-        name: 'test-auto',
-        title: 'test-auto',
+        name: 'Test-auto',
+        title: 'Test-auto',
         meta: {
           systemType: ['new'],
           permission: totlaPermission
         },
         leaves: [
           {
-            name: 'test-auto-114',
-            title: '測試Auto-114',
+            name: 'Test-auto-114',
+            title: 'Test Auto-114',
             component: () => import('@/views/Test-auto-114/Test-auto-114.vue'),
+            meta: {
+              keepAlive: false,
+              systemType: ['new'],
+              icon: 'file-circle-check'
+            }
+          }
+        ]
+      },
+      {
+        name: 'Test-dmd',
+        title: 'Test-dmd',
+        meta: {
+          systemType: ['new'],
+          permission: totlaPermission
+        },
+        leaves: [
+          {
+            name: 'Test-dmd-42',
+            title: 'Test Dmd-42',
+            component: () => import('@/views/Test-dmd-42/Test-dmd-42.vue'),
             meta: {
               keepAlive: false,
               systemType: ['new'],
@@ -152,7 +172,7 @@ const routes: Array<RouterTree> = [
   },
   {
     name: 'nav1',
-    title: '選單1',
+    title: 'Nav 1',
     meta: {
       systemType: ['new'],
       icon: 'cloud',
@@ -161,7 +181,7 @@ const routes: Array<RouterTree> = [
     leaves: [
       {
         name: 'nav1-1',
-        title: '選單1-1',
+        title: 'Nav 1-1',
         meta: {
           systemType: ['new'],
           permission: totlaPermission
@@ -169,7 +189,7 @@ const routes: Array<RouterTree> = [
         leaves: [
           {
             name: 'nav1-1-1',
-            title: '表格-可展開',
+            title: 'Table-可展開',
             component: () => import('@/views/Nav1-1-1/Nav1-1-1.vue'),
             meta: {
               keepAlive: false,
@@ -179,7 +199,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-1-2',
-            title: '表格-詳細資料',
+            title: 'Table-詳細資料',
             component: () => import('@/views/Nav1-1-2/Nav1-1-2.vue'),
             meta: {
               keepAlive: false,
@@ -221,7 +241,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav1-2',
-        title: '選單1-2',
+        title: 'Nav 1-2',
         meta: {
           systemType: ['new'],
           permission: totlaPermission
@@ -239,7 +259,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-2-2',
-            title: '時間線測試+QRcode',
+            title: '時間線Test +QRcode',
             component: () => import('@/views/Nav1-2-2/Nav1-2-2.vue'),
             meta: {
               keepAlive: false,
@@ -271,7 +291,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav1-3',
-        title: '測試檔案上傳',
+        title: 'Test 檔案上傳',
         component: () => import('@/views/Nav1-3/Nav1-3.vue'),
         meta: {
           keepAlive: false,
@@ -281,7 +301,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav1-4',
-        title: '選單1-4',
+        title: 'Nav 1-4',
         meta: {
           systemType: ['new'],
           permission: totlaPermission
@@ -289,7 +309,7 @@ const routes: Array<RouterTree> = [
         leaves: [
           {
             name: 'nav1-4-1',
-            title: '甘特圖測試',
+            title: '甘特圖Test ',
             component: () => import('@/views/Nav1-4-1/Nav1-4-1.vue'),
             meta: {
               keepAlive: false,
@@ -308,7 +328,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-4-3',
-            title: '柱狀圖測試',
+            title: '柱狀圖Test ',
             component: () => import('@/views/Nav1-4-3/Nav1-4-3.vue'),
             meta: {
               keepAlive: false,
@@ -317,7 +337,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav1-4-4',
-            title: '虛擬表格測試',
+            title: '虛擬TableTest ',
             component: () => import('@/views/Nav1-4-4/Nav1-4-4.vue'),
             meta: {
               keepAlive: false,
@@ -330,7 +350,7 @@ const routes: Array<RouterTree> = [
   },
   {
     name: 'nav2',
-    title: '選單2',
+    title: 'Nav 2',
     component: () => import('@/views/Nav2/Nav2-1.vue'),
     meta: {
       keepAlive: false,
@@ -341,7 +361,7 @@ const routes: Array<RouterTree> = [
   },
   {
     name: 'nav3',
-    title: '選單3',
+    title: 'Nav 3',
     meta: {
       systemType: ['new'],
       icon: 'cloud',
@@ -350,7 +370,7 @@ const routes: Array<RouterTree> = [
     leaves: [
       {
         name: 'nav3-1',
-        title: '選單3-1',
+        title: 'Nav 3-1',
         meta: {
           systemType: ['new'],
           icon: 'table-list'
@@ -358,7 +378,7 @@ const routes: Array<RouterTree> = [
         leaves: [
           {
             name: 'nav3-1-1',
-            title: '手寫虛擬列表',
+            title: 'Infinite Scroll',
             component: () => import('@/views/Nav3-1-1/Nav3-1-1.vue'),
             meta: {
               keepAlive: false,
@@ -368,7 +388,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-1-3',
-            title: '一般列表懶加載',
+            title: 'VirtralTable',
             component: () => import('@/views/Nav3-1-3/Nav3-1-3.vue'),
             meta: {
               keepAlive: false,
@@ -380,7 +400,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav3-2',
-        title: '選單3-2',
+        title: 'Nav 3-2',
         meta: {
           systemType: ['new'],
           icon: 'e'
@@ -398,7 +418,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-2-3',
-            title: '拖拉測試+其他',
+            title: '拖拉Test +其他',
             component: () => import('@/views/Nav3-2-3/Nav3-2-3.vue'),
             meta: {
               keepAlive: false,
@@ -410,7 +430,7 @@ const routes: Array<RouterTree> = [
       },
       {
         name: 'nav3-3',
-        title: '選單3-3',
+        title: 'Nav 3-3',
         meta: {
           systemType: ['new'],
           icon: 'dice-d20'
@@ -418,7 +438,7 @@ const routes: Array<RouterTree> = [
         leaves: [
           {
             name: 'nav3-3-1',
-            title: '收放展開組件測試',
+            title: '收放展開組件Test ',
             component: () => import('@/views/Nav3-3-1/Nav3-3-1.vue'),
             meta: {
               systemType: ['new'],
@@ -427,7 +447,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-3-3',
-            title: '樹結構組件測試',
+            title: '樹結構組件Test ',
             component: () => import('@/views/Nav3-3-3/Nav3-3-3.vue'),
             meta: {
               systemType: ['new'],
@@ -449,7 +469,7 @@ const routes: Array<RouterTree> = [
   },
   {
     name: 'nav4',
-    title: '選單4',
+    title: 'Nav 4',
     meta: {
       systemType: ['new'],
       icon: 'language',

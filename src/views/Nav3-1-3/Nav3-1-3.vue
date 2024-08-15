@@ -1,183 +1,204 @@
-<script setup lang="ts">
-import { ref, onBeforeMount, reactive } from 'vue'
+<script lang="tsx" setup>
+import type { FunctionalComponent } from 'vue'
+import { cloneVNode } from 'vue'
 
-import { CustomInput, CustomButton } from '@/components'
-import { useTableSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { HeaderClassNameGetter, TableV2CustomizedHeaderSlotParam } from 'element-plus'
+import { TableV2FixedDir, TableV2Placeholder, ElTableV2, ElAutoResizer } from 'element-plus'
 
-// 手寫 lazy-loading 虛擬列表
-import CustomTable from './Components/CustomTable.vue'
-
-const columnSetting = {
-  no: {
-    label: '項次',
-    table: {
-      width: 80,
-      align: 'left',
-      sortable: false
-    }
-  },
-  date: {
-    label: '生日',
-    table: {
-      width: 150,
-      align: 'left',
-      sortable: false
-    }
-  },
-  name: {
-    label: '姓名',
-    table: {
-      width: 200
-    }
-  },
-  address: {
-    label: '地址',
-    table: {
-      minWidth: 300
-    }
-  }
+const generateColumns = (length = 10, prefix = 'column-', props?: any) => {
+  return  Array.from({ length }).map((_, columnIndex) => ({
+    ...props,
+    key: `${prefix}${columnIndex}`,
+    dataKey: `${prefix}${columnIndex}`,
+    title: `Column ${columnIndex}`,
+    width: 150
+  }))
 }
 
-const tableOptions: TableOptions = {
-  title: '測試表單',
-  version: '1.0.1',
-  settingKey: 'test'
-}
-const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
-
-const download = () => {
-  downloadExcel(tableData)
-}
-
-const tableData = reactive([])
-
-const lazyLoadingStatus = ref('loadMore')
-
-const initData = () => {
-  loadData(false)
-}
-
-let no = 1
-
-const loadData = (delay = true) => {
-  lazyLoadingStatus.value = 'loading'
-
-  const temp = [
-    {
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles'
-    },
-    {
-      date: '2016-05-02',
-      name: 'Caleb',
-      address: 'No. 189, Grove St, Los Angeles'
-    },
-    {
-      date: '2016-05-04',
-      name: 'Peter',
-      address: 'No. 189, Grove St, Los Angeles'
-    },
-    {
-      date: '2016-05-01',
-      name: 'Amy',
-      address: 'No. 189, Grove St, Los Angeles'
-    }
-  ].flatMap(item => {
-    const res = []
-
-    for (let i = 0; i < 25; i++) {
-      res.push({
-        no: `${no++}`,
-        date: `${item.date}-${i}`,
-        name: `${item.name}-${i}`,
-        address: `${item.address}-${i}`
-      })
-    }
-
-    return res
-  })
-
-  if (delay) {
-    setTimeout(() => {
-      console.log(temp)
-      tableData.push(...temp)
-
-      if (tableData.length >= 300) {
-        lazyLoadingStatus.value = 'noMore'
-      } else {
-        lazyLoadingStatus.value = 'loadMore'
+const generateData = (columns: ReturnType<typeof generateColumns>, length = 200, prefix = 'row-') => {
+  return Array.from({ length }).map((_, rowIndex) => {
+    return columns.reduce(
+      (rowData, column, columnIndex) => {
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+        return rowData
+      },
+      {
+        id: `${prefix}${rowIndex}`,
+        parentId: null
       }
-    }, 3000)
-  } else {
-    setTimeout(() => {
-      tableData.push(...temp)
-      lazyLoadingStatus.value = 'loadMore'
-    }, 0)
-  }
-}
-
-const filterName = ref('')
-
-const addData = () => {
-  tableData.push({
-    date: '2023-08-21',
-    name: `test-${tableData.length}`,
-    address: 'TESTAddress'
+    )
   })
 }
 
-onBeforeMount(() => {
-  lazyLoadingStatus.value = 'loadMore'
-  initData()
+const columnTotal = 30
+const columns = generateColumns(columnTotal)
+const data = generateData(columns, 10000)
+
+const CustomizedHeader: FunctionalComponent<TableV2CustomizedHeaderSlotParam> = (bindProps: any) => {
+  const { cells, columns, headerIndex } = bindProps
+  // console.log('CustomizedHeader => ', bindProps)
+
+  if (headerIndex === 2) return cells
+
+  const groupCells = [] as typeof cells
+  let width = 0
+  let idx = 0
+
+  columns.forEach((column, columnIndex) => {
+    if (column.placeholderSign === TableV2Placeholder) {
+      groupCells.push(cells[columnIndex])
+    } else {
+      width += cells[columnIndex].props!.column.width
+      idx++
+
+      const nextColumn = columns[columnIndex + 1]
+      if (
+        columnIndex === columns.length - 1 ||
+        nextColumn.placeholderSign === TableV2Placeholder ||
+        idx === (headerIndex === 0 ? 4 : 2)
+      ) {
+        groupCells.push(
+          <div
+            class="flex items-center justify-center custom-header-cell"
+            role="columnheader"
+            style={{
+              ...cells[columnIndex].props!.style,
+              width: `${width}px`
+            }}
+          >
+            Group width {width}
+          </div>
+        )
+        width = 0
+        idx = 0
+      }
+    }
+  })
+  return groupCells
+}
+
+const rowSpanIndex = 0
+columns[rowSpanIndex].rowSpan = ({ rowIndex }) => {
+  return rowIndex % 2 === 0 && rowIndex <= data.length - 2 ? 2 : 1
+}
+
+const fixedColumns = columns.map((column, columnIndex) => {
+  let fixed: TableV2FixedDir | undefined = undefined
+  let width: number = 80
+  if (columnIndex < 3) {
+    fixed = TableV2FixedDir.LEFT
+    width = 150
+  }
+  if (columnIndex > (columnTotal - 3)) {
+    fixed = TableV2FixedDir.RIGHT
+    width = 100
+  }
+  return {
+    ...column,
+    fixed,
+    width,
+    rowSpan: ({ rowIndex }) => {
+      return rowIndex % 2 === 0 && rowIndex <= data.length - 2 ? 2 : 1
+    }
+    // headerCellRenderer
+  }
 })
+
+const Row = (bindProps: any) => {
+  const { rowData, rowIndex, cells, columns } = bindProps
+  // console.log('Row => ', bindProps)
+
+  const rowSpan = columns[rowSpanIndex].rowSpan({ rowData, rowIndex })
+  if (rowSpan > 1) {
+    const cell = cells[rowSpanIndex]
+    const style = {
+      ...cell.props.style,
+      backgroundColor: 'var(--el-color-primary-light-3)',
+      height: `${rowSpan * 50 - 1}px`,
+      alignSelf: 'flex-start',
+      zIndex: 1
+    }
+    cells[rowSpanIndex] = cloneVNode(cell, { style })
+  }
+  return cells
+}
+
+const headerClass = ({ headerIndex }: Parameters<HeaderClassNameGetter<any>>[0]) => {
+  if (headerIndex === 1) return 'el-primary-color'
+  return ''
+}
+
 </script>
 
 <template>
-  <div class="table-test">
-    <div class="flex-row-center i-ga-md">
-      <label>Element ui plus table 懶加載(無虛擬列表)</label>
+  <div class="i-page">
+    <ElAutoResizer>
+      <template #default="{ height, width }">
+        <ElTableV2
+          scrollbar-always-on
+          :width="width"
+          :height="height"
+          fixed
+          :columns="fixedColumns"
+          :data="data"
+          :header-height="[40, 40, 40]"
+          :footer-height="40"
+          :header-class="headerClass"
+        >
+          <template #header="props">
+            <CustomizedHeader v-bind="props" />
+          </template>
 
-      <CustomButton label="測試新增資料" @click="addData" />
-    </div>
+          <template #row="props">
+            <Row v-bind="props" />
+          </template>
 
-    <div class="table-main">
-      <CustomTable
-        :table-data="tableData"
-        :table-data-count="tableData.length"
-        v-bind="tableSetting"
-        lazy-loading
-        :lazy-loading-status="lazyLoadingStatus"
-        is-show-no
-        @excel="download"
-        @change-setting="initData"
-        @load="loadData"
-      >
-        <template #header-name="{ column }">
-          <CustomInput v-model="filterName" direction="row" :label="column.label" />
-        </template>
-        <template #header-date="{ column }">
-          {{ column.label }}
-        </template>
-      </CustomTable>
-    </div>
+          <template #footer>
+            <div
+              class="flex flex-center"
+              style="
+                justify-content: center;
+                height: 100%;
+                background-color: var(--el-color-primary-light-7);
+              "
+            >
+              Display a message in the footer
+            </div>
+          </template>
+
+          <!-- <template #overlay="scope">
+            <div>{{ $log(scope) }} overlay</div>
+          </template> -->
+        </ElTableV2>
+      </template>
+    </ElAutoResizer>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.table {
-  &-test {
-    width: 100%;
-    height: 100%;
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  &-main {
-    flex: 1;
-    width: 100%;
-  }
+<style>
+.el-table-v2__header-row .custom-header-cell,
+.el-table-v2__header-cell,
+.el-table-v2__row-cell {
+  border-right: 1px solid var(--el-border-color);
+  justify-content: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.el-table-v2__header-row .custom-header-cell:last-child {
+  border-right: none;
+}
+
+.el-primary-color {
+  background-color: var(--el-color-primary-light-7);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.el-primary-color
+.custom-header-cell {
+  padding: 0 4px;
 }
 </style>

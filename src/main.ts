@@ -1,5 +1,8 @@
-// Polyfill
-import './lib/Polyfill/inject'
+/**
+ * Polyfill
+ * 有需要再啟用
+ */
+// import './lib/Polyfill/inject'
 
 /**
  * 初始化客戶瀏覽器端的資料

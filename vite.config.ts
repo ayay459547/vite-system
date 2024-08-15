@@ -29,7 +29,8 @@ export default defineConfig(({ command, mode }) => {
     // root: path.resolve(__dirname, './src/'),
     build: {
       outDir: 'demo',
-      sourcemap: true,
+      sourcemap: false,
+      cssCodeSplit: true,
       // assetsDir: '',
       // outDir: path.resolve(__dirname, ''),
       rollupOptions: {
@@ -123,10 +124,13 @@ export default defineConfig(({ command, mode }) => {
       },
       warmup: {
         clientFiles: [
-          './src/components/form/*.vue',
-          './src/components/feature/**/*.vue',
-          './src/components/feature/**/*.ts'
+          './src/components/layout/**/*.vue',
+          './src/lib/init/*.ts',
+          './src/lib/*.ts'
         ]
+      },
+      hmr: {
+        overlay: false // 根據需要禁用錯誤覆蓋層
       }
       // https: {
       //   key: fs.readFileSync('RootCA-key.pem'),
@@ -146,7 +150,8 @@ export default defineConfig(({ command, mode }) => {
         scss: {
           additionalData: '@use "@/assets/main.scss" as *;'
         }
-      }
+      },
+      devSourcemap: false // 在開發模式下啟用 source map
     },
     optimizeDeps: {
       // include: ['element-plus']

@@ -33,8 +33,8 @@ import {
 import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
-import FixView from '@/views/Common/FixView.vue'
-import Page_404 from '@/views/Common/Page_404.vue'
+import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
+import Async_Error from '@/views/Common/Async_Error.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
@@ -204,11 +204,11 @@ export function useBoundingClientRect(
 export const useAsyncComponent = (loader: () => Promise<any>) => {
   return defineAsyncComponent({
     loader,
-    loadingComponent: FixView, // 自定義加載組件
-    errorComponent: Page_404, // 自定義錯誤組件
-    delay: 2000, // 延遲顯示加載組件
-    timeout: 3000, // 超過時間顯示錯誤組件
-    suspensible: true // Suspense
+    loadingComponent: Async_Skeleton, // 自定義加載組件
+    errorComponent: Async_Error, // 自定義錯誤組件
+    delay: 5000, // 延遲顯示加載組件
+    timeout: 5000, // 超過時間顯示錯誤組件
+    suspensible: false // Suspense
   })
 }
 

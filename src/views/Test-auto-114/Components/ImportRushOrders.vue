@@ -10,7 +10,7 @@ import { type UploadFileRes, uploadFile, updateInsertRushOrder } from './api'
 import { previewColumnSetting, checkColumnSetting } from './columns'
 
 // 插單匯入範例.xlsx
-import path from '@/assets/file/RushOrder_auto-114.xlsx?url'
+import path from '@/assets/file/ExcelToBar.xlsx?url'
 
 const collapseActive = ref([])
 const collapseOptions = [

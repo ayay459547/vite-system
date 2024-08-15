@@ -4,7 +4,7 @@ import type { App } from 'vue'
 import vClickOutside from 'click-outside-vue3'
 
 // element plus
-import { vLoading } from 'element-plus'
+import { vLoading, ElInfiniteScroll } from 'element-plus'
 
 // 文字懸浮
 import { vFixed } from './fixed'
@@ -14,6 +14,7 @@ const pluginDirective = {
     app.use(vClickOutside)
 
     app.directive('loading', vLoading)
+    app.use(ElInfiniteScroll)
 
     app.directive('fixed', vFixed)
   }

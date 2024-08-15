@@ -5,9 +5,10 @@ import { computed, nextTick, ref } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import { useAsyncComponent } from '@/lib/lib_hook'
 
-import SideContent from './SideContent/SideContent.vue'
-import HeaderContent from './HeaderContent/HeaderContent.vue'
+const SideContent = useAsyncComponent(() => import('./SideContent/SideContent.vue'))
+const HeaderContent = useAsyncComponent(() => import('./HeaderContent/HeaderContent.vue'))
 
 const props = defineProps({
   isNavOpen: {

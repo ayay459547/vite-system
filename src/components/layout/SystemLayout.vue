@@ -9,10 +9,11 @@ import { CustomModal } from '@/components'
 import { useLayoutStore } from '@/stores/stores_layout'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { tipLog } from '@/lib/lib_utils'
+import { useAsyncComponent } from '@/lib/lib_hook'
 
-import Layout1 from '@/components/layout/Layout-1/Layout-1.vue'
-import Layout2 from '@/components/layout/Layout-2/Layout-2.vue'
-import UserPreference from '@/components/layout/Preference/UserPreference.vue'
+const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'))
+const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'))
+const UserPreference = useAsyncComponent(() => import('@/components/layout/Preference/UserPreference.vue'))
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({

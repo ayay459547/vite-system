@@ -6,6 +6,8 @@ import { useRoute } from 'vue-router'
 import { useEventBus } from '@/lib/lib_hook'
 import { scrollToEl } from '@/lib/lib_utils'
 
+import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
+
 const emit = defineEmits([
   'routeChange',
   'login',
@@ -115,7 +117,7 @@ const initNavigationRoutes = (routeName: string) => {
   <div class="view-wrapper">
     <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
     <div v-show="isDisabled" class="is-disabled">{{ routeName }}</div>
-    <main class="view-container">
+    <main v-loading="isLoading" class="view-container">
       <!-- 滾動到最上方 -->
       <div class="__layout-scroll-top__"></div>
 
@@ -158,7 +160,7 @@ const initNavigationRoutes = (routeName: string) => {
           </RouterView>
         </template>
         <template #fallback>
-          <div v-loading="true" class="fill">Loading...</div>
+          <Async_Skeleton />
         </template>
       </Suspense>
     </main>

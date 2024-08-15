@@ -4,10 +4,12 @@ import type { RouteRecordRaw } from 'vue-router'
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
 import CheckStatus from '@/views/Common/CheckStatus.vue'
-import NoPermissions from '@/views/Common/NoPermissions.vue'
-import InProgress from '@/views/Common/InProgress.vue'
-import Page_404 from '@/views/Common/Page_404.vue'
-import FixView from '@/views/Common/FixView.vue'
+const NoPermissions = () => import('@/views/Common/NoPermissions.vue')
+const InProgress = () => import('@/views/Common/InProgress.vue')
+const Page_404 = () => import('@/views/Common/Page_404.vue')
+const FixView = () => import('@/views/Common/FixView.vue')
+// const Async_Skeleton = () => import('@/views/Common/Async_Skeleton.vue')
+// const Async_Error = () => import('@/views/Common/Async_Error.vue')
 
 // 網址前綴
 const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
@@ -67,6 +69,18 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     path: `${systemUrl}/page404`,
     component: Page_404
   },
+  // {
+  //   name: 'Async_Skeleton',
+  //   meta: { title: '404' },
+  //   path: `${systemUrl}/Async_Skeleton`,
+  //   component: Async_Skeleton
+  // },
+  // {
+  //   name: 'Async_Error',
+  //   meta: { title: '404' },
+  //   path: `${systemUrl}/Async_Error`,
+  //   component: Async_Error
+  // },
   {
     path: '/:pathMatch(.*)',
     redirect: { name: 'page404' }
