@@ -5,10 +5,9 @@ import { computed, nextTick, ref } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { useAsyncComponent } from '@/lib/lib_hook'
 
-const SideContent = useAsyncComponent(() => import('./SideContent/SideContent.vue'))
-const HeaderContent = useAsyncComponent(() => import('./HeaderContent/HeaderContent.vue'))
+import SideContent from './SideContent/SideContent.vue'
+import HeaderContent from './HeaderContent/HeaderContent.vue'
 
 const props = defineProps({
   isNavOpen: {
@@ -86,7 +85,7 @@ const sideRef = ref()
 const init = async () => {
   await nextTick()
 
-  sideRef.value.init()
+  sideRef.value?.init()
 }
 
 // 回首頁

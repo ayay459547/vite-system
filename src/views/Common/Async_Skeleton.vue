@@ -1,10 +1,54 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
+import { computed } from 'vue'
 import { ElSkeleton, ElSkeletonItem, ElAutoResizer } from 'element-plus'
+
+type Variant = 'p' | 'text'
+  | 'h1' | 'h3' | 'caption'
+  |'button' | 'image'
+  | 'circle' | 'rect'
+
+const props = defineProps({
+  variant: {
+    type: String as PropType<Variant>,
+    default: 'rect'
+  }
+})
+
+const bindStyle = computed(() => {
+  let width = '100%'
+  let height = 'fit-content'
+
+  switch (props.variant) {
+    case 'p':
+    case 'text':
+      height = '16px'
+      break
+    case 'h1':
+      height = '20px'
+      break
+    case 'h3':
+    case 'caption':
+      height = '18px'
+      break
+    case 'button':
+      width = '80px'
+      height = '32px'
+      break
+    case 'image':
+    case 'circle':
+    case 'rect':
+      height = '100%'
+      break
+  }
+
+  return { width, height }
+})
 
 </script>
 
 <template>
-  <div class="page-skeleton">
+  <div class="page-skeleton" :style="bindStyle">
     <ElAutoResizer>
       <template #default="{ height, width }">
         <ElSkeleton
@@ -16,11 +60,11 @@ import { ElSkeleton, ElSkeletonItem, ElAutoResizer } from 'element-plus'
         >
           <template #template>
             <ElSkeletonItem
-              variant="text"
               :style="{
-                width: `100%`,
+                width: `${width}px`,
                 height: `${height}px`
               }"
+              :variant="props.variant"
             />
           </template>
 
@@ -34,9 +78,5 @@ import { ElSkeleton, ElSkeletonItem, ElAutoResizer } from 'element-plus'
 <style lang="scss" scoped>
 .page-skeleton {
   background-color: var(--i-color-system-page);
-  width: fit-content;
-  max-width: 100%;
-  height: fit-content;
-  max-height: 100%;
 }
 </style>

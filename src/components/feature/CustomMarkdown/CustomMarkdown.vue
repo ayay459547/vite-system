@@ -64,10 +64,10 @@ onMounted(() => {
 @use '@/assets/styles/utils' as utils;
 
 $light-color: (
-  'markdown--odd': #fcfcfc,
-  'markdown--odd-hover': #f2f4f8,
-  'markdown--even': #f7f7f7,
-  'markdown--even-hover': #f2f4f8
+  'markdown-odd': #fcfcfc,
+  'markdown-odd-hover': #f2f4f8,
+  'markdown-even': #f7f7f7,
+  'markdown-even-hover': #f2f4f8
 );
 
 $dark-color: (
@@ -77,18 +77,18 @@ $dark-color: (
   'markdown-even-hover': #424243
 );
 
-// 顏色設定
-html {
-  // var(--i-color-table-thead)
-  @each $type, $color in $light-color {
+@mixin set-css-vars($color-map) {
+  // var(--i-color-markdown-odd)
+  @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 
+// 顏色設定
+html {
+  @include set-css-vars($light-color);
+}
 html.dark {
-  // var(--i-color-table-thead)
-  @each $type, $color in $dark-color {
-    @include utils.set-css-var-value(('color', $type), $color);
-  }
+  @include set-css-vars($dark-color);
 }
 </style>

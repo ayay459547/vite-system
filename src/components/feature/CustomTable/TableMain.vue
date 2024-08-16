@@ -603,12 +603,9 @@ defineExpose({
       height: 100%;
       thead {
         background-color: var(--i-color-table-thead);
-        & > tr {
+        & > tr,
+        & th {
           background-color: inherit;
-
-          & > th {
-            background-color: inherit;
-          }
         }
 
         th.el-table__cell {
@@ -682,7 +679,6 @@ defineExpose({
 
         &:hover {
           transition-duration: 0.2s;
-          // background-color: var(--el-table-row-hover-bg-color);
         }
       }
       .el-table__row .el-table__cell {
@@ -690,7 +686,6 @@ defineExpose({
         background-color: inherit;
         transition: background-color 0.1s ease-out;
         & > .cell {
-          // content-visibility: auto;
           overflow: visible;
         }
       }
@@ -780,18 +775,18 @@ $dark-color: (
   'table-even-hover': #424243
 );
 
-// 顏色設定
-html {
+@mixin set-css-vars($color-map) {
   // var(--i-color-table-thead)
-  @each $type, $color in $light-color {
+  @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 
+// 顏色設定
+html {
+  @include set-css-vars($light-color);
+}
 html.dark {
-  // var(--i-color-table-thead)
-  @each $type, $color in $dark-color {
-    @include utils.set-css-var-value(('color', $type), $color);
-  }
+  @include set-css-vars($dark-color);
 }
 </style>

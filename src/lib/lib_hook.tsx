@@ -4,6 +4,7 @@ import type{
   MaybeElementRef,
   UseRefHistoryOptions, UseRefHistoryReturn,
   UseThrottledRefHistoryOptions, UseThrottledRefHistoryReturn,
+  MaybeRefOrGetter,
   UseDraggableOptions, UseDraggableReturn,
   UseMouseOptions, UseMouseReturn,
   MouseInElementOptions, UseMouseInElementReturn,
@@ -13,7 +14,6 @@ import {
   useRefHistory as _useRefHistory,
   useThrottledRefHistory as _useThrottledRefHistory,
   useDebouncedRefHistory as _useDebouncedRefHistory,
-  MaybeRefOrGetter,
   useDraggable as _useDraggable,
   useMouse as _useMouse,
   useMouseInElement as _useMouseInElement,
@@ -201,12 +201,12 @@ export function useBoundingClientRect(
  * @description 懶加載組件
  * @param {Function} loader () => import('@/components/MyAsyncComponent.vue')
  */
-export const useAsyncComponent = (loader: () => Promise<any>) => {
+export const useAsyncComponent = (loader: () => Promise<any>, variant: string = 'rect') => {
   return defineAsyncComponent({
     loader,
-    loadingComponent: Async_Skeleton, // 自定義加載組件
-    errorComponent: Async_Error, // 自定義錯誤組件
-    delay: 5000, // 延遲顯示加載組件
+    loadingComponent: <Async_Skeleton variant={variant} />, // 自定義加載組件
+    errorComponent: <Async_Error variant={variant} />, // 自定義錯誤組件
+    delay: 200, // 延遲顯示加載組件
     timeout: 5000, // 超過時間顯示錯誤組件
     suspensible: false // Suspense
   })
@@ -356,11 +356,14 @@ export const useMouseInElement = (target?: MaybeElementRef, options?: MouseInEle
  * eventBus.on(event: string, listener: Function): 註冊事件監聽器。event 是事件名稱，listener 是事件處理函數。
  * eventBus.off(event: string, listener: Function): 取消註冊事件監聽器。event 是事件名稱，listener 是要取消的事件處理函數。
  */
-export const useEventBus = <T = unknown, P = any>(key: EventBusIdentifier<string>): UseEventBusReturn<T, P> => {
-  return _useEventBus<T, P>(key)
+export const useEventBus: <T = any, P = any>(key: EventBusIdentifier<T>) => UseEventBusReturn<T, P> = (key: EventBusIdentifier<any>) => {
+  return _useEventBus(key)
 }
 
-// https://react.dev/reference/react/hooks
+/**
+ * https://react.dev/reference/react/hooks
+ */
+
 
 /**
  * @author Caleb

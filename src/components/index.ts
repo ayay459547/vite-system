@@ -8,32 +8,32 @@ export type CustomElType = '' | 'primary' | 'success' | 'warning' | 'danger' | '
 export type { Option, Options } from '@/declare/columnSetting'
 
 // 圖表類
-export const CustomCharts = useAsyncComponent(() => import('./chart/CustomCharts/CustomCharts.vue'))
+export const CustomCharts = useAsyncComponent(() => import('./chart/CustomCharts/CustomCharts.vue'), 'rect')
 
-export const GanttChart = useAsyncComponent(() => import('./chart/GanttChart/GanttChart.vue'))
+export const GanttChart = useAsyncComponent(() => import('./chart/GanttChart/GanttChart.vue'), 'rect')
 
-export const WeekSchedule = useAsyncComponent(() => import('./chart/WeekSchedule/WeekSchedule.vue'))
+export const WeekSchedule = useAsyncComponent(() => import('./chart/WeekSchedule/WeekSchedule.vue'), 'rect')
 
 // 專案功能組件
 
 // 區塊右上方顯示 數字/圖示/其他
 export type { Props as BadgeProps } from './feature/CustomBadge/CustomBadgeInfo'
-export const CustomBadge = useAsyncComponent(() => import('./feature/CustomBadge/CustomBadge.vue'))
+export const CustomBadge = useAsyncComponent(() => import('./feature/CustomBadge/CustomBadge.vue'), 'caption')
 
 // 按鈕
 export type {
   Props as ButtonProps,
   Emits as ButtonEmits
 } from './feature/CustomButton/CustomButtonInfo'
-export const CustomButton = useAsyncComponent(() => import('./feature/CustomButton/CustomButton.vue'))
+export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
 // 卡片
 export type { Props as CardProps } from './feature/CustomCard/CustomCardInfo'
-export const CustomCard = useAsyncComponent(() => import('./feature/CustomCard/CustomCard.vue'))
+export const CustomCard = useAsyncComponent(() => import('./feature/CustomCard/CustomCard.vue'), 'rect')
 
 // 輪播
 export type { CarouselItem as CarouselItem } from './feature/CustomCarousel/CustomCarouselInfo'
-export const CustomCarousel = useAsyncComponent(() => import('./feature/CustomCarousel/CustomCarousel.vue'))
+export const CustomCarousel = useAsyncComponent(() => import('./feature/CustomCarousel/CustomCarousel.vue'), 'rect')
 
 // 展開/縮起 區塊
 export type {
@@ -41,19 +41,19 @@ export type {
   Props as CollapseProps,
   Emits as CollapseEmits
 } from './feature/CustomCollapse/CustomCollapseInfo'
-export const CustomCollapse = useAsyncComponent(() => import('./feature/CustomCollapse/CustomCollapse.vue'))
+export const CustomCollapse = useAsyncComponent(() => import('./feature/CustomCollapse/CustomCollapse.vue'), 'rect')
 
 // 棄用 CustomModal 代替
 export type { Props as DialogProps } from './feature/CustomDialog/CustomDialogInfo'
-export const CustomDialog = useAsyncComponent(() => import('./feature/CustomDialog/CustomDialog.vue'))
+export const CustomDialog = useAsyncComponent(() => import('./feature/CustomDialog/CustomDialog.vue'), 'p')
 
 // 分隔線
 export type { Props as DividerProps } from './feature/CustomDivider/CustomDividerInfo'
-export const CustomDivider = useAsyncComponent(() => import('./feature/CustomDivider/CustomDivider.vue'))
+export const CustomDivider = useAsyncComponent(() => import('./feature/CustomDivider/CustomDivider.vue'), 'p')
 
 // 分隔檢視
 export type { Props as DividerViewProps } from './feature/CustomDividerView/CustomDividerViewInfo'
-export const CustomDividerView = useAsyncComponent(() => import('./feature/CustomDividerView/CustomDividerView.vue'))
+export const CustomDividerView = useAsyncComponent(() => import('./feature/CustomDividerView/CustomDividerView.vue'), 'rect')
 
 // 拖拉
 export type {
@@ -61,18 +61,18 @@ export type {
   Props as DraggableProps,
   Emits as DraggableEmits
 } from './feature/CustomDraggable/CustomDraggableInfo'
-export const CustomDraggable = useAsyncComponent(() => import('./feature/CustomDraggable/CustomDraggable.vue'))
+export const CustomDraggable = useAsyncComponent(() => import('./feature/CustomDraggable/CustomDraggable.vue'), 'rect')
 
 // 從銀幕外插入畫面
 export type {
   Props as DrawerProps,
   Emits as DrawerEmits
 } from './feature/CustomDrawer/CustomDrawerInfo'
-export const CustomDrawer = useAsyncComponent(() => import('./feature/CustomDrawer/CustomDrawer.vue'))
+export const CustomDrawer = useAsyncComponent(() => import('./feature/CustomDrawer/CustomDrawer.vue'), 'p')
 
 // 無資料
 export type { Props as EmptyProps } from './feature/CustomEmpty/CustomEmptyInfo'
-export const CustomEmpty = useAsyncComponent(() => import('./feature/CustomEmpty/CustomEmpty.vue'))
+export const CustomEmpty = useAsyncComponent(() => import('./feature/CustomEmpty/CustomEmpty.vue'), 'rect')
 
 // 圖示
 export type {
@@ -87,7 +87,7 @@ export type {
   Props as ImageProps,
   Emits as ImageEmits
 } from './feature/CustomImage/CustomImageInfo'
-export const CustomImage = useAsyncComponent(() => import('./feature/CustomImage/CustomImage.vue'))
+export const CustomImage = useAsyncComponent(() => import('./feature/CustomImage/CustomImage.vue'), 'image')
 
 // 輸入框
 export type {
@@ -101,17 +101,17 @@ export type {
   Custom as LinkCustom,
   Props as LinkProps
 } from './feature/CustomLink/CustomLinkInfo'
-export const CustomLink = useAsyncComponent(() => import('./feature/CustomLink/CustomLink.vue'))
+export const CustomLink = useAsyncComponent(() => import('./feature/CustomLink/CustomLink.vue'), 'caption')
 
 // 鎖定
 export type {
   Props as LockViewProps
 } from './feature/CustomLockView/CustomLockViewInfo'
-export const CustomLockView = useAsyncComponent(() => import('./feature/CustomLockView/CustomLockView.vue'))
+export const CustomLockView = useAsyncComponent(() => import('./feature/CustomLockView/CustomLockView.vue'), 'rect')
 
 // .md
 export type { Props as MarkdownProps } from './feature/CustomMarkdown/CustomMarkdownInfo'
-export const CustomMarkdown = useAsyncComponent(() => import('./feature/CustomMarkdown/CustomMarkdown.vue'))
+export const CustomMarkdown = useAsyncComponent(() => import('./feature/CustomMarkdown/CustomMarkdown.vue'), 'rect')
 
 // 彈窗
 export type {
@@ -119,18 +119,18 @@ export type {
   Props as ModalProps,
   Emits as ModalEmits
 } from './feature/CustomModal/CustomModalInfo'
-export const CustomModal = useAsyncComponent(() => import('./feature/CustomModal/CustomModal.vue'))
+export const CustomModal = useAsyncComponent(() => import('./feature/CustomModal/CustomModal.vue'), 'p')
 
 // 彈出 區塊提示
 export type { Props as PopoverProps } from './feature/CustomPopover/CustomPopoverInfo'
-export const CustomPopover = useAsyncComponent(() => import('./feature/CustomPopover/CustomPopover.vue'))
+export const CustomPopover = useAsyncComponent(() => import('./feature/CustomPopover/CustomPopover.vue'), 'p')
 
 // 進度條
 export type {
   Custom as ProgressCustom,
   Props as ProgressProps
 } from './feature/CustomProgress/CustomProgressInfo'
-export const CustomProgress = useAsyncComponent(() => import('./feature/CustomProgress/CustomProgress.vue'))
+export const CustomProgress = useAsyncComponent(() => import('./feature/CustomProgress/CustomProgress.vue'), 'rect')
 
 // 滾輪
 export type {
@@ -139,20 +139,20 @@ export type {
   Emits as ScrollbarEmits,
   Expose as ScrollbarExpose
 } from './feature/CustomScrollbar/CustomScrollbarInfo'
-export const CustomScrollbar = useAsyncComponent(() => import('./feature/CustomScrollbar/CustomScrollbar.vue'))
+export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
 // 搜尋用組件
-export const CustomSearch = useAsyncComponent(() => import('./feature/CustomSearch/CustomSearch.vue'))
+export const CustomSearch = useAsyncComponent(() => import('./feature/CustomSearch/CustomSearch.vue'), 'h1')
 
 // GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
-export const GroupSearch = useAsyncComponent(() => import('./feature/CustomSearch/GroupSearch.vue'))
+export const GroupSearch = useAsyncComponent(() => import('./feature/CustomSearch/GroupSearch.vue'), 'p')
 
 // 步驟
 export type {
   Custom as StepsCustom,
   Props as StepsProps
 } from './feature/CustomSteps/CustomStepsInfo'
-export const CustomSteps = useAsyncComponent(() => import('./feature/CustomSteps/CustomSteps.vue'))
+export const CustomSteps = useAsyncComponent(() => import('./feature/CustomSteps/CustomSteps.vue'), 'rect')
 
 // 切換鈕
 export type {
@@ -160,12 +160,12 @@ export type {
   Props as SwitchProps,
   Emits as SwitchEmits
 } from './feature/CustomSwitch/CustomSwitchInfo'
-export const CustomSwitch = useAsyncComponent(() => import('./feature/CustomSwitch/CustomSwitch.vue'))
+export const CustomSwitch = useAsyncComponent(() => import('./feature/CustomSwitch/CustomSwitch.vue'), 'button')
 
 // 表格
-export const TableMain = useAsyncComponent(() => import('./feature/CustomTable/TableMain.vue'))
+export const TableMain = useAsyncComponent(() => import('./feature/CustomTable/TableMain.vue'), 'rect')
 // 虛擬表格
-export const CustomTableV2 = useAsyncComponent(() => import('./feature/CustomTableV2/CustomTableV2.vue'))
+export const CustomTableV2 = useAsyncComponent(() => import('./feature/CustomTableV2/CustomTableV2.vue'), 'rect')
 
 // 專案用表格
 import type { TableParams, PageChange } from './feature/CustomTable/CustomTableInfo'
@@ -191,39 +191,39 @@ export type {
   PropsTableColumn,
   ShowType
 } from './feature/CustomTable/CustomTableInfo'
-export const CustomTable = useAsyncComponent(() => import('./feature/CustomTable/CustomTable.vue'))
+export const CustomTable = useAsyncComponent(() => import('./feature/CustomTable/CustomTable.vue'), 'rect')
 
 // 分頁
 export type {
   Props as TabsProps,
   Emits as TabsEmits
 } from './feature/CustomTabs/CustomTabsInfo'
-export const CustomTabs = useAsyncComponent(() => import('./feature/CustomTabs/CustomTabs.vue'))
+export const CustomTabs = useAsyncComponent(() => import('./feature/CustomTabs/CustomTabs.vue'), 'h1')
 
 // 類似按鈕的標籤
 export type {
   Props as TagProps,
   Emits as TagEmits
 } from './feature/CustomTag/CustomTagInfo'
-export const CustomTag = useAsyncComponent(() => import('./feature/CustomTag/CustomTag.vue'))
+export const CustomTag = useAsyncComponent(() => import('./feature/CustomTag/CustomTag.vue'), 'caption')
 
 // 時間線
 export type {
   Custom as TimeLineCustom,
   Props as TimeLineProps
 } from './feature/CustomTimeLine/CustomTimeLineInfo'
-export const CustomTimeLine = useAsyncComponent(() => import('./feature/CustomTimeLine/CustomTimeLine.vue'))
+export const CustomTimeLine = useAsyncComponent(() => import('./feature/CustomTimeLine/CustomTimeLine.vue'), 'rect')
 
 // 彈出 文字提示
 export type { Props as TooltipProps } from './feature/CustomTooltip/CustomTooltipInfo'
-export const CustomTooltip = useAsyncComponent(() => import('./feature/CustomTooltip/CustomTooltip.vue'))
+export const CustomTooltip = useAsyncComponent(() => import('./feature/CustomTooltip/CustomTooltip.vue'), 'p')
 
 // 引導
 export type {
   Custom as TourCustom,
   Props as TourProps
 } from './feature/CustomTour/CustomTourInfo'
-export const CustomTour = useAsyncComponent(() => import('./feature/CustomTour/CustomTour.vue'))
+export const CustomTour = useAsyncComponent(() => import('./feature/CustomTour/CustomTour.vue'), 'p')
 
 // 樹狀
 export type {
@@ -232,7 +232,7 @@ export type {
   Emits as TreeEmits,
   Expose as TreeExpose
  } from './feature/CustomTree/CustomTreeInfo'
-export const CustomTree = useAsyncComponent(() => import('./feature/CustomTree/CustomTree.vue'))
+export const CustomTree = useAsyncComponent(() => import('./feature/CustomTree/CustomTree.vue'), 'rect')
 
 // 虛擬樹狀
 export type {
@@ -241,31 +241,31 @@ export type {
   Emits as TreeV2Emits,
   Expose as TreeV2Expose
  } from './feature/CustomTreeV2/CustomTreeV2Info'
-export const CustomTreeV2 = useAsyncComponent(() => import('./feature/CustomTreeV2/CustomTreeV2.vue'))
+export const CustomTreeV2 = useAsyncComponent(() => import('./feature/CustomTreeV2/CustomTreeV2.vue'), 'rect')
 
 // 檔案上傳
-export const CustomUpload = useAsyncComponent(() => import('./feature/CustomUpload/CustomUpload.vue'))
+export const CustomUpload = useAsyncComponent(() => import('./feature/CustomUpload/CustomUpload.vue'), 'rect')
 
 // 浮水印
-export const CustomWatermark = useAsyncComponent(() => import('./feature/CustomWatermark/CustomWatermark.vue'))
+export const CustomWatermark = useAsyncComponent(() => import('./feature/CustomWatermark/CustomWatermark.vue'), 'rect')
 
 // 過濾
-export const SimpleFilter = useAsyncComponent(() => import('./feature/SimpleFilter/SimpleFilter'))
+export const SimpleFilter = useAsyncComponent(() => import('./feature/SimpleFilter/SimpleFilter'), 'p')
 
 // 表格
-export const SimpleTable = useAsyncComponent(() => import('./feature/SimpleTable/SimpleTable.vue'))
+export const SimpleTable = useAsyncComponent(() => import('./feature/SimpleTable/SimpleTable.vue'), 'rect')
 
 // QRcode
-export const SimpleQRcode = useAsyncComponent(() => import('./feature/SimpleQRcode/SimpleQRcode.vue'))
+export const SimpleQRcode = useAsyncComponent(() => import('./feature/SimpleQRcode/SimpleQRcode.vue'), 'rect')
 
 // form
 export type { FetchSuggestions } from './form/FormAutocomplete.vue'
-export const FormAutocomplete = useAsyncComponent(() => import('./form/FormAutocomplete.vue'))
+export const FormAutocomplete = useAsyncComponent(() => import('./form/FormAutocomplete.vue'), 'h1')
 
-export const FormCheckbox = useAsyncComponent(() => import('./form/FormCheckbox.vue'))
+export const FormCheckbox = useAsyncComponent(() => import('./form/FormCheckbox.vue'), 'h1')
 
 export type { Shortcuts, DatePickerType } from './form/FormDatePicker.vue'
-export const FormDatePicker = useAsyncComponent(() => import('./form/FormDatePicker.vue'))
+export const FormDatePicker = useAsyncComponent(() => import('./form/FormDatePicker.vue'), 'h1')
 
 export declare interface FormInputExpose {
   key: string
@@ -276,20 +276,20 @@ export declare interface FormInputExpose {
   getDom: () => Element
 }
 
-export const FormInput = useAsyncComponent(() => import('./form/FormInput.vue'))
+export const FormInput = useAsyncComponent(() => import('./form/FormInput.vue'), 'h1')
 
-export const FormOperator = useAsyncComponent(() => import('./form/FormOperator.vue'))
+export const FormOperator = useAsyncComponent(() => import('./form/FormOperator.vue'), 'h1')
 
-export const FormRadio = useAsyncComponent(() => import('./form/FormRadio.vue'))
+export const FormRadio = useAsyncComponent(() => import('./form/FormRadio.vue'), 'h1')
 
 export type { Options as FormSelectOptions } from './form/FormSelect.vue'
-export const FormSelect = useAsyncComponent(() => import('./form/FormSelect.vue'))
+export const FormSelect = useAsyncComponent(() => import('./form/FormSelect.vue'), 'h1')
 
-export const FormSelectV2 = useAsyncComponent(() => import('./form/FormSelectV2.vue'))
+export const FormSelectV2 = useAsyncComponent(() => import('./form/FormSelectV2.vue'), 'h1')
 
 export type { TimePickerType } from './form/FormTimePicker.vue'
-export const FormTimePicker = useAsyncComponent(() => import('./form/FormTimePicker.vue'))
+export const FormTimePicker = useAsyncComponent(() => import('./form/FormTimePicker.vue'), 'h1')
 
-export const FormList = useAsyncComponent(() => import('./form/FormList.vue'))
+export const FormList = useAsyncComponent(() => import('./form/FormList.vue'), 'h1')
 
-export const WebViewTable = useAsyncComponent(() => import('./views/WebViewTable/WebViewTable.vue'))
+export const WebViewTable = useAsyncComponent(() => import('./views/WebViewTable/WebViewTable.vue'), 'h1')

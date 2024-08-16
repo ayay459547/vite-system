@@ -23,9 +23,9 @@ export const props = {
     type: String as PropType<Props.Direction>,
     required: false,
     default: 'horizontal',
-    description: `
-      horizontal: 橫線
-      vertical: 直線`
+    description: `方向
+      horizontal: 水平
+      vertical: 垂直`
   },
   borderStyle: {
     type: String as PropType<Props.BorderStyle>,

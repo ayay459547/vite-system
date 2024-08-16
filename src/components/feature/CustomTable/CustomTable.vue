@@ -1164,18 +1164,18 @@ $dark-color: (
   'table-footer': #39393A
 );
 
-// 顏色設定
-html {
+@mixin set-css-vars($color-map) {
   // var(--i-color-table-border)
-  @each $type, $color in $light-color {
+  @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 
+// 顏色設定
+html {
+  @include set-css-vars($light-color);
+}
 html.dark {
-  // var(--i-color-table-border)
-  @each $type, $color in $dark-color {
-    @include utils.set-css-var-value(('color', $type), $color);
-  }
+  @include set-css-vars($dark-color);
 }
 </style>

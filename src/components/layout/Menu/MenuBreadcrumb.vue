@@ -173,18 +173,18 @@ $dark-color: (
   'breadcrumb-text-hover': #CFD3DC
 );
 
-// 顏色設定
-html {
+@mixin set-css-vars($color-map) {
   // var(--i-color-breadcrumb-text)
-  @each $type, $color in $light-color {
+  @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 
+// 顏色設定
+html {
+  @include set-css-vars($light-color);
+}
 html.dark {
-  // var(--i-color-breadcrumb-text)
-  @each $type, $color in $dark-color {
-    @include utils.set-css-var-value(('color', $type), $color);
-  }
+  @include set-css-vars($dark-color);
 }
 </style>

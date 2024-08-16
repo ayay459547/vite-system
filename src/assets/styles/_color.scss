@@ -38,18 +38,19 @@ $dark-color: (
   'row-boder': #959595
 );
 
-html {
+@mixin set-css-vars($color-map) {
   // var(--i-color-system-bg)
-  @each $type, $color in $light-color {
+  @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }
 }
 
+// 顏色設定
+html {
+  @include set-css-vars($light-color);
+}
 html.dark {
-  // var(--i-color-system-bg)
-  @each $type, $color in $dark-color {
-    @include utils.set-css-var-value(('color', $type), $color);
-  }
+  @include set-css-vars($dark-color);
 }
 
 .swal2-popup {
@@ -76,7 +77,6 @@ $color-map: (
 );
 
 html {
-  // @include utils.set-css-var-value(('color', 'primary'), #409eff)
   @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }
