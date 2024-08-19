@@ -1,5 +1,4 @@
 body{
-  /* background-color: #d9ecff; */
   background: linear-gradient(#337ecc, 30%, #d9ecff);
   margin: 0;
   padding: 0;
@@ -35,7 +34,6 @@ body{
     transform: rotatex(360deg);
   }
 }
-
 
 .loader > span:nth-child(even){
   color: #337ecc;

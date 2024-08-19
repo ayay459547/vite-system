@@ -16,7 +16,7 @@ import descriptionRoutes from './description'
 // 開發用頁面
 import developmentRoutes from './development'
 // Test 用頁面
-import testRoutes from './Test'
+import testRoutes from './test'
 
 const routes: Array<RouterTree> = [
   {

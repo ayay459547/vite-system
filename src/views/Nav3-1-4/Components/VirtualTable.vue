@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 // import { ref } from 'vue'
 import 'vxe-table/styles/cssvar.scss'
 import 'vxe-pc-ui/styles/cssvar.scss'

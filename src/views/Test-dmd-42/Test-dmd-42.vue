@@ -9,6 +9,7 @@ import { getData } from './api'
 import { columnSetting } from './columns'
 import { formatDatetime } from '@/lib/lib_format'
 import { isEmpty } from '@/lib/lib_utils'
+import type { DateType } from '@/lib/lib_day'
 import dayjs from '@/lib/lib_day'
 
 import VirtualTable from './Components/VirtualTable.vue'
@@ -16,7 +17,7 @@ import VirtualTable from './Components/VirtualTable.vue'
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
-  i18nModule: 'dmd_common'
+  i18nModule: 'system'
 })
 
 const isLoading = ref(false)
@@ -24,9 +25,9 @@ const tableData = ref([])
 const { tableColumns } = useSimpleTableSetting(columnSetting, 'table')
 const dateColumns = ref([])
 
-const rowKeySet = new Set() // 行資料(客戶名稱+產品型號+達交類型)
-const dateSet = new Set() // 列資料(日)
-const monthSet = new Set() // 列總和(月)
+const rowKeySet: Set<string> = new Set() // 行資料(客戶名稱+產品型號+達交類型)
+const dateSet: Set<DateType> = new Set() // 列資料(日)
+const monthSet: Set<DateType> = new Set() // 列總和(月)
 
 const initData = async () => {
   isLoading.value = true
@@ -37,8 +38,8 @@ const initData = async () => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'sytem'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'sytem'),
       showCancelButton: false
     })
   }
@@ -69,7 +70,7 @@ const initData = async () => {
     return res
   }, [])
 
-  const cellDateList = [...dateSet.values()].sort((a, b) => {
+  const cellDateList = [...dateSet.values()].sort((a: DateType, b: DateType) => {
     return dayjs(a).valueOf() - dayjs(b).valueOf()
   })
   cellDateList.forEach(dateItem => {
@@ -86,7 +87,7 @@ const initData = async () => {
     width: 120
   })
 
-  const totalMonthList = [...monthSet.values()].sort((a, b) => {
+  const totalMonthList = [...monthSet.values()].sort((a: DateType, b: DateType) => {
     return dayjs(a).valueOf() - dayjs(b).valueOf()
   })
   totalMonthList.forEach(dateItem => {
