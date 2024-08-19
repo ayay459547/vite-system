@@ -10,12 +10,13 @@ import { columnSetting } from './columns'
 import { formatDatetime } from '@/lib/lib_format'
 import { hasOwnProperty } from '@/lib/lib_utils'
 import dayjs, { getWeekOfMonth } from '@/lib/lib_day'
+import { useAsyncComponent } from '@/lib/lib_hook'
 
-import VirtualTable from './Components/VirtualTable.vue'
+const VirtualTable = useAsyncComponent(() => import('./Components/VirtualTable.vue'), 'rect')
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
-  i18nModule: 'dmd_common'
+  i18nModule: 'system'
 })
 
 const isLoading = ref(false)
@@ -42,8 +43,8 @@ const initData = async () => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }
@@ -73,7 +74,7 @@ const initData = async () => {
       tempRef = _dateGroup[columnMonth]
 
       // 周
-      const columnWeek = getWeekOfMonth(deliveryDate)
+      const columnWeek = `${getWeekOfMonth(deliveryDate)}`
       if (!hasOwnProperty(tempRef, columnWeek)) {
         tempRef[columnWeek] = {}
       }
@@ -107,15 +108,15 @@ const initData = async () => {
   // 中間
   dateGroup.value = _dateGroup
 
-  const monthList = Object.entries(_dateGroup)
+  const monthList: any[] = Object.entries(_dateGroup)
 
   groupColumns.value = monthList.sort((a, b) => (dayjs(a).valueOf() - dayjs(b).valueOf())).map(([monthColumn, weekGroup]) => {
-    const weekList = Object.entries(weekGroup)
+    const weekList: any[] = Object.entries(weekGroup)
 
     return {
       key: `key-${monthColumn}`,
       title: monthColumn,
-      columns: weekList.sort((a, b) => a - b).map(([weekColumn, dateGroup]) => {
+      columns: weekList.sort((a, b) => (a - b)).map(([weekColumn, dateGroup]) => {
         const dateList = Object.keys(dateGroup)
 
         return {

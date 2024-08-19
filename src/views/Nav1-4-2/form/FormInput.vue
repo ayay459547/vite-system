@@ -148,7 +148,7 @@ const {
   value: tempValue, // 值
   handleChange, // 換值
   handleReset, // 重置
-  validate // 驗證
+  validate: validateForm // 驗證
 } = useField('field', validateField, {
   validateOnValueUpdate: false,
   initialValue: inputValue.value,
@@ -211,7 +211,7 @@ defineExpose({
   key: props.validateKey,
   value: tempValue,
   handleReset,
-  validate,
+  validate: validateForm,
   setvalidateKey(validateKey: string) {
     _domValidateKey.value = validateKey
   },
