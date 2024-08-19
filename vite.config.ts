@@ -6,6 +6,8 @@ import { read, utils } from 'xlsx'
 // import { resolve } from 'path'
 
 import { defineConfig, loadEnv } from 'vite'
+import { lazyImport, VxeResolver } from 'vite-plugin-lazy-import'
+
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
@@ -89,6 +91,12 @@ export default defineConfig(({ command, mode }) => {
           return `export default JSON.parse('${JSON.stringify(data)}')`
         }
       },
+      lazyImport({
+        resolvers: [
+          VxeResolver({ libraryName: 'vxe-table' }),
+          VxeResolver({ libraryName: 'vxe-pc-ui' })
+        ]
+      }),
       // VueDevTools({
       //   // openInEditorHost: 'http://localhost:3000',
       //   // clientHost: 'http://localhost:3000'

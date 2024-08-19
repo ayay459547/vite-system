@@ -387,9 +387,29 @@ const routes: Array<RouterTree> = [
             }
           },
           {
+            name: 'nav3-1-2',
+            title: 'VirtralTable-1',
+            component: () => import('@/views/Nav3-1-2/Nav3-1-2.vue'),
+            meta: {
+              keepAlive: false,
+              systemType: ['new'],
+              icon: 'table-list'
+            }
+          },
+          {
             name: 'nav3-1-3',
-            title: 'VirtralTable',
+            title: 'VirtralTable-2',
             component: () => import('@/views/Nav3-1-3/Nav3-1-3.vue'),
+            meta: {
+              keepAlive: false,
+              systemType: ['new'],
+              icon: 'table-list'
+            }
+          },
+          {
+            name: 'nav3-1-4',
+            title: 'VirtralTable-vxe-table',
+            component: () => import('@/views/Nav3-1-4/Nav3-1-4.vue'),
             meta: {
               keepAlive: false,
               systemType: ['new'],

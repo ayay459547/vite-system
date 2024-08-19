@@ -9,6 +9,7 @@ import { getData } from './api'
 import { columnSetting } from './columns'
 import { formatDatetime } from '@/lib/lib_format'
 import { isEmpty } from '@/lib/lib_utils'
+import dayjs from '@/lib/lib_day'
 
 import VirtualTable from './Components/VirtualTable.vue'
 // const isLoading = ref(false)
@@ -23,8 +24,9 @@ const tableData = ref([])
 const { tableColumns } = useSimpleTableSetting(columnSetting, 'table')
 const dateColumns = ref([])
 
-const rowKeySet = new Set()
-const dateSet = new Set()
+const rowKeySet = new Set() // 行資料(客戶名稱+產品型號+達交類型)
+const dateSet = new Set() // 列資料(日)
+const monthSet = new Set() // 列總和(月)
 
 const initData = async () => {
   isLoading.value = true
@@ -42,16 +44,20 @@ const initData = async () => {
   }
 
   tableData.value = resTableData
-  // console.log('resTableData => ', resTableData)
+  console.log('resTableData => ', resTableData)
 
   const _tableData = resTableData.reduce((res, item) => {
     const { customerName, productId, deliveryType, deliveryDate } = item
     const rowkey = `${customerName}-${productId}-${deliveryType}`
 
     if (!isEmpty(deliveryDate)) {
-      const showDate = formatDatetime(deliveryDate, 'YYYY-MM')
-      if (showDate !== 'Invalid Date' && !dateSet.has(showDate)) {
-        dateSet.add(showDate)
+      const cellDate = formatDatetime(deliveryDate, 'YYYY-MM-DD')
+      if (cellDate !== 'Invalid Date' && !dateSet.has(cellDate)) {
+        dateSet.add(cellDate)
+      }
+      const totalMonth = formatDatetime(deliveryDate, 'YYYY-MM')
+      if (totalMonth !== 'Invalid Date' && !monthSet.has(totalMonth)) {
+        monthSet.add(totalMonth)
       }
     }
 
@@ -63,20 +69,27 @@ const initData = async () => {
     return res
   }, [])
 
-  const dateList = [...dateSet.values()]
-  dateList.forEach(dateItem => {
+  const cellDateList = [...dateSet.values()].sort((a, b) => {
+    return dayjs(a).valueOf() - dayjs(b).valueOf()
+  })
+  cellDateList.forEach(dateItem => {
     dateColumns.value.push({
       label: dateItem,
       title: dateItem,
       width: 120
     })
   })
+
   dateColumns.value.push({
     label: '未排產',
     title: '未排產',
     width: 120
   })
-  dateList.forEach(dateItem => {
+
+  const totalMonthList = [...monthSet.values()].sort((a, b) => {
+    return dayjs(a).valueOf() - dayjs(b).valueOf()
+  })
+  totalMonthList.forEach(dateItem => {
     dateColumns.value.push({
       label: dateItem,
       title: dateItem,

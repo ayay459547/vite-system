@@ -196,10 +196,15 @@ export function useBoundingClientRect(
   }
 }
 
+export type Variant = 'p' | 'text'
+  | 'h1' | 'h3' | 'caption'
+  |'button' | 'image'
+  | 'circle' | 'rect'
 /**
  * @author Caleb
  * @description 懶加載組件
  * @param {Function} loader () => import('@/components/MyAsyncComponent.vue')
+ * @param {Variant} variant 類型
  */
 export const useAsyncComponent = (loader: () => Promise<any>, variant: string = 'rect') => {
   return defineAsyncComponent({

@@ -3,10 +3,7 @@ import type { PropType } from 'vue'
 import { computed } from 'vue'
 import { ElAlert, ElAutoResizer } from 'element-plus'
 
-type Variant = 'p' | 'text'
-  | 'h1' | 'h3' | 'caption'
-  |'button' | 'image'
-  | 'circle' | 'rect'
+import type { Variant } from '@/lib/lib_hook'
 
 const props = defineProps({
   variant: {
