@@ -103,12 +103,19 @@ const getIcon = (): Component => {
   }
   return getComponent(renderIcon)
 }
+
 </script>
 
 <template>
-  <Icon :size="props.size" :color="props.color" :tag="props.tag">
+  <Icon
+    :size="props.size"
+    :color="props.color"
+    :tag="props.tag"
+  >
     <component :is="getIcon"></component>
   </Icon>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

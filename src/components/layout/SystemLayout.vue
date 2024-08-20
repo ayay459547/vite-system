@@ -11,9 +11,9 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import { tipLog } from '@/lib/lib_utils'
 import { useAsyncComponent } from '@/lib/lib_hook'
 
-const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'))
-const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'))
-const UserPreference = useAsyncComponent(() => import('@/components/layout/Preference/UserPreference.vue'))
+const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'), 'rect')
+const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'), 'rect')
+const UserPreference = useAsyncComponent(() => import('@/components/layout/Preference/UserPreference.vue'), 'rect')
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -123,16 +123,16 @@ const init = async () => {
   setTimeout(() => {
     switch (layout.value) {
       case 'layout1':
-        layout1Ref.value.init()
+        layout1Ref.value?.init()
         break
       case 'layout2':
-        layout2Ref.value.init()
+        layout2Ref.value?.init()
         break
       default:
         tipLog('找不到對應的Layout')
         break
     }
-  }, 100)
+  }, 320)
 }
 
 defineExpose({

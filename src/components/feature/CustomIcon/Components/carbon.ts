@@ -1,4 +1,8 @@
-import { ChartTreemap, ChartMultitype, ChartMaximum } from '@vicons/carbon'
+import {
+  ChartTreemap,
+  ChartMultitype,
+  ChartMaximum
+} from '@vicons/carbon'
 
 export default {
   ChartTreemap,

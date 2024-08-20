@@ -2,9 +2,8 @@
 import type { PropType } from 'vue'
 import { useSlots, ref, onMounted, onUnmounted, computed, watch, effectScope, nextTick } from 'vue'
 import type { ElTable as ElTableType } from 'element-plus'
-import { ElTable, ElTableColumn } from 'element-plus'
+import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
@@ -200,26 +199,8 @@ const onRowContextmenu: RowContextmenu = (row, column, event) => {
   emit('row-contextmenu', row, column, event)
 }
 
-// 監聽寬度高度變化
-const tableMainRef = ref(null)
-const tableWidth = ref(500)
-const tableHeight = ref(500)
-const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach(entry => {
-    const newWidth = entry.contentRect.width
-    const newHeight = entry.contentRect.height
-    tableWidth.value = newWidth
-    tableHeight.value = newHeight
-
-    emit('update-size', {
-      width: newWidth,
-      height: newHeight
-    })
-  })
-}, 100) as ResizeObserverCallback
-const RO = new ResizeObserver(ROcallback)
-
 // 滾動到底時 emit load
+const tableMainRef = ref(null)
 const loadMoreRef = ref(null)
 const load = () => {
   if (props.lazyLoadingStatus === 'loadMore') {
@@ -244,10 +225,6 @@ const isLazyLoading = computed(() => {
   return props.isLazyLoading
 })
 onMounted(() => {
-  if (tableMainRef.value !== null) {
-    RO.observe(tableMainRef.value)
-  }
-
   scope.run(() => {
     watch(
       isLazyLoading,
@@ -273,9 +250,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (RO) {
-    RO.disconnect()
-  }
   scope.stop()
 })
 
@@ -306,170 +280,134 @@ defineExpose({
 
 <template>
   <div ref="tableMainRef" class="__table-main-wrapper">
-    <div class="__table-main-container">
-      <ElTable
-        ref="elTableRef"
-        stripe
-        scrollbar-always-on
-        :border="true"
-        :key="props.renderKey"
-        :data="props.showData"
-        :height="tableHeight"
-        :row-key="props.rowKey"
-        :size="props.tableSize"
-        :default-expand-all="props.defaultExpandAll"
-        :default-sort="{
-          prop: props.sort.key,
-          order: props.sort.order
-        }"
-        :span-method="props.spanMethod"
-        :row-class-name="props.rowClassName"
-        :row-style="props.rowStyle"
-        :cell-class-name="props.cellClassName"
-        :cell-style="props.cellStyle"
-        :lazy="props.lazy"
-        :load="props.load"
-        :tree-props="props.treeProps"
-        @row-click="onRowClick"
-        @sort-change="onSortChange"
-        @header-click="onHeaderClick"
-        @expand-change="onExpandChange"
-        @header-dragend="onHeaderDragend"
-        @select="onSelect"
-        @select-all="onSelectAll"
-        @selection-change="onSelectionChange"
-        @row-contextmenu="onRowContextmenu"
-      >
-        <!-- 資料為空 顯示內容 -->
-        <template v-if="hasSlot('empty')" #empty>
-          <slot name="empty"></slot>
-        </template>
+    <ElAutoResizer class="__table-main-container">
+      <template #default="{ width, height }">
+        <ElTable
+          ref="elTableRef"
+          stripe
+          scrollbar-always-on
+          :border="true"
+          :key="props.renderKey"
+          :data="props.showData"
+          :height="height"
+          :row-key="props.rowKey"
+          :size="props.tableSize"
+          :default-expand-all="props.defaultExpandAll"
+          :default-sort="{
+            prop: props.sort.key,
+            order: props.sort.order
+          }"
+          :span-method="props.spanMethod"
+          :row-class-name="props.rowClassName"
+          :row-style="props.rowStyle"
+          :cell-class-name="props.cellClassName"
+          :cell-style="props.cellStyle"
+          :lazy="props.lazy"
+          :load="props.load"
+          :tree-props="props.treeProps"
+          @row-click="onRowClick"
+          @sort-change="onSortChange"
+          @header-click="onHeaderClick"
+          @expand-change="onExpandChange"
+          @header-dragend="onHeaderDragend"
+          @select="onSelect"
+          @select-all="onSelectAll"
+          @selection-change="onSelectionChange"
+          @row-contextmenu="onRowContextmenu"
+        >
+          <!-- 資料為空 顯示內容 -->
+          <template v-if="hasSlot('empty')" #empty>
+            <slot name="empty"></slot>
+          </template>
 
-        <!-- 懶加載用 滾動到底 emit load -->
-        <template v-if="isLazyLoading" #append>
-          <div
-            v-show="props.lazyLoadingStatus === 'noMore'"
-            class="__table-main-append"
-            :style="`width: ${tableWidth}px;`"
-          >
-            無更多資料
-          </div>
-
-          <div
-            v-show="props.lazyLoadingStatus === 'loading'"
-            class="__table-main-append"
-            :style="`width: ${tableWidth}px;`"
-          >
+          <!-- 懶加載用 滾動到底 emit load -->
+          <template v-if="isLazyLoading" #append>
             <div
-              style="width: 100%; height: 50px"
-              v-loading="true"
-              element-loading-text="LOADING..."
-            ></div>
-            <div style="width: 100%; height: 30px"></div>
-          </div>
-
-          <div
-            v-show="props.lazyLoadingStatus === 'loadMore'"
-            class="__table-main-append"
-            :style="`width: ${tableWidth}px;`"
-          >
-            <CustomButton label="載入更多資料" type="info" text @click="load" />
-            <div ref="loadMoreRef" class="load-more"></div>
-          </div>
-        </template>
-
-        <!-- 展開 自訂內容 -->
-        <template v-if="hasSlot('row-expand')">
-          <ElTableColumn type="expand">
-            <template #default="scope">
-              <slot
-                name="row-expand"
-                :row="scope.row"
-                :row-index="scope.$index"
-                :expanded="scope.expanded"
-                :store="scope.store"
-              ></slot>
-            </template>
-          </ElTableColumn>
-        </template>
-
-        <!-- 顯示行數 -->
-        <template v-if="props.isShowNo">
-          <ElTableColumn
-            width="60"
-            :align="'center'"
-            key="__data-no"
-            prop="__data-no"
-            label="#"
-            :sortable="false"
-          >
-            <template #default="scope">
-              <span>{{ scope.$index + 1 }}</span>
-            </template>
-          </ElTableColumn>
-        </template>
-
-        <!-- 勾選 checkbox -->
-        <template v-if="props.selection">
-          <ElTableColumn width="50" :align="'center'" type="selection" />
-        </template>
-
-        <!-- 欄位設定 -->
-        <template v-for="column in showColumns" :key="column.prop">
-          <!-- header 有子欄位 -->
-          <template v-if="column.columns && column.columns.length > 0">
-            <ElTableColumn
-              :key="column.prop"
-              :prop="column.prop"
-              :label="column.label"
-              :sortable="column.sortable"
-              v-bind="column"
+              v-show="props.lazyLoadingStatus === 'noMore'"
+              class="__table-main-append"
+              :style="`width: ${width}px;`"
             >
-              <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
-                <div :class="column.sortable ? 'header-slot' : ''">
-                  <slot
-                    :name="`header-${column.slotKey}`"
-                    :label="column.label"
-                    :row-index="scope.$index"
-                    :column="column"
-                    :prop="column.prop"
-                  ></slot>
-                </div>
+              無更多資料
+            </div>
+
+            <div
+              v-show="props.lazyLoadingStatus === 'loading'"
+              class="__table-main-append"
+              :style="`width: ${width}px;`"
+            >
+              <div
+                style="width: 100%; height: 50px"
+                v-loading="true"
+                element-loading-text="LOADING..."
+              ></div>
+              <div style="width: 100%; height: 30px"></div>
+            </div>
+
+            <div
+              v-show="props.lazyLoadingStatus === 'loadMore'"
+              class="__table-main-append"
+              :style="`width: ${width}px;`"
+            >
+              <CustomButton label="載入更多資料" type="info" text @click="load" />
+              <div ref="loadMoreRef" class="load-more"></div>
+            </div>
+          </template>
+
+          <!-- 展開 自訂內容 -->
+          <template v-if="hasSlot('row-expand')">
+            <ElTableColumn type="expand">
+              <template #default="scope">
+                <slot
+                  name="row-expand"
+                  :row="scope.row"
+                  :row-index="scope.$index"
+                  :expanded="scope.expanded"
+                  :store="scope.store"
+                ></slot>
               </template>
-              <template v-else-if="hasSlot('header-all')" #header="scope">
-                <div :class="column.sortable ? 'header-slot' : ''">
-                  <slot
-                    name="header-all"
-                    :label="column.label"
-                    :row-index="scope.$index"
-                    :column="column"
-                    :prop="column.prop"
-                  ></slot>
-                </div>
+            </ElTableColumn>
+          </template>
+
+          <!-- 顯示行數 -->
+          <template v-if="props.isShowNo">
+            <ElTableColumn
+              width="60"
+              :align="'center'"
+              key="__data-no"
+              prop="__data-no"
+              label="#"
+              :sortable="false"
+            >
+              <template #default="scope">
+                <span>{{ scope.$index + 1 }}</span>
               </template>
-              <ElTableColumn v-for="child in column.columns" :key="child.prop" v-bind="child">
-                <template
-                  v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)"
-                  #header="scope"
-                >
-                  <div :class="child.sortable ? 'header-slot' : ''">
+            </ElTableColumn>
+          </template>
+
+          <!-- 勾選 checkbox -->
+          <template v-if="props.selection">
+            <ElTableColumn width="50" :align="'center'" type="selection" />
+          </template>
+
+          <!-- 欄位設定 -->
+          <template v-for="column in showColumns" :key="column.prop">
+            <!-- header 有子欄位 -->
+            <template v-if="column.columns && column.columns.length > 0">
+              <ElTableColumn
+                :key="column.prop"
+                :prop="column.prop"
+                :label="column.label"
+                :sortable="column.sortable"
+                v-bind="column"
+              >
+                <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
+                  <div :class="column.sortable ? 'header-slot' : ''">
                     <slot
-                      :name="`header-${column.slotKey}-${child.slotKey}`"
-                      :label="child.label"
+                      :name="`header-${column.slotKey}`"
+                      :label="column.label"
                       :row-index="scope.$index"
-                      :column="child"
-                      :prop="child.prop"
-                    ></slot>
-                  </div>
-                </template>
-                <template v-else-if="hasSlot(`header-${child.slotKey}-all`)" #header="scope">
-                  <div :class="child.sortable ? 'header-slot' : ''">
-                    <slot
-                      :name="`header-${column.slotKey}-all`"
-                      :label="child.label"
-                      :row-index="scope.$index"
-                      :column="child"
-                      :prop="child.prop"
+                      :column="column"
+                      :prop="column.prop"
                     ></slot>
                   </div>
                 </template>
@@ -477,113 +415,151 @@ defineExpose({
                   <div :class="column.sortable ? 'header-slot' : ''">
                     <slot
                       name="header-all"
+                      :label="column.label"
+                      :row-index="scope.$index"
+                      :column="column"
+                      :prop="column.prop"
+                    ></slot>
+                  </div>
+                </template>
+                <ElTableColumn v-for="child in column.columns" :key="child.prop" v-bind="child">
+                  <template
+                    v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)"
+                    #header="scope"
+                  >
+                    <div :class="child.sortable ? 'header-slot' : ''">
+                      <slot
+                        :name="`header-${column.slotKey}-${child.slotKey}`"
+                        :label="child.label"
+                        :row-index="scope.$index"
+                        :column="child"
+                        :prop="child.prop"
+                      ></slot>
+                    </div>
+                  </template>
+                  <template v-else-if="hasSlot(`header-${child.slotKey}-all`)" #header="scope">
+                    <div :class="child.sortable ? 'header-slot' : ''">
+                      <slot
+                        :name="`header-${column.slotKey}-all`"
+                        :label="child.label"
+                        :row-index="scope.$index"
+                        :column="child"
+                        :prop="child.prop"
+                      ></slot>
+                    </div>
+                  </template>
+                  <template v-else-if="hasSlot('header-all')" #header="scope">
+                    <div :class="column.sortable ? 'header-slot' : ''">
+                      <slot
+                        name="header-all"
+                        :label="child.label"
+                        :row-index="scope.$index"
+                        :column="child"
+                        :prop="child.prop"
+                      ></slot>
+                    </div>
+                  </template>
+
+                  <template
+                    v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)"
+                    #default="scope"
+                  >
+                    <slot
+                      :name="`column-${column.slotKey}-${child.slotKey}`"
                       :label="child.label"
+                      :data="scope.row[child.key]"
+                      :row="scope.row"
                       :row-index="scope.$index"
                       :column="child"
                       :prop="child.prop"
                     ></slot>
+                  </template>
+                  <template v-else-if="hasSlot(`column-${column.slotKey}-all`)" #default="scope">
+                    <slot
+                      :name="`column-${column.slotKey}-all`"
+                      :label="child.label"
+                      :data="scope.row[child.key]"
+                      :row="scope.row"
+                      :row-index="scope.$index"
+                      :column="child"
+                      :prop="child.prop"
+                    ></slot>
+                  </template>
+                  <template v-else-if="hasSlot(`column-all`)" #default="scope">
+                    <slot
+                      :name="`column-all`"
+                      :label="child.label"
+                      :data="scope.row[child.key]"
+                      :row="scope.row"
+                      :row-index="scope.$index"
+                      :column="child"
+                      :prop="child.prop"
+                    ></slot>
+                  </template>
+                </ElTableColumn>
+              </ElTableColumn>
+            </template>
+
+            <!-- header 沒有子欄位 -->
+            <template v-else>
+              <ElTableColumn
+                :key="column.prop"
+                :prop="column.prop"
+                :label="column.label"
+                :sortable="column.sortable"
+                v-bind="column"
+              >
+                <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
+                  <div :class="column.sortable ? 'header-slot' : ''">
+                    <slot
+                      :name="`header-${column.slotKey}`"
+                      :label="column.label"
+                      :row-index="scope.$index"
+                      :column="column"
+                      :prop="column.prop"
+                    ></slot>
+                  </div>
+                </template>
+                <template v-else-if="hasSlot('header-all')" #header="scope">
+                  <div :class="column.sortable ? 'header-slot' : ''">
+                    <slot
+                      name="header-all"
+                      :label="column.label"
+                      :row-index="scope.$index"
+                      :column="column"
+                      :prop="column.prop"
+                    ></slot>
                   </div>
                 </template>
 
-                <template
-                  v-if="hasSlot(`column-${column.slotKey}-${child.slotKey}`)"
-                  #default="scope"
-                >
+                <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
                   <slot
-                    :name="`column-${column.slotKey}-${child.slotKey}`"
-                    :label="child.label"
-                    :data="scope.row[child.key]"
+                    :name="`column-${column.slotKey}`"
+                    :label="column.label"
+                    :data="scope.row[column.key]"
                     :row="scope.row"
                     :row-index="scope.$index"
-                    :column="child"
-                    :prop="child.prop"
+                    :column="column"
+                    :prop="column.prop"
                   ></slot>
                 </template>
-                <template v-else-if="hasSlot(`column-${column.slotKey}-all`)" #default="scope">
+                <template v-else-if="hasSlot('column-all')" #default="scope">
                   <slot
-                    :name="`column-${column.slotKey}-all`"
-                    :label="child.label"
-                    :data="scope.row[child.key]"
+                    name="column-all"
+                    :label="column.label"
+                    :data="scope.row[column.key]"
                     :row="scope.row"
                     :row-index="scope.$index"
-                    :column="child"
-                    :prop="child.prop"
-                  ></slot>
-                </template>
-                <template v-else-if="hasSlot(`column-all`)" #default="scope">
-                  <slot
-                    :name="`column-all`"
-                    :label="child.label"
-                    :data="scope.row[child.key]"
-                    :row="scope.row"
-                    :row-index="scope.$index"
-                    :column="child"
-                    :prop="child.prop"
+                    :column="column"
+                    :prop="column.prop"
                   ></slot>
                 </template>
               </ElTableColumn>
-            </ElTableColumn>
+            </template>
           </template>
-
-          <!-- header 沒有子欄位 -->
-          <template v-else>
-            <ElTableColumn
-              :key="column.prop"
-              :prop="column.prop"
-              :label="column.label"
-              :sortable="column.sortable"
-              v-bind="column"
-            >
-              <template v-if="hasSlot(`header-${column.slotKey}`)" #header="scope">
-                <div :class="column.sortable ? 'header-slot' : ''">
-                  <slot
-                    :name="`header-${column.slotKey}`"
-                    :label="column.label"
-                    :row-index="scope.$index"
-                    :column="column"
-                    :prop="column.prop"
-                  ></slot>
-                </div>
-              </template>
-              <template v-else-if="hasSlot('header-all')" #header="scope">
-                <div :class="column.sortable ? 'header-slot' : ''">
-                  <slot
-                    name="header-all"
-                    :label="column.label"
-                    :row-index="scope.$index"
-                    :column="column"
-                    :prop="column.prop"
-                  ></slot>
-                </div>
-              </template>
-
-              <template v-if="hasSlot(`column-${column.slotKey}`)" #default="scope">
-                <slot
-                  :name="`column-${column.slotKey}`"
-                  :label="column.label"
-                  :data="scope.row[column.key]"
-                  :row="scope.row"
-                  :row-index="scope.$index"
-                  :column="column"
-                  :prop="column.prop"
-                ></slot>
-              </template>
-              <template v-else-if="hasSlot('column-all')" #default="scope">
-                <slot
-                  name="column-all"
-                  :label="column.label"
-                  :data="scope.row[column.key]"
-                  :row="scope.row"
-                  :row-index="scope.$index"
-                  :column="column"
-                  :prop="column.prop"
-                ></slot>
-              </template>
-            </ElTableColumn>
-          </template>
-        </template>
-      </ElTable>
-    </div>
+        </ElTable>
+      </template>
+    </ElAutoResizer>
   </div>
 </template>
 
@@ -727,7 +703,8 @@ defineExpose({
     position: relative;
   }
   &-container {
-    display: contents;
+    width: 100%;
+    height: 100%;
   }
   &-append {
     height: 80px;

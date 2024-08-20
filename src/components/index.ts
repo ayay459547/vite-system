@@ -142,7 +142,7 @@ export type {
 export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
 // 搜尋用組件
-export const CustomSearch = useAsyncComponent(() => import('./feature/CustomSearch/CustomSearch.vue'), 'h1')
+export { default as CustomSearch } from './feature/CustomSearch/CustomSearch.vue'
 
 // GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
 export const GroupSearch = useAsyncComponent(() => import('./feature/CustomSearch/GroupSearch.vue'), 'p')
@@ -163,7 +163,8 @@ export type {
 export const CustomSwitch = useAsyncComponent(() => import('./feature/CustomSwitch/CustomSwitch.vue'), 'button')
 
 // 表格
-export const TableMain = useAsyncComponent(() => import('./feature/CustomTable/TableMain.vue'), 'rect')
+export { default as TableMain } from './feature/CustomTable/TableMain.vue'
+
 // 虛擬表格
 export const CustomTableV2 = useAsyncComponent(() => import('./feature/CustomTableV2/CustomTableV2.vue'), 'rect')
 
@@ -191,7 +192,7 @@ export type {
   PropsTableColumn,
   ShowType
 } from './feature/CustomTable/CustomTableInfo'
-export const CustomTable = useAsyncComponent(() => import('./feature/CustomTable/CustomTable.vue'), 'rect')
+export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 // 分頁
 export type {
@@ -231,7 +232,7 @@ export type {
   Props as TreeProps,
   Emits as TreeEmits,
   Expose as TreeExpose
- } from './feature/CustomTree/CustomTreeInfo'
+} from './feature/CustomTree/CustomTreeInfo'
 export const CustomTree = useAsyncComponent(() => import('./feature/CustomTree/CustomTree.vue'), 'rect')
 
 // 虛擬樹狀
@@ -240,7 +241,7 @@ export type {
   Props as TreeV2Props,
   Emits as TreeV2Emits,
   Expose as TreeV2Expose
- } from './feature/CustomTreeV2/CustomTreeV2Info'
+} from './feature/CustomTreeV2/CustomTreeV2Info'
 export const CustomTreeV2 = useAsyncComponent(() => import('./feature/CustomTreeV2/CustomTreeV2.vue'), 'rect')
 
 // 檔案上傳

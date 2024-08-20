@@ -219,8 +219,7 @@ $draggable-btn-width: 38px;
       width: 100%;
       height: 100%;
       display: flex;
-      background-color: var(--el-bg-color);
-      // border: 1px solid var(--el-color-info-light-8);
+      background-color: inherit;
 
       &.is-move {
         cursor: col-resize;

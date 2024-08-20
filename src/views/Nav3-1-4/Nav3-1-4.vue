@@ -149,8 +149,6 @@ const initData = async () => {
     width: 120
   })
 
-
-
   await nextTick()
   isLoading.value = false
 }

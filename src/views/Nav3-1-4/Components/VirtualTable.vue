@@ -10,7 +10,6 @@ import {
 } from 'vxe-pc-ui'
 
 import {
-  VXETable,
   VxeTable,
   VxeColumn,
   VxeColgroup
@@ -27,11 +26,11 @@ import zhTW from 'vxe-table/lib/locale/lang/zh-TW'
 // import esES from 'vxe-table/lib/locale/lang/es-ES'
 // import ptBR from 'vxe-table/lib/locale/lang/pt-BR'
 
-VXETable.setI18n('zh-TW', zhTW)
-// VXETable.setI18n('zh-CN', zhCN)
-// VXETable.setI18n('en', enUS)
+VxeUI.setI18n('zh-TW', zhTW)
+// VxeUI.setI18n('zh-CN', zhCN)
+// VxeUI.setI18n('en', enUS)
 
-VXETable.setLanguage('zh-TW')
+VxeUI.setLanguage('zh-TW')
 
 VxeUI.component(VxeTooltip)
 

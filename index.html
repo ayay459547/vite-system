@@ -14,14 +14,15 @@
 
 <body>
   <div id="app">
-    <div class="loader">
-      <span>L</span>
-      <span>O</span>
-      <span>A</span>
-      <span>D</span>
-      <span>I</span>
-      <span>N</span>
-      <span>G</span>
+    <div class="loader-wrapper">
+      <div class="loader-container">
+        <div class="loader-circle"></div>
+        <div class="loader-circle"></div>
+        <div class="loader-circle"></div>
+        <div class="loader-shadow"></div>
+        <div class="loader-shadow"></div>
+        <div class="loader-shadow"></div>
+      </div>
     </div>
     
     <div class="app-table browser-version">
@@ -135,7 +136,7 @@
 
         setTimeout(() => {
           versionTable.style.opacity = '1'
-        }, 1000 * 60 * 5)
+        }, 1000 * 60 * 2)
       }
     })()
   </script>

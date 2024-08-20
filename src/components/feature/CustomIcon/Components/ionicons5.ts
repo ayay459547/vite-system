@@ -1,4 +1,7 @@
-import { BarChartOutline, StatsChartSharp } from '@vicons/ionicons5'
+import {
+  BarChartOutline,
+  StatsChartSharp
+} from '@vicons/ionicons5'
 
 export default {
   BarChartOutline,

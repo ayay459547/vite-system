@@ -2,9 +2,11 @@
 import { computed } from 'vue'
 
 import { getUuid, isEmpty } from '@/lib/lib_utils'
-import XIcon from './Components/XIcon.vue'
+import { useAsyncComponent } from '@/lib/lib_hook'
 
 import { version, props as iconProps } from './CustomIconInfo'
+
+const XIcon = useAsyncComponent(() => import('./Components/XIcon.vue'), 'rect')
 
 const scopedName = '__i-icon__'
 const scopedId = getUuid(scopedName)
@@ -25,7 +27,7 @@ const getIcon = computed(() => {
       scopedId,
       scopedName,
       `icon-size-${props.size}`,
-      `${props.iconClass}`
+      `${props.iconClass}`,
     ]"
   >
     <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />

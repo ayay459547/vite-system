@@ -67,20 +67,11 @@ export const getMilliseconds = (date: DateType, time: string): number => {
  * @param {DateType} date - 要計算的日期
  * @returns {number} - 當月的第幾周
  */
-export const getWeekOfMonth = (date: DateType) => {
-  const currentDate = dayjs(date)
-
-  // 確定當月的第一天
-  const startOfMonth = currentDate.startOf('month')
-
-  // 確定當月的第一周
-  const startWeekOfMonth = startOfMonth.isoWeek()
-
-  // 確定當前日期的周數
-  const currentWeek = currentDate.isoWeek()
-
-  // 計算當月的第幾周
-  return currentWeek - startWeekOfMonth + 1
+export const getWeekOfMonth = (date: DateType): number => {
+  const startOfMonth = dayjs(date).startOf('month')
+  const currentWeek = dayjs(date).week()
+  const startOfMonthWeek = startOfMonth.week()
+  return currentWeek - startOfMonthWeek + 1
 }
 
 export default dayjs
