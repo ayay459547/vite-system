@@ -120,30 +120,30 @@ body {
   border-collapse: collapse;
   width: 100%;
   font-size: 1.3em;
-  border-top: 1px solid #337ecc;
-  border-left: 1px solid #337ecc;
-  border-right: 1px solid #337ecc;
+  border-top: 1px solid #73767a;
+  border-left: 1px solid #73767a;
+  border-right: 1px solid #73767a;
 }
 
 .app-table thead {
-  background-color: #a0cfff;
+  background-color: #c8c9cc;
 }
 .app-table tbody tr {
   transition-duration: 0.2s;
 }
 .app-table tbody tr:nth-child(odd) {
-  background-color: #d9ecff;
+  background-color: #e9e9eb;
 }
 .app-table tbody tr:nth-child(even) {
-  background-color: #ecf5ff;
+  background-color: #f4f4f5;
 }
 .app-table tbody tr:hover {
-  background-color: #c6e2ff;
+  background-color: #dedfe0;
 }
 
 .app-table thead th,
 .app-table tbody td {
-  border-bottom: 1px solid #337ecc;
+  border-bottom: 1px solid #73767a;
   padding: 24px 64px;
   text-align: left;
   white-space: nowrap;

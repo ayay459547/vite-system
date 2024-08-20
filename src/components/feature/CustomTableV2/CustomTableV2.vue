@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref, useSlots, onMounted, onUnmounted } from 'vue'
+import { ref, useSlots } from 'vue'
 import type { ElTableV2 as ElTableV2Type, TableV2Instance } from 'element-plus'
 import { ElTableV2, ElAutoResizer } from 'element-plus'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
 import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as tableV2Props } from './CustomTableV2Info'
@@ -13,46 +11,12 @@ const scopedId = getUuid('__i-table-v2__')
 
 const props = defineProps(tableV2Props)
 
-const emit = defineEmits([
-  // 更新 table 大小
-  'update-size'
-])
-
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-// 監聽寬度高度變化
-const tableV2Ref = ref()
-const tableWidth = ref(500)
-const tableHeight = ref(500)
-const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-  entries.forEach(entry => {
-    const newWidth = entry.contentRect.width
-    const newHeight = entry.contentRect.height
-    tableWidth.value = newWidth
-    tableHeight.value = newHeight
-
-    emit('update-size', {
-      width: newWidth,
-      height: newHeight
-    })
-  })
-}, 100) as ResizeObserverCallback
-const RO = new ResizeObserver(ROcallback)
-
-onMounted(async () => {
-  if (tableV2Ref.value !== null) {
-    RO.observe(tableV2Ref.value)
-  }
-})
-onUnmounted(() => {
-  if (RO) {
-    RO.disconnect()
-  }
-})
-
+// const tableV2Ref = ref()
 const elTableV2Ref = ref<InstanceType<typeof ElTableV2Type> & TableV2Instance>()
 const resetScroll = (): void => {
   if ([null, undefined].includes(elTableV2Ref.value)) return
@@ -70,24 +34,24 @@ defineExpose({
       <ElAutoResizer>
         <template #default="{ height, width }">
           <ElTableV2
-            ref="elTableV2Ref"
             :key="props.renderKey"
-            :cache="props.cache"
-            :row-key="props.rowKey"
-            :data="props.data"
-            :columns="props.columns"
-            :header-height="props.headerHeight"
-            :row-height="props.rowHeight"
-            :footer-height="props.footerHeight"
-            :fixed="props.fixed"
+            ref="elTableV2Ref"
+            scrollbar-always-on
             :width="width"
             :height="height"
-            scrollbar-always-on
+            :columns="props.columns"
+            :data="props.data"
+            :row-key="props.rowKey"
+            :row-height="props.rowHeight"
+            :header-height="props.headerHeight"
+            :footer-height="props.footerHeight"
+            :fixed="props.fixed"
+            :cache="props.cache"
           >
             <template v-if="hasSlot('header')" #header="scope">
               <slot name="header" v-bind="scope"></slot>
             </template>
-            <template v-else #header-cell="scope">
+            <template #header-cell="scope">
               <slot
                 v-if="hasSlot('header-cell')"
                 name="header-cell"
@@ -130,10 +94,7 @@ defineExpose({
               </template>
             </template>
 
-            <template v-if="hasSlot('row')" #row="scope">
-              <slot name="row" v-bind="scope"></slot>
-            </template>
-            <template v-else #cell="scope">
+            <template #cell="scope">
               <slot
                 v-if="hasSlot('cell')"
                 name="cell"
@@ -180,6 +141,10 @@ defineExpose({
                   </div>
                 </template>
               </template>
+            </template>
+
+            <template v-if="hasSlot('row')" #row="scope">
+              <slot name="row" v-bind="scope"></slot>
             </template>
 
             <template v-if="hasSlot('footer')" #footer>

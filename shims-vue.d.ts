@@ -18,11 +18,6 @@ declare module '@/components.*' {
   export default content
 }
 
-declare module '*sheetjs' {
-  const excel: any
-  export default excel
-}
-
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'

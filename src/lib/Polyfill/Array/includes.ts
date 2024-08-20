@@ -5,7 +5,7 @@ const includes = () => {
     Object.defineProperty(Array.prototype, 'includes', {
       value: function (searchElement: any, fromIndex: number) {
         if (this === null) {
-          throw new TypeError('"this" is null or not defined')
+          throw new TypeError('this is null or not defined')
         }
 
         // 1. Let O be ? ToObject(this value).
