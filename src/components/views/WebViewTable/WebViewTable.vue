@@ -228,6 +228,7 @@ const tableDataCount = ref(0)
 const {
   tableSetting,
   downloadExcel,
+  setParams,
   getParams,
   changePage,
   getSelectionRows,
@@ -359,7 +360,7 @@ const initData = async (tableParams: any) => {
   // 防呆
   if (isWebView && isEmpty(webViewParams)) {
     isLoading.value = false
-    return
+    // return
   }
 
   const params: any = {
@@ -519,9 +520,11 @@ const viewTypeOptions = [
 const islazyLoading = computed(() => {
   return viewType.value === 'loadMore'
 })
-const onViewTypeChange = async () => {
+const onReset = async () => {
   tableData.value = []
   tableDataCount.value = 0
+  setParams({ page: 1 })
+
   await nextTick()
   throttleInit(null, 'input')
 }
@@ -588,7 +591,7 @@ onMounted(() => {
                   type="select"
                   :options="viewTypeOptions"
                   hidden-label
-                  @change="onViewTypeChange"
+                  @change="onReset"
                 />
               </CustomTooltip>
             </div>
@@ -628,7 +631,7 @@ onMounted(() => {
               :label="i18nTranslate('refrush', defaultModuleType)"
               icon-name="rotate"
               icon-move="rotate"
-              @click="throttleInit(null, 'input')"
+              @click="onReset"
             />
           </div>
         </div>

@@ -38,8 +38,8 @@ const initData = async () => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'sytem'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'sytem'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

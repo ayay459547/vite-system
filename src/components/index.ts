@@ -93,7 +93,7 @@ export type {
   ModelValue as InputModelValue,
   InputType
 } from './feature/CustomInput/CustomInputInfo'
-export { default as CustomInput } from './feature/CustomInput/CustomInput'
+export { default as CustomInput } from './feature/CustomInput/CustomInput.vue'
 
 // 跳轉用組件
 export type {
@@ -191,7 +191,7 @@ export type {
   PropsTableColumn,
   ShowType
 } from './feature/CustomTable/CustomTableInfo'
-export const CustomTable = useAsyncComponent(() => import('./feature/CustomTable/CustomTable.vue'), 'rect')
+export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 // 分頁
 export type {
@@ -258,13 +258,14 @@ export type {
 export const CustomColor = useAsyncComponent(() => import('./feature/CustomColor/CustomColor.vue'), 'rect')
 
 // 過濾
-export const SimpleFilter = useAsyncComponent(() => import('./feature/SimpleFilter/SimpleFilter'), 'p')
+export const SimpleFilter = useAsyncComponent(() => import('./feature/SimpleFilter/SimpleFilter.vue'), 'p')
 
 // 表格
 export const SimpleTable = useAsyncComponent(() => import('./feature/SimpleTable/SimpleTable.vue'), 'rect')
 
 // QRcode
-export const SimpleQRcode = useAsyncComponent(() => import('./feature/SimpleQRcode/SimpleQRcode.vue'), 'rect')
+// export const SimpleQRcode = useAsyncComponent(() => import('./feature/SimpleQRcode/SimpleQRcode.vue'), 'rect')
+export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
 // form
 export type { FetchSuggestions } from './form/FormAutocomplete.vue'

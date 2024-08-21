@@ -400,7 +400,9 @@ const onLoad = () => {
   emit('load', {
     page: ++currentPage.value,
     size: pageSize.value,
-    sort: currentSort.value
+    sort: currentSort.value,
+    sortingList: getProxyData(sortingList.value),
+    sortingMap: getProxyData(emitSortingData.value)
   })
 }
 
