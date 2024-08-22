@@ -93,6 +93,7 @@ const isVisible = computed({
       customSearchStore.setActiveScopedId(scopedId)
 
       await nextTick()
+      if (isActiveConditions.value) return
       if (props.search) {
         iconSearchRef?.value.focus()
       } else {
@@ -169,13 +170,15 @@ const isActiveConditions = computed({
   get () {
     return props.activeConditions
   },
-  set (value: boolean) {
-    if (value) {
-      onVisibleClick(true)
-    } else {
+  set: async (value: boolean) => {
+    isVisible.value = false
+    if (!value) {
       emit('change', inpuValue.value)
     }
     emit('update:activeConditions', value)
+
+    await nextTick()
+    isVisible.value = true
   }
 })
 
@@ -226,6 +229,14 @@ const {
   add,
   remove
 } = useFormListSetting<Form>(columnSetting, 'filter', [])
+
+const removeItem = (rowIndex: number) => {
+  if (formList.value.length > 1) {
+    remove(rowIndex)
+  } else {
+    isActiveConditions.value = false
+  }
+}
 
 const reset = () => {
   formList.value.splice(0)
@@ -434,9 +445,8 @@ const popverWidth = computed(() => {
                   item-key="key"
                   is-create
                   is-remove
-                  :min="1"
                   @add="addItem"
-                  @remove="remove"
+                  @remove="removeItem"
                 >
                   <template #header-all="{ column }">
                     <div class="text-danger i-pr-xs">*</div>
@@ -564,6 +574,8 @@ const popverWidth = computed(() => {
     height: 100vh;
     top: 0;
     left: 0;
+    background-color: var(--el-color-black);
+    opacity: 0.3;
     // pointer-events: none;
   }
 }

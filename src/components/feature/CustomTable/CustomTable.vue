@@ -13,7 +13,7 @@ import { ElPagination } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
-import { tipLog, isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { object_findIndex } from '@/lib/lib_object'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'
@@ -438,30 +438,7 @@ const showData = computed(() => {
 const columnSetting = ref(null)
 const showColumns = shallowReactive([...props.tableColumns])
 
-// 確認欄位 (只有開發階段 給予提示)
-const mode = (import.meta as any).env.MODE
-const checkTableColumns = (tempColumnList: ColumnItem[]) => {
-  if (mode !== 'development') return mode
-  const originColumnsKey = tempColumnList.map(item => item.key)
-  const settingColumnsKey = props.tableColumns.map(item => item.key)
-
-  if (originColumnsKey.length !== settingColumnsKey.length) {
-    tipLog('欄位數量不同', [
-      `table => ${props.title} (${props.settingKey})`,
-      `原始欄位列表 => ${tempColumnList.map(item => item?.label ?? '').join(' , ')}`,
-      `設定欄位列表 => ${props.tableColumns.map(item => item?.label ?? '').join(' , ')}`,
-      '如果欄位有要新增 請變更 version'
-    ])
-  } else if (settingColumnsKey.some((itemKey, itemIndex) => itemKey !== originColumnsKey[itemIndex])) {
-    tipLog('欄位異動', [
-      `table => ${props.title} (${props.settingKey})`,
-      `原始欄位列表 => ${originColumnsKey}`,
-      `設定欄位列表 => ${settingColumnsKey}`,
-      '如果欄位有要異動 請變更 version'
-    ])
-  }
-}
-
+// 初始化顯示欄位
 const initShowColumns = async (setting?: any) => {
   const {
     //預設的Setting各項參數
@@ -473,15 +450,11 @@ const initShowColumns = async (setting?: any) => {
   loading.value = isLoading //是否使用Loading, 不輸入函數則預設為使用
 
   if (columnSetting.value) {
+    // 確認欄位設定
     await columnSetting.value.checkColumnSetting()
 
     const tempColumnList = (await (columnSetting.value?.getColumnList() ?? [])) as ColumnItem[]
     columnSetting.value?.setColumnList(tempColumnList)
-
-    // 確認欄位 如果有變更 給予提示
-    if (!isEmpty(tempColumnList)) {
-      checkTableColumns(tempColumnList)
-    }
 
     const resColumns = tempColumnList.reduce((resColumn, tempColumn) => {
       if (tempColumn.isShow) {

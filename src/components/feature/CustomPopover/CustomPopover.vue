@@ -19,7 +19,11 @@ const tempVisible = ref(false)
 
 const tempValue = computed({
   get() {
-    return typeof props.visible === 'boolean' ? props.visible : tempVisible.value
+    if (typeof props.visible === 'boolean') {
+      return props.visible
+    } else {
+      return tempVisible.value
+    }
   },
   set(value: boolean) {
     tempVisible.value = value
@@ -31,10 +35,24 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
+
+const popoverRef = ref()
+// const updatePopper = async () => {
+//   console.log('updatePopper')
+//   await nextTick()
+//   if(popoverRef.value) {
+//     console.log(popoverRef.value)
+//     // popoverRef.value?.updatePopper()
+//   }
+// }
+// defineExpose({
+//   updatePopper
+// })
 </script>
 
 <template>
   <ElPopover
+    ref="popoverRef"
     v-model:visible="tempValue"
     :placement="props.placement"
     :title="props.title"

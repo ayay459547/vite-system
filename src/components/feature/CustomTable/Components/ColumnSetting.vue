@@ -8,7 +8,7 @@ import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
-import { isEmpty, getProxyData } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
 
 import type { PropsTableColumn } from '../CustomTableInfo'
 
@@ -82,10 +82,81 @@ const setColumnList = (columns: Array<ColumnItem>) => {
 }
 
 /**
+ * 當欄位變動時 設新的資料
+ * @param props column 的 key
+ * @param newValue 新的資料
+ */
+ const setColumnInfo = (props: string, newValue: Partial<ColumnItem>) => {
+  let temp: ColumnItem = columnList.value.find(columnItem => {
+    return columnItem.key === props
+  })
+  if (isEmpty(temp)) return
+
+  for (let prop in newValue) {
+    temp[prop] = newValue[prop]
+  }
+}
+
+/**
+ * Hash Table
+ * 確認欄位是否有變更 label / i18nLabel
+ */
+const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
+  // 長度不一 表示key值有異動
+  if (oldColumns.length !== props.columns.length) return true
+
+  // 保存欄位資料
+  const newColumnMap = {}
+  const oldColumnMap = {}
+  const empty: Partial<ColumnItem> = { key: '', label: '', i18nLabel: '' }
+  const len = Math.max(oldColumns.length, props.columns.length)
+
+  const settingDiff = (newColumn: Partial<ColumnItem>, oldColumn: Partial<ColumnItem>, propList: string[]) => {
+    const isDiff = propList.some(prop => newColumn[prop] !== oldColumn[prop])
+    if (isDiff) {
+      setColumnInfo(newColumn.key, newColumn)
+    }
+  }
+
+  for (let i = 0; i < len; i++) {
+    const newColumn = props.columns[i]
+    const { key: newKey } = newColumn ?? empty
+
+    const oldColumn = oldColumns[i]
+    const { key: oldKey } = oldColumn ?? empty
+
+    /**
+     * 舊/新 資料資料比對
+     * 如果 label / i18nLabel 不同設定新的
+     */
+    if (!isEmpty(newColumn) && hasOwnProperty(oldColumnMap, newKey)) {
+      // 比對+設定後 移除舊的資料
+      settingDiff(newColumn, oldColumnMap[newKey], ['label', 'i18nLabel'])
+      delete oldColumnMap[newKey]
+    } else {
+      // 保存新的資料
+      newColumnMap[newKey] = newColumn
+    }
+
+    if (!isEmpty(oldColumn) && hasOwnProperty(newColumnMap, oldKey)) {
+      // 比對+設定後 移除新的資料
+      settingDiff(newColumnMap[oldKey], oldColumn, ['label', 'i18nLabel'])
+      delete newColumnMap[oldKey]
+    } else {
+      // 保存舊的資料
+      oldColumnMap[oldKey] = oldColumn
+    }
+  }
+
+  // 如果有殘留的key 表示key值有異動
+  return !isEmpty(newColumnMap) || !isEmpty(oldColumnMap)
+}
+
+/**
  * 確認是否有設定過
  * 如果沒有給預設設定
  *
- * 如果版本更換
+ * 如果版本更換 / 如果欄位有變更 key
  * 重新給預設值
  */
 const checkColumnSetting = async () => {
@@ -93,9 +164,13 @@ const checkColumnSetting = async () => {
 
   if ([null, undefined].includes(getRes)) {
     await setDefaultColumnSetting()
-  } else if (getRes.version !== props.version) {
-    await delColumnSetting(props.settingKey)
-    await setDefaultColumnSetting()
+
+  } else {
+    const { version = '', columns = [] } = getRes
+    if (version !== props.version || checkTableColumns(columns)) {
+      await delColumnSetting(props.settingKey)
+      await setDefaultColumnSetting()
+    }
   }
   return props.settingKey
 }
@@ -131,14 +206,15 @@ const setDefaultColumnSetting = async () => {
 }
 
 /**
- * 依據 columns 的設定 重設
+ * 依據 columns 的設定在 indexedDB
+ * tempColumnList = 從 indexedDB 取設定
  */
 const resetSetting = async () => {
   await setDefaultColumnSetting()
 
   const tempColumnList = await getColumnList()
   setColumnList(tempColumnList)
-  updateSetting()
+  updateSetting(true)
 }
 
 // 最適化所有欄位寬度
@@ -152,14 +228,7 @@ const resizeColumns = () => {
  * @param newWidth 新的寬度
  */
 const setColumnWidth = (props: string, newWidth: number) => {
-  const temp = columnList.value.find(columnItem => {
-    return columnItem.key === props
-  })
-
-  if (isEmpty(temp)) return
-
-  temp.width = newWidth
-  // 改寬度不用重新設定 columns 資料
+  setColumnInfo(props, { width: newWidth })
   updateSetting(false)
 }
 
@@ -195,7 +264,7 @@ const updateSetting = async (isEmitChange = true) => {
 
 const onDragend = () => {
   drag.value = false
-  updateSetting()
+  updateSetting(false)
 }
 </script>
 
