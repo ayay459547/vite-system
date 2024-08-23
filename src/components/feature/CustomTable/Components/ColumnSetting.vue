@@ -109,7 +109,7 @@ const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
   const newColumnMap = {}
   const oldColumnMap = {}
   const empty: Partial<ColumnItem> = { key: '', label: '', i18nLabel: '' }
-  const len = Math.max(oldColumns.length, props.columns.length)
+  const len = props.columns.length
 
   let diffCount = 0
   const compareList = ['label', 'i18nLabel']
