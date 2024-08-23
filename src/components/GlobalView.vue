@@ -271,8 +271,8 @@ const login = async (userId: number) => {
 }
 
 // 向下傳送常用工具
-provide<UseHook>('useHook', options => {
-  const { i18nModule = defaultModuleType } = options ?? {}
+provide<UseHook>('useHook', (options = {}) => {
+  const { i18nModule = defaultModuleType } = options
 
   return {
     loading,
@@ -295,7 +295,7 @@ provide<UseHook>('useHook', options => {
       })
       queueId.value++
     },
-    swal: sweetAlertOptions => {
+    swal: (sweetAlertOptions = {}) => {
       return swal({
         confirmButtonText: i18nTranslate('confirm-yes', defaultModuleType),
         cancelButtonText: i18nTranslate('confirm-no', defaultModuleType),
@@ -304,8 +304,17 @@ provide<UseHook>('useHook', options => {
         ...sweetAlertOptions
       })
     },
-    notification,
-    message,
+    notification: (notificationProps = {}) => {
+      return notification({
+        ...notificationProps
+      })
+    },
+    message: (options = {}) => {
+      return message({
+        duration: 10000,
+        ...options
+      })
+    },
     permission: (routeName = null) => {
       if (!isEmpty(routeName)) {
         // 與路由守衛相同邏輯

@@ -86,6 +86,12 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false
   },
+  isEdit: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: true,
+    description: '是否可編輯'
+  },
   isCreate: {
     type: Boolean as PropType<boolean>,
     required: false,
@@ -178,7 +184,7 @@ const add = () => {
   nextTick(() => {
     const lastRowClass = props.isDraggable
       ? '.draggable.list-group-item:last-child'
-      : '.draggable.data-table-row:last-child'
+      : '.form-table [class*="data-table-row"]:last-child'
     const newEl = document.querySelector(`.${scopedId} ${lastRowClass}`)
     if (newEl) scrollToEl(newEl, { block: 'center' })
   })
@@ -346,21 +352,21 @@ onBeforeMount(() => {
                 <slot name="column-draggable" :scopedId="scopedId" v-bind="scope">
                   <CustomButton
                     v-if="props.isDraggable"
-                    disabled
                     type="info"
-                    icon-name="right-left"
+                    icon-x-type="tabler"
+                    icon-name="ArrowsUpDown"
                     text
+                    disabled
                     :class="`form-item-disable__${scopedId}`"
-                    style="transform: rotateZ(90deg)"
                   />
                 </slot>
                 <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
                   <CustomButton
                     v-if="props.isRemove"
-                    disabled
                     type="danger"
                     icon-name="trash-can"
                     text
+                    disabled
                     @click="remove(scope.rowIndex)"
                   />
                 </slot>
@@ -373,6 +379,7 @@ onBeforeMount(() => {
                     icon-x-type="tabler"
                     icon-name="ArrowsUpDown"
                     text
+                    :disabled="!props.isEdit"
                     :class="`form-item-move__${scopedId}`"
                   />
                 </slot>
@@ -382,6 +389,7 @@ onBeforeMount(() => {
                     type="danger"
                     icon-name="trash-can"
                     text
+                    :disabled="!props.isEdit"
                     @click="remove(scope.rowIndex)"
                   />
                 </slot>
@@ -393,11 +401,12 @@ onBeforeMount(() => {
 
       <div :class="`__form-list__ form-create ${props.createPosition}`">
         <CustomButton
-          v-if="isCreate"
+          v-if="props.isCreate && props.isEdit"
           type="primary"
           :label="i18nTranslate('create')"
           icon-name="plus"
           icon-move="rotate"
+          :disabled="!props.isEdit"
           @click="add"
         />
       </div>

@@ -111,10 +111,13 @@ const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
   const empty: Partial<ColumnItem> = { key: '', label: '', i18nLabel: '' }
   const len = Math.max(oldColumns.length, props.columns.length)
 
-  const settingDiff = (newColumn: Partial<ColumnItem>, oldColumn: Partial<ColumnItem>, propList: string[]) => {
-    const isDiff = propList.some(prop => newColumn[prop] !== oldColumn[prop])
+  let diffCount = 0
+  const compareList = ['label', 'i18nLabel']
+  const settingDiff = (newColumn: Partial<ColumnItem>, oldColumn: Partial<ColumnItem>) => {
+    const isDiff = compareList.some(prop => newColumn[prop] !== oldColumn[prop])
     if (isDiff) {
       setColumnInfo(newColumn.key, newColumn)
+      diffCount++
     }
   }
 
@@ -131,7 +134,7 @@ const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
      */
     if (!isEmpty(newColumn) && hasOwnProperty(oldColumnMap, newKey)) {
       // 比對+設定後 移除舊的資料
-      settingDiff(newColumn, oldColumnMap[newKey], ['label', 'i18nLabel'])
+      settingDiff(newColumn, oldColumnMap[newKey])
       delete oldColumnMap[newKey]
     } else {
       // 保存新的資料
@@ -140,7 +143,7 @@ const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
 
     if (!isEmpty(oldColumn) && hasOwnProperty(newColumnMap, oldKey)) {
       // 比對+設定後 移除新的資料
-      settingDiff(newColumnMap[oldKey], oldColumn, ['label', 'i18nLabel'])
+      settingDiff(newColumnMap[oldKey], oldColumn)
       delete newColumnMap[oldKey]
     } else {
       // 保存舊的資料
@@ -148,6 +151,10 @@ const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
     }
   }
 
+  // 有異動 設定新的資料 到indexedDB上
+  if (diffCount > 0) {
+    updateSetting(true)
+  }
   // 如果有殘留的key 表示key值有異動
   return !isEmpty(newColumnMap) || !isEmpty(oldColumnMap)
 }
