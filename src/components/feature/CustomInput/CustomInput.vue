@@ -59,7 +59,7 @@ const { i18nTranslate, i18nTest } = useHook({
 
 // i18nTranslate
 const getTranslateLabel = (object: any) => {
-  const label = i18nTest(object.i18nLabel)
+  const label = i18nTest(object?.i18nLabel ?? '')
     ? i18nTranslate(object.i18nLabel)
     : object.label ?? ''
   return label

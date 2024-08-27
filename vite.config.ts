@@ -146,7 +146,7 @@ export default defineConfig(({ command, mode }) => {
       // }
     },
     resolve: {
-      extensions: ['.js', '.ts', '.tsx', '.json'],
+      extensions: ['.tsx', '.json', '.js', '.ts'],
       alias: {
         '@': fileURLToPath(new URL('./src', (import.meta as any).url)),
         $: fileURLToPath(new URL('./public', (import.meta as any).url)),

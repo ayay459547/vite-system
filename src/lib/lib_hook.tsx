@@ -211,8 +211,8 @@ export const useAsyncComponent = (loader: () => Promise<any>, variant: string = 
     loader,
     loadingComponent: <Async_Skeleton variant={variant} />, // 自定義加載組件
     errorComponent: <Async_Error variant={variant} />, // 自定義錯誤組件
-    delay: 200, // 延遲顯示加載組件
-    timeout: 5000, // 超過時間顯示錯誤組件
+    delay: 300, // 延遲顯示加載組件
+    timeout: 60000, // 超過時間顯示錯誤組件
     suspensible: false // Suspense
   })
 }

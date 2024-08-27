@@ -4,11 +4,22 @@ import { computed } from 'vue'
 import { ElAlert, ElAutoResizer } from 'element-plus'
 
 import type { Variant } from '@/lib/lib_hook'
+import { isEmpty } from '@/lib/lib_utils'
 
 const props = defineProps({
   variant: {
     type: String as PropType<Variant>,
     default: 'rect'
+  },
+  error: {
+    type: Object as PropType<Error>,
+    required: false,
+    default () {
+      return {
+        name: 'Error',
+        message: 'Error'
+      }
+    }
   }
 })
 
@@ -42,6 +53,13 @@ const bindStyle = computed(() => {
   return { width, height }
 })
 
+const title = computed(() => {
+  const defaultMsg = 'Error'
+  const errorMsg = props.error?.message ?? (props?.error ?? defaultMsg)
+
+  return (!isEmpty(errorMsg) ? errorMsg : defaultMsg) as string
+})
+
 </script>
 
 <template>
@@ -49,7 +67,7 @@ const bindStyle = computed(() => {
     <ElAutoResizer>
       <template #default="{ height, width }">
         <ElAlert
-          title="Error"
+          :title="title"
           type="error"
           show-icon
           :closable="false"

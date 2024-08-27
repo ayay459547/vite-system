@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, inject, computed } from 'vue'
+import { ref, inject, computed, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
@@ -103,13 +103,16 @@ const setColumnList = (columns: Array<ColumnItem>) => {
  */
 const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
   // 長度不一 表示key值有異動
-  if (oldColumns.length !== props.columns.length) return true
+  const newColumns = props.columns.filter(column => {
+    return !(column?.isOperations ?? false)
+  })
+  const len = newColumns.length
+  // if (oldColumns.length !== len) return true
 
   // 保存欄位資料
   const newColumnMap = {}
   const oldColumnMap = {}
   const empty: Partial<ColumnItem> = { key: '', label: '', i18nLabel: '' }
-  const len = props.columns.length
 
   let diffCount = 0
   const compareList = ['label', 'i18nLabel']
@@ -256,6 +259,7 @@ const drag = ref(false)
  */
 const updateSetting = async (isEmitChange = true) => {
   const temp = columnList.value
+  await nextTick()
 
   const settingData: SettingData = {
     version: props.version,
@@ -271,7 +275,7 @@ const updateSetting = async (isEmitChange = true) => {
 
 const onDragend = () => {
   drag.value = false
-  updateSetting(false)
+  updateSetting(true)
 }
 </script>
 
