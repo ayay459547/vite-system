@@ -86,8 +86,8 @@ try {
   console.log(e)
 
   // 瀏覽版本支援對應表
-  const versionTable = document.querySelector('.app-table.browser-version')
-  if (![null, undefined, ''].includes(versionTable)) {
+  const versionTable = document.querySelector<HTMLElement>('.app-table.browser-version')
+  if (![null, undefined].includes(versionTable)) {
     const elNavigator = versionTable.querySelector('.app-navigator')
     elNavigator.innerHTML = `
       <div>${navigator.userAgent}</div>

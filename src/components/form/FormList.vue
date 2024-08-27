@@ -205,7 +205,7 @@ const beforeColumn = reactive({})
 const afterColumn = reactive({})
 
 const collapseList = ref(false)
-const setCollapseList = (method?:string) => {
+const setCollapseList = (method?: string) => {
   switch (method) {
     case 'open': collapseList.value = false
       break

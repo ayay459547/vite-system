@@ -101,13 +101,16 @@ const setColumnList = (columns: Array<ColumnItem>) => {
  * Hash Table
  * 確認欄位是否有變更 label / i18nLabel
  */
-const checkTableColumns = (oldColumns: Array<ColumnItem>) => {
-  // 長度不一 表示key值有異動
+const checkTableColumns = (columns: Array<ColumnItem>) => {
   const newColumns = props.columns.filter(column => {
     return !(column?.isOperations ?? false)
   })
-  const len = newColumns.length
-  // if (oldColumns.length !== len) return true
+  const oldColumns = columns.filter(column => {
+    return !(column?.isOperations ?? false)
+  })
+  const len = Math.max(newColumns.length, oldColumns.length)
+  // 長度不一 表示key值有異動
+  // if (oldColumns.length !== newColumns.length) return true
 
   // 保存欄位資料
   const newColumnMap = {}
