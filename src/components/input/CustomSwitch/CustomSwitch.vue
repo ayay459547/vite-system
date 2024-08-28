@@ -18,8 +18,8 @@ const tempValue = computed<Props.ModelValue>({
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const onChange: Emits.Change = (value: boolean) => {
-  emit('change', value)
+const onChange: Emits.Change = (val: string | number | boolean) => {
+  emit('change', val)
 }
 </script>
 

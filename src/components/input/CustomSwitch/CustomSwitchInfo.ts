@@ -53,5 +53,5 @@ export const props = {
 }
 
 export declare namespace Emits {
-  type Change = (value: boolean) => void
+  type Change = (val: string | number | boolean) => void
 }

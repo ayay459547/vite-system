@@ -88,13 +88,6 @@ export type {
 } from './feature/CustomImage/CustomImageInfo'
 export const CustomImage = useAsyncComponent(() => import('./feature/CustomImage/CustomImage.vue'), 'image')
 
-// 輸入框
-export type {
-  ModelValue as InputModelValue,
-  InputType
-} from './feature/CustomInput/CustomInputInfo'
-export { default as CustomInput } from './feature/CustomInput/CustomInput.vue'
-
 // 跳轉用組件
 export type {
   Custom as LinkCustom,
@@ -140,58 +133,12 @@ export type {
 } from './feature/CustomScrollbar/CustomScrollbarInfo'
 export { default as CustomScrollbar } from './feature/CustomScrollbar/CustomScrollbar.vue'
 
-// 搜尋用組件
-export { default as CustomSearch } from './feature/CustomSearch/CustomSearch.vue'
-
-// GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
-export const GroupSearch = useAsyncComponent(() => import('./feature/CustomSearch/GroupSearch.vue'), 'p')
-
 // 步驟
 export type {
   Custom as StepsCustom,
   Props as StepsProps
 } from './feature/CustomSteps/CustomStepsInfo'
 export const CustomSteps = useAsyncComponent(() => import('./feature/CustomSteps/CustomSteps.vue'), 'rect')
-
-// 切換鈕
-export type {
-  Custom as SwitchCustom,
-  Props as SwitchProps,
-  Emits as SwitchEmits
-} from './feature/CustomSwitch/CustomSwitchInfo'
-export const CustomSwitch = useAsyncComponent(() => import('./feature/CustomSwitch/CustomSwitch.vue'), 'button')
-
-// 表格
-export { default as TableMain } from './feature/CustomTable/TableMain.vue'
-
-// 虛擬表格
-export const CustomTableV2 = useAsyncComponent(() => import('./feature/CustomTableV2/CustomTableV2.vue'), 'rect')
-
-// 專案用表格
-import type { TableParams, PageChange } from './feature/CustomTable/CustomTableInfo'
-export declare interface CustomTableExpose {
-  pageChange: PageChange
-  getTableParams: () => TableParams
-  setTableParams: (params: TableParams) => void
-  resetScroll: () => void
-  toggleSelection: (rows: any[]) => void
-  getSelectionRows: () => any[]
-}
-export type {
-  Order,
-  Sort,
-  Sorting,
-  SortingList,
-  SortingMap,
-  PageChange,
-  TableParams,
-  LazyLoadingStatus,
-  TableSize,
-  SpanMethod,
-  PropsTableColumn,
-  ShowType
-} from './feature/CustomTable/CustomTableInfo'
-export { default as CustomTable } from './feature/CustomTable/CustomTable.vue'
 
 // 分頁
 export type {
@@ -243,9 +190,6 @@ export type {
  } from './feature/CustomTreeV2/CustomTreeV2Info'
 export const CustomTreeV2 = useAsyncComponent(() => import('./feature/CustomTreeV2/CustomTreeV2.vue'), 'rect')
 
-// 檔案上傳
-export const CustomUpload = useAsyncComponent(() => import('./feature/CustomUpload/CustomUpload.vue'), 'rect')
-
 // 浮水印
 export const CustomWatermark = useAsyncComponent(() => import('./feature/CustomWatermark/CustomWatermark.vue'), 'rect')
 
@@ -257,24 +201,46 @@ export type {
 } from './feature/CustomColor/CustomColorInfo'
 export const CustomColor = useAsyncComponent(() => import('./feature/CustomColor/CustomColor.vue'), 'rect')
 
-// 過濾
-export const SimpleFilter = useAsyncComponent(() => import('./feature/SimpleFilter/SimpleFilter.vue'), 'p')
-
-// 表格
-export const SimpleTable = useAsyncComponent(() => import('./feature/SimpleTable/SimpleTable.vue'), 'rect')
-
 // QRcode
 // export const SimpleQRcode = useAsyncComponent(() => import('./feature/SimpleQRcode/SimpleQRcode.vue'), 'rect')
 export { default as SimpleQRcode } from './feature/SimpleQRcode/SimpleQRcode.vue'
 
-// form
-export type { FetchSuggestions } from './form/FormAutocomplete.vue'
-export const FormAutocomplete = useAsyncComponent(() => import('./form/FormAutocomplete.vue'), 'h1')
+// input
 
-export const FormCheckbox = useAsyncComponent(() => import('./form/FormCheckbox.vue'), 'h1')
+// 輸入框
+export type {
+  ModelValue as InputModelValue,
+  InputType
+} from './input/CustomInput/CustomInputInfo'
+export { default as CustomInput } from './input/CustomInput/CustomInput.vue'
 
-export type { Shortcuts, DatePickerType } from './form/FormDatePicker.vue'
-export const FormDatePicker = useAsyncComponent(() => import('./form/FormDatePicker.vue'), 'h1')
+// 搜尋用組件
+export { default as CustomSearch } from './input/CustomSearch/CustomSearch.vue'
+
+// GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
+export const GroupSearch = useAsyncComponent(() => import('./input/CustomSearch/GroupSearch.vue'), 'p')
+
+// 切換鈕
+export type {
+  Custom as SwitchCustom,
+  Props as SwitchProps,
+  Emits as SwitchEmits
+} from './input/CustomSwitch/CustomSwitchInfo'
+export const CustomSwitch = useAsyncComponent(() => import('./input/CustomSwitch/CustomSwitch.vue'), 'button')
+
+// 檔案上傳
+export const CustomUpload = useAsyncComponent(() => import('./input/CustomUpload/CustomUpload.vue'), 'rect')
+
+// 過濾
+export const SimpleFilter = useAsyncComponent(() => import('./input/SimpleFilter/SimpleFilter.vue'), 'p')
+
+export type { FetchSuggestions } from './input/FormAutocomplete.vue'
+export const FormAutocomplete = useAsyncComponent(() => import('./input/FormAutocomplete.vue'), 'h1')
+
+export const FormCheckbox = useAsyncComponent(() => import('./input/FormCheckbox.vue'), 'h1')
+
+export type { Shortcuts, DatePickerType } from './input/FormDatePicker.vue'
+export const FormDatePicker = useAsyncComponent(() => import('./input/FormDatePicker.vue'), 'h1')
 
 export declare interface FormInputExpose {
   key: string
@@ -285,20 +251,78 @@ export declare interface FormInputExpose {
   getDom: () => Element
 }
 
-export const FormInput = useAsyncComponent(() => import('./form/FormInput.vue'), 'h1')
+export const FormInput = useAsyncComponent(() => import('./input/FormInput.vue'), 'h1')
 
-export const FormOperator = useAsyncComponent(() => import('./form/FormOperator.vue'), 'h1')
+export const FormOperator = useAsyncComponent(() => import('./input/FormOperator.vue'), 'h1')
 
-export const FormRadio = useAsyncComponent(() => import('./form/FormRadio.vue'), 'h1')
+export const FormRadio = useAsyncComponent(() => import('./input/FormRadio.vue'), 'h1')
 
-export type { Options as FormSelectOptions } from './form/FormSelect.vue'
-export const FormSelect = useAsyncComponent(() => import('./form/FormSelect.vue'), 'h1')
+export type { Options as FormSelectOptions } from './input/FormSelect.vue'
+export const FormSelect = useAsyncComponent(() => import('./input/FormSelect.vue'), 'h1')
 
-export const FormSelectV2 = useAsyncComponent(() => import('./form/FormSelectV2.vue'), 'h1')
+export const FormSelectV2 = useAsyncComponent(() => import('./input/FormSelectV2.vue'), 'h1')
 
-export type { TimePickerType } from './form/FormTimePicker.vue'
-export const FormTimePicker = useAsyncComponent(() => import('./form/FormTimePicker.vue'), 'h1')
+export type { TimePickerType } from './input/FormTimePicker.vue'
+export const FormTimePicker = useAsyncComponent(() => import('./input/FormTimePicker.vue'), 'h1')
 
-export const FormList = useAsyncComponent(() => import('./form/FormList.vue'), 'h1')
+export const FormList = useAsyncComponent(() => import('./input/FormList.vue'), 'h1')
 
-export const WebViewTable = useAsyncComponent(() => import('./views/WebViewTable/WebViewTable.vue'), 'h1')
+// table
+
+/**
+ * 表格
+ */
+export { default as TableMain } from './table/CustomTable/TableMain.vue'
+
+/**
+ * 虛擬表格
+ */
+export const CustomTableV2 = useAsyncComponent(() => import('./table/CustomTableV2/CustomTableV2.vue'), 'rect')
+
+/**
+ * 專案用表格
+ * 功能:
+ * 紀錄欄位設定
+ * 提供分頁
+ */
+import type { TableParams, PageChange } from './table/CustomTable/CustomTableInfo'
+export declare interface CustomTableExpose {
+  pageChange: PageChange
+  getTableParams: () => TableParams
+  setTableParams: (params: TableParams) => void
+  resetScroll: () => void
+  toggleSelection: (rows: any[]) => void
+  getSelectionRows: () => any[]
+}
+export type {
+  Order,
+  Sort,
+  Sorting,
+  SortingList,
+  SortingMap,
+  PageChange,
+  TableParams,
+  LazyLoadingStatus,
+  TableSize,
+  SpanMethod,
+  PropsTableColumn,
+  ShowType
+} from './table/CustomTable/CustomTableInfo'
+export { default as CustomTable } from './table/CustomTable/CustomTable.vue'
+
+/**
+ * 簡易表格
+ * 功能:
+ * 可拖拉
+ */
+export const SimpleTable = useAsyncComponent(() => import('./table/SimpleTable/SimpleTable.vue'), 'rect')
+
+/**
+ * 專案用特殊表格
+ * 需配合後端
+ * 功能:
+ * 多欄位排序
+ * 多欄位搜尋
+ * 進階搜尋
+ */
+export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable/WebViewTable.vue'), 'h1')

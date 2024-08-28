@@ -108,6 +108,7 @@ const checkTableColumns = (columns: Array<ColumnItem>) => {
   const oldColumns = columns.filter(column => {
     return !(column?.isOperations ?? false)
   })
+
   const len = Math.max(newColumns.length, oldColumns.length)
   // 長度不一 表示key值有異動
   // if (oldColumns.length !== newColumns.length) return true
@@ -128,7 +129,7 @@ const checkTableColumns = (columns: Array<ColumnItem>) => {
   }
 
   for (let i = 0; i < len; i++) {
-    const newColumn = props.columns[i]
+    const newColumn = newColumns[i]
     const { key: newKey } = newColumn ?? empty
 
     const oldColumn = oldColumns[i]
