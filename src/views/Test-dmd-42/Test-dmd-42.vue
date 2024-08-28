@@ -23,7 +23,7 @@ const TestTable = useAsyncComponent(() => import('./Components/TestTable.vue'), 
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
-  i18nModule: 'dmd_common'
+  i18nModule: 'system'
 })
 
 const isLoading = ref(true)
@@ -58,8 +58,8 @@ const init = async () => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'iPASP_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

@@ -560,3 +560,12 @@ export const awaitTime = (time: number): Promise<number> => {
     }, time)
   })
 }
+
+/**
+ * @description 替換特殊字元
+ * @param {String} string 原始文字
+ * @returns {String} 替換後文字
+ */
+export const escapeRegExp = (string: string): string => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
