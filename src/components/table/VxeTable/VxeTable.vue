@@ -1,10 +1,61 @@
 <script setup lang="ts">
+import { VxeTable } from 'vxe-table'
+import { VxeUI, VxeTooltip } from 'vxe-pc-ui'
+import 'vxe-pc-ui/styles/cssvar.scss'
+import 'vxe-table/styles/cssvar.scss'
+
+import zhTW from 'vxe-table/lib/locale/lang/zh-TW'
+// import zhCN from 'vxe-table/lib/locale/lang/zh-CN'
+// import enUS from 'vxe-table/lib/locale/lang/en-US'
+
+// import zhHK from 'vxe-table/lib/locale/lang/zh-HK'
+// import zhMO from 'vxe-table/lib/locale/lang/zh-MO'
+// import jaJP from 'vxe-table/lib/locale/lang/ja-JP'
+// import esES from 'vxe-table/lib/locale/lang/es-ES'
+// import ptBR from 'vxe-table/lib/locale/lang/pt-BR'
+
+import { ElAutoResizer } from 'element-plus'
+
+import { getUuid } from '@/lib/lib_utils'
+import { version, props as VxeTableProps } from './VxeTableInfo'
+
+VxeUI.setI18n('zh-TW', zhTW)
+VxeUI.setLanguage('zh-TW')
+VxeUI.component(VxeTooltip)
+
+const scopedName = '__vxe-table__'
+const scopedId = getUuid(scopedName)
+
+const props = defineProps(VxeTableProps)
 
 </script>
 
 <template>
-  <div></div>
+  <div class="fill" :class="[`VxeTable_${version}`, scopedId, scopedName]">
+    <ElAutoResizer>
+      <template #default="{ height }">
+        <VxeTable
+          :height="height ?? 0"
+          :max-height="9999"
+          :id="props.id"
+          :data="props.data"
+          :footer-data="props.footerData"
+          :row-config="props.rowConfig"
+          :column-config="props.columnConfig"
+          :scroll-y="props.scrollY"
+          :scroll-x="props.scrollX"
+          :show-overflow="props.showOverflow"
+          :show-header-overflow="props.showHeaderOverflow"
+          :show-footer-overflow="props.showFooterOverflow"
+          :show-footer="props.showFooter"
+          :border="props.border"
+          :stripe="props.stripe"
+        >
+          <slot></slot>
+        </VxeTable>
+      </template>
+    </ElAutoResizer>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -2,6 +2,13 @@ import type { Api, ApiRes } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { fakeTableData } from './fakeData'
 
+export type FilterData = {
+  customerName?: string
+  productId?: string
+  deliveryType?: string
+  deliveryDate?: string
+}
+
 export type TableData = {
   customerName?: string
   productId?: string

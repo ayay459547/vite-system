@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import markdown from '@/components/feature/CustomTable/CustomTable.md?raw'
+import markdown from '@/components/table/CustomTable/CustomTable.md?raw'
 import type { TableParams, PropsTableColumn } from '@/components'
 import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components'
 import type { TableOptions } from '@/declare/columnSetting'

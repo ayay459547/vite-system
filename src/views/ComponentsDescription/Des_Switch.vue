@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import markdown from '@/components/feature/CustomSwitch/CustomSwitch.md?raw'
+import markdown from '@/components/input/CustomSwitch/CustomSwitch.md?raw'
 import {
   type SwitchProps,
   CustomInput,

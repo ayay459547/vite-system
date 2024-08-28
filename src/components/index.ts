@@ -318,6 +318,15 @@ export { default as CustomTable } from './table/CustomTable/CustomTable.vue'
 export const SimpleTable = useAsyncComponent(() => import('./table/SimpleTable/SimpleTable.vue'), 'rect')
 
 /**
+ * Vxe Table
+ * 功能:
+ * 更加高效的渲染
+ */
+export const VxeColgroup = useAsyncComponent(() => import('./table/VxeTable/VxeColgroup.vue'), 'h1')
+export const VxeColumn = useAsyncComponent(() => import('./table/VxeTable/VxeColumn.vue'), 'h1')
+export const VxeTable = useAsyncComponent(() => import('./table/VxeTable/VxeTable.vue'), 'rect')
+
+/**
  * 專案用特殊表格
  * 需配合後端
  * 功能:
@@ -325,4 +334,4 @@ export const SimpleTable = useAsyncComponent(() => import('./table/SimpleTable/S
  * 多欄位搜尋
  * 進階搜尋
  */
-export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable/WebViewTable.vue'), 'h1')
+export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable/WebViewTable.vue'), 'rect')
