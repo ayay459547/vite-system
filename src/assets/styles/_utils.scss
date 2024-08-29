@@ -1,9 +1,49 @@
-@use './function' as function;
+// --i
+$namespace: 'i' !default;
 
-// set css var value, because we need translate value to string
-// for example:
-// @include set-css-var-value(('color', 'primary'), blue);
-// --i-color-primary: blue;
+/**
+ * @function
+ * https://sass-lang.com/documentation/at-rules/function/
+ */
+ 
+// join var name
+// joinVarName(('test', 'text-color')) => '--i-test-text-color'
+@function joinVarName($list) {
+  $name: '--' + $namespace;
+  @each $item in $list {
+    @if $item != '' {
+      $name: $name + '-' + $item;
+    }
+  }
+  @return $name;
+}
+
+// getCssVarName('test', 'text-color') => '--i-test-text-color'
+@function getCssVarName($args...) {
+  @return joinVarName($args);
+}
+
+// getCssVar('test', 'text-color') => var(--i-test-text-color)
+@function getCssVar($args...) {
+  @return var(#{joinVarName($args)});
+}
+
+// getCssVarWithDefault(('test', 'text-color'), blue) => var(--i-test-text-color, blue)
+@function getCssVarWithDefault($args, $default) {
+  @return var(#{joinVarName($args)}, #{$default});
+}
+
+/**
+ * @mixin
+ * https://sass-lang.com/documentation/at-rules/mixin/
+ */
+
+/**
+ * set css var value, because we need translate value to string
+ * for example:
+ * @include set-css-var-value(('color', 'primary'), blue);
+ * --i-color-primary: blue;
+ */
 @mixin set-css-var-value($name, $value) {
-  #{function.joinVarName($name)}: #{$value};
+  #{joinVarName($name)}: #{$value};
 }

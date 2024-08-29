@@ -1,10 +1,8 @@
-/**
-  其他共用樣式
-*/
+@use 'sass:math';
+
 .fill {
   width: 100%;
   height: 100%;
-
   &-x {
     width: 100%;
   }
@@ -13,26 +11,28 @@
   }
 }
 
-.cursor {
-  &-pointer {
-    cursor: pointer;
-  }
-  &-move {
-    cursor: move;
-  }
-  &-not-allowed {
-    cursor: not-allowed;
+$cursors: pointer, move, not-allowed, resize, s-resize, col-resize, no-drop, default;
+@each $cursor in $cursors {
+  .cursor-#{$cursor} {
+    cursor: #{$cursor};
   }
 }
 
-.text-hidden {
-  color: #ffffff00;
+@for $i from 1 through 10 {
+  .opacity-#{$i} {
+    opacity: math.div($i, 10);
+  }
 }
 
-.ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.text {
+  &-hidden {
+    color: #ffffff00;
+  }
+  &-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .i-page {
@@ -45,5 +45,5 @@
   width: 100%;
   height: fit-content;
   min-height: 100%;
-  padding: 16px 24px;
+  padding: 16px;
 }

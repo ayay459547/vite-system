@@ -55,8 +55,8 @@ export type LocalI18n = Partial<
 /**
  * @author Caleb
  * @description 使用翻譯工具
- * @param {Object} i18nModule Excel 設定的欄位模組
- * @returns {Object} 翻譯工具
+ * @param {ScopeKey} i18nModule Excel 設定的欄位模組
+ * @returns {LocalI18n} 翻譯工具
  */
 export const useLocalI18n = (i18nModule?: ScopeKey): LocalI18n => {
   const localI18n = useI18n({
@@ -110,7 +110,7 @@ export type updateContentRect = () => BoundingClientRect
  * @description 給 Dom元素 自動監聽大小變化
  *              需在 setup 中執行
  * @param {*} dom Dom元素
- * @param {*} callback Dom元素變化時執行
+ * @param {Function} callback Dom元素變化時執行
  * @returns {Object} 大小
  */
 export function useBoundingClientRect(

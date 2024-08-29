@@ -450,6 +450,7 @@ const init = async (params?: any, type?: string) => {
     }, 300)
 
     emit('init-end', [resData, resDataCount])
+    console.log('resData => ', resData)
     return [resData, resDataCount]
   } else {
     queue.value.push('init')
@@ -616,7 +617,7 @@ onMounted(() => {
               </template>
               <template
                 v-for="slotKey in tableSlotKeyList"
-                :key="slotKey"
+                :key="`search-slotKey-${slotKey}`"
                 #[getSearchSlot(slotKey)]="scope"
               >
                 <slot
@@ -678,7 +679,7 @@ onMounted(() => {
       </template>
       <template
         v-for="slotKey in tableSlotKeyList"
-        :key="slotKey"
+        :key="`view-header-slotKey-${slotKey}`"
         #[getHeaderSlot(slotKey)]="scope"
       >
         <slot :name="getHeaderSlot(slotKey)" :filter-column="filterColumn" v-bind="scope"></slot>
@@ -686,7 +687,7 @@ onMounted(() => {
 
       <template
         v-for="slotKey in tableSlotKeyList"
-        :key="slotKey"
+        :key="`view-column-slotKey-${slotKey}`"
         #[getColumnSlot(slotKey)]="scope"
       >
         <slot :name="getColumnSlot(slotKey)" :filter-column="filterColumn" v-bind="scope">

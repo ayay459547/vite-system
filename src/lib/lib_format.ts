@@ -4,7 +4,7 @@ import { isEmpty } from '@/lib/lib_utils'
 export type FormatOperatorOptions = {
   operatorPrefix?: string
   selectPrefix?: string
-  returnType?: 'object' | 'array' | 'string'
+  returnType?: 'object' | 'array'
 }
 /**
  * @author Caleb
@@ -24,21 +24,16 @@ export const formatOperator = <T>(key: string, value: any, options?: FormatOpera
     returnType = 'object'
   } = options ?? {}
 
-  const [
-    _operator = '',
-    _select = ''
-  ] = Array.isArray(value) ? value : []
+  const [_operator, _select] = Array.isArray(value) ? value : []
 
   const entries = [
-    [`${operatorPrefix}${key}`, _operator],
-    [`${selectPrefix}${key}`, _select]
+    [`${operatorPrefix}${key}`, _operator ?? ''],
+    [`${selectPrefix}${key}`, _select ?? '']
   ]
 
   switch (returnType) {
     case 'array':
       return [_operator, _select]
-    case 'string':
-      return `${_operator},${_select}`
     case 'object':
     default:
       return Object.fromEntries(entries)
@@ -48,7 +43,7 @@ export const formatOperator = <T>(key: string, value: any, options?: FormatOpera
 type FormatDateTimeRangeOptions = {
   startPrefix?: string
   endPrefix?: string
-  returnType?: 'object' | 'array' | 'string'
+  returnType?: 'object' | 'array'
 }
 /**
  * @author Caleb
@@ -65,24 +60,21 @@ export const formatDateTimeRange = <T>(key: string, value: any, options?: Format
   const {
     startPrefix = 'isStartDate_',
     endPrefix = 'isEndDate_',
+    // startPrefix = 'isStartDateTime_',
+    // endPrefix = 'isEndDateTime_',
     returnType = 'object'
   } = options ?? {}
 
-  const [
-    _startDate = '',
-    _endDate = ''
-  ] = Array.isArray(value) ? value : []
+  const [_startDate, _endDate] = Array.isArray(value) ? value : []
 
   const entries = [
-    [`${startPrefix}${key}`, _startDate],
-    [`${endPrefix}${key}`, _endDate]
+    [`${startPrefix}${key}`, _startDate ?? ''],
+    [`${endPrefix}${key}`, _endDate ?? '']
   ]
 
   switch (returnType) {
     case 'array':
       return [_startDate, _endDate]
-    case 'string':
-      return `${_startDate},${_endDate}`
     case 'object':
     default:
       return Object.fromEntries(entries)

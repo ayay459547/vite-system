@@ -10,9 +10,9 @@ const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
 /**
  * @description 設定 cookie
- * @param key 鍵值
- * @param value 值
- * @param options 設定
+ * @param {String} key 鍵值
+ * @param {String} value 值
+ * @param {Partial<Cookies.CookieAttributes>} options 設定
  */
 export const setCookie = (
   key: string,
@@ -29,7 +29,7 @@ export const setCookie = (
 
 /**
  * @description 取得 cookie
- * @param key 鍵值
+ * @param {String} key 鍵值
  * @returns {String | undefined}
  */
 export const getCookie = (key: string): string | undefined => {
@@ -38,7 +38,7 @@ export const getCookie = (key: string): string | undefined => {
 
 /**
  * @description 移除 cookie
- * @param key 鍵值
+ * @param {String} key 鍵值
  */
 export const removeCookie = (key: string, options?: Partial<Cookies.CookieAttributes>) => {
   Cookies.remove(key, options)
@@ -86,7 +86,7 @@ window.checkToken = checkToken
 
 /**
  * 取得登入資訊
- * @param loginTime YYYY-MM-DD_HH:mm:ss
+ * @param {String} loginTime YYYY-MM-DD_HH:mm:ss
  * @returns 使用者資訊
  */
 export const getToken = (loginTime?: string): Token | null => {
@@ -116,8 +116,8 @@ export const getToken = (loginTime?: string): Token | null => {
 
 /**
  * 設定登入資訊
- * @param userId 使用者ID
- * @param loginTime YYYY-MM-DD_HH:mm:ss
+ * @param {Number} userId 使用者ID
+ * @param {String} loginTime YYYY-MM-DD_HH:mm:ss
  */
 export const setToken = (userId: number, loginTime: string) => {
   try {
@@ -159,6 +159,7 @@ const _updateToken = () => {
 /**
  * 更新token(登入)狀態
  * 更新時機：換路由、送api
+ * @param {String} type 使用者ID
  */
 export const updateToken = (type?: string) => {
   if (queue === null) {

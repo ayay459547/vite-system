@@ -6,7 +6,7 @@ import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
 import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils'
 
 import type {
   Sort,
@@ -28,6 +28,8 @@ import type {
   SelectionChange,
   RowContextmenu
 } from './CustomTableInfo'
+
+const scopedId = getUuid('__table-main__')
 
 // slot
 const slots = useSlots()
@@ -287,7 +289,7 @@ defineExpose({
           stripe
           scrollbar-always-on
           :border="true"
-          :key="props.renderKey"
+          :key="`${scopedId}-${props.renderKey}`"
           :data="props.showData"
           :height="height"
           :row-key="props.rowKey"
@@ -390,11 +392,11 @@ defineExpose({
           </template>
 
           <!-- 欄位設定 -->
-          <template v-for="column in showColumns" :key="column.prop">
+          <template v-for="column in showColumns" :key="`column-${column.prop}-${scopedId}`">
             <!-- header 有子欄位 -->
             <template v-if="column.columns && column.columns.length > 0">
               <ElTableColumn
-                :key="column.prop"
+                :key="`column-${column.prop}-${scopedId}`"
                 :prop="column.prop"
                 :label="column.label"
                 :sortable="column.sortable"
@@ -422,7 +424,11 @@ defineExpose({
                     ></slot>
                   </div>
                 </template>
-                <ElTableColumn v-for="child in column.columns" :key="child.prop" v-bind="child">
+                <ElTableColumn
+                  v-for="child in column.columns"
+                  :key="`child-${child.prop}-${scopedId}`"
+                  v-bind="child"
+                >
                   <template
                     v-if="hasSlot(`header-${column.slotKey}-${child.slotKey}`)"
                     #header="scope"
@@ -503,7 +509,7 @@ defineExpose({
             <!-- header 沒有子欄位 -->
             <template v-else>
               <ElTableColumn
-                :key="column.prop"
+                :key="`header-${column.prop}-${scopedId}`"
                 :prop="column.prop"
                 :label="column.label"
                 :sortable="column.sortable"

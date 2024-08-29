@@ -519,7 +519,7 @@ const popverWidth = computed(() => {
 
     <Teleport to="body">
       <div
-        v-if="isVisible && props.isCondition"
+        v-if="isVisible"
         class="__search-close"
         @click="onVisibleClick(false)"
       ></div>
@@ -575,7 +575,7 @@ const popverWidth = computed(() => {
     top: 0;
     left: 0;
     background-color: var(--el-color-black);
-    opacity: 0.3;
+    opacity: 0.1;
     // pointer-events: none;
   }
 }

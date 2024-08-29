@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSlots } from 'vue'
 import { ElTag } from 'element-plus'
 
 import { CustomIcon } from '@/components'
@@ -16,12 +17,22 @@ const emit = defineEmits(['click'])
 const onClick: Emits.Click = ($event: Event) => {
   emit('click', $event)
 }
+
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
 </script>
 
 <template>
   <div
     class="tag-container"
-    :class="[`CustomTag_${version}`, scopedId, scopedName, `tag-size-${props.size}`]"
+    :class="[
+      `CustomTag_${version}`,
+      scopedId,
+      scopedName,
+      `tag-size-${props.size}`
+    ]"
   >
     <ElTag
       :type="props.type"
@@ -32,10 +43,13 @@ const onClick: Emits.Click = ($event: Event) => {
       :effect="props.effect"
       @click="onClick"
     >
-      <template v-if="props.label.length > 0" #default>
-        <div class="tag-group">
+      <template #default>
+        <div v-if="hasSlot('default')">
+          <slot></slot>
+        </div>
+        <div v-else-if="(props.iconName.length + props.label.length) > 0" class="tag-group">
           <CustomIcon
-            v-if="props.iconName.length > 0"
+            v-show="props.iconName.length > 0"
             class="icon"
             :class="`icon-${iconMove}`"
             :size="props.size"
@@ -44,6 +58,14 @@ const onClick: Emits.Click = ($event: Event) => {
           />
           <span class="tag-label" :class="`tag-label-size-${props.size}`">{{ props.label }}</span>
         </div>
+        <CustomIcon
+          v-else
+          class="icon"
+          :class="`icon-${iconMove}`"
+          :size="props.size"
+          :type="props.iconType"
+          name="bookmark"
+        />
       </template>
     </ElTag>
   </div>

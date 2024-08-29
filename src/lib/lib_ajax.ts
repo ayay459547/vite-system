@@ -110,16 +110,16 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
  * @author Caleb
  * @description 對後端發送請求用
  *              送api 更新 token
- * @param {Object} config 設定
+ * @param {AxiosRequestConfig} config 設定
  *              url: api網址
  *              method: get | post | put | delete
  *              data: 傳到後端資料
- * @param {Object} options
+ * @param {AjaxOptions<ResData>} options
  *              isFakeData: 是否取的假資料
  *              fakeData: 如果是取假資料 返回的資料
  *              status: 資料返回狀態
  *              callback: 自訂回傳假資料
- * @returns {Promise}
+ * @returns {PromiseLike<ResData>}
  */
 export const ajax = <ResData>(
   config: AxiosRequestConfig,

@@ -824,7 +824,7 @@ onMounted(() => {
 
         <template
           v-for="slotKey in slotKeyList"
-          :key="`${slotKey}`"
+          :key="`header-slotKey-${slotKey}-${scopedId}`"
           #[getHeaderSlot(slotKey)]="scope"
         >
           <div
@@ -861,7 +861,7 @@ onMounted(() => {
 
         <template
           v-for="slotKey in slotKeyList"
-          :key="`${slotKey}`"
+          :key="`column-slotKey-${slotKey}-${scopedId}`"
           #[getColumnSlot(slotKey)]="scope"
         >
           <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>
