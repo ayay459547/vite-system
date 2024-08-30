@@ -174,7 +174,15 @@ const onInputEvent = {
 
     const emitValue: ModelValue = [_selectValue, _value]
     tempValue.value = emitValue
-    if (!isEmpty(_selectValue) && !isEmpty(_value)) {
+
+    /**
+     * select 必需有值
+     * input 有值 || 原本有值
+     */
+    if (
+      !isEmpty(_selectValue) &&
+      (!isEmpty(_value) || !isEmpty(_inputValue))
+    ) {
       emit('change', emitValue)
       emit('blur')
     }
@@ -192,7 +200,15 @@ const onSelectEvent = {
     isFocus.value = false
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
-    if (!isEmpty(value) && !isEmpty(_inputValue)) {
+
+    /**
+     * select 有值 || 原本有值
+     * input 必需有值
+     */
+    if (
+      (!isEmpty(value) || !isEmpty(_selectValue)) &&
+      !isEmpty(_inputValue)
+    ) {
       emit('change', [value, _inputValue])
     }
   }
@@ -284,7 +300,7 @@ defineExpose({
             >
               <ElOption
                 v-for="item in props.options"
-                :key="`${item.value}`"
+                :key="`operator-${item.value}-${scopedId}`"
                 :label="item.label"
                 :value="item.value"
               >

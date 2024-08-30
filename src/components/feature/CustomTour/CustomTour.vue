@@ -74,7 +74,7 @@ const hasSlot = (prop: string): boolean => {
   >
     <ElTourStep
       v-for="(step, stepIndex) in props.steps"
-      :key="`__${stepIndex}__`"
+      :key="`tour-${stepIndex}-${scopedId}`"
       :target="step.target"
       :title="step?.title ?? ''"
       :description="step?.description ?? ''"

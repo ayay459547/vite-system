@@ -101,7 +101,7 @@ const getI18nTranslate = (link: any) => {
 
       <template #content>
         <div class="tooltip-options">
-          <template v-for="(link) in props.options" :key="`${scopedId}-${link}`">
+          <template v-for="(link) in props.options" :key="`link-${link}-${scopedId}`">
             <ElLink
               :type="props.type"
               :underline="props.underline"

@@ -40,7 +40,7 @@ const hasSlot = (prop: string): boolean => {
     <template v-if="props.options.length > 0">
       <ElCollapseItem
         v-for="item in props.options"
-        :key="item.value"
+        :key="`collapse-${item.value}-${scopedId}`"
         :title="item.label"
         :name="item.value"
         :disabled="item.disabled ?? false"

@@ -73,8 +73,8 @@ export const props = {
 
 export declare namespace Emits {
   type TabClick = (pane: TabsPaneContext, ev: Event) => void
-  type TabChange = (name: TabPaneName) => void
-  type TabRemove = (name: TabPaneName) => void
+  type TabChange =	(name: TabPaneName) => void
+  type TabRemove =	(name: TabPaneName) => void
   type TabAdd = () => void
   type Edit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => void
 }

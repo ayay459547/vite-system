@@ -37,6 +37,7 @@ $grid-system-map: (
 @each $size, $value in $grid-system-map {
   @media (min-width: $value) {
     @for $i from 1 through 24 {
+      .grid-row > .grid-col-#{$size}-#{$i},
       .grid-col-#{$size}-#{$i} {
         grid-column-start: span $i;
       }

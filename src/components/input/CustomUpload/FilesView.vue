@@ -36,7 +36,11 @@ const previewSrcList = computed(() => {
     <template v-if="!isEmpty(props.files)">
       <!-- 多張圖片 -->
       <div class="__i-file-multiple">
-        <div v-for="(file, fileIndex) in props.files" :key="file.uuid" class="__i-file-sigle">
+        <div
+          v-for="(file, fileIndex) in props.files"
+          :key="`file-${file.uuid}`"
+          class="__i-file-sigle"
+        >
           <div class="__file-icon">
             <CustomImage
               v-if="file.fileType === 'image' && !isEmpty(file.src)"

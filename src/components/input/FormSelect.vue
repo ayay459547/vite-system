@@ -203,7 +203,7 @@ defineExpose({
       <slot>
         <ElOption
           v-for="item in props.options"
-          :key="`__${item.value}__`"
+          :key="`option-${item.value}-${scopedId}`"
           :label="item.label"
           :value="item.value"
           :data="item.data"

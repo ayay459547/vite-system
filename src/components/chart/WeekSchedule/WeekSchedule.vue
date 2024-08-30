@@ -159,7 +159,11 @@ defineExpose({
         <h3 v-if="!isEmpty(props.title)">{{ props.title }}</h3>
       </slot>
       <div v-if="!isEmpty(props.options)" class="schedule-type-list">
-        <div v-for="typeItem in props.options" :key="typeItem.value" class="schedule-type-itme">
+        <div
+          v-for="typeItem in props.options"
+          :key="`schedule-${typeItem.value}`"
+          class="schedule-type-itme"
+        >
           <div class="schedule-type-color" :style="{ backgroundColor: typeItem.color }"></div>
           <div class="schedule-type-label">
             <slot
@@ -181,7 +185,7 @@ defineExpose({
       <div class="schedule-time">
         <div class="schedule-time-zero">{{ '00:00' }}</div>
         <ul class="schedule-time-list">
-          <li v-for="hour in 23" :key="hour" class="schedule-time-item">
+          <li v-for="hour in 23" :key="`hour-${hour}`" class="schedule-time-item">
             <div class="text">{{ `${hour}:00`.padStart(5, '0') }}</div>
           </li>
         </ul>

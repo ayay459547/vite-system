@@ -65,7 +65,7 @@ defineExpose({
               ></slot>
               <!-- 個別欄位設定 -->
               <template v-else>
-                <template v-for="column in props.columns" :key="column.prop">
+                <template v-for="column in props.columns" :key="`header-cell-${column.prop}-${scopedId}`">
                   <template v-if="column.slotKey === scope.column.slotKey">
                     <slot
                       v-if="hasSlot(`header-${column.slotKey}`)"
@@ -109,7 +109,7 @@ defineExpose({
                 :label="scope.column.label"
               ></slot>
               <template v-else>
-                <template v-for="column in props.columns" :key="column.prop">
+                <template v-for="column in props.columns" :key="`cell-${column.prop}-${scopedId}`">
                   <div v-if="column.slotKey === scope.column.slotKey">
                     <slot
                       v-if="hasSlot(`column-${column.slotKey}`)"

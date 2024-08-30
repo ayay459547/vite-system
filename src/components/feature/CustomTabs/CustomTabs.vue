@@ -27,10 +27,10 @@ const emit = defineEmits([
 const onTabClick = (pane: TabsPaneContext, ev: Event) => {
   emit('tab-click', pane, ev)
 }
-const onTabChange = (name: TabPaneName) => {
+const onTabChange =	(name: TabPaneName) => {
   emit('tab-change', name)
 }
-const onTabRemove = (name: TabPaneName) => {
+const onTabRemove =	(name: TabPaneName) => {
   emit('tab-remove', name)
 }
 const onTabAdd = () => {
@@ -56,10 +56,18 @@ const tempValue: WritableComputedRef<Props.ModelValue> = computed({
 })
 
 const elTabsRef = ref()
+
 </script>
 
 <template>
-  <div class="tabs-wrapper" :class="[`CustomTabs_${version}`, scopedId, scopedName]">
+  <div
+    class="tabs-wrapper"
+    :class="[
+      `CustomTabs_${version}`,
+      scopedId,
+      scopedName
+    ]"
+  >
     <ElTabs
       ref="elTabsRef"
       v-model="tempValue"
@@ -79,7 +87,7 @@ const elTabsRef = ref()
     >
       <ElTabPane
         v-for="item in props.options"
-        :key="`__${item.value}__`"
+        :key="`tab-${item.value}-${scopedId}`"
         :name="item.value"
         :label="item.label"
         :disabled="item?.disabled ?? false"

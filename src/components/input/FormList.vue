@@ -307,7 +307,7 @@ onBeforeMount(() => {
           </template>
           <template
             v-for="column in tableColumns"
-            :key="column.prop"
+            :key="`header-form-list-${column.prop}-${scopedId}`"
             v-slot:[getHeaderSlot(column.slotKey)]="{ key, rowIndex, data, column: _column }"
           >
             <slot
@@ -321,7 +321,7 @@ onBeforeMount(() => {
 
           <template
             v-for="column in tableColumns"
-            :key="column.prop"
+            :key="`column-form-list-${column.prop}-${scopedId}`"
             v-slot:[getColumnSlot(column.slotKey)]="{ key, row, rowIndex, data, column: _column }"
           >
             <slot

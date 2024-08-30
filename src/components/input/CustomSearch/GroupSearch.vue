@@ -60,7 +60,7 @@ defineExpose({
 
       <template #default>
         <div :class="props.class">
-          <template v-for="(column, key) in props.columns" :key="key">
+          <template v-for="(column, key) in props.columns" :key="`group-search-${key}-${scopedId}`">
             <template v-if="hasSlot(`search-${column.slotKey}`)">
               <slot
                 :name="`search-${column.slotKey}`"

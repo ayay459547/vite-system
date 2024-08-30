@@ -14,7 +14,7 @@ const subProps = props.sub.map(_props => {
   const sin = Math.sin((Math.PI * props.rotate) / 180)
   const absCos = Math.abs(cos)
   const absSin = Math.abs(sin)
-  //為了避免跑版，每組 rotate( width, height ) + gap 必須相同，取主浮水印為最大值
+  // 為了避免跑版，每組 rotate( width, height ) + gap 必須相同，取主浮水印為最大值
 
   const displaySize = (width: number, height: number, gap?: [number, number]) => {
     return [
@@ -69,7 +69,7 @@ const hasSlot = (prop: string): boolean => {
     :class="`CustomWatermarkInfo_${version} ${scopedId} fit-${props.sizeFit}`"
     class="__watermark-wrapper"
   >
-    <template v-for="(item, index) in subProps" :key="index">
+    <template v-for="(item, index) in subProps" :key="`watermark-${index}-${scopedId}`">
       <ElWatermark
         style="position: absolute; width: 100%; height: 100%"
         :width="item.width"

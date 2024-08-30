@@ -416,7 +416,11 @@ const popverWidth = computed(() => {
                 v-on="onEvent"
                 :disabled="!isActive"
               >
-                <template v-for="slotName in slotList" :key="slotName" #[slotName]>
+                <template
+                  v-for="slotName in slotList"
+                  :key="`icon-search-${slotName}-${scopedId}`"
+                  #[slotName]
+                >
                   <slot :name="slotName"></slot>
                 </template>
               </CustomInput>
@@ -511,7 +515,11 @@ const popverWidth = computed(() => {
       </div>
 
       <CustomInput ref="searchRef" v-model="inpuValue" v-bind="bindAttributes" v-on="onEvent">
-        <template v-for="slotName in slotList" :key="slotName" #[slotName]>
+        <template
+          v-for="slotName in slotList"
+          :key="`search-${slotName}-${scopedId}`"
+          #[slotName]
+        >
           <slot :name="slotName"></slot>
         </template>
       </CustomInput>

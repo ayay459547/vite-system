@@ -58,7 +58,12 @@ defineExpose({
       :motionBlur="props.motionBlur"
       @change="onChange"
     >
-      <ElCarouselItem v-for="item in props.items" :key="item" :label="item.label" :name="item.name">
+      <ElCarouselItem
+        v-for="item in props.items"
+        :key="`carousel-${item.name}-${scopedId}`"
+        :label="item.label"
+        :name="item.name"
+      >
         <template v-if="hasSlot(`item-${item.name}`)" #default>
           <slot :name="`item-${item.name}`" v-bind="item"></slot>
         </template>

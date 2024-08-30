@@ -87,7 +87,7 @@ const getStyle = (isSelected: boolean, color?: string) => {
     >
       <ElRadio
         v-for="item in props.options"
-        :key="`key-${item.value}`"
+        :key="`radio-${item.value}-${scopedId}`"
         :label="item.value"
         :value="item.value"
         :disabled="item.disabled ?? false"

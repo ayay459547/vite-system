@@ -30,7 +30,7 @@ const hasSlot = (prop: string): boolean => {
   >
     <ElStep
       v-for="(option, optionIndex) in props.options"
-      :key="optionIndex"
+      :key="`step-${optionIndex}-${scopedId}`"
       :title="option.label"
       v-bind="option"
     >

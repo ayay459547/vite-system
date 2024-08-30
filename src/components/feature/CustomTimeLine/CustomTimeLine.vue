@@ -20,11 +20,15 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <ElTimeline
     class="time-line-container"
-    :class="[`CustomTimeLine_${version}`, scopedId, scopedName]"
+    :class="[
+      `CustomTimeLine_${version}`,
+      scopedId,
+      scopedName
+    ]"
   >
     <ElTimelineItem
       v-for="(option, optionIndex) in props.options"
-      :key="optionIndex"
+      :key="`time-line-${optionIndex}-${scopedId}`"
       v-bind="option"
     >
       <template v-if="hasSlot('dot')" #dot>

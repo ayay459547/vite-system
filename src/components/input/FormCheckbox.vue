@@ -100,7 +100,7 @@ const scopedId = getUuid('__i-checkbox__')
       >
         <ElCheckbox
           v-for="item in options"
-          :key="`${item.value}`"
+          :key="`checkbox-${item.value}-${scopedId}`"
           :label="item.value"
           :value="item.value"
           :validate-event="false"
