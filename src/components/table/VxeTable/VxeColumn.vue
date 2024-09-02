@@ -93,7 +93,7 @@ const hasSlot = (prop: string): boolean => {
     <template v-if="hasSlot('content')" #content="scope">
       <slot name="content" v-bind="scope"></slot>
     </template>
-    <template #default="scope">
+    <template v-if="hasSlot('default')" #default="scope">
       <slot v-bind="scope"></slot>
     </template>
   </VxeColumn>

@@ -36,7 +36,9 @@ const hasSlot = (prop: string): boolean => {
     <template v-if="hasSlot('header')" #header="scope">
       <slot name="header" v-bind="scope"></slot>
     </template>
-    <slot></slot>
+    <template v-if="hasSlot('default')">
+      <slot></slot>
+    </template>
   </VxeColgroup>
 </template>
 

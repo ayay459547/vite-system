@@ -128,7 +128,8 @@ const pageChange: PageChange = (page, pageSize) => {
   onShowChange({
     page,
     pageSize,
-    sort: currentSort.value
+    sort: currentSort.value,
+    emitType: 'page-change'
   })
   resetScroll()
 }
@@ -155,7 +156,8 @@ const onSortChange = (props: {
   onShowChange({
     page: currentPage.value,
     pageSize: pageSize.value,
-    sort: currentSort.value
+    sort: currentSort.value,
+    emitType: 'sort-change'
   })
 }
 // 多欄排序
@@ -368,7 +370,8 @@ const onSortingChange = () => {
   onShowChange({
     page: currentPage.value,
     pageSize: pageSize.value,
-    sort: currentSort.value
+    sort: currentSort.value,
+    emitType: 'sorting-change'
   })
 }
 const onHeaderClick: HeaderClick = (column, event) => {
@@ -412,15 +415,16 @@ const onLoad = () => {
  * 頁碼
  * 排序
  */
-const onShowChange = (props: { page: number; pageSize: number; sort: Sort }) => {
-  const { page, pageSize, sort } = props
+const onShowChange = (props: { page: number; pageSize: number; sort: Sort, emitType?: string }) => {
+  const { page, pageSize, sort, emitType = 'show-change' } = props
 
   emit('show-change', {
     page,
     size: pageSize,
     sort: getProxyData(sort),
     sortingList: getProxyData(sortingList.value),
-    sortingMap: getProxyData(emitSortingData.value)
+    sortingMap: getProxyData(emitSortingData.value),
+    emitType
   })
 }
 // 顯示資料

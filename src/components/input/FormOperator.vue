@@ -183,6 +183,7 @@ const onInputEvent = {
       !isEmpty(_selectValue) &&
       (!isEmpty(_value) || !isEmpty(_inputValue))
     ) {
+      prevChangeInput.value = _value
       emit('change', emitValue)
       emit('blur')
     }
@@ -209,6 +210,7 @@ const onSelectEvent = {
       (!isEmpty(value) || !isEmpty(_selectValue)) &&
       !isEmpty(_inputValue)
     ) {
+      prevChangeInput.value = _inputValue
       emit('change', [value, _inputValue])
     }
   }
@@ -219,6 +221,7 @@ const validateRes = computed<string>(() => {
   return 'error'
 })
 
+// [select, input]
 const tempValue = customRef<ModelValue>((track, trigger) => {
   return {
     get: () => {
@@ -265,6 +268,17 @@ defineExpose({
     }
   }
 })
+
+// 紀錄上一次的 change input 值
+const prevChangeInput = ref<any>('')
+const onEnter = async () => {
+  await nextTick()
+  // 與上一次不同時 emit change
+  if (prevChangeInput.value !== inputValue.value) {
+    prevChangeInput.value = inputValue.value
+    emit('change', tempValue.value)
+  }
+}
 </script>
 
 <template>
@@ -282,6 +296,7 @@ defineExpose({
         ...onInputEvent
       }"
       clearable
+      @keyup.enter="onEnter"
     >
       <!-- 輸入框用 -->
       <template #prepend>

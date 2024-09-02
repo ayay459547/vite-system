@@ -8,7 +8,7 @@ import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, Cust
 import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
-import { hasOwnProperty, getProxyData, isEmpty } from '@/lib/lib_utils'
+import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type {
@@ -26,6 +26,8 @@ import {
   getTableData,
   getExcelData
 } from './api'
+
+const scopedId = getUuid('__WebViewTable__')
 
 const props = defineProps({
   baseurl: {
@@ -228,7 +230,7 @@ const tableDataCount = ref(0)
 const {
   tableSetting,
   downloadExcel,
-  setParams,
+  // setParams,
   getParams,
   changePage,
   getSelectionRows,
@@ -326,11 +328,19 @@ const initData = async (tableParams: any) => {
     size = 100,
     // sort = { key: null, order: null },
     // sortingList = [],
-    sortingMap = {}
+    sortingMap = {},
+    emitType = ''
   } = tableParams
 
+  let _page = page
+  const isReset = ['sorting-change', 'sort-change'].includes(emitType)
+  if (isReset) {
+    changePage(1)
+    _page = 1
+  }
+
   // 資料懶加載 + 第一頁 資料清空
-  if (islazyLoading.value && page === 1) {
+  if (islazyLoading.value && _page === 1) {
     tableData.value = []
   }
 
@@ -365,10 +375,10 @@ const initData = async (tableParams: any) => {
 
   const params: any = {
     ..._params,
-    // page,
+    // page: _page,
     // size,
     paging: {
-      page,
+      page: _page,
       size
     },
     advanced: conditions,
@@ -390,16 +400,11 @@ const initData = async (tableParams: any) => {
   // 資料懶加載
   if (islazyLoading.value) {
     const oldData = tableData.value
-    tableData.value = [...oldData, ...resData]
+    const newData = isReset ? resData : [...oldData, ...resData]
+    tableData.value = newData
+    tableDataCount.value = newData.length
+    lazyLoadingStatus.value = resData.length >= size ? 'loadMore' : 'noMore'
 
-    const len = resData.length
-    tableDataCount.value += len
-
-    if (len >= size) {
-      lazyLoadingStatus.value = 'loadMore'
-    } else {
-      lazyLoadingStatus.value = 'noMore'
-    }
     // 資料依據分頁
   } else {
     tableData.value = resData
@@ -434,7 +439,7 @@ const init = async (params?: any, type?: string) => {
 
     isLoading.value = true
     if (type === 'input') {
-      changePage()
+      changePage(1)
     }
     if (islazyLoading.value) {
       lazyLoadingStatus.value = 'loading'
@@ -450,7 +455,7 @@ const init = async (params?: any, type?: string) => {
     }, 300)
 
     emit('init-end', [resData, resDataCount])
-    console.log('resData => ', resData)
+    // console.log('resData => ', resData)
     return [resData, resDataCount]
   } else {
     queue.value.push('init')
@@ -521,10 +526,12 @@ const viewTypeOptions = [
 const islazyLoading = computed(() => {
   return viewType.value === 'loadMore'
 })
+
 const onReset = async () => {
   tableData.value = []
   tableDataCount.value = 0
-  setParams({ page: 1 })
+  // setParams({ page: 1 })
+  changePage(1)
 
   await nextTick()
   throttleInit(null, 'input')
@@ -554,7 +561,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-loading="isLoading" class="web-view">
+  <div v-loading="isLoading" class="web-view" :class="scopedId">
     <CustomTable
       ref="customTableRef"
       :table-data="tableData"
@@ -601,7 +608,7 @@ onMounted(() => {
               :columns="filterColumn"
               class="grid-row"
               @reset="resetFilter"
-              @submit="throttleInit()"
+              @submit="throttleInit('input')"
             >
               <template #search-all="scope">
                 <slot name="search-all" :filter-column="filterColumn" v-bind="scope">
@@ -617,7 +624,7 @@ onMounted(() => {
               </template>
               <template
                 v-for="slotKey in tableSlotKeyList"
-                :key="`search-slotKey-${slotKey}`"
+                :key="`search-slotKey-${slotKey}-${scopedId}`"
                 #[getSearchSlot(slotKey)]="scope"
               >
                 <slot
@@ -679,7 +686,7 @@ onMounted(() => {
       </template>
       <template
         v-for="slotKey in tableSlotKeyList"
-        :key="`view-header-slotKey-${slotKey}`"
+        :key="`view-header-slotKey-${slotKey}-${scopedId}`"
         #[getHeaderSlot(slotKey)]="scope"
       >
         <slot :name="getHeaderSlot(slotKey)" :filter-column="filterColumn" v-bind="scope"></slot>
@@ -687,7 +694,7 @@ onMounted(() => {
 
       <template
         v-for="slotKey in tableSlotKeyList"
-        :key="`view-column-slotKey-${slotKey}`"
+        :key="`view-column-slotKey-${slotKey}-${scopedId}`"
         #[getColumnSlot(slotKey)]="scope"
       >
         <slot :name="getColumnSlot(slotKey)" :filter-column="filterColumn" v-bind="scope">
