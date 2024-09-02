@@ -608,7 +608,7 @@ onMounted(() => {
               :columns="filterColumn"
               class="grid-row"
               @reset="resetFilter"
-              @submit="throttleInit('input')"
+              @submit="throttleInit(null, 'input')"
             >
               <template #search-all="scope">
                 <slot name="search-all" :filter-column="filterColumn" v-bind="scope">
