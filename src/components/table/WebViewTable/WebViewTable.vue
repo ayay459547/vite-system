@@ -1,10 +1,27 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, shallowRef, onMounted, useSlots, nextTick, computed, inject } from 'vue'
+import {
+  ref,
+  shallowRef,
+  onMounted,
+  useSlots,
+  nextTick,
+  computed,
+  inject,
+  reactive
+} from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import type { LazyLoadingStatus } from '@/components'
-import { CustomTable, CustomButton, GroupSearch, CustomSearch, CustomInput, CustomTooltip } from '@/components'
+import {
+  CustomTable,
+  CustomButton,
+  GroupSearch,
+  CustomSearch,
+  CustomInput,
+  CustomTooltip,
+  CustomModal
+} from '@/components'
 import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
@@ -558,10 +575,19 @@ onMounted(() => {
     throttleInit(null, '')
   }
 })
+
+// 時間線表格
+// modal
+// const detailRef = ref(null)
+const modal = reactive({
+  timeLine: false
+})
+
 </script>
 
 <template>
   <div v-loading="isLoading" class="web-view" :class="scopedId">
+    <!-- 一般表格 -->
     <CustomTable
       ref="customTableRef"
       :table-data="tableData"
@@ -569,6 +595,7 @@ onMounted(() => {
       v-bind="tableSetting"
       :is-lazy-loading="islazyLoading"
       :lazy-loading-status="lazyLoadingStatus"
+      :is-show-no="islazyLoading"
       @excel="download"
       @expand-change="onExpandChange"
       @select="onSelect"
@@ -702,6 +729,29 @@ onMounted(() => {
         </slot>
       </template>
     </CustomTable>
+
+    <!-- 時間線表格 -->
+    <CustomModal
+      v-model="modal.timeLine"
+      :title="i18nTranslate('datetime-table', defaultModuleType)"
+      height-size="large"
+      click-outside
+      :modal="false"
+      draggable
+      hidden-footer
+    >
+      <div class="i-pa-md">TimeLineTable</div>
+    </CustomModal>
+    <div class="web-view-time-line">
+      <CustomTooltip trigger="hover" placement="top">
+        <template #content>{{ i18nTranslate('test', defaultModuleType) }}</template>
+        <CustomButton
+          icon-name="calendar-day"
+          plain
+          @click="modal.timeLine = true"
+        />
+      </CustomTooltip>
+    </div>
   </div>
 </template>
 
@@ -709,12 +759,20 @@ onMounted(() => {
 .web-view {
   width: 100%;
   height: 100%;
+  position: relative;
 
   &-column {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
+  }
+  &-time-line {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    z-index: 3;
+    box-shadow: 0px 0px 6px 1px var(--el-text-color-disabled);
   }
 }
 </style>
