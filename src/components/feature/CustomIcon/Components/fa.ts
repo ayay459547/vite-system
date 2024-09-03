@@ -1,11 +1,17 @@
 import {
   Uncharted,
   ChartLine,
-  ChartArea
+  ChartArea,
+  Minus,
+  WindowRestoreRegular,
+  WindowMaximizeRegular
 } from '@vicons/fa'
 
 export default {
   Uncharted,
   ChartLine,
-  ChartArea
+  ChartArea,
+  Minus,
+  WindowRestoreRegular,
+  WindowMaximizeRegular
 }

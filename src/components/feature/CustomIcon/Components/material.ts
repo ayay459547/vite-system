@@ -2,12 +2,14 @@ import {
   BubbleChartSharp,
   PivotTableChartRound,
   AreaChartTwotone,
-  DragIndicatorRound
+  DragIndicatorRound,
+  PrecisionManufacturingSharp
 } from '@vicons/material'
 
 export default {
   BubbleChartSharp,
   PivotTableChartRound,
   AreaChartTwotone,
-  DragIndicatorRound
+  DragIndicatorRound,
+  PrecisionManufacturingSharp
 }

@@ -88,8 +88,6 @@ const openModal = async () => {
 
     setTimeout(async () => {
       resetMove()
-
-      await nextTick()
       isFinishInit.value = true
     }, 500)
   }
@@ -203,8 +201,6 @@ const resetMove = async () => {
     y: window.innerHeight / 2 - centerY
   }
 
-  await nextTick()
-
   switch (props.xPosition) {
     case 'center':
       move.x = 0
@@ -238,7 +234,6 @@ const resetMove = async () => {
   move.lastX = move.x
   move.lastY = move.y
 
-  await nextTick()
   setTimeout(() => {
     wrapperStyle.value = ''
   }, 200)
@@ -251,10 +246,10 @@ useBoundingClientRect(containerRef, () => {
   resetMove()
 })
 
-const mousedownClient = reactive({
+const mousedownClient = {
   clientX: 0,
   clientY: 0
-})
+}
 const updateTransform = (e: MouseEvent) => {
   const { clientX: mouseDownX, clientY: mouseDownY } = mousedownClient
 
@@ -280,7 +275,7 @@ const updateTransform = (e: MouseEvent) => {
   e.stopPropagation()
   e.preventDefault()
 }
-const throttleUpdateTransform = throttle(updateTransform, 1) as typeof updateTransform
+const throttleUpdateTransform = throttle(updateTransform, 8) as typeof updateTransform
 
 // 確認是否超出螢幕 要重設位置
 // const windowSize = reactive({
@@ -362,9 +357,8 @@ const addEvent = ($event: MouseEvent) => {
   if (!props.draggable) return
   resetRect()
 
-  const { clientX, clientY } = $event
-  mousedownClient.clientX = clientX
-  mousedownClient.clientY = clientY
+  mousedownClient.clientX = $event.clientX
+  mousedownClient.clientY = $event.clientY
 
   window.addEventListener('mousemove', throttleUpdateTransform)
   window.addEventListener('mouseup', mouseupEvent)
@@ -432,8 +426,12 @@ onMounted(() => {
   })
 })
 
-onUnmounted(() => {
-  scope.stop()
+onUnmounted(async () => {
+  tempValue.value = false
+
+  setTimeout(() => {
+    scope.stop()
+  }, 0)
 })
 </script>
 
@@ -477,25 +475,30 @@ onUnmounted(() => {
                   <h3>{{ props.title }}</h3>
                 </slot>
               </div>
-
               <slot v-else name="header">
                 <h3>{{ props.title }}</h3>
               </slot>
 
-              <!-- 關閉全部 -->
-              <CustomTooltip v-if="isCloseAllModal" trigger="hover" placement="top">
-                <CustomButton icon-name="close" text @click="close" />
-                <template #content>
-                  <CustomButton
-                    :label="i18nTranslate('closeAll', defaultModuleType)"
-                    type="danger"
-                    icon-name="close"
-                    @click="onCloseAllClick"
-                  />
-                </template>
-              </CustomTooltip>
-              <!-- 關閉單個 -->
-              <CustomButton v-else-if="!isCloseAllModal" icon-name="close" text @click="close" />
+              <div class="flex-row">
+                <CustomButton icon-x-type="fa" icon-name="Minus" text />
+                <CustomButton icon-x-type="fa" icon-name="WindowRestoreRegular" text />
+                <CustomButton icon-x-type="fa" icon-name="WindowMaximizeRegular" text />
+
+                <!-- 關閉全部 -->
+                <CustomTooltip v-if="isCloseAllModal" trigger="hover" placement="top">
+                  <CustomButton icon-name="close" text @click="close" />
+                  <template #content>
+                    <CustomButton
+                      :label="i18nTranslate('closeAll', defaultModuleType)"
+                      type="danger"
+                      icon-name="close"
+                      @click="onCloseAllClick"
+                    />
+                  </template>
+                </CustomTooltip>
+                <!-- 關閉單個 -->
+                <CustomButton v-else-if="!isCloseAllModal" icon-name="close" text @click="close" />
+              </div>
             </div>
 
             <div class="modal-body">
@@ -672,7 +675,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     background-color: var(--i-color-system-page);
-    box-shadow: 2px 2px 8px 1px #d6d6d6;
+    box-shadow: 1px 1px 8px 2px var(--el-text-color-disabled);
     transition-duration: 0.3s;
     min: {
       width: 100px;
@@ -688,7 +691,7 @@ onUnmounted(() => {
     align-items: center;
     padding: 0 8px;
     height: 40px;
-    border-bottom: 1px solid #d6d6d6;
+    border-bottom: 1px solid var(--el-text-color-disabled);
   }
   &-draggable {
     display: flex;
@@ -712,12 +715,12 @@ onUnmounted(() => {
     justify-content: flex-end;
     align-items: center;
     padding: 0 8px;
-    border-top: 1px solid #d6d6d6;
+    border-top: 1px solid var(--el-text-color-disabled);
 
     &-hidden {
       width: 100%;
       height: 24px;
-      border-top: 1px solid #d6d6d6;
+      border-top: 1px solid var(--el-text-color-disabled);
     }
 
     &-btn {
