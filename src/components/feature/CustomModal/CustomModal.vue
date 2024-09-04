@@ -14,10 +14,11 @@ import {
 import { storeToRefs } from 'pinia'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
-import { useBoundingClientRect } from '@/lib/lib_hook'
-import { CustomButton, CustomIcon, CustomTooltip } from '@/components'
+import { useResizeObserver } from '@/lib/lib_hook'
+import { CustomButton, CustomTooltip } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
+import debounce from '@/lib/lib_debounce'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
@@ -45,7 +46,7 @@ const tempValue = computed<Props.ModelValue>({
 // 如果有多個 modal 可以一次關閉全部
 const customModalStore = useCustomModalStore()
 const { modalIndexMap, modalCount } = storeToRefs(customModalStore)
-const modalCurrentIndex = computed(() => {
+const modalZIndex = computed(() => {
   const tempIndex = modalIndexMap?.value[scopedId] ?? 0
   return tempIndex + minModalIndex
 })
@@ -56,9 +57,10 @@ const removeModalIndex = () => {
   customModalStore.removeModalIndex(scopedId)
 }
 
+// 關閉全部的 modal
 const isCloseAllModal = computed(() => {
   if (tempValue.value && modalCount.value <= 0) {
-    close()
+    onClose('close')
   }
 
   return modalCount.value >= 2
@@ -67,70 +69,87 @@ const isCloseAllModal = computed(() => {
 const wrapperIsShow = ref(false)
 const containerIsShow = ref(false)
 
-const openModal = async () => {
+// 是否佔全螢幕
+const isFill = ref(props.widthSize === 'fill' && props.heightSize === 'fill')
+const setFill = async (newFill: boolean) => {
+  isCollapse.value = false
+  isFill.value = newFill
+
+  await nextTick()
+  setCenterAndLimit()
+  resetMove()
+}
+
+// 是否縮起來
+const isCollapse = ref(false)
+const setCollapse = async (newCollapse: boolean) => {
+  isFill.value = false
+  isCollapse.value = newCollapse
+
+  await nextTick()
+  setCenterAndLimit()
+  resetMove('start', 'bottom')
+}
+
+// header 點兩下切換顯示
+const onHeaderDoubleClick = () => {
+  if (isCollapse.value) {
+    setFill(false)
+  } else {
+    setFill(!isFill.value)
+  }
+}
+
+// 開啟彈窗
+const openModal = () => {
   wrapperIsShow.value = true
 
-  if (props.draggable) {
-    transform.x = '-50%'
-    transform.y = '-50%'
-  }
+  transform.x = '-50%'
+  transform.y = '-50%'
 
   setTimeout(() => {
     containerIsShow.value = true
-  }, 10)
+  }, 16)
 
   // 等過場動畫結束
-  await nextTick()
-  if (props.draggable) {
-    setTimeout(() => {
-      resetRect()
-    }, 400)
+  isCollapse.value = false
+  setTimeout(() => {
+    setFill(isFill.value)
+  }, 480)
 
-    setTimeout(async () => {
-      resetMove()
-      isFinishInit.value = true
-    }, 500)
-  }
+  setTimeout(() => {
+    isFinishInit.value = true
+  }, 560)
 }
 
 const closeModal = () => {
+  removeModalIndex()
   containerIsShow.value = false
   isFinishInit.value = false
 
+  removeEvent()
   setTimeout(() => {
     wrapperIsShow.value = false
-  }, 200)
+  }, 240)
 }
 
-const close = async () => {
+const onClose = async (emitEvent: string) => {
   await nextTick()
   if (props.autoClose) {
     tempValue.value = false
   }
-  emit('close')
-}
 
-const cancel = () => {
-  if (props.autoClose) {
-    tempValue.value = false
+  switch (emitEvent) {
+    case 'close':
+    case 'cancel':
+      emit(emitEvent)
+      break
   }
-  emit('cancel')
 }
 
 const submit = () => {
   emit('submit')
 }
-
-const bindStyle = computed(() => {
-  let resStyle = ''
-  if (props.width.length > 0) {
-    resStyle += `width: ${props.width};`
-  }
-  if (props.height.length > 0) {
-    resStyle += `height: ${props.height};`
-  }
-  return resStyle
-})
 
 const scope = effectScope()
 
@@ -144,7 +163,8 @@ const scope = effectScope()
 const centerRect = reactive({ x: 0, y: 0 })
 // 邊界 移動超出退回
 const limitRect = reactive({ x: 0, y: 0 })
-const wrapperStyle = ref('')
+
+const modalTransitionDuration = ref('0s')
 
 // 移動多少
 const move = reactive({
@@ -164,34 +184,22 @@ const transform = reactive({
 const containerRef = ref()
 const isFinishInit = ref(false)
 
-const setCenter = (x: number, y: number) => {
-  centerRect.x = x
-  centerRect.y = y
-}
-const setLimit = (x: number, y: number) => {
-  limitRect.x = x
-  limitRect.y = y
-}
 // 由於過場動畫
 // 所以需要再重設: 中心的 transform 值 + 移動的邊界值
-const resetRect = () => {
+const setCenterAndLimit = () => {
   const contentRect = containerRef.value.getBoundingClientRect()
-  const { width, height } = contentRect
-  const [centerX, cneterY] = [width / 2, height / 2]
+  const [centerX, cneterY] = [contentRect.width / 2, contentRect.height / 2]
 
-  setCenter(centerX, cneterY)
-
-  const [windowWidth, windowHeight] = [window.innerWidth, window.innerHeight]
+  centerRect.x = centerX
+  centerRect.y = cneterY
 
   // 確保 modal 全顯示
-  // setLimit(windowWidth / 2 - centerX, windowHeight / 2 - cneterY)
-
-  // 確保 有 50 顯示
-  setLimit(windowWidth / 2 - 50, windowHeight / 2 - 50)
+  const [windowWidth, windowHeight] = [window.innerWidth, window.innerHeight]
+  limitRect.x = windowWidth / 2 - centerX
+  limitRect.y = windowHeight / 2 - cneterY
 }
 
-const resetMove = async () => {
-  wrapperStyle.value = 'transition-duration: 0.2s;'
+const resetMove = async (xPosition?: Props.XPosition, yPosition?: Props.YPosition) => {
   await nextTick()
 
   const { x: centerX, y: centerY } = centerRect
@@ -201,7 +209,7 @@ const resetMove = async () => {
     y: window.innerHeight / 2 - centerY
   }
 
-  switch (props.xPosition) {
+  switch (xPosition ?? props.xPosition) {
     case 'center':
       move.x = 0
       transform.x = '-50%'
@@ -216,7 +224,7 @@ const resetMove = async () => {
       break
   }
 
-  switch (props.yPosition) {
+  switch (yPosition ?? props.yPosition) {
     case 'center':
       move.y = 0
       transform.y = '-50%'
@@ -233,23 +241,12 @@ const resetMove = async () => {
 
   move.lastX = move.x
   move.lastY = move.y
-
-  setTimeout(() => {
-    wrapperStyle.value = ''
-  }, 200)
 }
 
-// 視窗大小變化時 位置重設
-useBoundingClientRect(containerRef, () => {
-  if (!isFinishInit.value || !props.draggable) return
-  resetRect()
-  resetMove()
-})
-
-const mousedownClient = {
+const mousedownClient = reactive({
   clientX: 0,
   clientY: 0
-}
+})
 const updateTransform = (e: MouseEvent) => {
   const { clientX: mouseDownX, clientY: mouseDownY } = mousedownClient
 
@@ -275,26 +272,30 @@ const updateTransform = (e: MouseEvent) => {
   e.stopPropagation()
   e.preventDefault()
 }
-const throttleUpdateTransform = throttle(updateTransform, 8) as typeof updateTransform
+const throttleUpdateTransform = throttle(updateTransform, 8, { isNoTrailing: true }) as typeof updateTransform
 
 // 確認是否超出螢幕 要重設位置
-// const windowSize = reactive({
-//   width: 0,
-//   height: 0
-// })
-const fixModalOutSide = () => {
+const fixModalOutSide = async () => {
+  await nextTick()
   const contentRect = containerRef.value.getBoundingClientRect()
   const { x, y, width, height } = contentRect
   const [windowWidth, windowHeight] = [window.innerWidth, window.innerHeight]
 
   if (x < -width || x > windowWidth || y < -height || y > windowHeight) {
-    resetRect()
+    setCenterAndLimit()
     resetMove()
   }
 }
-const throttleFixModalOutSide = throttle(fixModalOutSide, 2000) as typeof fixModalOutSide
+const debounceFixModalOutSide = debounce(fixModalOutSide, 2400) as typeof fixModalOutSide
 
-const mouseupEvent = () => {
+// 視窗大小變化時 位置重設
+useResizeObserver(containerRef, () => {
+  if (tempValue.value) {
+    debounceFixModalOutSide()
+  }
+})
+
+const onMouseUp = () => {
   const { x: centerX, y: centerY } = centerRect
   // 有超出邊界
   if (
@@ -303,7 +304,7 @@ const mouseupEvent = () => {
     move.lastY < -limitRect.y ||
     move.lastY > limitRect.y
   ) {
-    wrapperStyle.value = 'transition-duration: 0.2s;'
+    modalTransitionDuration.value = '0.2s'
 
     // x軸邊界修正
     if (move.lastX < -limitRect.x) {
@@ -328,10 +329,10 @@ const mouseupEvent = () => {
     }
 
     setTimeout(() => {
-      wrapperStyle.value = ''
-    }, 250)
+      modalTransitionDuration.value = '0s'
+    }, 240)
   } else {
-    wrapperStyle.value = ''
+    modalTransitionDuration.value = '0s'
 
     move.x = move.lastX
     move.y = move.lastY
@@ -344,40 +345,41 @@ const mouseupEvent = () => {
   if (move.lastY !== move.y) {
     move.lastY = move.y
   }
-  window.removeEventListener('mousemove', throttleUpdateTransform)
+  removeEvent()
 
   // 有時超出銀幕
-  setTimeout(() => {
-    throttleFixModalOutSide()
-  }, 1000)
+  debounceFixModalOutSide()
+
+  if (!props.draggable) return
+  isDraggable.value = false
 }
 
 // 新增拖拉用事件
-const addEvent = ($event: MouseEvent) => {
+const isDraggable = ref(false)
+const onMouseDown = ($event: MouseEvent) => {
   if (!props.draggable) return
-  resetRect()
+  isDraggable.value = true
+  setCenterAndLimit()
 
   mousedownClient.clientX = $event.clientX
   mousedownClient.clientY = $event.clientY
 
   window.addEventListener('mousemove', throttleUpdateTransform)
-  window.addEventListener('mouseup', mouseupEvent)
-}
-
-const removeEvent = () => {
-  setTimeout(() => {
-    window.removeEventListener('mouseup', mouseupEvent)
-  }, 0)
+  window.addEventListener('mouseup', onMouseUp)
 }
 
 const clickOutside = () => {
-  removeEvent()
-
-  if (!props.clickOutside) return
-
-  if (wrapperIsShow.value && containerIsShow.value) {
-    tempValue.value = false
+  if (props.clickOutside && containerIsShow.value) {
+    setTimeout(() => {
+      tempValue.value = false
+    }, 320)
   }
+}
+
+// 移除事件
+const removeEvent = () => {
+  window.removeEventListener('mousemove', throttleUpdateTransform)
+  window.removeEventListener('mouseup', onMouseUp)
 }
 
 const onCloseAllClick = () => {
@@ -400,38 +402,21 @@ onBeforeMount(() => {
 
 onMounted(() => {
   scope.run(() => {
-    watch(
-      tempValue,
-      newValue => {
-        if (newValue) {
-          setModalIndex()
+    watch(tempValue, (newValue: boolean) => {
+      if (newValue) {
+        setModalIndex()
 
-          setTimeout(() => {
-            openModal()
-          }, 0)
-        } else {
-          removeModalIndex()
-          removeEvent()
-
-          setTimeout(() => {
-            closeModal()
-          }, 0)
-        }
-      },
-      {
-        deep: false,
-        immediate: true
+        setTimeout(() => { openModal() }, 0)
+      } else {
+        setTimeout(() => { closeModal() }, 0)
       }
-    )
+    }, { deep: false, immediate: true })
   })
 })
 
-onUnmounted(async () => {
+onUnmounted(() => {
   tempValue.value = false
-
-  setTimeout(() => {
-    scope.stop()
-  }, 0)
+  setTimeout(() => { scope.stop() }, 0)
 })
 </script>
 
@@ -444,20 +429,25 @@ onUnmounted(async () => {
         `CustomModal_${version}`,
         scopedId,
         scopedName,
-        containerIsShow ? 'is-show' : 'is-close',
-        props.modal ? 'is-modal' : ''
+        containerIsShow ? 'is-show' : 'is-hidden',
+        props.modal ? 'is-modal' : '',
+        isDraggable ? 'is-draggable user-select-none' : ''
       ]"
-      :style="{ zIndex: modalCurrentIndex }"
+      :style="{ 'z-index': modalZIndex }"
     >
       <div
         class="modal-wrapper"
-        :class="[`width-${props.widthSize}`, `height-${props.heightSize}`]"
-        :style="`
-          transform: translateX(${transform.x}) translateY(${transform.y});
-          ${wrapperStyle};
-          ${bindStyle};
-          z-index: ${modalCurrentIndex};
-        `"
+        :class="[
+          `width-${props.widthSize}`,
+          `height-${props.heightSize}`,
+          isFill ? 'width-isFill height-isFill' : '',
+          isCollapse ? 'width-isCollapse height-isCollapse isCollapse' : ''
+        ]"
+        :style="{
+          transform: `translateX(${transform.x}) translateY(${transform.y})`,
+          'transition-duration': modalTransitionDuration,
+          'z-index': modalZIndex
+        }"
         @mousedown="setModalIndex"
         v-click-outside="clickOutside"
       >
@@ -466,28 +456,65 @@ onUnmounted(async () => {
             v-show="containerIsShow"
             ref="containerRef"
             class="modal-container"
+            :class="containerIsShow ? 'opacity-10' : 'opacity-0'"
             v-loading="props.loading"
           >
             <div class="modal-header">
-              <div v-if="props.draggable" class="modal-draggable" @mousedown="addEvent">
-                <CustomIcon name="up-down-left-right" />
-                <slot name="header">
+              <CustomTooltip
+                trigger="hover"
+                placement="top-start"
+                :show-after="560"
+                :disabled="[undefined, null, ''].includes(props.title) || isDraggable"
+              >
+                <div
+                  class="modal-title"
+                  :class="props.draggable ? 'cursor-pointer' : 'cursor-default'"
+                  @mousedown="onMouseDown"
+                  @dblclick="onHeaderDoubleClick"
+                >
+                  <slot name="header">
+                    <h3>{{ props.title }}</h3>
+                  </slot>
+                </div>
+
+                <template #content>
                   <h3>{{ props.title }}</h3>
-                </slot>
-              </div>
-              <slot v-else name="header">
-                <h3>{{ props.title }}</h3>
-              </slot>
+                </template>
+              </CustomTooltip>
 
               <div class="flex-row">
-                <CustomButton icon-x-type="fa" icon-name="Minus" text />
-                <CustomButton icon-x-type="fa" icon-name="WindowRestoreRegular" text />
-                <CustomButton icon-x-type="fa" icon-name="WindowMaximizeRegular" text />
+                <CustomButton
+                  v-if="!props.hiddenCollapse"
+                  v-show="!isCollapse && !props.clickOutside"
+                  icon-x-type="fa"
+                  icon-name="Minus"
+                  text
+                  @click="setCollapse(true)"
+                />
+                <CustomButton
+                  v-show="isCollapse || isFill"
+                  icon-x-type="fa"
+                  icon-name="WindowRestoreRegular"
+                  text
+                  @click="setFill(false)"
+                />
+                <CustomButton
+                  v-show="isCollapse || !isFill"
+                  icon-x-type="fa"
+                  icon-name="WindowMaximizeRegular"
+                  text
+                  @click="setFill(true)"
+                />
 
-                <!-- 關閉全部 -->
-                <CustomTooltip v-if="isCloseAllModal" trigger="hover" placement="top">
-                  <CustomButton icon-name="close" text @click="close" />
+                <CustomTooltip
+                  trigger="hover"
+                  placement="top"
+                  :disabled="!isCloseAllModal"
+                >
+                  <!-- 關閉單個 -->
+                  <CustomButton icon-name="close" text @click="onClose('close')" />
                   <template #content>
+                    <!-- 關閉全部 -->
                     <CustomButton
                       :label="i18nTranslate('closeAll', defaultModuleType)"
                       type="danger"
@@ -496,12 +523,10 @@ onUnmounted(async () => {
                     />
                   </template>
                 </CustomTooltip>
-                <!-- 關閉單個 -->
-                <CustomButton v-else-if="!isCloseAllModal" icon-name="close" text @click="close" />
               </div>
             </div>
 
-            <div class="modal-body">
+            <div v-show="!isCollapse" class="modal-body">
               <KeepAlive>
                 <template v-if="props.isKeepAlive">
                   <div v-show="tempValue" style="width: 100%; height: 100%">
@@ -516,21 +541,24 @@ onUnmounted(async () => {
               </KeepAlive>
             </div>
 
-            <div v-if="!props.hiddenFooter" class="modal-footer">
+            <div
+              v-show="!isCollapse"
+              :class="props.hiddenFooter ? 'modal-footer-hidden' : 'modal-footer'"
+            >
               <slot name="footer">
                 <div
                   v-if="props.draggable"
                   class="modal-footer-draggable"
-                  @mousedown="addEvent"
+                  @mousedown="onMouseDown"
                 ></div>
 
-                <div class="modal-footer-btn">
+                <div v-if="!props.hiddenFooter" class="modal-footer-btn">
                   <CustomButton
                     v-if="!props.hiddenCancel"
                     :label="i18nTranslate('cancel', defaultModuleType)"
                     icon-name="angle-left"
                     icon-move="translate"
-                    @click="cancel"
+                    @click="onClose('cancel')"
                   />
                   <CustomButton
                     v-if="!props.hiddenSubmit"
@@ -542,13 +570,6 @@ onUnmounted(async () => {
                   />
                 </div>
               </slot>
-            </div>
-            <div v-else class="modal-footer-hidden">
-              <div
-                v-if="props.draggable"
-                class="modal-footer-draggable"
-                @mousedown="addEvent"
-              ></div>
             </div>
           </div>
         </Transition>
@@ -566,17 +587,24 @@ onUnmounted(async () => {
     left: 0;
     top: 0;
     transform: none;
-    display: contents;
 
-    transition-duration: 0.3s;
-    &.is-close {
+    display: contents;
+    &.is-hidden {
       background-color: #00000000;
     }
     &.is-show {
       background-color: #00000066;
     }
     &.is-modal {
-      display: block
+      display: block;
+    }
+    &.is-draggable {
+      display: block;
+
+      background-color: #00000000;
+      &.is-modal {
+        background-color: #00000066;
+      }
     }
   }
 
@@ -585,10 +613,18 @@ onUnmounted(async () => {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
+    max: {
+      width: 100%;
+      height: 100%;
+    }
     &.width {
-      &-fill {
-        width: 100%;
+      &-isFill {
+        width: 100% !important;
       }
+      &-isCollapse.isCollapse {
+        width: 320px !important;
+      }
+      &-fill,
       &-large {
         width: 85%;
         @media (max-width: 992px) {
@@ -625,21 +661,15 @@ onUnmounted(async () => {
           width: 85%;
         }
       }
-      &-fitContent {
-        width: fit-content;
-      }
     }
     &.height {
-      & {
-        max: {
-          width: 100%;
-          height: 100%;
-        }
+      &-isFill {
+        height: 100% !important;
       }
-
-      &-fill {
-        height: 100%;
+      &-isCollapse.isCollapse {
+        height: 32px !important;
       }
+      &-fill,
       &-large {
         height: 85%;
       }
@@ -661,9 +691,6 @@ onUnmounted(async () => {
           height: 90%;
         }
       }
-      &-fitContent {
-        height: fit-content;
-      }
     }
   }
 
@@ -677,11 +704,11 @@ onUnmounted(async () => {
     background-color: var(--i-color-system-page);
     box-shadow: 1px 1px 8px 2px var(--el-text-color-disabled);
     transition-duration: 0.3s;
-    min: {
-      width: 100px;
-      height: 100px;
-    }
     border-radius: 6px;
+    min: {
+      width: 80px;
+      height: 48px;
+    }
   }
 
   &-header {
@@ -690,16 +717,20 @@ onUnmounted(async () => {
     justify-content: space-between;
     align-items: center;
     padding: 0 8px;
-    height: 40px;
+    line-height: 40px;
     border-bottom: 1px solid var(--el-text-color-disabled);
+    overflow: hidden;
   }
-  &-draggable {
+  &-title {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
     padding: 4px;
-    cursor: pointer;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &-body {

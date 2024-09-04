@@ -5,7 +5,7 @@ export const version = '1.0.0'
 export const minModalIndex = 2005
 
 export declare namespace Custom {
-  type Size = 'fill' | 'large' | 'default' | 'small' | 'extraSmall' | 'fitContent'
+  type Size = 'fill' | 'large' | 'default' | 'small' | 'extraSmall'
 }
 
 export declare namespace Props {
@@ -14,8 +14,6 @@ export declare namespace Props {
   type Loading = boolean
   type Title = string
   type ClickOutside = boolean
-  type Width = string
-  type Height = string
   type WidthSize = Custom.Size
   type HeightSize = Custom.Size
   type Modal = boolean
@@ -57,16 +55,6 @@ export const props = {
     default: false,
     description: '點擊外面是否會關閉'
   },
-  width: {
-    type: String as PropType<Props.Width>,
-    default: '',
-    description: 'style width'
-  },
-  height: {
-    type: String as PropType<Props.Height>,
-    default: '',
-    description: 'style height'
-  },
   widthSize: {
     type: String as PropType<Props.WidthSize>,
     default: 'default',
@@ -89,7 +77,7 @@ export const props = {
   },
   draggable: {
     type: Boolean as PropType<Props.Draggable>,
-    default: false,
+    default: true,
     description: '是否可拖拉'
   },
   xPosition: {
@@ -116,6 +104,11 @@ export const props = {
     type: Boolean as PropType<Props.HiddenCancel>,
     default: false,
     description: '是否隱藏 取消按鈕'
+  },
+  hiddenCollapse: {
+    type: Boolean as PropType<Props.HiddenCancel>,
+    default: true,
+    description: '是否隱藏 縮小按鈕'
   }
 }
 

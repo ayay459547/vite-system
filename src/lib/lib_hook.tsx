@@ -2,10 +2,14 @@ import type { Ref, DeepReadonly } from 'vue'
 import { defineAsyncComponent } from 'vue'
 import type{
   MaybeElementRef,
+  MaybeComputedElementRef,
   UseRefHistoryOptions, UseRefHistoryReturn,
   UseThrottledRefHistoryOptions, UseThrottledRefHistoryReturn,
   MaybeRefOrGetter,
   UseDraggableOptions, UseDraggableReturn,
+  UseResizeObserverOptions,
+  ElementSize, UseElementSizeReturn,
+  UseResizeObserverReturn,
   UseMouseOptions, UseMouseReturn,
   MouseInElementOptions, UseMouseInElementReturn,
   EventBusIdentifier, UseEventBusReturn
@@ -15,6 +19,8 @@ import {
   useThrottledRefHistory as _useThrottledRefHistory,
   useDebouncedRefHistory as _useDebouncedRefHistory,
   useDraggable as _useDraggable,
+  useElementSize as _useElementSize,
+  useResizeObserver as _useResizeObserver,
   useMouse as _useMouse,
   useMouseInElement as _useMouseInElement,
   useEventBus as _useEventBus
@@ -309,8 +315,41 @@ export const useDebouncedRefHistory = <Raw, Serialized = Raw>(source: Ref<Raw>, 
  * onEnd: 拖拽結束時觸發的回調函數。
  * @returns {UseDraggableReturn}
  */
-export const useDraggable = (target: Ref, options?: UseDraggableOptions): UseDraggableReturn => {
+export const useDraggable = (target: MaybeElementRef, options?: UseDraggableOptions): UseDraggableReturn => {
   return _useDraggable(target, options)
+}
+
+/**
+ * @see https://vueuse.org/useElementSize
+ * @description 功能說明
+ * 1.監控尺寸變化：能夠監控指定元素的寬度和高度變化，並在尺寸變化時提供更新。
+ * 2.響應式更新：提供的尺寸資訊是響應式的，可以直接在 Vue 模板中使用，實現即時更新。
+ * 3.自動清理：在組件卸載時，自動移除監控，防止內存洩漏。
+ *
+ * @param {MaybeComputedElementRef} target ref的值 | Element
+ * @param {ElementSize} initialSize 初始大小
+ * @param {UseResizeObserverOptions} options 其他設定
+ * @returns {UseElementSizeReturn}
+ */
+export const useElementSize = (target: MaybeComputedElementRef, initialSize?: ElementSize, options?: UseResizeObserverOptions): UseElementSizeReturn => {
+  return _useElementSize(target, initialSize, options)
+}
+
+/**
+ * @see https://vueuse.org/useResizeObserver
+ * @description 功能說明
+ * 1.監控尺寸變化：能夠監控指定元素的寬度和高度變化，並在尺寸變化時提供更新。
+ * 2.響應式更新：提供的尺寸資訊是響應式的，可以直接在 Vue 模板中使用，實現即時更新。
+ * 3.支持多個元素：可以擴展以支持監控多個元素，只需在回調函數中處理每個元素的變化。
+ * 4.自動清理：在組件卸載時，自動移除監控，防止內存洩漏。
+ *
+ * @param {MaybeComputedElementRef | MaybeComputedElementRef[]} target ref的值 | Element
+ * @param {ResizeObserverCallback} callback 回調函數
+ * @param {UseResizeObserverOptions} options 其他設定
+ * @returns {UseResizeObserverReturn}
+ */
+export const useResizeObserver = (target: MaybeComputedElementRef | MaybeComputedElementRef[], callback: ResizeObserverCallback, options?: UseResizeObserverOptions): UseResizeObserverReturn => {
+  return _useResizeObserver(target, callback, options)
 }
 
 /**

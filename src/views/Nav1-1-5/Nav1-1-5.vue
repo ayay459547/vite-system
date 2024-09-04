@@ -3,14 +3,14 @@ import { ElCard } from 'element-plus'
 import { ref, onMounted } from 'vue'
 
 import { CustomScrollbar, CustomButton, CustomDivider, CustomDialog, CustomModal } from '@/components'
-import { useBoundingClientRect } from '@/lib/lib_hook'
+import { useElementSize } from '@/lib/lib_hook'
 
 import TestKeepAlive from './TestKeepAlive.vue'
 
 // 拖拉
 const resizeRef = ref()
 
-const testSize = useBoundingClientRect(resizeRef)
+const testSize = useElementSize(resizeRef)
 
 const list = ref([1, 2, 3, 4, 5])
 const add = () => {
@@ -83,8 +83,8 @@ onMounted(() => {
 
     <div class="flex-column i-ga-md">
       <h3>hook 計算大小變化</h3>
-      <div>width: {{ testSize.contentRect.width }}</div>
-      <div>height: {{ testSize.contentRect.height }}</div>
+      <div>width: {{ testSize.width }}</div>
+      <div>height: {{ testSize.height }}</div>
     </div>
     <textarea ref="resizeRef"></textarea>
 

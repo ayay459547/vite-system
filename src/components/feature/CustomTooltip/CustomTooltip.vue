@@ -41,6 +41,7 @@ const tempValue = computed({
     :virtual-ref="props.virtualRef"
     :virtual-triggering="props.virtualTriggering"
     :popper-options="props.popperOptions"
+    :disabled="props.disabled"
     effect="light"
     class="tooltip-container"
     :class="[

@@ -735,10 +735,10 @@ const modal = reactive({
       v-model="modal.timeLine"
       :title="i18nTranslate('datetime-table', defaultModuleType)"
       height-size="large"
-      click-outside
       :modal="false"
       draggable
       hidden-footer
+      :hidden-collapse="false"
     >
       <div class="i-pa-md">TimeLineTable</div>
     </CustomModal>

@@ -2,7 +2,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 
 import { CustomIcon, CustomScrollbar } from '@/components'
-import { useBoundingClientRect } from '@/lib/lib_hook'
+import { useResizeObserver } from '@/lib/lib_hook'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 
@@ -136,8 +136,10 @@ const setDefaultWidth = (width: number) => {
   defaultWidth.left = 0
   defaultWidth.right = fullWidth
 }
-useBoundingClientRect(containerRef, ({ width }) => {
-  setDefaultWidth(width)
+useResizeObserver(containerRef, entries => {
+  const entry = entries[0]
+
+  setDefaultWidth(entry.contentRect.width)
   switch (draggablePosition.value) {
     case 'left':
       defaultWidth.custom = defaultWidth.left
@@ -220,6 +222,8 @@ $draggable-btn-width: 38px;
       height: 100%;
       display: flex;
       background-color: inherit;
+      // background-color: var(--el-bg-color);
+      // border: 1px solid var(--el-color-info-light-8);
 
       &.is-move {
         cursor: col-resize;

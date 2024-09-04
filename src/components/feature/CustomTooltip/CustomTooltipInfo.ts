@@ -24,6 +24,7 @@ export declare namespace Props {
   type VirtualRef = HTMLElement
   type VirtualTriggering = boolean
   type PopperOptions = Record<string, any>
+  type Disabled = boolean
 }
 
 export const props = {
@@ -94,5 +95,11 @@ export const props = {
       return {}
     },
     description: '觸發後多久顯示內容，單位毫秒'
+  },
+  disabled: {
+    type: Boolean as PropType<Props.Disabled>,
+    required: false,
+    default: false,
+    description: '是否禁用'
   }
 }

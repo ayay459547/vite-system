@@ -6,10 +6,11 @@ import { storeToRefs } from 'pinia'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData, UseHook } from '@/declare/hook'
 import { CustomModal } from '@/components'
+import { useAsyncComponent } from '@/lib/lib_hook'
+
 import { useLayoutStore } from '@/stores/stores_layout'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { tipLog } from '@/lib/lib_utils'
-import { useAsyncComponent } from '@/lib/lib_hook'
 
 const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'), 'rect')
 const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'), 'rect')
@@ -156,7 +157,13 @@ const onLayoutChange = () => {
 <template>
   <div class="system-layout">
     <div class="user-modal">
-      <CustomModal v-model="modal.preference" hidden-footer draggable click-outside>
+      <CustomModal
+        v-model="modal.preference"
+        :modal="false"
+        hidden-footer
+        draggable
+        :hidden-collapse="false"
+      >
         <template #header>
           <label>{{ i18nTranslate('preference', defaultModuleType) }}</label>
         </template>
