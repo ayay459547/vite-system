@@ -41,7 +41,7 @@ const {
 const { tableSetting: productTableSetting } = useTableSetting(productColumnSetting, 'table', {
   title: '產品族',
   i18nTitle: 'product-group',
-  i18nModule: 'auto_common',
+  i18nModule: 'system',
   version: '1.0.5',
   settingKey: 'auto-32-sg-product',
   isSorting: false,
@@ -62,7 +62,7 @@ const { tableSetting: engineeringWipTableSetting } = useTableSetting(
   {
     i18nTitle: 'engineeringWip',
     title: '指定貨批',
-    i18nModule: 'auto_common',
+    i18nModule: 'system',
     version: '1.0.2',
     settingKey: 'auto-32-sg-engineeringWip',
     isSorting: false,
@@ -80,7 +80,7 @@ const {
 
 const { tableSetting: pnTableSetting } = useTableSetting(pnColumnSetting, 'table', {
   title: 'PN',
-  i18nModule: 'auto_common',
+  i18nModule: 'system',
   version: '1.0.2',
   settingKey: 'auto-32-sg-pn',
   isSorting: false,
@@ -229,7 +229,7 @@ onMounted(() => {
                 v-model="productFilter[prop]"
                 v-model:active="productActiveFilter[prop]"
                 v-bind="productFilterColumn[prop]"
-                i18n-module="auto_common"
+                i18n-module="system"
                 search
                 @change="throttleInit"
               />
@@ -254,7 +254,7 @@ onMounted(() => {
                 v-model="engineeringWipFilter[prop]"
                 v-model:active="engineeringWipActiveFilter[prop]"
                 v-bind="engineeringWipFilterColumn[prop]"
-                i18n-module="auto_common"
+                i18n-module="system"
                 search
                 @change="throttleInit"
               />
@@ -279,7 +279,7 @@ onMounted(() => {
                 v-model="pnFilter[prop]"
                 v-model:active="pnActiveFilter[prop]"
                 v-bind="pnFilterColumn[prop]"
-                i18n-module="auto_common"
+                i18n-module="system"
                 search
                 @change="throttleInit"
               />
