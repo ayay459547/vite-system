@@ -38,3 +38,5 @@ export const props = {
 export declare namespace Emits {
   type Change = (active: Props.ModelValue) => void
 }
+
+export declare namespace Expose {}

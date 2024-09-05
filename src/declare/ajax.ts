@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
-import type { Sort, SortingList, SortingMap } from '@/components'
+
+import type { TableCustom } from '@/components'
 // import type { SweetAlertIcon } from 'sweetalert2'
 
 export type ApiStatus = 'success' | 'error' | 'fail'
@@ -30,13 +31,7 @@ export type ApiRes<T = any> = {
   msg?: string
 }
 
-export declare interface TableParams {
-  page?: number
-  size?: number
-  sort?: Sort
-  sortingList?: SortingList
-  sortingMap?: SortingMap
-}
+export type TableParams = TableCustom.TableParams
 
 export declare interface ViewParams extends TableParams {
   webfuno?: string

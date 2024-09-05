@@ -74,3 +74,7 @@ export const props = {
     description: '引導'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

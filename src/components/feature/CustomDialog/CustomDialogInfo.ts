@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type ModelValue = boolean
   type Title = string
@@ -67,3 +69,7 @@ export const props = {
     description: '是否可拖拉'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type RenderKey = number
 
@@ -76,3 +78,7 @@ export const props = {
     description: '寬度欄位是否固定 還是自適應'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

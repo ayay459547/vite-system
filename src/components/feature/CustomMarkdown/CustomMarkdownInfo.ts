@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type Text = string
 }
@@ -13,3 +15,7 @@ export const props = {
     description: 'markdown 內容'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

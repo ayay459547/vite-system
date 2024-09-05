@@ -399,6 +399,7 @@ const popverWidth = computed(() => {
           :visible="isVisible"
           :width="popverWidth"
           placement="bottom"
+          popper-class="__search-popover"
         >
           <div class="__search-detail">
             <div class="__search-title">
@@ -549,21 +550,13 @@ const popverWidth = computed(() => {
     justify-content: space-between;
     align-items: center;
     gap: 8px;
-    // padding: 0 2px;
   }
 
-  &-detail,
-  &-btn {
-    z-index: var(--i-z-index-search-detail);
-  }
   &-detail {
     height: fit-content;
     max-height: 50vh;
     overflow: auto;
     padding-right: 8px;
-  }
-  &-btn {
-    transform: translateY(4px);
   }
 
   &-footer {
@@ -576,7 +569,7 @@ const popverWidth = computed(() => {
   }
 
   &-close {
-    position: fixed;
+    position: absolute;
     z-index: var(--i-z-index-search-close);
     width: 100vw;
     height: 100vh;
@@ -585,6 +578,14 @@ const popverWidth = computed(() => {
     background-color: var(--el-color-black);
     opacity: 0.1;
     // pointer-events: none;
+  }
+}
+</style>
+
+<style lang="scss">
+.__search {
+  &-popover {
+    z-index: var(--i-z-index-search-detail) !important;
   }
 }
 </style>

@@ -87,10 +87,7 @@ export declare namespace Emits {
 }
 
 export declare namespace Expose {
-  type GetCheckedNodes = (
-    leafOnly?: boolean,
-    includeHalfChecked?: boolean
-  ) => Array<Custom.TreeNodeData>
+  type GetCheckedNodes = (leafOnly?: boolean, includeHalfChecked?: boolean) => Array<Custom.TreeNodeData>
   type GetCheckedKeys = (leafOnly?: boolean) => Custom.TreeKey[]
   type SetCheckedNodes = (nodeList: Node[], leafOnly?: boolean) => void
   type SetCheckedKeys = (keyList: Array<string | number>, leafOnly?: boolean) => void

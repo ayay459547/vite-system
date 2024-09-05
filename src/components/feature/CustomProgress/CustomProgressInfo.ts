@@ -109,3 +109,7 @@ export const props = {
     description: '條紋是否流動'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

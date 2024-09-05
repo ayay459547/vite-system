@@ -1,6 +1,8 @@
-import type { PropType } from 'vue'
+import type { PropType, CSSProperties } from 'vue'
 
 export const version = '1.0.0'
+
+export declare namespace Custom {}
 
 export declare namespace Props {
   type Visible = boolean | null
@@ -20,7 +22,8 @@ export declare namespace Props {
     | 'right-start'
     | 'right-end'
   type Trigger = 'click' | 'focus' | 'hover' | 'contextmenu'
-  type PopperStyle = string
+  type PopperClass = string
+  type PopperStyle = string | CSSProperties
   type ShowArrow = boolean
   type Offset = number
   type VirtualRef = HTMLElement
@@ -58,11 +61,17 @@ export const props = {
     default: 'click',
     description: '觸發方式'
   },
+  popperClass: {
+    type: String as PropType<Props.PopperClass>,
+    required: false,
+    default: '',
+    description: 'class'
+  },
   popperStyle: {
     type: String as PropType<Props.PopperStyle>,
     required: false,
     default: '',
-    description: '樣式'
+    description: 'style'
   },
   showArrow: {
     type: Boolean as PropType<Props.ShowArrow>,
@@ -89,3 +98,7 @@ export const props = {
     description: 'virtual-triggering'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

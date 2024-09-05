@@ -19,7 +19,6 @@ import { getData } from './api'
 import { columnSetting } from './columns'
 
 const VirtualTable = useAsyncComponent(() => import('./Components/VirtualTable.vue'), 'rect')
-const TestTable = useAsyncComponent(() => import('./Components/TestTable.vue'), 'rect')
 
 const useHook: UseHook = inject('useHook')
 const { swal, i18nTranslate } = useHook({
@@ -238,15 +237,7 @@ onMounted(() => {
       </template>
       <template #right>
         <div class="page-right">
-          <!-- <VirtualTable
-            v-if="!isEmpty(tableData)"
-            :tableData="tableData"
-            :tableColumns="tableColumns"
-            :groupColumns="groupColumns"
-            :totalColumns="totalColumns"
-            :footerData="footerData"
-          /> -->
-          <TestTable
+          <VirtualTable
             v-if="!isEmpty(tableData)"
             :tableData="tableData"
             :tableColumns="tableColumns"

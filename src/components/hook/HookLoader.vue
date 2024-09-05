@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 
+export declare namespace Custom {}
+
+export declare namespace Props {}
+
+export declare namespace Emits {}
+
+export declare namespace Expose {
+  type OpenLoader = (message: string) => void
+  type CloseLoader = () => void
+}
+
 const isOpen = ref(false)
 const massage = ref('Loading')
 
@@ -10,11 +21,6 @@ const openTime = ref<number | null>(null)
 const barPercentage = ref(0)
 
 let timer = null
-
-interface Expose {
-  openLoader: (message: string) => void
-  closeLoader: () => void
-}
 
 const close = async () => {
   barPercentage.value = 100
@@ -26,35 +32,39 @@ const close = async () => {
   }, 200)
 }
 
-defineExpose<Expose>({
-  openLoader: (message: string) => {
-    barPercentage.value = 0
-    massage.value = message
+const openLoader: Expose.OpenLoader = (message: string) => {
+  barPercentage.value = 0
+  massage.value = message
 
-    if (isOpen.value) return
-    isOpen.value = true
-    openTime.value = Date.now()
+  if (isOpen.value) return
+  isOpen.value = true
+  openTime.value = Date.now()
 
-    timer = setInterval(() => {
-      if (barPercentage.value < 90) {
-        barPercentage.value += Math.floor(Math.random() * 10)
-      } else {
-        clearInterval(timer)
-      }
-    }, 1000)
-  },
-  // 至少大於一段時間才能關閉 不然會閃一下
-  closeLoader: () => {
-    if (!isOpen.value) return
-
-    if (Date.now() >= openTime.value + minTime) {
-      close()
+  timer = setInterval(() => {
+    if (barPercentage.value < 90) {
+      barPercentage.value += Math.floor(Math.random() * 10)
     } else {
-      setTimeout(() => {
-        close()
-      }, minTime)
+      clearInterval(timer)
     }
+  }, 1000)
+}
+
+const closeLoader: Expose.CloseLoader = () => {
+  if (!isOpen.value) return
+
+  if (Date.now() >= openTime.value + minTime) {
+    close()
+  } else {
+    setTimeout(() => {
+      close()
+    }, minTime)
   }
+}
+
+defineExpose({
+  openLoader,
+  // 至少大於一段時間才能關閉 不然會閃一下
+  closeLoader
 })
 </script>
 

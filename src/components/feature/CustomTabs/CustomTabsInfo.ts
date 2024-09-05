@@ -7,6 +7,10 @@ import type { Option } from '@/components'
 
 export const version = '2.0.0'
 
+export declare namespace Custom {
+  type Action = 'remove' | 'add'
+}
+
 export declare namespace Props {
   type ModelValue = string | number | null
   type Options = Array<Option<string | number>>
@@ -76,5 +80,7 @@ export declare namespace Emits {
   type TabChange =	(name: TabPaneName) => void
   type TabRemove =	(name: TabPaneName) => void
   type TabAdd = () => void
-  type Edit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => void
+  type Edit = (paneName: TabPaneName | undefined, action: Custom.Action) => void
 }
+
+export declare namespace Expose {}

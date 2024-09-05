@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type LeftWidth = number | null
   type DraggablePosition = 'left' | 'right' |'center' | 'custom'
@@ -21,3 +23,7 @@ export const props = {
     description: '分割線的位置'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

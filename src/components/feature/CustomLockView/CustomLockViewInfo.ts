@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type IsLock = boolean
   type Description = string
@@ -21,3 +23,7 @@ export const props = {
     description: '文字訊息'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

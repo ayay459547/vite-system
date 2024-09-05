@@ -96,5 +96,8 @@ export const props = {
       }
     `
   }
-
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

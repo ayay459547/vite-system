@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type Columns = Record<string, Record<string, any>>
   type Class = string
@@ -25,3 +27,7 @@ export const props = {
     default: 360
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

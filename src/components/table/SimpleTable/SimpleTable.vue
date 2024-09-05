@@ -112,7 +112,7 @@ export default defineComponent({
   name: 'SimpleTable',
   props: simpleTableProps,
   emits: ['update:modelValue'],
-  setup(props: Props, context: any) {
+  setup(props: any, context: any) {
     const SimpleTable = (): Component => {
       const { slots = {}, emit } = context
 
@@ -329,7 +329,7 @@ export default defineComponent({
         )
       }
 
-      return h<Props>(() => {
+      return h<any>(() => {
         return h('div',
           {
             class: [

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import {
   ref,
   shallowRef,
@@ -12,7 +11,8 @@ import {
 } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import type { LazyLoadingStatus } from '@/components'
+
+import type { TableProps } from '@/components'
 import {
   CustomTable,
   CustomButton,
@@ -22,20 +22,14 @@ import {
   CustomTooltip,
   CustomModal
 } from '@/components'
-import type { TableOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type {
-  FakeData,
-  TableData,
-  FilterData,
-  FormatExcel,
-  FormatTable,
-  FormatSorting
-} from './api'
+import type { Custom } from './WebViewTableInfo'
+import { version, props as webViewTableProps } from './WebViewTableInfo'
+
 import {
   webViewUrl,
   getUrlParams,
@@ -46,134 +40,7 @@ import {
 
 const scopedId = getUuid('__WebViewTable__')
 
-const props = defineProps({
-  baseurl: {
-    type: String as PropType<string>,
-    required: false,
-    description: `api baseURL 參數
-      baseURL: props.baseurl
-    `
-  },
-  apiurl: {
-    type: String as PropType<string>,
-    required: false,
-    description: `api url 參數
-      apiurl 存在時
-      url: props.apiurl
-      webfuno, funoviewsuffix, designatedview無效
-
-      apiurl 不存在時
-      url: /api/ipaspTable/retrieveIpaspTableFromView
-      webfuno, funoviewsuffix,  designatedview有效
-    `
-  },
-  webfuno: {
-    type: String as PropType<string>,
-    required: false,
-    description: 'api webfuno 參數'
-  },
-  funoviewsuffix: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: 'api funoviewsuffix 參數'
-  },
-  designatedview: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: `api designatedview 參數
-      designatedview 存在時 webfuno, funoviewsuffix 無效
-    `
-  },
-  tableOptions: {
-    type: Object as PropType<TableOptions>,
-    required: true,
-    description: `CustomTable 參數設定
-      CustomTable Props 最後會加在 tableSetting 中
-    `
-  },
-  columnSetting: {
-    type: Object as PropType<Record<any, any>>,
-    required: true,
-    description: '欄位設定'
-  },
-  tableKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'table',
-    description: 'useTableSetting 使用 columnSetting中對應的key'
-  },
-  filterKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'filter',
-    description: 'useFormSetting 使用 columnSetting中對應的key'
-  },
-  formatParams: {
-    type: Function as PropType<(params: any) => any>,
-    required: false,
-    default: (params: any) => params,
-    description: '自訂送出的api格式'
-  },
-  formatExcel: {
-    type: Function as PropType<FormatExcel>,
-    required: false,
-    default: (row: any) => row,
-    description: '自訂Excel資料格式'
-  },
-  formatTable: {
-    type: Function as PropType<FormatTable>,
-    required: false,
-    default: (row: any) => row,
-    description: '自訂Table資料格式'
-  },
-  formatSorting: {
-    type: Function as PropType<FormatSorting>,
-    required: false,
-    default: (row: any) => row,
-    description: '自訂SortingMap資料格式'
-  },
-  useFakeData: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: `
-      是否使用fakeData假資料
-      如果為true則不送出API responseData會使用fakeData
-    `
-  },
-  fakeData: {
-    type: Array as PropType<FakeData>,
-    required: false,
-    default() {
-      return []
-    },
-    description: '替代實際API輸出資料的假資料'
-  },
-  isMountedInit: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: true,
-    description: '是否在 onMounted 初始化'
-  },
-  //Custom Download Excel
-  downloadExcel: {
-    type: Function as PropType<any>,
-    required: false,
-    default: null,
-    description: `
-      取代downloadExcel的特製表格下載方式
-      ex: 子欄位、合併……
-    `
-  },
-  isHiddenPrepend: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否在 隱藏 slot #prepend'
-  }
-})
+const props = defineProps(webViewTableProps)
 
 const emit = defineEmits([
   // 'header-click',
@@ -230,9 +97,9 @@ const {
   activeConditions: activeConditions,
   conditions: filterConditions,
   getConditionFilter
-} = useFormSetting<FilterData>(props.columnSetting, props.filterKey)
+} = useFormSetting<Custom.FilterData>(props.columnSetting, props.filterKey)
 
-const setFilter = (_filter: FilterData) => {
+const setFilter = (_filter: Custom.FilterData) => {
   for (const filterKey in _filter) {
     if (hasOwnProperty(filter, filterKey)) {
       filter[filterKey] = _filter[filterKey]
@@ -241,7 +108,7 @@ const setFilter = (_filter: FilterData) => {
 }
 
 // table
-const tableData = shallowRef<TableData[]>([])
+const tableData = shallowRef<Array<Custom.TableData>>([])
 const tableDataCount = ref(0)
 
 const {
@@ -554,7 +421,7 @@ const onReset = async () => {
   throttleInit(null, 'input')
 }
 
-const lazyLoadingStatus = ref<LazyLoadingStatus>('loadMore')
+const lazyLoadingStatus = ref<TableProps.LazyLoadingStatus>('loadMore')
 
 // 可用函數
 defineExpose({
@@ -586,7 +453,11 @@ const modal = reactive({
 </script>
 
 <template>
-  <div v-loading="isLoading" class="web-view" :class="scopedId">
+  <div
+    v-loading="isLoading"
+    class="web-view"
+    :class="[version, scopedId]"
+  >
     <!-- 一般表格 -->
     <CustomTable
       ref="customTableRef"
@@ -734,7 +605,6 @@ const modal = reactive({
     <CustomModal
       v-model="modal.timeLine"
       :title="i18nTranslate('datetime-table', defaultModuleType)"
-      height-size="large"
       :modal="false"
       draggable
       hidden-footer
@@ -744,7 +614,7 @@ const modal = reactive({
     </CustomModal>
     <div class="web-view-time-line">
       <CustomTooltip trigger="hover" placement="top">
-        <template #content>{{ i18nTranslate('test', defaultModuleType) }}</template>
+        <template #content>{{ i18nTranslate('datetime-table', defaultModuleType) }}</template>
         <CustomButton
           icon-name="calendar-day"
           plain

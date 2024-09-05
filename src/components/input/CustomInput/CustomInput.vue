@@ -28,7 +28,7 @@ import { formatDatetime } from '@/lib/lib_format'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 
-import type { ModelValue } from './CustomInputInfo'
+import type { Props } from './CustomInputInfo'
 import { version, props as inputProps } from './CustomInputInfo'
 
 import styles from './CustomInput.module.scss'
@@ -100,7 +100,7 @@ onMounted(() => {
   validateCount.value = 0
 })
 // 驗證
-const validateField = (veeValue: ModelValue) => {
+const validateField = (veeValue: Props.ModelValue) => {
   // 一開始不驗證
   if (validateCount.value === 0) {
     validateCount.value++
@@ -146,7 +146,7 @@ const validateField = (veeValue: ModelValue) => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     validateValue.value = value
     emit('update:modelValue', value)
   }

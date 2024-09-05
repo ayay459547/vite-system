@@ -6,6 +6,8 @@ import type { Conditions as _Conditions } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type ModelValue = any
   type Active = boolean
@@ -75,3 +77,7 @@ export const props = {
   // 輸入框的 props
   ...inputProps
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

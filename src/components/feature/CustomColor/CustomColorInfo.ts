@@ -22,9 +22,6 @@ export declare namespace Props {
   // type Id = string
   // type Teleported = boolean
 }
-export declare namespace Emits {
-  type Change = (value: string) => void
-}
 
 export const props = {
   modelValue: {
@@ -81,3 +78,9 @@ export const props = {
   //   default: true
   // }
 }
+
+export declare namespace Emits {
+  type Change = (value: string) => void
+}
+
+export declare namespace Expose {}

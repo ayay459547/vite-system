@@ -145,6 +145,16 @@ const routes: Array<RouterTree> = [
               systemType: ['new'],
               icon: 'file-circle-check'
             }
+          },
+          {
+            name: 'Test-auto-32',
+            title: 'Test Auto-32',
+            component: () => import('@/views/Test-auto-32/Test-auto-32.vue'),
+            meta: {
+              keepAlive: false,
+              systemType: ['new'],
+              icon: 'file-circle-check'
+            }
           }
         ]
       },

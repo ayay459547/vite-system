@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type Value = string | number
   type Max = number
@@ -42,3 +44,7 @@ export const props = {
     description: '類型'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

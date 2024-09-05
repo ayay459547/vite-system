@@ -2,16 +2,16 @@
 import type { PropType } from 'vue'
 import { onMounted, ref, customRef, computed } from 'vue'
 
-import type { Sorting, Order } from '@/components'
+import type { TableCustom } from '@/components'
 import { CustomBadge } from '@/components'
 
 const props = defineProps({
   modelValue: {
-    type: Array as PropType<Sorting[]>,
+    type: Array as PropType<TableCustom.Sorting[]>,
     required: true
   },
   column: {
-    type: Object as PropType<any>,
+    type: Object as PropType<TableCustom.TableColumn>,
     required: true,
     description: '欄位的設定'
   },
@@ -28,7 +28,7 @@ const filterNoneColumnList = computed(() => {
   return props.modelValue.filter(item => item.order !== 'none')
 })
 
-const columnValue = customRef<Sorting & { index?: number | string }>((track, trigger) => {
+const columnValue = customRef<TableCustom.Sorting & { index?: number | string }>((track, trigger) => {
   return {
     get() {
       track() // 追蹤數據改變
@@ -40,7 +40,7 @@ const columnValue = customRef<Sorting & { index?: number | string }>((track, tri
         index: serialNumber === -1 ? '~' : serialNumber + 1
       }
     },
-    set(value: Sorting & { index?: number | string }) {
+    set(value: TableCustom.Sorting & { index?: number | string }) {
       const columnIndex = props.modelValue.findIndex(item => item.key === props.prop)
       const _temp = props.modelValue[columnIndex]
 
@@ -58,7 +58,7 @@ const columnValue = customRef<Sorting & { index?: number | string }>((track, tri
 const isShow = ref(false)
 
 const onSortClick = (type: string) => {
-  let newOrder: Order = 'none'
+  let newOrder: TableCustom.Order = 'none'
 
   switch (type) {
     case 'asc':

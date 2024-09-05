@@ -6,11 +6,11 @@ import type { UseHook } from '@/declare/hook'
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
 
-import type { PropsTableColumn } from '../CustomTableInfo'
+import type { TableProps } from '@/components'
+import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 
 const props = defineProps({
   i18nModule: {
@@ -20,19 +20,19 @@ const props = defineProps({
     description: 'i18nModule'
   },
   columns: {
-    type: Object as PropType<PropsTableColumn[]>,
+    type: Object as PropType<TableProps.TableColumns>,
     default() {
       return {}
     }
   },
   version: {
-    type: String as PropType<string>,
+    type: String as PropType<TableProps.Version>,
     default: '1.0.0',
     description: `欄位設定 版本
       如果版本更換 會重置欄位設定`
   },
   settingKey: {
-    type: String as PropType<string>,
+    type: String as PropType<TableProps.SettingKey>,
     required: true,
     description: '欄位設定 在 indexedDB 上的 key'
   },

@@ -6,7 +6,7 @@ import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
 
-import type { TableParams, Sort } from '@/components'
+import type { TableCustom } from '@/components'
 import type {
   InputRefItem,
   // FormColumnsItem,
@@ -588,7 +588,7 @@ export const useTableSetting = (
     })
   }
 
-  const tableParams = shallowReactive<TableParams>({
+  const tableParams = shallowReactive<TableCustom.TableParams>({
     page,
     size,
     sort
@@ -624,30 +624,30 @@ export const useTableSetting = (
     downloadExcel,
     resetScroll: (tableRef?: TableRef) => {
       if (tableRef) {
-        return tableRef.resetScroll()
+        return tableRef?.resetScroll()
       } else if (_tableRef.value !== null) {
-        return _tableRef.value.resetScroll()
+        return _tableRef.value?.resetScroll()
       }
     },
     toggleSelection: (rows: Array<any>, tableRef?: TableRef) => {
       if (tableRef) {
-        return tableRef.toggleSelection(rows)
+        return tableRef?.toggleSelection(rows)
       } else if (_tableRef.value !== null) {
-        return _tableRef.value.toggleSelection(rows)
+        return _tableRef.value?.toggleSelection(rows)
       }
     },
     getSelectionRows: (tableRef?: TableRef) => {
       if (tableRef) {
-        return tableRef.getSelectionRows()
+        return tableRef?.getSelectionRows()
       } else if (_tableRef.value !== null) {
-        return _tableRef.value.getSelectionRows()
+        return _tableRef.value?.getSelectionRows()
       }
     },
-    getParams: (tableRef?: TableRef): TableParams => {
+    getParams: (tableRef?: TableRef): TableCustom.TableParams => {
       if (tableRef) {
-        return tableRef.getTableParams()
+        return tableRef?.getTableParams()
       } else if (_tableRef.value !== null) {
-        return _tableRef.value.getTableParams()
+        return _tableRef.value?.getTableParams()
       } else {
         return {
           ...tableParams
@@ -658,14 +658,14 @@ export const useTableSetting = (
       params: {
         page?: number
         size?: number
-        sort?: Sort
+        sort?: TableCustom.Sort
       },
       tableRef?: TableRef
     ) => {
       if (tableRef) {
-        tableRef.setTableParams(params)
+        tableRef?.setTableParams(params)
       } else if (_tableRef.value !== null) {
-        _tableRef.value.setTableParams(params)
+        _tableRef.value?.setTableParams(params)
       } else {
         tipLog('無法設定 Table 參數', [
           '給 table 的 ref',
@@ -680,9 +680,9 @@ export const useTableSetting = (
       const { page: defaultPage, size: defaultSize } = tableParams
 
       if (tableRef) {
-        tableRef.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
+        tableRef?.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
       } else if (_tableRef.value !== null) {
-        _tableRef.value.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
+        _tableRef.value?.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
       } else {
         tipLog('無法換頁', [
           '給 table 的 ref',

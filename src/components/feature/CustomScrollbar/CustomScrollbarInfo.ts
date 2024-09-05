@@ -4,7 +4,10 @@ export const version = '1.0.0'
 
 export declare namespace Custom {
   type Style = CSSProperties | CSSProperties[] | string[]
-  type OnScrollParams = { scrollLeft: number; scrollTop: number }
+  type OnScrollParams = {
+    scrollLeft: number
+    scrollTop: number
+  }
 }
 
 export declare namespace Props {

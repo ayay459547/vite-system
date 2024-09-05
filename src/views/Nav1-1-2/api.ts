@@ -2,19 +2,21 @@ import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal, cutTableData } from '@/lib/lib_utils'
 import { object_every } from '@/lib/lib_object'
-import type { Sort } from '@/components'
+import type { TableCustom } from '@/components'
 
 import { fakeData } from './fakeData'
 
 export type Params = {
-  page: number
-  size: number
-  sort: Sort
-
   userId: number
   id: number
   title: string
   completed: '' | '0' | '1'
+
+  page: number
+  size: number
+  sort?: TableCustom.Sort
+  sortingList?: TableCustom.SortingList
+  sortingMap?: TableCustom.SortingMap
 }
 
 export type TableData = {

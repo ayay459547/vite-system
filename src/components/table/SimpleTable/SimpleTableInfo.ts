@@ -2,20 +2,8 @@ import type { PropType } from 'vue'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+
 export const version = '1.0.0'
-
-export interface Props extends Record<string, any> {
-  modelValue?: Array<any> | any
-  isDraggable?: boolean | any
-  handle?: string | any
-  itemKey?: string | any
-  move?: Function | any
-
-  tableData?: Array<any> | any
-  tableColumns?: Array<any> | any
-
-  i18nModule?: ScopeKey
-}
 
 export declare namespace Custom {
   type RowCallback<T> =
@@ -130,3 +118,7 @@ export const props = {
     }
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

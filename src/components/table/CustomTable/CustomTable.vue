@@ -26,23 +26,7 @@ import ColumnSorting from './Components/ColumnSorting.vue'
 import GroupSorting from './Components/GroupSorting.vue'
 import TableMain from './TableMain.vue'
 
-import type {
-  Sort,
-  PageChange,
-  SortingList,
-  SortingMap,
-  Order,
-  TableParams,
-  // emit
-  RowClick,
-  HeaderClick,
-  ExpandChange,
-  // HeaderDragend,
-  Select,
-  SelectAll,
-  SelectionChange,
-  RowContextmenu
-} from './CustomTableInfo'
+import type { Custom, Emits } from './CustomTableInfo'
 import { version, props as tableProps } from './CustomTableInfo'
 
 const scopedId = getUuid('__i-table__')
@@ -121,7 +105,7 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const pageChange: PageChange = (page, pageSize) => {
+const pageChange: Custom.PageChange = (page, pageSize) => {
   currentPage.value = page
 
   emit('page-change', { page, pageSize })
@@ -135,7 +119,7 @@ const pageChange: PageChange = (page, pageSize) => {
 }
 
 // 單欄排序
-const currentSort = shallowRef<Sort>({
+const currentSort = shallowRef<Custom.Sort>({
   key: null,
   order: null
 })
@@ -161,11 +145,11 @@ const onSortChange = (props: {
   })
 }
 // 多欄排序
-const sortingList = ref<SortingList>([])
-const emitSortingData = computed<SortingMap>(() => {
+const sortingList = ref<Custom.SortingList>([])
+const emitSortingData = computed<Custom.SortingMap>(() => {
   // return sortingList.value.filter(item => item.order !== 'none')
 
-  return sortingList.value.reduce<SortingMap>((res, curr) => {
+  return sortingList.value.reduce<Custom.SortingMap>((res, curr) => {
     const { key, order } = curr
     switch (order) {
       case 'ascending':
@@ -176,7 +160,7 @@ const emitSortingData = computed<SortingMap>(() => {
         break
     }
 
-    return res as SortingMap
+    return res as Custom.SortingMap
   }, {})
 })
 
@@ -189,7 +173,7 @@ const activeSort = () => {
   })
 }
 const initSortingList = async () => {
-  sortingList.value = props.tableColumns.reduce<SortingList>((res, column) => {
+  sortingList.value = props.tableColumns.reduce<Custom.SortingList>((res, column) => {
     const _isOperations = column?.isOperations ?? false
 
     if (!_isOperations && (column?.isSorting ?? true)) {
@@ -197,7 +181,7 @@ const initSortingList = async () => {
         label: column.label,
         i18nLabel: column.i18nLabel,
         key: column.key,
-        order: (column?.order ?? 'none') as Order,
+        order: (column?.order ?? 'none') as Custom.Order,
         orderIndex: (column?.orderIndex ?? -1) as number
       })
     }
@@ -360,7 +344,7 @@ const optimizeAllColumnWidth = () => {
 }
 
 // Emit
-const onRowClick: RowClick = (row, column, event) => {
+const onRowClick: Emits.RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
 }
 const onSortingChange = () => {
@@ -374,29 +358,29 @@ const onSortingChange = () => {
     emitType: 'sorting-change'
   })
 }
-const onHeaderClick: HeaderClick = (column, event) => {
+const onHeaderClick: Emits.HeaderClick = (column, event) => {
   emit('header-click', column, event)
 }
-const onExpandChange: ExpandChange = (row, expanded) => {
+const onExpandChange: Emits.ExpandChange = (row, expanded) => {
   emit('expand-change', row, expanded)
 }
-const onHeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
+const onHeaderDragend: Emits.HeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   if (columnSetting.value) {
     const props = column?.rawColumnKey ?? column?.property
     columnSetting.value.setColumnWidth(props, newWidth)
   }
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const onSelect: Select = (selection, row) => {
+const onSelect: Emits.Select = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll: SelectAll = (selection: any) => {
+const onSelectAll: Emits.SelectAll = (selection: any) => {
   emit('select-all', selection)
 }
-const onSelectionChange: SelectionChange = (newSelection: any) => {
+const onSelectionChange: Emits.SelectionChange = (newSelection: any) => {
   emit('selection-change', newSelection)
 }
-const onRowContextmenu: RowContextmenu = (row, column, event) => {
+const onRowContextmenu: Emits.RowContextmenu = (row, column, event) => {
   emit('row-contextmenu', row, column, event)
 }
 const onLoad = () => {
@@ -415,7 +399,7 @@ const onLoad = () => {
  * 頁碼
  * 排序
  */
-const onShowChange = (props: { page: number; pageSize: number; sort: Sort, emitType?: string }) => {
+const onShowChange = (props: { page: number; pageSize: number; sort: Custom.Sort, emitType?: string }) => {
   const { page, pageSize, sort, emitType = 'show-change' } = props
 
   emit('show-change', {
@@ -537,7 +521,7 @@ defineExpose({
     }
   },
   setTableParams: (params: {
-    [P in keyof TableParams]?: TableParams[P]
+    [P in keyof Custom.TableParams]?: Custom.TableParams[P]
   }) => {
     const { page, size, sort, sortingList: _sortingList } = params
 

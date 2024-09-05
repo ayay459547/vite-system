@@ -2,6 +2,8 @@ import type { CSSProperties, PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type Header = string
   type Footer = string
@@ -44,3 +46,7 @@ export const props = {
     description: '卡片陰影顯示時機'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

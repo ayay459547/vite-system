@@ -6,22 +6,45 @@ import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
 import throttle from '@/lib/lib_throttle'
 
-type Placement =
-  | 'top'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'left'
-  | 'left-start'
-  | 'left-end'
-  | 'right'
-  | 'right-start'
-  | 'right-end'
+export declare namespace Custom {
+  type Placement =
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end'
+}
+
+export declare namespace Props {
+  type ClientX = number
+  type ClientY = number
+  type EventList = EventItem[]
+  type Options = Record<string, any>
+}
+
+export declare namespace Emits {
+  type Close = () => void
+}
+
+export declare namespace Expose {
+  type OpenPopover = (
+    clientX: number,
+    clientY: number,
+    eventList: EventItem[],
+    options?: EventOptions
+  ) => void
+  type ClosePopover = () => void
+}
 
 const visible = ref<boolean>(false)
-const placement = ref<Placement>('bottom')
+const placement = ref<Custom.Placement>('bottom')
 const left = ref<number>(0)
 const top = ref<number>(0)
 
@@ -30,19 +53,19 @@ const popoverWidth = ref(150)
 
 const props = defineProps({
   clientX: {
-    type: Number as PropType<number>,
+    type: Number as PropType<Props.ClientX>,
     default: 0
   },
   clientY: {
-    type: Number as PropType<number>,
+    type: Number as PropType<Props.ClientY>,
     default: 0
   },
   eventList: {
-    type: Array as PropType<EventItem[]>,
+    type: Array as PropType<Props.EventList>,
     default: () => []
   },
   options: {
-    type: Object as PropType<Record<string, any>>,
+    type: Object as PropType<Props.Options>,
     default: () => {
       return { width: 150 }
     }
@@ -57,14 +80,7 @@ const callEvent = (callback: Function, disabled: boolean) => {
   callback()
 }
 
-type OpenPopover = (
-  clientX: number,
-  clientY: number,
-  eventList: EventItem[],
-  options?: EventOptions
-) => void
-
-const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
+const openPopover: Expose.OpenPopover = (clientX, clientY, eventList, options) => {
   if (visible.value) return
   left.value = clientX
   top.value = clientY + 10
@@ -87,7 +103,7 @@ const openPopover: OpenPopover = (clientX, clientY, eventList, options) => {
   }, 100)
 }
 
-const closePopover = () => {
+const closePopover: Expose.ClosePopover = () => {
   window.removeEventListener('wheel', throttleClosePopover)
   window.removeEventListener('resize', throttleClosePopover)
 
@@ -102,16 +118,11 @@ onMounted(() => {
   openPopover(props.clientX, props.clientY, props.eventList, props.options)
 })
 
-interface Expose {
-  openPopover: OpenPopover
-  closePopover: () => void
-}
-
 const deletePopover = () => {
   emit('close')
 }
 
-defineExpose<Expose>({
+defineExpose({
   openPopover,
   closePopover
 })

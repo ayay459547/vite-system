@@ -4,6 +4,8 @@ import type { CustomSize, IconProps } from '@/components'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type Label = string
   type Type = 'primary' | 'success' | 'info' | 'warning' | 'danger'
@@ -85,3 +87,5 @@ export const props = {
 export declare namespace Emits {
   type Click = ($event: Event) => void
 }
+
+export declare namespace Expose {}

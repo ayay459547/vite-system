@@ -16,6 +16,7 @@ export declare namespace Custom {
     uuid: string
   }
   type FilesInfo = Array<Custom.FileInfo>
+  type UploadFile = File
 }
 
 export declare namespace Props {
@@ -59,9 +60,8 @@ export const props = {
   }
 }
 
-type UploadFile = File
 export declare namespace Emits {
-  type File = (files: Custom.FilesInfo, targetList: UploadFile[]) => void | any
+  type File = (files: Custom.FilesInfo, targetList: Custom.UploadFile[]) => void | any
 }
 
 export declare namespace Expose {

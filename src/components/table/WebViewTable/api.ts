@@ -2,31 +2,12 @@ import type { Api, ViewParams } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { message, isEmpty } from '@/lib/lib_utils'
 
-export interface Params extends ViewParams {
-  [key: string]: any
-}
-
-type CommonData = Record<string, any>
-export type ResponseData = CommonData
-export type FilterData = CommonData
-export type TableData = CommonData
-export type ExcelData = CommonData
-export type ResponseTableData = [Array<TableData>, number]
-
-export type FormatExcel = (row: any) => any
-export type FormatTable = (row: any) => any
-export type FormatSorting = (row: any) => any
-export type FakeData = Array<any>
-
-export type UrlParams = {
-  baseURL?: string
-  url: string
-}
+import type { Custom, Props } from './WebViewTableInfo'
 
 // 通用api url
 export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
 
-export const getUrlParams = (params: UrlParams) => {
+export const getUrlParams = (params: Custom.UrlParams) => {
   const { url = webViewUrl, baseURL = '' } = params
 
   if (!isEmpty(baseURL)) return { url, baseURL }
@@ -54,13 +35,13 @@ export const getWebViewParams = (params: ViewParams, isWebView: boolean) => {
 }
 
 const getData = async (
-  callback: (row: ResponseData) => TableData,
+  callback: (row: Custom.ResponseData) => Custom.TableData,
   params: any,
-  fakeData: FakeData,
+  fakeData: Props.FakeData,
   isFakeData: boolean,
-  url: UrlParams
-): Promise<ResponseTableData> => {
-  const resData = await ajax<Api<ResponseData[]>>(
+  url: Custom.UrlParams
+): Promise<Custom.ResponseTableData> => {
+  const resData = await ajax<Api<Array<Custom.ResponseData>>>(
     {
       ...url,
       method: 'post',
@@ -93,11 +74,11 @@ const getData = async (
 // excel
 export const getExcelData = async (
   params: any,
-  formatExcel: FormatExcel,
-  fakeData: FakeData,
+  formatExcel: Props.FormatExcel,
+  fakeData: Props.FakeData,
   isFakeData: boolean,
-  url: UrlParams
-): Promise<ExcelData[]> => {
+  url: Custom.UrlParams
+): Promise<Array<Custom.ExcelData>> => {
   const [excelData] = await getData(formatExcel, params, fakeData, isFakeData, url)
   return excelData
 }
@@ -105,11 +86,11 @@ export const getExcelData = async (
 // table
 export const getTableData = async (
   params: any,
-  formatTable: FormatTable,
-  fakeData: FakeData,
+  formatTable: Props.FormatTable,
+  fakeData: Props.FakeData,
   isFakeData: boolean,
-  url: UrlParams
-): Promise<ResponseTableData> => {
+  url: Custom.UrlParams
+): Promise<Custom.ResponseTableData> => {
   const [tableData, tableDataCount] = await getData(formatTable, params, fakeData, isFakeData, url)
   return [tableData, tableDataCount]
 }

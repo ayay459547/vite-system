@@ -5,6 +5,8 @@ import { computed, ref, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+
+import type { TableCustom } from '@/components'
 import {
   CustomPopover,
   CustomButton,
@@ -15,8 +17,6 @@ import {
   CustomTooltip
 } from '@/components'
 
-import type { Sorting, Order } from '../CustomTableInfo'
-
 const props = defineProps({
   i18nModule: {
     type: String as PropType<ScopeKey>,
@@ -25,7 +25,7 @@ const props = defineProps({
     description: 'i18nModule'
   },
   modelValue: {
-    type: Array as PropType<Sorting[]>,
+    type: Array as PropType<TableCustom.Sorting[]>,
     required: true
   },
   settingWidth: {
@@ -50,7 +50,7 @@ const emit = defineEmits(['update:modelValue', 'reset-sorting', 'submit'])
 
 const tempValue = computed({
   get: () => props.modelValue,
-  set: (value: Sorting[]) => {
+  set: (value: TableCustom.Sorting[]) => {
     emit('update:modelValue', value)
   }
 })
@@ -68,7 +68,7 @@ const activeIndexMap = computed(() => {
   }, {})
 })
 
-const setSortingValue = (order: Order, key: string) => {
+const setSortingValue = (order: TableCustom.Order, key: string) => {
   const columnIndex = props.modelValue.findIndex(item => item.key === key)
   const _temp = props.modelValue[columnIndex]
 

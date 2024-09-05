@@ -6,15 +6,15 @@ $z-index-map: () !default;
 $z-index-map: map.merge(
   (
     'select-option': 4000, // var(--i-z-index-select-option);
-    'loading': 3000, // var(--i-z-index-loading);
-    'swal2': 3000, // 在下方已使用
-    'search-detail': 2085, // var(--i-z-index-search-close);
-    'search-close': 2010, // var(--i-z-index-search-close);
-    'global-disabled': 2080, // var(--i-z-index-global-disabled);
-    'notification': 2050, // 在下方已使用
-    'tour': 2050, // var(--i-z-index-tour);
-    'drawer': 2020, // var(--i-z-index-drawer);
-    'login': 2010, // var(--i-z-index-login);
+    'loading': 3800, // var(--i-z-index-loading);
+    'swal2': 3600, // 在下方已使用
+    'search-detail': 3000, // var(--i-z-index-search-detail);
+    'search-close': 2700, // var(--i-z-index-search-close);
+    'global-disabled': 2500, // var(--i-z-index-global-disabled);
+    'notification': 2400, // 在下方已使用
+    'tour': 2350, // var(--i-z-index-tour);
+    'drawer': 2300, // var(--i-z-index-drawer);
+    'login': 2100, // var(--i-z-index-login);
     'modal': 2005, // 對應 CustomModal 的 minModalIndex
     'side': 2003, // var(--i-z-index-side);
     'v-loading': 2000, // element-ul 設定的

@@ -58,6 +58,7 @@ const popoverRef = ref()
     :title="props.title"
     :width="props.width"
     :trigger="props.trigger"
+    :popper-class="props.popperClass"
     :popper-style="props.popperStyle"
     :show-arrow="props.showArrow"
     :offset="props.offset"

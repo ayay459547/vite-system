@@ -2,6 +2,10 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {
+  type EventError = Error
+}
+
 export declare namespace Props {
   type Src = string
   type Fit = '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
@@ -78,11 +82,12 @@ export const props = {
   }
 }
 
-type EventError = Error
 export declare namespace Emits {
   type Load = (e: Event) => void
-  type Error = (e: EventError) => void
+  type Error = (e: Custom.EventError) => void
   type Switch = (e: number) => void
   type Close = () => void
   type Show = () => void
 }
+
+export declare namespace Expose {}

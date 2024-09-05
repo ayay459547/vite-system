@@ -8,26 +8,7 @@ import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import type {
-  Sort,
-  SpanMethod,
-  RowClassName,
-  RowStyle,
-  CellClassName,
-  CellStyle,
-  Load,
-  LazyLoadingStatus,
-  TableSize,
-  // emit
-  RowClick,
-  HeaderClick,
-  ExpandChange,
-  HeaderDragend,
-  Select,
-  SelectAll,
-  SelectionChange,
-  RowContextmenu
-} from './CustomTableInfo'
+import type { Props, Emits } from './CustomTableInfo'
 
 const scopedId = getUuid('__table-main__')
 
@@ -44,8 +25,16 @@ const props = defineProps({
     default: 0,
     description: '重新渲染用的key'
   },
+  showColumns: {
+    type: Array as PropType<Props.TableColumns>,
+    required: false,
+    default: () => {
+      return []
+    },
+    description: '顯示欄位'
+  },
   showData: {
-    type: Array as PropType<Array<any>>,
+    type: Array as PropType<Props.TableData>,
     required: false,
     default: () => {
       return []
@@ -57,16 +46,8 @@ const props = defineProps({
   //   required: false,
   //   description: '總資料筆數 計算虛擬渲染用'
   // },
-  showColumns: {
-    type: Array as PropType<Array<any>>,
-    required: false,
-    default: () => {
-      return []
-    },
-    description: '顯示欄位'
-  },
   sort: {
-    type: Object as PropType<Sort>,
+    type: Object as PropType<Props.Sort>,
     required: false,
     default: () => {
       return {
@@ -77,70 +58,70 @@ const props = defineProps({
     description: '資料存在 children 時 預設是否展開'
   },
   isShowNo: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<Props.IsShowNo>,
     required: false,
     default: false,
     description: '是否顯示編號'
   },
   // element ui
   rowKey: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.RowKey>,
     required: false,
     default: 'id',
     description: '每行資料的key 預設是id'
   },
   tableSize: {
-    type: String as PropType<TableSize>,
+    type: String as PropType<Props.TableSize>,
     required: false,
     description: '表格大小'
   },
   defaultExpandAll: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<Props.DefaultExpandAll>,
     required: false,
     description: '資料存在 children 時 預設是否展開'
   },
   spanMethod: {
-    type: Function as PropType<SpanMethod | any>,
+    type: Function as PropType<Props.SpanMethod | any>,
     description: '資料跨欄'
   },
   rowClassName: {
-    type: Function as PropType<RowClassName | any>,
+    type: Function as PropType<Props.RowClassName | any>,
     description: 'row class callback'
   },
   rowStyle: {
-    type: Function as PropType<RowStyle | any>,
+    type: Function as PropType<Props.RowStyle | any>,
     description: 'row style callback'
   },
   cellClassName: {
-    type: Function as PropType<CellClassName | any>,
+    type: Function as PropType<Props.CellClassName | any>,
     description: 'cell class callback'
   },
   cellStyle: {
-    type: Function as PropType<CellStyle | any>,
+    type: Function as PropType<Props.CellStyle | any>,
     description: 'cell style callback'
   },
   lazy: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<Props.Lazy>,
     description: '懶加載子節點'
   },
   load: {
-    type: Function as PropType<Load | any>,
+    type: Function as PropType<Props.Load | any>,
     description: '懶加載子節點回調函數'
   },
   treeProps: {
-    type: Object as PropType<Record<string, any> | any>,
+    type: Object as PropType<Props.TreeProps | any>,
     description: '懶加載子節點回調函數'
   },
   selection: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<Props.Selection>,
     description: 'checkbox'
   },
   isLazyLoading: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean as PropType<Props.IsLazyLoading>,
     description: '懶加載'
   },
   lazyLoadingStatus: {
-    type: String as PropType<LazyLoadingStatus>,
+    type: String as PropType<Props.LazyLoadingStatus>,
     description: '懶加載狀態'
   }
 })
@@ -162,7 +143,7 @@ const emit = defineEmits([
   'update-size'
 ])
 
-const onRowClick: RowClick = (row, column, event) => {
+const onRowClick: Emits.RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
 }
 const onSortChange = (props: {
@@ -173,13 +154,13 @@ const onSortChange = (props: {
   const { column, prop: key = '', order } = props
   emit('sort-change', { column, key, order })
 }
-const onHeaderClick: HeaderClick = (column: any, event: Event) => {
+const onHeaderClick: Emits.HeaderClick = (column: any, event: Event) => {
   emit('header-click', column, event)
 }
-const onExpandChange: ExpandChange = (row: any, expanded: boolean) => {
+const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
 }
-const onHeaderDragend: HeaderDragend = (
+const onHeaderDragend: Emits.HeaderDragend = (
   newWidth: number,
   oddWidth: number,
   column: any,
@@ -187,16 +168,16 @@ const onHeaderDragend: HeaderDragend = (
 ) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const onSelect: Select = (selection, row) => {
+const onSelect: Emits.Select = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll: SelectAll = selection => {
+const onSelectAll: Emits.SelectAll = selection => {
   emit('select-all', selection)
 }
-const onSelectionChange: SelectionChange = newSelection => {
+const onSelectionChange: Emits.SelectionChange = newSelection => {
   emit('selection-change', newSelection)
 }
-const onRowContextmenu: RowContextmenu = (row, column, event) => {
+const onRowContextmenu: Emits.RowContextmenu = (row, column, event) => {
   // event.preventDefault()
   emit('row-contextmenu', row, column, event)
 }

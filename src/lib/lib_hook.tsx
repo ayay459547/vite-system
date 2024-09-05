@@ -29,10 +29,8 @@ import {
 import {
   customRef,
   readonly,
-  reactive,
   onMounted,
   onUnmounted,
-  isRef,
   effectScope,
   watch
 } from 'vue'
@@ -44,7 +42,6 @@ import Async_Error from '@/views/Common/Async_Error.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -96,109 +93,6 @@ export const useLocalI18n = (i18nModule?: ScopeKey): LocalI18n => {
     ...localI18n,
     i18nTranslate,
     i18nTest
-  }
-}
-
-export type BoundingClientRect = {
-  target: Element | null
-  width: number
-  height: number
-  bottom: number
-  top: number
-  left: number
-  right: number
-  x: number
-  y: number
-}
-export type updateContentRect = () => BoundingClientRect
-/**
- * @author Caleb
- * @description 給 Dom元素 自動監聽大小變化
- *              需在 setup 中執行
- * @param {*} dom Dom元素
- * @param {Function} callback Dom元素變化時執行
- * @returns {Object} 大小
- */
-export function useBoundingClientRect(
-  dom: Ref<Element | null> | Element,
-  callback?: (contentRect: BoundingClientRect) => void
-): {
-  contentRect: BoundingClientRect
-  updateContentRect: updateContentRect
-} {
-  const defaultContentRect = {
-    target: null,
-    width: 0,
-    height: 0,
-    bottom: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    x: 0,
-    y: 0
-  }
-  const contentRect = reactive({
-    ...defaultContentRect
-  })
-
-  const updateContentRect = () => {
-    const target = isRef(dom) ? dom.value : dom
-    if (isEmpty(target)) return defaultContentRect
-
-    const boundingClientRect = target.getBoundingClientRect()
-
-    const {
-      width = 0,
-      height = 0,
-      bottom = 0,
-      top = 0,
-      left = 0,
-      right = 0,
-      x = 0,
-      y = 0
-    } = boundingClientRect ?? {}
-
-    contentRect.target = target ?? null
-    contentRect.width = width
-    contentRect.height = height
-    contentRect.bottom = bottom
-    contentRect.top = top
-    contentRect.left = left
-    contentRect.right = right
-    contentRect.x = x
-    contentRect.y = y
-
-    if (typeof callback === 'function') {
-      callback(contentRect)
-    }
-    return contentRect
-  }
-
-  const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
-    entries.forEach(() => {
-      updateContentRect()
-    })
-  }, 100) as ResizeObserverCallback
-
-  const RO = new ResizeObserver(ROcallback)
-
-  onMounted(() => {
-    if (isRef(dom) && !isEmpty(dom.value)) {
-      RO.observe(dom.value)
-    } else if (!isRef(dom) && !isEmpty(dom)) {
-      RO.observe(dom)
-    }
-  })
-
-  onUnmounted(() => {
-    if (RO) {
-      RO.disconnect()
-    }
-  })
-
-  return {
-    contentRect: contentRect,
-    updateContentRect
   }
 }
 
@@ -308,14 +202,14 @@ export const useDebouncedRefHistory = <Raw, Serialized = Raw>(source: Ref<Raw>, 
  * 2.支持事件回調：提供回調函數來處理拖拽開始、拖拽過程和拖拽結束等事件。
  * 3.簡化配置：支持多種配置選項，讓你可以根據需求定制拖拽行為。
  *
- * @param {MaybeElementRef} target ref的值 | Element
+ * @param {MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>} target ref的值 | Element
  * @param {UseDraggableOptions} options 其他設定
  * onStart: 拖拽開始時觸發的回調函數。
  * onMove: 拖拽過程中觸發的回調函數，會接收拖拽事件對象。
  * onEnd: 拖拽結束時觸發的回調函數。
  * @returns {UseDraggableReturn}
  */
-export const useDraggable = (target: MaybeElementRef, options?: UseDraggableOptions): UseDraggableReturn => {
+export const useDraggable = (target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>, options?: UseDraggableOptions): UseDraggableReturn => {
   return _useDraggable(target, options)
 }
 

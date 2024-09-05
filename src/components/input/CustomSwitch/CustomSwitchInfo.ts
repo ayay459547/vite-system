@@ -55,3 +55,5 @@ export const props = {
 export declare namespace Emits {
   type Change = (val: string | number | boolean) => void
 }
+
+export declare namespace Expose {}

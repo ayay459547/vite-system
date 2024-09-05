@@ -6,7 +6,6 @@ import type { UseHook } from '@/declare/hook'
 import {
   type DraggableCustom,
   CustomDraggable,
-  type SpanMethod,
   TableMain,
   CustomInput,
   CustomButton,
@@ -152,7 +151,7 @@ const spanMethodPoint = {
   restrictionName: ''
 }
 
-const rowSpanMethod: SpanMethod = data => {
+const rowSpanMethod: any = (data: any) => {
   // console.log(data)
   const { row, column } = data
   const { property = '' } = column

@@ -117,3 +117,5 @@ export declare namespace Emits {
   type Cancel = () => void
   type Submit = () => void
 }
+
+export declare namespace Expose {}

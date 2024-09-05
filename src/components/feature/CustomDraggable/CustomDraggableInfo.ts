@@ -169,3 +169,5 @@ export declare namespace Emits {
   type Clone = ($event: any) => void
   type Change = ($event: Custom.DraggableChange) => void
 }
+
+export declare namespace Expose {}

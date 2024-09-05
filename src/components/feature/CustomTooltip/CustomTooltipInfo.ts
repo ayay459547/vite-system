@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type Visible = boolean | null
   type Placement =
@@ -103,3 +105,7 @@ export const props = {
     description: '是否禁用'
   }
 }
+
+export declare namespace Emits {}
+
+export declare namespace Expose {}

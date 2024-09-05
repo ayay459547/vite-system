@@ -2,6 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
+export declare namespace Custom {}
+
 export declare namespace Props {
   type ModelValue = boolean
   type Direction = 'rtl' | 'ltr' | 'ttb' | 'btt'
@@ -62,3 +64,5 @@ export declare namespace Emits {
   type Close = () => void
   type Closed = () => void
 }
+
+export declare namespace Expose {}
