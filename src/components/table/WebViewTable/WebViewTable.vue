@@ -20,7 +20,8 @@ import {
   CustomSearch,
   CustomInput,
   CustomTooltip,
-  CustomModal
+  CustomModal,
+  TimeLineTable
 } from '@/components'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
@@ -610,7 +611,10 @@ const modal = reactive({
       hidden-footer
       :hidden-collapse="false"
     >
-      <div class="i-pa-md">TimeLineTable</div>
+      <TimeLineTable
+        :tableColumns="tableSetting.tableColumns"
+        :table-data="tableData"
+      />
     </CustomModal>
     <div class="web-view-time-line">
       <CustomTooltip trigger="hover" placement="top">
@@ -622,6 +626,7 @@ const modal = reactive({
         />
       </CustomTooltip>
     </div>
+
   </div>
 </template>
 

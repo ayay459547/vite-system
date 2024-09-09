@@ -8,6 +8,7 @@ export declare namespace Custom {
     label?: string
     description?: string
     status?: StatusType | ''
+    [key: string]: any
   } & any
 }
 

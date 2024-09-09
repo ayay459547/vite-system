@@ -99,6 +99,15 @@ export const isEmpty = (value: any): boolean => {
 }
 
 /**
+ * @description 判斷東西是否為數字(包含字串數字)
+ * @param {*} value
+ * @returns {Boolean}
+ */
+export const isNumeric = (value: any): boolean => {
+  return !isNaN(Number(value))
+}
+
+/**
  * @author Caleb
  * @description 取隨機生成 id
  * @param {String} text 前綴

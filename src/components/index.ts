@@ -430,8 +430,16 @@ export type {
   Props as SimpleTableProps,
   Emits as SimpleTableEmits,
   Expose as SimpleTableExpose
-} from './table/CustomTable/CustomTableInfo'
+} from './table/SimpleTable/SimpleTableInfo'
 export const SimpleTable = useAsyncComponent(() => import('./table/SimpleTable/SimpleTable.vue'), 'rect')
+
+export type {
+  Custom as TimeLineTableCustom,
+  Props as TimeLineTableProps,
+  Emits as TimeLineTableEmits,
+  Expose as TimeLineTableExpose
+} from './table/TimeLineTable/TimeLineTableInfo'
+export const TimeLineTable = useAsyncComponent(() => import('./table/TimeLineTable/TimeLineTable.vue'), 'rect')
 
 /**
  * Vxe Table

@@ -8,6 +8,9 @@ dayjs.extend(duration)
 dayjs.extend(weekOfYear)
 dayjs.extend(isoWeek)
 
+// @ts-ignore
+window.dayjs = dayjs
+
 export type DateType = string | Date | dayjs.Dayjs
 
 /**
@@ -63,9 +66,18 @@ export const getMilliseconds = (date: DateType, time: string): number => {
 }
 
 /**
+ * 確定某個日期在當年的第幾周
+ * @param {DateType} date 要計算的日期
+ * @returns {number} 當年的第幾周
+ */
+export const getWeekOfYear = (date: DateType): number => {
+  return dayjs(date).week()
+}
+
+/**
  * 確定某個日期在當月的第幾周
- * @param {DateType} date - 要計算的日期
- * @returns {number} - 當月的第幾周
+ * @param {DateType} date 要計算的日期
+ * @returns {number} 當月的第幾周
  */
 export const getWeekOfMonth = (date: DateType): number => {
   const startOfMonth = dayjs(date).startOf('month')

@@ -83,6 +83,12 @@ export interface ColumnItem {
   orderIndex?: number
   // 是否為特殊查詢
   isCondition?: boolean
+
+  // TimeLineTable
+  timeLineType?: 'group' | 'date' | 'none' | null | undefined
+  timeIndex?: number
+  isDate?: boolean
+  isTimeLineDate?: boolean
 }
 
 export interface Condition {

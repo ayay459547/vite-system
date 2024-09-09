@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { VxeTable } from 'vxe-table'
 import { VxeUI, VxeTooltip } from 'vxe-pc-ui'
 import 'vxe-pc-ui/styles/cssvar.scss'
@@ -28,6 +29,16 @@ const scopedId = getUuid(scopedName)
 
 const props = defineProps(VxeTableProps)
 
+const vxeTableRef = ref()
+
+const refreshColumn = () => {
+  vxeTableRef.value?.refreshColumn()
+}
+
+defineExpose({
+  refreshColumn
+})
+
 </script>
 
 <template>
@@ -35,6 +46,7 @@ const props = defineProps(VxeTableProps)
     <ElAutoResizer>
       <template #default="{ height }">
         <VxeTable
+          ref="vxeTableRef"
           :height="height ?? 0"
           :max-height="9999"
           :id="props.id"
@@ -50,6 +62,7 @@ const props = defineProps(VxeTableProps)
           :show-footer="props.showFooter"
           :border="props.border"
           :stripe="props.stripe"
+          :mergeCells="props.mergeCells"
         >
           <slot></slot>
         </VxeTable>
@@ -58,4 +71,16 @@ const props = defineProps(VxeTableProps)
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:global(.__vxe-table__) {
+  .vxe-table--tooltip-wrapper {
+    z-index: 9999 !important;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.vxe-table--tooltip-wrapper {
+  z-index: 9999 !important;
+}
+</style>
