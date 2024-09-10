@@ -16,7 +16,7 @@ import { formatDatetime } from '@/lib/lib_format'
 import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils'
 
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
-import type { Custom } from './TimeLineTableInfo'
+import type { Custom, Expose } from './TimeLineTableInfo'
 import { version, props as timeLineTableProps } from './TimeLineTableInfo'
 
 import DraggableItem from './Components/DraggableItem.vue'
@@ -38,8 +38,7 @@ const timeLevelOptions = ref([
   { index: 1, name: '日', active: true, value: 'day' }
   // { index: 0, name: '時', active: false, value: 'hour' }
 ])
-
-const acviteValueList = computed(() => {
+const acviteTimeLevelList = computed(() => {
   return timeLevelOptions.value.reduce((res, option) => {
     if (option.active && option.index >= baseLevelIndex.value) {
       res.push(option.value)
@@ -49,32 +48,113 @@ const acviteValueList = computed(() => {
 })
 
 const timeLineDateKey = ref('')
-const changeKey = (newDateKey: string) => {
+const changeKey = async (newDateKey: string) => {
   timeLineDateKey.value = newDateKey
+
+  await nextTick()
+  refreshColumn()
 }
 
-// 群組排序用資料
+// 群組排序用資料 X軸
 const groupColumnsSortMap: {
-  [key1: string]: {
-    [key2: string]: {
-      showIndex: number
-      count: number
-      columnIndex: number
-    }
-  }
+  [key: string]: number
 } = {}
-const mergeCells = []
+const mergeCells = ref([])
+const resetMergeCells = () => {
+  // 合併欄位資料 必需先排序好資料
+  mergeCells.value.splice(0)
+  const mergeMap: Record<string, {
+    __row__: number
+    __col__: number
+    __rowspan__: number
+  }> = {}
+  showData.value.forEach((rowData, rowIndex) => {
+    let mergeKey = ''
 
-// 群組欄位 X
+    groupColumns.value.forEach((groupColumn, groupColumnIndex) => {
+      const columnData = rowData[groupColumn.key]
+      mergeKey += `__${groupColumn.key}-${columnData}__`
+
+      if (!hasOwnProperty(mergeMap, mergeKey)) {
+        mergeMap[mergeKey] = {
+          __row__: rowIndex,
+          __col__: groupColumnIndex,
+          __rowspan__: 0
+        }
+      }
+      mergeMap[mergeKey].__rowspan__ += 1
+    })
+
+  })
+  Object.values(mergeMap).forEach(mergeCell => {
+    const {__row__, __col__, __rowspan__} = mergeCell
+
+    if (__row__ >= 0 && __col__ >= 0 && __rowspan__ >= 1) {
+      mergeCells.value.push({
+        row: __row__,
+        col: __col__,
+        rowspan: __rowspan__,
+        colspan: 1
+      })
+    }
+  })
+  console.log('vxeTableRef => ', vxeTableRef.value)
+
+  vxeTableRef.value?.setMergeCells(mergeCells.value)
+}
+
+// 群組欄位 X軸
 const groupColumns = ref([])
+const groupColumnsKey = computed<string[]>(() => {
+  return groupColumns.value.reduce((res, groupColumn) => {
+    if (!isEmpty(groupColumn.key)) {
+      res.push(groupColumn.key)
+    }
+    return res
+  }, [])
+})
 
-// 群組日期 Y
+// 群組日期 Y軸
 const groupDateColumns = ref([])
+const getGroupDateColumns = (dateGroup: Record<string, any>) => {
+  if (isEmpty(dateGroup)) return []
 
-// 日期線欄位
+  const groupDateList = Object.entries(dateGroup)
+
+  return groupDateList.sort((a, b) => {
+    const [a_column] = a
+    const [b_column] = b
+    if (quarterRegex.test(a_column) || quarterRegex.test(b_column)) {
+      return parseInt(a_column.replace(quarterPrefix, '')) - parseInt(b_column.replace(quarterPrefix, ''))
+    }
+    if (weekRegex.test(a_column) || weekRegex.test(b_column)) {
+      return parseInt(a_column.replace(weekPrefix, '')) - parseInt(b_column.replace(weekPrefix, ''))
+    }
+
+    const aDateTime = formatDatetime(`${a_column}`, 'YYYY-MM-DD HH:mm:ss')
+    const bDateTime = formatDatetime(`${b_column}`, 'YYYY-MM-DD HH:mm:ss')
+
+    return dayjs(aDateTime).valueOf() - dayjs(bDateTime).valueOf()
+  }).map(([dateColumnKey, subDateGroup]) => {
+    let title = dateColumnKey
+    if (quarterRegex.test(dateColumnKey)) {
+      title = `Q${dateColumnKey.replace(quarterPrefix, '')}`
+    } else if (weekRegex.test(dateColumnKey)) {
+      title = `W${dateColumnKey.replace(weekPrefix, '')}`
+    }
+
+    return {
+      key: dateColumnKey,
+      title: title,
+      columns: getGroupDateColumns(subDateGroup)
+    }
+  })
+}
+
+// 日期線欄位 Y軸
 const dateColumns = ref([])
 
-// 其他欄位
+// 其他欄位 none
 const otherColumns = ref([])
 
 const vxeTableRef = ref()
@@ -89,6 +169,30 @@ const isLoading = ref(true)
 const isShow = ref(false)
 
 const showData = ref([])
+/**
+ * 群組用資料
+ * key = 組群的資料 合併成key (matrixKey)
+ *
+ * 矩陣表 insertIndex(插入矩陣表的位置) x groupDate(最小群組日期)
+ * [
+ *  { 日期1: uuid, 日期2: uuid, 日期3: uuid }, (insertIndex)
+ *  { 日期1: uuid, (無)       , 日期3: uuid },
+ *  { (無)       , (無)       , 日期3: uuid }
+ * ]
+ * 如果日期存在 就加一條
+ * 資料顯示群組
+ */
+const matrixMap = new Map()
+const getMatrixMap = (rowData: any) => {
+  const keyList = groupColumnsKey.value.reduce((res, columnKey) => {
+    if (!isEmpty(rowData[columnKey])) {
+      res.push(rowData[columnKey])
+    }
+    return res
+  }, [])
+
+  return keyList.join('-')
+}
 
 const quarterPrefix = 'Quarter-'
 const quarterRegex = new RegExp(quarterPrefix)
@@ -97,181 +201,151 @@ const weekPrefix = 'Week-'
 const weekRegex = new RegExp(weekPrefix)
 
 // 初始化資料
-const initData = () => {
+const initData = async () => {
   isLoading.value = true
 
   for (let sortMapKey in groupColumnsSortMap) {
     delete groupColumnsSortMap[sortMapKey]
   }
-  mergeCells.splice(0)
   showData.value.splice(0)
+  matrixMap.clear()
 
   // 日期群組
   const _dateGroup = {}
+
   const _tableData = deepClone(props.tableData, [])
 
-  const mapData = _tableData.reduce((resMap, item, itemIndex) => {
-    const rowkey = getUuid('group-id')
-    const rowData = {...item}
-
-    if(hasOwnProperty(rowData, timeLineDateKey.value)) {
-      const timeLineDate = rowData[timeLineDateKey.value]
-
-      let tempRef = _dateGroup
-      let groupDate = ''
-
-      // 設定日期群組
-      const setDateGroup = (timeLineDateType: string, timeLineDate: string) => {
-        let dateColumnKey = ''
-        switch (timeLineDateType) {
-          case 'year':
-            dateColumnKey = formatDatetime(timeLineDate, 'YYYY')
-            break
-          case 'quarter':
-            dateColumnKey = `${quarterPrefix}${getQuarter(timeLineDate)}`
-            break
-          case 'month':
-            dateColumnKey = formatDatetime(timeLineDate, 'YYYY-MM')
-            break
-          case 'week':
-            dateColumnKey = `${weekPrefix}${getWeekOfYear(timeLineDate)}`
-            break
-          case 'day':
-            dateColumnKey = formatDatetime(timeLineDate, 'YYYY-MM-DD')
-            break
-        }
-
-        if (!hasOwnProperty(tempRef, dateColumnKey)) {
-          tempRef[dateColumnKey] = {}
-        }
-        if (dateColumnKey.length > 0) {
-          tempRef = tempRef[dateColumnKey]
-          groupDate = dateColumnKey
-        }
-      }
-
-      // 將一樣的資料放一起
-      const setSortMap = () => {
-        groupColumns.value.forEach((column, columnIndex) => {
-          let _sortMapRef = null
-          if (!hasOwnProperty(groupColumnsSortMap, column.key)) {
-            groupColumnsSortMap[column.key] = {}
-          }
-          _sortMapRef = groupColumnsSortMap[column.key]
-
-          const columnData = rowData[column.key] ?? 'empty'
-          if (!hasOwnProperty(_sortMapRef, columnData)) {
-            _sortMapRef[columnData] = {
-              showIndex: itemIndex,
-              count: 0,
-              columnIndex
-            }
-          }
-          // 計算合併用 目前只有第一欄 會合併
-          // if (columnIndex === 0) {
-          //   _sortMapRef[columnData].count++
-          // }
-        })
-      }
-
-      // 使用日期資料 群組
-      if (!isEmpty(timeLineDate)) {
-        acviteValueList.value.forEach(timeLineDateType => {
-          setDateGroup(timeLineDateType, timeLineDate)
-        })
-        tempRef = rowkey
-        dateColumns.value.forEach(dateColumn => {
-          const field = `${groupDate}-${dateColumn.key}`
-          const fieldData = rowData[dateColumn.key]
-          rowData[field] = fieldData
-        })
-
-        setSortMap()
-
-        // 設定表格資料
-        resMap.set(rowkey, rowData)
-      }
+  let rowIndex = -1
+  const tableMap = _tableData.reduce((resMap, item) => {
+    if(
+      // 沒該日期欄位資料 || 資料是空
+      !hasOwnProperty(item, timeLineDateKey.value) ||
+      isEmpty(item[timeLineDateKey.value])
+    ) {
+      return resMap
     }
 
+    let tempRef = _dateGroup
+    // 最小群組日期
+    let groupDate = ''
+
+    // 設定日期群組
+    const setDateGroup = (timeLineDateType: string) => {
+      let dateColumnKey = ''
+      const timeLineDate = item[timeLineDateKey.value]
+
+      switch (timeLineDateType) {
+        case 'year':
+          dateColumnKey = formatDatetime(timeLineDate, 'YYYY')
+          break
+        case 'quarter':
+          dateColumnKey = `${quarterPrefix}${getQuarter(timeLineDate)}`
+          break
+        case 'month':
+          dateColumnKey = formatDatetime(timeLineDate, 'YYYY-MM')
+          break
+        case 'week':
+          dateColumnKey = `${weekPrefix}${getWeekOfYear(timeLineDate)}`
+          break
+        case 'day':
+          dateColumnKey = formatDatetime(timeLineDate, 'YYYY-MM-DD')
+          break
+      }
+
+      if (!hasOwnProperty(tempRef, dateColumnKey)) {
+        tempRef[dateColumnKey] = {}
+      }
+      if (dateColumnKey.length > 0) {
+        tempRef = tempRef[dateColumnKey]
+        groupDate = dateColumnKey
+      }
+    }
+    // 使用日期資料 群組
+    acviteTimeLevelList.value.forEach(timeLineDateType => {
+      setDateGroup(timeLineDateType)
+    })
+
+    // 塞入矩陣表的資料 (隨機不重複)
+    const matrixId = getUuid('matrix-id')
+    tempRef = matrixId
+
+    // 矩陣表 合併成key
+    const matrixKey = getMatrixMap(item)
+    if (!matrixMap.has(matrixKey)) {
+      matrixMap.set(matrixKey, [])
+    }
+    // 矩陣表 insertIndex(插入矩陣表的位置) x groupDate(最小群組日期)
+    const matrixData = matrixMap.get(matrixKey)
+
+    let insertIndex = matrixData.findIndex((matrix: any) => {
+      return !hasOwnProperty(matrix, groupDate)
+    })
+
+    if (insertIndex === -1) {
+      insertIndex = matrixData.length
+      rowIndex++
+      matrixData.push({})
+    }
+
+    matrixData[insertIndex][groupDate] = matrixId
+    // 更新矩陣表資料
+    matrixMap.set(matrixKey, matrixData)
+
+    // 行資料的key = 合併成key + 插入矩陣表的位置
+    const rowKey = `${matrixKey}-${insertIndex}`
+    if (!resMap.has(rowKey)) {
+      resMap.set(rowKey, { rowKey, ...item })
+    }
+    const rowData = resMap.get(rowKey)
+
+    dateColumns.value.forEach(dateColumn => {
+      // 對應 GroupDateColumn field
+      const field = `${groupDate}-${dateColumn.key}`
+      const fieldData = item[dateColumn.key]
+      rowData[field] = fieldData
+    })
+
+    // 計算群組欄位的合併+排序
+    groupColumns.value.forEach(groupColumn => {
+      const sortMapKey = `${groupColumn.key}-${item[groupColumn.key]}`
+
+      if (!hasOwnProperty(groupColumnsSortMap, sortMapKey)) {
+        groupColumnsSortMap[sortMapKey] = rowIndex
+      }
+    })
+
+    // 設定表格資料
+    resMap.set(rowKey, rowData)
     return resMap
   }, new Map())
 
-  const getGroupDateColumns = (dateGroup: Record<string, any>) => {
-    if (isEmpty(dateGroup)) return []
-
-    const groupDateList = Object.entries(dateGroup)
-
-    return groupDateList.sort((a, b) => {
-      const [a_column] = a
-      const [b_column] = b
-      if (quarterRegex.test(a_column) || quarterRegex.test(b_column)) {
-        return parseInt(a_column.replace(quarterPrefix, '')) - parseInt(b_column.replace(quarterPrefix, ''))
-      }
-      if (weekRegex.test(a_column) || weekRegex.test(b_column)) {
-        return parseInt(a_column.replace(weekPrefix, '')) - parseInt(b_column.replace(weekPrefix, ''))
-      }
-
-      const aDateTime = formatDatetime(`${a_column}`, 'YYYY-MM-DD HH:mm:ss')
-      const bDateTime = formatDatetime(`${b_column}`, 'YYYY-MM-DD HH:mm:ss')
-
-      return dayjs(aDateTime).valueOf() - dayjs(bDateTime).valueOf()
-    }).map(([dateColumnKey, subDateGroup]) => {
-      let title = dateColumnKey
-      if (quarterRegex.test(dateColumnKey)) {
-        title = `Q${dateColumnKey.replace(quarterPrefix, '')}`
-      } else if (weekRegex.test(dateColumnKey)) {
-        title = `W${dateColumnKey.replace(weekPrefix, '')}`
-      }
-
-      return {
-        key: dateColumnKey,
-        title: title,
-        columns: getGroupDateColumns(subDateGroup)
-      }
-    })
-  }
+  // 日期群組
   groupDateColumns.value = getGroupDateColumns(_dateGroup)
 
-  // 欄位合併
-  for (let columnKey in groupColumnsSortMap) {
-    const columnSortData = groupColumnsSortMap[columnKey]
-
-    for (let mergeCellKey in columnSortData) {
-      const { showIndex = 0, count = 0, columnIndex = 0 } = columnSortData[mergeCellKey]
-      if (count > 1) {
-        mergeCells.push({ row: showIndex, col: columnIndex, rowspan: count, colspan: 1 })
+  // 排序資料
+  showData.value = Array.from(tableMap.values()).sort((a, b) => {
+    for (let groupColumn of groupColumns.value) {
+      const [a_sortMapKey, b_sortMapKey] = [
+        `${groupColumn.key}-${a[groupColumn.key]}`,
+        `${groupColumn.key}-${b[groupColumn.key]}`
+      ]
+      if (groupColumnsSortMap[a_sortMapKey] !== groupColumnsSortMap[b_sortMapKey]) {
+        return groupColumnsSortMap[a_sortMapKey] - groupColumnsSortMap[b_sortMapKey]
       }
     }
-  }
 
-  showData.value = Array.from(mapData.values()).sort((a, b) => {
-    for (let columnKey in groupColumnsSortMap) {
-      const columnSortData = groupColumnsSortMap[columnKey]
-      if (
-        hasOwnProperty(columnSortData, a[columnKey]) &&
-        hasOwnProperty(columnSortData, b[columnKey])
-      ) {
-        return columnSortData[a[columnKey]].showIndex - columnSortData[b[columnKey]].showIndex
-      }
-    }
     return 0
   })
 
-  console.log({
-    dateGroup: _dateGroup,
-    groupDateColumns: groupDateColumns.value,
-    showData: showData.value,
-    groupColumnsSortMap,
-    mergeCells
-    // __showIndex
-  })
-
+  await nextTick()
   setTimeout(() => {
+    resetMergeCells()
+    isShow.value = true
     isLoading.value = false
-  }, 500)
+  }, 1600)
 }
 
-const init = () => {
+const init: Expose.Init = async () => {
   const _groupColumns = []
   const _dateColumns = []
   const _otherColumns = []
@@ -296,11 +370,8 @@ const init = () => {
     const [aIndex, bIndex] = [ a?.timeIndex ?? -1, b?.timeIndex ?? -1 ]
     return aIndex - bIndex
   }
-
   groupColumns.value = _groupColumns.sort(sortCallback)
-
   dateColumns.value = _dateColumns.sort(sortCallback)
-
   otherColumns.value = _otherColumns.sort(sortCallback)
 
   // 設定時間線的key
@@ -309,16 +380,16 @@ const init = () => {
   })
   changeKey(timeLineDateColumn?.key ?? '')
 
+  await nextTick()
   initData()
-
-  setTimeout(() => {
-    isShow.value = true
-  }, 300)
 }
 
 onMounted(() => {
-  isLoading.value = true
   init()
+})
+
+defineExpose({
+  init
 })
 
 </script>
@@ -330,7 +401,7 @@ onMounted(() => {
     :class="[version, scopedId]"
   >
     <VxeTable
-      v-if="isShow"
+      v-show="isShow"
       ref="vxeTableRef"
       :key="renderKey"
       show-overflow

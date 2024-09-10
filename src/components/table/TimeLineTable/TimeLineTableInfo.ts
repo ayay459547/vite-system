@@ -34,4 +34,6 @@ export const props = {
 
 export declare namespace Emits {}
 
-export declare namespace Expose {}
+export declare namespace Expose {
+  type Init = () => void
+}

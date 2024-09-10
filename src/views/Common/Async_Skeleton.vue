@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 const bindStyle = computed(() => {
-  let width = '100%'
+  let width = '99%'
   let height = 'fit-content'
 
   switch (props.variant) {
@@ -35,7 +35,7 @@ const bindStyle = computed(() => {
     case 'image':
     case 'circle':
     case 'rect':
-      height = '100%'
+      height = '99%'
       break
   }
 
@@ -75,5 +75,6 @@ const bindStyle = computed(() => {
 <style lang="scss" scoped>
 .page-skeleton {
   background-color: var(--i-color-system-page);
+  overflow: hidden;
 }
 </style>

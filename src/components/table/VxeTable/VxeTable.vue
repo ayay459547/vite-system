@@ -18,6 +18,7 @@ import zhTW from 'vxe-table/lib/locale/lang/zh-TW'
 import { ElAutoResizer } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
+import type { Custom, Expose } from './VxeTableInfo'
 import { version, props as VxeTableProps } from './VxeTableInfo'
 
 VxeUI.setI18n('zh-TW', zhTW)
@@ -31,12 +32,23 @@ const props = defineProps(VxeTableProps)
 
 const vxeTableRef = ref()
 
-const refreshColumn = () => {
+const refreshColumn: Expose.RefreshColumn = () => {
   vxeTableRef.value?.refreshColumn()
+}
+const updateData: Expose.UpdateData = () => {
+  console.log('updateData => ')
+  vxeTableRef.value?.updateData()
+}
+
+const setMergeCells: Expose.SetMergeCells = (merges: Custom.Merges) => {
+  console.log('setMergeCells => ')
+  vxeTableRef.value?.setMergeCells(merges)
 }
 
 defineExpose({
-  refreshColumn
+  refreshColumn,
+  updateData,
+  setMergeCells
 })
 
 </script>

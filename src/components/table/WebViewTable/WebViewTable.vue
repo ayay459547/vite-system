@@ -300,6 +300,13 @@ const initData = async (tableParams: any) => {
 }
 
 const customTableRef = ref()
+const timeLineTableRef = ref()
+const isShowTimeLineTable = computed(() => {
+  return tableSetting.tableColumns.some(tableColumn => {
+    return tableColumn?.isDate ?? false
+  })
+})
+
 /**
  * 確保 CustomTable 初始化 排序(initSortingList) + 欄位(initShowColumns)
  * 才可以送出api
@@ -337,7 +344,14 @@ const init = async (params?: any, type?: string) => {
 
     setTimeout(() => {
       isLoading.value = false
-    }, 300)
+    }, 320)
+
+    // 時間線表格 同步更新
+    setTimeout(() => {
+      if (modal.timeLine) {
+        timeLineTableRef.value?.init()
+      }
+    }, 800)
 
     emit('init-end', [resData, resDataCount])
     // console.log('resData => ', resData)
@@ -604,6 +618,7 @@ const modal = reactive({
 
     <!-- 時間線表格 -->
     <CustomModal
+      v-if="isShowTimeLineTable"
       v-model="modal.timeLine"
       :title="i18nTranslate('datetime-table', defaultModuleType)"
       :modal="false"
@@ -612,11 +627,12 @@ const modal = reactive({
       :hidden-collapse="false"
     >
       <TimeLineTable
+        ref="timeLineTableRef"
         :tableColumns="tableSetting.tableColumns"
         :table-data="tableData"
       />
     </CustomModal>
-    <div class="web-view-time-line">
+    <div v-show="isShowTimeLineTable" class="web-view-time-line">
       <CustomTooltip trigger="hover" placement="top">
         <template #content>{{ i18nTranslate('datetime-table', defaultModuleType) }}</template>
         <CustomButton
