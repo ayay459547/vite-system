@@ -1,10 +1,11 @@
 import type { PropType, Ref } from 'vue'
 import type { ElTourStep } from 'element-plus'
 
-export const version = '1.0.0'
+export const version = '__CustomTour_1.0.0__'
 
-export declare namespace Custom {
-  type Placement = 'top' | 'top-start' | 'top-end'
+export declare namespace Types {
+  type Placement =
+    |'top' | 'top-start' | 'top-end'
     |'bottom' | 'bottom-start' | 'bottom-end'
     |'left' | 'left-start' | 'left-end'
     |'right' | 'right-start' | 'right-end'
@@ -15,7 +16,7 @@ export declare namespace Custom {
     title?: string // 標題
     description?: string // 說明
     showArrow?: boolean // 是否顯示箭頭
-    placement?: Custom.Placement
+    placement?: Types.Placement
   }
 }
 
@@ -24,11 +25,10 @@ export declare namespace Props {
   type Current = number
   type ZIndex = number
   type ShowArrow = boolean
-  type Placement = Custom.Placement
+  type Placement = Types.Placement
   type TargetAreaClickable = boolean
-  type Steps = Array<Custom.Step>
+  type Steps = Array<Types.Step>
 }
-
 export const props = {
   modelValue: {
     type: Boolean as PropType<Props.ModelValue>,
@@ -75,6 +75,11 @@ export const props = {
   }
 }
 
-export declare namespace Emits {}
+export declare namespace Emits {
+  type Close = (current: number) => void
+  type Finish = () => void
+  type Change = (current: number) => void
+  type StepClose = () => void
+}
 
 export declare namespace Expose {}

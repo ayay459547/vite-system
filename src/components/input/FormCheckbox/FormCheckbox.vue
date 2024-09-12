@@ -1,54 +1,16 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed } from 'vue'
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-export type ModelValue = CheckboxValueType | CheckboxGroupValueType | any
+import type { Props, Emits } from './FormCheckboxInfo'
+import { version, props as formCheckboxProps } from './FormCheckboxInfo'
 
-export type Option = {
-  label: string
-  value: string | number | boolean | null
-  disabled?: boolean
-  data?: any
-  color?: string
-}
-export type Options = Array<Option>
+const scopedId = getUuid(version)
 
-const props = defineProps({
-  modelValue: {
-    type: [Array, String, Number, Boolean] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  options: {
-    type: Array as PropType<Options>,
-    default() {
-      return []
-    }
-  },
-  label: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  // element ui plus
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  indeterminate: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onChange: Function as PropType<(e: CheckboxGroupValueType | CheckboxValueType) => void>
-})
+const props = defineProps(formCheckboxProps)
 
 const bindAttributes = computed(() => {
   return {
@@ -59,9 +21,12 @@ const bindAttributes = computed(() => {
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const onEvent = {
-  groupChange: (value: CheckboxGroupValueType): void => emit('change', value),
-  change: (value: CheckboxValueType): void => emit('change', value)
+const onEvent: {
+  groupChange: Emits.Change<CheckboxGroupValueType>
+  change: Emits.Change<CheckboxValueType>
+} = {
+  groupChange: value => emit('change', value),
+  change: value => emit('change', value)
 }
 
 const validateRes = computed<string>(() => {
@@ -71,7 +36,7 @@ const validateRes = computed<string>(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value)
   }
 })
@@ -84,7 +49,6 @@ const getStyle = (isChecked: boolean, color?: string) => {
   return { color }
 }
 
-const scopedId = getUuid('__i-checkbox__')
 </script>
 
 <template>
@@ -100,7 +64,7 @@ const scopedId = getUuid('__i-checkbox__')
       >
         <ElCheckbox
           v-for="item in options"
-          :key="`checkbox-${item.value}-${scopedId}`"
+          :key="`${item.value}-${scopedId}`"
           :label="item.value"
           :value="item.value"
           :validate-event="false"
@@ -140,7 +104,7 @@ const scopedId = getUuid('__i-checkbox__')
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-checkbox__) {
   &.validate-error .el-checkbox__inner {

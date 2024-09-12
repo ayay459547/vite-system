@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomTooltip/CustomTooltip.md?raw'
-import type { Options, TooltipProps } from '@/components'
+import type { Options, CustomTooltipProps } from '@/components'
 import {
   CustomInput,
   CustomDivider,
@@ -27,13 +27,13 @@ const placementOptions = [
   { label: 'right-start', value: 'right-start' },
   { label: 'right-end', value: 'right-end' }
 ]
-const placement = ref<TooltipProps.Placement>('top')
+const placement = ref<CustomTooltipProps.Placement>('top')
 
 const triggerOptions = [
   { label: 'click', value: 'click' },
   { label: 'hover', value: 'hover' }
 ]
-const trigger = ref<TooltipProps.Trigger>('hover')
+const trigger = ref<CustomTooltipProps.Trigger>('hover')
 
 const showArrowOptions: Options<any> = [
   { label: '是', value: true },

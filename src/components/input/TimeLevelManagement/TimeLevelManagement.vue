@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
+
+import type { UseHook } from '@/declare/hook'
 import {
   CustomPopover,
   CustomIcon,
@@ -7,7 +9,15 @@ import {
   CustomButton
 } from '@/components'
 
+import type { Types } from './TimeLevelManagementInfo'
 import { props as managementProps } from './TimeLevelManagementInfo'
+
+const props = defineProps(managementProps)
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, i18nTest } = useHook({
+  i18nModule: props.i18nModule
+})
 
 const emit = defineEmits([
   'activeChange',
@@ -15,42 +25,47 @@ const emit = defineEmits([
   'update:baseLevelIndex'
 ])
 
-const props = defineProps(managementProps)
-
 const baseLevelIndex = computed(() => props.baseLevelIndex)
 const timeLevelActive = computed(() => {
   if(props.activeLevelIndexs) {
-    // 由activeLevelIndex判斷options是否為active
+    // 由 activeLevelIndex 判斷 options 是否為 active
     return props.options.map(option =>
       props.activeLevelIndexs.includes(option.index)
     )
-  }
-  else {
-    // 把active綁訂在options上
+  } else {
+    // 把 active 綁訂在 options 上
     return props.options.map(option => option.active)
   }
 })
 
-const setTimeLevelActive = timeLevel => {
-  //切換checkBox
+const setTimeLevelActive = (timeLevel: Types.TimeLevelOption) => {
+  // 切換 checkBox
   timeLevel.active =  !timeLevel.active
   emit('activeChange')
 }
-const setBaseLevel = timeLevel => {
+const setBaseLevel = (timeLevel: Types.TimeLevelOption) => {
   emit('update:baseLevelIndex', timeLevel.index)
   emit('baseChange', timeLevel.index)
 }
 
-const isUpperLevel = timeLevel => {
-  return timeLevel.index >= baseLevelIndex.value
-}
-const isBaseLevel = timeLevel => {
+const isBaseLevel = (timeLevel: Types.TimeLevelOption) => {
   return timeLevel.index === baseLevelIndex.value
 }
-const getOptionStyle = timeLevel => {
-  if(isBaseLevel(timeLevel)) return 'base-level' //基準時間維度
-  else if(isUpperLevel(timeLevel)) return 'upper-level' //大於基準維度的時間維度
-  else return 'lower-level' //小於基準維度的時間維度
+const isUpperLevel = (timeLevel: Types.TimeLevelOption) => {
+  return timeLevel.index >= baseLevelIndex.value
+}
+const getOptionClass = (timeLevel: Types.TimeLevelOption) => {
+  if(isBaseLevel(timeLevel)) return 'base-level' // 基準時間維度
+  if(isUpperLevel(timeLevel)) return 'upper-level' // 大於基準維度的時間維度
+  return 'lower-level' // 小於基準維度的時間維度
+}
+
+// i18nTranslate
+const getTranslateLabel = (timeLevel: Types.TimeLevelOption) => {
+  const label = i18nTest(timeLevel?.i18nLabel ?? '')
+    ? i18nTranslate(timeLevel.i18nLabel)
+    : (timeLevel?.label ?? timeLevel?.name)
+  return label
 }
 
 </script>
@@ -64,31 +79,22 @@ const getOptionStyle = timeLevel => {
     <template #default>
       <div class="option-container">
         <template v-for="(timeLevel, index) in props.options" :key="index">
-          <div class="option-item" :class="getOptionStyle(timeLevel)">
+          <div class="option-item" :class="getOptionClass(timeLevel)">
             <CustomInput
-              v-model="timeLevelActive[index]"
+              :model-value="timeLevelActive[index]"
+              :label="getTranslateLabel(timeLevel)"
               hidden-label
-              :label="timeLevel.name"
               type="checkbox"
               @change="setTimeLevelActive(timeLevel)"
             />
             <CustomButton
-              v-if="isBaseLevel(timeLevel)"
-              style="color: orange;"
-              icon-type="fas"
+              :icon-type="isBaseLevel(timeLevel) ? 'fas' : 'far'"
+              class="star-btn"
               icon-name="star"
               icon-size="small"
               text
               size="small"
-            />
-            <CustomButton
-              v-else
               @click="setBaseLevel(timeLevel)"
-              icon-type="far"
-              icon-name="star"
-              icon-size="small"
-              text
-              size="small"
             />
           </div>
         </template>
@@ -97,8 +103,8 @@ const getOptionStyle = timeLevel => {
 
     <template #reference>
       <CustomIcon
-        class="icon-trigger"
-        size="small"
+        class="cursor-pointer"
+        :size="props.iconSize"
         :icon="['far', 'clock']"
       />
     </template>
@@ -113,28 +119,32 @@ const getOptionStyle = timeLevel => {
   }
   &-item {
     display: flex;
-    padding-left: 8px;
-    padding-right: 4px;
+    padding: 0 4px 0 8px;
     align-items: center;
+    border-bottom: 3px solid #00000000;
+
+    transition-duration: 0.2s;
+    &:hover {
+      background-color: var(--el-color-primary-light-9);
+    }
+
     &.lower-level {
-      background-color: darkgray;
+      background-color: var(--el-text-color-disabled);
       opacity: 0.8;
     }
     &.base-level {
-      background-color: rgb(255, 231, 186);
-      border-bottom: 3px solid orange;
+      // background-color: rgb(255, 231, 186);
+      // border-bottom: 3px solid orange;
+      background-color: var(--el-color-warning-light-7);
+      border-bottom: 3px solid var(--el-color-warning-light-5);
+
+      .star-btn {
+        color: var(--i-color-orange);
+      }
+      &:hover {
+        background-color: var(--el-color-warning-light-8);
+      }
     }
   }
-  &-name {
-    width: 100%;
-    text-align: center;
-    align-items: center;
-  }
 }
-.icon {
-  &-trigger {
-    cursor: pointer;
-  }
-}
-
 </style>

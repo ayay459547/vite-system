@@ -5,7 +5,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type RowCallback<T> =
   | ((
       data: {
@@ -39,10 +39,10 @@ export declare namespace Props {
   type TableData = Array<any> | any
   type TableColumns = Array<any> | any
 
-  type RowClassName = Custom.RowCallback<string>
-  type RowStyle = Custom.RowCallback<Record<string, any>>
-  type CellClassName = Custom.CellCallback<string>
-  type CellStyle = Custom.CellCallback<Record<string, any>>
+  type RowClassName = Types.RowCallback<string>
+  type RowStyle = Types.RowCallback<Record<string, any>>
+  type CellClassName = Types.CellCallback<string>
+  type CellStyle = Types.CellCallback<Record<string, any>>
 
   type I18nModule = ScopeKey
   type HideHeader = boolean

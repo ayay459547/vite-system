@@ -5,7 +5,7 @@ import { reactive } from 'vue'
 import throttle from '@/lib/lib_throttle'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 
-import type { Custom } from '../WeekScheduleInfo'
+import type { Types } from '../WeekScheduleInfo'
 
 import {
   FPS,
@@ -29,13 +29,13 @@ const props = defineProps({
 })
 
 // 暫時的工時分配
-const tempPlanTime = reactive<Custom.PlanTime>({
+const tempPlanTime = reactive<Types.PlanTime>({
   start: '00:00',
   startSecond: 0,
   end: '00:00',
   endSecond: 0
 })
-const tempPlanStyle = reactive<Custom.PlanStyle>({
+const tempPlanStyle = reactive<Types.PlanStyle>({
   top: 0,
   height: 0,
   display: 'none'
@@ -96,7 +96,7 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
 }
 
 // 確認有暫時分配 新增
-const checkCreatePlan = (checkTimeIsExist: Custom.CheckTimeIsExist) => {
+const checkCreatePlan = (checkTimeIsExist: Types.CheckTimeIsExist) => {
   // 移除 EventListener
   props.scheduleContainer.removeEventListener('mousemove', mousemoveEvent)
 

@@ -6,7 +6,7 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as watermarkProps } from './CustomWatermarkInfo'
 
-const scopedId = getUuid('__i-watermark__')
+const scopedId = getUuid(version)
 
 const props = defineProps(watermarkProps)
 const subProps = props.sub.map(_props => {
@@ -66,10 +66,10 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <div
-    :class="`CustomWatermarkInfo_${version} ${scopedId} fit-${props.sizeFit}`"
-    class="__watermark-wrapper"
+    class="watermark-wrapper"
+    :class="[scopedId, `fit-${props.sizeFit}`]"
   >
-    <template v-for="(item, index) in subProps" :key="`watermark-${index}-${scopedId}`">
+    <template v-for="(item, index) in subProps" :key="`${index}-${scopedId}`">
       <ElWatermark
         style="position: absolute; width: 100%; height: 100%"
         :width="item.width"
@@ -103,20 +103,22 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__watermark {
-  &-wrapper {
-    position: relative;
+div[class*="__CustomWatermark"] {
+  &.watermark {
+    &-wrapper {
+      position: relative;
+    }
   }
-}
 
-.fit {
-  &-parent {
-    width: 100%;
-    height: 100%;
-  }
-  &-children {
-    width: fit-content;
-    height: fit-content;
+  &.fit {
+    &-parent {
+      width: 100%;
+      height: 100%;
+    }
+    &-children {
+      width: fit-content;
+      height: fit-content;
+    }
   }
 }
 </style>

@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomDividerView_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type LeftWidth = number | null

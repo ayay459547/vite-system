@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__GanttChart_1.0.0__'
 
-export declare namespace GanttData {
+export declare namespace Types {
   type Type = string
   type List = Array<
     [
@@ -14,46 +14,57 @@ export declare namespace GanttData {
   >
 }
 
+export declare namespace Props {
+  type Left = number
+  type DataZoomX = number
+  type DateFormatX = string
+  type IntervalX = number
+  type MinX = string
+  type MaxX = string
+  type GanttData = Array<{
+    type: Types.Type
+    list: Types.List
+  }>
+  type BarTextCallback = (value: any, title: string) => string
+  type BarColorCallback = (value: any) => string
+  type TooltipCallback = (value: any, start: string, end: string, title: string) => string
+  type TooltipPositionCallback = (x: number, y: number) => { x: number, y: number }
+}
 export const props = {
   left: {
-    type: Number as PropType<number>,
+    type: Number as PropType<Props.Left>,
     default: 150,
     description: '給左邊 type 的空間'
   },
   dataZoomX: {
-    type: Number as PropType<number>,
+    type: Number as PropType<Props.DataZoomX>,
     default: 100,
     description: 'x軸預設百分比'
   },
   dateFormatX: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.DateFormatX>,
     default: 'YYYY-MM-DD',
     description: '決定 x 軸上方的日期顯示'
   },
   intervalX: {
-    type: Number as PropType<number>,
+    type: Number as PropType<Props.IntervalX>,
     default() {
       return 1000 * 60 * 60 * 24
     },
     description: 'x軸 時間增加毫秒'
   },
   minX: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.MinX>,
     default: null,
     description: 'x軸 最小時間 YYYY-MM-DD hh:mm'
   },
   maxX: {
-    type: String as PropType<string>,
+    type: String as PropType<Props.MaxX>,
     default: null,
     description: 'x軸 最大時間 YYYY-MM-DD hh:mm'
   },
   ganttData: {
-    type: Array as PropType<
-      {
-        type: GanttData.Type
-        list: GanttData.List
-      }[]
-    >,
+    type: Array as PropType<Props.GanttData>,
     default() {
       return [
         {
@@ -84,14 +95,15 @@ export const props = {
     }
   },
   barTextCallback: {
-    type: Function,
+    type: Function as PropType<Props.BarTextCallback>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     default: (value: any, title: string) => {
       return title
     },
     description: '自訂甘特圖的條狀 顯示的文字 有給value值 標題'
   },
   barColorCallback: {
-    type: Function,
+    type: Function as PropType<Props.BarColorCallback>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     default: (value: any) => {
       return '#3073ac'
@@ -99,26 +111,39 @@ export const props = {
     description: '自訂甘特圖的條狀 顯示的顏色 有給value值'
   },
   tooltipCallback: {
-    type: Function,
-    default: (value: any, start: number, end: number, title: string) => {
-      return `<div 
-                class="gantt-tooltip" 
-                style="display: flex; flex-direction: column; gap: 8px;"
-            >
-                <div style="font-size: 1.2em;">${title}</div>
-                <div>${start}</div>
-                <div>${end}</div>
-            </div>`
+    type: Function as PropType<Props.TooltipCallback>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    default: (value: any, start: string, end: string, title: string) => {
+      return `
+        <div 
+          class="gantt-tooltip" 
+          style="display: flex; flex-direction: column; gap: 8px;"
+        >
+          <div style="font-size: 1.2em;">${title}</div>
+          <div>${start}</div>
+          <div>${end}</div>
+        </div>
+      `
     },
-    description: `自訂滑鼠移入時 顯示的東西
-        有給 value 值 開始時間 結束時間 標題
+    description: `
+      自訂滑鼠移入時 顯示的東西
+      有給 value 值 開始時間 結束時間 標題
     `
   },
   tooltipPositionCallback: {
-    type: Function,
+    type: Function as PropType<Props.TooltipPositionCallback>,
     default: (x: number, y: number) => {
       return { x, y }
     },
     description: '自訂滑鼠移入時 顯示的位置'
   }
+}
+
+export declare namespace Emits {
+  type TypeClick = ([number, string]) => void
+  type ItemClick = (params: any) => void
+}
+
+export declare namespace Expose {
+  type Init = () => void
 }

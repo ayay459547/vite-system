@@ -53,8 +53,7 @@ const onInput = (value: string) => {
 
 ## Element UI Plus
 
-[https://element-plus.org/en-US/component/input.html]
-(https://element-plus.org/en-US/component/input.html)
+https://element-plus.org/en-US/component/input.html
 
 ### Attributes ( props )
 

@@ -4,11 +4,10 @@ import Draggable from 'vuedraggable'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-import type { Custom, Emits } from './CustomDraggableInfo'
+import type { Types, Emits } from './CustomDraggableInfo'
 import { version, props as draggableProps } from './CustomDraggableInfo'
 
-const scopedName = '__i-draggable__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(draggableProps)
 
@@ -37,7 +36,7 @@ const onRemove: Emits.Remove = ($event: any) => emit('remove', $event)
 const onChoose: Emits.Choose = ($event: any) => emit('choose', $event)
 const onUnchoose: Emits.Unchoose = ($event: any) => emit('unchoose', $event)
 const onClone: Emits.Clone = ($event: any) => emit('clone', $event)
-const onChange: Emits.Change = ($event: Custom.DraggableChange) => emit('change', $event)
+const onChange: Emits.Change = ($event: Types.DraggableChange) => emit('change', $event)
 
 const listValue = computed({
   get() {
@@ -57,14 +56,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div
-    :class="[
-      `CustomDraggable_${version}`,
-      scopedId,
-      scopedName
-    ]"
-    class="draggable-container"
-  >
+  <div class="draggable-container" :class="scopedId">
     <Draggable
       v-model="listValue"
       :handle="props.handle"
@@ -116,41 +108,44 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__i-draggable__.draggable {
-  &-container {
-    display: contents;
+div[class*="__CustomDraggable"] {
+  &.draggable {
+    &-container {
+      display: contents;
 
-    .draggable {
-      width: 100%;
-      display: flex;
-      // height: 100%;
+      .draggable {
+        width: 100%;
+        display: flex;
+        // height: 100%;
+      }
     }
   }
-}
-.__i-draggable__ .ghost {
-  opacity: 0.7;
-  background: var(--el-color-primary-light-7);
-}
 
-.__i-draggable__ .list-group {
-  // width: 100%;
-  // height: 100%;
-  border-bottom: 1px solid #ffffff00;
+  .ghost {
+    opacity: 0.7;
+    background: var(--el-color-primary-light-7);
+  }
 
-  &-item {
-    background-color: inherit;
-    border-bottom: 1px solid var(--el-border-color);
+  .list-group {
+    // width: 100%;
+    // height: 100%;
+    border-bottom: 1px solid #ffffff00;
 
-    &.stripe {
-      &:nth-child(even) {
-        background-color: var(--el-color-info-light-9);
-        transition-duration: 0.3s;
-      }
+    &-item {
+      background-color: inherit;
+      border-bottom: 1px solid var(--el-border-color);
 
-      &:hover,
-      &:nth-child(even):hover {
-        background-color: var(--el-color-info-light-8);
-        transition-duration: 0.3s;
+      &.stripe {
+        &:nth-child(even) {
+          background-color: var(--el-color-info-light-9);
+          transition-duration: 0.3s;
+        }
+
+        &:hover,
+        &:nth-child(even):hover {
+          background-color: var(--el-color-info-light-8);
+          transition-duration: 0.3s;
+        }
       }
     }
   }

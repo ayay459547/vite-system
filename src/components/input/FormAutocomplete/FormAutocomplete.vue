@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElAutocomplete } from 'element-plus'
 
@@ -7,52 +6,16 @@ import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export type FetchSuggestions = (queryString: string, callback: (data: any) => void) => void
-type ModelValue = string | number | null
+import type { Props, Emits, Expose } from './FormAutocompleteInfo'
+import { version, props as formAutocompleteProps } from './FormAutocompleteInfo'
+
+const scopedId = getUuid(version)
+
+const props = defineProps(formAutocompleteProps)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
-})
-
-const props = defineProps({
-  modelValue: {
-    type: [String, Number, null] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  // element ui plus
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  valueKey: {
-    type: String as PropType<string>,
-    default: 'value'
-  },
-  fitInputWidth: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  fetchSuggestions: {
-    type: Function as PropType<FetchSuggestions>,
-    required: false
-  },
-  placeholder: {
-    type: String as PropType<string>,
-    required: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onSelect: Function as PropType<(item: ModelValue) => void>,
-  onChange: Function as PropType<(value: string | number) => void>
 })
 
 const bindAttributes = computed(() => {
@@ -69,12 +32,21 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits(['update:modelValue', 'select', 'blur', 'change'])
+const emit = defineEmits([
+  'update:modelValue',
+  'select',
+  'blur',
+  'change'
+])
 
-const onEvent = {
-  select: (item: ModelValue): void => emit('select', item),
-  blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: string | number): void => emit('change', value)
+const onEvent: {
+  select: Emits.Select
+  blur: Emits.Blur
+  change: Emits.Change
+} = {
+  select: item => emit('select', item),
+  blur: event => emit('blur', event),
+  change: value => emit('change', value)
 }
 
 const validateRes = computed<string>(() => {
@@ -84,7 +56,7 @@ const validateRes = computed<string>(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value)
     emit('change', value)
   }
@@ -97,20 +69,15 @@ const hasSlot = (prop: string): boolean => {
 }
 
 const elAutocompleteRef = ref()
-defineExpose({
-  focus: (): void => {
-    if (elAutocompleteRef.value) {
-      elAutocompleteRef.value.focus()
-    }
-  },
-  blur: (): void => {
-    if (elAutocompleteRef.value) {
-      elAutocompleteRef.value.blur()
-    }
-  }
-})
 
-const scopedId = getUuid('__i-autocomplete__')
+const focus: Expose.Focus = () => {
+  elAutocompleteRef.value?.focus()
+}
+const blur: Expose.Blur = () => {
+  elAutocompleteRef.value?.blur()
+}
+defineExpose({ focus, blur })
+
 </script>
 
 <template>
@@ -149,7 +116,7 @@ const scopedId = getUuid('__i-autocomplete__')
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-autocomplete__) {
   .el-input__wrapper {

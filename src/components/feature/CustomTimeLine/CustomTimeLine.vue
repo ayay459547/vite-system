@@ -6,8 +6,7 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as timeLineProps } from './CustomTimeLineInfo'
 
-const scopedName = '__i-time-line__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(timeLineProps)
 
@@ -15,20 +14,14 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
+
 </script>
 
 <template>
-  <ElTimeline
-    class="time-line-container"
-    :class="[
-      `CustomTimeLine_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <ElTimeline :class="scopedId">
     <ElTimelineItem
       v-for="(option, optionIndex) in props.options"
-      :key="`time-line-${optionIndex}-${scopedId}`"
+      :key="`${optionIndex}-${scopedId}`"
       v-bind="option"
     >
       <template v-if="hasSlot('dot')" #dot>

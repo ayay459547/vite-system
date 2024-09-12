@@ -4,11 +4,10 @@ import { ElScrollbar } from 'element-plus'
 
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import type { Custom, Emits, Expose } from './CustomScrollbarInfo'
+import type { Types, Emits, Expose } from './CustomScrollbarInfo'
 import { version, props as scrollbarProps } from './CustomScrollbarInfo'
 
-const scopedName = '__i-scroll-bar__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(scrollbarProps)
 
@@ -19,7 +18,7 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const onScroll: Emits.Scroll = ($event: Custom.OnScrollParams) => {
+const onScroll: Emits.Scroll = ($event: Types.OnScrollParams) => {
   const { scrollLeft, scrollTop } = $event
   emit('scroll', { scrollLeft, scrollTop })
 }
@@ -72,8 +71,7 @@ defineExpose({
     :role="props.role"
     :aria-label="props.ariaLabel"
     :aria-orientation="props.ariaOrientation"
-    class="scroll-bar"
-    :class="[`CustomScrollbar_${version}`, scopedId, scopedName]"
+    :class="scopedId"
     @scroll="onScroll"
   >
     <template v-if="hasSlot('default')" #default>

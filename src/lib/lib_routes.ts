@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { UseHookReturn } from '@/declare/hook'
 import type { RouterTree, Navigation } from '@/declare/routes'
-import type { IconProps } from '@/components'
+import type { CustomIconProps } from '@/components'
 import { type RouterType, routerTypeIcon } from '@/router/setting'
 import { isEmpty } from '@/lib/lib_utils'
 
@@ -114,11 +114,11 @@ export const refactorRoutes = <T>(
   return res
 }
 
-const getIcon = (icon: [IconProps.Type, string] | string): [IconProps.Type, string] => {
+const getIcon = (icon: [CustomIconProps.Type, string] | string): [CustomIconProps.Type, string] => {
   if (typeof icon === 'string') return ['fas', icon]
   return icon
 }
-const getLastTypeIcon = (systemType: RouterType[]): [IconProps.Type, string] => {
+const getLastTypeIcon = (systemType: RouterType[]): [CustomIconProps.Type, string] => {
   const lastType = systemType[systemType.length - 1]
   return routerTypeIcon[lastType]
 }
@@ -129,7 +129,7 @@ const getLastTypeIcon = (systemType: RouterType[]): [IconProps.Type, string] => 
  * @param {Object} nav 路由
  * @returns {Array} 圖示
  */
-const getRouteIcon = (nav: Navigation | null | undefined): [IconProps.Type, string] => {
+const getRouteIcon = (nav: Navigation | null | undefined): [CustomIconProps.Type, string] => {
   // 如果是 locatehome
   if ([null, undefined].includes(nav)) return ['fas', 'list']
 

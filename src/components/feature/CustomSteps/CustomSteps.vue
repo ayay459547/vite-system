@@ -6,7 +6,7 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as stopsProps } from './CustomStepsInfo'
 
-const scopedId = getUuid('__i-steps__')
+const scopedId = getUuid(version)
 
 const props = defineProps(stopsProps)
 
@@ -14,6 +14,7 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
+
 </script>
 
 <template>
@@ -25,12 +26,11 @@ const hasSlot = (prop: string): boolean => {
     :finish-status="props.finishStatus"
     :align-center="props.alignCenter"
     :simple="props.simple"
-    :class="`CustomSteps_${version} ${scopedId}`"
-    class="__steps-container"
+    :class="scopedId"
   >
     <ElStep
       v-for="(option, optionIndex) in props.options"
-      :key="`step-${optionIndex}-${scopedId}`"
+      :key="`${optionIndex}-${scopedId}`"
       :title="option.label"
       v-bind="option"
     >
@@ -49,10 +49,8 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__steps {
-  &-container {
-    width: 100%;
-    height: fit-content;
-  }
+div[class*="__CustomSteps"] {
+  width: 100%;
+  height: fit-content;
 }
 </style>

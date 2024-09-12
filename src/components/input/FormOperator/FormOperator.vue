@@ -1,85 +1,23 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed, customRef, useSlots, ref, onMounted, inject, nextTick } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import type { Options } from '@/components'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { numberFormat } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
-export type OperatorValue = string | number | null
-export type ModelValue = [OperatorOptions, OperatorValue]
+import type { Types, Props, Emits, Expose } from './FormOperatorInfo'
+import { version, props as formOperatorProps } from './FormOperatorInfo'
+
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const scopedId = getUuid('__i-operator__')
-
-const props = defineProps({
-  modelValue: {
-    type: Array as unknown as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  // 數字
-  onlyNumber: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  round: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  max: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  min: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  // element ui plus
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  options: {
-    type: Array as PropType<Options>,
-    default() {
-      return [
-        // { label: '=', value: 'equal' },
-        // { label: '>', value: 'greatterThan' },
-        // { label: '>=', value: 'greatterThanOrEqualTo' },
-        // { label: '<', value: 'lessThan' },
-        // { label: '<=', value: 'lessThanOrEqualTo' },
-        // { label: '<>', value: 'notEqual' }
-      ]
-    }
-  },
-  placeholder: {
-    type: String as PropType<string>,
-    required: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: any) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: any) => void>,
-  onChange: Function as PropType<(value: any) => void>,
-  onInput: Function as PropType<(value: any) => void>
-})
+const props = defineProps(formOperatorProps)
 
 const bindAttributes = computed(() => {
   const attributes: any = {
@@ -94,7 +32,14 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits(['update:modelValue', 'clear', 'focus', 'blur', 'input', 'change'])
+const emit = defineEmits([
+  'update:modelValue',
+  'clear',
+  'focus',
+  'blur',
+  'input',
+  'change'
+])
 
 const isFocus = ref(false)
 
@@ -104,35 +49,39 @@ onMounted(() => {
   lastValue = props.modelValue[1]
 })
 // 共用事件
-const onEvent = {
-  focus: (e: FocusEvent): void => {
+const onEvent: {
+  focus: Emits.Focus
+  clear: Emits.Clear
+  blur: Emits.Blur
+} = {
+  focus: $event => {
     isFocus.value = true
-    emit('focus', e)
+    emit('focus', $event)
   },
-  clear: (): void => emit('clear'),
-  blur: async (e: FocusEvent): Promise<void> => {
+  clear: () => emit('clear'),
+  blur: async $event => {
     isFocus.value = false
     await nextTick()
     // 300豪秒內沒有點在輸入框做事 就取消聚焦
     setTimeout(() => {
       if (!isFocus.value) {
-        emit('blur', e)
+        emit('blur', $event)
       }
     }, 300)
   }
 }
 // 選擇框事件
 const onInputEvent = {
-  input: (value: string | number): void => {
+  input: (value: Types.OperatorValue) => {
     isFocus.value = true
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
     emit('input', [_selectValue, value])
   },
-  change: (value: any) => {
+  change: (value: Types.OperatorValue) => {
     isFocus.value = false
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
 
     let _value = value
     // 數字
@@ -150,7 +99,7 @@ const onInputEvent = {
       if (typeof _value === 'number') {
         // 取小數點到第幾位
         if (!isEmpty(props.round)) {
-          _value = numberFormat(_value, {
+          _value = numberFormat<number>(_value, {
             type: 'round',
             toFixed: props.round
           })
@@ -172,7 +121,7 @@ const onInputEvent = {
       _value = _value.replace(/^(\s+)|(\s+)$/g, '')
     }
 
-    const emitValue: ModelValue = [_selectValue, _value]
+    const emitValue: Props.ModelValue = [_selectValue, _value]
     tempValue.value = emitValue
 
     /**
@@ -194,13 +143,13 @@ const onSelectEvent = {
   input: (value: string | number): void => {
     isFocus.value = true
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
     emit('input', [_selectValue, value])
   },
   change: (value: string) => {
     isFocus.value = false
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as ModelValue
+    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
 
     /**
      * select 有值 || 原本有值
@@ -222,13 +171,13 @@ const validateRes = computed<string>(() => {
 })
 
 // [select, input]
-const tempValue = customRef<ModelValue>((track, trigger) => {
+const tempValue = customRef<Props.ModelValue>((track, trigger) => {
   return {
     get: () => {
       track()
       return props.modelValue
     },
-    set: (value: ModelValue) => {
+    set: (value: Props.ModelValue) => {
       emit('update:modelValue', value)
       trigger()
     }
@@ -237,14 +186,14 @@ const tempValue = customRef<ModelValue>((track, trigger) => {
 
 const selectValue = computed({
   get: () => props.modelValue[0],
-  set: (value: OperatorOptions) => {
+  set: (value: Types.OperatorOptions) => {
     tempValue.value = [value, props.modelValue[1]]
   }
 })
 
 const inputValue = computed({
   get: () => props.modelValue[1],
-  set: (value: OperatorValue) => {
+  set: (value: Types.OperatorValue) => {
     tempValue.value = [props.modelValue[0], value]
   }
 })
@@ -256,18 +205,14 @@ const hasSlot = (prop: string): boolean => {
 }
 
 const elInputRef = ref()
-defineExpose({
-  focus: (): void => {
-    if (elInputRef.value) {
-      elInputRef.value.focus()
-    }
-  },
-  blur: (): void => {
-    if (elInputRef.value) {
-      elInputRef.value.blur()
-    }
-  }
-})
+
+const focus: Expose.Blur = () => {
+  elInputRef.value?.focus()
+}
+const blur: Expose.Blur = () => {
+  elInputRef.value?.blur()
+}
+defineExpose({ focus, blur })
 
 // 紀錄上一次的 change input 值
 const prevChangeInput = ref<any>('')
@@ -304,7 +249,7 @@ const onEnter = async () => {
           <div class="__i-select__">
             <ElSelect
               v-model="selectValue"
-              :placeholder="i18nTranslate('pleaseSelect')"
+              :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
               :validate-event="false"
               :options="props.options"
               v-bind="bindAttributes"
@@ -345,7 +290,7 @@ const onEnter = async () => {
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-operator__) {
   .el-input__wrapper {

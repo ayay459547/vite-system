@@ -12,7 +12,7 @@ import {
 import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { Custom, Emits, Expose } from './CustomUploadInfo'
+import type { Types, Emits, Expose } from './CustomUploadInfo'
 import { version, props as uploadProps } from './CustomUploadInfo'
 import { getFileTypeList, getIconClass } from './variable'
 
@@ -33,7 +33,7 @@ const drag = ref(null)
 const active = ref(false)
 
 const targetList: File[] = []
-const files = ref<Custom.FilesInfo>([])
+const files = ref<Types.FilesInfo>([])
 
 const limitTypeList = computed(() => {
   if (isEmpty(props.limitType)) return []
@@ -97,7 +97,7 @@ const initFilesData = async (target: FileList) => {
     const fileType = getFileType(_target)
     const { name, type, size, lastModified, webkitRelativePath } = _target
 
-    const info: Custom.Info = {
+    const info: Types.Info = {
       src: '',
       fileSize: byteConvert(size),
       fileType: fileType,
@@ -146,7 +146,7 @@ const remove = async (fileIndex: number) => {
   }, 500)
 }
 
-const onFile: Emits.File = (files: Custom.FilesInfo, targetList: File[]) => {
+const onFile: Emits.File = (files: Types.FilesInfo, targetList: File[]) => {
   emit('file', files, targetList)
 }
 
@@ -229,7 +229,7 @@ const getFormData: Expose.GetFormData = () => {
 
 const getFiles: Expose.GetFiles = () => {
   const _files = getProxyData(files.value)
-  return deepClone<Custom.FilesInfo>([], _files)
+  return deepClone<Types.FilesInfo>([], _files)
 }
 
 defineExpose({

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 
 import markdown from '@/components/feature/CustomBadge/CustomBadge.md?raw'
-import type { BadgeProps } from '@/components'
+import type { CustomBadgeProps } from '@/components'
 import { CustomInput, CustomDivider, CustomMarkdown, CustomBadge, CustomButton } from '@/components'
 
 const typeOptions = [
@@ -12,7 +12,7 @@ const typeOptions = [
   { label: 'danger', value: 'danger' },
   { label: 'info', value: 'info' }
 ]
-const type = ref<BadgeProps.Type>('primary')
+const type = ref<CustomBadgeProps.Type>('primary')
 
 const value = ref(20)
 

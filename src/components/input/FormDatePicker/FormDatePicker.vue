@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElDatePicker } from 'element-plus'
 
@@ -7,77 +6,19 @@ import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export type DatePickerType =
-  | 'year'
-  | 'month'
-  | 'date'
-  | 'dates'
-  | 'datetime'
-  | 'week'
-  | 'datetimerange'
-  | 'daterange'
-  | 'monthrange'
-export type Shortcuts = {
-  i18nLabel?: string
-  text: string
-  value: () => [number, number]
-}
+import type { Props, Emits, Expose } from './FormDatePickerInfo'
+import { version, props as formDatePickerProps } from './FormDatePickerInfo'
 
-type BaseValue = string | null
-type ModelValue = BaseValue | [BaseValue, BaseValue]
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const props = defineProps({
-  modelValue: {
-    type: [Array, String, null] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  // element ui plus
-  type: {
-    type: String as PropType<DatePickerType>,
-    default: 'date'
-  },
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  format: {
-    type: String as PropType<string>,
-    default: 'YYYY-MM-DD'
-  },
-  valueFormat: {
-    type: String as PropType<string>,
-    default: 'YYYY-MM-DD'
-  },
-  shortcuts: {
-    type: Array as PropType<Shortcuts[]>,
-    required: false
-  },
-  placeholder: {
-    type: String as PropType<string>,
-    required: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(e: ModelValue) => void>
-})
+const props = defineProps(formDatePickerProps)
 
-const getTranslateShortcuts = shortcuts => {
+const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
   if (!shortcuts) return []
   return shortcuts.map(shortcut => {
     return {
@@ -103,7 +44,12 @@ const bindAttributes = computed(() => {
   return attributes
 })
 
-const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'change'])
+const emit = defineEmits([
+  'update:modelValue',
+  'blur',
+  'focus',
+  'change'
+])
 
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
@@ -112,7 +58,7 @@ const validateRes = computed<string>(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value)
   }
 })
@@ -124,28 +70,31 @@ const hasSlot = (prop: string): boolean => {
 }
 
 // event
-const onEvent = {
-  focus: (e: FocusEvent): void => emit('focus', e),
-  blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: ModelValue): void => emit('change', value)
+const onEvent: {
+  focus: Emits.Focus
+  blur: Emits.Blur
+  change: Emits.Change
+} = {
+  focus: $event => emit('focus', $event),
+  blur: $event => emit('blur', $event),
+  change: value => emit('change', value)
 }
 
-const scopedId = getUuid('__i-date-picker__')
-
 const elDatePickerRef = ref()
-defineExpose({
-  focus: (): void => {
-    if (elDatePickerRef.value) {
-      elDatePickerRef.value.focus()
-      elDatePickerRef.value.handleOpen()
-    }
-  },
-  blur: (): void => {
-    if (elDatePickerRef.value) {
-      elDatePickerRef.value.handleClose()
-    }
+
+const focus: Expose.Focus = () => {
+  if (elDatePickerRef.value) {
+    elDatePickerRef.value.focus()
+    elDatePickerRef.value.handleOpen()
   }
-})
+}
+const blur: Expose.Blur = () => {
+  if (elDatePickerRef.value) {
+    elDatePickerRef.value.handleClose()
+  }
+}
+defineExpose({ focus, blur })
+
 </script>
 
 <template>
@@ -154,7 +103,7 @@ defineExpose({
       ref="elDatePickerRef"
       v-model="inputValue"
       class="__i-date-picker__"
-      :placeholder="i18nTranslate('pleaseSelect')"
+      :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
       :start-placeholder="i18nTranslate('startTime-time')"
       :end-placeholder="i18nTranslate('endTime-time')"
       :class="[`validate-${validateRes}`]"
@@ -173,7 +122,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-date-picker__) {
   &.el-date-editor {

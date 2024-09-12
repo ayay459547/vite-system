@@ -6,8 +6,7 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as dividerProps } from './CustomDividerInfo'
 
-const scopedName = '__i-divider__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(dividerProps)
 
@@ -23,7 +22,7 @@ const hasSlot = (prop: string): boolean => {
     :border-style="props.borderStyle"
     :content-position="props.contentPosition"
     class="divider-container"
-    :class="[`CustomDividerInfo_${version}`, scopedId, scopedName]"
+    :class="scopedId"
   >
     <template v-if="hasSlot('default')" #default>
       <slot></slot>
@@ -32,10 +31,9 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__i-divider__.divider {
+div[class*="__CustomDivider"].divider {
   &-container {
     width: 100%;
-    // height: fit-content;
   }
 }
 </style>

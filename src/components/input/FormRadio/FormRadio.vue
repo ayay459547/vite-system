@@ -1,43 +1,15 @@
 <script setup lang="ts">
-import { type PropType, computed } from 'vue'
+import { computed } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 
-export type Options = Array<{
-  label: string
-  value: string | number | boolean
-  disabled?: boolean
-  data?: any
-  color?: string
-}>
+import type { Props, Emits } from './FormRadioInfo'
+import { version, props as formRadioProps } from './FormRadioInfo'
 
-type ModelValue = number | string | boolean | null
+const scopedId = getUuid(version)
 
-const props = defineProps({
-  modelValue: {
-    type: [Boolean, String, Number, null] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  options: {
-    type: Array as PropType<Options>,
-    default() {
-      return []
-    }
-  },
-  // element ui plus
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onChange: Function as PropType<(e: ModelValue) => void>
-})
+const props = defineProps(formRadioProps)
 
 const bindAttributes = computed(() => {
   return {
@@ -47,8 +19,10 @@ const bindAttributes = computed(() => {
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const onEvent = {
-  change: (value: ModelValue): void => emit('change', value)
+const onEvent: {
+  change: Emits.Change
+} = {
+  change: (value: Props.ModelValue): void => emit('change', value)
 }
 
 const validateRes = computed<string>(() => {
@@ -58,12 +32,10 @@ const validateRes = computed<string>(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value)
   }
 })
-
-const scopedId = getUuid('__i-radio__')
 
 const getStyle = (isSelected: boolean, color?: string) => {
   if (!isSelected) return {}
@@ -72,6 +44,7 @@ const getStyle = (isSelected: boolean, color?: string) => {
 
   return { color }
 }
+
 </script>
 
 <template>
@@ -110,7 +83,7 @@ const getStyle = (isSelected: boolean, color?: string) => {
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-radio__) {
   &.validate-error .el-radio__inner {

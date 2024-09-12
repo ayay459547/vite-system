@@ -5,7 +5,7 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomButton } from '@/components'
+import { CustomSwitch } from '@/components'
 
 const value = ref(false)
 </script>

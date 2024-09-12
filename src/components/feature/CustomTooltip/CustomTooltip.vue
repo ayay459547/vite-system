@@ -6,8 +6,7 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as tooltipProps } from './CustomTooltipInfo'
 
-const scopedName = '__i-tooltip__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(tooltipProps)
 
@@ -26,6 +25,7 @@ const tempValue = computed({
     emit('update:visible', value)
   }
 })
+
 </script>
 
 <template>
@@ -43,12 +43,7 @@ const tempValue = computed({
     :popper-options="props.popperOptions"
     :disabled="props.disabled"
     effect="light"
-    class="tooltip-container"
-    :class="[
-      `CustomTooltip_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="scopedId"
   >
     <template #default>
       <slot></slot>

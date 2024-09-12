@@ -4,15 +4,15 @@ import { ElCarousel, ElCarouselItem } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
 
+import type { Emits, Expose } from './CustomCarouselInfo'
 import { version, props as carouselProps } from './CustomCarouselInfo'
 
-const scopedId = getUuid('__i-carousel__')
+const scopedId = getUuid(version)
 
 const props = defineProps(carouselProps)
 
 const emit = defineEmits(['change'])
-
-const onChange = (curIndex: number, prevIndex: number) => {
+const onChange: Emits.Change = (curIndex: number, prevIndex: number) => {
   emit('change', curIndex, prevIndex)
 }
 
@@ -22,26 +22,28 @@ const hasSlot = (prop: string): boolean => {
 }
 
 const carouselRef = ref(null)
-defineExpose({
-  setActiveItem: (item: number | string) => {
-    // 切換至指定的 Carousel
-    //number: index in items
-    //string: name of item
-    carouselRef?.value.setActiveItem(item)
-  },
-  prev: () => {
-    // 切換至上一張 Carousel
-    carouselRef?.value.prev()
-  },
-  next: () => {
-    // 切換至下一張 Carousel
-    carouselRef?.value.next()
-  }
-})
+/**
+ * 切換至指定的 Carousel
+ * @param {Number|String} item
+ * number: index in items
+ * string: name of item
+ */
+const setActiveItem: Expose.SetActiveItem = item => {
+  carouselRef?.value.setActiveItem(item)
+}
+// 切換至上一張 Carousel
+const prev: Expose.Prev = () => {
+  carouselRef?.value.prev()
+}
+// 切換至下一張 Carousel
+const next: Expose.Next = () => {
+  carouselRef?.value.next()
+}
+defineExpose({ setActiveItem, prev, next })
 </script>
 
 <template>
-  <div :class="`CustomCarousel_${version} ${scopedId}`" class="__carousel-wrapper">
+  <div :class="scopedId">
     <ElCarousel
       ref="carouselRef"
       :height="props.height"
@@ -75,19 +77,4 @@ defineExpose({
   </div>
 </template>
 
-<style lang="scss" scoped>
-.__collapse {
-  &-wrapper {
-    width: 100%;
-    height: fit-content;
-  }
-
-  &-title {
-    font: {
-      size: 1.2em;
-      weight: 600;
-    }
-    padding: 0 8px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

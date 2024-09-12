@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {}
 

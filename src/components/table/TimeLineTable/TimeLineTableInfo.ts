@@ -4,12 +4,12 @@ import type { TableColumnsItem } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type TableColumn = TableColumnsItem
 }
 
 export declare namespace Props {
-  type TableColumns = Array<Custom.TableColumn>
+  type TableColumns = Array<Types.TableColumn>
   type TableData = any[]
 }
 

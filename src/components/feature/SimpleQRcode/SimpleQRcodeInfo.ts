@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__SimpleQRcode_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Text = string
@@ -10,7 +10,6 @@ export declare namespace Props {
   type BgSrc = string
   type LogoSrc = string
 }
-
 export const props = {
   text: {
     type: String as PropType<Props.Text>,

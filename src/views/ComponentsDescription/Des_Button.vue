@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 
 import markdown from '@/components/feature/CustomButton/CustomButton.md?raw'
-import type { ButtonProps } from '@/components'
+import type { CustomButtonProps } from '@/components'
 import { CustomInput, CustomDivider, CustomMarkdown, CustomButton } from '@/components'
 
 const sizeOptions = [
@@ -10,7 +10,7 @@ const sizeOptions = [
   { label: 'default', value: 'default' },
   { label: 'small', value: 'small' }
 ]
-const size = ref<ButtonProps.Size>('default')
+const size = ref<CustomButtonProps.Size>('default')
 
 const typeOptions = [
   { label: 'success', value: 'success' },
@@ -20,7 +20,7 @@ const typeOptions = [
   { label: 'warning', value: 'warning' },
   { label: 'danger', value: 'danger' }
 ]
-const type = ref<ButtonProps.Type>('success')
+const type = ref<CustomButtonProps.Type>('success')
 
 const styleOptions = [
   { label: '無', value: '' },
@@ -57,7 +57,7 @@ const iconTypeOptions = [
   { label: 'far', value: 'far' },
   { label: 'fab', value: 'fab' }
 ]
-const iconType = ref<ButtonProps.IconType>('fas')
+const iconType = ref<CustomButtonProps.IconType>('fas')
 
 const iconNameOptions = [
   { label: 'bookmark', value: 'bookmark' },
@@ -75,7 +75,7 @@ const iconMoveOptions = [
   { label: 'rotate', value: 'rotate' },
   { label: 'scale', value: 'scale' }
 ]
-const iconMove = ref<ButtonProps.IconMove>('none')
+const iconMove = ref<CustomButtonProps.IconMove>('none')
 
 const colorOptions = [
   { label: '無', value: '' },

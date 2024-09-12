@@ -6,6 +6,7 @@ import { CustomButton, CustomPopover } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { object_reduce } from '@/lib/lib_object'
 
+// @ts-ignore
 import styles from './SimpleFilter.module.scss'
 
 import { version, props as simpleFilterProps } from './SimpleFilterInfo'

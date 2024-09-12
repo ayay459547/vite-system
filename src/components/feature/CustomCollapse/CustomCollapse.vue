@@ -8,8 +8,7 @@ import { getUuid } from '@/lib/lib_utils'
 import type { Props, Emits } from './CustomCollapseInfo'
 import { version, props as collapseProps } from './CustomCollapseInfo'
 
-const scopedName = '__i-collapse__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(collapseProps)
 
@@ -34,13 +33,13 @@ const hasSlot = (prop: string): boolean => {
     v-model="tempValue"
     :accordion="props.accordion"
     class="collapse-container"
-    :class="[`CustomCollapse_${version}`, scopedId, scopedName]"
+    :class="scopedId"
     @change="onChange"
   >
     <template v-if="props.options.length > 0">
       <ElCollapseItem
         v-for="item in props.options"
-        :key="`collapse-${item.value}-${scopedId}`"
+        :key="`${item.value}-${scopedId}`"
         :title="item.label"
         :name="item.value"
         :disabled="item.disabled ?? false"
@@ -68,14 +67,14 @@ const hasSlot = (prop: string): boolean => {
         </template>
       </ElCollapseItem>
     </template>
-    <ElCollapseItem v-else title="無選項" name="empty">
+    <ElCollapseItem v-else title="none" name="empty">
       <CustomEmpty />
     </ElCollapseItem>
   </ElCollapse>
 </template>
 
 <style lang="scss" scoped>
-.__i-collapse__.collapse {
+div[class*="__CustomCollapse"].collapse {
   &-container {
     width: 100%;
     height: fit-content;

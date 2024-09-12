@@ -1,28 +1,27 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomSteps_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success'
   type Option = {
     label?: string
     description?: string
     status?: StatusType | ''
     [key: string]: any
-  } & any
+  }
 }
 
 export declare namespace Props {
   type Space = string | number
   type Direction = 'vertical' | 'horizontal'
   type Active = number
-  type ProcessStatus = Custom.StatusType
-  type FinishStatus = Custom.StatusType
+  type ProcessStatus = Types.StatusType
+  type FinishStatus = Types.StatusType
   type AlignCenter = boolean
   type Simple = boolean
-  type Options = Array<Custom.Option>
+  type Options = Array<Types.Option>
 }
-
 export const props = {
   space: {
     type: [String, Number] as PropType<Props.Space>,

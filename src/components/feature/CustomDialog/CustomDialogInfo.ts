@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomDialog_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type ModelValue = boolean
@@ -16,7 +16,6 @@ export declare namespace Props {
   type LockScroll = boolean
   type Draggable = boolean
 }
-
 export const props = {
   modelValue: {
     type: Boolean as PropType<Props.ModelValue>,

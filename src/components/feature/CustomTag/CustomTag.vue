@@ -8,8 +8,7 @@ import { getUuid } from '@/lib/lib_utils'
 import type { Emits } from './CustomTagInfo'
 import { version, props as tagProps } from './CustomTagInfo'
 
-const scopedName = '__i-tag__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(tagProps)
 
@@ -22,17 +21,13 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
+
 </script>
 
 <template>
   <div
     class="tag-container"
-    :class="[
-      `CustomTag_${version}`,
-      scopedId,
-      scopedName,
-      `tag-size-${props.size}`
-    ]"
+    :class="[scopedId, `tag-size-${props.size}`]"
   >
     <ElTag
       :type="props.type"
@@ -72,7 +67,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__i-tag__ :deep(.tag-container) {
+div[class*="__CustomTag"] :deep(.tag-container) {
   &.tag-size {
     &-large {
       .el-tag {

@@ -6,8 +6,7 @@ import { getUuid } from '@/lib/lib_utils'
 
 import { version, props as cardProps } from './CustomCardInfo'
 
-const scopedName = '__i-card__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(cardProps)
 
@@ -24,8 +23,7 @@ const hasSlot = (prop: string): boolean => {
     :body-style="props.bodyStyle"
     :body-class="props.bodyClass"
     :shadow="props.shadow"
-    class="card-container"
-    :class="[`CustomCard_${version}`, scopedId, scopedName]"
+    :class="scopedId"
   >
     <template v-if="hasSlot('default')" #default>
       <slot name="default"></slot>

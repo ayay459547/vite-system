@@ -1,10 +1,10 @@
 import type { PropType } from 'vue'
 
-import type { CustomSize, IconProps } from '@/components'
+import type { CustomSize, CustomIconProps } from '@/components'
 
-export const version = '1.0.0'
+export const version = '__CustomTag_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Label = string
@@ -16,11 +16,10 @@ export declare namespace Props {
   type Size = CustomSize
   type Effect = 'dark' | 'light' | 'plain'
   type Round = boolean
-  type IconType = IconProps.Type
+  type IconType = CustomIconProps.Type
   type IconName = string
   type IconMove = 'none' | 'translate' | 'rotate' | 'scale'
 }
-
 export const props = {
   label: {
     type: String as PropType<Props.Label>,

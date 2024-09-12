@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomIcon/CustomIcon.md?raw'
 import {
-  type IconProps,
+  type CustomIconProps,
   CustomDivider,
   CustomMarkdown,
   CustomInput,
@@ -16,7 +16,7 @@ const typeOptions = [
   { label: 'far', value: 'far' },
   { label: 'fab', value: 'fab' }
 ]
-const type = ref<IconProps.Type>('fab')
+const type = ref<CustomIconProps.Type>('fab')
 
 const xTypeOptions = [
   { label: 'null', value: '' },
@@ -29,11 +29,11 @@ const xTypeOptions = [
   { label: 'tabler', value: 'tabler' },
   { label: 'carbon', value: 'carbon' }
 ]
-const xType = ref<IconProps.XType>('')
+const xType = ref<CustomIconProps.XType>('')
 
 const name = ref('vuejs')
 
-const onClick = (iconType: IconProps.Type, iconName: string) => {
+const onClick = (iconType: CustomIconProps.Type, iconName: string) => {
   type.value = iconType
   name.value = iconName
 }

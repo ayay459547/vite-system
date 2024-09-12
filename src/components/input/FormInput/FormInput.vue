@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed, useSlots, ref, onMounted, inject } from 'vue'
 import { ElInput } from 'element-plus'
 
@@ -9,80 +8,17 @@ import type { NumberFormatType } from '@/lib/lib_format'
 import { numberFormat } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-type ModelValue = string | number | null
+import type { Props, Emits, Expose } from './FormInputInfo'
+import { version, props as formInputProps } from './FormInputInfo'
+
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Number, null] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  // 數字
-  onlyNumber: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  round: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  floor: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  ceil: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  max: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  min: {
-    type: [Number, null] as PropType<number | null>,
-    default: null
-  },
-  // element ui plus
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  type: {
-    type: String as PropType<string>,
-    default: 'text'
-  },
-  rows: {
-    type: Number as PropType<number>,
-    default: 2
-  },
-  showPassword: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  placeholder: {
-    type: String as PropType<string>,
-    required: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(value: string | number) => void>,
-  onInput: Function as PropType<(value: string | number) => void>
-})
+const props = defineProps(formInputProps)
 
 const bindAttributes = computed(() => {
   const attributes: any = {
@@ -110,11 +46,19 @@ const emit = defineEmits([
 ])
 
 let lastValue: any = ''
-const onEvent = {
-  focus: (e: FocusEvent): void => emit('focus', e),
-  clear: (): void => emit('clear'),
-  blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: string | number): void => {
+
+const onEvent: {
+  focus: Emits.Focus
+  clear: Emits.Clear
+  blur: Emits.Blur
+  change: Emits.Change
+  input: Emits.Input
+  click: Emits.Click
+} = {
+  focus: $event => emit('focus', $event),
+  clear: () => emit('clear'),
+  blur: $event => emit('blur', $event),
+  change: value => {
     let _value = value
 
     // 數字
@@ -173,12 +117,12 @@ const onEvent = {
       lastValue = _value
     }
   },
-  input: (value: string | number): void => {
+  input: value => {
     emit('input', value)
   },
-  click: (e: MouseEvent): void => {
-    emit('click', e)
-    e.stopPropagation()
+  click: $event => {
+    emit('click', $event)
+    $event.stopPropagation()
   }
 }
 
@@ -193,12 +137,10 @@ const validateRes = computed<string>(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value)
   }
 })
-
-const scopedId = getUuid('__i-input__')
 
 // slot
 const slots = useSlots()
@@ -207,18 +149,15 @@ const hasSlot = (prop: string): boolean => {
 }
 
 const elInputRef = ref()
-defineExpose({
-  focus: (): void => {
-    if (elInputRef.value) {
-      elInputRef.value.focus()
-    }
-  },
-  blur: (): void => {
-    if (elInputRef.value) {
-      elInputRef.value.blur()
-    }
-  }
-})
+
+const focus: Expose.Focus = () => {
+  elInputRef.value?.focus()
+}
+const blur: Expose.Blur = () => {
+  elInputRef.value?.blur()
+}
+defineExpose({ focus, blur })
+
 </script>
 
 <template>
@@ -252,7 +191,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-input__) {
   .el-input__wrapper {

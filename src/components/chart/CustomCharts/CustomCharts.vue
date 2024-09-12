@@ -1,7 +1,5 @@
 <script lang="ts">
 import * as echarts from 'echarts'
-import type { EChartsOption } from 'echarts/types/dist/shared'
-import type { PropType } from 'vue'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -11,20 +9,16 @@ import debounce from '@/lib/lib_debounce'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { useLayoutStore } from '@/stores/stores_layout'
 
+import type { Types, Emits, Expose } from './CustomChartsInfo'
+import { version, props as customChartsProps } from './CustomChartsInfo'
+
 export default defineComponent({
   name: 'CustomCharts',
-  props: {
-    domKey: {
-      type: String as PropType<string>,
-      default: '_charts'
-    },
-    options: {
-      type: Function as PropType<() => EChartsOption | any>,
-      required: true
-    }
-  },
+  props: customChartsProps,
   emits: ['click'],
   setup(props, context) {
+    const scopedId = getUuid(version)
+
     // 監聽外框大小變化
     const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
       entries.forEach(() => {
@@ -47,25 +41,33 @@ export default defineComponent({
 
     let myChart: any
 
-    const debounceClickCallback = debounce(function (params: any) {
+    const debounceClickCallback: Emits.Click = debounce(function (params: any) {
       context.emit('click', params)
     }, 200)
-
-    const scopedId = getUuid('charts')
 
     // 色調
     const layoutStore = useLayoutStore()
     const { isDark } = storeToRefs(layoutStore)
 
-    const init = () => {
-      const chartDom = document.getElementsByClassName(`${props.domKey}-charts__${scopedId}`)[0]
+    const setOption = (option: Types.BuildOptions) => {
+      myChart.setOption(option)
+    }
+
+    const init: Expose.Init = () => {
+      const chartDom = document.getElementsByClassName(`chart-dom-${scopedId}`)[0]
       if (isEmpty(props.options) || isEmpty(chartDom)) return
 
       if (isEmpty(myChart) && chartDom.clientWidth > 0 && chartDom.clientHeight > 0) {
         myChart = echarts.init(chartDom as HTMLElement, isDark.value ? 'dark' : '')
       }
 
-      const _options = props.options()
+      let _options = null
+      if (typeof props.options === 'function') {
+        _options = props.options()
+      } else if (typeof props.options === 'object') {
+        _options = props.options
+      }
+
       if (!isEmpty(myChart) && !isEmpty(_options)) {
         myChart.clear()
         myChart.setOption(_options, true)
@@ -74,21 +76,21 @@ export default defineComponent({
         myChart.resize()
       }
     }
-
     context.expose({ init })
 
     return {
       charts,
       init,
-      scopedId
+      scopedId,
+      setOption
     }
   }
 })
 </script>
 
 <template>
-  <div class="charts-container" ref="charts">
-    <div class="charts-main" :class="`${domKey}-charts__${scopedId}`"></div>
+  <div ref="charts" class="charts-container" :class="scopedId">
+    <div class="charts-main" :class="`chart-dom-${scopedId}`"></div>
   </div>
 </template>
 

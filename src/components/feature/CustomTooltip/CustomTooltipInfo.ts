@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomTooltip_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Visible = boolean | null
@@ -28,7 +28,6 @@ export declare namespace Props {
   type PopperOptions = Record<string, any>
   type Disabled = boolean
 }
-
 export const props = {
   visible: {
     type: Boolean as PropType<Props.Visible>,

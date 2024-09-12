@@ -14,6 +14,7 @@ import type { UseHook } from '@/declare/hook'
 import {
   FormInput,
   FormSelect,
+  FormSelectTree,
   FormSelectV2,
   FormDatePicker,
   FormTimePicker,
@@ -31,7 +32,10 @@ import validateFun from '@/lib/lib_validate'
 import type { Props } from './CustomInputInfo'
 import { version, props as inputProps } from './CustomInputInfo'
 
+// @ts-ignore
 import styles from './CustomInput.module.scss'
+
+const scopedId = getUuid('__i-group-input__')
 
 const props = defineProps(inputProps)
 const emit = defineEmits([
@@ -48,28 +52,30 @@ const emit = defineEmits([
   // autocomplete
   'select'
 ])
-const slots = useSlots()
-
-const scopedId = getUuid('__i-group-input__')
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
 
+const slots = useSlots()
+
 // i18nTranslate
 const getTranslateLabel = (object: any) => {
-  const label = i18nTest(object?.i18nLabel ?? '')
+  const label = i18nTest(object?.i18nLabel ?? '__none__')
     ? i18nTranslate(object.i18nLabel)
     : object.label ?? ''
   return label
 }
 const getTranslateOptions = (options: any[]) => {
+  if (!Array.isArray(options)) return null
+
   const i18nOptions = options.map(option => {
     return {
       ...option,
       label: getTranslateLabel(option),
-      value: option.value
+      value: option.value,
+      options: getTranslateOptions(option?.options)
     }
   })
   return i18nOptions
@@ -287,6 +293,7 @@ const domValidateKey = computed(() => {
 
 const inputRef = ref()
 const selectRef = ref()
+const selectTreeRef = ref()
 const selectV2Ref = ref()
 const datePickerRef = ref()
 const timePickerRef = ref()
@@ -317,6 +324,9 @@ defineExpose({
         break
       case 'select':
         selectRef.value.focus()
+        break
+      case 'select-tree':
+        selectTreeRef.value.focus()
         break
       case 'select-v2':
         selectV2Ref.value.focus()
@@ -353,6 +363,9 @@ defineExpose({
         break
       case 'select':
         selectRef.value.blur()
+        break
+      case 'select-tree':
+        selectTreeRef.value.blur()
         break
       case 'select-v2':
         selectV2Ref.value.blur()
@@ -397,8 +410,16 @@ const getTextValue = computed(() => {
     case 'autocomplete':
       return inputValue.value
     case 'select':
+    case 'select-tree':
     case 'select-v2': {
-      const option = props.options.find(_option => _option.value === inputValue.value)
+      const findCallback = (_option: any) => {
+        if (Array.isArray(_option.options) && _option.options.length > 0) {
+          return _option.options.find(findCallback)
+        } else {
+          return _option.value === inputValue.value
+        }
+      }
+      const option = props.options.find(findCallback)
       return getTranslateLabel(option)
     }
     case 'year':
@@ -551,9 +572,32 @@ const renderInput = () => {
           onVisible-change={(e: boolean) => onEvent.value.onVisibleChange(e)}
         >
           {{
-            ...getSlot(['options', 'header', 'footer', 'prefix', 'empty'])
+            ...getSlot(['options', 'header', 'footer', 'prefix', 'label', 'tag', 'empty'])
           }}
         </FormSelect>
+      )
+    case 'select-tree':
+      return (
+        <FormSelectTree
+          ref={selectTreeRef}
+          modelValue={inputValue.value}
+          onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
+          // v-bind 綁定屬性
+          {...bindAttributes.value}
+          options={translateOptions.value}
+          errorMessage={errorMessage.value}
+          // v-on 接收事件
+          onFocus={(e: any) => onEvent.value.onFocus(e)}
+          onClear={() => onEvent.value.onClear()}
+          onBlur={(e: any) => onEvent.value.onBlur(e)}
+          onChange={(e: any) => onEvent.value.onChange(e)}
+          onRemove-tag={(e: any) => onEvent.value.onRemoveTag(e)}
+          onVisible-change={(e: boolean) => onEvent.value.onVisibleChange(e)}
+        >
+          {{
+            ...getSlot(['options', 'header', 'footer', 'prefix', 'empty', 'label', 'tag', 'default'])
+          }}
+        </FormSelectTree>
       )
     case 'select-v2':
       return (

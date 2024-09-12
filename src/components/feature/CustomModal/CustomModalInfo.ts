@@ -1,10 +1,10 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomModal_1.0.0__'
 
 export const minModalIndex = 2005
 
-export declare namespace Custom {
+export declare namespace Types {
   type Size = 'fill' | 'large' | 'default' | 'small' | 'extraSmall'
 }
 
@@ -14,8 +14,8 @@ export declare namespace Props {
   type Loading = boolean
   type Title = string
   type ClickOutside = boolean
-  type WidthSize = Custom.Size
-  type HeightSize = Custom.Size
+  type WidthSize = Types.Size
+  type HeightSize = Types.Size
   type Modal = boolean
   type AutoClose = boolean
   type Draggable = boolean
@@ -25,7 +25,6 @@ export declare namespace Props {
   type HiddenSubmit = boolean
   type HiddenCancel = boolean
 }
-
 export const props = {
   modelValue: {
     type: Boolean as PropType<Props.ModelValue>,

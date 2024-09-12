@@ -12,7 +12,7 @@ import {
 
 import type { UseHook } from '@/declare/hook'
 
-import type { TableProps } from '@/components'
+import type { CustomTableProps } from '@/components'
 import {
   CustomTable,
   CustomButton,
@@ -28,8 +28,8 @@ import throttle from '@/lib/lib_throttle'
 import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { Custom } from './WebViewTableInfo'
-import { version, props as webViewTableProps } from './WebViewTableInfo'
+import type { Types } from './WebViewTableInfo'
+import { version, props as webViewCustomTableProps } from './WebViewTableInfo'
 
 import {
   webViewUrl,
@@ -41,7 +41,7 @@ import {
 
 const scopedId = getUuid('__WebViewTable__')
 
-const props = defineProps(webViewTableProps)
+const props = defineProps(webViewCustomTableProps)
 
 const emit = defineEmits([
   // 'header-click',
@@ -98,9 +98,9 @@ const {
   activeConditions: activeConditions,
   conditions: filterConditions,
   getConditionFilter
-} = useFormSetting<Custom.FilterData>(props.columnSetting, props.filterKey)
+} = useFormSetting<Types.FilterData>(props.columnSetting, props.filterKey)
 
-const setFilter = (_filter: Custom.FilterData) => {
+const setFilter = (_filter: Types.FilterData) => {
   for (const filterKey in _filter) {
     if (hasOwnProperty(filter, filterKey)) {
       filter[filterKey] = _filter[filterKey]
@@ -109,7 +109,7 @@ const setFilter = (_filter: Custom.FilterData) => {
 }
 
 // table
-const tableData = shallowRef<Array<Custom.TableData>>([])
+const tableData = shallowRef<Array<Types.TableData>>([])
 const tableDataCount = ref(0)
 
 const {
@@ -436,7 +436,7 @@ const onReset = async () => {
   throttleInit(null, 'input')
 }
 
-const lazyLoadingStatus = ref<TableProps.LazyLoadingStatus>('loadMore')
+const lazyLoadingStatus = ref<CustomTableProps.LazyLoadingStatus>('loadMore')
 
 // 可用函數
 defineExpose({
@@ -586,10 +586,10 @@ const modal = reactive({
               v-model:activeConditions="activeConditions[scope.prop]"
               v-model:conditions="filterConditions[scope.prop]"
               :i18nModule="i18nModule"
-              v-bind="filterColumn[scope.prop]"
               :label="i18nTranslate(scope.column?.i18nLabel)"
-              search
               :column-id="scope.prop"
+              v-bind="filterColumn[scope.prop]"
+              search
               @change="throttleInit($event, 'input')"
               @submit="throttleInit($event, 'input')"
             />
@@ -638,6 +638,7 @@ const modal = reactive({
         <CustomButton
           icon-name="calendar-day"
           plain
+          :disabled="modal.timeLine"
           @click="modal.timeLine = true"
         />
       </CustomTooltip>

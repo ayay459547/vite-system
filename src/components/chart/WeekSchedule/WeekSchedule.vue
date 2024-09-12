@@ -5,11 +5,13 @@ import type { UseHook } from '@/declare/hook'
 import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { Custom, Props } from './WeekScheduleInfo'
-import { props as weekScheduleProps } from './WeekScheduleInfo'
-import { tableHeight, timeToSecond } from './planUtils'
+import type { Types, Props, Expose } from './WeekScheduleInfo'
+import { version, props as weekScheduleProps } from './WeekScheduleInfo'
 
+import { tableHeight, timeToSecond } from './planUtils'
 import PlanDay from './Components/PlanDay.vue'
+
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -36,7 +38,7 @@ const scheduleContainer = ref(null)
 const planDayMapRef = reactive({})
 
 // 工時分配資料
-const planData: Record<number, Custom.PlanTime[]> = reactive({
+const planData: Record<number, Types.PlanTime[]> = reactive({
   1: [],
   2: [],
   3: [],
@@ -53,7 +55,7 @@ const planData: Record<number, Custom.PlanTime[]> = reactive({
 const renderKey = ref(1)
 
 // 初始化
-const init = async (scheduleList: Props.ScheduleList) => {
+const init: Expose.Init = async (scheduleList: Props.ScheduleList) => {
   isLoading.value = true
   await nextTick()
   // 清除資料
@@ -81,7 +83,7 @@ const init = async (scheduleList: Props.ScheduleList) => {
   // 原始資料設定在每天中
   await awaitTime(80)
   for (let dayId in planData) {
-    const planList: Custom.PlanTime[] = getProxyData(planData[dayId])
+    const planList: Types.PlanTime[] = getProxyData(planData[dayId])
     if (planDayMapRef[dayId]) {
       planDayMapRef[dayId].init(planList)
     }
@@ -94,7 +96,7 @@ const init = async (scheduleList: Props.ScheduleList) => {
 }
 
 // 複製到其他天
-const copyPlan = (planTime: Custom.PlanTime) => {
+const copyPlan = (planTime: Types.PlanTime) => {
   for (let dayId in planData) {
     if (planDayMapRef[dayId]) {
       planDayMapRef[dayId].insertData(planTime)
@@ -107,7 +109,7 @@ onMounted(() => {
 })
 
 // 取資料
-const getData = async () => {
+const getData: Expose.GetData = async () => {
   await nextTick()
 
   const createList = []
@@ -117,7 +119,7 @@ const getData = async () => {
   const allList = []
 
   for (let dayId in planData) {
-    const planList: Custom.PlanTime[] = getProxyData(planData[dayId])
+    const planList: Types.PlanTime[] = getProxyData(planData[dayId])
     if (planDayMapRef[dayId]) {
       const {
         create = [],
@@ -152,7 +154,7 @@ defineExpose({
 </script>
 
 <template>
-  <div v-loading="isLoading" class="schedule">
+  <div v-loading="isLoading" class="schedule" :class="scopedId">
     <!-- 類型 -->
     <div class="schedule-type">
       <slot name="title">

@@ -8,8 +8,7 @@ import { getUuid } from '@/lib/lib_utils'
 import type { Emits } from './CustomButtonInfo'
 import { version, props as buttonProps } from './CustomButtonInfo'
 
-const scopedName = '__i-button__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(buttonProps)
 
@@ -38,7 +37,7 @@ const hasSlot = (prop: string): boolean => {
     :loading="props.loading"
     :style="props.style"
     class="button-container"
-    :class="[`CustomButton_${version}`, `button-size-${props.size}`, scopedId, scopedName]"
+    :class="[scopedId, `button-size-${props.size}`]"
     @click="onClick"
   >
     <template v-if="!props.loading && props.iconName.length > 0" #icon>
@@ -55,11 +54,7 @@ const hasSlot = (prop: string): boolean => {
 
     <template v-if="props.label.length > 0 || hasSlot('default')" #default>
       <slot>
-        <span
-          class="button-label"
-          :class="`button-label-size-${props.iconSize}`"
-          :style="{ color: props.textColor }"
-        >
+        <span class="button-label" :class="`button-label-size-${props.iconSize}`" :style="{ color: props.textColor }">
           {{ props.label }}
         </span>
       </slot>
@@ -68,11 +63,11 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:global(.__i-button__.el-button) {
+:global(button[class*="__CustomButton"].el-button) {
   align-items: center;
 }
 :global(.el-button) {
-  & + .el-button {
+  &+.el-button {
     margin-left: 0 !important;
   }
 }
@@ -86,7 +81,7 @@ const hasSlot = (prop: string): boolean => {
   }
 }
 
-.__i-button__ {
+button[class*="__CustomButton"] {
   &.button {
     &-container {
       width: fit-content;

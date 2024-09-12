@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomDraggable_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type DraggableChange = {
     added?: {
       newIndex: number
@@ -40,7 +40,6 @@ export declare namespace Props {
   type Direction = 'column' | 'row'
   type Group = any
 }
-
 export const props = {
   modelValue: {
     type: Array as PropType<Props.ModelValue>,
@@ -167,7 +166,7 @@ export declare namespace Emits {
   type Choose = ($event: any) => void
   type Unchoose = ($event: any) => void
   type Clone = ($event: any) => void
-  type Change = ($event: Custom.DraggableChange) => void
+  type Change = ($event: Types.DraggableChange) => void
 }
 
 export declare namespace Expose {}

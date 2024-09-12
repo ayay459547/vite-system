@@ -4,10 +4,10 @@ import { ElDialog } from 'element-plus'
 
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
-import { type Props, version, props as dialogProps } from './CustomDialogInfo'
+import type { Props } from './CustomDialogInfo'
+import { version, props as dialogProps } from './CustomDialogInfo'
 
-const scopedName = '__i-dialog__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(dialogProps)
 
@@ -36,8 +36,7 @@ const hasSlot = (prop: string): boolean => {
     :append-to-body="props.appendToBody"
     :lock-scroll="props.lockScroll"
     :draggable="props.draggable"
-    class="dialog-container"
-    :class="[`CustomDialog_${version}`, scopedId, scopedName]"
+    :class="scopedId"
   >
     <template v-if="hasSlot('default')" #default>
       <slot name="default"></slot>
@@ -51,11 +50,4 @@ const hasSlot = (prop: string): boolean => {
   </ElDialog>
 </template>
 
-<style lang="scss" scoped>
-.__i-dialog__.dialog {
-  &-container {
-    width: fit-content;
-    height: fit-content;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -4,22 +4,14 @@ import { CustomIcon } from '@/components'
 
 import { version, props as lockViewProps } from './CustomLockViewInfo'
 
-const scopedName = '__i-lock-view__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(lockViewProps)
 
 </script>
 
 <template>
-  <div
-    class="lock-view-wrapper"
-    :class="[
-      `CustomLockView_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div class="lock-view-wrapper" :class="scopedId">
     <Transition name="fixed" mode="out-in">
       <div v-show="props.isLock" class="lock-view-container">
         <!-- 遮罩 -->
@@ -45,7 +37,7 @@ const props = defineProps(lockViewProps)
 <style lang="scss" scoped>
 $fix-width: 12px;
 
-.__i-lock-view__ {
+div[class*="__CustomLockView"] {
   &.lock-view{
     &-wrapper,
     &-container {

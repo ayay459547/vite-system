@@ -1,16 +1,16 @@
 import type { PropType } from 'vue'
 
-import type { PopoverProps } from '@/components'
+import type { CustomPopoverProps } from '@/components'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Columns = Record<string, any>
   type Width = string | number
   type Class = string
-  type Placement = PopoverProps.Placement
+  type Placement = CustomPopoverProps.Placement
 }
 
 export const props = {

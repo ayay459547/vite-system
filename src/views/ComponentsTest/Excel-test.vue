@@ -4,7 +4,7 @@ import ExcelJs from 'exceljs'
 
 import type { UseHook } from '@/declare/hook'
 import { useTableSetting } from '@/lib/lib_columns'
-import type { IconProps, ButtonProps, TooltipProps } from '@/components'
+import type { CustomIconProps, CustomButtonProps, CustomTooltipProps } from '@/components'
 import {
   CustomButton,
   CustomModal,
@@ -61,11 +61,11 @@ function changeLoading() {
   }, 3000)
 }
 
-const testIcon: [IconProps.Type, string] = ['fas', 'check']
-const testType: IconProps.Type = 'far'
+const testIcon: [CustomIconProps.Type, string] = ['fas', 'check']
+const testType: CustomIconProps.Type = 'far'
 const testName = 'folder-open'
 
-const size: ButtonProps.Size = 'large'
+const size: CustomButtonProps.Size = 'large'
 
 const modalShow = ref<boolean>(false)
 
@@ -141,7 +141,7 @@ const tableData2 = [
   }
 ]
 
-const tooltipPlacement: TooltipProps.Trigger = 'click'
+const tooltipPlacement: CustomTooltipProps.Trigger = 'click'
 
 const isPopoverVisible = ref(false)
 </script>

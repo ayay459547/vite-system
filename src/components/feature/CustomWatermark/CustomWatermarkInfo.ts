@@ -1,9 +1,9 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomWatermark_1.0.0__'
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 
-export declare namespace Custom {
+export declare namespace Types {
   type FontWeight = 'normal' | 'light' | 'weight' | number
   type FontStyle = 'none' | 'normal' | 'italic' | 'oblique'
   type TextAlign = 'left' | 'right' | 'center' | 'start' | 'end'
@@ -34,13 +34,12 @@ export declare namespace Props {
   type ZIndex = number
   type Image = string
   type Content = string | string[]
-  type Font = Custom.Font
+  type Font = Types.Font
   type Gap = [number, number]
   type Offset = [number, number]
   type SizeFit = 'parent' | 'children'
-  type Sub = Array<Custom.SubWatermark>
+  type Sub = Array<Types.SubWatermark>
 }
-
 export const props = {
   width: {
     type: Number as PropType<Props.Width>,

@@ -5,26 +5,32 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
 import type { Option } from '@/components'
 
-import type { Shortcuts, FetchSuggestions, DatePickerType, TimePickerType } from '@/components'
+import type {
+  FormTimePickerTypes,
+  FormDatePickerTypes,
+  FormDatePickerProps,
+  FormAutocompleteProps
+} from '@/components'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type InputType =
     | 'text'
     | 'textarea'
     | 'password'
     | 'select'
+    | 'select-tree'
     | 'select-v2'
     | 'checkbox'
     | 'radio'
     | 'autocomplete'
     | 'operator'
-    | DatePickerType
-    | TimePickerType
+    | FormDatePickerTypes.DatePickerType
+    | FormTimePickerTypes.TimePickerType
 
-  type InputShortcuts = Shortcuts
-  type InputFetchSuggestions = FetchSuggestions
+  type InputShortcuts = FormDatePickerProps.Shortcuts
+  type InputFetchSuggestions = FormAutocompleteProps.FetchSuggestions
 }
 
 export declare namespace Props {
@@ -47,7 +53,7 @@ export declare namespace Props {
   type I18nModule = ScopeKey
   type I18nLabel = string
 
-  type Type = Custom.InputType
+  type Type = Types.InputType
   type Clearable = boolean
   type Disabled = boolean
   type Placeholder = string
@@ -70,7 +76,7 @@ export declare namespace Props {
 
   type Format = string
   type ValueFormat = string
-  type Shortcuts = Custom.InputShortcuts[]
+  type Shortcuts = Types.InputShortcuts[]
 
   type IsRange = boolean
   type RangeSeparator = string
@@ -79,7 +85,7 @@ export declare namespace Props {
 
   type ValueKey = string
   type FitInputWidth = boolean
-  type FetchSuggestions = Custom.InputFetchSuggestions
+  type FetchSuggestions = Types.InputFetchSuggestions
 }
 
 const custom = {

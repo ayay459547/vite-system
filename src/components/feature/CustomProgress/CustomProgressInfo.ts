@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomProgress_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type ProgressFunction = (percentage: number) => string
   type ProgressColor =
     | string
@@ -21,14 +21,13 @@ export declare namespace Props {
   type Status = '' | 'success' | 'exception' | 'warning'
   type Indeterminate = boolean
   type Duration = number
-  type Color = Custom.ProgressColor
+  type Color = Types.ProgressColor
   type ShowText = boolean
   type StrokeLinecap = 'butt' | 'round' | 'square'
-  type Format = Custom.ProgressFunction
+  type Format = Types.ProgressFunction
   type Striped = boolean
   type StripedFlow = boolean
 }
-
 export const props = {
   percentage: {
     type: Number as PropType<Props.Percentage>,

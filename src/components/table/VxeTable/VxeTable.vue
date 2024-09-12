@@ -18,8 +18,8 @@ import zhTW from 'vxe-table/lib/locale/lang/zh-TW'
 import { ElAutoResizer } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
-import type { Custom, Expose } from './VxeTableInfo'
-import { version, props as VxeTableProps } from './VxeTableInfo'
+import type { Types, Expose } from './VxeTableInfo'
+import { version, props as VxeCustomTableProps } from './VxeTableInfo'
 
 VxeUI.setI18n('zh-TW', zhTW)
 VxeUI.setLanguage('zh-TW')
@@ -28,7 +28,7 @@ VxeUI.component(VxeTooltip)
 const scopedName = '__vxe-table__'
 const scopedId = getUuid(scopedName)
 
-const props = defineProps(VxeTableProps)
+const props = defineProps(VxeCustomTableProps)
 
 const vxeTableRef = ref()
 
@@ -40,7 +40,7 @@ const updateData: Expose.UpdateData = () => {
   vxeTableRef.value?.updateData()
 }
 
-const setMergeCells: Expose.SetMergeCells = (merges: Custom.Merges) => {
+const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => {
   console.log('setMergeCells => ')
   vxeTableRef.value?.setMergeCells(merges)
 }

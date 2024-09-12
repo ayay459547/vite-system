@@ -8,7 +8,7 @@ import { getUuid } from '@/lib/lib_utils'
 import type { Props } from './CustomColorInfo'
 import { version, props as CustomColorInfo } from './CustomColorInfo'
 
-const scopedId = getUuid('__i-watermark__')
+const scopedId = getUuid(version)
 
 const props = defineProps(CustomColorInfo)
 
@@ -27,19 +27,17 @@ const emit = defineEmits(['update:modelValue', 'change'])
 </script>
 
 <template>
-  <div
-    :class="`CustomColorInfo_${version} ${scopedId}`"
-    class="__cololr-wrapper"
-  >
+  <div class="color-wrapper" :class="scopedId">
     <ElColorPicker
       v-model="tempValue"
       :size="props.size"
+      @change="(value) => emit('change', value)"
     />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.__color {
+div[class*="__CustomColor"].color {
   &-wrapper {
     display: block;
   }

@@ -1,94 +1,23 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed, onMounted, onBeforeUnmount, ref, watch, effectScope, inject } from 'vue'
 import { ElTimePicker } from 'element-plus'
-import type { Dayjs } from 'dayjs'
 
 import type { UseHook } from '@/declare/hook'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { formatDatetime } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export type TimePickerType = 'time' | 'timerange'
-export declare type GetDisabledHours = (role: string, comparingDate?: Dayjs) => number[]
-export declare type GetDisabledMinutes = (
-  hour: number,
-  role: string,
-  comparingDate?: Dayjs
-) => number[]
-export declare type GetDisabledSeconds = (
-  hour: number,
-  minute: number,
-  role: string,
-  comparingDate?: Dayjs
-) => number[]
+import type { Props, Emits, Expose } from './FormTimePickerInfo'
+import { version, props as formTimePickerProps } from './FormTimePickerInfo'
 
-type BaseValue = string | Date | null
-type ModelValue = BaseValue | [BaseValue, BaseValue]
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const props = defineProps({
-  modelValue: {
-    type: [Array, String, null] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  type: {
-    type: String as PropType<TimePickerType>,
-    default: 'time'
-  },
-  // element ui plus
-  isRange: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  format: {
-    type: String as PropType<string>,
-    default: 'HH:mm:ss'
-  },
-  rangeSeparator: {
-    type: String as PropType<string>,
-    default: '-'
-  },
-  disabledHours: {
-    type: Function as PropType<GetDisabledHours>,
-    default: () => []
-  },
-  disabledMinutes: {
-    type: Function as PropType<GetDisabledMinutes>,
-    default: () => []
-  },
-  disabledSeconds: {
-    type: Function as PropType<GetDisabledSeconds>,
-    default: () => []
-  },
-  placeholder: {
-    type: String as PropType<string>,
-    required: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(e: ModelValue) => void>
-})
+const props = defineProps(formTimePickerProps)
 
 const bindAttributes = computed(() => {
   const attributes: any = {
@@ -119,7 +48,7 @@ const inputValue = computed({
   get: () => {
     return props.modelValue
   },
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value)
   }
 })
@@ -129,10 +58,14 @@ const inputValue = computed({
 const _inputValue = ref()
 
 // event
-const onEvent = {
-  focus: (e: FocusEvent): void => emit('focus', e),
-  blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: ModelValue): void => {
+const onEvent: {
+  focus: Emits.Focus
+  blur: Emits.Blur
+  change: Emits.Change
+} = {
+  focus: $event => emit('focus', $event),
+  blur: $event => emit('blur', $event),
+  change: value => {
     let _value = value
     if (Array.isArray(value)) {
       _value = [
@@ -152,7 +85,7 @@ const scope = effectScope()
 
 // 當值發生改變時 更新資料
 // HH:mm:ss => Day Month Date Year HH:mm:ss GMT+0800 (台北標準時間)
-const updateValue = (value: ModelValue) => {
+const updateValue = (value: Props.ModelValue) => {
   if (props.isRange || props.type === 'timerange') {
     const today = new Date()
     let _start = formatDatetime(today, 'YYYY-MM-DD 00:00:00')
@@ -178,7 +111,7 @@ onMounted(() => {
 
   // 有掛載才開啟監聽
   scope.run(() => {
-    watch(inputValue, (newValue: ModelValue) => {
+    watch(inputValue, (newValue: Props.ModelValue) => {
       updateValue(newValue)
     })
   })
@@ -188,24 +121,22 @@ onBeforeUnmount(() => {
   scope.stop()
 })
 
-const scopedId = getUuid('__i-time-picker__')
-
 const elTimePickerRef = ref()
 
-defineExpose({
-  focus: (): void => {
-    if (elTimePickerRef.value) {
-      elTimePickerRef.value.focus()
-      elTimePickerRef.value.handleOpen()
-    }
-  },
-  blur: (): void => {
-    if (elTimePickerRef.value) {
-      elTimePickerRef.value.blur()
-      elTimePickerRef.value.handleClose()
-    }
+const focus: Expose.Focus = () => {
+  if (elTimePickerRef.value) {
+    elTimePickerRef.value.focus()
+    elTimePickerRef.value.handleOpen()
   }
-})
+}
+const blur: Expose.Blur = () => {
+  if (elTimePickerRef.value) {
+    elTimePickerRef.value.blur()
+    elTimePickerRef.value.handleClose()
+  }
+}
+defineExpose({ focus, blur })
+
 </script>
 
 <template>
@@ -214,7 +145,7 @@ defineExpose({
       ref="elTimePickerRef"
       v-model="_inputValue"
       class="__i-time-picker__"
-      :placeholder="i18nTranslate('pleaseSelect')"
+      :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
       :start-placeholder="i18nTranslate('startTime-time')"
       :end-placeholder="i18nTranslate('endTime-time')"
       :class="[`validate-${validateRes}`]"
@@ -226,7 +157,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-time-picker__) {
   &.el-date-editor {

@@ -4,7 +4,7 @@
 | 參數           | 說明    | 輸入資料型態                      |
 | ------------- | ------- | --------------------------------  |
 | paging        |  分頁    | { page: number, size: number }   |
-| advanced      | 進階搜尋 | Array<{ columnId: string, condition: string, value: string}> |
+| advanced      | 進階搜尋 | Array<{ columnId: string, condition: string, value: string }> |
 | sortingMap    | 多欄位   | Record<string, 'Asc' | 'Desc'>   |
 | 前贅詞_{{key}} | 一般搜尋 | 篩選條件 key 對照表               |
 

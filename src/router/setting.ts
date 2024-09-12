@@ -1,5 +1,5 @@
 import type { RouterTree } from '@/declare/routes'
-import type { IconProps } from '@/components'
+import type { CustomIconProps } from '@/components'
 import { refactorRoutes } from '@/lib/lib_routes'
 
 const mode = (import.meta as any).env.MODE
@@ -10,7 +10,7 @@ export type RouterType = 'system' | 'new' | 'inProgress' | 'completed' | 'develo
  * key: 類型
  * value: icon
  */
-export const routerTypeIcon: Record<RouterType, [IconProps.Type, string]> = {
+export const routerTypeIcon: Record<RouterType, [CustomIconProps.Type, string]> = {
   system: ['fas', 'paper-plane'],
   new: ['fas', 'xmark'],
   inProgress: ['fas', 'hammer'],

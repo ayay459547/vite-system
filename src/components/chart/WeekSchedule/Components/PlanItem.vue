@@ -6,7 +6,7 @@ import throttle from '@/lib/lib_throttle'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
 
-import type { Custom } from '../WeekScheduleInfo'
+import type { Types } from '../WeekScheduleInfo'
 
 import {
   FPS,
@@ -23,7 +23,7 @@ const props = defineProps({
     required: true
   },
   planTime: {
-    type: Object as PropType<Custom.PlanTime>,
+    type: Object as PropType<Types.PlanTime>,
     required: true
   },
   scheduleContainer: {
@@ -31,11 +31,11 @@ const props = defineProps({
     required: true
   },
   // originPlan: {
-  //   type: [Object, undefined] as PropType<Custom.Origin | undefined>,
+  //   type: [Object, undefined] as PropType<Types.Origin | undefined>,
   //   required: true
   // }
   originPlanMap: {
-    type: [Object, undefined] as PropType<Record<string, Custom.Origin>>,
+    type: [Object, undefined] as PropType<Record<string, Types.Origin>>,
     required: true
   },
   isEdit: {
@@ -46,18 +46,18 @@ const props = defineProps({
 
 const emit = defineEmits(['update:planTime', 'copyPlan', 'removePlan'])
 
-const plan = computed<Custom.PlanTime>({
+const plan = computed<Types.PlanTime>({
   get() {
     return props.planTime
   },
-  set (v: Custom.PlanTime) {
-    const _planTime = props.planTime as Custom.PlanTime
+  set (v: Types.PlanTime) {
+    const _planTime = props.planTime as Types.PlanTime
     const status = _planTime.status === 'new' ? 'new' : v.status
     emit('update:planTime', { ..._planTime, ...v, status })
   }
 })
 
-// 原來的位置 Custom.Origin
+// 原來的位置 Types.Origin
 const origin = computed(() => {
   // const _originPlan = props.originPlan
   const _originPlan = props.originPlanMap[props.uuid]
@@ -82,7 +82,7 @@ const origin = computed(() => {
   }
 })
 
-const planStyle = computed<Custom.PlanStyle>(() => {
+const planStyle = computed<Types.PlanStyle>(() => {
   const startSecond = plan.value.startSecond
   const endSecond = plan.value.endSecond
 
@@ -301,7 +301,7 @@ const copyPlan = async () => {
   isCheck.value = false
 }
 
-const checkUpdatePlan = (checkTimeIsExist: Custom.CheckTimeIsExist) => {
+const checkUpdatePlan = (checkTimeIsExist: Types.CheckTimeIsExist) => {
   isCheck.value = true
 
   // 移除 EventListener
@@ -310,7 +310,7 @@ const checkUpdatePlan = (checkTimeIsExist: Custom.CheckTimeIsExist) => {
   props.scheduleContainer.removeEventListener('mousemove', setEndEvent)
   isMove.value = false
 
-  const planTime = getProxyData<Custom.PlanTime>(plan.value)
+  const planTime = getProxyData<Types.PlanTime>(plan.value)
   const { startSecond, endSecond } = planTime
   const isExist = checkTimeIsExist(startSecond, endSecond, props.uuid)
 

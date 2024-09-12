@@ -4,7 +4,7 @@ import { type PropType, computed } from 'vue'
 import { CustomIcon, CustomImage, CustomButton } from '@/components'
 import { isEmpty } from '@/lib/lib_utils'
 
-import type { Custom } from './CustomUploadInfo'
+import type { Types } from './CustomUploadInfo'
 import { getIcon, getIconClass } from './variable'
 
 const props = defineProps({
@@ -15,7 +15,7 @@ const props = defineProps({
     description: '是否可上傳多個檔案'
   },
   files: {
-    type: Array as PropType<Custom.FilesInfo>,
+    type: Array as PropType<Types.FilesInfo>,
     required: false,
     default: null,
     description: '上傳類型'

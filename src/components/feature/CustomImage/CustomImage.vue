@@ -7,12 +7,12 @@ import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import type { Emits } from './CustomImageInfo'
 import { version, props as imageProps } from './CustomImageInfo'
 
-const scopedName = '__i-image__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(imageProps)
 
 const emit = defineEmits(['load', 'error', 'switch', 'close', 'show'])
+
 const onEvent: {
   load: Emits.Load
   error: Emits.Error
@@ -46,7 +46,7 @@ const hasSlot = (prop: string): boolean => {
     :hide-on-click-modal="props.hideOnClickModal"
     :preview-teleported="props.previewTeleported"
     class="image-container"
-    :class="[`CustomImage_${version}`, scopedId, scopedName]"
+    :class="scopedId"
     v-on="onEvent"
   >
     <template v-if="hasSlot('placeholder')" #placeholder>
@@ -62,7 +62,7 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-.__i-image__.image {
+div[class*="__CustomImage"].image {
   &-container {
     width: 100%;
     height: 100%;

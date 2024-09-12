@@ -1,9 +1,9 @@
 import type { PropType } from 'vue'
 import type { TreeNode } from 'element-plus'
 
-export const version = '1.0.0'
+export const version = '__CustomTreeV2_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type CheckNode = Node | string | number
   type TreeKey = string | number
   interface TreeNodeData {
@@ -19,12 +19,11 @@ export declare namespace Custom {
 
 export declare namespace Props {
   type Data = Array<any>
-  type Props = Custom.TreeV2OptionProps | any
+  type Props = Types.TreeV2OptionProps | any
   type HighlightCurrent = boolean
   type DefaultExpandAll = boolean
   type ShowCheckbox = boolean
 }
-
 export const props = {
   data: {
     type: Array as PropType<Props.Data>,
@@ -67,15 +66,15 @@ export const props = {
 }
 
 export declare namespace Emits {
-  type NodeClick = (data: Custom.TreeNodeData, node: TreeNode, e: MouseEvent) => void | any
-  type CheckChange = (data: Custom.TreeNodeData, checked: boolean) => void | any
+  type NodeClick = (data: Types.TreeNodeData, node: TreeNode, e: MouseEvent) => void | any
+  type CheckChange = (data: Types.TreeNodeData, checked: boolean) => void | any
   type Check = (nodeDate: any, checkedData: any) => void | any
 }
 
 export declare namespace Expose {
-  type GetCheckedNodes = (leafOnly?: boolean) => Array<Custom.TreeNodeData>
-  type GetCheckedKeys = (leafOnly?: boolean) => Custom.TreeKey[]
-  type SetCheckedKeys = (keyList: Array<Custom.TreeKey>) => void
+  type GetCheckedNodes = (leafOnly?: boolean) => Array<Types.TreeNodeData>
+  type GetCheckedKeys = (leafOnly?: boolean) => Types.TreeKey[]
+  type SetCheckedKeys = (keyList: Array<Types.TreeKey>) => void
   type ResetChecked = () => void
-  type SetChecked = (key: Custom.TreeKey, checked: boolean) => void
+  type SetChecked = (key: Types.TreeKey, checked: boolean) => void
 }

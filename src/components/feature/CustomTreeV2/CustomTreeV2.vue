@@ -9,20 +9,19 @@ import { getUuid } from '@/lib/lib_utils'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 
-import type { Custom, Emits, Expose } from './CustomTreeV2Info'
+import type { Types, Emits, Expose } from './CustomTreeV2Info'
 import { version, props as treeProps } from './CustomTreeV2Info'
 
-const scopedName = '__i-tree-v2__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(treeProps)
 
 const emit = defineEmits(['node-click', 'check-change', 'check'])
 
-const onNodeClick: Emits.NodeClick = (data: Custom.TreeNodeData, node: TreeNode, e: MouseEvent) => {
+const onNodeClick: Emits.NodeClick = (data: Types.TreeNodeData, node: TreeNode, e: MouseEvent) => {
   emit('node-click', e, data, node)
 }
-const onCheckChange: Emits.CheckChange = (data: Custom.TreeNodeData, checked: boolean) => {
+const onCheckChange: Emits.CheckChange = (data: Types.TreeNodeData, checked: boolean) => {
   emit('check-change', data, checked)
 }
 const onCheck: Emits.Check = (nodeDate: any, checkedData: any) => {
@@ -40,7 +39,7 @@ const getCheckedKeys: Expose.GetCheckedKeys = (leafOnly?: boolean) => {
 }
 
 // 設定勾選
-const setCheckedKeys: Expose.SetCheckedKeys = (keyList: Array<Custom.TreeKey>) => {
+const setCheckedKeys: Expose.SetCheckedKeys = (keyList: Array<Types.TreeKey>) => {
   elTreeV2Ref.value!.setCheckedKeys(keyList)
 }
 
@@ -48,7 +47,7 @@ const resetChecked: Expose.ResetChecked = () => {
   elTreeV2Ref.value!.setCheckedKeys([])
 }
 
-const setChecked: Expose.SetChecked = (key: Custom.TreeKey, checked: boolean) => {
+const setChecked: Expose.SetChecked = (key: Types.TreeKey, checked: boolean) => {
   elTreeV2Ref.value!.setChecked(key, checked)
 }
 
@@ -98,15 +97,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    ref="wrapRef"
-    class="tree-container"
-    :class="[
-      `CustomTree_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div ref="wrapRef" class="tree-container" :class="scopedId">
     <ElTreeV2
       ref="elTreeV2Ref"
       :data="props.data"
@@ -133,7 +124,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.__i-tree-v2__.tree {
+div[class*="__CustomTreeV2"].tree {
   &-container {
     width: 100%;
     height: 100%;

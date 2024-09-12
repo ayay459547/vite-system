@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, computed } from 'vue'
+import { ref, onMounted, nextTick, computed, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import {
   VxeTable,
   VxeColgroup,
@@ -14,10 +15,11 @@ import {
 
 import { formatDatetime } from '@/lib/lib_format'
 import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils'
-
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
-import type { Custom, Expose } from './TimeLineTableInfo'
-import { version, props as timeLineTableProps } from './TimeLineTableInfo'
+
+import type { Types, Expose } from './TimeLineTableInfo'
+import { version, props as timeLineCustomTableProps } from './TimeLineTableInfo'
 
 import DraggableItem from './Components/DraggableItem.vue'
 import GroupDateColumn from './Components/GroupDateColumn.vue'
@@ -26,7 +28,12 @@ const baseWidth = 80
 
 const scopedId = getUuid('__TimeLineTable__')
 
-const props = defineProps(timeLineTableProps)
+const props = defineProps(timeLineCustomTableProps)
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
+})
 
 const baseLevelIndex = ref(1)
 const timeLevelOptions = ref([
@@ -366,7 +373,7 @@ const init: Expose.Init = async () => {
     }
   })
 
-  const sortCallback = (a: Custom.TableColumn, b: Custom.TableColumn) => {
+  const sortCallback = (a: Types.TableColumn, b: Types.TableColumn) => {
     const [aIndex, bIndex] = [ a?.timeIndex ?? -1, b?.timeIndex ?? -1 ]
     return aIndex - bIndex
   }
@@ -416,12 +423,12 @@ defineExpose({
       :merge-cells="mergeCells"
     >
       <VxeColgroup
-        title="設定"
+        :title="i18nTranslate('setting')"
         fixed="left"
       >
         <template #header>
           <div class="flex-row i-ga-lg">
-            <h3>設定</h3>
+            <h3>{{ i18nTranslate('setting') }}</h3>
 
             <div class="flex-row i-ga-md">
               <CustomPopover

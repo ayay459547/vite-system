@@ -9,7 +9,7 @@ import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props } from './SimpleTableInfo'
-import { version, props as simpleTableProps } from './SimpleTableInfo'
+import { version, props as simpleCustomTableProps } from './SimpleTableInfo'
 
 type GetRowCallbackAttrOptions = {
   rowData: any
@@ -105,12 +105,12 @@ function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHead
   return null
 }
 
-// SimpleTable.props = simpleTableProps
+// SimpleTable.props = simpleCustomTableProps
 // SimpleTable.emits = ['update:modelValue']
 
 export default defineComponent({
   name: 'SimpleTable',
-  props: simpleTableProps,
+  props: simpleCustomTableProps,
   emits: ['update:modelValue'],
   setup(props: any, context: any) {
     const SimpleTable = (): Component => {

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/table/CustomTable/CustomTable.md?raw'
-import type { TableCustom } from '@/components'
+import type { CustomTableTypes } from '@/components'
 import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components'
 import { useTableSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting'
@@ -73,12 +73,12 @@ const download = () => {
   downloadExcel(tableData2)
 }
 
-const onTableChange = (params: TableCustom.TableParams) => {
+const onTableChange = (params: CustomTableTypes.TableParams) => {
   console.log(params)
 }
 
 const checkTable = ref()
-const tableColumns1: TableCustom.TableColumn[] = [
+const tableColumns1: CustomTableTypes.TableColumn[] = [
   { key: 'name', label: '名稱', sortable: 'custom', prop: 'name', width: 150 },
   { key: 'age', label: '年齡', sortable: 'custom', prop: 'age', width: 120 },
   { key: 'address', label: '地址', sortable: 'custom', prop: 'address', minWidth: 200 }

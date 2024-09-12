@@ -2,7 +2,7 @@
 import { type PropType, ref, onMounted, reactive, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { type TimeLineProps, CustomTimeLine, SimpleTable } from '@/components'
+import { type CustomTimeLineProps, CustomTimeLine, SimpleTable } from '@/components'
 import { scrollToEl, isEmpty } from '@/lib/lib_utils'
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 
@@ -29,7 +29,7 @@ const { tableColumns } = useSimpleTableSetting(columnSetting, 'table')
 
 const isLoading = ref(false)
 
-const timeLine = ref<TimeLineProps.Options>([])
+const timeLine = ref([])
 
 const currentSequence = ref(0)
 
@@ -67,38 +67,34 @@ const init = async () => {
     })
   }
 
-  timeLine.value = resData
-    .sort((a, b) => {
-      return a.sequence - b.sequence
-    })
-    .map(item => {
-      const {
-        process_id = '',
-        process_name = '',
-        scheduledMachine_Id,
-        CREATE_DATE = '',
-        sequence,
-        reasons
-      } = item
+  timeLine.value = resData.sort((a, b) => a.sequence - b.sequence).map(item => {
+    const {
+      process_id = '',
+      process_name = '',
+      scheduledMachine_Id,
+      CREATE_DATE = '',
+      sequence,
+      reasons
+    } = item
 
-      const _type = ((scheduledMachine_Id, reasons) => {
-        if (scheduledMachine_Id) return 'success'
-        if (reasons.length > 0) return 'danger'
-        return ''
-      })(scheduledMachine_Id, reasons)
+    const _type = ((scheduledMachine_Id, reasons) => {
+      if (scheduledMachine_Id) return 'success'
+      if (reasons.length > 0) return 'danger'
+      return ''
+    })(scheduledMachine_Id, reasons)
 
-      return {
-        label: `${sequence}. ${process_id} : ${process_name}`,
-        type: _type,
-        timestamp: CREATE_DATE,
-        size: 'large',
-        placement: 'top',
+    return {
+      label: `${sequence}. ${process_id} : ${process_name}`,
+      type: _type,
+      timestamp: CREATE_DATE,
+      size: 'large',
+      placement: 'top',
 
-        scheduledMachine_Id: scheduledMachine_Id ? scheduledMachine_Id : i18nTranslate('none-var'),
-        sequence,
-        reasons
-      }
-    })
+      scheduledMachine_Id: scheduledMachine_Id ? scheduledMachine_Id : i18nTranslate('none-var'),
+      sequence,
+      reasons
+    }
+  }) as CustomTimeLineProps.Options
 
   await nextTick()
   setTimeout(() => {

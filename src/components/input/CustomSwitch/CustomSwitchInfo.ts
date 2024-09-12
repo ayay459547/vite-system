@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Size = '' | 'large' | 'default' | 'small'
 }
 
@@ -13,7 +13,7 @@ export declare namespace Props {
   type InactiveText = string
   type Disabled = boolean
   type Loading = boolean
-  type Size = Custom.Size
+  type Size = Types.Size
   type Width = string | number
 }
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
@@ -7,6 +6,11 @@ import { SimpleTable, CustomButton } from '@/components'
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+
+import type { Emits, Expose } from './FormListInfo'
+import { version, props as formListProps } from './FormListInfo'
+
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -38,126 +42,9 @@ const getColumnSlot = (slotKey: string): string => {
   return getSlot(slotKey, 'column')
 }
 
-const props = defineProps({
-  modelValue: {
-    type: Array as PropType<any[]>,
-    default() {
-      return []
-    }
-  },
-  label: {
-    type: String as PropType<string>,
-    required: false,
-    default: ''
-  },
-  min: {
-    type: Number as PropType<number>,
-    required: false,
-    default: 0
-  },
-  max: {
-    type: Number as PropType<number>,
-    required: false,
-    default: Infinity
-  },
-  columnSetting: {
-    type: Object as PropType<Record<string, any>>,
-    required: true,
-    default() {
-      return {}
-    }
-  },
-  tableKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'table'
-  },
-  itemKey: {
-    type: String as PropType<string>,
-    required: false,
-    default: 'key'
-  },
-  isDraggable: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false
-  },
-  draggableGroup: {
-    type: String as PropType<string>,
-    required: false
-  },
-  isEdit: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: true,
-    description: '是否可編輯'
-  },
-  isCreate: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否可新增'
-  },
-  createPosition: {
-    type: String as PropType<'center' | 'right' | 'left'>,
-    required: false,
-    default: 'center',
-    description: `
-      新增用按鈕的顯示位置
-      種類: 'center' | 'right' | 'left'
-    `
-  },
-  isRemove: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否可刪除'
-  },
-  isShowNo: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: '是否顯示編號'
-  },
-  isCollapse: {
-    type: Boolean as PropType<boolean>,
-    required: false,
-    default: false,
-    description: `
-      是否允許摺疊FormList, 僅顯示標題與摺疊鍵
-    `
-  },
-  move: {
-    type: Function,
-    required: false,
-    default: null,
-    description: '用於draggable的移動後回掉函式'
-  },
-  disabled: {
-    type: Function,
-    required: false,
-    default: null,
-    description: '用於定義draggable是否可移動'
-  },
-  setDisabled: {
-    type: Function,
-    required: false,
-    default: () => { return false },
-    description: `
-      用於判斷FormList Item是否禁止操作
-    `
-  }
-})
+const props = defineProps(formListProps)
 
 const emit = defineEmits(['add', 'remove', 'update:modelValue'])
-
-//Expose
-defineExpose({
-  setCollapse: (method?: string) => {
-    //展開或折疊FormList
-    setCollapseList(method)
-  }
-})
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -169,8 +56,7 @@ const tempValue = computed({
 const tableColumns = ref()
 const showTableColumns = ref()
 
-const scopedId = getUuid('__form-list__')
-const add = () => {
+const add: Emits.Add = () => {
   if (tempValue.value.length >= props.max) {
     return swal({
       icon: 'warning',
@@ -189,7 +75,7 @@ const add = () => {
     if (newEl) scrollToEl(newEl, { block: 'center' })
   })
 }
-const remove = (rowIndex: number) => {
+const remove: Emits.Remove = (rowIndex: number) => {
   if (tempValue.value.length < props.min + 1) {
     return swal({
       icon: 'warning',
@@ -215,6 +101,12 @@ const setCollapseList = (method?: string) => {
       break
   }
 }
+
+// 展開或折疊 FormList
+const setCollapse: Expose.SetCollapse = (method?: string) => {
+  setCollapseList(method)
+}
+defineExpose({ setCollapse })
 
 onBeforeMount(() => {
   if (props.isShowNo) {

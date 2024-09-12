@@ -5,15 +5,15 @@ import type { TableOptions } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type CommonData = Record<string, any>
 
-  type ResponseData = Custom.CommonData
-  type FilterData = Custom.CommonData
-  type TableData = Custom.CommonData
-  type ExcelData = Custom.CommonData
+  type ResponseData = Types.CommonData
+  type FilterData = Types.CommonData
+  type TableData = Types.CommonData
+  type ExcelData = Types.CommonData
 
-  type ResponseTableData = [Array<Custom.TableData>, number]
+  type ResponseTableData = [Array<Types.TableData>, number]
 
   type WebViewTableOptions = TableOptions
   type Params = ViewParams & {
@@ -32,11 +32,11 @@ export declare namespace Props {
   type Webfuno = string
   type Funoviewsuffix = string
   type Designatedview = string
-  type TableOptions = Custom.WebViewTableOptions
+  type TableOptions = Types.WebViewTableOptions
   type ColumnSetting = Record<any, any>
   type TableKey = string
   type FilterKey = string
-  type FormatParams = (params: Custom.Params) => any
+  type FormatParams = (params: Types.Params) => any
   type FormatExcel = (row: any) => any
   type FormatTable = (row: any) => any
   type FormatSorting = (row: any) => any

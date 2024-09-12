@@ -1,15 +1,14 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomEmpty_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Image = string
   type ImageSize = number
   type Description = string
 }
-
 export const props = {
   image: {
     type: String as PropType<Props.Image>,

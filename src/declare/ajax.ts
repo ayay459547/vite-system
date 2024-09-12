@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 
-import type { TableCustom } from '@/components'
+import type { CustomTableTypes } from '@/components'
 // import type { SweetAlertIcon } from 'sweetalert2'
 
 export type ApiStatus = 'success' | 'error' | 'fail'
@@ -31,7 +31,7 @@ export type ApiRes<T = any> = {
   msg?: string
 }
 
-export type TableParams = TableCustom.TableParams
+export type TableParams = CustomTableTypes.TableParams
 
 export declare interface ViewParams extends TableParams {
   webfuno?: string

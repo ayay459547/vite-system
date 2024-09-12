@@ -6,7 +6,7 @@ import type {
   MessageHandler
 } from 'element-plus'
 
-import type { IconProps } from '@/components'
+import type { CustomIconProps } from '@/components'
 import type { Permission as PagePermission } from '@/lib/lib_permission'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 
@@ -61,7 +61,7 @@ export declare interface AuthData {
 
 // event 事件
 export declare interface EventItem {
-  icon: [IconProps.Type, string] | []
+  icon: [CustomIconProps.Type, string] | []
   label: string
   disabled?: boolean
   active?: boolean

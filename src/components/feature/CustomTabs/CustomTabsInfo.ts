@@ -5,9 +5,9 @@ import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { Option } from '@/components'
 
-export const version = '2.0.0'
+export const version = '__CustomTabs_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Action = 'remove' | 'add'
 }
 
@@ -21,7 +21,6 @@ export declare namespace Props {
   type TabPosition = 'top' | 'right' | 'bottom' | 'left'
   type Stretch = boolean
 }
-
 export const props = {
   modelValue: {
     type: [String, Number, null] as PropType<Props.ModelValue>,
@@ -80,7 +79,7 @@ export declare namespace Emits {
   type TabChange =	(name: TabPaneName) => void
   type TabRemove =	(name: TabPaneName) => void
   type TabAdd = () => void
-  type Edit = (paneName: TabPaneName | undefined, action: Custom.Action) => void
+  type Edit = (paneName: TabPaneName | undefined, action: Types.Action) => void
 }
 
 export declare namespace Expose {}

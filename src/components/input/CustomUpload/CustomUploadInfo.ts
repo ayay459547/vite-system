@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type FileType = 'file' | 'image' | 'excel' | 'word' | 'powerpoint' | 'zip'
   interface Info {
     src?: string
@@ -12,10 +12,10 @@ export declare namespace Custom {
     excel?: any[]
     properties?: any
   }
-  interface FileInfo extends Partial<File>, Custom.Info {
+  interface FileInfo extends Partial<File>, Types.Info {
     uuid: string
   }
-  type FilesInfo = Array<Custom.FileInfo>
+  type FilesInfo = Array<Types.FileInfo>
   type UploadFile = File
 }
 
@@ -24,7 +24,7 @@ export declare namespace Props {
   type Overwrite = boolean
   type Multiple = boolean
   type LimitCount = number | null
-  type LimitType = Custom.FileType | Array<Custom.FileType>
+  type LimitType = Types.FileType | Array<Types.FileType>
 }
 
 export const props = {
@@ -61,10 +61,10 @@ export const props = {
 }
 
 export declare namespace Emits {
-  type File = (files: Custom.FilesInfo, targetList: Custom.UploadFile[]) => void | any
+  type File = (files: Types.FilesInfo, targetList: Types.UploadFile[]) => void | any
 }
 
 export declare namespace Expose {
   type GetFormData = () => FormData
-  type GetFiles = () => Custom.FilesInfo
+  type GetFiles = () => Types.FilesInfo
 }

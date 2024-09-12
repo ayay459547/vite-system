@@ -1,18 +1,18 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomColor_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Size = '' | 'large' | 'default' | 'small'
   type ColorFormat = 'hsl' | 'hsv' | 'hex' | 'rgb'
 }
 
 export declare namespace Props {
   type ModelValue = string
-  type Size = Custom.Size
+  type Size = Types.Size
   // type Disabled = boolean
   // type ShowAlpha = boolean
-  // type ColorFormat = Custom.ColorFormat
+  // type ColorFormat = Types.ColorFormat
   // type PopperClass = string
   // type Predefine = Array<string>
   // type ValidateEvent = boolean
@@ -22,7 +22,6 @@ export declare namespace Props {
   // type Id = string
   // type Teleported = boolean
 }
-
 export const props = {
   modelValue: {
     type: String as PropType<Props.ModelValue>,

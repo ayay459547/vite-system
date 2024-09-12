@@ -1,9 +1,9 @@
 import type { PropType } from 'vue'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 
-export const version = '1.0.0'
+export const version = '__CustomTree_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type CheckNode = Node | string | number
   type TreeKey = string | number
   interface TreeNodeData {
@@ -11,11 +11,11 @@ export declare namespace Custom {
   }
   interface TreeOptionProps {
     children?: string
-    label?: string | ((data: Custom.TreeNodeData, node: Node) => string)
-    disabled?: string | ((data: Custom.TreeNodeData, node: Node) => string)
-    isLeaf?: string | ((data: Custom.TreeNodeData, node: Node) => boolean)
+    label?: string | ((data: Types.TreeNodeData, node: Node) => string)
+    disabled?: string | ((data: Types.TreeNodeData, node: Node) => string)
+    isLeaf?: string | ((data: Types.TreeNodeData, node: Node) => boolean)
     class?: (
-      data: Custom.TreeNodeData,
+      data: Types.TreeNodeData,
       node: Node
     ) =>
       | string
@@ -28,13 +28,12 @@ export declare namespace Custom {
 
 export declare namespace Props {
   type Data = Array<any>
-  type Props = Custom.TreeOptionProps | any
+  type Props = Types.TreeOptionProps | any
   type NodeKey = string
   type HighlightCurrent = boolean
   type DefaultExpandAll = boolean
   type ShowCheckbox = boolean
 }
-
 export const props = {
   data: {
     type: Array as PropType<Props.Data>,
@@ -87,10 +86,10 @@ export declare namespace Emits {
 }
 
 export declare namespace Expose {
-  type GetCheckedNodes = (leafOnly?: boolean, includeHalfChecked?: boolean) => Array<Custom.TreeNodeData>
-  type GetCheckedKeys = (leafOnly?: boolean) => Custom.TreeKey[]
+  type GetCheckedNodes = (leafOnly?: boolean, includeHalfChecked?: boolean) => Array<Types.TreeNodeData>
+  type GetCheckedKeys = (leafOnly?: boolean) => Types.TreeKey[]
   type SetCheckedNodes = (nodeList: Node[], leafOnly?: boolean) => void
   type SetCheckedKeys = (keyList: Array<string | number>, leafOnly?: boolean) => void
   type ResetChecked = () => void
-  type SetChecked = (checkNode: Custom.CheckNode, checked: boolean, deep: boolean) => void
+  type SetChecked = (checkNode: Types.CheckNode, checked: boolean, deep: boolean) => void
 }

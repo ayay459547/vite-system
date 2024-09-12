@@ -1,8 +1,8 @@
 import type { PropType, CSSProperties } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomPopover_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Visible = boolean | null
@@ -29,7 +29,6 @@ export declare namespace Props {
   type VirtualRef = HTMLElement
   type VirtualTriggering = boolean
 }
-
 export const props = {
   visible: {
     type: Boolean as PropType<Props.Visible>,

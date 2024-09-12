@@ -1,8 +1,8 @@
 import type { CSSProperties, PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomCard_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Header = string
@@ -11,7 +11,6 @@ export declare namespace Props {
   type BodyClass = string
   type Shadow = 'always' | 'never' | 'hover'
 }
-
 export const props = {
   header: {
     type: String as PropType<Props.Header>,

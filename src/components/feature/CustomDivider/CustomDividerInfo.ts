@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomDivider_1.0.0__'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type Direction = 'horizontal' | 'vertical'
@@ -33,9 +33,9 @@ export const props = {
     type: String as PropType<Props.BorderStyle>,
     required: false,
     default: 'solid',
-    description: `
-      線的類型
-      css border 的 style`
+    description: `線的類型
+      css border 的 style
+    `
   },
   contentPosition: {
     type: String as PropType<Props.ContentPosition>,

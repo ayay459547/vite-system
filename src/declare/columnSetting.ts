@@ -1,13 +1,13 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
 import type {
-  FormInputExpose,
-  TableCustom,
-  TableProps
+  TempCustomInputExpose,
+  CustomTableTypes,
+  CustomTableProps
 } from '@/components'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
 
-export interface InputRefItem extends Element, ComponentPublicInstance, FormInputExpose {}
+export interface InputRefItem extends Element, ComponentPublicInstance, TempCustomInputExpose {}
 
 export interface FormColumnsItem {
   ref?: (el: InputRefItem) => void
@@ -103,24 +103,25 @@ export interface TableRef extends Element, ComponentPublicInstance {
 }
 
 export interface TableOptions {
-  title: TableProps.Title
-  i18nTitle?: TableProps.I18nTitle
-  version: TableProps.Version
-  settingKey: TableProps.SettingKey
-  page?: TableProps.Page
-  size?: TableProps.PageSize
-  sort?: TableProps.Sort
-  rowKey?: TableProps.RowKey
-  isSorting?: TableProps.IsSorting // 是否可多欄位排序
-  isHiddenExcel?: TableProps.IsHiddenExcel // 是否隱藏下載excel按鈕
-  isHiddenColumnSetting?: TableProps.IsHiddenColumnSetting // 是否隱藏欄位設定按鈕
-  tableSize?: TableProps.TableSize
-  showType?: TableProps.ShowType
-  selection?: TableProps.Selection
-  lazy?: TableProps.Lazy
-  load?: TableProps.Load // 懶加載
-  treeProps?: TableProps.TreeProps
-  i18nModule?: TableProps.I18nModule // 翻譯模組
+  title: CustomTableProps.Title
+  i18nTitle?: CustomTableProps.I18nTitle
+  version: CustomTableProps.Version
+  settingKey: CustomTableProps.SettingKey
+  page?: CustomTableProps.Page
+  size?: CustomTableProps.PageSize
+  sort?: CustomTableProps.Sort
+  rowKey?: CustomTableProps.RowKey
+  isSorting?: CustomTableProps.IsSorting // 是否可多欄位排序
+  isHiddenExcel?: CustomTableProps.IsHiddenExcel // 是否隱藏下載excel按鈕
+  isHiddenColumnSetting?: CustomTableProps.IsHiddenColumnSetting // 是否隱藏欄位設定按鈕
+  tableSize?: CustomTableProps.TableSize
+  showType?: CustomTableProps.ShowType
+  selection?: CustomTableProps.Selection
+  lazy?: CustomTableProps.Lazy
+  load?: CustomTableProps.Load // 懶加載
+  treeProps?: CustomTableProps.TreeProps
+  i18nModule?: CustomTableProps.I18nModule // 翻譯模組
+  [key: string]: any
 }
 
 export interface TableSetting {
@@ -131,27 +132,28 @@ export interface TableSetting {
     i18nTitle?: string
     version: string
     settingKey: string
-    params: TableCustom.TableParams
+    params: CustomTableTypes.TableParams
     page?: number
     pageSize?: number
     // 單一欄位的 sortable (原版)
     // 暫時不用 先保留功能
-    sort?: TableProps.Sort
+    sort?: CustomTableProps.Sort
     // 多欄位用的 isSorting (爆改版)
     isSorting?: boolean
     tableColumns: any[]
-    tableSize?: TableProps.TableSize
+    tableSize?: CustomTableProps.TableSize
     isHiddenExcel?: boolean
     isHiddenColumnSetting?: boolean
     i18nModule?: ScopeKey
     // 其他 table 的 props
-  } & Record<string, any>
+    [key: string]: any
+  }
   downloadExcel: (tableData: Record<string, any>[]) => void
   resetScroll: (tableRef?: TableRef) => void
   toggleSelection: (rows: any[], tableRef?: TableRef) => void
   getSelectionRows: () => any[]
-  getParams: (tableRef?: TableRef) => TableCustom.TableParams | null
-  setParams: (params: TableCustom.TableParams, tableRef?: TableRef) => void
+  getParams: (tableRef?: TableRef) => CustomTableTypes.TableParams | null
+  setParams: (params: CustomTableTypes.TableParams, tableRef?: TableRef) => void
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }
 
@@ -182,6 +184,7 @@ export interface SimpleTableColumnsItem {
   label: string
   i18nLabel?: string
   title: string
+  [key: string]: any
 }
 
 export interface Option<T = (string | number | null | undefined)> extends Record<string, any> {
@@ -189,8 +192,8 @@ export interface Option<T = (string | number | null | undefined)> extends Record
   i18nLabel?: string
   value: T
   disabled?: boolean
-  color?: string
   data?: any
+  [key: string]: any
 }
 
 export type Options<T = (string | number | null | undefined)> = Array<Option<T>>

@@ -17,8 +17,7 @@ import { version, props as linkProps } from './CustomLinkInfo'
 const useHook: UseHook = inject('useHook')
 const { env, i18nTranslate, i18nTest } = useHook()
 
-const scopedName = '__i-link__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(linkProps)
 
@@ -74,13 +73,7 @@ const getI18nTranslate = (link: any) => {
 </script>
 
 <template>
-  <div
-    :class="[
-      `CustomLinkInfo_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div :class="scopedId">
     <CustomTooltip
       placement="right"
       :offset="10"
@@ -118,14 +111,14 @@ const getI18nTranslate = (link: any) => {
 </template>
 
 <style lang="scss" scoped>
-.__i-link__ .tooltip {
+div[class*="__CustomLink"] .tooltip {
   &-default {
     width: fit-content;
     display: flex;
     gap: 8px;
 
     &-icon {
-      color: #409eff;
+      color: var(--el-color-primary);
     }
   }
 }

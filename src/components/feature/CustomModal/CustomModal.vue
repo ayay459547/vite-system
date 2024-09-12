@@ -30,8 +30,7 @@ const { swal, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const scopedName = '__i-modal__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(modalProps)
 
@@ -426,9 +425,7 @@ onUnmounted(() => {
       v-show="wrapperIsShow"
       class="modal-mask"
       :class="[
-        `CustomModal_${version}`,
         scopedId,
-        scopedName,
         containerIsShow ? 'is-show' : 'is-hidden',
         props.modal ? 'is-modal' : '',
         isDraggable ? 'is-draggable user-select-none' : ''

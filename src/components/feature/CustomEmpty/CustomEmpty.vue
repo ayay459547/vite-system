@@ -6,8 +6,7 @@ import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
 
 import { version, props as emptyProps } from './CustomEmptyInfo'
 
-const scopedName = '__i-empty__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(emptyProps)
 
@@ -18,8 +17,15 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div class="empty-container" :class="[`CustomEmpty_${version}`, scopedId, scopedName]">
-    <ElEmpty :image="props.image" :description="props.description" :image-size="props.imageSize">
+  <div
+    class="empty-container"
+    :class="scopedId"
+  >
+    <ElEmpty
+      :image="props.image"
+      :description="props.description"
+      :image-size="props.imageSize"
+    >
       <template v-if="hasSlot('default')" #default>
         <slot></slot>
       </template>
@@ -35,11 +41,11 @@ const hasSlot = (prop: string): boolean => {
 
 <style lang="scss" scoped>
 // :deep() 需要一個根節點
-.__i-empty__ :deep(.el-empty) {
+div[class*="__CustomEmpty"] :deep(.el-empty) {
   padding: 12px 0;
 }
 
-.__i-empty__.empty {
+div[class*="__CustomEmpty"].empty {
   &-container {
     width: 100%;
     height: 100%;

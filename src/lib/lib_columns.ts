@@ -6,7 +6,7 @@ import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
 
-import type { TableCustom } from '@/components'
+import type { CustomTableTypes } from '@/components'
 import type {
   InputRefItem,
   // FormColumnsItem,
@@ -75,6 +75,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       showOverflowTooltip: false,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
+      i18nModule: column?.i18nModule ?? defaultModuleType,
       // 條件搜尋
       isCondition: column?.isCondition ?? false,
       ...column[type]
@@ -283,6 +284,7 @@ export const useFormListSetting = <T>(
       showOverflowTooltip: false,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
+      i18nModule: column?.i18nModule ?? defaultModuleType,
       ...column[type]
     }
   }
@@ -588,7 +590,7 @@ export const useTableSetting = (
     })
   }
 
-  const tableParams = shallowReactive<TableCustom.TableParams>({
+  const tableParams = shallowReactive<CustomTableTypes.TableParams>({
     page,
     size,
     sort
@@ -643,7 +645,7 @@ export const useTableSetting = (
         return _tableRef.value?.getSelectionRows()
       }
     },
-    getParams: (tableRef?: TableRef): TableCustom.TableParams => {
+    getParams: (tableRef?: TableRef): CustomTableTypes.TableParams => {
       if (tableRef) {
         return tableRef?.getTableParams()
       } else if (_tableRef.value !== null) {
@@ -658,7 +660,7 @@ export const useTableSetting = (
       params: {
         page?: number
         size?: number
-        sort?: TableCustom.Sort
+        sort?: CustomTableTypes.Sort
       },
       tableRef?: TableRef
     ) => {
@@ -723,6 +725,7 @@ export const useSimpleTableSetting = (
       minWidth: 150,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
+      i18nModule: column?.i18nModule ?? defaultModuleType,
       title: column?.label ?? '',
       required: false,
       ...column[type]

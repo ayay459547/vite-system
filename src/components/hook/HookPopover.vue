@@ -6,20 +6,12 @@ import type { EventOptions, EventItem } from '@/declare/hook'
 import { CustomPopover } from '@/components'
 import throttle from '@/lib/lib_throttle'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Placement =
-    | 'top'
-    | 'top-start'
-    | 'top-end'
-    | 'bottom'
-    | 'bottom-start'
-    | 'bottom-end'
-    | 'left'
-    | 'left-start'
-    | 'left-end'
-    | 'right'
-    | 'right-start'
-    | 'right-end'
+    | 'top' | 'top-start' | 'top-end'
+    | 'bottom' | 'bottom-start' | 'bottom-end'
+    | 'left' | 'left-start' | 'left-end'
+    | 'right' | 'right-start' | 'right-end'
 }
 
 export declare namespace Props {
@@ -44,7 +36,7 @@ export declare namespace Expose {
 }
 
 const visible = ref<boolean>(false)
-const placement = ref<Custom.Placement>('bottom')
+const placement = ref<Types.Placement>('bottom')
 const left = ref<number>(0)
 const top = ref<number>(0)
 

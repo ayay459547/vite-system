@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import markdown from '@/components/input/CustomSwitch/CustomSwitch.md?raw'
 import {
-  type SwitchProps,
+  type CustomSwitchProps,
   CustomInput,
   CustomDivider,
   CustomMarkdown,
@@ -17,7 +17,7 @@ const sizeOptions = [
   { label: '中', value: 'default' },
   { label: '小', value: 'small' }
 ]
-const size = ref<SwitchProps.Size>('default')
+const size = ref<CustomSwitchProps.Size>('default')
 
 // slot
 const activeText = ref('activeText')

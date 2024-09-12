@@ -1,12 +1,12 @@
 import type { PropType } from 'vue'
 
-import type { PopoverProps } from '@/components'
+import type { CustomPopoverProps } from '@/components'
 import { props as inputProps } from '@/components/input/CustomInput/CustomInputInfo'
 import type { Conditions as _Conditions } from '@/declare/columnSetting'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type ModelValue = any
@@ -15,7 +15,7 @@ export declare namespace Props {
   type ColumnId = string
   type Conditions = _Conditions
   type Width = string | number
-  type Placement = PopoverProps.Placement
+  type Placement = CustomPopoverProps.Placement
   type Search = boolean
 }
 

@@ -11,8 +11,7 @@ import type { Option } from '@/components'
 import type { Props } from './CustomTabsInfo'
 import { version, props as tabsProps } from './CustomTabsInfo'
 
-const scopedName = '__i-tabs__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(tabsProps)
 
@@ -60,14 +59,7 @@ const elTabsRef = ref()
 </script>
 
 <template>
-  <div
-    class="tabs-wrapper"
-    :class="[
-      `CustomTabs_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div class="tabs-wrapper" :class="scopedId">
     <ElTabs
       ref="elTabsRef"
       v-model="tempValue"
@@ -77,8 +69,6 @@ const elTabsRef = ref()
       :editable="props.editable"
       :tab-position="props.tabPosition"
       :stretch="props.stretch"
-      class="tabs-container"
-      :class="scopedName"
       @tab-click="onTabClick"
       @tab-change="onTabChange"
       @tab-remove="onTabRemove"
@@ -87,7 +77,7 @@ const elTabsRef = ref()
     >
       <ElTabPane
         v-for="item in props.options"
-        :key="`tab-${item.value}-${scopedId}`"
+        :key="`${item.value}-${scopedId}`"
         :name="item.value"
         :label="item.label"
         :disabled="item?.disabled ?? false"
@@ -119,7 +109,7 @@ const elTabsRef = ref()
 </template>
 
 <style lang="scss" scoped>
-.__i-tabs__ :deep(.el-tabs) {
+div[class*="__CustomTabs"] :deep(.el-tabs) {
   .el-tabs__header {
     margin: 0 0 8px;
   }
@@ -135,15 +125,10 @@ const elTabsRef = ref()
   }
 }
 
-.__i-tabs__.tabs {
+div[class*="__CustomTabs"].tabs {
   &-wrapper {
     width: 100%;
-    // height: 100%;
     height: fit-content;
-  }
-  &-container {
-    width: 100%;
-    height: 100%;
   }
 }
 </style>

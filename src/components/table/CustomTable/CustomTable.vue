@@ -26,7 +26,7 @@ import ColumnSorting from './Components/ColumnSorting.vue'
 import GroupSorting from './Components/GroupSorting.vue'
 import TableMain from './TableMain.vue'
 
-import type { Custom, Emits } from './CustomTableInfo'
+import type { Types, Emits } from './CustomTableInfo'
 import { version, props as tableProps } from './CustomTableInfo'
 
 const scopedId = getUuid('__i-table__')
@@ -105,7 +105,7 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const pageChange: Custom.PageChange = (page, pageSize) => {
+const pageChange: Types.PageChange = (page, pageSize) => {
   currentPage.value = page
 
   emit('page-change', { page, pageSize })
@@ -119,7 +119,7 @@ const pageChange: Custom.PageChange = (page, pageSize) => {
 }
 
 // 單欄排序
-const currentSort = shallowRef<Custom.Sort>({
+const currentSort = shallowRef<Types.Sort>({
   key: null,
   order: null
 })
@@ -145,11 +145,11 @@ const onSortChange = (props: {
   })
 }
 // 多欄排序
-const sortingList = ref<Custom.SortingList>([])
-const emitSortingData = computed<Custom.SortingMap>(() => {
+const sortingList = ref<Types.SortingList>([])
+const emitSortingData = computed<Types.SortingMap>(() => {
   // return sortingList.value.filter(item => item.order !== 'none')
 
-  return sortingList.value.reduce<Custom.SortingMap>((res, curr) => {
+  return sortingList.value.reduce<Types.SortingMap>((res, curr) => {
     const { key, order } = curr
     switch (order) {
       case 'ascending':
@@ -160,7 +160,7 @@ const emitSortingData = computed<Custom.SortingMap>(() => {
         break
     }
 
-    return res as Custom.SortingMap
+    return res as Types.SortingMap
   }, {})
 })
 
@@ -173,7 +173,7 @@ const activeSort = () => {
   })
 }
 const initSortingList = async () => {
-  sortingList.value = props.tableColumns.reduce<Custom.SortingList>((res, column) => {
+  sortingList.value = props.tableColumns.reduce<Types.SortingList>((res, column) => {
     const _isOperations = column?.isOperations ?? false
 
     if (!_isOperations && (column?.isSorting ?? true)) {
@@ -181,7 +181,7 @@ const initSortingList = async () => {
         label: column.label,
         i18nLabel: column.i18nLabel,
         key: column.key,
-        order: (column?.order ?? 'none') as Custom.Order,
+        order: (column?.order ?? 'none') as Types.Order,
         orderIndex: (column?.orderIndex ?? -1) as number
       })
     }
@@ -399,7 +399,7 @@ const onLoad = () => {
  * 頁碼
  * 排序
  */
-const onShowChange = (props: { page: number; pageSize: number; sort: Custom.Sort, emitType?: string }) => {
+const onShowChange = (props: { page: number; pageSize: number; sort: Types.Sort, emitType?: string }) => {
   const { page, pageSize, sort, emitType = 'show-change' } = props
 
   emit('show-change', {
@@ -521,7 +521,7 @@ defineExpose({
     }
   },
   setTableParams: (params: {
-    [P in keyof Custom.TableParams]?: Custom.TableParams[P]
+    [P in keyof Types.TableParams]?: Types.TableParams[P]
   }) => {
     const { page, size, sort, sortingList: _sortingList } = params
 

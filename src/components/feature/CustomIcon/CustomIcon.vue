@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getUuid, isEmpty } from '@/lib/lib_utils'
 import { useAsyncComponent } from '@/lib/lib_hook'
+import { getUuid, isEmpty } from '@/lib/lib_utils'
 
 import { version, props as iconProps } from './CustomIconInfo'
 
 const XIcon = useAsyncComponent(() => import('./Components/XIcon.vue'), 'rect')
 
-const scopedName = '__i-icon__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(iconProps)
 
@@ -23,9 +22,7 @@ const getIcon = computed(() => {
   <div
     class="icon-container"
     :class="[
-      `CustomIcon_${version}`,
       scopedId,
-      scopedName,
       `icon-size-${props.size}`,
       `${props.iconClass}`,
     ]"
@@ -36,7 +33,7 @@ const getIcon = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.__i-icon__.icon {
+div[class*="__CustomIcon"].icon {
   &-container {
     width: fit-content;
     height: fit-content;

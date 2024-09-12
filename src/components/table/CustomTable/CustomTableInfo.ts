@@ -6,7 +6,7 @@ import type { ScopeKey } from '@/i18n/i18n_setting'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Order = null | 'ascending' | 'descending' | 'none' | 'Asc' | 'Desc'
   type Sort = {
     key: null | string
@@ -19,20 +19,20 @@ export declare namespace Custom {
     label?: string
     i18nLabel?: string
     key?: null | string
-    order?: Custom.Order
+    order?: Types.Order
     orderIndex?: number
   }
 
   type SortingList = Sorting[]
   // 送 api 的格式
-  type SortingMap = Record<string, Custom.Order>
+  type SortingMap = Record<string, Types.Order>
 
-  type TableParams = {
+  type TableParams =  {
     page?: number
     size?: number
-    sort?: Custom.Sort
-    sortingList?: Custom.SortingList
-    sortingMap?: Custom.SortingMap
+    sort?: Types.Sort
+    sortingList?: Types.SortingList
+    sortingMap?: Types.SortingMap
   }
 
   type RowCallback<T> =
@@ -71,7 +71,7 @@ export declare namespace Props {
   type Version = string
   type SettingKey = string
   type SettingWidth = number
-  type TableColumns = Array<Custom.TableColumn>
+  type TableColumns = Array<Types.TableColumn>
   type TableData = any[]
   type TableDataCount = number
   type RowKey = string
@@ -89,17 +89,17 @@ export declare namespace Props {
       ) => number[] | { rowspan: number; colspan: number } | void)
     | null
 
-  type RowClassName = Custom.RowCallback<string>
-  type RowStyle = Custom.RowCallback<Record<string, any>>
-  type CellClassName = Custom.CellCallback<string>
-  type CellStyle = Custom.CellCallback<Record<string, any>>
+  type RowClassName = Types.RowCallback<string>
+  type RowStyle = Types.RowCallback<Record<string, any>>
+  type CellClassName = Types.CellCallback<string>
+  type CellStyle = Types.CellCallback<Record<string, any>>
   type Lazy = boolean
   type Load = (row: any, treeNode: any, resolve: any) => void | null
   type TreeProps = Record<string, any>
   type Page = number
   type PageSize = number
-  type Sort = Custom.Sort
-  type ShowType = Custom.ShowType
+  type Sort = Types.Sort
+  type ShowType = Types.ShowType
   type IsHiddenExcel = boolean
   type IsShowNo = boolean
   type IsSorting = boolean
@@ -343,9 +343,9 @@ export declare namespace Emits {
 }
 
 export declare namespace Expose {
-  type PageChange = Custom.PageChange
-  type GetTableParams = () => Custom.TableParams
-  type SetTableParams = (params: Custom.TableParams) => void
+  type PageChange = Types.PageChange
+  type GetTableParams = () => Types.TableParams
+  type SetTableParams = (params: Types.TableParams) => void
   type ResetScroll = () => void
   type ToggleSelection = (rows: any[]) => void
   type GetSelectionRows = () => any[]

@@ -1,4 +1,4 @@
-import type { IconProps } from '@/components'
+import type { CustomIconProps } from '@/components'
 import type { RouterType } from '@/router/setting'
 // import type { ScopeKey } from '@/i18n/i18n_setting'
 
@@ -10,7 +10,7 @@ interface Meta {
   systemType?: RouterType[]
 
   // 路由圖示
-  icon?: string | [IconProps.Type, string]
+  icon?: string | [CustomIconProps.Type, string]
 
   // i18n Excel檔案(i18n.xlsx) 對應的模組
   // i18nModule?: ScopeKey

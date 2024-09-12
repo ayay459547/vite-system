@@ -4,11 +4,10 @@ import { ElTour, ElTourStep } from 'element-plus'
 
 import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
-import type { Props } from './CustomTourInfo'
+import type { Props, Emits } from './CustomTourInfo'
 import { version, props as tourProps } from './CustomTourInfo'
 
-const scopedName = '__i-tour__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(tourProps)
 
@@ -34,17 +33,16 @@ const currentValue = computed({
   }
 })
 
-const onClose = (current: number) => {
+const onClose: Emits.Close = (current: number) => {
   emit('close', current)
 }
-const onFinish = () => {
+const onFinish: Emits.Finish = () => {
   emit('finish')
 }
-const onChange = (current: number) => {
+const onChange: Emits.Change = (current: number) => {
   emit('change', current)
 }
-
-const onStepClose = () => {
+const onStepClose: Emits.StepClose = () => {
   emit('step-close')
 }
 
@@ -52,6 +50,7 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
+
 </script>
 
 <template>
@@ -62,19 +61,14 @@ const hasSlot = (prop: string): boolean => {
     :show-arrow="props.showArrow"
     :placement="props.placement"
     :target-area-clickable="targetAreaClickable"
-    class="tour-container"
-    :class="[
-      `CustomTour_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="scopedId"
     @close="onClose"
     @finish="onFinish"
     @change="onChange"
   >
     <ElTourStep
       v-for="(step, stepIndex) in props.steps"
-      :key="`tour-${stepIndex}-${scopedId}`"
+      :key="`${stepIndex}-${scopedId}`"
       :target="step.target"
       :title="step?.title ?? ''"
       :description="step?.description ?? ''"

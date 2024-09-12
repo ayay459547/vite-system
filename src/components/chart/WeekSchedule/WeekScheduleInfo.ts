@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__WeekSchedule_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Option = {
     label: string
     value: any
@@ -51,11 +51,10 @@ export declare namespace Custom {
 
 export declare namespace Props {
   type Title = string
-  type ScheduleList = Array<Custom.PlanTime>
-  type Options = Array<Custom.Option>
+  type ScheduleList = Array<Types.PlanTime>
+  type Options = Array<Types.Option>
 
 }
-
 export const props = {
   title: {
     type: String as PropType<Props.Title>,
@@ -99,3 +98,15 @@ export const props = {
   }
 }
 
+export declare namespace Emits {}
+
+export declare namespace Expose {
+  type Init = (scheduleList: Props.ScheduleList) => void
+  type GetData = () => Promise<{
+    create: Array<any>
+    update: Array<any>
+    remove: Array<any>
+    old: Array<any>
+    all: Array<any>
+  }>
+}

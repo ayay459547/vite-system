@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelectV2 } from 'element-plus'
 
@@ -7,16 +6,10 @@ import type { UseHook } from '@/declare/hook'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
+import type { Props, Emits } from './FormSelectV2Info'
+import { version, props as formSelectV2Props } from './FormSelectV2Info'
 
-export type Option = {
-  label: string
-  value: string | number | boolean | null
-  data?: any
-  disabled?: boolean
-}
-
-export type Options = Array<Option>
+const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -30,91 +23,7 @@ const propsValue = {
   disabled: 'disabled'
 }
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Number, Boolean, Array, Object, null] as PropType<ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<string>,
-    default: ''
-  },
-  options: {
-    type: Array as PropType<Options>,
-    default() {
-      return []
-    }
-  },
-  // element ui plus
-  clearable: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  disabled: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  loading: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  remote: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  remoteMethod: {
-    type: Function as PropType<Function>,
-    required: false
-  },
-  remoteShowSuffix: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  multiple: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  multipleLimit: {
-    type: Number as PropType<number>,
-    default: 0
-  },
-  maxCollapseTags: {
-    type: Number as PropType<number>,
-    default: 1
-  },
-  filterable: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  reserveKeyword: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  allowCreate: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  defaultFirstOption: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  placeholder: {
-    type: String as PropType<string>,
-    required: false
-  },
-  valuekey: {
-    type: String as PropType<string>,
-    default: 'value'
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(value: string | number) => void>,
-  'onRemove-tag': Function as PropType<(tagValue: any) => void>,
-  'onVisible-change': Function as PropType<(visible: boolean) => void>
-})
+const props = defineProps(formSelectV2Props)
 
 const bindAttributes = computed(() => {
   const attributes: any = {
@@ -155,17 +64,23 @@ const emit = defineEmits([
   'visible-change'
 ])
 
-const onEvent = {
-  focus: (e: FocusEvent): void => emit('focus', e),
+const onEvent: {
+  focus: Emits.Focus
+  clear: Emits.Clear
+  blur: Emits.Blur
+  change: Emits.Change
+  removeTag: Emits.RemoveTag
+  visibleChange: Emits.VisibleChange
+} = {
+  focus: $event => emit('focus', $event),
   clear: (): void => emit('clear'),
-  blur: (e: FocusEvent): void => emit('blur', e),
-  change: (value: string | number): void => {
+  blur: $event => emit('blur', $event),
+  change: value => {
     emit('change', value ?? '')
   },
-  removeTag: (tagValue: any): void => emit('remove-tag', tagValue),
-  visibleChange: (visible: boolean): void => emit('visible-change', visible)
+  removeTag: tagValue => emit('remove-tag', tagValue),
+  visibleChange: visible => emit('visible-change', visible)
 }
-
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
   return 'error'
@@ -173,12 +88,10 @@ const validateRes = computed<string>(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: ModelValue) => {
+  set: (value: Props.ModelValue) => {
     emit('update:modelValue', value ?? '')
   }
 })
-
-const scopedId = getUuid('__i-select-v2__')
 
 // slot
 const slots = useSlots()
@@ -207,7 +120,7 @@ defineExpose({
       ref="elSelectV2Ref"
       v-model="inputValue"
       class="__i-select-v2__"
-      :placeholder="i18nTranslate('pleaseSelect')"
+      :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"
       v-bind="bindAttributes"
@@ -231,7 +144,7 @@ defineExpose({
       </template>
       <template v-if="hasSlot('footer') || props.remote" #footer>
         <slot name="footer">
-          <span class="search-more">{{ props.remote ? '搜尋顯示更多' : '' }}</span>
+          <span class="search-more">{{ props.remote ? i18nTranslate('search-forMore', defaultModuleType) : '' }}</span>
         </slot>
       </template>
       <template v-if="hasSlot('prefix')" #prefix>
@@ -251,7 +164,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use './_form.scss' as *;
+@use '../Form.scss' as *;
 
 :deep(.__i-select-v2__) {
   .el-input__wrapper {

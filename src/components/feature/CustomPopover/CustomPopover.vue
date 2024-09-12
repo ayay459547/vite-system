@@ -6,8 +6,7 @@ import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
 
 import { version, props as popoverProps } from './CustomPopoverInfo'
 
-const scopedName = '__i-popover__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(popoverProps)
 
@@ -64,12 +63,7 @@ const popoverRef = ref()
     :offset="props.offset"
     :virtual-ref="props.virtualRef"
     :virtual-triggering="props.virtualTriggering"
-    class="popover-container"
-    :class="[
-      `CustomPopover_${version}`,
-      scopedId,
-      scopedName
-    ]"
+    :class="scopedId"
   >
     <template v-if="hasSlot('reference')" #reference>
       <slot name="reference"></slot>

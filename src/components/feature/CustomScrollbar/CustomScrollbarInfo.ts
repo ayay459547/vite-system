@@ -1,8 +1,8 @@
 import type { PropType, Ref, CSSProperties } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomScrollbar_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Style = CSSProperties | CSSProperties[] | string[]
   type OnScrollParams = {
     scrollLeft: number
@@ -13,9 +13,9 @@ export declare namespace Custom {
 export declare namespace Props {
   type Height = string | number
   type MaxHeight = string | number
-  type WrapStyle = Custom.Style
+  type WrapStyle = Types.Style
   type WrapClass = string
-  type ViewStyle = Custom.Style
+  type ViewStyle = Types.Style
   type ViewClass = string
   type Noresize = boolean
   type Tag = string
@@ -26,7 +26,6 @@ export declare namespace Props {
   type AriaLabel = string
   type AriaOrientation = 'horizontal' | 'vertical'
 }
-
 export const props = {
   height: {
     type: [String, Number] as PropType<Props.Height>,
@@ -109,7 +108,7 @@ export const props = {
 }
 
 export declare namespace Emits {
-  type Scroll = ($event: Custom.OnScrollParams) => void
+  type Scroll = ($event: Types.OnScrollParams) => void
 }
 
 export declare namespace Expose {

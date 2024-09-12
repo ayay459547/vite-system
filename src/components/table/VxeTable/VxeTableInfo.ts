@@ -1,12 +1,12 @@
 import type { PropType } from 'vue'
-import type { VxeTablePropTypes, TableMergeConfig } from 'vxe-table'
+import type { VxeTablePropTypes } from 'vxe-table'
 
 import { getUuid } from '@/lib/lib_utils'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {
-  type Merges = TableMergeConfig | TableMergeConfig[]
+export declare namespace Types {
+  type Merges = VxeTablePropTypes.MergeCells
 }
 
 export declare namespace Props {
@@ -137,5 +137,5 @@ export declare namespace Emits {}
 export declare namespace Expose {
   type RefreshColumn = () => void
   type UpdateData = () => void
-  type SetMergeCells = (merges: Custom.Merges) => void
+  type SetMergeCells = (merges: Types.Merges) => void
 }

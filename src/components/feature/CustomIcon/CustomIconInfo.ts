@@ -1,9 +1,9 @@
 import type { PropType } from 'vue'
 import type { CustomSize } from '@/components'
 
-export const version = '1.0.0'
+export const version = '__CustomIcon_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type IconType = 'fas' | 'far' | 'fab'
   type XIconType = '' | 'fluent' | 'ionicons4' | 'ionicons5' | 'antd' | 'material' | 'fa' | 'tabler' | 'carbon' | null | undefined
 }
@@ -16,16 +16,15 @@ export declare namespace Custom {
  */
 export declare namespace Props {
   // fontawesome
-  type Icon = [Custom.IconType, string] | []
-  type Type = Custom.IconType
+  type Icon = [Types.IconType, string] | []
+  type Type = Types.IconType
   type Name = string
   // xicons
-  type XType = Custom.XIconType
+  type XType = Types.XIconType
 
   type Size = CustomSize
   type IconClass = string
 }
-
 export const props = {
   icon: {
     type: Array as unknown as PropType<Props.Icon>,

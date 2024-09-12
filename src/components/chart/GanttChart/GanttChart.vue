@@ -10,6 +10,7 @@ import { isEmpty, getUuid } from '@/lib/lib_utils'
 import { numberFormat, formatDatetime } from '@/lib/lib_format'
 import { useLayoutStore } from '@/stores/stores_layout'
 
+import type { Expose } from './GanttChartInfo'
 import { version, props as ganttChartProps } from './GanttChartInfo'
 
 export default defineComponent({
@@ -17,7 +18,7 @@ export default defineComponent({
   props: ganttChartProps,
   emits: ['typeClick', 'itemClick'],
   setup(props, context) {
-    const scopedId = getUuid('__i-gantt-chart__')
+    const scopedId = getUuid(version)
 
     // 監聽外框大小變化
     const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
@@ -69,7 +70,7 @@ export default defineComponent({
       }
     }, 200)
 
-    const init = () => {
+    const init: Expose.Init = () => {
       _typeData.splice(0)
       _ganttData.splice(0)
 
@@ -424,7 +425,6 @@ export default defineComponent({
       ganttContainer,
       init,
       option,
-      version,
       scopedId,
       showGanttData: _ganttData
     }
@@ -433,7 +433,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="__gantt-wrapper" :class="`GanttChart_${version}`" ref="ganttContainer">
+  <div class="__gantt-wrapper" :class="scopedId" ref="ganttContainer">
     <div class="__gantt-main" :class="`main-${scopedId}`"></div>
   </div>
 </template>

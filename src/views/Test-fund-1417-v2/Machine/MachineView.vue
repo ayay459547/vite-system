@@ -4,7 +4,7 @@ import { ref, inject, onMounted, nextTick, reactive } from 'vue'
 // 全域功能類型
 import type { UseHook, SwalResult } from '@/declare/hook'
 // 引入組件
-import type { TourProps } from '@/components'
+import type { CustomTourProps } from '@/components'
 import {
   WeekSchedule,
   CustomButton,
@@ -223,7 +223,7 @@ const onRTDSClick = async () => {
 
 // 引導
 const isOpenTour = ref(false)
-const steps: TourProps.Steps = [
+const steps: CustomTourProps.Steps = [
   {
     target: '.GeneralView .el-table__body-wrapper',
     title: '機台列表',

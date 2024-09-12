@@ -66,6 +66,17 @@ export const getMilliseconds = (date: DateType, time: string): number => {
 }
 
 /**
+ * 確定某個日期在當年的第幾季
+ * @param {DateType} date 要計算的日期
+ * @returns {number} 當年的第幾季
+ */
+export const getQuarter = (date: DateType): number => {
+  const month = dayjs(date).month() + 1
+  const quarter = Math.ceil(month / 3)
+  return quarter
+}
+
+/**
  * 確定某個日期在當年的第幾周
  * @param {DateType} date 要計算的日期
  * @returns {number} 當年的第幾周

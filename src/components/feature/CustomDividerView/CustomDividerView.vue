@@ -9,8 +9,7 @@ import throttle from '@/lib/lib_throttle'
 import type { Props } from './CustomDividerViewInfo'
 import { version, props as dividerViewProps } from './CustomDividerViewInfo'
 
-const scopedName = '__i-divider-view__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(dividerViewProps)
 
@@ -163,12 +162,7 @@ onMounted(() => {
   <div
     ref="containerRef"
     class="divider-view-container"
-    :class="[
-      `CustomDividerView_${version}`,
-      scopedId,
-      scopedName,
-      isMove ? 'is-move' : ''
-    ]"
+    :class="[scopedId, isMove ? 'is-move' : '']"
     @mouseup.stop="removeEvent"
     @mouseleave.stop="removeEvent"
     v-click-outside="removeEvent"
@@ -187,8 +181,8 @@ onMounted(() => {
     <!-- 拖拉變更兩邊大小 -->
     <div
       class="divider-view-draggable"
-      @mousedown="onDraggableMousedown"
-      @dblclick="onDraggableDblclick"
+      @mousedown.self="onDraggableMousedown"
+      @dblclick.self="onDraggableDblclick"
     >
       <div class="divider-view-btn" @mousedown.stop>
         <div class="left-icon" @click.stop="onLeftClick">
@@ -215,7 +209,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 $draggable-btn-width: 38px;
 
-.__i-divider-view__ {
+div[class*="__CustomDividerView"] {
   &.divider-view {
     &-container {
       width: 100%;

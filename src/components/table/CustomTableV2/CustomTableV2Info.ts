@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 
 export const version = '1.0.0'
 
-export declare namespace Custom {}
+export declare namespace Types {}
 
 export declare namespace Props {
   type RenderKey = number

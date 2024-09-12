@@ -7,12 +7,18 @@ import { getUuid } from '@/lib/lib_utils'
 import type { Emits } from './CustomDrawerInfo'
 import { version, props as drawerProps } from './CustomDrawerInfo'
 
-const scopedName = '__i-drawer__'
-const scopedId = getUuid(scopedName)
+const scopedId = getUuid(version)
 
 const props = defineProps(drawerProps)
 
-const emit = defineEmits(['update:modelValue', 'open', 'opened', 'close', 'closed'])
+const emit = defineEmits([
+  'update:modelValue',
+  'open',
+  'opened',
+  'close',
+  'closed'
+])
+
 const onOpen: Emits.Open = () => emit('open')
 const onOpened: Emits.Opened = () => emit('opened')
 const onClose: Emits.Close = () => emit('close')
@@ -34,14 +40,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div
-    class="drawer-container"
-    :class="[
-      `CustomDrawer_${version}`,
-      scopedId,
-      scopedName
-    ]"
-  >
+  <div class="drawer-container" :class="scopedId">
     <ElDrawer
       v-model="tempValue"
       :direction="props.direction"
@@ -80,7 +79,7 @@ const hasSlot = (prop: string): boolean => {
 }
 
 // :deep() 需要一個根節點
-.__i-drawer__ :deep(.el-drawer) {
+div[class*="__CustomDrawer"] :deep(.el-drawer) {
   &.drawer-main {
     width: 100%;
     min-height: 300px;

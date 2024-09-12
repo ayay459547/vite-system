@@ -9,7 +9,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
 
-import type { TableProps } from '@/components'
+import type { CustomTableProps } from '@/components'
 import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
 
 const props = defineProps({
@@ -20,19 +20,19 @@ const props = defineProps({
     description: 'i18nModule'
   },
   columns: {
-    type: Object as PropType<TableProps.TableColumns>,
+    type: Object as PropType<CustomTableProps.TableColumns>,
     default() {
       return {}
     }
   },
   version: {
-    type: String as PropType<TableProps.Version>,
+    type: String as PropType<CustomTableProps.Version>,
     default: '1.0.0',
     description: `欄位設定 版本
       如果版本更換 會重置欄位設定`
   },
   settingKey: {
-    type: String as PropType<TableProps.SettingKey>,
+    type: String as PropType<CustomTableProps.SettingKey>,
     required: true,
     description: '欄位設定 在 indexedDB 上的 key'
   },

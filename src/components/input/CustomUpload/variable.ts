@@ -1,4 +1,4 @@
-import type { Custom } from './CustomUploadInfo'
+import type { Types } from './CustomUploadInfo'
 
 export const fileTypeMap = {
   image: ['image/png', 'image/jpeg'],
@@ -14,7 +14,7 @@ export const fileTypeMap = {
  * @param fileTypeList 類型名稱
  * @returns {Array} 所有檔案類型
  */
-export const getFileTypeList = (fileTypeList: Custom.FileType[]): string[] => {
+export const getFileTypeList = (fileTypeList: Types.FileType[]): string[] => {
   return fileTypeList.reduce((res, fileType) => {
     return [...res, ...fileTypeMap[fileType]]
   }, [])

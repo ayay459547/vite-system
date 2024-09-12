@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomImage_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type EventError = Error
 }
 
@@ -18,7 +18,6 @@ export declare namespace Props {
   type HideOnClickModal = boolean
   type PreviewTeleported = boolean
 }
-
 export const props = {
   src: {
     type: String as PropType<Props.Src>,
@@ -84,7 +83,7 @@ export const props = {
 
 export declare namespace Emits {
   type Load = (e: Event) => void
-  type Error = (e: Custom.EventError) => void
+  type Error = (e: Types.EventError) => void
   type Switch = (e: number) => void
   type Close = () => void
   type Show = () => void

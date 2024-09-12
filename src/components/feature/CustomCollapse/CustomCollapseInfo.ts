@@ -1,16 +1,16 @@
 import type { PropType } from 'vue'
 import type { Option } from '@/declare/columnSetting'
 
-export const version = '1.0.0'
+export const version = '__CustomCollapse_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type CollapseValue = string | number
 }
 
 export declare namespace Props {
-  type ModelValue = Custom.CollapseValue | Array<Custom.CollapseValue>
+  type ModelValue = Types.CollapseValue | Array<Types.CollapseValue>
   type Accordion = boolean
-  type Options = Array<Option<Custom.CollapseValue>>
+  type Options = Array<Option<Types.CollapseValue>>
 }
 
 export const props = {

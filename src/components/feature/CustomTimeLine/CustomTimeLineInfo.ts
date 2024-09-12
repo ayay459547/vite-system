@@ -3,9 +3,9 @@ import type { TimelineItemProps } from 'element-plus'
 
 import type { CustomSize } from '@/components'
 
-export const version = '1.0.0'
+export const version = '__CustomTimeLine_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type Option = Partial<TimelineItemProps> & {
     label?: string
     timestamp?: string
@@ -14,13 +14,13 @@ export declare namespace Custom {
     size?: CustomSize
     hollow?: boolean
     placement?: 'top' | 'bottom'
-  } & any
+    [key: string]: any
+  }
 }
 
 export declare namespace Props {
-  type Options = Array<Custom.Option>
+  type Options = Array<Types.Option>
 }
-
 export const props = {
   options: {
     type: Array as PropType<Props.Options>,

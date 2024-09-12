@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomCarousel_1.0.0__'
 
-export declare namespace Custom {
+export declare namespace Types {
   type IndicatorTrigger = 'hover' | 'click'
   type IndicatorPosition = 'outside' | 'none' | undefined
   type ArrowTrigger = 'always' | 'hover' | 'never'
@@ -11,33 +11,34 @@ export declare namespace Custom {
   type CarouselItem = {
     name?: string
     label?: string
-  } & any
+    [key: string]: any
+  }
   type CarouselItems = Array<CarouselItem>
 }
 
-export type IndicatorTrigger = Custom.IndicatorTrigger
-export type IndicatorPosition = Custom.IndicatorPosition
-export type ArrowTrigger = Custom.ArrowTrigger
-export type Type = Custom.Type
-export type Direction = Custom.Direction
+export type IndicatorTrigger = Types.IndicatorTrigger
+export type IndicatorPosition = Types.IndicatorPosition
+export type ArrowTrigger = Types.ArrowTrigger
+export type Type = Types.Type
+export type Direction = Types.Direction
 
-export type CarouselItem = Custom.CarouselItem
-export type CarouselItems = Custom.CarouselItems
+export type CarouselItem = Types.CarouselItem
+export type CarouselItems = Types.CarouselItems
 
 export declare namespace Props {
   type Height = string
   type InitialIndex = number
-  type Trigger = Custom.IndicatorTrigger
+  type Trigger = Types.IndicatorTrigger
   type Autoplay = boolean
   type Interval = number
-  type IndicatorPosition = Custom.IndicatorPosition
-  type Arrow = Custom.ArrowTrigger
-  type Type = Custom.Type
+  type IndicatorPosition = Types.IndicatorPosition
+  type Arrow = Types.ArrowTrigger
+  type Type = Types.Type
   type Loop = boolean
-  type Direction = Custom.Direction
+  type Direction = Types.Direction
   type PauseOnHover = boolean
   type MotionBlur = boolean
-  type Items = Custom.CarouselItems
+  type Items = Types.CarouselItems
 }
 
 export const props = {
@@ -110,6 +111,12 @@ export const props = {
   }
 }
 
-export declare namespace Emits {}
+export declare namespace Emits {
+  type Change = (curIndex: number, prevIndex: number) => void
+}
 
-export declare namespace Expose {}
+export declare namespace Expose {
+  type SetActiveItem = (item: number | string) => void
+  type Prev = () => void
+  type Next = () => void
+}
