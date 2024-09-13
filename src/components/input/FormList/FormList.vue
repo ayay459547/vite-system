@@ -184,10 +184,10 @@ onBeforeMount(() => {
           v-model="tempValue"
           :item-key="props.itemKey"
           :is-draggable="isDraggable"
-          :handle="`.form-item-move__${scopedId}`"
+          :handle="`.__form-item-move__`"
           :move="props.move"
           :disabled="props.disabled"
-          :group="props.draggableGroup"
+          :group="props.draggableGroup ?? `${scopedId}`"
           :table-data="tempValue"
           :table-columns="showTableColumns"
         >
@@ -249,7 +249,7 @@ onBeforeMount(() => {
                     icon-name="ArrowsUpDown"
                     text
                     disabled
-                    :class="`form-item-disable__${scopedId}`"
+                    class="__form-item-disable__"
                   />
                 </slot>
                 <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
@@ -272,7 +272,7 @@ onBeforeMount(() => {
                     icon-name="ArrowsUpDown"
                     text
                     :disabled="!props.isEdit"
-                    :class="`form-item-move__${scopedId}`"
+                    class="__form-item-move__"
                   />
                 </slot>
                 <slot name="column-remove" :scopedId="scopedId" v-bind="scope">

@@ -1,5 +1,6 @@
 import type { PropType } from 'vue'
-import type { TreeNode } from 'element-plus'
+// import type { TreeNode } from 'element-plus'
+import type { TreeNode } from 'element-plus/es/components/tree-v2/src/types'
 
 export const version = '__CustomTreeV2_1.0.0__'
 
@@ -15,6 +16,7 @@ export declare namespace Types {
     label?: string
     disabled?: string
   }
+  type FilterMethod = (query: string, node: TreeNode) => boolean | any
 }
 
 export declare namespace Props {
@@ -23,6 +25,7 @@ export declare namespace Props {
   type HighlightCurrent = boolean
   type DefaultExpandAll = boolean
   type ShowCheckbox = boolean
+  type FilterMethod = Types.FilterMethod | undefined
 }
 export const props = {
   data: {
@@ -62,6 +65,12 @@ export const props = {
     required: false,
     default: false,
     description: '是否使用checkbox'
+  },
+  filterMethod: {
+    type: Function as PropType<Props.FilterMethod>,
+    required: false,
+    default: undefined,
+    description: '過濾'
   }
 }
 
@@ -77,4 +86,5 @@ export declare namespace Expose {
   type SetCheckedKeys = (keyList: Array<Types.TreeKey>) => void
   type ResetChecked = () => void
   type SetChecked = (key: Types.TreeKey, checked: boolean) => void
+  type Filter= (query: string) => void
 }

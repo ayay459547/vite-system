@@ -190,3 +190,9 @@ defineExpose({ focus, blur })
   height: 100%;
 }
 </style>
+
+<style lang="scss">
+.el-picker__popper {
+  z-index: var(--i-z-index-select-option) !important;
+}
+</style>

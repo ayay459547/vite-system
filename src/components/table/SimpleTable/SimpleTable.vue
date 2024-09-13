@@ -297,7 +297,7 @@ export default defineComponent({
             {
               class: '__data-table-body',
               modelValue: props.tableData,
-              'onUpdate:modelValue': value => {
+              'onUpdate:modelValue': (value: any) => {
                 emit('update:modelValue', value)
               },
               handle,

@@ -51,12 +51,17 @@ const setChecked: Expose.SetChecked = (key: Types.TreeKey, checked: boolean) => 
   elTreeV2Ref.value!.setChecked(key, checked)
 }
 
+const filter: Expose.Filter = (query: string) => {
+  elTreeV2Ref.value!.filter(query)
+}
+
 defineExpose({
   getCheckedNodes,
   getCheckedKeys,
   setCheckedKeys,
   resetChecked,
-  setChecked
+  setChecked,
+  filter
 })
 
 const slots = useSlots()
@@ -107,6 +112,7 @@ onUnmounted(() => {
       :show-checkbox="props.showCheckbox"
       :style="`max-width: ${treeSize.width}px`"
       :height="treeSize.height"
+      :filter-method="props.filterMethod"
       @node-click="onNodeClick"
       @check-change="onCheckChange"
       @check="onCheck"
