@@ -33,22 +33,36 @@ const props = defineProps(VxeCustomTableProps)
 const vxeTableRef = ref()
 
 const refreshColumn: Expose.RefreshColumn = () => {
-  vxeTableRef.value?.refreshColumn()
+  return vxeTableRef.value?.refreshColumn()
 }
 const updateData: Expose.UpdateData = () => {
-  console.log('updateData => ')
-  vxeTableRef.value?.updateData()
+  return vxeTableRef.value?.updateData()
+}
+const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => {
+  return vxeTableRef.value?.setMergeCells(merges)
 }
 
-const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => {
-  console.log('setMergeCells => ')
-  vxeTableRef.value?.setMergeCells(merges)
+const clearScroll: Expose.ClearScroll = () => {
+  return vxeTableRef.value?.clearScroll()
+}
+const scrollTo: Expose.ScrollTo = (scrollLeft, scrollTop) => {
+  return vxeTableRef.value?.scrollTo(scrollLeft, scrollTop)
+}
+const scrollToRow: Expose.ScrollToRow = (row, fieldOrColumn) => {
+  return vxeTableRef.value?.scrollToRow(row, fieldOrColumn)
+}
+const scrollToColumn: Expose.ScrollToColumn = fieldOrColumn => {
+  return vxeTableRef.value?.scrollToColumn(fieldOrColumn)
 }
 
 defineExpose({
   refreshColumn,
   updateData,
-  setMergeCells
+  setMergeCells,
+  clearScroll,
+  scrollTo,
+  scrollToRow,
+  scrollToColumn
 })
 
 </script>
@@ -64,8 +78,15 @@ defineExpose({
           :id="props.id"
           :data="props.data"
           :footer-data="props.footerData"
-          :row-config="props.rowConfig"
+          :row-class-name="props.rowClassName"
+          :cell-class-name="props.cellClassName"
+          :header-row-class-name="props.headerRowClassName"
+          :header-cell-class-name="props.headerCellClassName"
+          :footer-row-class-name="props.footerRowClassName"
+          :footer-cell-class-name="props.footerCellClassName"
           :column-config="props.columnConfig"
+          :row-config="props.rowConfig"
+          :filter-config="props.filterConfig"
           :scroll-y="props.scrollY"
           :scroll-x="props.scrollX"
           :show-overflow="props.showOverflow"

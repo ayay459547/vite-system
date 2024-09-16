@@ -16,7 +16,7 @@ export declare namespace Types {
     label?: string
     disabled?: string
   }
-  type FilterMethod = (query: string, node: TreeNode) => boolean | any
+  type FilterMethod = (query: string, node: TreeNode | any) => boolean | any
 }
 
 export declare namespace Props {

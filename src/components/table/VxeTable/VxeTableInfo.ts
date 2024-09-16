@@ -7,14 +7,40 @@ export const version = '1.0.0'
 
 export declare namespace Types {
   type Merges = VxeTablePropTypes.MergeCells
+  type ColumnConfig = VxeTablePropTypes.ColumnOpts<any>
+  type RowConfig = VxeTablePropTypes.RowOpts<any>
+
+  type RowClassCallbackParams = {
+    row?: any
+    rowIndex?: number
+    $rowIndex: number
+  }
+  type CellClassCallbackParams = {
+    row?: any
+    rowIndex?: number
+    $rowIndex: number
+
+    column: any
+    columnIndex: number
+    $columnIndex: number
+  }
 }
 
 export declare namespace Props {
   type ID = string
   type Data = Array<any>
   type FooterData = Array<any>
-  type RowConfig = Record<string, any>
-  type ColumnConfig = Record<string, any>
+
+  type RowClassName = string | ((params: Types.RowClassCallbackParams) => any) | undefined
+  type CellClassName = string | ((params: Types.CellClassCallbackParams) => any) | undefined
+  type HeaderRowClassName = string | ((params: Types.RowClassCallbackParams) => any) | undefined
+  type HeaderCellClassName = string | ((params: Types.CellClassCallbackParams) => any) | undefined
+  type FooterRowClassName = string | ((params: Types.RowClassCallbackParams) => any) | undefined
+  type FooterCellClassName = string | ((params: Types.CellClassCallbackParams) => any) | undefined
+
+  type ColumnConfig = Types.ColumnConfig
+  type RowConfig = Types.RowConfig
+  type FilterConfig = Record<string, any>
   type ScrollY = Record<string, any>
   type ScrollX = Record<string, any>
   type ShowOverflow = boolean
@@ -54,6 +80,50 @@ export const props = {
     },
     description: '資料'
   },
+  rowClassName: {
+    type: [Function, String] as PropType<Props.HeaderRowClassName>,
+    required: false,
+    default: undefined,
+    description: '將表格的行附加 className'
+  },
+  cellClassName: {
+    type: [Function, String] as PropType<Props.CellClassName>,
+    required: false,
+    default: undefined,
+    description: '將表格的儲存格附加 className'
+  },
+  headerRowClassName: {
+    type: [Function, String] as PropType<Props.RowClassName>,
+    required: false,
+    default: undefined,
+    description: '將表頭的行附加 className'
+  },
+  headerCellClassName: {
+    type: [Function, String] as PropType<Props.HeaderCellClassName>,
+    required: false,
+    default: undefined,
+    description: '將表頭的儲存格附加 className'
+  },
+  footerRowClassName: {
+    type: [Function, String] as PropType<Props.FooterRowClassName>,
+    required: false,
+    default: undefined,
+    description: '將表頭的行附加 className'
+  },
+  footerCellClassName: {
+    type: [Function, String] as PropType<Props.FooterCellClassName>,
+    required: false,
+    default: undefined,
+    description: '將表頭的儲存格附加 className'
+  },
+  columnConfig: {
+    type: Object as PropType<Props.ColumnConfig>,
+    required: false,
+    default: () => {
+      return {}
+    },
+    description: '設定'
+  },
   rowConfig: {
     type: Object as PropType<Props.RowConfig>,
     required: false,
@@ -62,8 +132,8 @@ export const props = {
     },
     description: '設定'
   },
-  columnConfig: {
-    type: Object as PropType<Props.ColumnConfig>,
+  filterConfig: {
+    type: Object as PropType<Props.FilterConfig>,
     required: false,
     default: () => {
       return {}
@@ -135,7 +205,11 @@ export const props = {
 export declare namespace Emits {}
 
 export declare namespace Expose {
-  type RefreshColumn = () => void
-  type UpdateData = () => void
-  type SetMergeCells = (merges: Types.Merges) => void
+  type RefreshColumn = () => Promise<any>
+  type UpdateData = () => Promise<any>
+  type SetMergeCells = (merges: Types.Merges) => Promise<any>
+  type ClearScroll = () => Promise<any>
+  type ScrollTo = (scrollLeft?: number, scrollTo?: number) => Promise<any>
+  type ScrollToRow = (row: any, fieldOrColumn?: string | Types.ColumnConfig) => Promise<any>
+  type ScrollToColumn = (fieldOrColumn: string | Types.ColumnConfig) => Promise<any>
 }

@@ -390,6 +390,7 @@ export default defineComponent({
     z-index: 1;
     position: sticky;
     top: 0;
+    transform: translateY(-1px);
   }
 
   &-body-container {

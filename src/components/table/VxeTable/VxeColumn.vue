@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { useSlots } from 'vue'
-import type { VxeColumnProps } from 'vxe-table'
 import { VxeColumn } from 'vxe-table'
 
 type ColumnType = string
@@ -43,15 +42,15 @@ const props = defineProps({
     description: '欄位名稱'
   },
   width: {
-    type: [String, Number] as PropType<string | number>,
+    type: [String, Number] as PropType<string | number | undefined>,
     required: false,
-    default: 'auto',
+    default: undefined,
     description: '寬度'
   },
   minWidth: {
-    type: [String, Number] as PropType<string | number>,
+    type: [String, Number] as PropType<string | number | undefined>,
     required: false,
-    default: 'auto',
+    default: undefined,
     description: '最小寬度'
   },
   fixed: {
@@ -66,7 +65,7 @@ const props = defineProps({
     default: undefined,
     description: '對齊方式'
   }
-}) as VxeColumnProps
+})
 
 // slot
 const slots = useSlots()
