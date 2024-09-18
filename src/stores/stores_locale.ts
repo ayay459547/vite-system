@@ -6,7 +6,7 @@ import ElzhTw from 'element-plus/dist/locale/zh-tw.min.js'
 import ElzhCn from 'element-plus/dist/locale/zh-cn.min.js'
 import Elen from 'element-plus/dist/locale/en.min.js'
 
-export type LangType = 'zhTw' | 'zhCn' | 'en'
+export type LangType = 'zhTw' | 'zhCn' | 'en' | string | null
 const localeType = {
   zhTw: ElzhTw,
   zhCn: ElzhCn,

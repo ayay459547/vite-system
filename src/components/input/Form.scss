@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $form-danger: #f56c6c;
 
 @mixin validate-error ($type) {
@@ -11,20 +13,20 @@ $form-danger: #f56c6c;
     $type == time-picker
   ) {
     box-shadow: 0 0 0 1px $form-danger inset;
-    background-color: lighten($form-danger, 20%);
+    background-color: color.scale($form-danger, $lightness: 20%);
 
   } @else if (
     $type == checkbox or
     $type == radio
   ) {
     border: 1px solid $form-danger;
-    background-color: lighten($form-danger, 20%);
+    background-color: color.scale($form-danger, $lightness: 20%);
 
   } @else if (
     $type == operator
   ) {
     box-shadow: 0 0 0 1px $form-danger inset !important;
-    background-color: lighten($form-danger, 20%);
+    background-color: color.scale($form-danger, $lightness: 20%);
   }
 }
 // @include validate-error(type);

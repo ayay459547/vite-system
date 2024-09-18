@@ -409,6 +409,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@use 'sass:color';
+
 .info {
   &-container {
     width: 100%;
@@ -416,7 +418,7 @@ defineExpose({
     border-radius: 6px;
     overflow: auto;
     border: 1px solid #e9e9eb;
-    box-shadow: 2px 2px 8px 1px lighten(#bcbcbc, 20%);
+    box-shadow: 2px 2px 8px 1px color.scale(#bcbcbc, $lightness: 20%);
   }
   &-header {
     background-color: #c6e2ff;

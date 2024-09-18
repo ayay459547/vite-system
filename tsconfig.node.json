@@ -13,5 +13,10 @@
     "allowJs": true,
     "composite": true,
     "types": ["node"]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test"
+  ]
 }
