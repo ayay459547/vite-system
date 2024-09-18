@@ -44,7 +44,7 @@ const changeTimeLineDateKey = () => {
     <label>{{ `${props.index + 1}. ${props.column.label}` }}</label>
 
     <CustomButton
-      v-if="props.column?.isDate"
+      v-if="props.column?.isTimeLineDate"
       :class="{ 'btn-is-active': isAcitve }"
       :icon-type="isAcitve ? 'fas' : 'far'"
       icon-name="star"

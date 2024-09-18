@@ -3,7 +3,7 @@ import type { VxeTablePropTypes } from 'vxe-table'
 
 import { getUuid } from '@/lib/lib_utils'
 
-export const version = '1.0.0'
+export const version = '__VxeTable_1.0.0__'
 
 export declare namespace Types {
   type Merges = VxeTablePropTypes.MergeCells
@@ -13,16 +13,16 @@ export declare namespace Types {
   type RowClassCallbackParams = {
     row?: any
     rowIndex?: number
-    $rowIndex: number
+    $rowIndex?: number
   }
   type CellClassCallbackParams = {
     row?: any
     rowIndex?: number
-    $rowIndex: number
+    $rowIndex?: number
 
-    column: any
-    columnIndex: number
-    $columnIndex: number
+    column?: any
+    columnIndex?: number
+    $columnIndex?: number
   }
 }
 
@@ -81,7 +81,7 @@ export const props = {
     description: '資料'
   },
   rowClassName: {
-    type: [Function, String] as PropType<Props.HeaderRowClassName>,
+    type: [Function, String] as PropType<Props.RowClassName>,
     required: false,
     default: undefined,
     description: '將表格的行附加 className'
@@ -93,7 +93,7 @@ export const props = {
     description: '將表格的儲存格附加 className'
   },
   headerRowClassName: {
-    type: [Function, String] as PropType<Props.RowClassName>,
+    type: [Function, String] as PropType<Props.HeaderRowClassName>,
     required: false,
     default: undefined,
     description: '將表頭的行附加 className'

@@ -535,11 +535,23 @@ export const TimeLineTable = useAsyncComponent(() => import('./table/TimeLineTab
  * 功能:
  * 更加高效的渲染
  */
+export type {
+  Types as VxeColgroupTypes,
+  Props as VxeColgroupProps,
+  Emits as VxeColgroupEmits,
+  Expose as VxeColgroupExpose
+} from './table/VxeTable/VxeColgroupInfo'
 export const VxeColgroup = useAsyncComponent(() => import('./table/VxeTable/VxeColgroup.vue'), 'h1')
+export type {
+  Types as VxeColumnTypes,
+  Props as VxeColumnProps,
+  Emits as VxeColumnEmits,
+  Expose as VxeColumnExpose
+} from './table/VxeTable/VxeColumnInfo'
 export const VxeColumn = useAsyncComponent(() => import('./table/VxeTable/VxeColumn.vue'), 'h1')
 export type {
-  Types as VxeCustomTableTypes,
-  Props as VxeCustomTableProps,
+  Types as VxeTableTypes,
+  Props as VxeTableProps,
   Emits as VxeTableEmits,
   Expose as VxeTableExpose
 } from './table/VxeTable/VxeTableInfo'

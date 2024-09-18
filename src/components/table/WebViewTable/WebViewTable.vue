@@ -39,7 +39,7 @@ import {
   getExcelData
 } from './api'
 
-const scopedId = getUuid('__WebViewTable__')
+const scopedId = getUuid(version)
 
 const props = defineProps(webViewCustomTableProps)
 
@@ -303,7 +303,7 @@ const customTableRef = ref()
 const timeLineTableRef = ref()
 const isShowTimeLineTable = computed(() => {
   return tableSetting.tableColumns.some(tableColumn => {
-    return tableColumn?.isDate ?? false
+    return tableColumn?.isTimeLineDate ?? false
   })
 })
 
@@ -471,7 +471,7 @@ const modal = reactive({
   <div
     v-loading="isLoading"
     class="web-view"
-    :class="[version, scopedId]"
+    :class="scopedId"
   >
     <!-- 一般表格 -->
     <CustomTable
@@ -529,7 +529,7 @@ const modal = reactive({
                     class="grid-col-xs-12 grid-col-md-8 grid-col-lg-6"
                     v-model="filter[scope.prop]"
                     v-model:active="activeFilter[scope.prop]"
-                    :i18nModule="i18nModule"
+                    :i18n-module="i18nModule"
                     v-bind="filterColumn[scope.prop]"
                     :label="i18nTranslate(scope.column?.i18nLabel)"
                   />
@@ -585,7 +585,7 @@ const modal = reactive({
               v-model:active="activeFilter[scope.prop]"
               v-model:activeConditions="activeConditions[scope.prop]"
               v-model:conditions="filterConditions[scope.prop]"
-              :i18nModule="i18nModule"
+              :i18n-module="i18nModule"
               :label="i18nTranslate(scope.column?.i18nLabel)"
               :column-id="scope.prop"
               v-bind="filterColumn[scope.prop]"
@@ -620,7 +620,7 @@ const modal = reactive({
     <CustomModal
       v-if="isShowTimeLineTable"
       v-model="modal.timeLine"
-      :title="i18nTranslate('datetime-table', defaultModuleType)"
+      :title="i18nTranslate('timeLine-table', defaultModuleType)"
       :modal="false"
       draggable
       hidden-footer
@@ -629,12 +629,13 @@ const modal = reactive({
       <TimeLineTable
         ref="timeLineTableRef"
         :tableColumns="tableSetting.tableColumns"
+        :i18n-module="tableSetting.i18nModule"
         :table-data="tableData"
       />
     </CustomModal>
     <div v-show="isShowTimeLineTable" class="web-view-time-line">
       <CustomTooltip trigger="hover" placement="top">
-        <template #content>{{ i18nTranslate('datetime-table', defaultModuleType) }}</template>
+        <template #content>{{ i18nTranslate('timeLine-table', defaultModuleType) }}</template>
         <CustomButton
           icon-name="calendar-day"
           plain

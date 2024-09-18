@@ -15,8 +15,8 @@ import {
 
 import { formatDatetime } from '@/lib/lib_format'
 import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Types, Expose } from './TimeLineTableInfo'
 import { version, props as timeLineCustomTableProps } from './TimeLineTableInfo'
@@ -26,13 +26,13 @@ import GroupDateColumn from './Components/GroupDateColumn.vue'
 
 const baseWidth = 80
 
-const scopedId = getUuid('__TimeLineTable__')
+const scopedId = getUuid(version)
 
 const props = defineProps(timeLineCustomTableProps)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
-  i18nModule: defaultModuleType
+  i18nModule: props.i18nModule
 })
 
 const baseLevelIndex = ref(1)
@@ -40,7 +40,7 @@ const timeLevelOptions = ref([
   { index: 6, name: '年', active: false, value: 'year' },
   // { index: 5, name: '半年', active: false, value: 'half' },
   { index: 4, name: '季', active: false, value: 'quarter' },
-  { index: 3, name: '月', active: true, value: 'month' },
+  { index: 3, name: '月', active: false, value: 'month' },
   { index: 2, name: '周', active: false, value: 'week' },
   { index: 1, name: '日', active: true, value: 'day' }
   // { index: 0, name: '時', active: false, value: 'hour' }
@@ -105,7 +105,6 @@ const resetMergeCells = () => {
       })
     }
   })
-  console.log('vxeTableRef => ', vxeTableRef.value)
 
   vxeTableRef.value?.setMergeCells(mergeCells.value)
 }
@@ -236,26 +235,54 @@ const initData = async () => {
     // 最小群組日期
     let groupDate = ''
 
+    // format
+    const formartUseMap = {
+      year: false,
+      // quarter: false,
+      month: false,
+      // week: false,
+      day: false
+    }
+
     // 設定日期群組
     const setDateGroup = (timeLineDateType: string) => {
       let dateColumnKey = ''
+      let formartList = []
+      let formartStr = ''
       const timeLineDate = item[timeLineDateKey.value]
 
       switch (timeLineDateType) {
         case 'year':
+          formartUseMap.year = true
+
           dateColumnKey = formatDatetime(timeLineDate, 'YYYY')
           break
         case 'quarter':
           dateColumnKey = `${quarterPrefix}${getQuarter(timeLineDate)}`
           break
         case 'month':
-          dateColumnKey = formatDatetime(timeLineDate, 'YYYY-MM')
+          formartList = [formartUseMap.year ? '' : 'YYYY', 'MM'].filter(str => str.length > 0)
+          formartUseMap.year = true
+          formartUseMap.month = true
+          formartStr = formartList.join('-')
+
+          dateColumnKey = formatDatetime(timeLineDate, formartStr)
           break
         case 'week':
           dateColumnKey = `${weekPrefix}${getWeekOfYear(timeLineDate)}`
           break
         case 'day':
-          dateColumnKey = formatDatetime(timeLineDate, 'YYYY-MM-DD')
+          formartList = [
+            formartUseMap.year ? '' : 'YYYY',
+            formartUseMap.month ? '' : 'MM',
+            'DD'
+          ].filter(str => str.length > 0)
+          formartUseMap.year = true
+          formartUseMap.month = true
+          formartUseMap.day = true
+          formartStr = formartList.join('-')
+
+          dateColumnKey = formatDatetime(timeLineDate, formartStr)
           break
       }
 
@@ -374,7 +401,7 @@ const init: Expose.Init = async () => {
   })
 
   const sortCallback = (a: Types.TableColumn, b: Types.TableColumn) => {
-    const [aIndex, bIndex] = [ a?.timeIndex ?? -1, b?.timeIndex ?? -1 ]
+    const [aIndex, bIndex] = [a?.timeIndex ?? -1, b?.timeIndex ?? -1]
     return aIndex - bIndex
   }
   groupColumns.value = _groupColumns.sort(sortCallback)
@@ -383,7 +410,7 @@ const init: Expose.Init = async () => {
 
   // 設定時間線的key
   const timeLineDateColumn = props.tableColumns.find(column => {
-    return column?.isTimeLineDate
+    return column?.isTimeLineDateActive
   })
   changeKey(timeLineDateColumn?.key ?? '')
 
@@ -405,7 +432,7 @@ defineExpose({
   <div
     v-loading="isLoading"
     class="time-line"
-    :class="[version, scopedId]"
+    :class="scopedId"
   >
     <VxeTable
       v-show="isShow"
@@ -423,12 +450,12 @@ defineExpose({
       :merge-cells="mergeCells"
     >
       <VxeColgroup
-        :title="i18nTranslate('setting')"
+        :title="i18nTranslate('setting', defaultModuleType)"
         fixed="left"
       >
         <template #header>
           <div class="flex-row i-ga-lg">
-            <h3>{{ i18nTranslate('setting') }}</h3>
+            <h3>{{ i18nTranslate('setting', defaultModuleType) }}</h3>
 
             <div class="flex-row i-ga-md">
               <CustomPopover
@@ -526,7 +553,8 @@ defineExpose({
           :field="column.key"
           :width="column?.width ?? baseWidth"
           :min-width="column?.minWidth ?? baseWidth"
-          :title="column.title"
+          :title="i18nTranslate(column?.i18nLabel ?? column.label)"
+          class-name="time-line-group"
         ></VxeColumn>
       </VxeColgroup>
 
@@ -535,6 +563,7 @@ defineExpose({
         :group-date-columns="groupDateColumns"
         :date-columns="dateColumns"
         :base-width="baseWidth"
+        :i18n-module="props.i18nModule"
       />
 
       <!-- 測試顯示用 -->
@@ -601,6 +630,23 @@ $max-height: calc(100vh - 240px);
     width: 100%;
     height: 100%;
     padding: 8px;
+  }
+}
+</style>
+
+<style lang="scss">
+div[class*="__TimeLineTable"] {
+  tr[class*="vxe-body"] {
+    td.time-line-group {
+      position: relative;
+      vertical-align: top;
+      padding: 12px 0;
+    }
+
+    div.vxe-cell {
+      position: sticky;
+      top: 12px;
+    }
   }
 }
 </style>

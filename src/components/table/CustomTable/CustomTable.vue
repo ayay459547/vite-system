@@ -35,7 +35,7 @@ const props = defineProps(tableProps)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, message } = useHook({
-  i18nModule: props?.i18nModule ?? defaultModuleType
+  i18nModule: props.i18nModule
 })
 
 const emit = defineEmits([

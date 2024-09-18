@@ -1,25 +1,13 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { useSlots } from 'vue'
 import { VxeColgroup } from 'vxe-table'
 
-/**
- * https://vxetable.cn/#/colgroup/api
- */
-const props = defineProps({
-  field: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '資料key'
-  },
-  title: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '欄位名稱'
-  }
-})
+import { getUuid } from '@/lib/lib_utils'
+import { version, props as vxeColgroupProps } from './VxeColgroupInfo'
+
+const scopedId = getUuid(version)
+
+const props = defineProps(vxeColgroupProps)
 
 // slot
 const slots = useSlots()
@@ -32,6 +20,8 @@ const hasSlot = (prop: string): boolean => {
   <VxeColgroup
     :field="props.field"
     :title="props.title"
+    :header-class-name="props.headerClassName"
+    :class="scopedId"
   >
     <template v-if="hasSlot('header')" #header="scope">
       <slot name="header" v-bind="scope"></slot>

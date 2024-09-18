@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import type { ViewParams } from '@/declare/ajax'
 import type { TableOptions } from '@/declare/columnSetting'
 
-export const version = '1.0.0'
+export const version = '__WebViewTable_1.0.0__'
 
 export declare namespace Types {
   type CommonData = Record<string, any>

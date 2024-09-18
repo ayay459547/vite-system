@@ -87,8 +87,8 @@ export interface ColumnItem {
   // TimeLineTable
   timeLineType?: 'group' | 'date' | 'none' | null | undefined
   timeIndex?: number
-  isDate?: boolean
-  isTimeLineDate?: boolean
+  isTimeLineDate?: boolean // 是否是日期欄位
+  isTimeLineDateActive?: boolean // 是否正在使用的日期欄位(只有一個)
 }
 
 export interface Condition {

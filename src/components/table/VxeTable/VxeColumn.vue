@@ -1,71 +1,13 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { useSlots } from 'vue'
 import { VxeColumn } from 'vxe-table'
 
-type ColumnType = string
-  | 'seq'
-  | 'checkbox'
-  | 'radio'
-  | 'expand'
-  | 'html'
+import { getUuid } from '@/lib/lib_utils'
+import { version, props as vxeColumnProps } from './VxeColumnInfo'
 
-type Fixed = String | any
- | 'left'
- | 'right'
+const scopedId = getUuid(version)
 
-type Align = String | any
- | 'center'
- | 'left'
- | 'right'
-
- /**
-  * https://vxetable.cn/#/column/api
-  */
-const props = defineProps({
-  type: {
-    type: String as PropType<ColumnType>,
-    required: false,
-    default: '',
-    description: '欄位類型'
-  },
-  field: {
-    type: String as PropType<string>,
-    required: false,
-    default: undefined,
-    description: '資料key'
-  },
-  title: {
-    type: String as PropType<string>,
-    required: false,
-    default: '',
-    description: '欄位名稱'
-  },
-  width: {
-    type: [String, Number] as PropType<string | number | undefined>,
-    required: false,
-    default: undefined,
-    description: '寬度'
-  },
-  minWidth: {
-    type: [String, Number] as PropType<string | number | undefined>,
-    required: false,
-    default: undefined,
-    description: '最小寬度'
-  },
-  fixed: {
-    type: String as PropType<Fixed>,
-    required: false,
-    default: undefined,
-    description: '固定位置'
-  },
-  align: {
-    type: String as PropType<Align>,
-    required: false,
-    default: undefined,
-    description: '對齊方式'
-  }
-})
+const props = defineProps(vxeColumnProps)
 
 // slot
 const slots = useSlots()
@@ -82,6 +24,10 @@ const hasSlot = (prop: string): boolean => {
     :minWidth="props.minWidth"
     :fixed="props.fixed"
     :align="props.align"
+    :class-name="props.className"
+    :header-class-name="props.headerClassName"
+    :footer-class-name="props.footerClassName"
+    :class="scopedId"
   >
     <template v-if="hasSlot('header')" #header="scope">
       <slot name="header" v-bind="scope"></slot>
