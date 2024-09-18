@@ -1,10 +1,15 @@
-@forward 'element-plus/theme-chalk/src/dark/var.scss' with (
-  $bg-color: (
-    'page': #545454,
-    '': #4f4f4f,
-    'overlay': #1d1e1f
-  )
-);
+// @forward 'element-plus/theme-chalk/src/dark/var.scss' with (
+//   $bg-color: (
+//     'page': #424243,
+//     '': #5b5b5b,
+//     'overlay': #1d1e1f
+//   ),
+//   $mask-color: (
+//     '': #505050cc,
+//     'extra-light': #4c4c4c4d,
+//   )
+// );
+
 // import dark theme
 @use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
 

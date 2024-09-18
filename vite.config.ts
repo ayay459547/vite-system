@@ -18,12 +18,26 @@ import eslintPlugin from 'vite-plugin-eslint'
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const buildVersion = env.VITE_API_BUILD_VERSION
-  const timestamp = new Date().getTime()
+  const nowDate = new Date()
+  const timestamp = nowDate.getTime()
+  const [
+    year, month, day,
+    hour, min, second
+  ] = [
+    nowDate.getFullYear(),
+    `${nowDate.getMonth() + 1}`.padStart(2, '0'),
+    `${nowDate.getDate()}`.padStart(2, '0'),
+    `${nowDate.getHours()}`.padStart(2, '0'),
+    `${nowDate.getMinutes()}`.padStart(2, '0'),
+    `${nowDate.getSeconds()}`.padStart(2, '0')
+  ]
+
   console.log({
     buildVersion,
     mode,
     command,
-    timestamp
+    timestamp,
+    dateTime: `${year}-${month}-${day} ${hour}:${min}:${second}`
   })
 
   return {
