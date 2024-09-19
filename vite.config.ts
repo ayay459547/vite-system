@@ -5,6 +5,7 @@ import { read, utils } from 'xlsx'
 // import path from 'path'
 // import { resolve } from 'path'
 
+import type { UserConfigExport, UserConfig } from 'vite'
 import { defineConfig, loadEnv } from 'vite'
 import { lazyImport, VxeResolver } from 'vite-plugin-lazy-import'
 
@@ -15,7 +16,7 @@ import eslintPlugin from 'vite-plugin-eslint'
 // import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const buildVersion = env.VITE_API_BUILD_VERSION
   const nowDate = new Date()
@@ -180,3 +181,5 @@ export default defineConfig(({ command, mode }) => {
     }
   }
 })
+
+export default viteConfig as UserConfig
