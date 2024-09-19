@@ -18,6 +18,16 @@ npm run lint
 npm run format
 ```
 
+### 檢查package漏洞
+```sh
+npm audit
+```
+
+### 版本比對
+```sh
+npm outdated
+```
+
 ### 運行開發環境
 ```sh
 npm run dev
