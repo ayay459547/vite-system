@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { ref, computed, onBeforeMount } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute } from 'vue-router'
@@ -8,6 +9,13 @@ import { scrollToEl } from '@/lib/lib_utils'
 
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
 
+const props = defineProps({
+  isIframe: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  }
+})
+
 const emit = defineEmits([
   'routeChange',
   'login',
@@ -16,6 +24,8 @@ const emit = defineEmits([
 ])
 
 const pageScrollTop = () => {
+  if (props.isIframe) return
+
   const el = document.querySelector('.__layout-scroll-top__')
   if (el) {
     scrollToEl(el, { behavior: 'auto' })
@@ -114,7 +124,7 @@ const initNavigationRoutes = (routeName: string) => {
 </script>
 
 <template>
-  <div class="view-wrapper">
+  <div class="view-wrapper" :class="{'is-iframe': isIframe}">
     <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
     <div v-show="isDisabled" class="is-disabled">{{ routeName }}</div>
     <main v-loading="isLoading" class="view-container">
@@ -173,6 +183,10 @@ const initNavigationRoutes = (routeName: string) => {
     width: 100%;
     height: 100%;
     padding: 2px 12px 8px;
+
+    &.is-iframe {
+      padding: 0;
+    }
   }
   &-container {
     width: 100%;

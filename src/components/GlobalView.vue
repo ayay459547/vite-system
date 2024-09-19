@@ -82,7 +82,10 @@ const systemEnv = computed(() => {
     buildVersion: _env.VITE_API_BUILD_VERSION,
     baseUrl: _env.VITE_API_BASE_URL,
     // PRIVATE_KEY: _env.VITE_API_PRIVATE_KEY,
-    QUERY_KEY: _env.VITE_API_QUERY_KEY
+    QUERY_KEY: _env.VITE_API_QUERY_KEY,
+
+    // 只有 PageContent 不用 SystemLayout
+    isIframe: (_env.VITE_API_IFRAME === 'true')
   }
 })
 
@@ -369,6 +372,7 @@ provide<UseHook>('useHook', (options = {}) => {
       :breadcrumb-name="breadcrumbName"
       :breadcrumb-title="breadcrumbTitle"
       :auth-data="authData"
+      :is-iframe="systemEnv.isIframe"
       @logout="logout"
       @lang-change="setWebInfo"
     >
@@ -389,6 +393,7 @@ provide<UseHook>('useHook', (options = {}) => {
       <template #content>
         <PageContent
           ref="pageContentRef"
+          :is-iframe="systemEnv.isIframe"
           @routeChange="routeChange"
           @login="login"
           @setLayoutInfo="setLayoutInfo"

@@ -60,6 +60,10 @@ const props = defineProps({
         groups: []
       } as AuthData
     }
+  },
+  isIframe: {
+    type: Boolean as PropType<boolean>,
+    default: false
   }
 })
 
@@ -156,73 +160,79 @@ const onLayoutChange = () => {
 
 <template>
   <div class="system-layout">
-    <div class="user-modal">
-      <CustomModal
-        v-model="modal.preference"
-        :modal="false"
-        hidden-footer
-        draggable
-        :hidden-collapse="false"
+    <template v-if="!props.isIframe">
+      <div class="user-modal">
+        <CustomModal
+          v-model="modal.preference"
+          :modal="false"
+          hidden-footer
+          draggable
+          :hidden-collapse="false"
+        >
+          <template #header>
+            <label>{{ i18nTranslate('preference', defaultModuleType) }}</label>
+          </template>
+          <UserPreference
+            ref="preferenceRef"
+            :is-dark="isDark"
+            @lang-change="onLangChange"
+            @layout-change="onLayoutChange"
+          />
+        </CustomModal>
+      </div>
+
+      <Layout1
+        ref="layout1Ref"
+        v-if="layout === 'layout1'"
+        v-model:isNavOpen="isNavOpen"
+        :isNavHover="isNavHover"
+        v-bind="layoutAttr"
+        v-on="layoutEvent"
       >
-        <template #header>
-          <label>{{ i18nTranslate('preference', defaultModuleType) }}</label>
+        <template #logo="{ isShow }">
+          <slot name="logo" :is-show="isShow"></slot>
         </template>
-        <UserPreference
-          ref="preferenceRef"
-          :is-dark="isDark"
-          @lang-change="onLangChange"
-          @layout-change="onLayoutChange"
-        />
-      </CustomModal>
+        <template #menu-footer="{ isShow }">
+          <slot name="menu-footer" :is-show="isShow"></slot>
+        </template>
+
+        <template #header-left>
+          <slot name="header-left"></slot>
+        </template>
+        <template #header-right>
+          <slot name="header-right"></slot>
+        </template>
+
+        <template #content>
+          <slot name="content"></slot>
+        </template>
+      </Layout1>
+
+      <Layout2
+        ref="layout2Ref"
+        v-else-if="layout === 'layout2'"
+        v-bind="layoutAttr"
+        v-on="layoutEvent"
+      >
+        <template #logo>
+          <slot name="logo" :is-show="true"></slot>
+        </template>
+        <template #menu-left>
+          <slot name="menu-left"></slot>
+        </template>
+        <template #menu-right>
+          <slot name="menu-right"></slot>
+        </template>
+
+        <template #content>
+          <slot name="content"></slot>
+        </template>
+      </Layout2>
+    </template>
+
+    <div v-else class="fill">
+      <slot name="content"></slot>
     </div>
-
-    <Layout1
-      ref="layout1Ref"
-      v-if="layout === 'layout1'"
-      v-model:isNavOpen="isNavOpen"
-      :isNavHover="isNavHover"
-      v-bind="layoutAttr"
-      v-on="layoutEvent"
-    >
-      <template #logo="{ isShow }">
-        <slot name="logo" :is-show="isShow"></slot>
-      </template>
-      <template #menu-footer="{ isShow }">
-        <slot name="menu-footer" :is-show="isShow"></slot>
-      </template>
-
-      <template #header-left>
-        <slot name="header-left"></slot>
-      </template>
-      <template #header-right>
-        <slot name="header-right"></slot>
-      </template>
-
-      <template #content>
-        <slot name="content"></slot>
-      </template>
-    </Layout1>
-
-    <Layout2
-      ref="layout2Ref"
-      v-else-if="layout === 'layout2'"
-      v-bind="layoutAttr"
-      v-on="layoutEvent"
-    >
-      <template #logo>
-        <slot name="logo" :is-show="true"></slot>
-      </template>
-      <template #menu-left>
-        <slot name="menu-left"></slot>
-      </template>
-      <template #menu-right>
-        <slot name="menu-right"></slot>
-      </template>
-
-      <template #content>
-        <slot name="content"></slot>
-      </template>
-    </Layout2>
   </div>
 </template>
 

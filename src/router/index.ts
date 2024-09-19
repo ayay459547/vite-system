@@ -8,14 +8,17 @@ import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
-import { permission, hasPermission } from '@/lib/lib_permission'
-import { tipLog } from '@/lib/lib_utils'
+import { permission, totlaPermission, hasPermission } from '@/lib/lib_permission'
+import { tipLog, isEmpty } from '@/lib/lib_utils'
 import { updateToken } from '@/lib/lib_cookie'
 
 import { commonRoutes } from './Common'
 
 // 網址前綴
 const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
+
+const isSkipLogin = (import.meta as any).env.VITE_API_SKIP_LOGIN === 'true'
+const isAllPermission = (import.meta as any).env.VITE_API_ALL_PERMISSION === 'true'
 
 /**
  * @author Caleb
@@ -115,7 +118,21 @@ router.beforeEach(
      * 3. 系統預設
      * 4. 0 (無權限)
      */
-    const pagePermission = routerPermission?.permission ?? 0
+    const pagePermission = isAllPermission ?
+      totlaPermission : (routerPermission?.permission ?? 0)
+
+    /**
+     * iframe
+     * src="...?views=page"
+     */
+    const page = from?.redirectedFrom?.query?.views ?? ''
+    if (!isEmpty(page) && typeof page === 'string') {
+      if (to.name === page) {
+        next()
+      } else {
+        next({ name: page })
+      }
+    }
 
     // 尚未確認登入狀態
     if (!isCheckedStatus.value) {
@@ -129,7 +146,7 @@ router.beforeEach(
 
         next({ name: 'checkStatus' })
       }
-    } else if (isLogin.value) {
+    } else if (isLogin.value || isSkipLogin) {
       // 已經登入 如果要進登入頁 自動跳回首頁
       if (to.name === 'login') {
         next({ name: 'locatehome' })

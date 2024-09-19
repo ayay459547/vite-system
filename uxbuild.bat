@@ -1,7 +1,23 @@
-node -v
+call node -v
 
-npm -v
+call npm -v
 
-node uxbuild.js
+@echo off
+set root=%cd%
 
-pause 按任意鍵繼續
+cd %root%\ux-dev
+REM #### install vue depenedency
+call npm install
+
+REM #### build vue project #######
+
+call npm run build-only:pro
+
+REM #### copy vue file to ipassweb #######
+REM #### copy /y %root%\demo\portal\*.* %root%\dist\*.*
+
+REM #### rd /s /q %root%\dist\static
+REM #### xcopy /y /i /S %root%\demo\portal\static\* %root%\dist\static
+
+REM delete unused portal folder from vue
+REM #### rd /s /q %root%\demo\portal
