@@ -60,8 +60,10 @@ const emit = defineEmits([
   'selection-change',
   'row-contextmenu',
   // 'load',
-  'init-start', //初始化開始
-  'init-end' //初始化完成
+  'init-start', // 初始化開始
+  'init-end', // 初始化完成
+
+  'mounted' // WebViewTable mounted
 ])
 
 const useHook: UseHook = inject('useHook')
@@ -100,6 +102,7 @@ const {
   getConditionFilter
 } = useFormSetting<Types.FilterData>(props.columnSetting, props.filterKey)
 
+// 使用記得定義 columns
 const setFilter = (_filter: Types.FilterData) => {
   for (const filterKey in _filter) {
     if (hasOwnProperty(filter, filterKey)) {
@@ -301,10 +304,18 @@ const initData = async (tableParams: any) => {
 
 const customTableRef = ref()
 const timeLineTableRef = ref()
-const isShowTimeLineTable = computed(() => {
-  return tableSetting.tableColumns.some(tableColumn => {
-    return tableColumn?.isTimeLineDate ?? false
-  })
+const _isShowTimeLineTable = computed(() => {
+  return props.isShowTimeLineTable &&
+    tableSetting.tableColumns.some(tableColumn => {
+      return tableColumn?.isTimeLineDate ?? false
+    })
+})
+
+onMounted(() => {
+  emit('mounted')
+  if (props.isMountedInit) {
+    init(null, '')
+  }
 })
 
 /**
@@ -324,9 +335,27 @@ const isCustomTableInit = computed({
   }
 })
 
-const queue = ref([])
+async function* generator(): AsyncGenerator<number, number, unknown> {
+  let initCount = 0
+
+  while (true) {
+    if (props.isMountedInit) {
+      yield ++initCount
+    } else if (isCustomTableInit.value) {
+      yield ++initCount
+    }
+
+    yield ++initCount
+  }
+}
+const gen = generator()
+
 const init = async (params?: any, type?: string) => {
-  if (isCustomTableInit.value) {
+  const initCount = (await gen.next()).value
+  // console.trace(initCount)
+
+  // 只少要等到 isCustomTableInit = true 後才能送api
+  if (initCount >= 2) {
     emit('init-start')
 
     isLoading.value = true
@@ -355,13 +384,15 @@ const init = async (params?: any, type?: string) => {
 
     emit('init-end', [resData, resDataCount])
     // console.log('resData => ', resData)
+
     return [resData, resDataCount]
-  } else {
-    queue.value.push('init')
   }
 }
 
-const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
+const throttleInit = throttle<typeof init>(init, 200, {
+  // isNoLeading: true,
+  isNoTrailing: true
+})
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -438,8 +469,12 @@ const onReset = async () => {
 
 const lazyLoadingStatus = ref<CustomTableProps.LazyLoadingStatus>('loadMore')
 
-// 可用函數
+/**
+ * 可用函數
+ * 建議在 emit('mounted') 後使用
+ */
 defineExpose({
+  setFilter,
   init,
   getTableData: () => {
     return getProxyData(tableData.value)
@@ -447,15 +482,8 @@ defineExpose({
   getTableDataCount: () => {
     return getProxyData(tableDataCount.value)
   },
-  setFilter,
   getSelectionRows,
   toggleSelection
-})
-
-onMounted(() => {
-  if (props.isMountedInit) {
-    throttleInit(null, '')
-  }
 })
 
 // 時間線表格
@@ -618,7 +646,7 @@ const modal = reactive({
 
     <!-- 時間線表格 -->
     <CustomModal
-      v-if="isShowTimeLineTable"
+      v-if="_isShowTimeLineTable"
       v-model="modal.timeLine"
       :title="i18nTranslate('timeLine-table', defaultModuleType)"
       :modal="false"
@@ -633,7 +661,7 @@ const modal = reactive({
         :table-data="tableData"
       />
     </CustomModal>
-    <div v-show="isShowTimeLineTable" class="web-view-time-line">
+    <div v-show="_isShowTimeLineTable" class="web-view-time-line">
       <CustomTooltip trigger="hover" placement="top">
         <template #content>{{ i18nTranslate('timeLine-table', defaultModuleType) }}</template>
         <CustomButton

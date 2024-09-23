@@ -171,7 +171,12 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@use "@/assets/main.scss" as *;'
+          additionalData: '@use "@/assets/main.scss" as *;',
+          quietDeps: true, // 僅顯示錯誤，不顯示警告
+          api: 'modern-compiler', // or "modern"
+          // Sass 2.0.0 隱藏訊息
+          // Deprecation Warning: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+          silenceDeprecations: ['legacy-js-api']
         }
       },
       devSourcemap: false // 在開發模式下啟用 source map

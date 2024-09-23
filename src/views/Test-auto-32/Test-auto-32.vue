@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, inject } from 'vue'
+import { ref, reactive, inject } from 'vue'
 
 // 全域功能類型
 import type { UseHook } from '@/declare/hook'
@@ -68,7 +68,7 @@ const onPlanInfoClick = (row: TableData) => {
 }
 
 // 跳轉處理
-onMounted(() => {
+const onWebViewTableMounted = () => {
   // 跳轉來源, 附帶資料
   const { fromPage, queryData } = redirectInfo()
 
@@ -86,11 +86,10 @@ onMounted(() => {
         })
         break
       }
-
     }
   }
   webViewTableRef?.value?.init()
-})
+}
 
 // 顯示資料格式化
 const formatData = (row: ResponseData): ExcelData | TableData => {
@@ -193,6 +192,7 @@ const formatTable = (row: ResponseData): TableData => {
       :format-table="formatTable"
       :fake-data="fakeTableData"
       :is-mounted-init="false"
+      @mounted="onWebViewTableMounted"
     >
       <template #header-planInfo="{ column }">
         <label class="fill-y flex-row align-center">{{ i18nTranslate(column.i18nLabel) }}</label>

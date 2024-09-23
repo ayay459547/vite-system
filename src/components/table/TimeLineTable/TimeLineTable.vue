@@ -47,17 +47,23 @@ const timeLevelOptions = ref([
 ])
 const acviteTimeLevelList = computed(() => {
   return timeLevelOptions.value.reduce((res, option) => {
-    if (option.active && option.index >= baseLevelIndex.value) {
+    if (
+      (option.index >= baseLevelIndex.value && option.active) ||
+      option.index === baseLevelIndex.value
+    ) {
       res.push(option.value)
     }
     return res
   }, [])
 })
 
+const emit = defineEmits(['changeKey'])
+
 const timeLineDateKey = ref('')
 const changeKey = async (newDateKey: string) => {
   timeLineDateKey.value = newDateKey
 
+  emit('changeKey', newDateKey)
   await nextTick()
   refreshColumn()
 }
@@ -423,7 +429,8 @@ onMounted(() => {
 })
 
 defineExpose({
-  init
+  init,
+  changeKey
 })
 
 </script>
@@ -637,10 +644,13 @@ $max-height: calc(100vh - 240px);
 <style lang="scss">
 div[class*="__TimeLineTable"] {
   tr[class*="vxe-body"] {
+    content-visibility: auto;
+
     td.time-line-group {
       position: relative;
       vertical-align: top;
       padding: 12px 0;
+      border-right: 1px solid var(--el-border-color-lighter);
     }
 
     div.vxe-cell {

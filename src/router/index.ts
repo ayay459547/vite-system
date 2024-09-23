@@ -125,7 +125,8 @@ router.beforeEach(
      * iframe
      * src="...?views=page"
      */
-    const page = from?.redirectedFrom?.query?.views ?? ''
+    // const page = from?.redirectedFrom?.query?.views ?? ''
+    const page = to?.redirectedFrom?.query?.views ?? ''
     if (!isEmpty(page) && typeof page === 'string') {
       if (to.name === page) {
         next()

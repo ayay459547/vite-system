@@ -58,6 +58,7 @@ const { i18nTranslate } = useHook({
       :group-date-columns="groupDateColumn.columns"
       :date-columns="props.dateColumns"
       :base-width="props.baseWidth"
+      :i18n-module="props.i18nModule"
     />
     <template v-else>
       <VxeColumn

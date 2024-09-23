@@ -16,6 +16,7 @@ import type { ColumnItem } from '@/declare/columnSetting'
 import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { object_findIndex } from '@/lib/lib_object'
+import { numberFormat } from '@/lib/lib_format'
 import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'
 
 // 欄位設定
@@ -75,20 +76,48 @@ const onExcelClick = (type: 'all' | 'page') => {
 }
 
 // 每頁顯示筆數
-const pageSize = ref<number>(props.pageSize)
+let lastValue: number = props.pageSize
+const tempPageSize = ref<number | string>(props.pageSize)
+const pageSize = computed<number>({
+  get: () => {
+    if (typeof tempPageSize.value === 'string') {
+      return Number.parseInt(tempPageSize.value)
+    }
+    return tempPageSize.value
+  },
+  set: (v: number | string) => {
+    console.log('v => ', v)
+    let _value = v
+    // 轉化數字
+    if (typeof _value === 'string') {
+      _value = Number.parseFloat(_value)
 
+      // 不是數字 給最後一次的值
+      if (Number.isNaN(_value)) {
+        _value = lastValue
+      }
+    }
+
+    if (typeof _value === 'number') {
+      _value = numberFormat<number>(_value, { type: 'floor', toFixed: 0 })
+    }
+
+    if (lastValue !== _value) {
+      lastValue = _value
+    }
+
+    tempPageSize.value = _value
+  }
+})
 const sizeOptions = [
-  { value: 30, label: '30' },
+  // { value: 3, label: '3' },
+  // { value: 10, label: '10' },
+  // { value: 30, label: '30' },
   { value: 50, label: '50' },
   { value: 100, label: '100' },
   { value: 300, label: '300' },
-  { value: 500, label: '500' }
-]
-const lazyLoadSizeOptions = [
-  { value: 100, label: '100' },
   { value: 500, label: '500' },
   { value: 1000, label: '1000' },
-  { value: 5000, label: '5000' },
   { value: -1, label: '全部', i18nLabel: 'all' }
 ]
 
@@ -529,17 +558,9 @@ defineExpose({
       currentPage.value = page
     }
     if (!isEmpty(size)) {
-      const _index = ((isLazyLoading: boolean) => {
-        if (isLazyLoading) {
-          return lazyLoadSizeOptions.findIndex(option => {
-            option.value === size
-          })
-        } else {
-          return sizeOptions.findIndex(option => {
-            option.value === size
-          })
-        }
-      })(props.isLazyLoading)
+      const _index = sizeOptions.findIndex(option => {
+        option.value === size
+      })
 
       if (_index >= 0) {
         pageSize.value = size
@@ -660,48 +681,32 @@ onMounted(() => {
 
     <div class="__table-setting">
       <div class="setting-left">
+        <div style="width: 120px; overflow: hidden">
+          <CustomTooltip placement="top" :show-after="300">
+            <template #content>
+              <!-- 顯示更多 : 分頁 -->
+              <div>{{ i18nTranslate(props.isLazyLoading ? 'load-count' : 'show-count', defaultModuleType) }}</div>
+            </template>
+            <CustomInput
+              v-model="pageSize"
+              validate-key="CustomTable:pageSize"
+              type="select"
+              :options="sizeOptions"
+              hidden-label
+              :filterable="false"
+              :allow-create="false"
+              :default-first-option="false"
+              @change="onSizeChange"
+            />
+          </CustomTooltip>
+        </div>
+
         <!-- 顯示更多 -->
-        <template v-if="props.isLazyLoading">
-          <div style="width: 120px; overflow: hidden">
-            <CustomTooltip placement="top" :show-after="300">
-              <template #content>
-                <div>{{ i18nTranslate('load-count', defaultModuleType) }}</div>
-              </template>
-              <CustomInput
-                v-model="pageSize"
-                validate-key="CustomTable:pageSize"
-                :i18n-module="defaultModuleType"
-                type="select"
-                :options="lazyLoadSizeOptions"
-                hidden-label
-                @change="onSizeChange"
-              />
-            </CustomTooltip>
-          </div>
-          <div>
-            <label>
-              {{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}
-            </label>
-          </div>
-        </template>
-        <!-- 分頁 -->
-        <template v-else>
-          <div style="width: 120px; overflow: hidden">
-            <CustomTooltip placement="top" :show-after="300">
-              <template #content>
-                <div>{{ i18nTranslate('show-count', defaultModuleType) }}</div>
-              </template>
-              <CustomInput
-                v-model="pageSize"
-                validate-key="CustomTable:pageSize"
-                type="select"
-                :options="sizeOptions"
-                hidden-label
-                @change="onSizeChange"
-              />
-            </CustomTooltip>
-          </div>
-        </template>
+        <div v-if="props.isLazyLoading">
+          <label>
+            {{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}
+          </label>
+        </div>
 
         <!-- Excel -->
         <CustomPopover

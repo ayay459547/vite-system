@@ -45,6 +45,7 @@ export declare namespace Props {
   type IsMountedInit = boolean
   type DownloadExcel = any
   type IsHiddenPrepend = boolean
+  type IsShowTimeLineTable = boolean
 }
 
 export const props = {
@@ -173,6 +174,12 @@ export const props = {
     required: false,
     default: false,
     description: '是否在 隱藏 slot #prepend'
+  },
+  isShowTimeLineTable: {
+    type: Boolean as PropType<Props.IsShowTimeLineTable>,
+    required: false,
+    default: false,
+    description: '是否顯示時間線表格'
   }
 }
 

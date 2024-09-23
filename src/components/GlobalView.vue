@@ -43,7 +43,7 @@ import { useGlobalI18n } from '@/i18n/i18n_excel'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { getPermission } from '@/lib/lib_permission'
+import { totlaPermission, getPermission } from '@/lib/lib_permission'
 
 // slot
 const slots = useSlots()
@@ -85,7 +85,10 @@ const systemEnv = computed(() => {
     QUERY_KEY: _env.VITE_API_QUERY_KEY,
 
     // 只有 PageContent 不用 SystemLayout
-    isIframe: (_env.VITE_API_IFRAME === 'true')
+    isIframe: (_env.VITE_API_IFRAME === 'true'),
+
+    isSkipLogin: (_env.VITE_API_SKIP_LOGIN === 'true'),
+    isAllPermissionData: (_env.VITE_API_ALL_PERMISSION === 'true')
   }
 })
 
@@ -319,6 +322,8 @@ provide<UseHook>('useHook', (options = {}) => {
       })
     },
     permission: (routeName = null) => {
+      if (systemEnv.value.isAllPermissionData) return getPermission(totlaPermission)
+
       if (!isEmpty(routeName)) {
         // 與路由守衛相同邏輯
         const routerPermission = navigationMap.value.get(routeName)

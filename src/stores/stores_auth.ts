@@ -15,6 +15,8 @@ import type { AuthData, PermissionData } from '@/declare/hook'
 
 import { defaultAuthData, getAuthData } from './api'
 
+const isSkipLogin = (import.meta as any).env.VITE_API_SKIP_LOGIN === 'true'
+
 export const useAuthStore = defineStore('auth', () => {
   // 是否已確認登入狀態
   const isCheckedStatus = ref(false)
@@ -114,6 +116,11 @@ export const useAuthStore = defineStore('auth', () => {
    */
   const initSystemData = async () => {
     isCheckedStatus.value = false
+
+    if (isSkipLogin) {
+      isCheckedStatus.value = true
+      return
+    }
 
     routesPermission.clear()
 

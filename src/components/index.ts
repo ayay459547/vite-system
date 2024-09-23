@@ -541,14 +541,16 @@ export type {
   Emits as VxeColgroupEmits,
   Expose as VxeColgroupExpose
 } from './table/VxeTable/VxeColgroupInfo'
-export const VxeColgroup = useAsyncComponent(() => import('./table/VxeTable/VxeColgroup.vue'), 'h1')
+export { default as VxeColgroup } from './table/VxeTable/VxeColgroup.vue'
+
 export type {
   Types as VxeColumnTypes,
   Props as VxeColumnProps,
   Emits as VxeColumnEmits,
   Expose as VxeColumnExpose
 } from './table/VxeTable/VxeColumnInfo'
-export const VxeColumn = useAsyncComponent(() => import('./table/VxeTable/VxeColumn.vue'), 'h1')
+export { default as VxeColumn } from './table/VxeTable/VxeColumn.vue'
+
 export type {
   Types as VxeTableTypes,
   Props as VxeTableProps,
