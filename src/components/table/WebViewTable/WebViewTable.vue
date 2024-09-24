@@ -526,9 +526,10 @@ const modal = reactive({
                     class="grid-col-xs-12 grid-col-md-8 grid-col-lg-6"
                     v-model="filter[scope.prop]"
                     v-model:active="activeFilter[scope.prop]"
-                    :i18n-module="i18nModule"
                     v-bind="filterColumn[scope.prop]"
-                    :label="i18nTranslate(scope.column?.i18nLabel)"
+                    :i18n-module="i18nModule"
+                    :column-id="scope.prop"
+                    :label="i18nTranslate(scope.column?.i18nLabel, i18nModule)"
                   />
                 </slot>
               </template>
@@ -582,10 +583,10 @@ const modal = reactive({
               v-model:active="activeFilter[scope.prop]"
               v-model:activeConditions="activeConditions[scope.prop]"
               v-model:conditions="filterConditions[scope.prop]"
-              :i18n-module="i18nModule"
-              :label="i18nTranslate(scope.column?.i18nLabel)"
-              :column-id="scope.prop"
               v-bind="filterColumn[scope.prop]"
+              :i18n-module="i18nModule"
+              :label="i18nTranslate(scope.column?.i18nLabel, i18nModule)"
+              :column-id="scope.prop"
               search
               @change="throttleInit($event, 'input')"
               @submit="throttleInit($event, 'input')"

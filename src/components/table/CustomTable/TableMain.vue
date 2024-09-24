@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { useSlots, ref, onMounted, onUnmounted, computed, watch, effectScope, nextTick } from 'vue'
+import { useSlots, ref, inject, onMounted, onUnmounted, computed, watch, effectScope, nextTick } from 'vue'
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components'
 import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits } from './CustomTableInfo'
 
 const scopedId = getUuid('__table-main__')
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({ i18nModule: defaultModuleType })
 
 // slot
 const slots = useSlots()
@@ -331,7 +336,12 @@ defineExpose({
               class="__table-main-append"
               :style="`width: ${width}px;`"
             >
-              <CustomButton label="載入更多資料" type="info" text @click="load" />
+              <CustomButton
+                :label="i18nTranslate('show-mode-more', defaultModuleType)"
+                type="info"
+                text
+                @click="load"
+              />
               <div ref="loadMoreRef" class="load-more"></div>
             </div>
           </template>

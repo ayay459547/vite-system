@@ -342,7 +342,7 @@ const onDragend = () => {
 
         <div class="__column-footer">
           <CustomButton
-            :label="'調整全部欄寬' /*i18nTranslate('resize-header', defaultModuleType)*/"
+            :label="i18nTranslate('resize-header', defaultModuleType)"
             type="info"
             plain
             icon-name="arrows-left-right-to-line"
