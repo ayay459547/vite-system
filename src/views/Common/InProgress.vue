@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Composition API
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 
 import { CustomWatermark } from '@/components'

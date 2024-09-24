@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// Composition API
 import { ref, onMounted, reactive, inject, nextTick } from 'vue'
+
 // 引入類型
 import type { UseHook, SwalResult } from '@/declare/hook'
 // 引入組件

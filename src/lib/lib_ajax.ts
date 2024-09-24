@@ -40,6 +40,9 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json;charset=utf8'
+      // 'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+      // Pragma: 'no-cache',
+      // Expires: '0'
     }
   })
 
@@ -413,3 +416,7 @@ export class IWebScoket {
     this.socket.close()
   }
 }
+
+// 尚未封裝
+export type EventSourceConfig = {}
+export class IEventSource {}

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, inject } from 'vue'
+import { ref, onBeforeMount, inject } from 'vue'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 
 import type { UseHook } from '@/declare/hook'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, permission } = useHook({ i18nModule: 'system' })
-
-const userPermission = ref<Permission>(getPermission(defaultPermission))
 
 const testList = [
   'any',
@@ -20,11 +18,12 @@ const testList = [
   'excelView'
 ]
 
-onMounted(() => {
+// 頁面權限
+const userPermission = ref<Permission>(getPermission(defaultPermission))
+onBeforeMount(() => {
   userPermission.value = permission('nav4-1')
-
-  console.log(`${i18nTranslate('nav4-1')} => `, userPermission.value)
 })
+
 </script>
 
 <template>

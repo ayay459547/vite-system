@@ -302,7 +302,7 @@ const initData = async (tableParams: any) => {
   return [resData, resDataCount]
 }
 
-const customTableRef = ref()
+// const customTableRef = ref()
 const timeLineTableRef = ref()
 const _isShowTimeLineTable = computed(() => {
   return props.isShowTimeLineTable &&
@@ -313,80 +313,49 @@ const _isShowTimeLineTable = computed(() => {
 
 onMounted(() => {
   emit('mounted')
-  if (props.isMountedInit) {
-    init(null, '')
-  }
 })
 
 /**
  * 確保 CustomTable 初始化 排序(initSortingList) + 欄位(initShowColumns)
  * 才可以送出api
  */
-const _isCustomTableInit = ref(false)
-const isCustomTableInit = computed({
-  get () {
-    return _isCustomTableInit.value
-  },
-  set (v: boolean) {
-    _isCustomTableInit.value = v
-    if (v) {
-      init(null, '')
-    }
-  }
-})
-
-async function* generator(): AsyncGenerator<number, number, unknown> {
-  let initCount = 0
-
-  while (true) {
-    if (props.isMountedInit) {
-      yield ++initCount
-    } else if (isCustomTableInit.value) {
-      yield ++initCount
-    }
-
-    yield ++initCount
+const onCustomTableInitFinish = () => {
+  if (props.isMountedInit) {
+    init(null, '')
   }
 }
-const gen = generator()
 
 const init = async (params?: any, type?: string) => {
-  const initCount = (await gen.next()).value
-  // console.trace(initCount)
+  emit('init-start')
 
-  // 只少要等到 isCustomTableInit = true 後才能送api
-  if (initCount >= 2) {
-    emit('init-start')
-
-    isLoading.value = true
-    if (type === 'input') {
-      changePage(1)
-    }
-    if (islazyLoading.value) {
-      lazyLoadingStatus.value = 'loading'
-    }
-    await nextTick()
-    const tableParams = type === 'table' ? params : getParams()
-
-    const [resData, resDataCount] = await initData(tableParams)
-    await nextTick()
-
-    setTimeout(() => {
-      isLoading.value = false
-    }, 320)
-
-    // 時間線表格 同步更新
-    setTimeout(() => {
-      if (modal.timeLine) {
-        timeLineTableRef.value?.init()
-      }
-    }, 800)
-
-    emit('init-end', [resData, resDataCount])
-    // console.log('resData => ', resData)
-
-    return [resData, resDataCount]
+  isLoading.value = true
+  if (type === 'input') {
+    changePage(1)
   }
+  if (islazyLoading.value) {
+    lazyLoadingStatus.value = 'loading'
+  }
+  await nextTick()
+  const tableParams = type === 'table' ? params : getParams()
+
+  const [resData, resDataCount] = await initData(tableParams)
+  await nextTick()
+
+  setTimeout(() => {
+    isLoading.value = false
+  }, 320)
+
+  // 時間線表格 同步更新
+  setTimeout(() => {
+    if (modal.timeLine) {
+      timeLineTableRef.value?.init()
+    }
+  }, 800)
+
+  emit('init-end', [resData, resDataCount])
+  // console.log('resData => ', resData)
+
+  return [resData, resDataCount]
 }
 
 const throttleInit = throttle<typeof init>(init, 200, {
@@ -519,7 +488,7 @@ const modal = reactive({
       @row-contextmenu="onRowContextmenu"
       @show-change="throttleInit($event, 'table')"
       @load="throttleInit($event, 'table')"
-      @init-finish="isCustomTableInit = true"
+      @init-finish="onCustomTableInitFinish"
     >
       <template v-if="!props.isHiddenPrepend" #prepend>
         <div class="flex-row i-ga-xs content-between">

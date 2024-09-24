@@ -76,5 +76,6 @@ const bindStyle = computed(() => {
 .page-skeleton {
   background-color: var(--i-color-system-page);
   overflow: hidden;
+  margin: 2px;
 }
 </style>

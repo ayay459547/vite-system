@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Composition API
 import { onMounted, ref, inject, nextTick } from 'vue'
 
 // 全域功能類型

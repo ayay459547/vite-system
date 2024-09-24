@@ -56,6 +56,7 @@ const emit = defineEmits([
   'selection-change',
   'row-contextmenu',
   'load',
+  'mounted',
   'init-finish'
 ])
 
@@ -519,6 +520,10 @@ onMounted(async () => {
 
   setTimeout(() => {
     isRender.value = true
+    emit('mounted')
+  }, 0)
+
+  setTimeout(() => {
     emit('init-finish')
   }, 120)
 })

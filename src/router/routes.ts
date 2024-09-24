@@ -97,26 +97,6 @@ const routes: Array<RouterTree> = [
             }
           },
           {
-            name: 'Test-fund-1417',
-            title: 'Test Fund-1417',
-            component: () => import('@/views/Test-fund-1417/Test-fund-1417.vue'),
-            meta: {
-              keepAlive: false,
-              systemType: ['new'],
-              icon: 'file-circle-check'
-            }
-          },
-          {
-            name: 'Test-fund-1417-v2',
-            title: 'Test Fund-1417-v2',
-            component: () => import('@/views/Test-fund-1417-v2/Test-fund-1417-v2.vue'),
-            meta: {
-              keepAlive: false,
-              systemType: ['new'],
-              icon: 'file-circle-check'
-            }
-          },
-          {
             name: 'Test-fund-122',
             title: 'Test Fund-122',
             component: () => import('@/views/Test-fund-122/Test-fund-122.vue'),

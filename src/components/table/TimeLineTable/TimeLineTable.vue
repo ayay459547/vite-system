@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, computed, inject } from 'vue'
+import { ref, shallowRef, onMounted, nextTick, computed, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
 import {
@@ -72,10 +72,10 @@ const changeKey = async (newDateKey: string) => {
 const groupColumnsSortMap: {
   [key: string]: number
 } = {}
-const mergeCells = ref([])
+const mergeCells = []
 const resetMergeCells = () => {
   // 合併欄位資料 必需先排序好資料
-  mergeCells.value.splice(0)
+  mergeCells.splice(0)
   const mergeMap: Record<string, {
     __row__: number
     __col__: number
@@ -102,8 +102,8 @@ const resetMergeCells = () => {
   Object.values(mergeMap).forEach(mergeCell => {
     const {__row__, __col__, __rowspan__} = mergeCell
 
-    if (__row__ >= 0 && __col__ >= 0 && __rowspan__ >= 1) {
-      mergeCells.value.push({
+    if (__rowspan__ > 1) {
+      mergeCells.push({
         row: __row__,
         col: __col__,
         rowspan: __rowspan__,
@@ -112,11 +112,11 @@ const resetMergeCells = () => {
     }
   })
 
-  vxeTableRef.value?.setMergeCells(mergeCells.value)
+  vxeTableRef.value?.setMergeCells(mergeCells)
 }
 
 // 群組欄位 X軸
-const groupColumns = ref([])
+const groupColumns = shallowRef([])
 const groupColumnsKey = computed<string[]>(() => {
   return groupColumns.value.reduce((res, groupColumn) => {
     if (!isEmpty(groupColumn.key)) {
@@ -127,7 +127,7 @@ const groupColumnsKey = computed<string[]>(() => {
 })
 
 // 群組日期 Y軸
-const groupDateColumns = ref([])
+const groupDateColumns = shallowRef([])
 const getGroupDateColumns = (dateGroup: Record<string, any>) => {
   if (isEmpty(dateGroup)) return []
 
@@ -164,10 +164,10 @@ const getGroupDateColumns = (dateGroup: Record<string, any>) => {
 }
 
 // 日期線欄位 Y軸
-const dateColumns = ref([])
+const dateColumns = shallowRef([])
 
 // 其他欄位 none
-const otherColumns = ref([])
+const otherColumns = shallowRef([])
 
 const vxeTableRef = ref()
 const renderKey = ref(0)
@@ -180,7 +180,7 @@ const refreshColumn = async () => {
 const isLoading = ref(true)
 const isShow = ref(false)
 
-const showData = ref([])
+const showData = shallowRef([])
 /**
  * 群組用資料
  * key = 組群的資料 合併成key (matrixKey)
@@ -219,7 +219,7 @@ const initData = async () => {
   for (let sortMapKey in groupColumnsSortMap) {
     delete groupColumnsSortMap[sortMapKey]
   }
-  showData.value.splice(0)
+  showData.value = []
   matrixMap.clear()
 
   // 日期群組
@@ -241,7 +241,7 @@ const initData = async () => {
     // 最小群組日期
     let groupDate = ''
 
-    // format
+    // format 避免資訊重複
     const formartUseMap = {
       year: false,
       // quarter: false,

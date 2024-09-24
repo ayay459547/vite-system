@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Composition API
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
