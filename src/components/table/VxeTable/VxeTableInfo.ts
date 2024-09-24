@@ -208,6 +208,8 @@ export declare namespace Expose {
   type RefreshColumn = () => Promise<any>
   type UpdateData = () => Promise<any>
   type SetMergeCells = (merges: Types.Merges) => Promise<any>
+  type RemoveMergeCells = (merges: Types.Merges) => Promise<any>
+  type ClearMergeCells = () => Promise<any>
   type ClearScroll = () => Promise<any>
   type ScrollTo = (scrollLeft?: number, scrollTo?: number) => Promise<any>
   type ScrollToRow = (row: any, fieldOrColumn?: string | Types.ColumnConfig) => Promise<any>

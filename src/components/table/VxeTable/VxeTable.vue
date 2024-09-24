@@ -34,6 +34,12 @@ const updateData: Expose.UpdateData = () => {
 const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => {
   return vxeTableRef.value?.setMergeCells(merges)
 }
+const removeMergeCells: Expose.RemoveMergeCells = (merges: Types.Merges) => {
+  return vxeTableRef.value?.removeMergeCells(merges)
+}
+const clearMergeCells: Expose.ClearMergeCells = () => {
+  return vxeTableRef.value?.clearMergeCells()
+}
 
 const clearScroll: Expose.ClearScroll = () => {
   return vxeTableRef.value?.clearScroll()
@@ -52,6 +58,9 @@ defineExpose({
   refreshColumn,
   updateData,
   setMergeCells,
+  removeMergeCells,
+  clearMergeCells,
+
   clearScroll,
   scrollTo,
   scrollToRow,

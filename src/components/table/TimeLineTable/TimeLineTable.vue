@@ -72,8 +72,25 @@ const changeKey = async (newDateKey: string) => {
 const groupColumnsSortMap: {
   [key: string]: number
 } = {}
+
+// 清除 Y軸欄位合併
+const clearMergeCells = () => {
+  setTimeout(() => {
+    vxeTableRef.value?.clearMergeCells()
+  }, 0)
+}
+// 設定 Y軸欄位合併
 const mergeCells = []
+const setMergeCells = () => {
+  setTimeout(() => {
+    vxeTableRef.value?.setMergeCells(mergeCells)
+  }, 80)
+}
+
+// 重設 Y軸欄位合併
 const resetMergeCells = () => {
+  clearMergeCells()
+
   // 合併欄位資料 必需先排序好資料
   mergeCells.splice(0)
   const mergeMap: Record<string, {
@@ -99,6 +116,7 @@ const resetMergeCells = () => {
     })
 
   })
+
   Object.values(mergeMap).forEach(mergeCell => {
     const {__row__, __col__, __rowspan__} = mergeCell
 
@@ -112,7 +130,7 @@ const resetMergeCells = () => {
     }
   })
 
-  vxeTableRef.value?.setMergeCells(mergeCells)
+  setMergeCells()
 }
 
 // 群組欄位 X軸
@@ -380,6 +398,9 @@ const initData = async () => {
   await nextTick()
   setTimeout(() => {
     resetMergeCells()
+  }, 800)
+
+  setTimeout(() => {
     isShow.value = true
     isLoading.value = false
   }, 1600)
@@ -450,11 +471,10 @@ defineExpose({
       :border="true"
       stripe
       :data="showData"
-      :row-config="{isCurrent: true, isHover: true}"
-      :column-config="{resizable: true}"
-      :scroll-y="{enabled: true, gt: 0}"
-      :scroll-x="{enabled: true, gt: 0}"
-      :merge-cells="mergeCells"
+      :row-config="{ isCurrent: true, isHover: true }"
+      :column-config="{ resizable: true }"
+      :scroll-y="{ enabled: true, gt: 0 }"
+      :scroll-x="{ enabled: true, gt: 0 }"
     >
       <VxeColgroup
         :title="i18nTranslate('setting', defaultModuleType)"
@@ -463,6 +483,23 @@ defineExpose({
         <template #header>
           <div class="flex-row i-ga-lg">
             <h3>{{ i18nTranslate('setting', defaultModuleType) }}</h3>
+
+            <!-- 檢驗合併用 需要再打開 -->
+            <!-- <div class="test-merge">
+              <CustomButton
+                :label="i18nTranslate('setting', defaultModuleType)"
+                icon-name="table-cells-column-lock"
+                size="small"
+                @click="setMergeCells"
+              />
+
+              <CustomButton
+                :label="i18nTranslate('clear', defaultModuleType)"
+                icon-name="table-cells"
+                size="small"
+                @click="clearMergeCells"
+              />
+            </div> -->
 
             <div class="flex-row i-ga-md">
               <CustomPopover
@@ -541,6 +578,7 @@ defineExpose({
                   />
                 </template>
               </CustomPopover>
+
               <TimeLevelManagement
                 v-model:base-level-index="baseLevelIndex"
                 v-model:options="timeLevelOptions"
@@ -643,6 +681,9 @@ $max-height: calc(100vh - 240px);
 
 <style lang="scss">
 div[class*="__TimeLineTable"] {
+  table[class*="vxe-table"] {
+    border-collapse: collapse; /* 合併邊框 */
+  }
   tr[class*="vxe-body"] {
     content-visibility: auto;
 

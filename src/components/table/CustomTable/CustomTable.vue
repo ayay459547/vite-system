@@ -87,7 +87,6 @@ const pageSize = computed<number>({
     return tempPageSize.value
   },
   set: (v: number | string) => {
-    console.log('v => ', v)
     let _value = v
     // 轉化數字
     if (typeof _value === 'string') {
