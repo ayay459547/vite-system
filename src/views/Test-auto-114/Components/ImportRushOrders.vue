@@ -56,7 +56,7 @@ const submitFilesData = async () => {
       } else {
         swal({
           icon: 'error',
-          title: i18nTranslate('update-fail'),
+          title: i18nTranslate('update-failed'),
           text: msg,
           showCancelButton: false
         })

@@ -560,7 +560,7 @@ onUnmounted(() => {
                   <CustomButton
                     v-if="!props.hiddenSubmit"
                     type="success"
-                    :label="i18nTranslate('confirm', defaultModuleType)"
+                    :label="i18nTranslate('submit', defaultModuleType)"
                     icon-name="check"
                     icon-move="scale"
                     @click="submit"

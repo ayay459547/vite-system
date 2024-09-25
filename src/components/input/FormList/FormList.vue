@@ -71,7 +71,7 @@ const add: Emits.Add = () => {
     const lastRowClass = props.isDraggable
       ? '.draggable.list-group-item:last-child'
       : '.form-table [class*="data-table-row"]:last-child'
-    const newEl = document.querySelector(`.${scopedId} ${lastRowClass}`)
+    const newEl = document.querySelector(`div[class*="${scopedId}"] ${lastRowClass}`)
     if (newEl) scrollToEl(newEl, { block: 'center' })
   })
 }
@@ -295,7 +295,7 @@ onBeforeMount(() => {
         <CustomButton
           v-if="props.isCreate && props.isEdit"
           type="primary"
-          :label="i18nTranslate('create')"
+          :label="i18nTranslate('add')"
           icon-name="plus"
           icon-move="rotate"
           :disabled="!props.isEdit"

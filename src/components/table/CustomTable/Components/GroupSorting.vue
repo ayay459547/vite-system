@@ -184,7 +184,7 @@ const submit = () => {
           />
 
           <CustomButton
-            :label="i18nTranslate('confirm', defaultModuleType)"
+            :label="i18nTranslate('submit', defaultModuleType)"
             type="primary"
             plain
             icon-name="check"

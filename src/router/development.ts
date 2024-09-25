@@ -46,7 +46,7 @@ const testRoutes: RouterTree[] = [
         }
       },
       {
-        name: 'schedule',
+        name: 'do-scheduling',
         title: '工作進度表',
         component: () => import('@/views/Development/ScheduleView/ScheduleView.vue'),
         meta: {

@@ -184,7 +184,8 @@ const isActiveConditions = computed({
 
 const columnSetting = {
   conditionType: {
-    label: '查詢條件',
+    label: '條件',
+    i18nLabel: 'conditions',
     table: {
       width: 150
     },
@@ -200,6 +201,7 @@ const columnSetting = {
   },
   filterValue: {
     label: '查詢值',
+    i18nLabel: 'conditions-value',
     table: {
       minWidth: 180
     },
@@ -246,6 +248,8 @@ const reset = () => {
 const addItem = () => {
   validateForm().then(() => {
     add()
+  }).catch(e => {
+    console.log('CustomSearch addItem: ', e)
   })
 }
 
@@ -455,7 +459,7 @@ const popverWidth = computed(() => {
                 >
                   <template #header-all="{ column }">
                     <div class="text-danger i-pr-xs">*</div>
-                    <div>{{ column.label }}</div>
+                    <div>{{ i18nTranslate(column.i18nLabel, defaultModuleType) }}</div>
                   </template>
                   <template #column-conditionType="{ rowIndex }">
                     <CustomInput
@@ -486,7 +490,7 @@ const popverWidth = computed(() => {
                 <CustomButton
                   type="primary"
                   plain
-                  :label="i18nTranslate('confirm', defaultModuleType)"
+                  :label="i18nTranslate('submit', defaultModuleType)"
                   icon-name="check"
                   icon-move="scale"
                   @click="submit"

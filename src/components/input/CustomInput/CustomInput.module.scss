@@ -5,6 +5,7 @@
     display: flex;
     gap: 8px;
     position: relative;
+    overflow: hidden;
   }
   &-row {
     flex-direction: row;
@@ -26,6 +27,7 @@
 
   &-label {
     width: fit-content;
+    // white-space: wrap;
     white-space: nowrap;
     height: 21px;
   }

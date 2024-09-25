@@ -287,7 +287,7 @@ export default defineComponent({
               class: '__data-table-body',
               style: 'padding: 12px 16px; font-size: 1.2em'
             },
-            h('div', { class: '__data-table-emtpy' }, i18nTranslate('noData'))
+            h('div', { class: '__data-table-emtpy' }, i18nTranslate('empty-data'))
           )
         }
 

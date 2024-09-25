@@ -100,8 +100,8 @@ export const columnSetting = {
       validate: [],
       required: true,
       options: [
-        { label: 'effectiveCapacity', value: '1' },
-        { label: 'infinityCapacity', value: '2' }
+        { i18nLabel: 'effectiveCapacity', label: '有限產能', value: '1' },
+        { i18nLabel: 'infinityCapacity', label: '無限產能', value: '2' }
       ]
     },
     filter: {
