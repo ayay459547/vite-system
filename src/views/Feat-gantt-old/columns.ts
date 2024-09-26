@@ -148,7 +148,7 @@ export const columnSetting = {
   },
   timeRange: {
     label: '時間區間',
-    i18nLabel: 'timeRange-date',
+    i18nLabel: 'datetime-range-date',
     filter: {
       isValidate: false,
       default: getDefaultDate(),

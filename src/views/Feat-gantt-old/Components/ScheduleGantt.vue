@@ -370,8 +370,8 @@ const initGantt = async (type?: Tab) => {
         {
           tooltipCallback: function (value, start, end, title) {
             const mo = title
-            const text1 = `${i18nTranslate('startTime-time')} : ${value.startDate}`
-            const text2 = `${i18nTranslate('endTime-time')} : ${value.endDate}`
+            const text1 = `${i18nTranslate('datetime-startTime')} : ${value.startDate}`
+            const text2 = `${i18nTranslate('datetime-endTime')} : ${value.endDate}`
 
             const tempStatus = (_status => {
               switch (_status) {

@@ -881,7 +881,7 @@ onMounted(() => {
       </div>
       <div class="__table-pagination-right">
         <span>{{
-          `${i18nTranslate('totalAmount', defaultModuleType)}：${props.tableDataCount}`
+          `${i18nTranslate('total-amount', defaultModuleType)}：${props.tableDataCount}`
         }}</span>
       </div>
     </div>

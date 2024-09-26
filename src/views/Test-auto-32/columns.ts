@@ -52,8 +52,8 @@ export const columnSetting = {
       default: '',
       options: [
         { label: '全部', i18nLabel: 'all', value: '' },
-        { label: '是', i18nLabel: 'select-yes', value: 'LEVEL_1' },
-        { label: '否', i18nLabel: 'select-no', value: 'LEVEL_10' }
+        { label: '是', i18nLabel: 'select-true', value: 'LEVEL_1' },
+        { label: '否', i18nLabel: 'select-false', value: 'LEVEL_10' }
       ]
     }
   },
@@ -122,7 +122,7 @@ export const columnSetting = {
   },
   moveInTime: {
     label: '預計到站時間',
-    // i18nLabel: 'MoveInTime',
+    i18nLabel: 'move-in-time',
     table: {
       width: 200,
       sortable: false
@@ -345,8 +345,8 @@ export const columnSetting = {
   //     default: '',
   //     options: [
   //       { i18nLabel: 'all', label: '全部', value: '' },
-  //       { i18nLabel: 'yes', label: 'Y', value: 'Y' },
-  //       { i18nLabel: 'no', label: 'N', value: 'N' }
+  //       { i18nLabel: 'select-true', label: 'Y', value: 'Y' },
+  //       { i18nLabel: 'select-false', label: 'N', value: 'N' }
   //     ]
   //   },
   //   getI18nValue(data?: string) {

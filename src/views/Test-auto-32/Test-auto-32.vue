@@ -131,7 +131,7 @@ const formatExcel = (row: ResponseData): ExcelData => {
 
   return {
     ...formatData(row),
-    severity: i18nTranslate(severity === 'LEVEL_1' ? 'select-yes' : 'select-no')
+    severity: i18nTranslate(severity === 'LEVEL_1' ? 'select-true' : 'select-false')
   }
 }
 const formatTable = (row: ResponseData): TableData => {
@@ -223,7 +223,7 @@ const formatTable = (row: ResponseData): TableData => {
             :name="data === 'LEVEL_1' ? 'check' : 'xmark'"
             :class="data === 'LEVEL_1' ? 'text-success' : 'text-info'"
           />
-          <!-- <span>{{ i18nTranslate(data === 'LEVEL_1' ? 'select-yes' : 'select-no') }}</span> -->
+          <!-- <span>{{ i18nTranslate(data === 'LEVEL_1' ? 'select-true' : 'select-false') }}</span> -->
         </div>
       </template>
 

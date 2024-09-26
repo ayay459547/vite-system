@@ -23,13 +23,13 @@ const bodyHeight = `${tableHeight}px`
 const props = defineProps(weekScheduleProps)
 
 const dayList = [
-  { id: 1, label: 'monday' },
-  { id: 2, label: 'tuesday' },
-  { id: 3, label: 'wednesday' },
-  { id: 4, label: 'thursday' },
-  { id: 5, label: 'friday' },
-  { id: 6, label: 'saturday' },
-  { id: 7, label: 'sunday' }
+  { id: 1, label: 'monday', i18nLabel: 'datetime-monday' },
+  { id: 2, label: 'tuesday', i18nLabel: 'datetime-tuesday' },
+  { id: 3, label: 'wednesday', i18nLabel: 'datetime-wednesday' },
+  { id: 4, label: 'thursday', i18nLabel: 'datetime-thursday' },
+  { id: 5, label: 'friday', i18nLabel: 'datetime-friday' },
+  { id: 6, label: 'saturday', i18nLabel: 'datetime-saturday' },
+  { id: 7, label: 'sunday', i18nLabel: 'datetime-sunday' }
 ]
 
 const isLoading = ref(true)
@@ -204,7 +204,7 @@ defineExpose({
             class="schedule-day-item"
             :class="[6, 7].includes(dayItem.id) ? 'text-danger' : ''"
           >
-            {{ i18nTranslate(dayItem.label) }}
+            {{ i18nTranslate(dayItem.i18nLabel) }}
           </li>
         </ul>
         <!-- 表格 -->

@@ -110,7 +110,7 @@ export const productColumnSetting = {
   },
   lastUpdateTimestamp: {
     label: '最後更新時間',
-    i18nLabel: 'lastupdatedTimeNote',
+    i18nLabel: 'last-updateTime',
     table: {
       minWidth: 200
     }
@@ -198,7 +198,7 @@ export const engineeringWipColumnSetting = {
   },
   lastUpdateTimestamp: {
     label: '最後更新時間',
-    i18nLabel: 'lastupdatedTimeNote',
+    i18nLabel: 'last-updateTime',
     table: {
       minWidth: 200
     }
@@ -279,7 +279,7 @@ export const pnColumnSetting = {
   },
   lastUpdateTimestamp: {
     label: '最後更新時間',
-    i18nLabel: 'lastupdatedTimeNote',
+    i18nLabel: 'last-updateTime',
     table: {
       minWidth: 200
     }
