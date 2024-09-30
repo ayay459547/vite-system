@@ -185,7 +185,7 @@ const isActiveConditions = computed({
 const columnSetting = {
   conditionType: {
     label: '條件',
-    i18nLabel: 'conditions',
+    i18nLabel: 'select-condition',
     table: {
       width: 150
     },
@@ -201,7 +201,7 @@ const columnSetting = {
   },
   filterValue: {
     label: '查詢值',
-    i18nLabel: 'conditions-value',
+    i18nLabel: 'select-condition-value',
     table: {
       minWidth: 180
     },
@@ -554,6 +554,7 @@ const popverWidth = computed(() => {
     justify-content: space-between;
     align-items: center;
     gap: 8px;
+    word-break: break-word;
   }
 
   &-detail {

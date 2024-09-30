@@ -60,7 +60,7 @@ const { tableSetting: engineeringWipTableSetting } = useTableSetting(
   engineeringWipColumnSetting,
   'table',
   {
-    i18nTitle: 'engineeringWip',
+    i18nTitle: 'engineering-wip',
     title: '指定貨批',
     i18nModule: 'system',
     version: '1.0.2',
@@ -91,7 +91,7 @@ const { tableSetting: pnTableSetting } = useTableSetting(pnColumnSetting, 'table
 const tab = ref('product')
 const tabs = [
   { i18nLabel: 'product-group', value: 'product', label: '產品族' },
-  { i18nLabel: 'engineeringWip', value: 'engineeringWip', label: '指定貨批' },
+  { i18nLabel: 'engineering-wip', value: 'engineeringWip', label: '指定貨批' },
   { value: 'pn', label: 'PN' }
 ]
 
@@ -200,7 +200,7 @@ onMounted(() => {
           {{ `${i18nTranslate('product-group')} ( ${productData.length} )` }}
         </span>
         <span v-else-if="value === 'engineeringWip'">
-          {{ `${i18nTranslate('engineeringWip')} ( ${engineeringWipData.length} )` }}
+          {{ `${i18nTranslate('engineering-wip')} ( ${engineeringWipData.length} )` }}
         </span>
         <span v-else-if="value === 'pn'">
           {{ `${label} ( ${pnData.length} )` }}

@@ -49,7 +49,6 @@ const tempIsOpen = computed<boolean>({
     return props.isNavOpen
   },
   set(value) {
-    localStorage.setItem('isNavOpen', `${value}`)
     emit('update:isNavOpen', value)
   }
 })
@@ -97,7 +96,10 @@ defineExpose({
 <template>
   <div
     class="side-wrapper"
-    :class="[tempIsOpen ? 'is-open' : 'is-close', props.isNavHover ? 'is-hover' : '']"
+    :class="[
+      tempIsOpen ? 'is-open' : 'is-close',
+      props.isNavHover ? 'is-hover' : ''
+    ]"
   >
     <div class="side-container">
       <div class="side-logo">
@@ -116,7 +118,7 @@ defineExpose({
       <div class="side-nav">
         <NavigationView
           ref="navRef"
-          :is-open="tempIsOpen"
+          :is-nav-open="tempIsOpen"
           :level1-list="props.showRoutes"
           :current-route-name="props.currentRouteName"
         />

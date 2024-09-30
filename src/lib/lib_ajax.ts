@@ -111,6 +111,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
 
 /**
  * @author Caleb
+ * @see https://github.com/axios/axios
  * @description 對後端發送請求用
  *              送api 更新 token
  * @param {AxiosRequestConfig} config 設定
@@ -177,6 +178,7 @@ export type WebSocketConfig = {
 }
 /**
  * @author Caleb
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
  * @description WebScoket
  *
  *   使用範例
@@ -419,4 +421,8 @@ export class IWebScoket {
 
 // 尚未封裝
 export type EventSourceConfig = {}
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource
+ * @description EventSource
+ */
 export class IEventSource {}

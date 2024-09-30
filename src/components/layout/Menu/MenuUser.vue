@@ -63,9 +63,7 @@ const loginTime = computed(() => {
 
           <template #content>
             <div @click="openUserEffect">
-              <span>{{
-                `${i18nTranslate('login', defaultModuleType)}${i18nTranslate('time')} : `
-              }}</span>
+              <span>{{ `${i18nTranslate('login', defaultModuleType)}${i18nTranslate('time')} : ` }}</span>
               <span>{{ loginTime }}</span>
             </div>
           </template>
@@ -79,9 +77,7 @@ const loginTime = computed(() => {
             <div class="user-xs" @click="openUserEffect">
               <span>{{ userName }}</span>
               <div>
-                <span>{{
-                  `${i18nTranslate('login', defaultModuleType)}${i18nTranslate('time')} : `
-                }}</span>
+                <span>{{ `${i18nTranslate('login', defaultModuleType)}${i18nTranslate('time')} : ` }}</span>
                 <span>{{ loginTime }}</span>
               </div>
             </div>

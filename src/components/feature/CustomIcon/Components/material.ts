@@ -3,7 +3,10 @@ import {
   PivotTableChartRound,
   AreaChartTwotone,
   DragIndicatorRound,
-  PrecisionManufacturingSharp
+  PreviewFilled,
+  PrecisionManufacturingSharp,
+  ZoomOutRound,
+  ZoomInRound
 } from '@vicons/material'
 
 export default {
@@ -11,5 +14,8 @@ export default {
   PivotTableChartRound,
   AreaChartTwotone,
   DragIndicatorRound,
-  PrecisionManufacturingSharp
+  PreviewFilled,
+  PrecisionManufacturingSharp,
+  ZoomOutRound,
+  ZoomInRound
 }

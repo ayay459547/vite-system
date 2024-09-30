@@ -1,6 +1,11 @@
 import dbPromise from './init/init_idb'
 import { isEmpty, swal } from '@/lib/lib_utils'
 
+/**
+ * @see https://github.com/jakearchibald/idb
+ * IndexedDB
+ */
+
 async function get(table: string, key: string) {
   try {
     return (await dbPromise).get(table, key)

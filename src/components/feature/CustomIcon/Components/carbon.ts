@@ -1,11 +1,15 @@
 import {
   ChartTreemap,
   ChartMultitype,
-  ChartMaximum
+  ChartMaximum,
+  ZoomArea,
+  ZoomPan
 } from '@vicons/carbon'
 
 export default {
   ChartTreemap,
   ChartMultitype,
-  ChartMaximum
+  ChartMaximum,
+  ZoomArea,
+  ZoomPan
 }

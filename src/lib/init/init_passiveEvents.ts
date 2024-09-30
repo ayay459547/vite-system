@@ -1,5 +1,6 @@
-// https://stackoverflow.com/questions/46094912/added-non-passive-event-listener-to-a-scroll-blocking-touchstart-event
-
+/**
+ * @see https://stackoverflow.com/questions/46094912/added-non-passive-event-listener-to-a-scroll-blocking-touchstart-event
+ */
 export const passiveEvents = function () {
   if (typeof EventTarget !== 'undefined') {
     const func = EventTarget.prototype.addEventListener
@@ -13,5 +14,4 @@ export const passiveEvents = function () {
     }
   }
 }
-
 passiveEvents()

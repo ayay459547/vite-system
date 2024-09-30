@@ -254,7 +254,8 @@ export const numberFormat = <T extends number | string>(
 
 /**
  * @author Caleb
- * @description Swal 互動式彈窗
+ * @see https://sweetalert2.github.io/
+ * @description 互動式彈窗
  * @param {Object} options 自訂選項
  * @returns {Promise}
  */
@@ -283,7 +284,8 @@ export const swal = (options: SweetAlertOptions): Promise<any> => {
 
 /**
  * @author Caleb
- * @description https://element-plus.org/en-US/component/notification.html
+ * @see https://element-plus.org/en-US/component/notification.html
+ * @description 通知:卡片樣式-角落
  * @param options options 自訂選項
  * @returns {NotificationHandle}
  */
@@ -304,7 +306,8 @@ export const notification = (options: Partial<NotificationOptions>): Notificatio
 
 /**
  * @author Caleb
- * @description https://element-plus.org/en-US/component/message.html
+ * @see https://element-plus.org/en-US/component/message.html
+ * @description 提示:懸浮文字-畫面中央
  * @param options options 自訂選項
  * @returns {MessageHandler}
  */
@@ -333,8 +336,11 @@ export const message = (options: MessageOptions): MessageHandler => {
 export const deepClone = <T = any>(targetElement: any, origin: T): T => {
   const toStr = Object.prototype.toString
 
-  const targetElementType = toStr.call(targetElement)
-  const originType = toStr.call(origin)
+  // 檢驗 拷貝是否相同
+  const [targetElementType, originType] = [
+    toStr.call(targetElement),
+    toStr.call(origin)
+  ]
   if (targetElementType !== originType) {
     tipLog('無法執行 deepClone', [
       'targetElement 需要與 origin 為一樣的類型才能拷貝',
@@ -343,39 +349,52 @@ export const deepClone = <T = any>(targetElement: any, origin: T): T => {
     ])
   }
 
-  const target = targetElement
+  const target = targetElement ?? (Array.isArray(targetElement) ? [] : {})
 
+  // 設定值
   function setFun(obj: Array<any> | Record<any, any>, key: string | number, value: any): void {
     obj[key] = value
   }
 
-  for (const prop in origin) {
-    if (hasOwnProperty(origin, prop)) {
-      switch (toStr.call(target[prop])) {
-        case '[object Array]':
-        case '[object Object]':
-          switch (toStr.call(origin[prop])) {
-            case '[object Array]':
-            case '[object Object]':
-              target[prop] = new (origin[prop] as any).constructor()
-              deepClone(target[prop], origin[prop])
-              break
-            default:
-              setFun(target, prop, origin[prop])
-              break
-          }
-          break
-        default:
-          setFun(target, prop, origin[prop])
-          break
+  // 防止遞歸陷入循環
+  const seen = new WeakMap()
+  // 拷貝資料
+  const _deepClone = (_target, _origin) => {
+    if (seen.has(_target)) {
+      return seen.get(_target)
+    }
+
+    for (const _prop in _origin) {
+      if (hasOwnProperty(_origin, _prop)) {
+        switch (toStr.call(_target[_prop])) {
+          case '[object Array]':
+          case '[object Object]':
+            switch (toStr.call(_origin[_prop])) {
+              case '[object Array]':
+              case '[object Object]':
+                _target[_prop] = new (_origin[_prop] as any).constructor()
+                _deepClone(_target[_prop], _origin[_prop])
+                break
+              default:
+                setFun(_target, _prop, _origin[_prop])
+                break
+            }
+            break
+          default:
+            setFun(_target, _prop, _origin[_prop])
+            break
+        }
       }
     }
   }
+  _deepClone(target, origin)
+
   return target as T
 }
 
 /**
  * @author Caleb
+ * @see https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollIntoView
  * @description 移動到指定的Dom元素 預設跑到專案最上面
  * @param {Element} el Dom元素 <div>
  * @param {Object} options 選項
@@ -448,32 +467,24 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
 
 /**
  * @author Caleb
+ * @see https://github.com/brix/crypto-js
  * @description 使用 AES 加密資料
  * @param {String} str 要加密的字串
  * @param {String} key 加密用的key
  * @returns {String} 回傳的值
  */
 export const aesEncrypt = (str: string, key: string): string => {
-  const encJson = cryptoJS.AES.encrypt(str, `${key}`).toString()
-  const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
-  return encData
+  const ciphertext = cryptoJS.AES.encrypt(str, `${key}`).toString()
+  return ciphertext
 
-  // const utf8data = cryptoJS.enc.Utf8.parse(str)
-  // const encData = cryptoJS.AES.encrypt(utf8data, `__${key}__`)
-  // return encData
-
-  // const keyHex = cryptoJS.enc.Utf8.parse(`${key}`)
-  // const options = {
-  //   mode: cryptoJS.mode.ECB,
-  //   padding: cryptoJS.pad.Pkcs7
-  // }
-  // const encrypted = cryptoJS.AES.encrypt(str, keyHex, options)
-  // const encData = encrypted.ciphertext.toString()
+  // const encJson = cryptoJS.AES.encrypt(str, `${key}`).toString()
+  // const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
   // return encData
 }
 
 /**
  * @author Caleb
+ * @see https://github.com/brix/crypto-js
  * @description 使用 AES 解密資料
  * @param {String} str 加密後的字串
  * @param {String} key 加密用的key
@@ -481,24 +492,14 @@ export const aesEncrypt = (str: string, key: string): string => {
  */
 export const aesDecrypt = (str: string, key: string): string => {
   try {
-    const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
-    const decJson = cryptoJS.AES.decrypt(decData, `${key}`).toString(cryptoJS.enc.Utf8)
-    return decJson
+    const bytes = cryptoJS.AES.decrypt(str, `${key}`)
+    const originalText = bytes.toString(cryptoJS.enc.Utf8)
+    return originalText
 
-    // const decrypted = cryptoJS.AES.decrypt(str, `__${key}__`)
-    // const decryptedData = cryptoJS.enc.Utf8.stringify(decrypted)
-    // return decryptedData
+    // const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
+    // const decJson = cryptoJS.AES.decrypt(decData, `${key}`).toString(cryptoJS.enc.Utf8)
+    // return decJson
 
-    // const data = cryptoJS.enc.Hex.parse(str)
-    // const keyHex = cryptoJS.enc.Utf8.parse(`${key}`)
-    // const options = {
-    //   mode: cryptoJS.mode.ECB,
-    //   padding: cryptoJS.pad.Pkcs7
-    // }
-    // const srcs = cryptoJS.enc.Base64.stringify(data)
-    // const words = cryptoJS.AES.decrypt(srcs, keyHex, options)
-    // const decryptedData = words.toString(cryptoJS.enc.Utf8).toString()
-    // return decryptedData
   } catch (error) {
     console.log(error)
 

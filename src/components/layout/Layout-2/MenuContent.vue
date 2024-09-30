@@ -22,12 +22,21 @@ const emit = defineEmits<{
   (e: 'preference'): void
   (e: 'setLevel2Router', level2List: Navigation): void
   (e: 'routerChange'): void
+  (e: 'resetMenu'): void
+  (e: 'setRouter', value: string[]): void
 }>()
 
 const setLevel2Router = (level2Router: Navigation) => {
   emit('setLevel2Router', level2Router)
 }
 
+const onResetMenu = () => {
+  emit('resetMenu')
+}
+
+const setRouter = (targetRoutePath: string[]) => {
+  emit('setRouter', targetRoutePath)
+}
 // const onRouterChange = () => {
 //   emit('routerChange')
 // }
@@ -43,6 +52,7 @@ const setLevel2Router = (level2Router: Navigation) => {
           :current-navigation="currentNavigation"
           :current-route-name="props.currentRouteName"
           @set-level2-router="setLevel2Router"
+          @reset-menu="onResetMenu"
         />
       </div>
       <slot name="menu-left"></slot>
@@ -53,6 +63,7 @@ const setLevel2Router = (level2Router: Navigation) => {
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
         text-align="end"
+        @set-router="setRouter"
       />
     </div>
 

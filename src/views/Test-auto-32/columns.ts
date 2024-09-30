@@ -176,7 +176,7 @@ export const columnSetting = {
   },
   status: {
     label: '工單狀態',
-    i18nLabel: 'workOrder-state',
+    i18nLabel: 'workOrder-status',
     table: {
       width: 180,
       sortable: false
@@ -304,7 +304,7 @@ export const columnSetting = {
   },
   custDeviceNo: {
     label: '客戶型號',
-    i18nLabel: 'customer-productId',
+    i18nLabel: 'customer-product-id',
     table: {
       width: 200,
       sortable: false,

@@ -30,14 +30,14 @@ export const productColumnSetting = {
   },
   productDate: {
     label: '排產日期',
-    i18nLabel: 'allocate-productDate',
+    i18nLabel: 'schedule-productDate',
     table: {
       minWidth: 200
     }
   },
   sequence: {
     label: '排產順序',
-    i18nLabel: 'allocate-sequence',
+    i18nLabel: 'schedule-sequence',
     table: {
       minWidth: 200
     }
@@ -68,14 +68,14 @@ export const productColumnSetting = {
   },
   scheduleTargetValue: {
     label: '排產目標',
-    i18nLabel: 'allocate-scheduleTarget',
+    i18nLabel: 'schedule-target',
     table: {
       minWidth: 200
     }
   },
   batchSize: {
-    label: 'batchSize',
-    i18nLabel: 'batch-size',
+    label: '生產批數',
+    i18nLabel: 'production-batch-size',
     table: {
       minWidth: 130
     }
@@ -103,7 +103,7 @@ export const productColumnSetting = {
   },
   createDate: {
     label: '資料建立時間',
-    i18nLabel: 'createDate',
+    i18nLabel: 'create-date',
     table: {
       minWidth: 200
     }
@@ -139,14 +139,14 @@ export const engineeringWipColumnSetting = {
   },
   productDate: {
     label: '排產日期',
-    i18nLabel: 'allocate-productDate',
+    i18nLabel: 'schedule-productDate',
     table: {
       minWidth: 200
     }
   },
   sequence: {
     label: '排產順序',
-    i18nLabel: 'allocate-sequence',
+    i18nLabel: 'schedule-sequence',
     table: {
       minWidth: 200
     }
@@ -177,7 +177,7 @@ export const engineeringWipColumnSetting = {
   },
   scheduleTargetValue: {
     label: '排產目標',
-    i18nLabel: 'allocate-scheduleTarget',
+    i18nLabel: 'schedule-target',
     table: {
       minWidth: 200
     }
@@ -191,7 +191,7 @@ export const engineeringWipColumnSetting = {
   },
   createDate: {
     label: '資料建立時間',
-    i18nLabel: 'createDate',
+    i18nLabel: 'create-date',
     table: {
       minWidth: 200
     }
@@ -227,14 +227,14 @@ export const pnColumnSetting = {
   },
   productDate: {
     label: '排產日期',
-    i18nLabel: 'allocate-productDate',
+    i18nLabel: 'schedule-productDate',
     table: {
       minWidth: 200
     }
   },
   sequence: {
     label: '排產順序',
-    i18nLabel: 'allocate-sequence',
+    i18nLabel: 'schedule-sequence',
     table: {
       minWidth: 200
     }
@@ -265,14 +265,14 @@ export const pnColumnSetting = {
   },
   scheduleTargetValue: {
     label: '排產目標',
-    i18nLabel: 'allocate-scheduleTarget',
+    i18nLabel: 'schedule-target',
     table: {
       minWidth: 200
     }
   },
   createDate: {
     label: '資料建立時間',
-    i18nLabel: 'createDate',
+    i18nLabel: 'create-date',
     table: {
       minWidth: 200
     }

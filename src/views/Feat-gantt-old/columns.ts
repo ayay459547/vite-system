@@ -52,7 +52,7 @@ export const columnSetting = {
   // },
   status: {
     label: '狀態',
-    i18nLabel: 'status',
+    i18nLabel: 'select-status',
     table: {
       width: 120,
       sortable: false

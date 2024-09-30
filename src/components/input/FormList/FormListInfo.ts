@@ -124,7 +124,7 @@ export const props = {
   disabled: {
     type: Function as PropType<Props.Disabled>,
     required: false,
-    default: null,
+    default: undefined,
     description: '用於定義draggable是否可移動'
   },
   setDisabled: {

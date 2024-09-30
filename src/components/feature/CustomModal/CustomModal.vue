@@ -552,7 +552,7 @@ onUnmounted(() => {
                 <div v-if="!props.hiddenFooter" class="modal-footer-btn">
                   <CustomButton
                     v-if="!props.hiddenCancel"
-                    :label="i18nTranslate('cancel', defaultModuleType)"
+                    :label="i18nTranslate('confirm-no', defaultModuleType)"
                     icon-name="angle-left"
                     icon-move="translate"
                     @click="onClose('cancel')"

@@ -6,7 +6,7 @@ call npm -v
 set root=%cd%
 
 cd %root%\ux-dev
-REM #### install vue depenedency
+REM #### install vue depenedency #######
 call npm install
 
 REM #### build vue project #######
@@ -14,10 +14,10 @@ REM #### build vue project #######
 call npm run build-only:pro
 
 REM #### copy vue file to ipassweb #######
-REM #### copy /y %root%\demo\portal\*.* %root%\dist\*.*
+:: copy /y %root%\dist\*.* %root%\demo\*.*
 
-REM #### rd /s /q %root%\dist\static
-REM #### xcopy /y /i /S %root%\demo\portal\static\* %root%\dist\static
+:: rd /s /q %root%\demo\static
+:: xcopy /y /i /S %root%\dist\static\* %root%\demo\static
 
 REM delete unused portal folder from vue
-REM #### rd /s /q %root%\demo\portal
+:: rd /s /q %root%\dist

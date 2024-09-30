@@ -25,7 +25,10 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['lang-change', 'layout-change'])
+const emit = defineEmits([
+  'lang-change',
+  'layout-change'
+])
 
 // 語言
 const localeStore = useLocaleStore()
@@ -133,7 +136,7 @@ const onClickLayout = (layoutValue: string) => {
             <div class="icon">
               <CustomIcon type="far" name="window-restore" />
             </div>
-            <label>{{ i18nTranslate('browser') + i18nTranslate('mode') }}</label>
+            <label>{{ i18nTranslate('view') + i18nTranslate('mode') }}</label>
           </div>
 
           <div class="modal-select">
@@ -149,13 +152,16 @@ const onClickLayout = (layoutValue: string) => {
         <div class="modal-item">
           <div class="modal-label">
             <div class="icon">
-              <CustomIcon type="fas" name="palette" />
+              <CustomIcon type="fas" name="palette"/>
             </div>
             <label>{{ `${i18nTranslate('color-tone')}` }}</label>
           </div>
 
           <div class="modal-select">
-            <FormRadio v-model="colorTone" :options="colorToneOptions">
+            <FormRadio
+              v-model="colorTone"
+              :options="colorToneOptions"
+            >
               <template #options="{ label }">
                 {{ i18nTranslate(label) }}
               </template>
@@ -172,7 +178,7 @@ const onClickLayout = (layoutValue: string) => {
         <div class="icon">
           <CustomIcon name="chalkboard-user" />
         </div>
-        <label>{{ i18nTranslate('layout', defaultModuleType) }}</label>
+        <label>{{ i18nTranslate('layout') }}</label>
       </div>
 
       <div class="modal-select">
@@ -183,9 +189,7 @@ const onClickLayout = (layoutValue: string) => {
           class="layout cursor-pointer"
           @click="onClickLayout(layoutOption.value)"
         >
-          <div class="i-mb-sm">
-            {{ i18nTranslate('layout', defaultModuleType) + layoutOption.label }}
-          </div>
+          <div class="i-mb-sm">{{ i18nTranslate('layout') + layoutOption.label }}</div>
           <component :is="getLayoutView(layoutOption.label)" />
         </div>
       </div>

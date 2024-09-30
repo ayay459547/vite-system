@@ -112,7 +112,7 @@ defineExpose({
       <template #footer>
         <div class="flex-row content-end i-ga-sm">
           <CustomButton
-            :label="i18nTranslate('cancel')"
+            :label="i18nTranslate('confirm-no')"
             icon-name="angle-left"
             icon-move="translate"
             @click="modal.rushOrder = false"

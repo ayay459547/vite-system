@@ -37,13 +37,13 @@ const { i18nTranslate } = useHook({
 
 const baseLevelIndex = ref(1)
 const timeLevelOptions = ref([
-  { index: 6, name: '年', active: false, value: 'year' },
-  // { index: 5, name: '半年', active: false, value: 'half' },
-  { index: 4, name: '季', active: false, value: 'quarter' },
-  { index: 3, name: '月', active: false, value: 'month' },
-  { index: 2, name: '周', active: false, value: 'week' },
-  { index: 1, name: '日', active: true, value: 'day' }
-  // { index: 0, name: '時', active: false, value: 'hour' }
+  { index: 6, name: '年', active: false, value: 'year', i18nLabel: 'datetime-year' },
+  // { index: 5, name: '半年', active: false, value: 'half', i18nLabel: 'datetime-year-half' },
+  { index: 4, name: '季', active: false, value: 'quarter', i18nLabel: 'datetime-quarter' },
+  { index: 3, name: '月', active: false, value: 'month', i18nLabel: 'datetime-month' },
+  { index: 2, name: '周', active: false, value: 'week', i18nLabel: 'datetime-week' },
+  { index: 1, name: '日', active: true, value: 'day', i18nLabel: 'datetime-day' }
+  // { index: 0, name: '時', active: false, value: 'hour', i18nLabel: 'datetime-hour' }
 ])
 const acviteTimeLevelList = computed(() => {
   return timeLevelOptions.value.reduce((res, option) => {

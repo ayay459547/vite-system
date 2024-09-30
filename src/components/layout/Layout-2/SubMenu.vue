@@ -1,22 +1,29 @@
 <script setup lang="ts">
-import { onMounted, shallowRef, ref } from 'vue'
+import { shallowRef, computed, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { useRoutesHook } from '@/lib/lib_routes'
-import { CustomIcon, CustomButton } from '@/components'
-import { isEmpty } from '@/lib/lib_utils'
+import { CustomIcon } from '@/components'
+import { deepClone, isEmpty } from '@/lib/lib_utils'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+// import routes from '@/router/routes'
 
-const { getRouteIcon, getRouteTitle } = useRoutesHook()
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate, i18nTest } = useHook({
+  i18nModule: defaultModuleType
+})
 
 const props = defineProps<{
+  showRoutes: Navigation[]
   currentNavigation: Navigation
-  level2Nav: Navigation
-  level2List: Navigation[]
   currentRouteName: CurrentRouteName
 }>()
 
-const isOpen = ref(true)
+// const isOpen = ref(true)
+const isOpen = computed(() => {
+  return !isEmpty(routeList.value)
+})
 
 const level3List = shallowRef<Navigation[]>([])
 
@@ -30,78 +37,87 @@ const clearLevel3List = () => {
   level3List.value = []
 }
 
-onMounted(() => {
-  console.log(props.level2List)
-})
+const routeList = shallowRef<Navigation[]>([])
+const levelRecord = []
+const resetMenu = (navigation?: Navigation) => {
+  levelRecord.splice(0)
 
-const setOpen = (value: boolean) => {
-  isOpen.value = value
+  if (navigation) {
+    const routeLevel = deepClone([], navigation.breadcrumbName)
+    routeLevel.reduce(
+      (curRoutes: any, leaveName: string) => {
+        const leaves = curRoutes.leaves
+        setMenu(leaves)
+        return leaves.find(route => leaveName === route.name)
+      },
+      { leaves: props.showRoutes }
+    )
+    if (navigation.leaves) setMenu(navigation.leaves)
+  } else {
+    setMenu(props.showRoutes)
+  }
+}
+const setMenu = routes => {
+  routeList.value = deepClone([], routes)
+  levelRecord.push(routes)
+}
+const backMenu = () => {
+  levelRecord.pop()
+  if (isEmpty(levelRecord)) {
+    routeList.value = []
+  } else {
+    setMenu(levelRecord.pop())
+  }
+}
+const getActive = routeName => {
+  return Object.values(props.currentRouteName).includes(routeName)
 }
 
 defineExpose({
   setLevel3Router,
   clearLevel3List,
-  setOpen
+  // setOpen,
+  resetMenu
 })
+
+const geti18nTranslate = root => {
+  if (i18nTest(root.name)) return i18nTranslate(root.name)
+  else return root.title
+}
 </script>
 
 <template>
   <div class="menu-wrapper">
     <div class="menu-container" :class="isOpen ? 'is-open' : 'is-close'">
-      <nav v-show="props.level2List.length > 0" class="menu-list level2">
-        <template v-for="routerItem in props.level2List" :key="routerItem.name">
+      <nav class="menu-list level2">
+        <div class="menu-item back" @click="backMenu">
+          <CustomIcon :icon="['fas', 'left-long']" class="item-icon" />
+        </div>
+
+        <template v-for="routerItem in routeList" :key="routerItem.name">
           <!-- 有子路由 -->
           <div
             v-if="Object.prototype.hasOwnProperty.call(routerItem, 'leaves')"
             class="menu-item"
-            :class="{ active: props.currentRouteName.level2 === routerItem.name }"
-            @click="setLevel3Router(routerItem)"
+            :class="{ active: getActive(routerItem.name) }"
+            @click="setMenu(routerItem.leaves)"
           >
-            <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
-            <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+            <span class="item-title">{{ geti18nTranslate(routerItem) }}</span>
           </div>
           <!-- 無子路由 -->
           <RouterLink
             v-else
             class="menu-item"
-            :class="{ active: props.currentRouteName.level2 === routerItem.name }"
+            :class="{ active: getActive(routerItem.name) }"
             :to="{ name: routerItem.name }"
             v-slot="{ navigate }"
-            @click="clearLevel3List"
           >
             <div style="display: contents" @click="navigate">
-              <CustomIcon :icon="getRouteIcon(routerItem)" class="item-icon" />
-              <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+              <span class="item-title">{{ geti18nTranslate(routerItem) }}</span>
             </div>
           </RouterLink>
         </template>
       </nav>
-
-      <nav v-show="level3List.length > 0" class="menu-list level3">
-        <template v-for="leaf in level3List" :key="leaf.name">
-          <RouterLink
-            class="menu-item"
-            :class="{ active: props.currentRouteName.level3 === leaf.name }"
-            :to="{ name: leaf.name }"
-            v-slot="{ navigate }"
-          >
-            <div style="display: contents" @click="navigate">
-              <!-- <CustomIcon :icon="getRouteIcon(leaf)" class="item-icon" /> -->
-              <span class="item-title">{{ getRouteTitle(leaf) }}</span>
-            </div>
-          </RouterLink>
-        </template>
-      </nav>
-    </div>
-
-    <div v-show="props.level2List.length > 0" class="menu-collapse">
-      <CustomButton
-        class="btn"
-        :class="isOpen ? 'is-open' : 'is-close'"
-        icon-name="chevron-up"
-        circle
-        @click="setOpen(!isOpen)"
-      />
     </div>
   </div>
 </template>
@@ -115,7 +131,7 @@ defineExpose({
   &-container {
     width: 100%;
     height: fit-content;
-    transition-duration: 0.3s;
+    transition-duration: 0.5s;
     overflow: hidden;
     will-change: max-height;
     &.is-open {
@@ -164,6 +180,16 @@ defineExpose({
     &:hover,
     &.active {
       color: var(--el-color-warning);
+    }
+
+    &.back {
+      width: 50px;
+      justify-content: center;
+      transition-duration: 0.5s;
+
+      &:hover {
+        transform: rotateZ(90deg);
+      }
     }
   }
 

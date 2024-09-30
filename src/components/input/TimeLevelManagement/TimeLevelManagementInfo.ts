@@ -59,9 +59,7 @@ export const props = {
     type: String as PropType<Props.I18nModule>,
     required: false,
     default: defaultModuleType,
-    description: `
-      label, options 使用 i18nLabel 時套用的翻譯模組
-    `
+    description: 'label, options 使用 i18nLabel 時套用的翻譯模組'
   }
 }
 

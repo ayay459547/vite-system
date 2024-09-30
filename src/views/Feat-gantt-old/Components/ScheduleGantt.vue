@@ -393,7 +393,7 @@ const initGantt = async (type?: Tab) => {
                   return i18nTranslate('gantt-state999')
               }
             })(value.status)
-            const text6 = `${i18nTranslate('status')} : ${tempStatus}`
+            const text6 = `${i18nTranslate('select-status')} : ${tempStatus}`
 
             return `
             <div 

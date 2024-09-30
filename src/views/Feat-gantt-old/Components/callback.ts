@@ -203,7 +203,7 @@ export const defaultTooltipCallback: TooltipCallback = function (
     i18nTranslate('datetime-endTime') + ' : ' + value.endDate, //'結束時間' + ' : ' + value.endDate
     i18nTranslate('machine-no') + ' : ' + value.machineId, //'機台編號' + ' : ' + value.machineId
     i18nTranslate('process-no') + ' : ' + value.processId, //'製程編號' + ' : ' + value.processId
-    i18nTranslate('status') + ' : ' + getStatus(value.status) //'狀態' + ' : ' + tempStatus
+    i18nTranslate('select-status') + ' : ' + getStatus(value.status) //'狀態' + ' : ' + tempStatus
   ]
 
   const orderIds = value.orderIds

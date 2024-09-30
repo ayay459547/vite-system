@@ -29,7 +29,7 @@ const size: ButtonSize = 'large'
 ### Attributes ( props )
 
 | 屬姓名   | 說明                | 类型    | 默認值    |
-| -------- | ------------------- | ------- | --------- |
+| -------- | ------------------ | ------- | --------- |
 | label    | 顯示文字            | string  | ''        |
 | size     | 按鈕大小            | enum    | 'default' |
 | type     | 按鈕類型            | enum    | 'default' |
@@ -54,5 +54,5 @@ const size: ButtonSize = 'large'
 ### Events ( emits )
 
 | 事件名 | 說明     |
-| ------ | -------- |
+| ------ | ------- |
 | click  | 按鈕點擊 |

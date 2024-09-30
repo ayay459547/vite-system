@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, shallowRef, nextTick } from 'vue'
+import { ref, nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
@@ -27,20 +27,13 @@ const emit = defineEmits<{
 }>()
 
 // 第二層路由
-const level2Nav = shallowRef<Navigation>()
-const level2List = shallowRef<Navigation[]>([])
 
 const subMenuRef = ref()
 
-const setLevel2Router = async (level2Router: Navigation) => {
+const setLevel2Router = (level2Router: Navigation) => {
   if (isEmpty(level2Router)) return
-
-  const { leaves } = level2Router
-  level2Nav.value = level2Router
-  level2List.value = leaves ?? []
-
-  await nextTick()
-  // subMenuRef.value.setOpen(true)
+  console.log(level2Router)
+  // const { leaves } = level2Router
 }
 
 const resetMenu = (navigation?: Navigation) => {
@@ -83,7 +76,6 @@ const init = async () => {
 // 回首頁
 const onRouterChange = async () => {
   await nextTick()
-  level2List.value = []
   subMenuRef.value.clearLevel3List()
 }
 
@@ -125,8 +117,6 @@ defineExpose({
           ref="subMenuRef"
           :show-routes="props.showRoutes"
           :current-navigation="props.currentNavigation"
-          :level2-nav="level2Nav"
-          :level2-list="level2List"
           :current-route-name="props.currentRouteName"
         />
       </div>

@@ -1,14 +1,11 @@
 import Cookies from 'js-cookie'
 
-import {
-  // getUuid,
-  aesEncrypt,
-  aesDecrypt
-} from '@/lib/lib_utils'
+import { aesEncrypt, aesDecrypt } from '@/lib/lib_utils'
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
 /**
+ * @see https://github.com/js-cookie/js-cookie
  * @description 設定 cookie
  * @param {String} key 鍵值
  * @param {String} value 值
@@ -28,6 +25,7 @@ export const setCookie = (
 }
 
 /**
+ * @see https://github.com/js-cookie/js-cookie
  * @description 取得 cookie
  * @param {String} key 鍵值
  * @returns {String | undefined}
@@ -37,6 +35,7 @@ export const getCookie = (key: string): string | undefined => {
 }
 
 /**
+ * @see https://github.com/js-cookie/js-cookie
  * @description 移除 cookie
  * @param {String} key 鍵值
  */
