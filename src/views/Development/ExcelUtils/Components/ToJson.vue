@@ -45,7 +45,7 @@ const excelToJson = () => {
     <div class="flex-row content-between i-pb-sm">
       <label>Excel 轉 JSON</label>
       <CustomButton
-        label="下載使用範例"
+        label="下載範例"
         type="info"
         icon-name="download"
         @click="downloadFile(path, 'Excel轉JSON.xlsx')"

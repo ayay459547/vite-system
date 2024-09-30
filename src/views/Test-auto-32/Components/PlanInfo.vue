@@ -173,11 +173,11 @@ onMounted(() => {
   <div v-loading="isLoading" class="modal">
     <div class="flex-label-list">
       <div class="flex-label-item">
-        <label> {{ i18nTranslate('order-id') }} </label>
+        <label> {{ i18nTranslate('order-no') }} </label>
         <span>{{ lotData.erpNo }}</span>
       </div>
       <div class="flex-label-item">
-        <label> {{ i18nTranslate('customer-id') }} </label>
+        <label> {{ i18nTranslate('customer-no') }} </label>
         <span>{{ lotData.custNo }}</span>
       </div>
       <div class="flex-label-item">
@@ -185,11 +185,11 @@ onMounted(() => {
         <span>{{ lotData.productGroup_Id }}</span>
       </div>
       <div class="flex-label-item">
-        <label> {{ i18nTranslate('site-id') }} </label>
+        <label> {{ i18nTranslate('site-no') }} </label>
         <span>{{ lotData.process_id }}</span>
       </div>
       <div class="flex-label-item">
-        <label> {{ i18nTranslate('machine-id') }} </label>
+        <label> {{ i18nTranslate('machine-no') }} </label>
         <span>{{ lotData.scheduledMachine_Id }}</span>
       </div>
     </div>

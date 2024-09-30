@@ -1,7 +1,7 @@
 export const columnSetting = {
   machineId: {
     label: '機台編號',
-    i18nLabel: 'machine-id',
+    i18nLabel: 'machine-no',
     table: {
       minWidth: 180,
       sortable: false

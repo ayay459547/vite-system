@@ -4,7 +4,7 @@ import { operatorOptions } from '@/variable'
 export const columnSetting = {
   erpNo: {
     label: '訂單編號',
-    i18nLabel: 'order-id',
+    i18nLabel: 'order-no',
     table: {
       width: 170,
       sortable: false,
@@ -79,7 +79,7 @@ export const columnSetting = {
   },
   process_id: {
     label: '製程編號',
-    i18nLabel: 'process-id',
+    i18nLabel: 'process-no',
     table: {
       width: 170,
       sortable: false
@@ -108,7 +108,7 @@ export const columnSetting = {
   },
   scheduledMachine_Id: {
     label: '機台編號',
-    i18nLabel: 'machine-id',
+    i18nLabel: 'machine-no',
     table: {
       minWidth: 180,
       sortable: false
@@ -242,7 +242,7 @@ export const columnSetting = {
   predeinedAmount: {
     label: '需求量',
     i18nLabel: 'demand-quantity',
-    // i18nLabel: 'product-amount',
+    // i18nLabel: 'production-quantity',
     table: {
       width: 170,
       sortable: false,
@@ -266,7 +266,7 @@ export const columnSetting = {
   },
   quantityOfQualification: {
     label: '生產量',
-    i18nLabel: 'product-amount',
+    i18nLabel: 'production-quantity',
     table: {
       width: 170,
       sortable: false,
@@ -319,7 +319,7 @@ export const columnSetting = {
   },
   bom_Id: {
     label: '產品編號',
-    i18nLabel: 'product-id',
+    i18nLabel: 'product-no',
     table: {
       width: 200,
       sortable: false

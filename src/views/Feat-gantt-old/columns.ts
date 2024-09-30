@@ -11,7 +11,7 @@ const getDefaultDate = () => {
 export const columnSetting = {
   orderIds: {
     label: '訂單',
-    i18nLabel: 'order-id',
+    i18nLabel: 'order-no',
     table: {
       minWidth: 200,
       sortable: false
@@ -76,7 +76,7 @@ export const columnSetting = {
   },
   productId: {
     label: '產品',
-    i18nLabel: 'product-id',
+    i18nLabel: 'product-no',
     table: {
       minWidth: 200,
       sortable: false
@@ -100,7 +100,7 @@ export const columnSetting = {
   },
   processId: {
     label: '製程',
-    i18nLabel: 'process-id',
+    i18nLabel: 'process-no',
     table: {
       minWidth: 150,
       sortable: false
@@ -124,7 +124,7 @@ export const columnSetting = {
   },
   machineId: {
     label: '機台',
-    i18nLabel: 'machine-id',
+    i18nLabel: 'machine-no',
     table: {
       minWidth: 180,
       sortable: false

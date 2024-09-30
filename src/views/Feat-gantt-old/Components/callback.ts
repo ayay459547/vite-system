@@ -201,8 +201,8 @@ export const defaultTooltipCallback: TooltipCallback = function (
   const texts = [
     i18nTranslate('datetime-startTime') + ' : ' + value.startDate, //'開始時間' + ' : ' + value.startDate
     i18nTranslate('datetime-endTime') + ' : ' + value.endDate, //'結束時間' + ' : ' + value.endDate
-    i18nTranslate('machine-id') + ' : ' + value.machineId, //'機台編號' + ' : ' + value.machineId
-    i18nTranslate('process-id') + ' : ' + value.processId, //'製程編號' + ' : ' + value.processId
+    i18nTranslate('machine-no') + ' : ' + value.machineId, //'機台編號' + ' : ' + value.machineId
+    i18nTranslate('process-no') + ' : ' + value.processId, //'製程編號' + ' : ' + value.processId
     i18nTranslate('status') + ' : ' + getStatus(value.status) //'狀態' + ' : ' + tempStatus
   ]
 

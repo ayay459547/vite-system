@@ -137,9 +137,9 @@ const submit = () => {
                     :label="i18nTranslate(element?.i18nLabel ?? element.label)"
                     type="radio"
                     :options="[
-                      { label: i18nTranslate('ascending', defaultModuleType), value: 'ascending' },
+                      { label: i18nTranslate('order-ascending', defaultModuleType), value: 'ascending' },
                       { label: i18nTranslate('none-var', defaultModuleType), value: 'none' },
-                      { label: i18nTranslate('descending', defaultModuleType), value: 'descending' }
+                      { label: i18nTranslate('order-descending', defaultModuleType), value: 'descending' }
                     ]"
                   >
                     <template #options="{ value, label }">

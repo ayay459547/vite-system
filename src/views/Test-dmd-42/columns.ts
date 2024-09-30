@@ -16,7 +16,7 @@ export const columnSetting = {
   },
   productId: {
     label: '產品型號',
-    i18nLabel: 'product-id',
+    i18nLabel: 'product-no',
     table: {
       width: 120,
       fixed: 'left',

@@ -115,7 +115,7 @@ const svg = `
         <CustomInput
           v-model="form.account"
           v-bind="formColumn.account"
-          :label="i18nTranslate('account', defaultModuleType)"
+          :label="i18nTranslate('input-account', defaultModuleType)"
           @keyup.enter="login"
         >
           <template #prefix>
@@ -127,7 +127,7 @@ const svg = `
           <CustomInput
             v-model="form.password"
             v-bind="formColumn.password"
-            :label="i18nTranslate('password', defaultModuleType)"
+            :label="i18nTranslate('input-password', defaultModuleType)"
           >
             <template #prefix>
               <CustomIcon name="unlock-keyhole" />

@@ -121,7 +121,7 @@ onMounted(() => {
   <div v-loading="isLoading" class="modal">
     <div class="flex-label-list">
       <div class="flex-label-item">
-        <label>{{ i18nTranslate('order-id') }}</label>
+        <label>{{ i18nTranslate('order-no') }}</label>
         <span>{{ lotData.erpNo }}</span>
       </div>
       <div class="flex-label-item">
