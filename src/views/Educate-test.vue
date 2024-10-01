@@ -23,7 +23,7 @@ const selectValue = ref(null)
 
 const operatorValue = ref<any>([null, null])
 
-const onOperatorChange = v => {
+const onOperatorChange = (v: any) => {
   console.log(v)
 }
 </script>
