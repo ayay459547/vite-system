@@ -8,7 +8,11 @@ import type {
 
 import type { CustomIconProps } from '@/components'
 import type { Permission as PagePermission } from '@/lib/lib_permission'
-import type { ScopeKey } from '@/i18n/i18n_setting'
+import type {
+  ScopeKey,
+  I18nTranslate as _I18nTranslate,
+  I18nTest as _I18nTest
+} from '@/i18n/i18n_setting'
 
 // 使用者
 export declare interface User {
@@ -82,8 +86,8 @@ export declare interface CustomPopoverQueue {
 
 export declare namespace UseHookReturn {
   type Loading = (isOpen: boolean, message?: string) => void
-  type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
-  type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
+  type I18nTranslate = _I18nTranslate
+  type I18nTest = _I18nTest
   type EventList = (click: MouseEvent, eventList?: Array<EventItem>, options?: EventOptions) => void
   type Swal = (sweetAlertOptions: SweetAlertOptions) => Promise<SweetAlertResult<any>>
   type Notification = (notificationProps: Partial<NotificationProps>) => NotificationHandle

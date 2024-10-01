@@ -94,9 +94,6 @@ const systemEnv = computed(() => {
 
 // store
 const localeStore = useLocaleStore()
-const locale = computed(() => localeStore.locale)
-// @ts-ignore TEST 更換語言
-window.changeLang = localeStore.changeLang
 
 const authStore = useAuthStore()
 const { initSystemData } = authStore
@@ -121,34 +118,22 @@ const {
 } = storeToRefs(routesStore)
 
 // 翻譯檔
-const { initModuleLangMap, setModuleType, i18nTest, i18nTranslate } = useGlobalI18n()
+const { initModuleLangMap, i18nTest, i18nTranslate } = useGlobalI18n()
 
 onMounted(() => {
   initModuleLangMap()
-  setModuleType(defaultModuleType)
 })
-
-// 如果是另開視窗 將選單縮起來
-const setModalView = async (currentRoute: RouteLocationNormalized) => {
-  const isModal = currentRoute?.query?.isModal ?? 'false'
-
-  if (isModal === 'true') {
-    systemLayoutRef.value?.setModalView()
-  }
-}
 
 // 路由更換時執行
 const routeChange = async (currentRoute: RouteLocationNormalized) => {
   const { name } = currentNavigation?.value ?? { name: '' }
   if ([null, undefined, name, 'login'].includes(currentRoute.name as string)) return
+
   setNavigationData(currentRoute)
   await awaitTime(120)
 
   // 設定網頁標籤名稱
   setWebInfo()
-
-  // 設定是否為 modal 模式
-  setModalView(currentRoute)
 }
 
 // 設定 網頁 title
@@ -367,7 +352,7 @@ provide<UseHook>('useHook', (options = {}) => {
 </script>
 
 <template>
-  <ElConfigProvider :locale="locale.el">
+  <ElConfigProvider :locale="localeStore.elLocale">
     <!-- layout -->
     <SystemLayout
       ref="systemLayoutRef"

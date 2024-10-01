@@ -20,7 +20,7 @@ const langCallbackList = computed<EventItem[]>(() => {
       icon: [],
       label: option.label,
       event: () => {
-        localeStore.currentLang = option.value
+        localeStore.setSystemLocale(option.value)
       }
     }
   })

@@ -633,10 +633,8 @@ $max-height: calc(100vh - 240px);
   padding: 16px;
 
   &-draggable {
-    width: 100%;
+    width: clamp(500px, 100%, $max-height);
     height: 100;
-    min-width: 500px;
-    max-height: $max-height;
     padding-right: 8px;
     gap: 12px 0;
   }

@@ -7,22 +7,36 @@ import ElzhCn from 'element-plus/dist/locale/zh-cn.min.js'
 import Elen from 'element-plus/dist/locale/en.min.js'
 
 export type LangType = 'zhTw' | 'zhCn' | 'en' | string | null
-const localeType = {
+const elLocaleMap = {
   zhTw: ElzhTw,
   zhCn: ElzhCn,
   en: Elen
 }
 
 export const useLocaleStore = defineStore('locale', () => {
-  onBeforeMount(() => {
-    init()
-  })
 
   const {
-    t,
-    locale: i18nLocale
+    t: i18nT,
+    locale: i18nLocale // 語言類型
     // availableLocales
   } = useI18n({ useScope: 'global' })
+
+  const systemLocale = ref('zhTw')
+
+  const setSystemLocale = (lang: LangType) => {
+    i18nLocale.value = lang
+    systemLocale.value = lang
+    localStorage.setItem('locale', lang)
+  }
+
+  const currentLang = computed(() => {
+    return i18nT('locale-language')
+  })
+
+  // element ui config locale
+  const elLocale = computed(() => {
+    return elLocaleMap[systemLocale.value]
+  })
 
   /**
    * 初始化語言
@@ -35,50 +49,34 @@ export const useLocaleStore = defineStore('locale', () => {
       localStorage.setItem('locale', 'zhTw')
     }
 
-    currentLang.value = localStorage.getItem('locale')
+    setSystemLocale(localStorage.getItem('locale'))
   }
-  const elLocale = ref('zhTw')
-
-  const currentLang = computed({
-    set: (type: LangType) => {
-      i18nLocale.value = type
-      elLocale.value = type
-      localStorage.setItem('locale', type)
-    },
-    get: () => {
-      return t('locale-language')
-    }
+  onBeforeMount(() => {
+    init()
   })
 
-  const locale = computed(() => {
-    return {
-      lang: currentLang.value, // 當前語言
-      i18n: i18nLocale.value, // i18n
-      el: localeType[elLocale.value] // element UI 使用
-    }
-  })
-
-  const changeLang = () => {
-    switch (elLocale.value) {
+  // @ts-ignore TEST 更換語言
+  window.changeLang = () => {
+    switch (systemLocale.value) {
       case 'zhTw':
-        currentLang.value = 'zhCn'
+        setSystemLocale('zhCn')
         break
       case 'zhCn':
-        currentLang.value = 'en'
+        setSystemLocale('en')
         break
       case 'en':
-        currentLang.value = 'zhTw'
+        setSystemLocale('zhTw')
         break
       default:
-        currentLang.value = 'zhTw'
+        setSystemLocale('zhTw')
         break
     }
   }
 
   return {
-    elLocale,
+    systemLocale,
+    setSystemLocale,
     currentLang,
-    locale,
-    changeLang
+    elLocale
   }
 })

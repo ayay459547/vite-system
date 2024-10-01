@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { PropType, WritableComputedRef } from 'vue'
-import { computed, nextTick, ref } from 'vue'
+import type { PropType } from 'vue'
+import { computed, nextTick, ref, onMounted } from 'vue'
+// import type { RouteLocationNormalized } from 'vue-router'
 
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
@@ -10,14 +11,6 @@ import SideContent from './SideContent/SideContent.vue'
 import HeaderContent from './HeaderContent/HeaderContent.vue'
 
 const props = defineProps({
-  isNavOpen: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
-  isNavHover: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   isShow: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -69,16 +62,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['logout', 'update:isNavOpen', 'preference'])
-
-const tempIsOpen: WritableComputedRef<boolean> = computed({
-  get() {
-    return props.isNavOpen
-  },
-  set(value) {
-    emit('update:isNavOpen', value)
-  }
-})
+const emit = defineEmits(['logout', 'preference'])
 
 const sideRef = ref()
 
@@ -100,24 +84,88 @@ defineExpose({
 
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   if (targetRoutePath.length === 0) {
-    tempIsOpen.value = false
+    isNavOpen.value = false
     sideRef.value?.setOpen(false)
   }
 
   // level1 被點擊
   if (targetRoutePath.length === 1) {
-    tempIsOpen.value = true
+    isNavOpen.value = true
     sideRef.value?.setOpen(false)
     // level2 被點擊
   } else if (targetRoutePath.length === 2) {
-    tempIsOpen.value = true
+    isNavOpen.value = true
     sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
     // level3 被點擊
   } else {
-    tempIsOpen.value = true
+    isNavOpen.value = true
     sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
   }
 }
+
+// 如果是另開視窗 將選單縮起來
+// const setModalView = async (currentRoute: RouteLocationNormalized) => {
+//   const isModal = currentRoute?.query?.isModal ?? 'false'
+
+//   if (isModal === 'true') {
+//     console.log()
+//   }
+// }
+
+const _isNavOpen = ref('false')
+const isNavOpen = computed({
+  set: (isOpen: boolean) => {
+    const temp = isOpen ? 'true' : 'false'
+    _isNavOpen.value = temp
+    localStorage.setItem('isNavOpen', temp)
+  },
+  get: () => {
+    return _isNavOpen.value === 'true'
+  }
+})
+
+let timeoutId: NodeJS.Timeout | null
+const _isNavHover = ref('false')
+const isNavHover = computed({
+  set: (isHover: boolean) => {
+    if (timeoutId) {
+      clearInterval(timeoutId)
+    }
+    const temp = isHover ? 'true' : 'false'
+    _isNavHover.value = temp
+    localStorage.setItem('isNavHover', temp)
+
+    // hover 一段時間 自動取消
+    if (isHover) {
+      timeoutId = setTimeout(() => {
+        _isNavHover.value = 'false'
+        localStorage.setItem('isNavHover', 'false')
+      }, 2500)
+    }
+  },
+  get: () => {
+    return _isNavHover.value === 'true'
+  }
+})
+
+const initLayout1 = () => {
+  const isNavOpenLocale = localStorage.getItem('isNavOpen')
+  if ([null, undefined, ''].includes(isNavOpenLocale)) {
+    localStorage.setItem('isNavOpen', 'false')
+  }
+  _isNavOpen.value = localStorage.getItem('isNavOpen')
+
+  const isNavHoverLocale = localStorage.getItem('isNavHover')
+  if ([null, undefined, ''].includes(isNavHoverLocale)) {
+    localStorage.setItem('isNavHover', 'false')
+  }
+  _isNavHover.value = localStorage.getItem('isNavHover')
+}
+
+onMounted(() => {
+  initLayout1()
+})
+
 </script>
 
 <template>
@@ -125,16 +173,15 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     <div
       v-show="props.isShow"
       class="layout-left layout-side"
-      :class="tempIsOpen ? 'is-open' : 'is-close'"
+      :class="isNavOpen ? 'is-open' : 'is-close'"
     >
       <SideContent
         ref="sideRef"
-        v-model:isNavOpen="tempIsOpen"
-        :isNavHover="props.isNavHover"
+        v-model:isNavOpen="isNavOpen"
+        :isNavHover="isNavHover"
         :show-routes="props.showRoutes"
         :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
-        @close="emit('update:isNavOpen', false)"
       >
         <template #logo="{ isShow }">
           <slot name="logo" :is-show="isShow"></slot>
@@ -145,10 +192,10 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
       </SideContent>
     </div>
 
-    <div v-show="props.isShow" class="layout-right" :class="tempIsOpen ? 'is-open' : 'is-close'">
+    <div v-show="props.isShow" class="layout-right" :class="isNavOpen ? 'is-open' : 'is-close'">
       <div class="layout-header">
         <HeaderContent
-          v-model:is-open="tempIsOpen"
+          v-model:is-open="isNavOpen"
           :auth-data="props.authData"
           :breadcrumb-name="props.breadcrumbName"
           :breadcrumb-title="props.breadcrumbTitle"

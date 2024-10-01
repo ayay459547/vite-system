@@ -32,13 +32,13 @@ const emit = defineEmits([
 
 // 語言
 const localeStore = useLocaleStore()
-const { elLocale } = storeToRefs(localeStore)
+const { systemLocale } = storeToRefs(localeStore)
 const langValue = computed({
   get() {
-    return elLocale.value
+    return systemLocale.value
   },
   set(lang: string) {
-    localeStore.currentLang = lang
+    localeStore.setSystemLocale(lang)
     emit('lang-change')
   }
 })
@@ -102,8 +102,8 @@ const getLayoutView = (layoutNumber: string) => {
   }
 }
 
-const onClickLayout = (layoutValue: string) => {
-  layoutStore.currentLayout = layoutValue
+const onClickLayout = (layoutType: string) => {
+  layoutStore.setLayout(layoutType)
   emit('layout-change')
 }
 </script>
@@ -183,7 +183,7 @@ const onClickLayout = (layoutValue: string) => {
 
       <div class="modal-select">
         <div
-          v-for="layoutOption in layoutStore.options"
+          v-for="layoutOption in layoutStore.layoutOptions"
           :key="layoutOption.value"
           :class="{ active: layout === layoutOption.value }"
           class="layout cursor-pointer"

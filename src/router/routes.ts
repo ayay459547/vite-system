@@ -417,16 +417,6 @@ const routes: Array<RouterTree> = [
         },
         leaves: [
           {
-            name: 'nav3-2-1',
-            title: '虛擬列表資訊來源',
-            component: () => import('@/views/Nav3-2-1/Nav3-2-1.vue'),
-            meta: {
-              keepAlive: false,
-              systemType: ['new'],
-              icon: 'link'
-            }
-          },
-          {
             name: 'nav3-2-3',
             title: '拖拉Test +其他',
             component: () => import('@/views/Nav3-2-3/Nav3-2-3.vue'),

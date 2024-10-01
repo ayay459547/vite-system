@@ -73,7 +73,7 @@ const emit = defineEmits([
 ])
 
 const layoutStore = useLayoutStore()
-const { isDark, layout, isNavOpen, isNavHover } = storeToRefs(layoutStore)
+const { isDark, layout } = storeToRefs(layoutStore)
 
 export type CurrentRouteName = {
   level1: string
@@ -141,11 +141,6 @@ const init = async () => {
 }
 
 defineExpose({
-  setModalView: async () => {
-    await nextTick()
-
-    isNavOpen.value = false
-  },
   init
 })
 
@@ -184,8 +179,6 @@ const onLayoutChange = () => {
       <Layout1
         ref="layout1Ref"
         v-if="layout === 'layout1'"
-        v-model:isNavOpen="isNavOpen"
-        :isNavHover="isNavHover"
         v-bind="layoutAttr"
         v-on="layoutEvent"
       >

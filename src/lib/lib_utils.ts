@@ -348,7 +348,7 @@ export const deepClone = <T = any>(targetElement: any, origin: T): T => {
   const seen = new WeakMap()
 
   // 拷貝資料
-  const _deepClone = (_target, _origin) => {
+  const _deepClone = (_target: any, _origin: any) => {
     if (seen.has(_target)) {
       return seen.get(_target)
     }
@@ -384,7 +384,7 @@ export const deepClone = <T = any>(targetElement: any, origin: T): T => {
 
 /**
  * @author Caleb
- * @see https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollIntoView
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
  * @description 移動到指定的Dom元素 預設跑到專案最上面
  * @param {Element} el Dom元素 <div>
  * @param {Object} options 選項
@@ -470,10 +470,6 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
 export const aesEncrypt = (str: string, key: string): string => {
   const ciphertext = cryptoJS.AES.encrypt(str, `${key}`).toString()
   return ciphertext
-
-  // const encJson = cryptoJS.AES.encrypt(str, `${key}`).toString()
-  // const encData = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(encJson))
-  // return encData
 }
 
 /**
@@ -490,12 +486,8 @@ export const aesDecrypt = (str: string, key: string): string => {
     const originalText = bytes.toString(cryptoJS.enc.Utf8)
     return originalText
 
-    // const decData = cryptoJS.enc.Base64.parse(str).toString(cryptoJS.enc.Utf8)
-    // const decJson = cryptoJS.AES.decrypt(decData, `${key}`).toString(cryptoJS.enc.Utf8)
-    // return decJson
-
-  } catch (error) {
-    console.log(error)
+  } catch (e) {
+    console.log(e)
 
     return null
   }
@@ -524,15 +516,17 @@ export const copyText = async (text: string): Promise<string> => {
 
     ElNotification({
       type: 'success',
-      title: '複製文字成功',
+      title: 'Copy Success',
       message: text
     })
 
     return text
-  } catch (err) {
+  } catch (e) {
+    console.log(e)
+
     ElNotification({
       type: 'error',
-      title: '複製文字失敗',
+      title: 'Copy Error',
       message: text
     })
     return text

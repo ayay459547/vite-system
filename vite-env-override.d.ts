@@ -1,14 +1,16 @@
 /// <reference types="vite/client" />
+
 declare module '*?b64' {
   const b64Value: string
   export default b64Value
 }
+
 declare module '*?sheetjs' {
   const sheetjs: string
   export default sheetjs
 }
 
-declare module '*?i18n' {
+declare module '*.xlsx' {
   const i18n: any
   export default i18n
 }

@@ -6,12 +6,13 @@ import { useI18n } from 'vue-i18n'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
 import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 
+import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
-import type { ScopeKey, ModuleLangMap, I18nTranslate, I18nTest } from './i18n_setting'
-import { defaultModuleLangMap, scopeList } from './i18n_setting'
+import type { ScopeKey, I18nTranslate, I18nTest } from './i18n_setting'
+import { scopeList, defaultModuleType } from './i18n_setting'
 
-import i18nJson from './i18n.json'
+import i18nJson from './i18n_table.json'
 /**
  * 如果不需要 更新翻譯檔
  * 註解下面兩行
@@ -22,46 +23,59 @@ import i18nJson from './i18n.json'
  * 2.base64 轉 json
  * 3.重新寫入 i18n.json
  */
-import i18nXlsx from './i18n.xlsx?b64'
+import i18nXlsx from './i18n_table.xlsx?b64'
 const mode = (import.meta as any).env.MODE
 if (mode === 'development') {
-  console.log('i18nXlsx => ', i18nXlsx)
+  console.groupCollapsed('[init] i18nXlsx')
+  console.log(i18nXlsx)
+  console.log(i18nJson)
+  console.groupEnd()
 }
 
 export const initTranslateSrcFile = () => {
-  const moduleList = i18nJson as any[]
+  const excelJsonList = i18nJson as any[]
+  const moduleMap = {}
 
-  if (isEmpty(moduleList)) return defaultModuleLangMap
+  if (isEmpty(excelJsonList)) return { langMap: {}, moduleMap }
 
-  const moduleLangMap = moduleList.reduce<ModuleLangMap>((resModuleLangMap, moduleItem) => {
-    const { Key, en, zh_TW, zh_CN } = moduleItem
+  const scopeKeyList = []
+  // 記錄不同模組翻譯檔版本
+  scopeList.forEach(scopeItem => {
+    const { scopeKey: i18nModule, label, version } = scopeItem
 
-    scopeList.forEach(scopeItem => {
-      const { scopeKey, label, version } = scopeItem
+    scopeKeyList.push(i18nModule)
+    // 使翻譯可區分模組 紀錄可用翻譯
+    moduleMap[i18nModule] = new Set()
 
-      if (hasOwnProperty(moduleItem, `${scopeKey}`)) {
-        const i18nKey = `__${scopeKey}__:${Key}`
-
-        // 切割 模組用翻譯
-        resModuleLangMap[scopeKey][i18nKey] = {
-          zhTw: zh_TW,
-          zhCn: zh_CN,
-          en
-        }
+    // 紀錄版本
+    getI18nInfo(i18nModule).then(info => {
+      if (isEmpty(info) || info.version !== version) {
+        setI18nInfo(i18nModule, { scopeKey: i18nModule, label, version })
       }
+    })
+  })
 
-      // 紀錄版本
-      getI18nInfo(scopeKey).then(info => {
-        if (isEmpty(info) || info.version !== version) {
-          setI18nInfo(scopeKey, { label, scopeKey, version })
-        }
-      })
+  const langMap = excelJsonList.reduce<LangMap>((resLangMap, excelJsonItem) => {
+    const { Key: i18nKey, en, zh_TW, zh_CN } = excelJsonItem
+
+    scopeKeyList.forEach(i18nModule => {
+      if (hasOwnProperty(excelJsonItem, i18nModule)) {
+        moduleMap[i18nModule].add(i18nKey)
+      }
     })
 
-    return resModuleLangMap
-  }, defaultModuleLangMap)
+    // https://vue-i18n.intlify.dev/guide/advanced/composition#message-translation
+    resLangMap[i18nKey] = {
+      // key | 預設顯示文字 | 客製化(尚未製作)
+      zhTw: `${i18nKey} | ${zh_TW} | ${zh_TW}`,
+      zhCn: `${i18nKey} | ${zh_CN} | ${zh_CN}`,
+      en: `${i18nKey} | ${en} | ${en}`
+    }
 
-  return moduleLangMap
+    return resLangMap
+  }, {})
+
+  return { langMap, moduleMap }
 }
 
 export type GlobalI18n = Partial<
@@ -78,67 +92,48 @@ export type GlobalI18n = Partial<
  * @returns {Object} 翻譯工具
  */
 export const useGlobalI18n = (): GlobalI18n => {
-  const moduleType = ref('')
-  const i18nMap = shallowRef<Record<string, any>>(defaultModuleLangMap)
+  // 模組
+  const moduleMap = shallowRef<Record<string, any>>({})
+  // 翻譯
+  const globalI18n = ref<Partial<Composer>>({
+    t: () => '',
+    te: () => false
+  })
 
   const initModuleLangMap = () => {
-    const moduleLangMap = initTranslateSrcFile()
+    const { langMap, moduleMap: _moduleMap } = initTranslateSrcFile()
 
-    const _i18nMap = {}
-    for (const _moduleType in moduleLangMap) {
-      const messages = getI18nMessages(moduleLangMap[_moduleType])
+    const messages = getI18nMessages(langMap)
 
-      const globalI18n = useI18n({
-        useScope: 'global',
-        messages
-      }) as Partial<Composer>
+    const _globalI18n = useI18n({
+      useScope: 'global',
+      messages
+    }) as Partial<Composer>
 
-      _i18nMap[_moduleType] = globalI18n
-    }
-
-    i18nMap.value = _i18nMap
+    moduleMap.value = _moduleMap
+    globalI18n.value = _globalI18n
   }
 
-  const setModuleType = (type: string) => {
-    moduleType.value = type
-  }
-
-  const i18nTranslate = (key: string, i18nModule?: string) => {
-    const _i18nModule = !isEmpty(i18nModule) ? i18nModule : moduleType.value
-
-    // 沒有對應模組
+  const i18nTranslate = (i18nKey: string, i18nModule: string = defaultModuleType) => {
     if (
-      !hasOwnProperty(i18nMap.value, _i18nModule) ||
-      typeof i18nMap.value[_i18nModule]?.te !== 'function'
-    )
-      return key
+      typeof moduleMap.value[i18nModule] !== 'object' ||
+      !moduleMap.value[i18nModule].has(i18nKey)
+    ) return i18nKey
 
-    // 有對應模組
-    const i18nKey = `__${_i18nModule}__:${key}`
-    if (i18nMap.value[_i18nModule]?.te(i18nKey) ?? false) {
-      return i18nMap.value[_i18nModule].t(i18nKey)
-    }
-    return i18nMap.value[_i18nModule].t(key)
+    return globalI18n.value.t(i18nKey)
   }
 
-  const i18nTest = (key: string, i18nModule?: string) => {
-    const _i18nModule = !isEmpty(i18nModule) ? i18nModule : moduleType.value
-
-    // 沒有對應模組
+  const i18nTest = (i18nKey: string, i18nModule: string = defaultModuleType) => {
     if (
-      !hasOwnProperty(i18nMap.value, _i18nModule) ||
-      typeof i18nMap.value[_i18nModule]?.te !== 'function'
-    )
-      return false
+      typeof moduleMap.value[i18nModule] !== 'object' ||
+      !moduleMap.value[i18nModule].has(i18nKey)
+    ) return false
 
-    // 有對應模組
-    const i18nKey = `__${_i18nModule}__:${key}`
-    return i18nMap.value[_i18nModule]?.te(i18nKey) ?? false
+    return globalI18n.value.te(i18nKey)
   }
 
   return {
     initModuleLangMap,
-    setModuleType,
     i18nTranslate,
     i18nTest
   }

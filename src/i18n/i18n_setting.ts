@@ -1,39 +1,20 @@
-import type { Composer } from 'vue-i18n'
-
-import type { LangMap } from '@/i18n'
-
 export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
 export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
 
-export type LocalI18n = Partial<
-  Composer & {
-    i18nTranslate: I18nTranslate
-    i18nTest: I18nTest
-  }
->
-
 export interface I18n {
   Key: string
-  zhTW?: string
-  zhCN?: string
   en?: string
   zh_TW?: string
   zh_CN?: string
 }
 
-export interface ModuleType extends I18n {
+export interface ModuleType {
   system?: string
   test?: string
   view?: string
 }
 
-export type ModuleLangMap = {
-  system?: LangMap
-  test?: LangMap
-  view?: LangMap
-}
-
-export type ScopeKey = keyof ModuleLangMap | ''
+export type ScopeKey = keyof ModuleType | ''
 
 export const defaultModuleType: ScopeKey = 'system'
 
