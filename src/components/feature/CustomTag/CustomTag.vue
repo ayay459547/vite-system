@@ -42,16 +42,20 @@ const hasSlot = (prop: string): boolean => {
         <div v-if="hasSlot('default')">
           <slot></slot>
         </div>
-        <div v-else-if="(props.iconName.length + props.label.length) > 0" class="tag-group">
+        <div v-else-if="props.iconName.length > 0 || props.label.length > 0" class="tag-group">
           <CustomIcon
-            v-show="props.iconName.length > 0"
+            v-if="props.iconName.length > 0"
             class="icon"
             :class="`icon-${iconMove}`"
             :size="props.size"
             :type="props.iconType"
             :name="props.iconName"
           />
-          <span class="tag-label" :class="`tag-label-size-${props.size}`">{{ props.label }}</span>
+          <span
+            v-if="props.label.length > 0"
+            class="tag-label"
+            :class="`tag-label-size-${props.size}`"
+          >{{ props.label }}</span>
         </div>
         <CustomIcon
           v-else

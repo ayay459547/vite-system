@@ -44,58 +44,46 @@ export const getType = (value: any): string => {
 
 /**
  * @author Caleb
- * @description 判斷東西是否有值
- * @param {*} value
- * @returns {Boolean}
- */
-export const isSet = (value: any): boolean => {
-  if ([null, undefined].includes(value)) return false
-  const type = getType(value)
-
-  switch (type) {
-    case 'Array':
-    case 'String':
-      if (value.length > 0) return true
-      return false
-    case 'Object':
-      for (const key in value) {
-        if (hasOwnProperty(value, key)) return true
-      }
-      return false
-    case 'Number':
-      if (!Number.isNaN(parseInt(value))) return true
-      return false
-    default:
-      return true
-  }
-}
-
-/**
- * @author Caleb
  * @description 判斷東西是否為空
  * @param {*} value
  * @returns {Boolean}
  */
 export const isEmpty = (value: any): boolean => {
-  if ([null, undefined].includes(value)) return true
-  const type = getType(value)
+  const valueType = Object.prototype.toString.call(value)
 
-  switch (type) {
-    case 'Array':
-    case 'String':
-      if (value.length > 0) return false
-      return true
-    case 'Object':
+  switch (valueType) {
+    case '[object Array]':
+    case '[object String]':
+      return value.length === 0
+    case '[object Object]':
       for (const key in value) {
         if (hasOwnProperty(value, key)) return false
       }
       return true
-    case 'Number':
-      if (!Number.isNaN(parseInt(value))) return false
-      return true
+    case '[object Set]':
+    case '[object Map]':
+      return value.size === 0
+    case '[object Undefined]':
+    case '[object Null]':
+        return true
+    case '[object Number]':
+    case '[object BigInt]':
+    case '[object Boolean]':
+    case '[object Symbol]':
+    case '[object Date]':
     default:
       return false
   }
+}
+
+/**
+ * @author Caleb
+ * @description 判斷東西是否有值
+ * @param {*} value
+ * @returns {Boolean}
+ */
+export const isSet = (value: any): boolean => {
+  return !isEmpty(value)
 }
 
 /**
@@ -358,11 +346,13 @@ export const deepClone = <T = any>(targetElement: any, origin: T): T => {
 
   // 防止遞歸陷入循環
   const seen = new WeakMap()
+
   // 拷貝資料
   const _deepClone = (_target, _origin) => {
     if (seen.has(_target)) {
       return seen.get(_target)
     }
+    seen.set(_target, toStr.call(_target))
 
     for (const _prop in _origin) {
       if (hasOwnProperty(_origin, _prop)) {
@@ -412,13 +402,17 @@ export const scrollToEl = (
     inline: 'nearest',
     ...options
   }
-  if ([null, undefined].includes(el)) return
-
+  const elType = Object.prototype.toString.call(el)
   const re = new RegExp('Element')
-  if (re.test(Object.prototype.toString.call(el))) {
-    el.scrollIntoView(setting)
-  } else {
-    tipLog('無法執行 scrollToEl', ['請給 html 的 dom 物件', `傳入參數: ${el} => ${getType(el)}`])
+
+  try {
+    if (re.test(elType)) {
+      el.scrollIntoView(setting)
+    } else {
+      throw `無法執行 scrollToEl, ${el}: ${elType}`
+    }
+  } catch (e) {
+    console.log(e)
   }
 }
 

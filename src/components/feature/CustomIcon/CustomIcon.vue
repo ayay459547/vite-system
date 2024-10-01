@@ -13,7 +13,13 @@ const scopedId = getUuid(version)
 const props = defineProps(iconProps)
 
 const getIcon = computed(() => {
-  if (Array.isArray(props.icon) && props.icon.length > 0) return props.icon
+  if (
+    Array.isArray(props.icon) &&
+    props.icon.filter(
+      item => !['', undefined, null].includes(item)
+    ).length === 2
+  ) return props.icon
+
   return [props.type, props.name]
 })
 </script>
