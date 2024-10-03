@@ -159,32 +159,3 @@ const onBreadcrumbTextClick = (index: number) => {
   }
 }
 </style>
-
-<style lang="scss">
-@use '@/assets/styles/utils' as utils;
-
-$light-color: (
-  'breadcrumb-text': #506D9C,
-  'breadcrumb-text-hover': #6582B0
-);
-
-$dark-color: (
-  'breadcrumb-text': #E5EAF3,
-  'breadcrumb-text-hover': #CFD3DC
-);
-
-@mixin set-css-vars($color-map) {
-  // var(--i-color-breadcrumb-text)
-  @each $type, $color in $color-map {
-    @include utils.set-css-var-value(('color', $type), $color);
-  }
-}
-
-// 顏色設定
-html {
-  @include set-css-vars($light-color);
-}
-html.dark {
-  @include set-css-vars($dark-color);
-}
-</style>

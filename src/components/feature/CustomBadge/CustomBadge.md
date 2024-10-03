@@ -23,16 +23,29 @@ const type = ref<BadgeType>('primary')
 
 ### Attributes ( props )
 
-| 屬姓名 | 說明           | 类型            | 默認值    |
-| ------ | -------------- | --------------- | --------- |
-| value  | 顯示的值       | string / number | ''        |
-| max    | 最大值         | boolean         | false     |
-| isDot  | 是否顯示小圓點 | boolean         | false     |
-| hidden | 是否隱藏標記   | boolean         | false     |
-| type   | 類型           | enum            | 'primary' |
+| 屬姓名     | 說明            | 类型             | 默認值    |
+| ---------- | -------------- | ---------------- | --------- |
+| value      | 顯示的值        | string / number  | ''        |
+| max        | 最大值          | boolean          | false     |
+| isDot      | 是否顯示小圓點   | boolean          | false     |
+| hidden     | 是否隱藏標記     | boolean          | false     |
+| type       | 類型            | enum             | 'primary' |
+| showZero   | 是否顯示0       | boolean          | true      |
+| color      | 背景色          | string           | undefined |
+| offset     | 偏移量          | [number, number] | undefined |
+| badgeStyle | 自訂style       | object           | undefined |
+| badgeStyle | 自訂class       | string           | undefined |
 
 ### Slots
 
 | 插槽名  | 說明         |
 | ------- | ------------ |
 | default | 文字顯示內容 |
+
+### Events ( emits )
+
+無
+
+### Expose
+
+無

@@ -26,7 +26,8 @@ const options = () => {
 <style lang="scss" scoped>
 .locatehome {
   width: 100%;
-  height: 100%;
+  height:fit-content;
+  min-height: 100%;
   padding: 16px;
   display: flex;
   flex-direction: column;

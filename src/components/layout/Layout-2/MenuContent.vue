@@ -1,61 +1,110 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
+import { computed, inject } from 'vue'
+import { ElMenu, ElMenuItem } from 'element-plus'
+
+import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import { useRoutesHook } from '@/lib/lib_routes'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
-import MenuRouter from '@/components/layout/Menu/MenuRouter.vue'
-// import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 
-const props = defineProps<{
-  showRoutes: Navigation[]
-  currentNavigation: Navigation
-  currentRouteName: CurrentRouteName
+import ElNavigation from './ElNavigation.vue'
 
-  authData: AuthData
-  breadcrumbName: string[]
-  breadcrumbTitle: string[]
-}>()
+const props = defineProps({
+  showRoutes: {
+    type: Array as PropType<Navigation[]>,
+    default: () => {
+      return []
+    }
+  },
+  currentNavigation: {
+    type: Object as PropType<Navigation>,
+    default: () => {
+      return {}
+    }
+  },
+  currentRouteName: {
+    type: Object as PropType<CurrentRouteName>,
+    default: () => {
+      return {
+        level1: '',
+        level2: '',
+        level3: ''
+      }
+    }
+  },
+  authData: {
+    type: Object as PropType<AuthData>,
+    default: () => {
+      return {
+        user: {},
+        role: {},
+        roleFunction: [],
+        groups: []
+      } as AuthData
+    }
+  },
+  breadcrumbName: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  },
+  breadcrumbTitle: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  }
+})
 
-const emit = defineEmits<{
-  (e: 'logout'): void
-  (e: 'preference'): void
-  (e: 'setLevel2Router', level2List: Navigation): void
-  (e: 'routerChange'): void
-  (e: 'resetMenu'): void
-  (e: 'setRouter', value: string[]): void
-}>()
+const emit = defineEmits(['logout', 'preference'])
 
-const setLevel2Router = (level2Router: Navigation) => {
-  emit('setLevel2Router', level2Router)
-}
+const useHook: UseHook = inject('useHook')
+const { i18nTest, i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
+})
 
-const onResetMenu = () => {
-  emit('resetMenu')
-}
+const { getRouteTitle } = useRoutesHook({
+  i18nTranslate,
+  i18nTest
+})
 
-const setRouter = (targetRoutePath: string[]) => {
-  emit('setRouter', targetRoutePath)
-}
-// const onRouterChange = () => {
-//   emit('routerChange')
-// }
+const activeIndex = computed(() => {
+  return props.currentNavigation?.name ?? ''
+})
+
 </script>
 
 <template>
   <div class="menu-container">
     <div class="menu-left">
       <slot name="logo"></slot>
-      <div class="menu-left-effect">
-        <MenuRouter
-          :show-routes="showRoutes"
-          :current-navigation="currentNavigation"
-          :current-route-name="props.currentRouteName"
-          @set-level2-router="setLevel2Router"
-          @reset-menu="onResetMenu"
-        />
-      </div>
-      <slot name="menu-left"></slot>
+      <ElMenu
+        v-if="Array.isArray(props.showRoutes) && props.showRoutes.length > 0"
+        :default-active="activeIndex"
+        key="ElMenu"
+        router
+        class="menu-nav"
+        mode="horizontal"
+      >
+        <template v-for="route in props.showRoutes" :key="`nav-${route.name}`">
+          <ElNavigation
+            v-if="Array.isArray(route.leaves)"
+            :sub-route="route"
+            :key="`ElNavigation-${route.name}`"
+          ></ElNavigation>
+          <ElMenuItem v-else :index="route.name" :key="`ElMenuItem-${route.name}`">
+            <div class="menu-nav-item">
+              <span class="menu-nav-title">{{ getRouteTitle(route) }}</span>
+            </div>
+          </ElMenuItem>
+        </template>
+      </ElMenu>
     </div>
 
     <div class="menu-center">
@@ -63,14 +112,10 @@ const setRouter = (targetRoutePath: string[]) => {
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
         text-align="end"
-        @set-router="setRouter"
       />
     </div>
 
     <div class="menu-right">
-      <!-- <div class="menu-right-effect">
-        <MenuHome @router-change="onRouterChange"/>
-      </div> -->
       <div class="menu-right-effect">
         <MenuUser
           :auth-data="props.authData"
@@ -83,31 +128,36 @@ const setRouter = (targetRoutePath: string[]) => {
 </template>
 
 <style lang="scss" scoped>
+
 .menu {
   &-container {
     width: 100%;
-    height: 56px;
+    height: 100%;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 8px;
+    padding: 8px;
     font-size: 1.2em;
-    background-color: var(--i-color-menu);
-    color: var(--i-color-menu-color);
+    background-color: var(--i-color-menu) !important;
+    color: var(--i-color-menu-color) !important;
+
+    --el-menu-bg-color: var(--i-color-menu);
+    --el-menu-text-color: var(--i-color-menu-color);
+    --el-menu-active-color: var(--el-color-warning);
   }
 
   &-left {
     display: flex;
     align-items: center;
-    height: fit-content;
-    gap: 8px;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+  }
 
-    &-effect {
-      width: fit-content;
-      display: flex;
-      align-items: center;
-    }
+  &-nav {
+    max-width: 800px;
+    overflow: hidden;
   }
 
   &-center {
@@ -136,7 +186,7 @@ const setRouter = (targetRoutePath: string[]) => {
       white-space: nowrap;
 
       transition-duration: 0.3s;
-      color: #ffffff;
+      color: #ffffff !important;
 
       &:hover {
         color: var(--el-color-warning);

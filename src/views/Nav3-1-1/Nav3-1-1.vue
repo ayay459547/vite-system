@@ -1,5 +1,13 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import {
+  CustomBadge,
+  CustomButtonGroup,
+  CustomButton,
+  CustomIcon,
+  CustomDivider
+} from '@/components'
+
 const count = ref(10)
 const load = () => {
   console.log('load')
@@ -14,7 +22,28 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="i-page">
+  <div class="i-page flex-column i-ga-md">
+    <CustomBadge
+      :value="0"
+      type="primary"
+      :max="50"
+      :badge-style="{ backgroundColor: 'red' }"
+      badge-clss="text-primary"
+    >
+      <div class="card-info i-pa-xs">slot</div>
+    </CustomBadge>
+
+    <CustomButtonGroup type="success">
+      <CustomButton label="Button1">
+        <template #icon>
+          <CustomIcon name="user"></CustomIcon>
+        </template>
+      </CustomButton>
+      <CustomButton label="Button2" :icon="CustomIcon"></CustomButton>
+    </CustomButtonGroup>
+
+    <CustomDivider />
+
     <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
       <li v-for="i in count" :key="i" class="infinite-list-item">{{ i }}</li>
     </ul>

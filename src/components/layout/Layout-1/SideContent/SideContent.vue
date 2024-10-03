@@ -103,11 +103,8 @@ defineExpose({
   >
     <div class="side-container">
       <div class="side-logo">
-        <div class="side-logo-navigate open">
-          <slot name="logo" :is-show="true"></slot>
-        </div>
-        <div class="side-logo-navigate close">
-          <slot name="logo" :is-show="false"></slot>
+        <div class="side-logo-navigate">
+          <slot name="logo" :is-open="tempIsOpen"></slot>
         </div>
 
         <div class="side-logo-close" @click="tempIsOpen = false">
@@ -125,11 +122,8 @@ defineExpose({
       </div>
 
       <div class="side-footer">
-        <div class="side-footer-navigate open">
-          <slot name="footer" :is-show="true"></slot>
-        </div>
-        <div class="side-footer-navigate close">
-          <slot name="footer" :is-show="false"></slot>
+        <div class="side-footer-navigate">
+          <slot name="version" :is-open="tempIsOpen"></slot>
         </div>
       </div>
     </div>
@@ -142,26 +136,9 @@ defineExpose({
 @mixin navStyle($isNavOpen) {
   @if ($isNavOpen) {
     min-width: $nav-width;
-    transition-delay: 0.2s;
-    .side-logo .open,
-    .side-footer .open {
-      display: block;
-    }
-    .side-logo .close,
-    .side-footer .close {
-      display: none;
-    }
+    transition-delay: 0.25s;
   } @else {
     min-width: $side-width;
-    .side-logo .open,
-    .side-footer .open {
-      display: none;
-    }
-
-    .side-logo .close,
-    .side-footer .close {
-      display: block;
-    }
   }
 }
 

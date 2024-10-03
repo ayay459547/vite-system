@@ -23,6 +23,11 @@ const hasSlot = (prop: string): boolean => {
     :is-dot="props.isDot"
     :hidden="props.hidden"
     :type="props.type"
+    :show-zero="props.showZero"
+    :color="props.color"
+    :offset="props.offset"
+    :badge-style="props.badgeStyle"
+    :badge-class="props.badgeClass"
     :class="scopedId"
   >
     <template v-if="hasSlot('default')" #default>

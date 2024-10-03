@@ -1,4 +1,4 @@
-import type { PropType } from 'vue'
+import type { PropType, CSSProperties } from 'vue'
 
 export const version = '__CustomBadge_1.0.0__'
 
@@ -10,6 +10,11 @@ export declare namespace Props {
   type IsDot = boolean
   type Hidden = boolean
   type Type = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+  type ShowZero = boolean
+  type Color = string
+  type Offset = [number, number]
+  type BadgeStyle = CSSProperties
+  type BadgeClass = string
 }
 
 export const props = {
@@ -42,6 +47,36 @@ export const props = {
     required: false,
     default: 'primary',
     description: '類型'
+  },
+  showZero: {
+    type: Boolean as PropType<Props.ShowZero>,
+    required: false,
+    default: true,
+    description: '是否顯示0'
+  },
+  color: {
+    type: String as PropType<Props.Color>,
+    required: false,
+    default: undefined,
+    description: '背景色'
+  },
+  offset: {
+    type: Array as unknown as PropType<Props.Offset>,
+    required: false,
+    default: undefined,
+    description: '偏移量'
+  },
+  badgeStyle: {
+    type: Object as PropType<Props.BadgeStyle>,
+    required: false,
+    default: undefined,
+    description: '自訂style'
+  },
+  badgeClass: {
+    type: String as PropType<Props.BadgeClass>,
+    required: false,
+    default: undefined,
+    description: '自訂class'
   }
 }
 

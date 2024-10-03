@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import type { PropType } from 'vue'
+import { nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
@@ -7,76 +8,64 @@ import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { isEmpty } from '@/lib/lib_utils'
 
 import MenuContent from './MenuContent.vue'
-import SubMenu from './SubMenu.vue'
 
-const props = defineProps<{
-  isShow: boolean
-
-  showRoutes: Navigation[]
-  currentNavigation: Navigation
-  currentRouteName: CurrentRouteName
-
-  authData: AuthData
-  breadcrumbName: string[]
-  breadcrumbTitle: string[]
-}>()
-
-const emit = defineEmits<{
-  (e: 'logout'): void
-  (e: 'preference'): void
-}>()
-
-// 第二層路由
-
-const subMenuRef = ref()
-
-const setLevel2Router = (level2Router: Navigation) => {
-  if (isEmpty(level2Router)) return
-  console.log(level2Router)
-  // const { leaves } = level2Router
-}
-
-const resetMenu = (navigation?: Navigation) => {
-  subMenuRef.value.resetMenu(navigation)
-}
-
-const setRouter = (targetRoutePath: string[]) => {
-  if (targetRoutePath[0] === 'locatehome') return
-
-  const getNavigation = (leaves, target) => {
-    const navigation = leaves.find(route => target[0] === route.name)
-    target.shift()
-    if (isEmpty(target)) return navigation
-    else return getNavigation(navigation.leaves, target)
+const props = defineProps({
+  isShow: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  showRoutes: {
+    type: Array as PropType<Navigation[]>,
+    default: () => {
+      return []
+    }
+  },
+  currentNavigation: {
+    type: Object as PropType<Navigation>,
+    default: () => {
+      return {}
+    }
+  },
+  currentRouteName: {
+    type: Object as PropType<CurrentRouteName>,
+    default: () => {
+      return {
+        level1: '',
+        level2: '',
+        level3: ''
+      }
+    }
+  },
+  authData: {
+    type: Object as PropType<AuthData>,
+    default: () => {
+      return {
+        user: {},
+        role: {},
+        roleFunction: [],
+        groups: []
+      } as AuthData
+    }
+  },
+  breadcrumbName: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
+  },
+  breadcrumbTitle: {
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
   }
+})
 
-  const targetNavigation = getNavigation(props.showRoutes, targetRoutePath)
-  resetMenu(targetNavigation)
-}
+const emit = defineEmits(['logout', 'preference'])
 
 const init = async () => {
   await nextTick()
   if (isEmpty(props.currentNavigation)) return
-
-  const currentLevel1 = props.showRoutes.find(level1Item => {
-    return level1Item.name === props.currentRouteName.level1
-  })
-
-  resetMenu(props.currentNavigation)
-
-  const tempLevel2List = currentLevel1?.leaves ?? []
-  const currentLevel2 = tempLevel2List.find(level2Item => {
-    return level2Item.name === props.currentRouteName.level2
-  })
-
-  subMenuRef.value.clearLevel3List()
-  subMenuRef.value.setLevel3Router(currentLevel2)
-}
-
-// 回首頁
-const onRouterChange = async () => {
-  await nextTick()
-  subMenuRef.value.clearLevel3List()
 }
 
 defineExpose({
@@ -86,7 +75,7 @@ defineExpose({
 
 <template>
   <div class="layout-wrapper">
-    <div class="layout-menu level1">
+    <div class="layout-menu">
       <MenuContent
         :show-routes="props.showRoutes"
         :current-navigation="props.currentNavigation"
@@ -96,30 +85,11 @@ defineExpose({
         :breadcrumb-title="props.breadcrumbTitle"
         @logout="emit('logout')"
         @preference="emit('preference')"
-        @set-level2-router="setLevel2Router"
-        @router-change="onRouterChange"
-        @reset-menu="resetMenu"
-        @set-router="setRouter"
       >
         <template #logo>
           <slot name="logo"></slot>
         </template>
-        <template #menu-left>
-          <slot name="menu-left"></slot>
-        </template>
-        <template #menu-right>
-          <slot name="menu-right"></slot>
-        </template>
       </MenuContent>
-
-      <div class="level2">
-        <SubMenu
-          ref="subMenuRef"
-          :show-routes="props.showRoutes"
-          :current-navigation="props.currentNavigation"
-          :current-route-name="props.currentRouteName"
-        />
-      </div>
     </div>
 
     <div class="layout-view">
@@ -138,19 +108,17 @@ defineExpose({
     display: flex;
     flex-direction: column;
     position: relative;
-
     gap: 8px;
   }
 
   &-menu {
     width: 100%;
-    height: fit-content;
+    height: 64px;
   }
 
   &-view {
     width: 100%;
-    height: 100%;
-    flex: 1;
+    height: calc(100% - 64px);
   }
 }
 </style>

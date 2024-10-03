@@ -25,31 +25,42 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElButton
-    :type="props.type"
-    :text="props.text"
     :size="props.size"
+    :type="props.type"
     :plain="props.plain"
+    :text="props.text"
+    :bg="props.bg"
+    :link="props.link"
     :round="props.round"
     :circle="props.circle"
-    :disabled="props.disabled"
-    :color="props.color"
-    :dark="props.dark"
     :loading="props.loading"
-    :style="props.style"
+    :loading-icon="props.loadingIcon"
+    :disabled="props.disabled"
+    :icon="props.icon"
+    :dark="props.dark"
+    :autofocus="props.autofocus"
+    :autoInsertSpace="props.autoInsertSpace"
+    :color="props.color"
     class="button-container"
+    :style="props.style"
     :class="[scopedId, `button-size-${props.size}`]"
     @click="onClick"
   >
-    <template v-if="!props.loading && props.iconName.length > 0" #icon>
-      <CustomIcon
-        class="icon"
-        :class="`icon-${iconMove}`"
-        :size="props.iconSize"
-        :type="props.iconType"
-        :x-type="props.iconXType"
-        :name="props.iconName"
-        :style="{ color: props.textColor }"
-      />
+    <template v-if="hasSlot('icon') || (!props.loading && props.iconName.length > 0)" #icon>
+      <slot name="icon">
+        <CustomIcon
+          class="icon"
+          :class="`icon-${iconMove}`"
+          :size="props.iconSize"
+          :type="props.iconType"
+          :x-type="props.iconXType"
+          :name="props.iconName"
+          :style="{ color: props.textColor }"
+        />
+      </slot>
+    </template>
+    <template v-if="hasSlot('loading')" #loading>
+      <slot name="loading"></slot>
     </template>
 
     <template v-if="props.label.length > 0 || hasSlot('default')" #default>

@@ -7,8 +7,7 @@ import {
   provide,
   onMounted,
   onBeforeMount,
-  nextTick,
-  useSlots
+  nextTick
 } from 'vue'
 
 import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils'
@@ -44,12 +43,6 @@ import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { totlaPermission, getPermission } from '@/lib/lib_permission'
-
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
 
 // hook
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
@@ -366,18 +359,11 @@ provide<UseHook>('useHook', (options = {}) => {
       @logout="logout"
       @lang-change="setWebInfo"
     >
-      <template #logo="{ isShow }">
-        <slot name="logo" :is-show="isShow" :env="systemEnv"></slot>
+      <template #logo="{ isOpen }">
+        <slot name="logo" :is-open="isOpen" :env="systemEnv"></slot>
       </template>
-      <template #menu-footer="{ isShow }">
-        <slot name="menu-footer" :is-show="isShow" :env="systemEnv"></slot>
-      </template>
-
-      <template v-if="hasSlot('header-left')" #header-left>
-        <slot name="header-left" :env="systemEnv"></slot>
-      </template>
-      <template v-if="hasSlot('header-right')" #header-right>
-        <slot name="header-right" :env="systemEnv"></slot>
+      <template #version="{ isOpen }">
+        <slot name="version" :is-open="isOpen" :env="systemEnv"></slot>
       </template>
 
       <template #content>
@@ -394,6 +380,7 @@ provide<UseHook>('useHook', (options = {}) => {
 
     <!-- hook loading -->
     <HookLoader ref="customLoader" />
+
     <!-- hook popover -->
     <template v-if="customPopoverQueue.length > 0">
       <HookPopover

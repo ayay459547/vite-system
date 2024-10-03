@@ -182,18 +182,11 @@ const onLayoutChange = () => {
         v-bind="layoutAttr"
         v-on="layoutEvent"
       >
-        <template #logo="{ isShow }">
-          <slot name="logo" :is-show="isShow"></slot>
+        <template #logo="{ isOpen }">
+          <slot name="logo" :is-open="isOpen"></slot>
         </template>
-        <template #menu-footer="{ isShow }">
-          <slot name="menu-footer" :is-show="isShow"></slot>
-        </template>
-
-        <template #header-left>
-          <slot name="header-left"></slot>
-        </template>
-        <template #header-right>
-          <slot name="header-right"></slot>
+        <template #version="{ isOpen }">
+          <slot name="version" :is-open="isOpen"></slot>
         </template>
 
         <template #content>
@@ -207,14 +200,11 @@ const onLayoutChange = () => {
         v-bind="layoutAttr"
         v-on="layoutEvent"
       >
-        <template #logo>
-          <slot name="logo" :is-show="true"></slot>
+        <template #logo="{ isOpen }">
+          <slot name="logo" :is-open="isOpen"></slot>
         </template>
-        <template #menu-left>
-          <slot name="menu-left"></slot>
-        </template>
-        <template #menu-right>
-          <slot name="menu-right"></slot>
+        <template #version="{ isOpen }">
+          <slot name="version" :is-open="isOpen"></slot>
         </template>
 
         <template #content>

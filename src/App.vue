@@ -3,10 +3,17 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 import GlobalView from '@/components/GlobalView.vue'
+import { CustomTooltip, SimpleQRcode } from '@/components'
+
+import qrcode from '@/assets/images/chan.jpg?url'
 
 export default defineComponent({
   name: 'AppView',
-  components: { GlobalView },
+  components: {
+    GlobalView,
+    CustomTooltip,
+    SimpleQRcode
+  },
   setup() {
     const router = useRouter()
     const toHome = () => {
@@ -14,8 +21,8 @@ export default defineComponent({
     }
 
     return {
-      router,
-      toHome
+      toHome,
+      qrcodeImg: qrcode
     }
   }
 })
@@ -31,15 +38,30 @@ export default defineComponent({
         </div>
       </template>
 
-      <template #menu-footer="{ isShow, env }">
-        <div class="menu-footer">
-          <span v-if="isShow">{{ `${env.system} ${env.version}` }}</span>
-          <span v-else>{{ `${env.version.split('-')[0]}` }}</span>
-        </div>
+      <template #version="{ env }">
+        <CustomTooltip
+          :width="200"
+          trigger="hover"
+          placement="top"
+          class="menu-footer-tip"
+        >
+          <template #content>
+            <div class="tip-list">
+              <SimpleQRcode
+                text="https://github.com/ayay459547/"
+                :size="250"
+                :logoSrc="qrcodeImg"
+              />
+            </div>
+          </template>
+          <template #default>
+            <div class="menu-footer">
+              <span>{{ `${env.system}` }}</span>
+              <span>{{ `${env.version}` }}</span>
+            </div>
+          </template>
+        </CustomTooltip>
       </template>
-
-      <!-- <template #header-left></template> -->
-      <!-- <template #header-right></template> -->
     </GlobalView>
   </div>
 </template>
@@ -75,11 +97,11 @@ export default defineComponent({
 
   &-footer {
     color: #ddd;
-    padding: 8px 12px;
+    padding: 8px;
     border-radius: 6px;
-    transition-duration: 0.3s;
-    margin: 0 auto;
-    width: fit-content;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 16px;
   }
 }
 

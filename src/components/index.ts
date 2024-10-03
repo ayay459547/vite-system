@@ -53,6 +53,14 @@ export type {
 } from './feature/CustomButton/CustomButtonInfo'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
 
+export type {
+  Types as ButtonGroupTypes,
+  Props as ButtonGroupProps,
+  Emits as ButtonGroupEmits,
+  Expose as ButtonGroupExpose
+} from './feature/CustomButtonGroup/CustomButtonGroupInfo'
+export { default as CustomButtonGroup } from './feature/CustomButtonGroup/CustomButtonGroup.vue'
+
 // 卡片
 export type {
   Types as CustomCardTypes,

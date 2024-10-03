@@ -72,7 +72,6 @@ const init = async () => {
   sideRef.value?.init()
 }
 
-// 回首頁
 const onRouterChange = async () => {
   await nextTick()
   sideRef.value.setOpen(false)
@@ -148,7 +147,7 @@ const isNavHover = computed({
   }
 })
 
-const initLayout1 = () => {
+onMounted(() => {
   const isNavOpenLocale = localStorage.getItem('isNavOpen')
   if ([null, undefined, ''].includes(isNavOpenLocale)) {
     localStorage.setItem('isNavOpen', 'false')
@@ -160,10 +159,6 @@ const initLayout1 = () => {
     localStorage.setItem('isNavHover', 'false')
   }
   _isNavHover.value = localStorage.getItem('isNavHover')
-}
-
-onMounted(() => {
-  initLayout1()
 })
 
 </script>
@@ -183,11 +178,11 @@ onMounted(() => {
         :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
       >
-        <template #logo="{ isShow }">
-          <slot name="logo" :is-show="isShow"></slot>
+        <template #logo="{ isOpen }">
+          <slot name="logo" :is-open="isOpen"></slot>
         </template>
-        <template #footer="{ isShow }">
-          <slot name="menu-footer" :is-show="isShow"></slot>
+        <template #version="{ isOpen }">
+          <slot name="version" :is-open="isOpen"></slot>
         </template>
       </SideContent>
     </div>
@@ -203,14 +198,7 @@ onMounted(() => {
           @preference="emit('preference')"
           @router-change="onRouterChange"
           @set-router="onBreadCrumbClick"
-        >
-          <template #header-left>
-            <slot name="header-left"></slot>
-          </template>
-          <template #header-right>
-            <slot name="header-right"></slot>
-          </template>
-        </HeaderContent>
+        />
       </div>
 
       <div class="layout-view">

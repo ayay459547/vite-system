@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed } from 'vue'
 
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
-// import MenuHome from '@/components/layout/Menu/MenuHome.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 import type { AuthData } from '@/declare/hook'
-// import MenuLang from '@/components/layout/Menu/MenuLang.vue'
 
 import HamburgerIcon from './HamburgerIcon.vue'
-
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
 
 const props = defineProps<{
   isOpen: boolean
@@ -26,7 +18,6 @@ const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void
   (e: 'logout'): void
   (e: 'preference'): void
-  (e: 'routerChange'): void
   (e: 'setRouter', value: string[]): void
 }>()
 
@@ -40,9 +31,6 @@ const tempIsOpen = computed<boolean>({
   }
 })
 
-// const onRouterChange = () => {
-//   emit('routerChange')
-// }
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   emit('setRouter', targetRoutePath)
 }
@@ -52,7 +40,13 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
   <div class="header-container">
     <div class="header-left">
       <HamburgerIcon v-model:isOpen="tempIsOpen" class="header-hamburger" />
-      <slot name="header-left"></slot>
+      <RouterLink
+        class="header-left-effect"
+        :to="{ name: 'locatehome' }"
+        v-slot="{ navigate }"
+      >
+        <CustomIcon name="home" @click="navigate" />
+      </RouterLink>
       <MenuBreadcrumb
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
@@ -62,13 +56,6 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     </div>
 
     <div class="header-right">
-      <div v-if="hasSlot('header-right')" class="header-right-effect">
-        <slot name="header-right"></slot>
-      </div>
-
-      <!-- <div class="header-right-effect">
-        <MenuHome @router-change="onRouterChange"/>
-      </div> -->
       <div class="header-right-effect">
         <MenuUser
           :auth-data="props.authData"
@@ -81,6 +68,24 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
 </template>
 
 <style lang="scss" scoped>
+%effect {
+  display: flex;
+  justify-content: flex-start;
+  width: fit-content;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  transition-duration: 0.3s;
+  color: var(--i-color-menu);
+
+  &:hover {
+    color: var(--i-color-menu-hover);
+  }
+}
+
 .header {
   &-container {
     width: 100%;
@@ -102,6 +107,10 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     align-items: center;
     gap: 16px;
     flex: 1;
+
+    &-effect {
+      @extend %effect;
+    }
   }
 
   &-right {
@@ -111,21 +120,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
     gap: 8px;
 
     &-effect {
-      display: flex;
-      justify-content: flex-start;
-      width: fit-content;
-      align-items: center;
-      padding: 8px;
-      gap: 8px;
-      overflow: hidden;
-      white-space: nowrap;
-
-      transition-duration: 0.3s;
-      color: var(--i-color-menu);
-
-      &:hover {
-        color: var(--i-color-menu-hover);
-      }
+      @extend %effect;
     }
   }
 }
