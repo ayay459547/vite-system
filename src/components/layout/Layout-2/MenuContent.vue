@@ -82,14 +82,17 @@ const activeIndex = computed(() => {
 
 <template>
   <div class="menu-container">
-    <div class="menu-left">
+    <div class="menu-logo">
       <slot name="logo"></slot>
+    </div>
+
+    <div class="menu-main">
       <ElMenu
         v-if="Array.isArray(props.showRoutes) && props.showRoutes.length > 0"
         :default-active="activeIndex"
         key="ElMenu"
         router
-        class="menu-nav"
+        class="menu-main-nav"
         mode="horizontal"
       >
         <template v-for="route in props.showRoutes" :key="`nav-${route.name}`">
@@ -107,7 +110,7 @@ const activeIndex = computed(() => {
       </ElMenu>
     </div>
 
-    <div class="menu-center">
+    <div class="menu-breadcrumb">
       <MenuBreadcrumb
         :breadcrumb-name="props.breadcrumbName"
         :breadcrumb-title="props.breadcrumbTitle"
@@ -115,14 +118,12 @@ const activeIndex = computed(() => {
       />
     </div>
 
-    <div class="menu-right">
-      <div class="menu-right-effect">
-        <MenuUser
-          :auth-data="props.authData"
-          @logout="emit('logout')"
-          @preference="emit('preference')"
-        />
-      </div>
+    <div class="menu-user">
+      <MenuUser
+        :auth-data="props.authData"
+        @logout="emit('logout')"
+        @preference="emit('preference')"
+      />
     </div>
   </div>
 </template>
@@ -132,66 +133,53 @@ const activeIndex = computed(() => {
 .menu {
   &-container {
     width: 100%;
-    height: 100%;
+    height: 64px;
+    min-height: 64px;
+    max-height: 64px;
+    overflow: hidden;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px;
-    font-size: 1.2em;
+    gap: 8px;
+    padding: 0 8px;
+
+    font-size: 1.1em;
     background-color: var(--i-color-menu) !important;
     color: var(--i-color-menu-color) !important;
 
     --el-menu-bg-color: var(--i-color-menu);
     --el-menu-text-color: var(--i-color-menu-color);
     --el-menu-active-color: var(--el-color-warning);
+    --el-menu-base-level-padding: 12px;
+    --el-menu-item-font-size: 1em;
   }
 
-  &-left {
-    display: flex;
-    align-items: center;
+  &-logo {
+    flex: none;
+    min-width: fit-content;
+  }
+
+  &-main {
+    flex: auto;
     width: 100%;
-    height: 100%;
-    flex: 1;
-  }
-
-  &-nav {
-    max-width: 800px;
     overflow: hidden;
-  }
 
-  &-center {
-    width: 100%;
-    height: 100%;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 24px;
-  }
-
-  &-right {
-    display: flex;
-    width: fit-content;
-    align-items: center;
-    gap: 8px;
-
-    &-effect {
-      display: flex;
-      width: fit-content;
-      align-items: center;
-      padding: 8px;
-      gap: 8px;
+    &-nav {
+      width: 100%;
       overflow: hidden;
-      white-space: nowrap;
-
-      transition-duration: 0.3s;
-      color: #ffffff !important;
-
-      &:hover {
-        color: var(--el-color-warning);
-      }
     }
+  }
+
+  &-breadcrumb {
+    flex: none;
+    width: fit-content;
+    align-content: center;
+  }
+
+  &-user {
+    flex: none;
+    width: fit-content;
   }
 }
 </style>

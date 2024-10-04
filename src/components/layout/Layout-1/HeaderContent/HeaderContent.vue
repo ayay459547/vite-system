@@ -105,7 +105,7 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
   &-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
     flex: 1;
 
     &-effect {

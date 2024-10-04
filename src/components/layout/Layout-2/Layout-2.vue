@@ -113,7 +113,7 @@ defineExpose({
 
   &-menu {
     width: 100%;
-    height: 64px;
+    height: fit-content;
   }
 
   &-view {

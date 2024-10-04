@@ -36,7 +36,7 @@ const getIcon = computed(() => {
     <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />
     <XIcon
       v-else
-      :class="`icon-x-${props.size}`"
+      class="x-icon"
       :type="props.xType"
       :name="props.name"
     />
@@ -53,24 +53,21 @@ div[class*="__CustomIcon"].icon {
   &-size {
     &-large {
       font-size: 1.5em;
+      .x-icon {
+        font-size: 1.6em;
+      }
     }
     &-default {
       font-size: 1.3em;
+      .x-icon {
+        font-size: 1.4em;
+      }
     }
     &-small {
       font-size: 1em;
-    }
-  }
-
-  &-x-size {
-    &-large {
-      font-size: 1.6em;
-    }
-    &-default {
-      font-size: 1.4em;
-    }
-    &-small {
-      font-size: 1.1em;
+      .x-icon {
+        font-size: 1.2em;
+      }
     }
   }
 }

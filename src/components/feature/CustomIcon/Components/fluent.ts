@@ -6,7 +6,9 @@ import {
   BoxCheckmark24Filled,
   ArrowSort28Filled,
   ClipboardArrowRight16Filled,
-  EyeTracking16Filled
+  EyeTracking16Filled,
+  CalendarSearch20Filled,
+  DualScreenClock24Filled
 } from '@vicons/fluent'
 
 export default {
@@ -17,5 +19,7 @@ export default {
   BoxCheckmark24Filled,
   ArrowSort28Filled,
   ClipboardArrowRight16Filled,
-  EyeTracking16Filled
+  EyeTracking16Filled,
+  CalendarSearch20Filled,
+  DualScreenClock24Filled
 }

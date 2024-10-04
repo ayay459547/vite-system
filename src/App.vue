@@ -44,6 +44,7 @@ export default defineComponent({
           trigger="hover"
           placement="top"
           class="menu-footer-tip"
+          popper-class="menu-footer-popper"
         >
           <template #content>
             <div class="tip-list">
@@ -86,7 +87,7 @@ export default defineComponent({
 
     .vue {
       &-img {
-        width: 46px;
+        width: 40px;
       }
       &-text {
         font-size: 1.6em;
@@ -114,5 +115,11 @@ export default defineComponent({
       color: #409eff;
     }
   }
+}
+</style>
+
+<style>
+.menu-footer-popper {
+  z-index: 10000 !important;
 }
 </style>
