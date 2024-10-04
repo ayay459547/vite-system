@@ -1,5 +1,5 @@
-export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
-export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
+export type I18nTranslate = (key: string | string[], i18nModule?: ScopeKey) => string
+export type I18nTest = (key: string | string[], i18nModule?: ScopeKey) => boolean
 
 export interface I18n {
   Key: string

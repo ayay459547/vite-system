@@ -39,7 +39,6 @@ import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useGlobalI18n } from '@/i18n/i18n_excel'
-import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { totlaPermission, getPermission } from '@/lib/lib_permission'
@@ -260,10 +259,10 @@ provide<UseHook>('useHook', (options = {}) => {
 
   return {
     loading,
-    i18nTranslate: (key: string, _i18nModule?: ScopeKey) => {
+    i18nTranslate: (key, _i18nModule?) => {
       return `${i18nTranslate(key, _i18nModule ?? i18nModule)}`
     },
-    i18nTest: (key, _i18nModule?: ScopeKey) => {
+    i18nTest: (key, _i18nModule?) => {
       return i18nTest(key, _i18nModule ?? i18nModule)
     },
     eventList: (click, eventList, options) => {

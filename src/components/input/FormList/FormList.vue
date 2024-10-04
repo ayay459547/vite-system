@@ -146,7 +146,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="__form-list__ form-container hover-card-info" :class="scopedId">
+  <div
+    class="__form-list__ form-container hover-card-info"
+    :class="[scopedId, collapseList ? 'is-collapse' : 'is-expand']"
+  >
     <div
       v-if="hasSlot('title') || !isEmpty(props.label)"
       class="__form-list__ form-top"
@@ -313,7 +316,7 @@ onBeforeMount(() => {
     &-top {
       width: 100%;
       display: flex;
-      // justify-content: space-between
+      align-items: center;
     }
 
     &-title {
@@ -333,6 +336,11 @@ onBeforeMount(() => {
       gap: 16px;
       padding: 8px;
       transition-duration: 0.3s;
+
+      &.is-collapse {
+        background-color: var(--el-disabled-bg-color);
+      }
+      // &.is-expand {}
     }
 
     &-content{

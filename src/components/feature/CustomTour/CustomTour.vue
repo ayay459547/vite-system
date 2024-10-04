@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useSlots, computed } from 'vue'
+import { useSlots, computed, inject } from 'vue'
 import { ElTour, ElTourStep } from 'element-plus'
 
-import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
+import type { UseHook } from '@/declare/hook'
+import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils'
 
 import type { Props, Emits } from './CustomTourInfo'
 import { version, props as tourProps } from './CustomTourInfo'
@@ -19,6 +20,21 @@ const emit = defineEmits([
   'change',
   'step-close'
 ])
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props.i18nModule
+})
+const getText = (text: string, i18nText: string) => {
+  console.log({
+    text,
+    i18nText,
+    isEmpty: isEmpty(i18nText),
+    res: i18nTranslate(i18nText)
+  })
+  if (isEmpty(i18nText)) return text ?? ''
+  return i18nTranslate(i18nText)
+}
 
 const openValue = computed({
   get: () => props.modelValue,
@@ -70,16 +86,20 @@ const hasSlot = (prop: string): boolean => {
       v-for="(step, stepIndex) in props.steps"
       :key="`${stepIndex}-${scopedId}`"
       :target="step.target"
-      :title="step?.title ?? ''"
-      :description="step?.description ?? ''"
+      :title="step.title"
+      :description="step.description"
       v-bind="step"
       @close="onStepClose"
     >
-      <template v-if="hasSlot('header-steps')" #header>
-        <slot name="header-steps" v-bind="step"></slot>
+      <template #header>
+        <slot name="header-steps" v-bind="step">
+          <span>{{ getText(step.title, step.i18nTitle) }}</span>
+        </slot>
       </template>
-      <template v-if="hasSlot('steps')">
-        <slot name="steps" v-bind="step"></slot>
+      <template #default>
+        <slot name="steps" v-bind="step">
+          <span>{{ getText(step.description, step.i18nDescription) }}</span>
+        </slot>
       </template>
     </ElTourStep>
 

@@ -12,7 +12,9 @@ import { getI18nMessages } from '@/i18n'
 import type { ScopeKey, I18nTranslate, I18nTest } from './i18n_setting'
 import { scopeList, defaultModuleType } from './i18n_setting'
 
+// import i18nJson from './i18n.json'
 import i18nJson from './i18n_table.json'
+
 /**
  * 如果不需要 更新翻譯檔
  * 註解下面兩行
@@ -23,7 +25,9 @@ import i18nJson from './i18n_table.json'
  * 2.base64 轉 json
  * 3.重新寫入 i18n.json
  */
+// import i18nXlsx from './i18n.xlsx?b64'
 import i18nXlsx from './i18n_table.xlsx?b64'
+
 const mode = (import.meta as any).env.MODE
 if (mode === 'development') {
   console.groupCollapsed('[init] i18nXlsx')
@@ -114,22 +118,47 @@ export const useGlobalI18n = (): GlobalI18n => {
     globalI18n.value = _globalI18n
   }
 
-  const i18nTranslate = (i18nKey: string, i18nModule: string = defaultModuleType) => {
-    if (
-      typeof moduleMap.value[i18nModule] !== 'object' ||
-      !moduleMap.value[i18nModule].has(i18nKey)
-    ) return i18nKey
+  // 將翻譯的key轉成array
+  const getI18nKeyList = (i18nKey: string | string[]) => {
+    let i18KeyList: string[] = []
+    if (Array.isArray(i18nKey)) {
+      i18KeyList = i18nKey
+    } else if (typeof i18nKey === 'string') {
+      i18KeyList = [i18nKey]
+    }
 
-    return globalI18n.value.t(i18nKey)
+    return i18KeyList
   }
-
-  const i18nTest = (i18nKey: string, i18nModule: string = defaultModuleType) => {
+  // 確認模組中是否有key
+  const check_key_in_i18nModule = (i18KeyList: string[], i18nModule: string): boolean => {
     if (
       typeof moduleMap.value[i18nModule] !== 'object' ||
-      !moduleMap.value[i18nModule].has(i18nKey)
+      i18KeyList.length === 0
     ) return false
 
-    return globalI18n.value.te(i18nKey)
+    return i18KeyList.every(_i18nKey => {
+      return moduleMap.value[i18nModule].has(_i18nKey)
+    })
+  }
+
+  // 確認key是否存在翻譯
+  const i18nTest = (i18nKey: string | string[], i18nModule: string = defaultModuleType) => {
+    const i18KeyList = getI18nKeyList(i18nKey)
+
+    if (!check_key_in_i18nModule(i18KeyList, i18nModule)) return false
+    return i18KeyList.every(_i18nKey => {
+      return globalI18n.value.te(_i18nKey)
+    })
+  }
+
+  // 翻譯
+  const i18nTranslate = (i18nKey: string | string[], i18nModule: string = defaultModuleType) => {
+    const i18KeyList = getI18nKeyList(i18nKey)
+
+    if (!check_key_in_i18nModule(i18KeyList, i18nModule)) return i18KeyList.join(' , ')
+    return i18KeyList.map(_i18nKey => {
+      return globalI18n.value.t(_i18nKey)
+    }).join(' ')
   }
 
   return {

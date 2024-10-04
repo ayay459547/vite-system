@@ -1,6 +1,9 @@
 import type { PropType, Ref } from 'vue'
 import type { ElTourStep } from 'element-plus'
 
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+
 export const version = '__CustomTour_1.0.0__'
 
 export declare namespace Types {
@@ -14,7 +17,9 @@ export declare namespace Types {
     // Dom 元素
     target?: HTMLElement | string | (() => HTMLElement) | Ref<any>
     title?: string // 標題
+    i18nTitle?: string | string[] // 標題: i18nTranslate
     description?: string // 說明
+    i18nDescription?: string | string[] // 說明: i18nTranslate
     showArrow?: boolean // 是否顯示箭頭
     placement?: Types.Placement
   }
@@ -28,6 +33,7 @@ export declare namespace Props {
   type Placement = Types.Placement
   type TargetAreaClickable = boolean
   type Steps = Array<Types.Step>
+  type I18nModule = ScopeKey
 }
 export const props = {
   modelValue: {
@@ -72,6 +78,14 @@ export const props = {
       return []
     },
     description: '引導'
+  },
+  i18nModule: {
+    type: String as PropType<Props.I18nModule>,
+    required: false,
+    default: defaultModuleType,
+    description: `
+      label, options 使用 i18nLabel 時套用的翻譯模組
+    `
   }
 }
 
