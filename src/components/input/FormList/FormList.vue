@@ -5,17 +5,11 @@ import type { UseHook } from '@/declare/hook'
 import { SimpleTable, CustomButton } from '@/components'
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
-import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Emits, Expose } from './FormListInfo'
 import { version, props as formListProps } from './FormListInfo'
 
 const scopedId = getUuid(version)
-
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
-  i18nModule: defaultModuleType
-})
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -45,6 +39,11 @@ const getColumnSlot = (slotKey: string): string => {
 const props = defineProps(formListProps)
 
 const emit = defineEmits(['add', 'remove', 'update:modelValue'])
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props.i18nModule
+})
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -197,11 +196,11 @@ onBeforeMount(() => {
           <template #header-all="{ key, rowIndex, data, column: _column }">
             <slot name="header-all" :label="data" :row-index="rowIndex" :column="_column" :prop="key">
               <div v-show="_column.required" class="text-danger i-pr-xs">*</div>
-              <div>{{ _column.label }}</div>
+              <div>{{ i18nTranslate(_column?.i18nLabel ?? _column.label) }}</div>
             </slot>
           </template>
           <template
-            v-for="column in tableColumns"
+            v-for="column in (tableColumns as Array<any>)"
             :key="`header-form-list-${column.prop}-${scopedId}`"
             v-slot:[getHeaderSlot(column.slotKey)]="{ key, rowIndex, data, column: _column }"
           >
@@ -215,7 +214,7 @@ onBeforeMount(() => {
           </template>
 
           <template
-            v-for="column in tableColumns"
+            v-for="column in (tableColumns as Array<any>)"
             :key="`column-form-list-${column.prop}-${scopedId}`"
             v-slot:[getColumnSlot(column.slotKey)]="{ key, row, rowIndex, data, column: _column }"
           >

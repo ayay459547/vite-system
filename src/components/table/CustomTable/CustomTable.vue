@@ -799,6 +799,7 @@ onMounted(() => {
         :selection="props.selection"
         :is-lazy-loading="isLazyLoading"
         :lazy-loading-status="props.lazyLoadingStatus"
+        :i18n-module="props.i18nModule"
         @row-click="onRowClick"
         @sort-change="onSortChange"
         @header-click="onHeaderClick"
@@ -837,7 +838,7 @@ onMounted(() => {
             :resizing-key="scope.column.key"
           >
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
-              <label>{{ scope.label }}</label>
+              <label>{{ i18nTranslate(scope?.column?.i18nLabel ?? scope.label) }}</label>
             </slot>
           </div>
 

@@ -14,9 +14,6 @@ import type { Props, Emits } from './CustomTableInfo'
 
 const scopedId = getUuid('__table-main__')
 
-const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({ i18nModule: defaultModuleType })
-
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -128,7 +125,18 @@ const props = defineProps({
   lazyLoadingStatus: {
     type: String as PropType<Props.LazyLoadingStatus>,
     description: '懶加載狀態'
+  },
+  i18nModule: {
+    type: String as PropType<Props.I18nModule>,
+    required: false,
+    default: defaultModuleType,
+    description: 'i18nModule'
   }
+})
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props.i18nModule
 })
 
 const emit = defineEmits([
@@ -315,7 +323,7 @@ defineExpose({
               class="__table-main-append"
               :style="`width: ${width}px;`"
             >
-              無更多資料
+              {{ i18nTranslate('empty-data-more', defaultModuleType) }}
             </div>
 
             <div
@@ -389,7 +397,7 @@ defineExpose({
               <ElTableColumn
                 :key="`column-${column.prop}-${scopedId}`"
                 :prop="column.prop"
-                :label="column.label"
+                :label="i18nTranslate(column?.i18nLabel ?? column.label)"
                 :sortable="column.sortable"
                 v-bind="column"
               >
@@ -502,7 +510,7 @@ defineExpose({
               <ElTableColumn
                 :key="`header-${column.prop}-${scopedId}`"
                 :prop="column.prop"
-                :label="column.label"
+                :label="i18nTranslate(column?.i18nLabel ?? column.label)"
                 :sortable="column.sortable"
                 v-bind="column"
               >

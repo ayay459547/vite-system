@@ -113,7 +113,7 @@ const onUserIdClick = (rowData: any) => {
   <div v-loading="isLoading" class="page">
     <!-- <div class="flex-row content-end">
       <CustomButton
-        :label="i18nTranslate('refrush')"
+        :label="i18nTranslate('refresh')"
         icon-name="rotate"
         icon-move="rotate"
         @click="init()"

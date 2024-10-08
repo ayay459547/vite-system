@@ -75,7 +75,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       showOverflowTooltip: false,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
-      i18nModule: column?.i18nModule ?? defaultModuleType,
+      i18nModule: column?.i18nModule,
       // 條件搜尋
       isCondition: column?.isCondition ?? false,
       ...column[type]
@@ -284,7 +284,7 @@ export const useFormListSetting = <T>(
       showOverflowTooltip: false,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
-      i18nModule: column?.i18nModule ?? defaultModuleType,
+      i18nModule: column?.i18nModule,
       ...column[type]
     }
   }
@@ -725,7 +725,7 @@ export const useSimpleTableSetting = (
       minWidth: 150,
       label: column?.label ?? '',
       i18nLabel: column?.i18nLabel ?? column?.label ?? key,
-      i18nModule: column?.i18nModule ?? defaultModuleType,
+      i18nModule: column?.i18nModule,
       title: column?.label ?? '',
       required: false,
       ...column[type]

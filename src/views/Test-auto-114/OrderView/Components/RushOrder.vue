@@ -7,7 +7,7 @@ import { CustomButton, CustomEmpty } from '@/components'
 import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { ResValidate } from './MachineRushOrderList.vue'
+import type { ResValidate } from './api'
 import MachineRushOrderList from './MachineRushOrderList.vue'
 
 import type { RushOrderData } from '../../api'
@@ -163,11 +163,11 @@ defineExpose({
 
     await nextTick()
     const validateList = machineRushOrderListRef.value.map(rushOrderRef => {
-      console.log(rushOrderRef)
+      // console.log(rushOrderRef)
       return rushOrderRef?.validate()
     })
     const resList: Array<ResValidate> = await Promise.all(validateList)
-    console.log('resListresList => ', resList)
+    // console.log('resListresList => ', resList)
 
     const errorItem = resList.find(resItem => {
       return resItem.status === 'error'

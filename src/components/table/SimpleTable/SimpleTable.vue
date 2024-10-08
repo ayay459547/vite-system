@@ -156,7 +156,7 @@ export default defineComponent({
           const {
             label = '',
             i18nLabel = '',
-            i18nModule,
+            i18nModule: columnI18nModule,
             width = 0,
             minWidth = 0,
             align = 'left',
@@ -214,7 +214,7 @@ export default defineComponent({
             }
           }
 
-          const defaultRender = isHeader ? getTranslate(label, i18nLabel, i18nModule) : rowItem[prop]
+          const defaultRender = isHeader ? getTranslate(label, i18nLabel, columnI18nModule) : rowItem[prop]
 
           return h('div',
             {

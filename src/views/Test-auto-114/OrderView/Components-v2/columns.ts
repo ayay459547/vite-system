@@ -1,6 +1,7 @@
 export const workReportColumnSetting = {
   processId: {
     label: '製程編號',
+    i18nLabel: 'process-no',
     table: {
       minWidth: 180,
       required: true
@@ -20,6 +21,7 @@ export const workReportColumnSetting = {
   },
   machineId: {
     label: '機台編號',
+    i18nLabel: 'machine-no',
     table: {
       minWidth: 180,
       required: true
@@ -40,6 +42,7 @@ export const workReportColumnSetting = {
   },
   sequence: {
     label: '生產順序',
+    i18nLabel: 'production-sequence',
     table: {
       width: 100,
       align: 'center'
@@ -50,6 +53,7 @@ export const workReportColumnSetting = {
   },
   LAST_UPDATE_TIMESTAMP: {
     label: '最後更新時間',
+    i18nLabel: 'last-updateTime',
     table: {
       minWidth: 180
     },
@@ -62,6 +66,7 @@ export const workReportColumnSetting = {
   },
   updateBy: {
     label: '最後更新者',
+    i18nLabel: 'lastUpdated-by',
     table: {
       minWidth: 180
     },
@@ -77,6 +82,7 @@ export const workReportColumnSetting = {
 export const switchSequenceColumnSetting = {
   sequence: {
     label: '生產順序',
+    i18nLabel: 'schedule-sequence',
     table: {
       width: 100,
       align: 'center'
@@ -84,6 +90,7 @@ export const switchSequenceColumnSetting = {
   },
   process_Id: {
     label: '站點編號',
+    i18nLabel: 'process-no',
     table: {
       minWidth: 160,
       required: true
@@ -103,6 +110,7 @@ export const switchSequenceColumnSetting = {
   },
   erpNo: {
     label: '插單單號',
+    i18nLabel: 'rushOrder-no',
     table: {
       minWidth: 160,
       required: false
@@ -110,6 +118,7 @@ export const switchSequenceColumnSetting = {
   },
   LAST_UPDATE_TIMESTAMP: {
     label: '最後更新時間',
+    i18nLabel: 'last-updateTime',
     table: {
       minWidth: 160
     },
@@ -122,6 +131,7 @@ export const switchSequenceColumnSetting = {
   },
   updateBy: {
     label: '最後更新者',
+    i18nLabel: 'lastUpdated-by',
     table: {
       minWidth: 160
     },

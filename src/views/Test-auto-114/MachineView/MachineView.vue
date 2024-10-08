@@ -64,7 +64,7 @@ defineExpose({
   <div class="process-view">
     <CustomModal
       v-model="modal.machineRushOrder"
-      :title="`插單作業：機台 ${currentMachine.machineId}`"
+      :title="`${i18nTranslate('auto-114')}：${i18nTranslate('machine')} ${currentMachine.machineId}`"
       height-size="large"
       @submit="onMachineRushOrderSubmit"
     >
@@ -79,7 +79,7 @@ defineExpose({
           />
           <CustomButton
             type="success"
-            :label="`${i18nTranslate('setting')}${i18nTranslate('insert-order')}`"
+            :label="`${i18nTranslate('setting')}${i18nTranslate('insertOrder')}`"
             icon-name="check"
             icon-move="scale"
             @click="onMachineRushOrderSubmit"

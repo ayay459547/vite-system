@@ -59,7 +59,7 @@ export const columnSetting = {
   },
   sequence: {
     label: '生產順序',
-    i18nLabel: 'product-sequence',
+    i18nLabel: 'production-sequence',
     table: {
       width: 150,
       sortable: false,
@@ -385,7 +385,7 @@ export const columnSetting = {
   },
   custNo: {
     label: '客戶編號',
-    i18nLabel: 'customer-id',
+    i18nLabel: 'customer-no',
     table: {
       width: 170,
       sortable: false

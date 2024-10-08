@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useSlots, computed } from 'vue'
+import { useSlots, computed, inject } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 
+import type { UseHook } from '@/declare/hook'
 import { CustomEmpty } from '@/components'
 import { getUuid } from '@/lib/lib_utils'
 
@@ -11,6 +12,11 @@ import { version, props as collapseProps } from './CustomCollapseInfo'
 const scopedId = getUuid(version)
 
 const props = defineProps(collapseProps)
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: props.i18nModule
+})
 
 const emit = defineEmits(['update:modelValue', 'change'])
 const onChange: Emits.Change = (active: Props.ModelValue) => {
@@ -40,18 +46,18 @@ const hasSlot = (prop: string): boolean => {
       <ElCollapseItem
         v-for="item in props.options"
         :key="`${item.value}-${scopedId}`"
-        :title="item.label"
+        :title="i18nTranslate(item?.i18nLabel ?? item.label)"
         :name="item.value"
         :disabled="item.disabled ?? false"
       >
         <template v-if="hasSlot(`${item.value}-title`)" #title>
           <slot :name="`${item.value}-title`" v-bind="item">
-            <label class="collapse-title">{{ item.label }}</label>
+            <label class="collapse-title">{{ i18nTranslate(item?.i18nLabel ?? item.label) }}</label>
           </slot>
         </template>
         <template v-else #title>
           <slot name="title" v-bind="item">
-            <label class="collapse-title">{{ item.label }}</label>
+            <label class="collapse-title">{{ i18nTranslate(item?.i18nLabel ?? item.label) }}</label>
           </slot>
         </template>
 

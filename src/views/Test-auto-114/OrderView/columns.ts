@@ -25,6 +25,7 @@ export const columnSetting = {
   },
   routeId: {
     label: '流程代號',
+    i18nLabel: 'bom-ver',
     table: {
       minWidth: 180,
       sortable: false
@@ -37,6 +38,7 @@ export const columnSetting = {
   },
   isAlreadySetRushOrder: {
     label: '是否已設定插單',
+    i18nLabel: 'insertOrder-exist',
     table: {
       minWidth: 180,
       sortable: false
@@ -46,9 +48,9 @@ export const columnSetting = {
       type: 'select',
       default: '',
       options: [
-        { label: '全部', value: '' },
-        { label: '是', value: 'Y' },
-        { label: '否', value: 'N' }
+        { i18nLabel: 'all', label: '全部', value: '' },
+        { i18nLabel: 'select-true', label: '是', value: 'Y' },
+        { i18nLabel: 'select-false', label: '否', value: 'N' }
       ],
       isValidate: false
     },

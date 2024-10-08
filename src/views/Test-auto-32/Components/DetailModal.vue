@@ -125,7 +125,7 @@ onMounted(() => {
         <span>{{ lotData.erpNo }}</span>
       </div>
       <div class="flex-label-item">
-        <label>{{ i18nTranslate('customer-id') }}</label>
+        <label>{{ i18nTranslate('customer-no') }}</label>
         <span>{{ lotData.custNo }}</span>
       </div>
       <div class="flex-label-item">

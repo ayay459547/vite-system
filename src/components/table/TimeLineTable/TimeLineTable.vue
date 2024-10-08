@@ -511,7 +511,7 @@ defineExpose({
                   <div class="time-line-draggable grid-row">
                     <!-- 群組欄位 -->
                     <div class="draggable-list grid-col-xs-12 group">
-                      <label>群組欄位</label>
+                      <label>{{ i18nTranslate('column-group', defaultModuleType) }}</label>
                       <CustomDraggable
                         v-model="groupColumns"
                         :group="{ name: 'columns', pull: true, put: true }"
@@ -525,14 +525,16 @@ defineExpose({
                             :column="elementItem"
                             :timeLineDateKey="timeLineDateKey"
                             @changeKey="changeKey"
-                          />
+                          >
+                            <label>{{ `${index + 1}. ${i18nTranslate(elementItem?.i18nLabel ?? elementItem.label)}` }}</label>
+                          </DraggableItem>
                         </template>
                       </CustomDraggable>
                     </div>
 
                     <!-- 日期線欄位 -->
                     <div class="draggable-list grid-col-xs-12 date">
-                      <label>日期線欄位</label>
+                      <label>{{ i18nTranslate('column-dateLine', defaultModuleType) }}</label>
                       <CustomDraggable
                         v-model="dateColumns"
                         :group="{ name: 'columns', pull: true, put: true }"
@@ -545,14 +547,16 @@ defineExpose({
                             :column="elementItem"
                             :timeLineDateKey="timeLineDateKey"
                             @changeKey="changeKey"
-                          />
+                          >
+                            <label>{{ `${index + 1}. ${i18nTranslate(elementItem?.i18nLabel ?? elementItem.label)}` }}</label>
+                          </DraggableItem>
                         </template>
                       </CustomDraggable>
                     </div>
 
                     <!-- 未使用欄位 -->
                     <div class="draggable-list grid-col-xs-24 other">
-                      <label>未使用欄位</label>
+                      <label>{{ i18nTranslate('column-unuse', defaultModuleType) }}</label>
                       <CustomDraggable
                         v-model="otherColumns"
                         :group="{ name: 'columns', pull: true, put: true }"
@@ -565,7 +569,9 @@ defineExpose({
                             :column="elementItem"
                             :timeLineDateKey="timeLineDateKey"
                             @changeKey="changeKey"
-                          />
+                          >
+                            <label>{{ `${index + 1}. ${i18nTranslate(elementItem?.i18nLabel ?? elementItem.label)}` }}</label>
+                          </DraggableItem>
                         </template>
                       </CustomDraggable>
                     </div>
@@ -633,8 +639,9 @@ $max-height: calc(100vh - 240px);
   padding: 16px;
 
   &-draggable {
-    width: clamp(500px, 100%, $max-height);
-    height: 100;
+    width: 100%;
+    height: 100%;
+    max-height: $max-height;
     padding-right: 8px;
     gap: 12px 0;
   }

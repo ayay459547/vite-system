@@ -9,6 +9,7 @@ import { isEmpty, scrollToEl } from '@/lib/lib_utils'
 
 import { workReportColumnSetting } from './columns'
 import type { RushOrders } from '../../api'
+import type { ResValidate } from './api'
 import { getMachineList, getRushOrderList, getProcessList } from '../../api'
 
 const useHook: UseHook = inject('useHook')
@@ -252,15 +253,7 @@ onMounted(async () => {
 })
 
 const machineRef = ref()
-export type ResValidate = {
-  // 上傳資料
-  machineId: string
-  rushOrders: RushOrders
-  updateBy: string
-  // 驗證用
-  status: string
-  errorEl: Element | null
-}
+
 defineExpose({
   validate: async (): Promise<ResValidate> => {
     // 沒有選機台

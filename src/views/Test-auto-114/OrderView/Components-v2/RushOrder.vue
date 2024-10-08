@@ -107,7 +107,7 @@ const modal = reactive({
 })
 // 打開編輯生產順序
 const openSwitchSequence = (row: FormData) => {
-  console.log(machineRushOrderMap)
+  // console.log(machineRushOrderMap)
 
   const { machineId, processId } = row
   modal.machineId = machineId
@@ -487,7 +487,7 @@ defineExpose({
           }
         }
 
-        console.log('rushOrderData => ', rushOrderData)
+        // console.log('rushOrderData => ', rushOrderData)
         const { status, msg } = await rushOrderFromWeb(rushOrderData)
         if (status === 'success') {
           swal({
@@ -526,7 +526,7 @@ defineExpose({
   <div v-loading="isLoading" class="machine-rush-order">
     <CustomModal
       v-model="modal.switchSequence"
-      :title="`生產順序：${modal.machineId}`"
+      :title="`${i18nTranslate('production-sequence')}：${modal.machineId}`"
       @submit="onSwitchSequenceSubmit"
     >
       <SwitchSequence

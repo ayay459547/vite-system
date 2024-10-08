@@ -1,5 +1,8 @@
 import type { PropType } from 'vue'
 
+import type { ScopeKey } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/i18n/i18n_setting'
+
 export const version = '__FormList_1.0.0__'
 
 export declare namespace Types {
@@ -25,6 +28,7 @@ export declare namespace Props {
   type Move = Function | any
   type Disabled = Function | any
   type SetDisabled = (row: any) => boolean
+  type I18nModule = ScopeKey
 }
 export const props = {
   modelValue: {
@@ -134,6 +138,10 @@ export const props = {
     description: `
       用於判斷FormList Item是否禁止操作
     `
+  },
+  i18nModule: {
+    type: String as PropType<Props.I18nModule>,
+    default: defaultModuleType
   }
 }
 

@@ -43,8 +43,10 @@ div[class*="__CustomLockView"] {
     &-container {
       width: fit-content;
       height: fit-content;
-      min-width: 100%;
-      min-height: 100%;
+      min: {
+        width: 100%;
+        height: 100%;
+      }
       position: relative;
     }
   }
@@ -56,8 +58,9 @@ div[class*="__CustomLockView"] {
       position: absolute;
       z-index: 3;
       opacity: 0.7;
-      border: 3px dashed var(--el-color-primary);
-      border-radius: 12px;
+      border: 3px dashed var(--el-color-primary) {
+        radius: 12px;
+      };
       background-color: var(--el-color-primary-light-8);
     }
     &-description {
@@ -77,8 +80,10 @@ div[class*="__CustomLockView"] {
       font-size: 3em;
     }
     &-text {
-      font-size: 1.5em;
-      font-weight: 600;
+      font: {
+        size: 1.5em;
+        weight: 600;
+      }
     }
 
     &-inner {

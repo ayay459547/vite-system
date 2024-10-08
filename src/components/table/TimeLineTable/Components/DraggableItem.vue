@@ -41,7 +41,9 @@ const changeTimeLineDateKey = () => {
 
 <template>
   <div class="draggable-item" :class="{ 'is-active': isAcitve }">
-    <label>{{ `${props.index + 1}. ${props.column.label}` }}</label>
+    <slot>
+      <label>{{ `${props.index + 1}. ${props.column.label}` }}</label>
+    </slot>
 
     <CustomButton
       v-if="props.column?.isTimeLineDate"

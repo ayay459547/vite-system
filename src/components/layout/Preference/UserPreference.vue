@@ -136,7 +136,7 @@ const onClickLayout = (layoutType: string) => {
             <div class="icon">
               <CustomIcon type="far" name="window-restore" />
             </div>
-            <label>{{ i18nTranslate('view') + i18nTranslate('mode') }}</label>
+            <label>{{ i18nTranslate(['view', 'mode']) }}</label>
           </div>
 
           <div class="modal-select">

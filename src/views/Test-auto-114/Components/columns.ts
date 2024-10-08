@@ -1,6 +1,7 @@
 export const previewColumnSetting = {
   process: {
     label: '站點編號',
+    i18nLabel: 'site-no',
     table: { minWidth: 100 }
   },
   cust: {
@@ -13,6 +14,7 @@ export const previewColumnSetting = {
   },
   seq: {
     label: '插單順序',
+    i18nLabel: 'rushOrder-sequence',
     table: { minWidth: 100 }
   },
   memo: {
@@ -38,6 +40,7 @@ export const checkColumnSetting = {
   },
   process: {
     label: '站點編號',
+    i18nLabel: 'site-no',
     table: { minWidth: 100 }
   },
   cust: {
@@ -50,6 +53,7 @@ export const checkColumnSetting = {
   },
   seq: {
     label: '插單順序',
+    i18nLabel: 'rushOrder-sequence',
     table: { minWidth: 100 }
   },
   memo: {
@@ -58,6 +62,7 @@ export const checkColumnSetting = {
   },
   note: {
     label: '資料註記狀態',
+    i18nLabel: 'data-note-status',
     table: { minWidth: 200 }
   },
   dataForm: {

@@ -260,7 +260,7 @@ const remove = (rowData: TableData) => {
             </GroupSearch>
 
             <CustomButton
-              :label="i18nTranslate('refrush')"
+              :label="i18nTranslate('refresh')"
               icon-name="rotate"
               icon-move="rotate"
               @click="throttleInit()"

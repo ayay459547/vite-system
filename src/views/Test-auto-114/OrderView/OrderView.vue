@@ -21,8 +21,8 @@ const { i18nTranslate } = useHook({
 
 const tab = ref('ProcessView')
 const tabs = [
-  { label: '製程', value: 'ProcessView' },
-  { label: '機台', value: 'MachineView' }
+  { i18nLabel: 'process', label: '製程', value: 'ProcessView' },
+  { i18nLabel: 'machine', label: '機台', value: 'MachineView' }
 ]
 
 const tableOptions: TableOptions = {
@@ -85,12 +85,16 @@ defineExpose({
   <div class="process-view">
     <CustomModal
       v-model="modal.rushOrder"
-      :title="`插單作業：訂單 ${currentOrder.id}`"
+      :title="`${i18nTranslate('auto-114')}：${i18nTranslate('order')} ${currentOrder.id}`"
       height-size="large"
       @submit="onMachineRushOrderSubmit"
     >
       <div class="process-modal">
-        <CustomTabs v-model="tab" :options="tabs" />
+        <CustomTabs
+          v-model="tab"
+          :options="tabs"
+          i18n-module="system"
+        />
 
         <div class="process-rush-order">
           <Transition name="fade" mode="out-in">
@@ -119,7 +123,7 @@ defineExpose({
           />
           <CustomButton
             type="success"
-            :label="`${i18nTranslate('setting')}${i18nTranslate('insert-order')}`"
+            :label="`${i18nTranslate(['setting', 'insertOrder'])}`"
             icon-name="check"
             icon-move="scale"
             @click="onMachineRushOrderSubmit"

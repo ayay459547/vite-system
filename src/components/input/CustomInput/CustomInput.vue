@@ -786,9 +786,16 @@ const CustomInputTemplate = () => (
   >
     {!props.hiddenLabel && (
       <label class={styles['__input-label']}>
-        {props.isValidate && props.required && (
-          <span class={[styles['__input-required'], styles['__input-prefix']]}>*</span>
-        )}
+        {
+          props.isValidate && props.required && (
+            <span
+              class={[
+                styles['__input-required'],
+                styles['__input-prefix']
+              ]}
+            >*</span>
+          )
+        }
         <span>{translateLabel.value}</span>
       </label>
     )}

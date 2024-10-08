@@ -258,7 +258,7 @@ defineExpose({
       </div>
 
       <CustomButton
-        :label="`${i18nTranslate('select')}${i18nTranslate('file')}`"
+        :label="`${i18nTranslate(['select', 'file'])}`"
         icon-name="cloud-arrow-up"
         size="large"
         type="primary"
