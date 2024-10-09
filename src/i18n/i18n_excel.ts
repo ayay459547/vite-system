@@ -12,12 +12,9 @@ import { getI18nMessages } from '@/i18n'
 import type { ScopeKey, I18nTranslate, I18nTest } from './i18n_setting'
 import { scopeList, defaultModuleType } from './i18n_setting'
 
-// import i18nJson from './i18n.json'
-import i18nJson from './i18n_table.json'
-
 /**
  * 如果不需要 更新翻譯檔
- * 註解下面兩行
+ * 註解 .xlsx?b64
  *
  * 只有啟動服務時有效 限定development
  * 讀取 ?b64
@@ -25,8 +22,13 @@ import i18nJson from './i18n_table.json'
  * 2.base64 轉 json
  * 3.重新寫入 i18n.json
  */
-// import i18nXlsx from './i18n.xlsx?b64'
-import i18nXlsx from './i18n_table.xlsx?b64'
+
+import i18nJson from './i18n.json'
+import i18nXlsx from './i18n.xlsx?b64'
+
+// 測試用
+// import i18nJson from './i18n_test.json'
+// import i18nXlsx from './i18n_test.xlsx?b64'
 
 const mode = (import.meta as any).env.MODE
 if (mode === 'development') {

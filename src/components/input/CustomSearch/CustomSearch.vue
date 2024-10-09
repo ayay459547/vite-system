@@ -433,7 +433,7 @@ const popverWidth = computed(() => {
               <div style="width: fit-content;">
                 <CustomTooltip placement="right">
                   <template #content>
-                    <div>{{ i18nTranslate('進階設定', defaultModuleType) }}</div>
+                    <div>{{ i18nTranslate('setting-advanced', defaultModuleType) }}</div>
                   </template>
                   <FormCheckbox
                     v-show="props.isCondition"
@@ -448,7 +448,7 @@ const popverWidth = computed(() => {
               <div class="i-py-xs">
                 <FormList
                   v-model="formList"
-                  :label="'進階設定'"
+                  :label="i18nTranslate('setting-advanced', defaultModuleType)"
                   :table-data="formList"
                   :column-setting="columnSetting"
                   item-key="key"

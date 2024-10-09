@@ -131,7 +131,7 @@ export type {
   Emits as CustomDrawerEmits,
   Expose as CustomDrawerExpose
 } from './feature/CustomDrawer/CustomDrawerInfo'
-export const CustomDrawer = useAsyncComponent(() => import('./feature/CustomDrawer/CustomDrawer.vue'), 'p')
+export const CustomDrawer = useAsyncComponent(() => import('./feature/CustomDrawer/CustomDrawer.vue'), 'button')
 
 // 無資料
 export type {

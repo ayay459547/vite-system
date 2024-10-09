@@ -22,16 +22,7 @@ const barPercentage = ref(0)
 
 let timer = null
 
-const close = async () => {
-  barPercentage.value = 100
-  await nextTick()
-
-  setTimeout(() => {
-    isOpen.value = false
-    if (timer) clearInterval(timer)
-  }, 200)
-}
-
+// 開啟遮罩
 const openLoader: Expose.OpenLoader = (message: string) => {
   barPercentage.value = 0
   massage.value = message
@@ -41,6 +32,7 @@ const openLoader: Expose.OpenLoader = (message: string) => {
   openTime.value = Date.now()
 
   timer = setInterval(() => {
+    // 虛擬進度條
     if (barPercentage.value < 90) {
       barPercentage.value += Math.floor(Math.random() * 10)
     } else {
@@ -49,6 +41,16 @@ const openLoader: Expose.OpenLoader = (message: string) => {
   }, 1000)
 }
 
+const close = async () => {
+  barPercentage.value = 100
+  await nextTick()
+
+  setTimeout(() => {
+    isOpen.value = false
+    if (timer) clearInterval(timer)
+  }, 200)
+}
+// 關閉遮罩
 const closeLoader: Expose.CloseLoader = () => {
   if (!isOpen.value) return
 
