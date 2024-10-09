@@ -43,6 +43,9 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { totlaPermission, getPermission } from '@/lib/lib_permission'
 
+// 開發測試使用
+import DevelopmentTest from './DevelopmentTest/DevelopmentTest.vue'
+
 // hook
 const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
 const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
@@ -110,7 +113,7 @@ const {
 } = storeToRefs(routesStore)
 
 // 翻譯檔
-const { initModuleLangMap, i18nTest, i18nTranslate } = useGlobalI18n()
+const { initModuleLangMap, i18nTest, i18nTranslate, langMap } = useGlobalI18n()
 
 onMounted(() => {
   initModuleLangMap()
@@ -125,12 +128,16 @@ const routeChange = async (currentRoute: RouteLocationNormalized) => {
   await awaitTime(120)
 
   // 設定網頁標籤名稱
-  setWebInfo()
+  setWebTitle()
 }
 
-// 設定 網頁 title
-// 設定 使用中的翻譯檔模組
-const setWebInfo = () => {
+/**
+ * 設定網頁 title 優先順序
+ * 1. i18n Excel 中 views 的名稱
+ * 2. router 設定的 title
+ * 3. 系統名稱
+ */
+const setWebTitle = () => {
   const currentTitle = (currentNavigation => {
     if (currentNavigation) {
       const { name, title } = currentNavigation
@@ -140,8 +147,10 @@ const setWebInfo = () => {
       }
       if (title ?? false) return title
     }
+
     return systemEnv.value.system
   })(currentNavigation.value)
+
   document.title = currentTitle
 }
 
@@ -253,6 +262,32 @@ const login = async (userId: number) => {
   }
 }
 
+// 開發測試用 DevelopmentTest
+const developmentTestRef = ref()
+const isShowDevelopmentTest = ref(false)
+// @ts-ignore
+window.development = () => {
+  if (systemEnv.value.mode === 'development') {
+    isShowDevelopmentTest.value = !isShowDevelopmentTest.value
+
+  } else {
+    swal({
+      title: 'Input System Title',
+      input: 'text',
+      showCancelButton: true,
+      showConfirmButton: true
+    }).then((result: any) => {
+      const { isConfirmed, value } = result
+
+      if (isConfirmed && value === systemEnv.value.system) {
+        isShowDevelopmentTest.value = !isShowDevelopmentTest.value
+      } else {
+        isShowDevelopmentTest.value = false
+      }
+    })
+  }
+}
+
 // 向下傳送常用工具
 provide<UseHook>('useHook', (options = {}) => {
   const { i18nModule = defaultModuleType } = options
@@ -260,6 +295,18 @@ provide<UseHook>('useHook', (options = {}) => {
   return {
     loading,
     i18nTranslate: (key, _i18nModule?) => {
+      if (isShowDevelopmentTest.value) {
+        const { name } = currentNavigation?.value ?? { name: null }
+
+        if (name) {
+          developmentTestRef.value?.addI18nUsageRecord({
+            routeName: name,
+            i18nKey: key,
+            i18nModule: _i18nModule ?? i18nModule
+          })
+        }
+      }
+
       return `${i18nTranslate(key, _i18nModule ?? i18nModule)}`
     },
     i18nTest: (key, _i18nModule?) => {
@@ -356,7 +403,7 @@ provide<UseHook>('useHook', (options = {}) => {
       :auth-data="authData"
       :is-iframe="systemEnv.isIframe"
       @logout="logout"
-      @lang-change="setWebInfo"
+      @lang-change="setWebTitle"
     >
       <template #logo="{ isOpen }">
         <slot name="logo" :is-open="isOpen" :env="systemEnv"></slot>
@@ -390,6 +437,14 @@ provide<UseHook>('useHook', (options = {}) => {
         @close="deleteCustomPopoverQueue"
       />
     </template>
+
+    <!-- 開發測試用 -->
+    <DevelopmentTest
+      ref="developmentTestRef"
+      v-if="isShowDevelopmentTest"
+      :lang-map="langMap"
+    />
+
   </ElConfigProvider>
 </template>
 

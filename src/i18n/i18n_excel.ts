@@ -23,8 +23,8 @@ import { scopeList, defaultModuleType } from './i18n_setting'
  * 3.重新寫入 i18n.json
  */
 
-import i18nJson from './i18n.json'
-import i18nXlsx from './i18n.xlsx?b64'
+import i18nJson from './i18n_table.json'
+import i18nXlsx from './i18n_table.xlsx?b64'
 
 // 測試用
 // import i18nJson from './i18n_test.json'
@@ -72,10 +72,14 @@ export const initTranslateSrcFile = () => {
 
     // https://vue-i18n.intlify.dev/guide/advanced/composition#message-translation
     resLangMap[i18nKey] = {
-      // key | 預設顯示文字 | 客製化(尚未製作)
-      zhTw: `${i18nKey} | ${zh_TW} | ${zh_TW}`,
-      zhCn: `${i18nKey} | ${zh_CN} | ${zh_CN}`,
-      en: `${i18nKey} | ${en} | ${en}`
+      zhTw: `${zh_TW}`,
+      zhCn: `${zh_CN}`,
+      en: `${en}`
+
+      // key | 預設顯示文字 | 客製化(可能需要 尚未製作)
+      // zhTw: `${i18nKey} | ${zh_TW} | ${zh_TW}`,
+      // zhCn: `${i18nKey} | ${zh_CN} | ${zh_CN}`,
+      // en: `${i18nKey} | ${en} | ${en}`
     }
 
     return resLangMap
@@ -98,6 +102,8 @@ export type GlobalI18n = Partial<
  * @returns {Object} 翻譯工具
  */
 export const useGlobalI18n = (): GlobalI18n => {
+  // 對照表
+  const langMap = shallowRef<Record<string, any>>({})
   // 模組
   const moduleMap = shallowRef<Record<string, any>>({})
   // 翻譯
@@ -107,15 +113,16 @@ export const useGlobalI18n = (): GlobalI18n => {
   })
 
   const initModuleLangMap = () => {
-    const { langMap, moduleMap: _moduleMap } = initTranslateSrcFile()
+    const { langMap: _langMap, moduleMap: _moduleMap } = initTranslateSrcFile()
 
-    const messages = getI18nMessages(langMap)
+    const messages = getI18nMessages(_langMap)
 
     const _globalI18n = useI18n({
       useScope: 'global',
       messages
     }) as Partial<Composer>
 
+    langMap.value = _langMap
     moduleMap.value = _moduleMap
     globalI18n.value = _globalI18n
   }
@@ -166,6 +173,7 @@ export const useGlobalI18n = (): GlobalI18n => {
   return {
     initModuleLangMap,
     i18nTranslate,
-    i18nTest
+    i18nTest,
+    langMap
   }
 }

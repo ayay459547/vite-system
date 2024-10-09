@@ -250,6 +250,15 @@ export type {
 } from './feature/CustomTag/CustomTagInfo'
 export const CustomTag = useAsyncComponent(() => import('./feature/CustomTag/CustomTag.vue'), 'caption')
 
+// 文字
+export type {
+  Types as CustomTextTypes,
+  Props as CustomTextProps,
+  Emits as CustomTextEmits,
+  Expose as CustomTextExpose
+} from './feature/CustomText/CustomTextInfo'
+export const CustomText = useAsyncComponent(() => import('./feature/CustomText/CustomText.vue'), 'caption')
+
 // 時間線
 export type {
   Types as CustomTimeLineTypes,
@@ -582,3 +591,13 @@ export type {
   Expose as WebViewTableExpose
 } from './table/WebViewTable/WebViewTableInfo'
 export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable/WebViewTable.vue'), 'rect')
+
+/**
+ * 階級式甘特圖
+ * 功能:
+ * 多欄位
+ * 多階級篩選
+ * 手動插單
+ */
+export const HierarchiesGantt = useAsyncComponent(() => import('./chart/HierarchiesGantt/HierarchiesGantt.vue'), 'rect')
+// export { default as HierarchiesGantt } from './chart/HierarchiesGantt/HierarchiesGantt.vue'
