@@ -89,13 +89,13 @@ export type {
 export const CustomCollapse = useAsyncComponent(() => import('./feature/CustomCollapse/CustomCollapse.vue'), 'rect')
 
 // 棄用 CustomModal 代替
-export type {
-  Types as CustomDialogTypes,
-  Props as CustomDialogProps,
-  Emits as CustomDialogEmits,
-  Expose as CustomDialogExpose
-} from './feature/CustomDialog/CustomDialogInfo'
-export const CustomDialog = useAsyncComponent(() => import('./feature/CustomDialog/CustomDialog.vue'), 'p')
+// export type {
+//   Types as CustomDialogTypes,
+//   Props as CustomDialogProps,
+//   Emits as CustomDialogEmits,
+//   Expose as CustomDialogExpose
+// } from './feature/CustomDialog/CustomDialogInfo'
+// export const CustomDialog = useAsyncComponent(() => import('./feature/CustomDialog/CustomDialog.vue'), 'p')
 
 // 分隔線
 export type {
@@ -131,7 +131,7 @@ export type {
   Emits as CustomDrawerEmits,
   Expose as CustomDrawerExpose
 } from './feature/CustomDrawer/CustomDrawerInfo'
-export const CustomDrawer = useAsyncComponent(() => import('./feature/CustomDrawer/CustomDrawer.vue'), 'button')
+export const CustomDrawer = useAsyncComponent(() => import('./feature/CustomDrawer/CustomDrawer.vue'), 'empty')
 
 // 無資料
 export type {
@@ -167,7 +167,7 @@ export type {
   Emits as CustomLinkEmits,
   Expose as CustomLinkExpose
 } from './feature/CustomLink/CustomLinkInfo'
-export const CustomLink = useAsyncComponent(() => import('./feature/CustomLink/CustomLink.vue'), 'caption')
+export { default as CustomLink } from './feature/CustomLink/CustomLink.vue'
 
 // 鎖定
 export type {
@@ -257,7 +257,7 @@ export type {
   Emits as CustomTextEmits,
   Expose as CustomTextExpose
 } from './feature/CustomText/CustomTextInfo'
-export const CustomText = useAsyncComponent(() => import('./feature/CustomText/CustomText.vue'), 'caption')
+export { default as CustomText } from './feature/CustomText/CustomText.vue'
 
 // 時間線
 export type {

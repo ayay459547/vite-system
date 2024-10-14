@@ -446,7 +446,7 @@ onUnmounted(() => {
           'z-index': modalZIndex
         }"
         @mousedown="setModalIndex"
-        v-click-outside="clickOutside"
+        v-on-click-outside="clickOutside"
       >
         <Transition name="modal">
           <div

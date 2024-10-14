@@ -98,7 +98,7 @@ export const useLocalI18n = (i18nModule?: ScopeKey): LocalI18n => {
 
 export type Variant = 'p' | 'text'
   | 'h1' | 'h3' | 'caption'
-  |'button' | 'image'
+  |'button' | 'empty' | 'image'
   | 'circle' | 'rect'
 /**
  * @author Caleb

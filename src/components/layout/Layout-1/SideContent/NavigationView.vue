@@ -6,7 +6,7 @@ import type { NavigationFailure } from 'vue-router'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
-import { CustomIcon, CustomScrollbar } from '@/components'
+import { CustomIcon, CustomScrollbar, CustomTooltip } from '@/components'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { isEmpty } from '@/lib/lib_utils'
@@ -125,7 +125,17 @@ defineExpose({
               class="nav-item-left"
               :class="{ active: props.currentRouteName.level1 === level1Item.name }"
             >
-              <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+              <CustomTooltip
+                placement="right"
+                :disabled="!isLevel2Open"
+                :offset="12"
+                :show-after="160"
+              >
+                <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+                <template #content>
+                  <div>{{ getRouteTitle(level1Item) }}</div>
+                </template>
+              </CustomTooltip>
               <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
             </div>
 
@@ -144,7 +154,17 @@ defineExpose({
               :class="{ active: props.currentRouteName.level1 === level1Item.name }"
               @click="onRouterLinkClick(navigate)"
             >
-              <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+              <CustomTooltip
+                placement="right"
+                :disabled="!isLevel2Open"
+                :offset="12"
+                :show-after="160"
+              >
+                <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+                <template #content>
+                  <div>{{ getRouteTitle(level1Item) }}</div>
+                </template>
+              </CustomTooltip>
               <span class="item-title">{{ getRouteTitle(level1Item) }}</span>
             </div>
 
@@ -154,7 +174,10 @@ defineExpose({
       </nav>
     </CustomScrollbar>
 
-    <div class="nav-list level2">
+    <div
+      class="nav-list nav-level2"
+      :class="isLevel2Open ? 'is-open' : 'is-close'"
+    >
       <SubNavigationView
         v-model:isLevel2Open="isLevel2Open"
         :title="getRouteTitle(level2Nav)"
@@ -168,22 +191,12 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use '../Layout-1.scss' as *;
-
 .nav {
   &-container {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-wrap: nowrap;
     padding: 0 2px;
-    // transition-duration: 0.3s;
-    // &.is-open {
-    //   transform: translateX(-$nav-width + $nav-padding * 2);
-    // }
-    // &.is-close {
-    //   transform: translateX(0px);
-    // }
+    position: relative;
 
     &:hover {
       .nav-level1-container {
@@ -203,6 +216,14 @@ defineExpose({
 
   &-level1 {
     &-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      background-color: var(--i-color-menu);
+
       & {
         overflow: hidden {
           y: auto;
@@ -216,29 +237,13 @@ defineExpose({
       &.nav-is-open.is-close {
         opacity: 0.2;
       }
-
-      &.is-close {
-        min-width: $side-width - $nav-padding * 2;
-      }
-      &.is-open {
-        min-width: $nav-width - $nav-padding * 2;
-      }
     }
   }
 
   &-list {
-    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    &.level1 {
-      min-width: $nav-width - $nav-padding * 2;
-    }
-    &.level2 {
-      min-width: $nav-width - $side-width;
-      padding: 0;
-    }
   }
 
   &-item {
@@ -283,6 +288,9 @@ defineExpose({
         transform: translateX(0);
         transition-duration: 0.3s;
         width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .item-icon {
         font-size: 1.3em;
@@ -294,6 +302,24 @@ defineExpose({
 
     &-right {
       font-size: 1.2em;
+    }
+  }
+
+  &-level2 {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: var(--i-color-menu);
+    z-index: 2;
+
+    &.is-open {
+      width: calc(100% - 56px);
+      opacity: 1;
+    }
+    &.is-close {
+      width: 0px;
+      opacity: 0;
     }
   }
 }

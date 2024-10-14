@@ -7,6 +7,7 @@ import {
   CustomIcon,
   CustomDivider
 } from '@/components'
+import { vInfiniteScroll } from '@vueuse/components'
 
 const count = ref(10)
 const load = () => {

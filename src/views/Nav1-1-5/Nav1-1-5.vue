@@ -2,7 +2,13 @@
 import { ElCard } from 'element-plus'
 import { ref, onMounted } from 'vue'
 
-import { CustomScrollbar, CustomButton, CustomDivider, CustomDialog, CustomModal } from '@/components'
+import {
+  CustomScrollbar,
+  CustomButton,
+  CustomDivider,
+  // CustomDialog,
+  CustomModal
+} from '@/components'
 import { useElementSize } from '@/lib/lib_hook'
 
 import TestKeepAlive from './TestKeepAlive.vue'
@@ -99,9 +105,9 @@ onMounted(() => {
 
       <CustomButton type="warning" label="關閉 Dialog" class="i-my-sm" @click="isShow = false" />
 
-      <CustomDialog v-model="isShow" draggable modal>
+      <!-- <CustomDialog v-model="isShow" draggable modal>
         <h3>測試 CustomDialog</h3>
-      </CustomDialog>
+      </CustomDialog> -->
     </div>
 
     <CustomDivider />

@@ -69,7 +69,7 @@ const SimpleFilterTemplate = () => (
         default: () => (
           <div
             class={styles['filter-container']}
-            // v-click-outside={(e: MouseEvent) => {
+            // v-on-click-outside={(e: MouseEvent) => {
             //   isVisible.value = false
             //   e.stopPropagation()
             // }}

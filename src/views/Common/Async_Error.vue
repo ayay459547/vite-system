@@ -43,6 +43,10 @@ const bindStyle = computed(() => {
       width = '80px'
       height = '32px'
       break
+    case 'empty':
+      width = '0px'
+      height = '0px'
+      break
     case 'image':
     case 'circle':
     case 'rect':

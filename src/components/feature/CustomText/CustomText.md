@@ -28,6 +28,7 @@ import { CustomText } from '@/components'
 | truncated       | 顯示省略號              | boolean | false     |
 | text            | 最大行數                | number  | undefined     |
 | tag             | 自訂元素標籤            | string / Components  | 'span'  |
+| label           | 文字                   | string   | ''  |
 
 ### Slots
 

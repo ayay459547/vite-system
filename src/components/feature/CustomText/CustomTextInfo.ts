@@ -12,6 +12,8 @@ export declare namespace Props {
   type Truncated = boolean
   type LineClamp = number
   type Tag = string | Component
+
+  type Label = string
 }
 export const props = {
   // Element UI
@@ -44,6 +46,13 @@ export const props = {
     required: false,
     default: 'span',
     description: '自訂元素標籤'
+  },
+  // Custom
+  label: {
+    type: String as PropType<Props.Label>,
+    required: false,
+    default: '',
+    description: '文字'
   }
 }
 

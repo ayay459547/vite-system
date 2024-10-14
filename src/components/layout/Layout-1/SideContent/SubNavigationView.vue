@@ -193,6 +193,9 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     &:hover {

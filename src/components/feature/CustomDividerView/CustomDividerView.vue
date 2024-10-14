@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 
 import { CustomIcon, CustomScrollbar } from '@/components'
 import { useResizeObserver } from '@/lib/lib_hook'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
 import throttle from '@/lib/lib_throttle'
 
-import type { Props } from './CustomDividerViewInfo'
+import type { Props, Emits, Expose } from './CustomDividerViewInfo'
 import { version, props as dividerViewProps } from './CustomDividerViewInfo'
 
 const scopedId = getUuid(version)
@@ -26,34 +26,68 @@ const draggablePosition = ref<Props.DraggablePosition>('center')
 const isMove = ref(false)
 
 // 監聽移動改變大小
-let reSizeEvent = ($event: MouseEvent) => {
+let reSizeEvent = ($event: Event) => {
   console.log($event)
 }
-let beforeMoveWidth = 0
-const onDraggableMousedown = ($event: MouseEvent) => {
-  if (isEmpty(containerRef.value) || isMove.value) return
 
-  const { clientX: mouseDownX } = $event
+let beforeMoveWidth = 0
+const getClientInfo = ($event: Event): Event | TouchList => {
+  switch ($event.type) {
+    case 'mousedown':
+    case 'mousemove':
+      return $event
+    case 'touchstart':
+    case 'touchmove':
+      return $event.changedTouches[0]
+  }
+}
+const onDraggableMousedown = ($event: Event) => {
+  if (isEmpty(containerRef.value) || isMove.value) return
+  event.preventDefault()
+
+  const clientInfo = getClientInfo($event)
+  const { clientX: mouseDownX } = clientInfo
   beforeMoveWidth = defaultWidth.custom
 
   // 滑鼠移動時執行
-  const throttleMousemoveEvent = throttle<typeof reSizeEvent>(function ($event: MouseEvent) {
-    const { clientX: mouseMoveX } = $event
+  const throttleMousemoveEvent = throttle<typeof reSizeEvent>(function ($moveEvent: Event) {
+    const moveClientInfo = getClientInfo($moveEvent)
+    const { clientX: mouseMoveX } = moveClientInfo
     // 變化高度
     const _moveX = mouseMoveX - mouseDownX
     currentLeftWidth.value = beforeMoveWidth + _moveX
-  }, 16, { isNoLeading: true })
+  }, 24, { isNoLeading: true })
 
   reSizeEvent = throttleMousemoveEvent
-  containerRef.value.addEventListener('mousemove', reSizeEvent)
+
+  switch ($event.type) {
+    case 'mousedown':
+      containerRef.value.addEventListener('mousemove', reSizeEvent)
+      break
+    case 'touchstart':
+      containerRef.value.addEventListener('touchmove', reSizeEvent, { passive: false })
+      break
+  }
 
   draggablePosition.value = 'custom'
   isMove.value = true
 }
+
+const emit = defineEmits(['change'])
+const onChange: Emits.Change = async () => {
+  await nextTick()
+  emit('change', defaultWidth.custom)
+}
+
 // 取消監聽事件
 const removeEvent = () => {
-  if (containerRef.value) {
+  if (containerRef.value && isMove.value) {
+    // console.log('removeEvent')
     containerRef.value.removeEventListener('mousemove', reSizeEvent)
+
+    if (draggablePosition.value === 'custom') {
+      onChange()
+    }
   }
   isMove.value = false
 }
@@ -122,6 +156,16 @@ const currentLeftWidth = computed<any>({
   }
 })
 
+// 重設定中心寬度
+const initDefaultCenter: Expose.InitDefaultCenter = () => {
+  if (typeof props.leftWidth === 'number' && props.leftWidth > 0) {
+    defaultWidth.center = props.leftWidth
+  }
+}
+defineExpose({
+  initDefaultCenter
+})
+
 // 設定預設寬度
 const setDefaultWidth = (width: number) => {
   // 全部寬 - 拖拉寬 - (border 1px * 2)
@@ -165,7 +209,9 @@ onMounted(() => {
     :class="[scopedId, isMove ? 'is-move' : '']"
     @mouseup.stop="removeEvent"
     @mouseleave.stop="removeEvent"
-    v-click-outside="removeEvent"
+    @touchend.stop="removeEvent"
+    @touchcancel.stop="removeEvent"
+    v-on-click-outside="removeEvent"
   >
     <!-- 左邊 -->
     <div
@@ -181,10 +227,15 @@ onMounted(() => {
     <!-- 拖拉變更兩邊大小 -->
     <div
       class="divider-view-draggable"
-      @mousedown.self="onDraggableMousedown"
-      @dblclick.self="onDraggableDblclick"
+      @mousedown.self.stop="onDraggableMousedown"
+      @touchstart.self.stop="onDraggableMousedown"
+      @dblclick.self.stop="onDraggableDblclick"
     >
-      <div class="divider-view-btn" @mousedown.stop>
+      <div
+        class="divider-view-btn"
+        @mousedown.stop
+        @touchstart.stop
+      >
         <div class="left-icon" @click.stop="onLeftClick">
           <CustomIcon name="chevron-left" />
         </div>
@@ -230,10 +281,12 @@ div[class*="__CustomDividerView"] {
       height: 100%;
       background-color: var(--el-color-info-light-9);
       position: relative;
+      border-radius: 6px;
+      transition-duration: 0.2s;
 
       &:hover {
         cursor: col-resize;
-
+        box-shadow: 0px 0px 8px 1px var(--el-color-info-light-3);
         & > .divider-view-btn {
           opacity: 1;
         }

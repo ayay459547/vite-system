@@ -32,6 +32,10 @@ const bindStyle = computed(() => {
       width = '80px'
       height = '32px'
       break
+    case 'empty':
+      width = '0px'
+      height = '0px'
+      break
     case 'image':
     case 'circle':
     case 'rect':
@@ -40,6 +44,11 @@ const bindStyle = computed(() => {
   }
 
   return { width, height }
+})
+
+const skeletonVariant = computed(() => {
+  if (props.variant === 'empty') return 'text'
+  return props.variant
 })
 
 </script>
@@ -61,7 +70,7 @@ const bindStyle = computed(() => {
                 width: `${width}px`,
                 height: `${height}px`
               }"
-              :variant="props.variant"
+              :variant="skeletonVariant"
             />
           </template>
 

@@ -1,9 +1,10 @@
 import type { App } from 'vue'
 import { createApp } from 'vue'
-// import debounce from '@/lib/lib_debounce'
-import vClickOutside from 'click-outside-vue3'
-import VFixed from '@/components/VFixed.vue'
 import type { Placement } from 'element-plus'
+import { vOnClickOutside } from '@vueuse/components'
+
+// import debounce from '@/lib/lib_debounce'
+import VFixed from '@/components/VFixed.vue'
 import { awaitTime } from '@/lib/lib_utils'
 
 const mouseenter = 'mouseenter'
@@ -68,7 +69,7 @@ function createHandler(this: Element, options: Options) {
     elClass
   })
 
-  const vm = app.use(vClickOutside).mount(fixedEl)
+  const vm = app.directive('on-click-outside', vOnClickOutside).mount(fixedEl)
 
   fixedSet.add({
     app,

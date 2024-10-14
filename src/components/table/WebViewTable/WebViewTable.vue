@@ -523,7 +523,7 @@ const modal = reactive({
               <template #search-all="scope">
                 <slot name="search-all" :filter-column="filterColumn" v-bind="scope">
                   <CustomSearch
-                    class="grid-col-xs-12 grid-col-md-8 grid-col-lg-6"
+                    class="grid-col-xs-24 grid-col-sm-12 grid-col-md-8 grid-col-lg-6"
                     v-model="filter[scope.prop]"
                     v-model:active="activeFilter[scope.prop]"
                     v-bind="filterColumn[scope.prop]"
@@ -547,7 +547,7 @@ const modal = reactive({
             </GroupSearch>
 
             <CustomButton
-              :label="i18nTranslate('refrush', defaultModuleType)"
+              :label="i18nTranslate('refresh', defaultModuleType)"
               icon-name="rotate"
               icon-move="rotate"
               @click="onReset"

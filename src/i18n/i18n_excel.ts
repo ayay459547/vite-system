@@ -9,7 +9,7 @@ import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
-import type { ScopeKey, I18nTranslate, I18nTest } from './i18n_setting'
+import type { I18nTranslate, I18nTest } from './i18n_setting'
 import { scopeList, defaultModuleType } from './i18n_setting'
 
 /**
@@ -93,7 +93,7 @@ export type GlobalI18n = Partial<
     initModuleLangMap: () => void
     i18nTranslate: I18nTranslate
     i18nTest: I18nTest
-    setModuleType: (type: ScopeKey) => void
+    langMap: Record<string, any>
   }
 >
 /**

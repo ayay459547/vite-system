@@ -12,13 +12,16 @@ import {
   FormInput
 } from '@/components'
 import { useDraggable, useResizeObserver } from '@/lib/lib_hook'
-import { isEmpty, hasOwnProperty, deepClone } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, deepClone, aesDecrypt } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { formatDatetime } from '@/lib/lib_format'
+import { getCookie } from '@/lib/lib_cookie'
 
 // excel
 import type { ExcelColumn, Worksheet } from '@/lib/lib_files'
 import { createWorkbook, downloadWorkbook } from '@/lib/lib_files'
+
+const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 
 const props = defineProps({
   langMap: {
@@ -169,6 +172,40 @@ const customDownloadExcel = () => {
   }
 }
 
+let timer: any = null
+/**
+ * 檢查登入狀態資訊
+ * @param isIntervalCheck 是否每5分鐘 檢查一次
+ */
+const checkToken = (isIntervalCheck?: boolean) => {
+  const loginTime = getCookie('loginTime')
+  const _token = getCookie('token')
+  const temp = aesDecrypt(_token, `${privateKey}__${loginTime}`)
+
+  const log = () => {
+    console.groupCollapsed('CheckToken')
+    console.log('now:', new Date())
+    console.log('token:', _token)
+    console.log('loginTime:', loginTime)
+    console.log('userId:', temp)
+    console.groupEnd()
+  }
+  log()
+
+  if (typeof isIntervalCheck !== 'boolean') return
+
+  if (timer || !isIntervalCheck) {
+    clearInterval(timer)
+  }
+
+  if (isIntervalCheck) {
+    timer = setInterval(() => {
+      log()
+    }, 5 * 60 * 1000)
+  }
+
+}
+
 defineExpose({
   addI18nUsageRecord: (record: any) => {
     const { routeName, i18nKey, i18nModule } = record
@@ -276,6 +313,33 @@ defineExpose({
               @click="replaceText"
             />
           </div>
+
+          <CustomButtonGroup>
+            <CustomButton
+              icon-name="user-shield"
+              label="登入狀態"
+              type="danger"
+              plain
+              size="large"
+              @click="checkToken"
+            />
+            <CustomButton
+              icon-name="stopwatch"
+              label="開啟定期確認"
+              type="danger"
+              plain
+              size="large"
+              @click="checkToken(true)"
+            />
+            <CustomButton
+              icon-name="pause"
+              label="關閉定期確認"
+              type="danger"
+              plain
+              size="large"
+              @click="checkToken(false)"
+            />
+          </CustomButtonGroup>
         </div>
       </div>
       <template #reference>

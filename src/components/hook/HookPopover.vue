@@ -159,7 +159,11 @@ defineExpose({
       <div v-else>empty</div>
 
       <template #reference>
-        <div v-click-outside="deletePopover" class="popover-test" @click="visible = !visible"></div>
+        <div
+          v-on-click-outside="deletePopover"
+          class="popover-test"
+          @click="visible = !visible"
+        ></div>
       </template>
     </CustomPopover>
   </div>

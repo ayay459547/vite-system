@@ -24,6 +24,10 @@ export const props = {
   }
 }
 
-export declare namespace Emits {}
+export declare namespace Emits {
+  type Change = () => void
+}
 
-export declare namespace Expose {}
+export declare namespace Expose {
+  type InitDefaultCenter = () => void
+}
