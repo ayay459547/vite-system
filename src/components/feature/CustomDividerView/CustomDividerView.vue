@@ -31,17 +31,20 @@ let reSizeEvent = ($event: Event) => {
 }
 
 let beforeMoveWidth = 0
-const getClientInfo = ($event: Event): Event | TouchList => {
+const getClientInfo = ($event: MouseEvent | TouchEvent): MouseEvent | Touch => {
   switch ($event.type) {
     case 'mousedown':
-    case 'mousemove':
-      return $event
+    case 'mousemove': {
+      return $event as MouseEvent
+    }
     case 'touchstart':
-    case 'touchmove':
-      return $event.changedTouches[0]
+    case 'touchmove': {
+      const event = $event as TouchEvent
+      return event.changedTouches[0]
+    }
   }
 }
-const onDraggableMousedown = ($event: Event) => {
+const onDraggableMousedown = ($event: MouseEvent | TouchEvent) => {
   if (isEmpty(containerRef.value) || isMove.value) return
   event.preventDefault()
 
@@ -50,7 +53,7 @@ const onDraggableMousedown = ($event: Event) => {
   beforeMoveWidth = defaultWidth.custom
 
   // 滑鼠移動時執行
-  const throttleMousemoveEvent = throttle<typeof reSizeEvent>(function ($moveEvent: Event) {
+  const throttleMousemoveEvent = throttle<typeof reSizeEvent>(function ($moveEvent: MouseEvent | TouchEvent) {
     const moveClientInfo = getClientInfo($moveEvent)
     const { clientX: mouseMoveX } = moveClientInfo
     // 變化高度

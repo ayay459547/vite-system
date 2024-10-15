@@ -1,7 +1,7 @@
 export type ResValidate = {
   // 上傳資料
   machineId: string
-  rushOrders: RushOrders
+  rushOrders: any
   updateBy: string
   // 驗證用
   status: string

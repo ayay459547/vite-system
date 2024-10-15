@@ -35,7 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:isLevel2Open', 'change-map'])
 
-const navHeight = 40
+const navHeight = 39.5
 const useHook: UseHook = inject('useHook')
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
@@ -205,7 +205,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
     color: var(--i-color-menu-color);
 
     h3 {
-      font-size: 1.4em;
+      font-size: 1.2em;
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;

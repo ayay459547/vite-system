@@ -22,6 +22,11 @@ import {
 // 文字懸浮
 import { vFixed } from './fixed'
 
+/**
+ * @description 自訂模板語法
+ * @see https://vuejs.org/guide/reusability/custom-directives
+ */
+
 const pluginDirective = {
   install(app: App): void {
     // https://element-plus.org/en-US/component/loading.html#loading

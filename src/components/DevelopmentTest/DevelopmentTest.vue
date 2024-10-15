@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue'
+import type { PropType } from 'vue'
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -51,7 +51,7 @@ const isVisible = computed({
   }
 })
 
-useResizeObserver(document.querySelector('body #app'), () => {
+useResizeObserver(document.querySelector('body #app') as any, () => {
   const { x: initX, y: initY } = getInitPosition()
   x.value = initX
   y.value = initY
@@ -95,8 +95,7 @@ const replaceText = () => {
   const walker: TreeWalker = document.createTreeWalker(
     document.body,
     NodeFilter.SHOW_TEXT,
-    null,
-    false
+    null
   )
 
   let node: Node | null = null
@@ -321,7 +320,7 @@ defineExpose({
               type="danger"
               plain
               size="large"
-              @click="checkToken"
+              @click="checkToken()"
             />
             <CustomButton
               icon-name="stopwatch"

@@ -574,7 +574,7 @@ export type {
   Emits as VxeTableEmits,
   Expose as VxeTableExpose
 } from './table/VxeTable/VxeTableInfo'
-export const VxeTable = useAsyncComponent(() => import('./table/VxeTable/VxeTable.vue'), 'rect')
+export { default as VxeTable } from './table/VxeTable/VxeTable.vue'
 
 /**
  * 專案用特殊表格
@@ -600,4 +600,3 @@ export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable
  * 手動插單
  */
 export const HierarchiesGantt = useAsyncComponent(() => import('./chart/HierarchiesGantt/HierarchiesGantt.vue'), 'rect')
-// export { default as HierarchiesGantt } from './chart/HierarchiesGantt/HierarchiesGantt.vue'
