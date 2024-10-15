@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, useSlots, onMounted } from 'vue'
+import { ref, computed, useSlots, nextTick } from 'vue'
 import { ElText } from 'element-plus'
 
 import { CustomTooltip } from '@/components'
@@ -20,17 +20,16 @@ const textTruncated = computed(() => {
   return props.truncated || isTruncated.value
 })
 
-onMounted(() => {
-  setTimeout(() => {
-    const textWrapper = document.querySelector(`[class*="${scopedId}"]`)
-    if (isEmpty(textWrapper)) return
+const onResize = async () => {
+  await nextTick()
+  const textWrapper = document.querySelector(`[class*="${scopedId}"]`) as HTMLElement
+  if (isEmpty(textWrapper)) return
 
-    const textContent = textWrapper.querySelector('.text-label')
-    if (isEmpty(textContent)) return
+  const textContent = textWrapper.querySelector('.text-label') as HTMLElement
+  if (isEmpty(textContent)) return
 
-    isTruncated.value = (textWrapper.offsetWidth < textContent.offsetWidth)
-  }, 560)
-})
+  isTruncated.value = (textWrapper.offsetWidth < textContent.offsetWidth)
+}
 
 </script>
 
@@ -43,6 +42,7 @@ onMounted(() => {
     :disabled="!isTruncated"
   >
     <ElText
+      v-element-size="onResize"
       :type="props.type"
       :size="props.size"
       :truncated="textTruncated"

@@ -131,37 +131,13 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use '../Layout-1.scss' as *;
-
-@mixin navStyle($isNavOpen) {
-  @if ($isNavOpen) {
-    min-width: $nav-width;
-    transition-delay: 0.25s;
-  } @else {
-    min-width: $side-width;
-  }
-}
-
 .side {
   &-wrapper {
     width: 100%;
     height: 100%;
-    padding: $nav-padding 0 $nav-padding $nav-padding;
+    padding: 8px;
     transition-duration: 0.3s;
     will-change: min-width;
-    @include navStyle(false);
-
-    // 大於 992px 只能使用按鈕打開
-    @media (min-width: 992px) {
-      left: -$side-width;
-      &.is-hover,
-      &:hover {
-        @include navStyle(true);
-      }
-    }
-    &.is-open {
-      @include navStyle(true);
-    }
   }
 
   &-container {

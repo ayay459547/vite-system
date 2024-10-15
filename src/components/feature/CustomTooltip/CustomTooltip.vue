@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, useSlots } from 'vue'
 import { ElTooltip } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils'
@@ -26,29 +26,45 @@ const tempValue = computed({
   }
 })
 
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
+
 </script>
 
 <template>
   <ElTooltip
-    v-model:visible="tempValue"
-    :placement="props.placement"
-    :trigger="props.trigger"
-    :popper-class="props.popperClass"
-    :show-arrow="props.showArrow"
-    :offset="props.offset"
-    :enterable="props.enterable"
-    :show-after="props.showAfter"
-    :virtual-ref="props.virtualRef"
-    :virtual-triggering="props.virtualTriggering"
-    :popper-options="props.popperOptions"
-    :disabled="props.disabled"
+    :append-to="props.appendTo"
     effect="light"
+    :content="props.content"
+    :raw-content="props.rawContent"
+    :placement="props.placement"
+    :fallback-placements="props.fallbackPlacements"
+    v-model:visible="tempValue"
+    :disabled="props.disabled"
+    :offset="props.offset"
+    :transition="props.transition"
+    :popper-options="props.popperOptions"
+    :show-after="props.showAfter"
+    :show-arrow="props.showArrow"
+    :hide-after="props.hideAfter"
+    :auto-close="props.autoClose"
+    :popper-class="props.popperClass"
+    :enterable="props.enterable"
+    :teleported="props.teleported"
+    :trigger="props.trigger"
+    :virtual-triggering="props.virtualTriggering"
+    :virtual-ref="props.virtualRef"
+    :trigger-keys="props.triggerKeys"
+    :persistent="props.persistent"
+    :aria-label="props.ariaLabel"
     :class="scopedId"
   >
     <template #default>
       <slot></slot>
     </template>
-    <template #content>
+    <template v-if="hasSlot('content')" #content>
       <slot name="content"></slot>
     </template>
   </ElTooltip>

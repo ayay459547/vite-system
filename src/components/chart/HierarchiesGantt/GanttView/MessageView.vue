@@ -183,7 +183,7 @@ const getStatusText = (item) => {
               </div>
               <div class="popover-data orders">
                 <span> {{ `${i18nTranslate('workOrder-status')} :` /*工單狀態*/ }} </span>
-                <span> {{ i18nTranslate('insert-order') /*'插單'*/ }} </span>
+                <span> {{ i18nTranslate('insertOrder') /*'插單'*/ }} </span>
                 <!-- <span> {{ item.statusStr }} </span> -->
               </div>
               <div class="popover-data orders">

@@ -5,7 +5,7 @@ import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomScrollbar, CustomTooltip } from '@/components'
+import { CustomIcon, CustomScrollbar } from '@/components'
 import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -76,7 +76,6 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
   <div class="nav-wrapper">
     <div class="nav-title" @click="titleClick">
       <CustomIcon :icon="['fas', 'angle-left']" />
-
       <h3>{{ props.title }}</h3>
     </div>
 
@@ -90,12 +89,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                 class="nav-item-left"
                 :class="{ active: props.currentRouteName.level2 === routerItem.name }"
               >
-                <CustomTooltip :show-after="800">
-                  <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                  <template #content>
-                    <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                  </template>
-                </CustomTooltip>
+                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
               </div>
 
               <CustomIcon
@@ -133,12 +127,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                     )
                   "
                 >
-                  <CustomTooltip :show-after="800">
-                    <span class="item-title">{{ getRouteTitle(leaf) }}</span>
-                    <template #content>
-                      <span class="item-title">{{ getRouteTitle(leaf) }}</span>
-                    </template>
-                  </CustomTooltip>
+                  <span class="item-title">{{ getRouteTitle(leaf) }}</span>
                 </div>
 
                 <div class="nav-item-right"></div>
@@ -166,12 +155,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                 )
               "
             >
-              <CustomTooltip :show-after="800">
-                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                <template #content>
-                  <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                </template>
-              </CustomTooltip>
+              <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
 
             <div class="nav-item-right"></div>
@@ -200,15 +184,18 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
     padding: 12px 22px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 28px;
     cursor: pointer;
     color: var(--i-color-menu-color);
 
-    h3 {
+    & > h3 {
       font-size: 1.4em;
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     &:hover {
@@ -266,7 +253,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
       .item-title {
         width: 100%;
         display: inline-block;
-        font-size: 1.25em;
+        font-size: 1.3em;
         transform: translateX(0);
         transition-duration: 0.3s;
 

@@ -220,14 +220,14 @@ const isPopoverVisible = ref(false)
         </template>
       </CustomPopover>
 
-      <CustomTooltip>
+      <CustomTooltip placement="bottom">
         <CustomButton label="滑鼠移入 Tooltip" type="primary" />
         <template #content>
           <div>Tooltip 內容1</div>
         </template>
       </CustomTooltip>
 
-      <CustomTooltip :trigger="tooltipPlacement">
+      <CustomTooltip :trigger="tooltipPlacement" placement="bottom">
         <CustomButton label="滑鼠點擊 Tooltip" type="success" />
         <template #content>
           <div>Tooltip 內容2</div>

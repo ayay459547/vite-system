@@ -85,8 +85,8 @@ const routeName = computed<any>(() => {
   return route?.name ?? ''
 })
 
-const bus = useEventBus<string>('router')
-const listener = (event: string) => {
+const routerBus = useEventBus<string>('router')
+const routerBusListener = (event: string) => {
   switch (event) {
     case 'busRouterChange':
       isLoading.value = true
@@ -94,22 +94,22 @@ const listener = (event: string) => {
   }
 }
 onBeforeMount(() => {
-  bus.on(listener)
+  routerBus.on(routerBusListener)
 })
 
 const login = (userId: number) => {
-  bus.on(listener)
+  routerBus.on(routerBusListener)
   emit('login', userId)
 }
 
 defineExpose({
   busOn () {
     // 開啟 EventBus 監聽
-    bus.on(listener)
+    routerBus.on(routerBusListener)
   },
   busOff () {
     // 移除 EventBus 監聽
-    bus.off(listener)
+    routerBus.off(routerBusListener)
   }
 })
 

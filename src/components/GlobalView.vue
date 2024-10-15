@@ -7,11 +7,13 @@ import {
   provide,
   onMounted,
   onBeforeMount,
+  onBeforeUnmount,
   nextTick
 } from 'vue'
 
 import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils'
 
+import { useEventBus } from '@/lib/lib_hook'
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
 import PageContent from '@/components/layout/PageContent.vue'
@@ -131,6 +133,20 @@ const routeChange = async (currentRoute: RouteLocationNormalized) => {
   setWebTitle()
 }
 
+const i18nBus = useEventBus<string>('i18n')
+const i18nBusListener = (event: string) => {
+  switch (event) {
+    case 'langChange':
+      setWebTitle()
+      break
+  }
+}
+onBeforeMount(() => {
+  i18nBus.on(i18nBusListener)
+})
+onBeforeUnmount(() => {
+  i18nBus.off(i18nBusListener)
+})
 /**
  * 設定網頁 title 優先順序
  * 1. i18n Excel 中 views 的名稱
@@ -403,13 +419,12 @@ provide<UseHook>('useHook', (options = {}) => {
       :auth-data="authData"
       :is-iframe="systemEnv.isIframe"
       @logout="logout"
-      @lang-change="setWebTitle"
     >
-      <template #logo="{ isOpen }">
-        <slot name="logo" :is-open="isOpen" :env="systemEnv"></slot>
+      <template #logo>
+        <slot name="logo" :env="systemEnv"></slot>
       </template>
-      <template #version="{ isOpen }">
-        <slot name="version" :is-open="isOpen" :env="systemEnv"></slot>
+      <template #version>
+        <slot name="version" :env="systemEnv"></slot>
       </template>
 
       <template #content>

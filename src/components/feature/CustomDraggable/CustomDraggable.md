@@ -39,7 +39,7 @@ const list = ref([
 
 ### Attributes ( props )
 
-| 屬姓名     | 說明             | 类型           | 默認值           | 是否必填 |
+| 屬姓名     | 說明             | 類型           | 預設值           | 是否必填 |
 | ---------- | ---------------- | -------------- | ---------------- | -------- |
 | modelValue | v-modal 綁定的值 | boolean        |                  | V        |
 | itemKey    | 每筆資料的 key   | string         | 'id'             |          |

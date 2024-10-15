@@ -22,7 +22,7 @@ import { CustomDivider } from '@/components'
 
 ### Attributes ( props )
 
-| 屬姓名 | 說明       | 类型 | 默認值       |
+| 屬姓名 | 說明       | 類型 | 預設值       |
 | ------ | ---------- | ---- | ------------ |
 | label  | 方向       | enum | 'horizontal' |
 | size   | 線的 style | enum | 'solid'      |

@@ -35,7 +35,7 @@ const active = ref([])
 
 ### Attributes ( props )
 
-| 屬姓名    | 說明             | 类型                    | 默認值 |
+| 屬姓名    | 說明             | 類型                    | 預設值 |
 | --------- | ---------------- | ----------------------- | ------ |
 | value     | 展開的選項       | string / number / Array | ''     |
 | accordion | 是否為手風琴模式 | boolean                 | false  |

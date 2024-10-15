@@ -57,7 +57,7 @@ https://element-plus.org/en-US/component/input.html
 
 ### Attributes ( props )
 
-| 屬姓名       | 說明                         | 类型    | 默認值   | 是否必填 |
+| 屬姓名       | 說明                         | 類型    | 預設值   | 是否必填 |
 | ------------ | ---------------------------- | ------- | -------- | -------- |
 | modelValue   | v-model 綁定的值             | string  | ''       | V        |
 | direction    | 文字與輸入框的方向           | string  | 'column' |          |

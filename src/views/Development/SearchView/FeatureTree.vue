@@ -165,21 +165,21 @@ export default defineComponent({
         </div>
 
         <div v-if="!hasLeaves(route)" class="tree-item-operations-xs">
-          <CustomTooltip>
+          <CustomTooltip placement="bottom">
             <CustomButton icon-name="plus" />
             <template #content>
               <span>{{ '新增選項' }}</span>
             </template>
           </CustomTooltip>
 
-          <CustomTooltip>
+          <CustomTooltip placement="bottom">
             <CustomButton icon-name="window-restore" @click="newWindow(route)" />
             <template #content>
               <span>{{ '另開視窗' }}</span>
             </template>
           </CustomTooltip>
 
-          <CustomTooltip>
+          <CustomTooltip placement="bottom">
             <CustomButton icon-name="up-right-from-square" @click="newPage(route)" />
             <template #content>
               <span>{{ '新開分頁' }}</span>

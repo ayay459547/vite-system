@@ -58,7 +58,7 @@ const subWatermark: SubWatermark[] = [
 
 ### Attributes ( props )
 
-| 屬性名  | 說明                 | 類型              | 默認值                | 是否必填 |
+| 屬性名  | 說明                 | 類型              | 預設值                | 是否必填 |
 | ------- | -------------------- | ----------------- | --------------------- | -------- |
 | width   | 單個浮水印寬度       | number            | 120                   |          |
 | height  | 單個浮水印高度       | number            | 64                    |          |
@@ -74,7 +74,7 @@ const subWatermark: SubWatermark[] = [
 
 ### Type Font
 
-| 屬性名       | 說明     | 類型    | 默認值            | 是否必填 |
+| 屬性名       | 說明     | 類型    | 預設值            | 是否必填 |
 | ------------ | -------- | ------- | ----------------- | -------- |
 | color        | 文字顏色 | string  | 'rgba(0,0,0,.15)' |          |
 | fontsize     | 文字大小 | nunmber | 16                |          |
@@ -86,7 +86,7 @@ const subWatermark: SubWatermark[] = [
 
 ### Type SubWatermark
 
-| 屬性名  | 說明                 | 類型                     | 默認值       | 是否必填 |
+| 屬性名  | 說明                 | 類型                     | 預設值       | 是否必填 |
 | ------- | -------------------- | ------------------------ | ------------ | -------- |
 | width   | 單個子浮水印寬度     | number                   | props.width  |          |
 | height  | 單個子浮水印高度     | number                   | props.height |          |

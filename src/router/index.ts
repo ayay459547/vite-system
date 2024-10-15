@@ -97,8 +97,8 @@ const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
 router.beforeEach(
   (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-    const bus = useEventBus<string>('router')
-    bus.emit('busRouterChange')
+    const routerBus = useEventBus<string>('router')
+    routerBus.emit('busRouterChange')
 
     updateToken((to?.name ?? 'busRouterChange') as string)
 

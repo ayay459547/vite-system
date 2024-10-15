@@ -51,7 +51,7 @@ export const props = {
   placement: {
     type: String as PropType<Props.Placement>,
     required: false,
-    default: 'bottom',
+    default: 'top',
     description: '顯示位置'
   },
   trigger: {

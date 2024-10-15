@@ -22,7 +22,7 @@ https://element-plus.org/zh-US/component/tag.html
 
 ### Attributes ( props )
 
-| 屬姓名    | 說明       | 类型    | 默認值 |
+| 屬姓名    | 說明       | 類型    | 預設值 |
 | --------- | ---------- | ------- | ------ |
 | type      | 類型       | enum    | ''     |
 | closeable | 是否可關閉 | boolean | false  |

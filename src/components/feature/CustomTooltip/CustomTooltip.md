@@ -31,14 +31,31 @@ import { CustomTooltip, CustomButton } from '@/components'
 
 ### Attributes ( props )
 
-| 屬姓名      | 說明             | 类型    | 默認值   |
-| ----------- | ---------------- | ------- | -------- |
-| visible     | 是否顯示         | boolean | false    |
-| placement   | 出現位置         | enum    | 'bottom' |
-| trigger     | 切換方式         | enum    | 'click'  |
-| popperClass | 自訂樣式         | string  | ''       |
-| showArrow   | 是否顯示箭頭     | boolean | true     |
-| offset      | 出現位置的偏移量 | number  | 0        |
+| 屬姓名             | 說明                     | 類型    | 預設值      |
+| ------------------ | ----------------------- | ------- | ---------- |
+| appendTo           | Tooltip內容 指定DOM      | string  | HTMLElement | undefined |
+| content            | 顯示的內容               | string  | ''         |
+| rawContent         | 是否以 HTML 字串處理      | boolean | false     |
+| placement          | 出現位置                 | enum    | 'top'     |
+| fallbackPlacements | Tooltip 可用的 positions | enum    | undefined |
+| visible            | 是否顯示                 | boolean | false     |
+| disabled           | 是否禁用                 | boolean | false     |
+| offset             | 出現位置的偏移量          | number  | 6         |
+| transition         | 動畫名稱                 | string  | undefined |
+| popperOptions      | popper.js 参数           | Object  | {}        |
+| showAfter          | 觸發後多久顯示內容        | number  | 0         |
+| showArrow          | 是否顯示箭頭             | boolean | true       |
+| hideAfter          | 觸發後多久顯示內容        | number  | 200       |
+| autoClose          | 出現後自動隱藏式延遲      | number  | 0         |
+| popperClass        | 自訂樣式                 | string  | ''        |
+| enterable          | 滑鼠是否可進到 tooltip 中 | boolean | true      |
+| teleported         | 是否使用 teleport        | boolean | true      |
+| trigger            | 如何觸發 Tooltip         | string  | 'hover'   |
+| virtualTriggering  | 用來標識虛擬觸發是否已啟用 | boolean | undefined |
+| virtualRef         | 標識虛擬觸發時的觸發元素   | Object  | undefined |
+| triggerKeys        | 按鍵控制顯示              | Array   | ['Enter', 'Space'] |
+| persistent         | 長時間不觸發 會被刪除     | boolean | undefined |
+| ariaLabel          | aria-label 屬性          | string  | undefined |
 
 ### Slots
 

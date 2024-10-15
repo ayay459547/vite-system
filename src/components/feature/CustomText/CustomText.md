@@ -21,7 +21,7 @@ import { CustomText } from '@/components'
 
 ### Attributes ( props )
 
-| 屬姓名          | 說明                    | 类型    | 默認值    |
+| 屬姓名          | 說明                    | 類型    | 預設值    |
 | --------------- | ---------------------- | ------- | --------- |
 | size            | 尺寸                   | enum    | undefined |
 | type            | 類型                   | enum    | undefined |

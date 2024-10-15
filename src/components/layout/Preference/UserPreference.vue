@@ -4,6 +4,7 @@ import { inject, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
+import { useEventBus } from '@/lib/lib_hook'
 import { CustomIcon, FormRadio } from '@/components'
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
@@ -12,6 +13,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
+import Layout3 from './Layout-3.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -25,21 +27,19 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'lang-change',
-  'layout-change'
-])
+const emit = defineEmits(['layout-change'])
 
 // 語言
 const localeStore = useLocaleStore()
 const { systemLocale } = storeToRefs(localeStore)
+const i18nBus = useEventBus<string>('i18n')
 const langValue = computed({
   get() {
     return systemLocale.value
   },
   set(lang: string) {
     localeStore.setSystemLocale(lang)
-    emit('lang-change')
+    i18nBus.emit('langChange', lang)
   }
 })
 
@@ -99,6 +99,8 @@ const getLayoutView = (layoutNumber: string) => {
       return Layout1
     case '2':
       return Layout2
+    case '3':
+      return Layout3
   }
 }
 

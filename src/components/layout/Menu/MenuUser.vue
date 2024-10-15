@@ -55,7 +55,7 @@ const loginTime = computed(() => {
   <div class="user-wrapper">
     <div class="user-container" @click="openUserEffect">
       <div class="user-md">
-        <CustomTooltip>
+        <CustomTooltip placement="bottom">
           <div class="user-md">
             <CustomIcon name="user" class="icon" />
             <span>{{ userName }}</span>
@@ -70,7 +70,7 @@ const loginTime = computed(() => {
         </CustomTooltip>
       </div>
       <div class="user-xs">
-        <CustomTooltip>
+        <CustomTooltip placement="bottom">
           <CustomIcon name="user" />
 
           <template #content>

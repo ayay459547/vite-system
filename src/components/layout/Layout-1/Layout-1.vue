@@ -6,7 +6,6 @@ import { computed, nextTick, ref, onMounted } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { CustomDividerView } from '@/components'
 
 import SideContent from './SideContent/SideContent.vue'
 import HeaderContent from './HeaderContent/HeaderContent.vue'
@@ -81,13 +80,6 @@ const onRouterChange = async () => {
 defineExpose({
   init
 })
-
-const customDividerViewRef = ref(null)
-let defaultLeftWidth = ref(350)
-const setDefaultLeftWidth = (currentLeftWidth: number) => {
-  defaultLeftWidth.value = currentLeftWidth
-  customDividerViewRef.value?.initDefaultCenter()
-}
 
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   if (targetRoutePath.length === 0) {
@@ -173,75 +165,120 @@ onMounted(() => {
 
 <template>
   <div class="layout-wrapper">
-    <CustomDividerView
-      ref="customDividerViewRef"
+    <div
       v-show="props.isShow"
-      :left-width="defaultLeftWidth"
-      @change="setDefaultLeftWidth"
+      class="layout-left layout-side"
+      :class="isNavOpen ? 'is-open' : 'is-close'"
     >
-      <template #left>
-        <!-- 側邊選單 -->
-        <div class="layout-left">
-          <SideContent
-            ref="sideRef"
-            v-model:isNavOpen="isNavOpen"
-            :isNavHover="isNavHover"
-            :show-routes="props.showRoutes"
-            :current-navigation="props.currentNavigation"
-            :current-route-name="props.currentRouteName"
-          >
-            <template #logo="{ isOpen }">
-              <slot name="logo" :is-open="isOpen"></slot>
-            </template>
-            <template #version="{ isOpen }">
-              <slot name="version" :is-open="isOpen"></slot>
-            </template>
-          </SideContent>
-        </div>
-      </template>
-      <template #right>
-        <!-- header + view -->
-        <div v-show="props.isShow" class="layout-right" :class="isNavOpen ? 'is-open' : 'is-close'">
-          <div class="layout-header">
-            <HeaderContent
-              v-model:is-open="isNavOpen"
-              :auth-data="props.authData"
-              :breadcrumb-name="props.breadcrumbName"
-              :breadcrumb-title="props.breadcrumbTitle"
-              @logout="emit('logout')"
-              @preference="emit('preference')"
-              @router-change="onRouterChange"
-              @set-router="onBreadCrumbClick"
-            />
-          </div>
+      <SideContent
+        ref="sideRef"
+        v-model:isNavOpen="isNavOpen"
+        :isNavHover="isNavHover"
+        :show-routes="props.showRoutes"
+        :current-navigation="props.currentNavigation"
+        :current-route-name="props.currentRouteName"
+      >
+        <template #logo="{ isOpen }">
+          <slot name="logo" :is-open="isOpen"></slot>
+        </template>
+        <template #version="{ isOpen }">
+          <slot name="version" :is-open="isOpen"></slot>
+        </template>
+      </SideContent>
+    </div>
 
-          <div class="layout-view">
-            <slot name="content"></slot>
-          </div>
-        </div>
-      </template>
-    </CustomDividerView>
+    <div v-show="props.isShow" class="layout-right" :class="isNavOpen ? 'is-open' : 'is-close'">
+      <div class="layout-header">
+        <HeaderContent
+          v-model:is-open="isNavOpen"
+          :auth-data="props.authData"
+          :breadcrumb-name="props.breadcrumbName"
+          :breadcrumb-title="props.breadcrumbTitle"
+          @logout="emit('logout')"
+          @preference="emit('preference')"
+          @router-change="onRouterChange"
+          @set-router="onBreadCrumbClick"
+        />
+      </div>
+
+      <div class="layout-view">
+        <slot name="content"></slot>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$header-heigth: 48px;
+@use './Layout-1.scss' as *;
 
 .layout {
   &-wrapper {
     width: 100%;
     height: 100%;
+
+    display: flex;
     position: relative;
     background: inherit;
   }
 
-  &-left,
-  &-right {
-    width: 100%;
+  &-left {
+    z-index: var(--i-z-index-side);
     height: 100%;
     transition-duration: 0.3s;
     will-change: width;
-    overflow: hidden;
+    position: absolute;
+    top: 0;
+
+    // 小螢幕 只移動不改變寬度
+    &.is-close {
+      left: -$nav-width;
+      width: $nav-width;
+    }
+    &.is-open {
+      left: 0;
+      width: $nav-width;
+    }
+    // 大螢幕 指改變寬度
+    @media (min-width: 992px) {
+      &.is-close {
+        left: 0;
+        width: $side-width;
+      }
+      &.is-open {
+        left: 0;
+        width: $nav-width;
+      }
+    }
+  }
+
+  &-right {
+    position: relative;
+    top: 0;
+    transition-duration: 0.3s;
+    will-change: width, left;
+
+    &.is-close,
+    &.is-open {
+      width: 100%;
+      left: 0;
+    }
+
+    // 至少要 992px 才可以定住選單
+    @media (min-width: 992px) {
+      &.is-close {
+        width: calc(100% - $side-width);
+        left: $side-width;
+      }
+
+      &.is-open {
+        width: calc(100% - $nav-width);
+        left: $nav-width;
+      }
+    }
+
+    & {
+      overflow: hidden;
+    }
   }
   &-header {
     width: 100%;

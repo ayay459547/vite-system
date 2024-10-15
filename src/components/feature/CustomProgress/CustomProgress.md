@@ -30,7 +30,7 @@ https://element-plus.org/zh-CN/component/progress.html
 
 ### Attributes ( props )
 
-| 屬姓名        | 說明               | 类型                    | 默認值  | 說明                              |
+| 屬姓名        | 說明               | 類型                    | 預設值  | 說明                              |
 | ------------- | ------------------ | ----------------------- | ------- | --------------------------------- |
 | percentage    | 進度               | number                  | 0       |                                   |
 | type          | 類型               | enum                    | 'line'  | 'line', 'circle', 'dashboard'     |

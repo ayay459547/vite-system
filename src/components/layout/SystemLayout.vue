@@ -14,6 +14,7 @@ import { tipLog } from '@/lib/lib_utils'
 
 const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'), 'rect')
 const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'), 'rect')
+const Layout3 = useAsyncComponent(() => import('@/components/layout/Layout-3/Layout-3.vue'), 'rect')
 const UserPreference = useAsyncComponent(() => import('@/components/layout/Preference/UserPreference.vue'), 'rect')
 
 const useHook: UseHook = inject('useHook')
@@ -67,10 +68,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
-  'lang-change',
-  'logout'
-])
+const emit = defineEmits(['logout'])
 
 const layoutStore = useLayoutStore()
 const { isDark, layout } = storeToRefs(layoutStore)
@@ -121,6 +119,7 @@ const modal = reactive({
 
 const layout1Ref = ref()
 const layout2Ref = ref()
+const layout3Ref = ref()
 
 const init = async () => {
   await nextTick()
@@ -133,6 +132,9 @@ const init = async () => {
       case 'layout2':
         layout2Ref.value?.init()
         break
+      case 'layout3':
+        layout3Ref.value?.init()
+        break
       default:
         tipLog('找不到對應的Layout')
         break
@@ -144,13 +146,10 @@ defineExpose({
   init
 })
 
-const onLangChange = () => {
-  emit('lang-change')
-}
-
 const onLayoutChange = () => {
   init()
 }
+
 </script>
 
 <template>
@@ -170,7 +169,6 @@ const onLayoutChange = () => {
           <UserPreference
             ref="preferenceRef"
             :is-dark="isDark"
-            @lang-change="onLangChange"
             @layout-change="onLayoutChange"
           />
         </CustomModal>
@@ -182,11 +180,11 @@ const onLayoutChange = () => {
         v-bind="layoutAttr"
         v-on="layoutEvent"
       >
-        <template #logo="{ isOpen }">
-          <slot name="logo" :is-open="isOpen"></slot>
+        <template #logo>
+          <slot name="logo"></slot>
         </template>
-        <template #version="{ isOpen }">
-          <slot name="version" :is-open="isOpen"></slot>
+        <template #version>
+          <slot name="version"></slot>
         </template>
 
         <template #content>
@@ -200,19 +198,42 @@ const onLayoutChange = () => {
         v-bind="layoutAttr"
         v-on="layoutEvent"
       >
-        <template #logo="{ isOpen }">
-          <slot name="logo" :is-open="isOpen"></slot>
+        <template #logo>
+          <slot name="logo"></slot>
         </template>
-        <template #version="{ isOpen }">
-          <slot name="version" :is-open="isOpen"></slot>
+        <template #version>
+          <slot name="version"></slot>
         </template>
 
         <template #content>
           <slot name="content"></slot>
         </template>
       </Layout2>
+
+      <Layout3
+        ref="layout3Ref"
+        v-else-if="layout === 'layout3'"
+        v-bind="layoutAttr"
+        v-on="layoutEvent"
+      >
+        <template #logo>
+          <slot name="logo"></slot>
+        </template>
+        <template #version>
+          <slot name="version"></slot>
+        </template>
+
+        <template #content>
+          <slot name="content"></slot>
+        </template>
+      </Layout3>
+
+      <div v-else class="fill">
+        <slot name="content"></slot>
+      </div>
     </template>
 
+    <!-- isIframe -->
     <div v-else class="fill">
       <slot name="content"></slot>
     </div>
