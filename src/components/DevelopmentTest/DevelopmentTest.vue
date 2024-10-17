@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useLocaleStore } from '@/stores/stores_locale'
@@ -204,6 +204,22 @@ const checkToken = (isIntervalCheck?: boolean) => {
   }
 
 }
+
+// 以鍵盤切換語系
+const onKeyup = event => {
+  if(event.key === '*') {
+    changeLang()
+    event.preventDefault()
+  }
+}
+onMounted(() => {
+  window.addEventListener('keyup', onKeyup)
+})
+onUnmounted(() => {
+  window.removeEventListener('keyup', onKeyup)
+})
+
+
 
 defineExpose({
   addI18nUsageRecord: (record: any) => {

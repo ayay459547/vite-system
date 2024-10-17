@@ -185,7 +185,7 @@ onMounted(() => {
         <span>{{ lotData.productGroup_Id }}</span>
       </div>
       <div class="flex-label-item">
-        <label> {{ i18nTranslate('site-no') }} </label>
+        <label> {{ i18nTranslate('process-no') }} </label>
         <span>{{ lotData.process_id }}</span>
       </div>
       <div class="flex-label-item">

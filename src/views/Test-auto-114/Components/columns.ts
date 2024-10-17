@@ -1,11 +1,12 @@
 export const previewColumnSetting = {
   process: {
     label: '站點編號',
-    i18nLabel: 'site-no',
+    i18nLabel: 'process-no',
     table: { minWidth: 100 }
   },
   cust: {
     label: '客戶編號',
+    i18nLabel: 'customer-no',
     table: { minWidth: 100 }
   },
   erpNo: {
@@ -40,7 +41,7 @@ export const checkColumnSetting = {
   },
   process: {
     label: '站點編號',
-    i18nLabel: 'site-no',
+    i18nLabel: 'process-no',
     table: { minWidth: 100 }
   },
   cust: {
