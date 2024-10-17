@@ -46,7 +46,6 @@ const getClientInfo = ($event: MouseEvent | TouchEvent): MouseEvent | Touch => {
 }
 const onDraggableMousedown = ($event: MouseEvent | TouchEvent) => {
   if (isEmpty(containerRef.value) || isMove.value) return
-  event.preventDefault()
 
   const clientInfo = getClientInfo($event)
   const { clientX: mouseDownX } = clientInfo
@@ -68,6 +67,7 @@ const onDraggableMousedown = ($event: MouseEvent | TouchEvent) => {
       containerRef.value.addEventListener('mousemove', reSizeEvent)
       break
     case 'touchstart':
+      $event.preventDefault()
       containerRef.value.addEventListener('touchmove', reSizeEvent, { passive: false })
       break
   }
@@ -85,7 +85,6 @@ const onChange: Emits.Change = async () => {
 // 取消監聽事件
 const removeEvent = () => {
   if (containerRef.value && isMove.value) {
-    // console.log('removeEvent')
     containerRef.value.removeEventListener('mousemove', reSizeEvent)
 
     if (draggablePosition.value === 'custom') {
@@ -210,10 +209,9 @@ onMounted(() => {
     ref="containerRef"
     class="divider-view-container"
     :class="[scopedId, isMove ? 'is-move' : '']"
-    @mouseup.stop="removeEvent"
-    @mouseleave.stop="removeEvent"
-    @touchend.stop="removeEvent"
-    @touchcancel.stop="removeEvent"
+    @mouseup="removeEvent"
+    @touchend="removeEvent"
+    @touchcancel="removeEvent"
     v-on-click-outside="removeEvent"
   >
     <!-- 左邊 -->
@@ -224,15 +222,17 @@ onMounted(() => {
       :style="{ width: currentLeftWidth }"
     >
       <CustomScrollbar>
-        <slot name="left"></slot>
+        <KeepAlive :max="1">
+          <slot name="left"></slot>
+        </KeepAlive>
       </CustomScrollbar>
     </div>
     <!-- 拖拉變更兩邊大小 -->
     <div
       class="divider-view-draggable"
-      @mousedown.self.stop="onDraggableMousedown"
-      @touchstart.self.stop="onDraggableMousedown"
-      @dblclick.self.stop="onDraggableDblclick"
+      @mousedown.stop.self="onDraggableMousedown"
+      @touchstart.stop.self="onDraggableMousedown"
+      @dblclick.stop.self="onDraggableDblclick"
     >
       <div
         class="divider-view-btn"
@@ -254,7 +254,9 @@ onMounted(() => {
       :class="{ 'is-move': isMove }"
     >
       <CustomScrollbar>
-        <slot name="right"></slot>
+        <KeepAlive :max="1">
+          <slot name="right"></slot>
+        </KeepAlive>
       </CustomScrollbar>
     </div>
   </div>

@@ -282,11 +282,17 @@ onMounted(() => {
   }
   &-header {
     width: 100%;
-    height: $header-heigth;
+    height: 48px;
+    @media (max-width: 992px) {
+      height: 40px;
+    }
   }
   &-view {
     width: 100%;
-    height: calc(100% - $header-heigth);
+    height: calc(100% - 48px);
+    @media (max-width: 992px) {
+      height: calc(100% - 40px);
+    }
   }
 }
 </style>

@@ -13,6 +13,10 @@
 // import dark theme
 @use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
 
+// reset
+@use './styles/normalize.css' as *;
+@use './reset.scss' as *;
+
 // 顏色
 // $system-bg-color: #506d9c !default;
 @use './styles/color' as *;

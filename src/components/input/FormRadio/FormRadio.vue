@@ -89,6 +89,14 @@ const getStyle = (isSelected: boolean, color?: string) => {
   &.validate-error .el-radio__inner {
     @include validate-error(radio);
   }
+
+  .el-radio {
+    margin-right: 24px;
+  }
+
+  input[type="radio" i] {
+    margin: 3px 3px 0px 5px;
+  }
 }
 .__i-radio__ {
   width: 100%;

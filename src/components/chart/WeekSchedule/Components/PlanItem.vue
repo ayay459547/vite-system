@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { nextTick, reactive, computed, ref } from 'vue'
+import { nextTick, reactive, computed, ref, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 import throttle from '@/lib/lib_throttle'
 import { isEmpty, getProxyData } from '@/lib/lib_utils'
 import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
@@ -42,6 +44,11 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: true
   }
+})
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
 })
 
 const emit = defineEmits(['update:planTime', 'copyPlan', 'removePlan'])
@@ -386,7 +393,7 @@ defineExpose({
         </template>
         <div class="schedule-update-container">
           <div class="schedule-update-header">
-            <span class="update-label">編輯時間區段</span>
+            <span class="update-label">{{ i18nTranslate('edit-time-range') }}</span>
             <CustomButton icon-name="close" text @click="closeUpdate" />
           </div>
           <div class="schedule-update-body">
@@ -399,14 +406,14 @@ defineExpose({
           </div>
           <div class="schedule-update-footer">
             <CustomButton
-              label="刪除此區間"
+              :label="i18nTranslate('delete-block')"
               type="danger"
               icon-name="close"
               icon-move="scale"
               @click="removePlan"
             />
             <CustomButton
-              label="同步至整周"
+              :label="i18nTranslate('sync-week')"
               type="primary"
               icon-name="copy"
               icon-move="scale"

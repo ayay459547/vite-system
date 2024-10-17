@@ -404,6 +404,7 @@ const popverWidth = computed(() => {
           :width="popverWidth"
           placement="bottom"
           popper-class="__search-popover"
+          popper-style="max-width: 100vw;"
         >
           <div class="__search-detail">
             <div class="__search-title">

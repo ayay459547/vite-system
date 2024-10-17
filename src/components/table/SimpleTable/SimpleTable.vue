@@ -397,6 +397,7 @@ export default defineComponent({
     flex: 1;
     width: 100%;
     height: 100%;
+    padding: 0 2px;
     min: {
       width: fit-content;
       height: fit-content;

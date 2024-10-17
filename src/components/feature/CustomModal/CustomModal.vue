@@ -524,7 +524,7 @@ onUnmounted(() => {
             </div>
 
             <div v-show="!isCollapse" class="modal-body">
-              <KeepAlive>
+              <KeepAlive :max="1">
                 <template v-if="props.isKeepAlive">
                   <div v-show="tempValue" style="width: 100%; height: 100%">
                     <slot :key="scopedId">Body</slot>
@@ -715,8 +715,10 @@ onUnmounted(() => {
     align-items: center;
     padding: 0 8px;
     line-height: 40px;
-    border-bottom: 1px solid var(--el-text-color-disabled);
     overflow: hidden;
+    // border-bottom: 1px solid var(--el-text-color-disabled);
+    box-shadow: 0px 0px 1px 1px var(--el-text-color-disabled);
+    z-index: 1;
   }
   &-title {
     display: flex;

@@ -1,5 +1,3 @@
-@import './styles/normalize.css';
-
 #app {
   height: 100%;
   display: flex;
@@ -8,7 +6,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#app,
 h1,
 h2,
 h3,
@@ -43,8 +40,15 @@ li,
 span,
 nav {
   /* touch-action: none; */
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    '微软雅黑', Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica,
+    'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑',
+    Arial, sans-serif;
+  
+  font-size: 1em;
+  @media (max-width: 992px) {
+    font-size: 0.99em;
+  }
 }
 
 body {

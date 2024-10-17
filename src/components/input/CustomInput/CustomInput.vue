@@ -21,7 +21,8 @@ import {
   FormCheckbox,
   FormRadio,
   FormAutocomplete,
-  FormOperator
+  FormOperator,
+  CustomText
 } from '@/components'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
@@ -796,7 +797,7 @@ const CustomInputTemplate = () => (
             >*</span>
           )
         }
-        <span>{translateLabel.value}</span>
+        <CustomText label={translateLabel.value}></CustomText>
       </label>
     )}
 

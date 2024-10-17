@@ -233,5 +233,9 @@ defineExpose({ focus, blur })
 <style lang="scss">
 .el-select__popper {
   z-index: var(--i-z-index-select-option) !important;
+
+  .el-select-dropdown__item {
+    padding: 0 32px 0 20px;
+  }
 }
 </style>

@@ -36,6 +36,7 @@ const hasSlot = (prop: string): boolean => {
       :round="props.round"
       :color="props.color"
       :effect="props.effect"
+      class="custom-tag"
       @click="onClick"
     >
       <template #default>
@@ -71,7 +72,17 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
+:deep(.custom-tag) {
+  &.el-tag {
+    padding: 4px 8px !important;
+    height: fit-content;
+    display: inline-block;
+    align-content: center;
+  }
+}
+
 div[class*="__CustomTag"] :deep(.tag-container) {
+
   &.tag-size {
     &-large {
       .el-tag {
