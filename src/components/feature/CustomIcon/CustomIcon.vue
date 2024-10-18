@@ -52,21 +52,21 @@ div[class*="__CustomIcon"].icon {
 
   &-size {
     &-large {
-      font-size: 1.5em;
-      .x-icon {
-        font-size: 1.6em;
-      }
-    }
-    &-default {
-      font-size: 1.3em;
+      font-size: 1.2em;
       .x-icon {
         font-size: 1.4em;
       }
     }
-    &-small {
-      font-size: 1em;
+    &-default {
+      font-size: 1.1em;
       .x-icon {
-        font-size: 1.2em;
+        font-size: 1.3em;
+      }
+    }
+    &-small {
+      font-size: 0.95em;
+      .x-icon {
+        font-size: 1.1em;
       }
     }
   }

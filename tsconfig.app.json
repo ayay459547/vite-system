@@ -17,6 +17,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "$/*": ["./public/*"]
-    }
+    },
+    // "preserveValueImports": true,
+    // "importsNotUsedAsValues": "error",
+    "verbatimModuleSyntax": true,
   }
 }

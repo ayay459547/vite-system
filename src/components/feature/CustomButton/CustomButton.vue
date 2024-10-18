@@ -43,7 +43,7 @@ const hasSlot = (prop: string): boolean => {
     :color="props.color"
     class="button-container"
     :style="props.style"
-    :class="[scopedId, `button-size-${props.size}`]"
+    :class="[scopedId, `button-size-${props.size ?? 'default'}`]"
     @click="onClick"
   >
     <template v-if="hasSlot('icon') || (!props.loading && props.iconName.length > 0)" #icon>
@@ -76,6 +76,7 @@ const hasSlot = (prop: string): boolean => {
 <style lang="scss" scoped>
 :global(button[class*="__CustomButton"].el-button) {
   align-items: center;
+  line-height: inherit;
 }
 :global(.el-button) {
   &+.el-button {
@@ -125,13 +126,13 @@ button[class*="__CustomButton"] {
       display: inline-block;
 
       &-size-large {
-        font-size: 1.3em;
+        font-size: 1.2em;
       }
       &-size-default {
-        font-size: 1.1em;
+        font-size: 1em;
       }
       &-size-small {
-        font-size: 1em;
+        font-size: 0.95em;
       }
     }
   }

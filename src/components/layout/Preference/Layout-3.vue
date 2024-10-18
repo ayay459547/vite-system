@@ -37,7 +37,7 @@ $layout-height: 160px;
 
   &-arrow {
     position: absolute;
-    left: calc($left-width - 16px);
+    left: calc($left-width - 14px);
     top: calc($layout-height / 2);
   }
 

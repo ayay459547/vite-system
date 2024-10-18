@@ -136,13 +136,13 @@ div[class*="__CustomTag"] :deep(.tag-container) {
 
   &-label-size {
     &-large {
-      font-size: 1.3em;
+      font-size: 1.2em;
     }
     &-default {
-      font-size: 1.1em;
+      font-size: 1em;
     }
     &-small {
-      font-size: 1em;
+      font-size: 0.95em;
     }
   }
 }
