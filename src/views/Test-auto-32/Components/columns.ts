@@ -56,7 +56,7 @@ export const productColumnSetting = {
   },
   processId: {
     label: '分配站點',
-    i18nLabel: 'allocate-site',
+    i18nLabel: 'allocate-process',
     table: {
       minWidth: 200
     },
@@ -165,7 +165,7 @@ export const engineeringWipColumnSetting = {
   },
   processId: {
     label: '分配站點',
-    i18nLabel: 'allocate-site',
+    i18nLabel: 'allocate-process',
     table: {
       minWidth: 200
     },
@@ -184,7 +184,7 @@ export const engineeringWipColumnSetting = {
   },
   classcode: {
     label: '工單型態',
-    i18nLabel: 'workOrder-type',
+    i18nLabel: 'manufacturing-order-type',
     table: {
       minWidth: 200
     }
@@ -253,7 +253,7 @@ export const pnColumnSetting = {
   },
   processId: {
     label: '分配站點',
-    i18nLabel: 'allocate-site',
+    i18nLabel: 'allocate-process',
     table: {
       minWidth: 200
     },

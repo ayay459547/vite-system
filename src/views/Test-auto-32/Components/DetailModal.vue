@@ -133,11 +133,11 @@ onMounted(() => {
         <span>{{ lotData.bom_Id }}</span>
       </div>
       <div class="flex-label-item">
-        <label>{{ i18nTranslate('bom-ver') }}</label>
+        <label>{{ i18nTranslate('routing-no') }}</label>
         <span>{{ lotData.bom_ver }}</span>
       </div>
       <div class="flex-label-item">
-        <label>{{ i18nTranslate('workOrder-id') }}</label>
+        <label>{{ i18nTranslate('manufacturing-order-no') }}</label>
         <span>{{ lotData.no }}</span>
       </div>
     </div>

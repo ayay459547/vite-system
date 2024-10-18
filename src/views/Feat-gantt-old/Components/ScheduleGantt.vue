@@ -35,7 +35,7 @@ import {
 
 import ScheduleGantt from './ScheduleGantt.vue'
 
-export type Tab = 'order' | 'workOrder' | 'process' | 'machine'
+export type Tab = 'order' | 'manufacturingOrder' | 'process' | 'machine'
 type OrderStatus = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '999'
 
 const useHook: UseHook = inject('useHook')
@@ -423,8 +423,8 @@ const initGantt = async (type?: Tab) => {
       break
     }
     // 工單
-    case 'workOrder':
-      setGanttData(groupCallbackMap.workOrder, {
+    case 'manufacturingOrder':
+      setGanttData(groupCallbackMap.manufacturingOrder, {
         tooltipCallback: null,
         textCallback: null,
         colorCallback: null,
@@ -512,8 +512,8 @@ const initFilterOptions = (type?: Tab) => {
     case 'order':
       setFilterOptions(rowData => rowData[groupKeyword['order']])
       break
-    case 'workOrder':
-      setFilterOptions(rowData => rowData[groupKeyword['workOrder']])
+    case 'manufacturingOrder':
+      setFilterOptions(rowData => rowData[groupKeyword['manufacturingOrder']])
       break
     case 'process':
       setFilterOptions(rowData => rowData[groupKeyword['process']])
@@ -592,8 +592,8 @@ const onItemClick = (param: [number, number, number, string, string]) => {
     case 'order':
       typeName = rowData[groupKeyword['order']]
       break
-    case 'workOrder':
-      typeName = rowData[groupKeyword['workOrder']]
+    case 'manufacturingOrder':
+      typeName = rowData[groupKeyword['manufacturingOrder']]
       break
     case 'process':
       typeName = rowData[groupKeyword['process']]

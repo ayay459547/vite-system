@@ -34,7 +34,7 @@ const tableData = ref([])
 const defaultTab: Tab = 'order'
 const tabs = [
   { i18nLabel: 'order', label: '訂單', value: 'order' },
-  { i18nLabel: 'workOrder', label: '工單', value: 'workOrder' },
+  { i18nLabel: 'manufacturing-order', label: '工單', value: 'manufacturing-order' },
   { i18nLabel: 'process', label: '製程', value: 'process' },
   { i18nLabel: 'machine', label: '機台', value: 'machine' }
 ]

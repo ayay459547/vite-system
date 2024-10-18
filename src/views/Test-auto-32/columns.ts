@@ -20,7 +20,7 @@ export const columnSetting = {
   },
   no: {
     label: '工單編號', // 產品批號 -> 工單編號
-    i18nLabel: 'workOrder-id',
+    i18nLabel: 'manufacturing-order-no',
     table: {
       width: 220,
       sortable: false
@@ -40,7 +40,7 @@ export const columnSetting = {
     label: '急單',
     i18nLabel: 'superHotRun',
     // label: '工單緊急度',
-    // i18nLabel: 'workOrder-severity',
+    // i18nLabel: 'manufacturing-order-severity',
     table: {
       width: 120,
       sortable: false
@@ -176,7 +176,7 @@ export const columnSetting = {
   },
   status: {
     label: '工單狀態',
-    i18nLabel: 'workOrder-status',
+    i18nLabel: 'manufacturing-order-status',
     table: {
       width: 180,
       sortable: false
@@ -189,13 +189,13 @@ export const columnSetting = {
       default: [],
       options: [
         // { i18nLabel: 'all', label: '全部', value: '' },
-        { i18nLabel: 'workOrder-auto-32-state3', label: '生產中', value: '3' },
-        { i18nLabel: 'workOrder-auto-32-state2', label: '完工', value: '2' },
-        { i18nLabel: 'workOrder-auto-32-state6', label: '停工中', value: '6' },
-        { i18nLabel: 'workOrder-auto-32-state7', label: '工單到站', value: '7' },
-        { i18nLabel: 'workOrder-auto-32-state8', label: '工單出站', value: '8' },
-        { i18nLabel: 'workOrder-auto-32-state999', label: '已結案', value: '999' },
-        { i18nLabel: 'workOrder-auto-32-state0', label: '未開工', value: '0' }
+        { i18nLabel: 'manufacturing-order-auto-32-state3', label: '生產中', value: '3' },
+        { i18nLabel: 'manufacturing-order-auto-32-state2', label: '完工', value: '2' },
+        { i18nLabel: 'manufacturing-order-auto-32-state6', label: '停工中', value: '6' },
+        { i18nLabel: 'manufacturing-order-auto-32-state7', label: '工單到站', value: '7' },
+        { i18nLabel: 'manufacturing-order-auto-32-state8', label: '工單出站', value: '8' },
+        { i18nLabel: 'manufacturing-order-auto-32-state999', label: '已結案', value: '999' },
+        { i18nLabel: 'manufacturing-order-auto-32-state0', label: '未開工', value: '0' }
       ]
     },
     getValue(data?: number) {
@@ -221,19 +221,19 @@ export const columnSetting = {
     getI18nValue(data?: string) {
       switch (data) {
         case '生產中':
-          return 'workOrder-auto-32-state3'
+          return 'manufacturing-order-auto-32-state3'
         case '完工':
-          return 'workOrder-auto-32-state2'
+          return 'manufacturing-order-auto-32-state2'
         case '停工中':
-          return 'workOrder-auto-32-state6'
+          return 'manufacturing-order-auto-32-state6'
         case '工單到站':
-          return 'workOrder-auto-32-state7'
+          return 'manufacturing-order-auto-32-state7'
         case '工單出站':
-          return 'workOrder-auto-32-state8'
+          return 'manufacturing-order-auto-32-state8'
         case '已結案':
-          return 'workOrder-auto-32-state999'
+          return 'manufacturing-order-auto-32-state999'
         case '未開工':
-          return 'workOrder-auto-32-state0'
+          return 'manufacturing-order-auto-32-state0'
         default:
           return ''
       }
@@ -290,7 +290,7 @@ export const columnSetting = {
   },
   bom_ver: {
     label: '流程代號',
-    i18nLabel: 'bom-ver',
+    i18nLabel: 'routing-no',
     table: {
       width: 200,
       sortable: false
@@ -528,7 +528,7 @@ export const linkSetting = {
       {
         toPage: 'fund-121'
         // description: '途程詳細資訊',
-        // i18nDescription: 'link-route-detail'
+        // i18nDescription: 'link-routing-detail'
       }
     ]
   },

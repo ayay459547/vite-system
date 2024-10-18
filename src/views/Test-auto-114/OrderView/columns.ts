@@ -24,8 +24,8 @@ export const columnSetting = {
     }
   },
   routeId: {
-    label: '流程代號',
-    i18nLabel: 'bom-ver',
+    label: '途程代號',
+    i18nLabel: 'routing-no',
     table: {
       minWidth: 180,
       sortable: false

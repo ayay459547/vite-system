@@ -12,21 +12,21 @@ export type GroupCallback = (
 ) => boolean
 
 export type GroupCallbackMap = {
-  workOrder: GroupCallback
+  manufacturingOrder: GroupCallback
   process: GroupCallback
   machine: GroupCallback
 }
 
 export const groupKeyword = {
   order: 'orderIds',
-  workOrder: 'orderIds',
+  manufacturingOrder: 'orderIds',
   process: 'processId',
   machine: 'machineId'
 }
 
 export const groupCallbackMap: GroupCallbackMap = {
-  workOrder(rowData, typeIndex, groupData, ganttData, filter) {
-    const _keyword = groupKeyword['workOrder']
+  manufacturingOrder(rowData, typeIndex, groupData, ganttData, filter) {
+    const _keyword = groupKeyword['manufacturingOrder']
 
     let isTypeIndexAdd = false
 
