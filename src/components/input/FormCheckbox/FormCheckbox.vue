@@ -107,6 +107,13 @@ const getStyle = (isChecked: boolean, color?: string) => {
 @use '../Form.scss' as *;
 
 :deep(.__i-checkbox__) {
+  .el-checkbox {
+    margin-right: 24px;
+
+    .el-checkbox__label {
+      padding-left: 8px;
+    }
+  }
   &.validate-error .el-checkbox__inner {
     @include validate-error(checkbox);
   }

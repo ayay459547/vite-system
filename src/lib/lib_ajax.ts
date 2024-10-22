@@ -88,21 +88,22 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
         duration: 5000
       })
 
-      const apiUrl = error?.request?.responseURL ?? ''
-      const status = error?.response?.status ?? ''
-      swal({
-        icon: 'error',
-        reverseButtons: true,
-        title,
-        showConfirmButton: false,
-        showCancelButton: false,
-        showDenyButton: false,
-        html: `<div>
-          <div>url: ${apiUrl}</div>
-          <div>message: ${error.message}</div>
-          <div>status: ${status}</div>
-        </div>`
-      })
+      // 暫時關閉
+      // const apiUrl = error?.request?.responseURL ?? ''
+      // const status = error?.response?.status ?? ''
+      // swal({
+      //   icon: 'error',
+      //   reverseButtons: true,
+      //   title,
+      //   showConfirmButton: false,
+      //   showCancelButton: false,
+      //   showDenyButton: false,
+      //   html: `<div>
+      //     <div>url: ${apiUrl}</div>
+      //     <div>message: ${error.message}</div>
+      //     <div>status: ${status}</div>
+      //   </div>`
+      // })
     }
   )
 
