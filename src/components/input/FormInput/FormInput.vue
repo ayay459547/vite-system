@@ -210,7 +210,7 @@ defineExpose({ focus, blur })
   }
 
   .el-input-group__prepend {
-    padding: 0;
+    padding: 0 12px;
 
     div[class*='el-'] {
       margin: 0;

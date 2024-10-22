@@ -1,21 +1,14 @@
 import type { Ref, DeepReadonly } from 'vue'
 import { defineAsyncComponent } from 'vue'
-import type{
-  MaybeElementRef,
-  MaybeComputedElementRef,
-  UseRefHistoryOptions, UseRefHistoryReturn,
-  UseThrottledRefHistoryOptions, UseThrottledRefHistoryReturn,
-  MaybeRefOrGetter,
-  UseDraggableOptions, UseDraggableReturn,
-  UseResizeObserverOptions,
-  ElementSize, UseElementSizeReturn,
-  UseResizeObserverReturn,
-  UseMouseOptions, UseMouseReturn,
-  MouseInElementOptions, UseMouseInElementReturn,
-  EventBusIdentifier, UseEventBusReturn
+
+import type {
+  EventBusIdentifier,
+  UseEventBusReturn
 } from '@vueuse/core'
+
 import {
   useRefHistory as _useRefHistory,
+  refThrottled as _refThrottled,
   useThrottledRefHistory as _useThrottledRefHistory,
   useDebouncedRefHistory as _useDebouncedRefHistory,
   useDraggable as _useDraggable,
@@ -34,67 +27,11 @@ import {
   effectScope,
   watch
 } from 'vue'
-import type { Composer } from 'vue-i18n'
-import { useI18n } from 'vue-i18n'
 
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
 import Async_Error from '@/views/Common/Async_Error.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils'
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
-
-export type I18nTranslate = (key: string, i18nModule?: ScopeKey) => string
-export type I18nTest = (key: string, i18nModule?: ScopeKey) => boolean
-
-export type LocalI18n = Partial<
-  Composer & {
-    i18nTranslate: I18nTranslate
-    i18nTest: I18nTest
-  }
->
-/**
- * @author Caleb
- * @description 使用翻譯工具
- * @param {ScopeKey} i18nModule Excel 設定的欄位模組
- * @returns {LocalI18n} 翻譯工具
- */
-export const useLocalI18n = (i18nModule?: ScopeKey): LocalI18n => {
-  const localI18n = useI18n({
-    useScope: 'global',
-    messages: {}
-  }) as Partial<Composer>
-
-  const globalI18nModule = i18nModule ?? defaultModuleType
-  const i18nTranslate: I18nTranslate = (key: string, i18nModule?: string) => {
-    const _i18nModule = !isEmpty(i18nModule) ? i18nModule : globalI18nModule
-
-    if (typeof localI18n?.te !== 'function') return key
-
-    const i18nKey = `__${_i18nModule}__:${key}`
-    if (localI18n?.te(i18nKey) ?? false) {
-      return localI18n?.t(i18nKey)
-    }
-    return localI18n?.t(key)
-  }
-
-  const i18nTest: I18nTest = (key: string, i18nModule?: string) => {
-    const _i18nModule = !isEmpty(i18nModule) ? i18nModule : globalI18nModule
-
-    if (typeof localI18n?.te !== 'function') return false
-
-    const i18nKey = `__${_i18nModule}__:${key}`
-    return localI18n?.te(i18nKey) ?? false
-  }
-
-  return {
-    ...localI18n,
-    i18nTranslate,
-    i18nTest
-  }
-}
 
 export type Variant = 'p' | 'text'
   | 'h1' | 'h3' | 'caption'
@@ -146,140 +83,86 @@ export function useDebouncedRef(value: any): Ref<any> {
 // vue use
 
 /**
- * @see https://vueuse.org/useRefHistory
- * @description 工能說明
- * 1.記錄歷史：跟踪 ref 的歷史記錄，保存所有變更的歷史值。
- * 2.方便查詢：提供簡單的接口來查詢和操作歷史記錄。
- * 3.支持回溯：可以用來實現撤銷/重做功能，或在應用中追溯數據變化歷史。
+ * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with throttled filter.
  *
- * @param {Ref<Raw>} source ref的值
- * @param {UseRefHistoryOptions<Raw, Serialized>} options 其他設定
- * @returns {UseRefHistoryReturn<Raw, Serialized>} 變動歷史資訊
- * history: 一個響應式的數組，包含 ref 的歷史記錄。每次 ref 的值發生變化時，這個數組會更新，記錄所有變化過的值。
- */
-export const useRefHistory = <Raw, Serialized = Raw>(source: Ref<Raw>, options?: UseRefHistoryOptions<Raw, Serialized> ): UseRefHistoryReturn<Raw, Serialized> => {
-  return _useRefHistory(source, options)
-}
-
-/**
  * @see https://vueuse.org/useThrottledRefHistory
- * @description 工能說明
- * 1.記錄歷史：跟踪 ref 的歷史記錄，允許你查詢或操作過去的值。
- * 2.節流更新：節流（throttling）變更記錄，避免因頻繁的更新而影響性能。
- * 3.簡化管理：提供一個簡單的接口來管理和查詢 ref 的歷史記錄。
-
- * @param {Ref<Raw>} source ref的值
- * @param {UseThrottledRefHistoryOptions<Raw, Serialized>} options 其他設定
- * @returns {UseThrottledRefHistoryReturn<Raw, Serialized>} 變動歷史資訊
- * history: 一個響應式的數組，包含 ref 的歷史記錄。每次 ref 的值變化時，這個數組會更新。
+ * @param source
+ * @param options
  */
-export const useThrottledRefHistory = <Raw, Serialized = Raw>(source: Ref<Raw>, options?: UseThrottledRefHistoryOptions<Raw, Serialized>): UseThrottledRefHistoryReturn<Raw, Serialized> => {
-  return _useThrottledRefHistory(source, options)
-}
+export const useRefHistory = _useRefHistory
 
 /**
+ * Throttle execution of a function. Especially useful for rate limiting
+ * execution of handlers on events like resize and scroll.
+ *
+ * @see https://vueuse.org/refThrottled
+ * @param value Ref value to be watched with throttle effect
+ * @param delay  A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
+ * @param [trailing] if true, update the value again after the delay time is up
+ * @param [leading] if true, update the value on the leading edge of the ms timeout
+ */
+export const refThrottled = _refThrottled
+
+/**
+ * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with throttled filter.
+ *
+ * @see https://vueuse.org/useThrottledRefHistory
+ * @param source
+ * @param options
+ */
+export const useThrottledRefHistory = _useThrottledRefHistory
+
+/**
+ * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with debounce filter.
+ *
  * @see https://vueuse.org/useDebouncedRefHistory
- * @description 工能說明
- * 1.記錄歷史：跟踪 ref 的歷史記錄，保存所有變更的歷史值。
- * 2.防抖更新：使用防抖機制來延遲歷史記錄的更新，減少因頻繁變化造成的性能開銷。
- * 3.方便查詢：提供一個簡單的接口來查詢和操作歷史記錄。
- *
- * @param {Ref<Raw>} source ref的值
- * @param {UseThrottledRefHistoryOptions<Raw, Serialized>} options 其他設定
- * @returns {UseThrottledRefHistoryReturn<Raw, Serialized>} 變動歷史資訊
- * history: 一個響應式的數組，包含 ref 的歷史記錄。每次 ref 的值變化時，這個數組會在防抖間隔後更新。
+ * @param source
+ * @param options
  */
-export const useDebouncedRefHistory = <Raw, Serialized = Raw>(source: Ref<Raw>, options?: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & {
-  debounce?: MaybeRefOrGetter<number>;
-}): UseRefHistoryReturn<Raw, Serialized> => {
-  return _useDebouncedRefHistory(source, options)
-}
+export const useDebouncedRefHistory = _useDebouncedRefHistory
 
 /**
- * @see https://vueuse.org/useMouse
- * @description 功能說明
- * 1.實現拖拽：使元素可以被拖拽，並在拖拽過程中更新元素的位置。
- * 2.支持事件回調：提供回調函數來處理拖拽開始、拖拽過程和拖拽結束等事件。
- * 3.簡化配置：支持多種配置選項，讓你可以根據需求定制拖拽行為。
+ * Make elements draggable.
  *
- * @param {MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>} target ref的值 | Element
- * @param {UseDraggableOptions} options 其他設定
- * onStart: 拖拽開始時觸發的回調函數。
- * onMove: 拖拽過程中觸發的回調函數，會接收拖拽事件對象。
- * onEnd: 拖拽結束時觸發的回調函數。
- * @returns {UseDraggableReturn}
+ * @see https://vueuse.org/useDraggable
+ * @param target
+ * @param options
  */
-export const useDraggable = (target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>, options?: UseDraggableOptions): UseDraggableReturn => {
-  return _useDraggable(target, options)
-}
+export const useDraggable = _useDraggable
 
 /**
+ * Reactive size of an HTML element.
+ *
  * @see https://vueuse.org/useElementSize
- * @description 功能說明
- * 1.監控尺寸變化：能夠監控指定元素的寬度和高度變化，並在尺寸變化時提供更新。
- * 2.響應式更新：提供的尺寸資訊是響應式的，可以直接在 Vue 模板中使用，實現即時更新。
- * 3.自動清理：在組件卸載時，自動移除監控，防止內存洩漏。
- *
- * @param {MaybeComputedElementRef} target ref的值 | Element
- * @param {ElementSize} initialSize 初始大小
- * @param {UseResizeObserverOptions} options 其他設定
- * @returns {UseElementSizeReturn}
  */
-export const useElementSize = (target: MaybeComputedElementRef, initialSize?: ElementSize, options?: UseResizeObserverOptions): UseElementSizeReturn => {
-  return _useElementSize(target, initialSize, options)
-}
+export const useElementSize = _useElementSize
 
 /**
+ * Reports changes to the dimensions of an Element's content or the border-box
+ *
  * @see https://vueuse.org/useResizeObserver
- * @description 功能說明
- * 1.監控尺寸變化：能夠監控指定元素的寬度和高度變化，並在尺寸變化時提供更新。
- * 2.響應式更新：提供的尺寸資訊是響應式的，可以直接在 Vue 模板中使用，實現即時更新。
- * 3.支持多個元素：可以擴展以支持監控多個元素，只需在回調函數中處理每個元素的變化。
- * 4.自動清理：在組件卸載時，自動移除監控，防止內存洩漏。
- *
- * @param {MaybeComputedElementRef | MaybeComputedElementRef[]} target ref的值 | Element
- * @param {ResizeObserverCallback} callback 回調函數
- * @param {UseResizeObserverOptions} options 其他設定
- * @returns {UseResizeObserverReturn}
+ * @param target
+ * @param callback
+ * @param options
  */
-export const useResizeObserver = (target: MaybeComputedElementRef | MaybeComputedElementRef[], callback: ResizeObserverCallback, options?: UseResizeObserverOptions): UseResizeObserverReturn => {
-  return _useResizeObserver(target, callback, options)
-}
+export const useResizeObserver = _useResizeObserver
 
 /**
+ * Reactive mouse position.
+ *
  * @see https://vueuse.org/useMouse
- * @description 功能說明
- * 1.獲取鼠標位置：提供鼠標的 X 和 Y 坐標，使得可以在應用中追蹤鼠標的位置。
- * 2.鼠標按鈕狀態：檢查鼠標的按鈕狀態，例如左鍵、右鍵是否被按下。
- * 3.簡化事件處理：自動處理鼠標事件的綁定和解除，使得你可以專注於業務邏輯。
- *
- * @param {UseMouseOptions} options 其他設定
- * @returns {UseMouseReturn}
- * x: 鼠標的 X 坐標。
- * y: 鼠標的 Y 坐標。
- * left: 一個布林值，表示左鍵是否被按下。
- * right: 一個布林值，表示右鍵是否被按下。
- * middle: 一個布林值，表示中鍵（滾輪）是否被按下。
+ * @param options
  */
-export const useMouse = (options?: UseMouseOptions): UseMouseReturn => {
-  return _useMouse(options)
-}
+export const useMouse = _useMouse
 
 /**
- * @see https://vueuse.org/useMouseInElement
- * @description 功能說明
- * 1.檢測鼠標位置：能夠檢測鼠標是否在指定的元素內部。
- * 2.提供狀態：提供一個響應式的布林值，表示鼠標是否在元素內部。
- * 3.簡化處理：自動處理事件監聽的綁定和解除，使得你能專注於業務邏輯。0
+ * Reactive mouse position related to an element.
  *
- * @param {MaybeElementRef} target ref的值 | Element
- * @param {MouseInElementOptions} options 其他設定
- * @returns {UseMouseInElementReturn}
- * isMouseInside: 一個響應式的布林值，表示鼠標是否在指定的元素內部。
+ * @see https://vueuse.org/useMouseInElement
+ * @param target
+ * @param options
  */
-export const useMouseInElement = (target?: MaybeElementRef, options?: MouseInElementOptions): UseMouseInElementReturn => {
-  return _useMouseInElement(target, options)
-}
+export const useMouseInElement = _useMouseInElement
 
 /**
  * @see https://vueuse.org/core/useEventBus

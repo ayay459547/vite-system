@@ -67,11 +67,11 @@ const onPlanInfoClick = (row: TableData) => {
   modal.planInfo = true
 }
 
-// 跳轉處理
-const onWebViewTableMounted = () => {
-  // 跳轉來源, 附帶資料
-  const { fromPage, queryData } = redirectInfo()
+// 跳轉來源, 附帶資料
+const { fromPage, queryData } = redirectInfo()
 
+const onWebViewTableMounted = () => {
+  // 跳轉處理
   if (!isEmpty(queryData)) {
     switch (fromPage) {
       case 'auto-31-SG': {
@@ -159,9 +159,9 @@ const formatTable = (row: ResponseData): TableData => {
             <FormRadio
               v-model="radioValue"
               :options="[
-                { label: `${i18nTranslate('hidden', 'system')}${i18nTranslate('all')}`, value: 'hidden' },
-                { label: `${i18nTranslate('show', 'system')}${i18nTranslate('error')}`, value: 'error' },
-                { label: `${i18nTranslate('show', 'system')}${i18nTranslate('all')}`, value: 'show' }
+                { label: `${i18nTranslate('display-hidden', 'system')}${i18nTranslate('all')}`, value: 'hidden' },
+                { label: `${i18nTranslate('display-show', 'system')}${i18nTranslate('error')}`, value: 'error' },
+                { label: `${i18nTranslate('display-show', 'system')}${i18nTranslate('all')}`, value: 'show' }
               ]"
             />
           </div>

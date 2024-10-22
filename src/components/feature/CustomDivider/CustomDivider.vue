@@ -34,6 +34,7 @@ const hasSlot = (prop: string): boolean => {
 div[class*="__CustomDivider"].divider {
   &-container {
     width: 100%;
+    margin: 16px 0 !important;
   }
 }
 </style>

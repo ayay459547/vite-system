@@ -2,7 +2,6 @@
 import {
   ref,
   shallowRef,
-  onMounted,
   useSlots,
   nextTick,
   computed,
@@ -311,10 +310,6 @@ const _isShowTimeLineTable = computed(() => {
     })
 })
 
-onMounted(() => {
-  emit('mounted')
-})
-
 /**
  * 確保 CustomTable 初始化 排序(initSortingList) + 欄位(initShowColumns)
  * 才可以送出api
@@ -438,6 +433,10 @@ const onReset = async () => {
 
 const lazyLoadingStatus = ref<CustomTableProps.LazyLoadingStatus>('loadMore')
 
+const onTableMounted = () => {
+  emit('mounted')
+}
+
 /**
  * 可用函數
  * 建議在 emit('mounted') 後使用
@@ -489,6 +488,7 @@ const modal = reactive({
       @show-change="throttleInit($event, 'table')"
       @load="throttleInit($event, 'table')"
       @init-finish="onCustomTableInitFinish"
+      @mounted="onTableMounted"
     >
       <template v-if="!props.isHiddenPrepend" #prepend>
         <div class="flex-row i-ga-xs content-between">

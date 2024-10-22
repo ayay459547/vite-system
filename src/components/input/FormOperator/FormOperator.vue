@@ -309,8 +309,12 @@ const onEnter = async () => {
     @include validate-error(operator);
   }
   .el-input--suffix .el-input__wrapper {
-    padding: 2px 11px;
+    padding: 2px 12px;
   }
+  .el-input-group__prepend .el-select__wrapper {
+    box-shadow: none;
+  }
+
   .el-input-group__prepend {
     padding: 0;
   }
@@ -327,7 +331,7 @@ const onEnter = async () => {
 
   &-select__ {
     width: 100%;
-    max-width: 100px;
+    max-width: 120px;
     min-width: 90px !important;
   }
 }

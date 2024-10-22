@@ -78,6 +78,10 @@ const hasSlot = (prop: string): boolean => {
   align-items: center;
   line-height: inherit;
 }
+:global(button[class*="__CustomButton"].el-button > span) {
+  display: contents
+}
+
 :global(.el-button) {
   &+.el-button {
     margin-left: 0 !important;

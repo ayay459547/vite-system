@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, useSlots, nextTick } from 'vue'
+import { ref, computed, useSlots, nextTick, onMounted } from 'vue'
 import { ElText } from 'element-plus'
 
 import { CustomTooltip } from '@/components'
 import { getUuid, isEmpty } from '@/lib/lib_utils'
+import debounce from '@/lib/lib_debounce'
 import { version, props as textProps } from './CustomTextInfo'
 
 const scopedId = getUuid(version)
@@ -20,7 +21,7 @@ const textTruncated = computed(() => {
   return props.truncated || isTruncated.value
 })
 
-const onResize = async () => {
+const resize = async () => {
   await nextTick()
   const textWrapper = document.querySelector(`[class*="${scopedId}"]`) as HTMLElement
   if (isEmpty(textWrapper)) return
@@ -30,6 +31,11 @@ const onResize = async () => {
 
   isTruncated.value = (textWrapper.offsetWidth < textContent.offsetWidth)
 }
+const debounceResize = debounce(resize, 120)
+
+onMounted(() => {
+  debounceResize()
+})
 
 </script>
 
@@ -38,11 +44,11 @@ const onResize = async () => {
     placement="top-start"
     trigger="hover"
     :offset="6"
-    :show-after="800"
+    :show-after="240"
     :disabled="!isTruncated"
   >
     <ElText
-      v-element-size="onResize"
+      v-element-size="debounceResize"
       :type="props.type"
       :size="props.size"
       :truncated="textTruncated"
