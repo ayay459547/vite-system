@@ -314,10 +314,11 @@ const _isShowTimeLineTable = computed(() => {
  * 確保 CustomTable 初始化 排序(initSortingList) + 欄位(initShowColumns)
  * 才可以送出api
  */
-const onCustomTableInitFinish = () => {
+const onTableMounted = () => {
   if (props.isMountedInit) {
     init(null, '')
   }
+  emit('mounted')
 }
 
 const init = async (params?: any, type?: string) => {
@@ -433,10 +434,6 @@ const onReset = async () => {
 
 const lazyLoadingStatus = ref<CustomTableProps.LazyLoadingStatus>('loadMore')
 
-const onTableMounted = () => {
-  emit('mounted')
-}
-
 /**
  * 可用函數
  * 建議在 emit('mounted') 後使用
@@ -487,7 +484,6 @@ const modal = reactive({
       @row-contextmenu="onRowContextmenu"
       @show-change="throttleInit($event, 'table')"
       @load="throttleInit($event, 'table')"
-      @init-finish="onCustomTableInitFinish"
       @mounted="onTableMounted"
     >
       <template v-if="!props.isHiddenPrepend" #prepend>

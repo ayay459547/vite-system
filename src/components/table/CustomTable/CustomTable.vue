@@ -17,7 +17,14 @@ import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { object_findIndex } from '@/lib/lib_object'
 import { numberFormat } from '@/lib/lib_format'
-import { CustomButton, CustomPopover, CustomInput, CustomIcon, CustomTooltip } from '@/components'
+import {
+  CustomButton,
+  CustomPopover,
+  CustomInput,
+  CustomIcon,
+  CustomTooltip,
+  CustomText
+} from '@/components'
 
 // 欄位設定
 import ColumnSetting from './Components/ColumnSetting.vue'
@@ -56,8 +63,7 @@ const emit = defineEmits([
   'selection-change',
   'row-contextmenu',
   'load',
-  'mounted',
-  'init-finish'
+  'mounted'
 ])
 
 const loading = ref(true)
@@ -515,16 +521,12 @@ onMounted(async () => {
   })
 
   await initShowColumns()
-  await nextTick()
 
-  setTimeout(() => {
+  setTimeout(async () => {
     isRender.value = true
+    await nextTick()
     emit('mounted')
   }, 0)
-
-  setTimeout(() => {
-    emit('init-finish')
-  }, 120)
 })
 
 const tableMainRef = ref(null)
@@ -740,11 +742,11 @@ onMounted(() => {
 
       <div class="setting-center">
         <slot name="setting-center">
-          <span class="setting-center-title">
+          <CustomText>
             <slot name="title">
               {{ i18nTranslate(props?.i18nTitle ?? props.title) }}
             </slot>
-          </span>
+          </CustomText>
         </slot>
       </div>
 
@@ -986,12 +988,6 @@ $border-style: 1px solid var(--i-color-table-border);
       &-center {
         justify-content: center;
         font-weight: 600;
-
-        &-title {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
 
         @media (max-width: 1200px) {
           overflow: hidden;
