@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 
-import type { CustomTableTypes } from '@/components'
+import type { CustomTableTypes } from '@/components' // 系統組件
 // import type { SweetAlertIcon } from 'sweetalert2'
 
 export type ApiStatus = 'success' | 'error' | 'fail'

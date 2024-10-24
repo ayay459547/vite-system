@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
 
-import { CustomInput, CustomDivider, CustomEmpty, CustomProgress, CustomButton } from '@/components'
+import { CustomInput, CustomDivider, CustomEmpty, CustomProgress, CustomButton } from '@/components' // 系統組件
 
-import { awaitTime } from '@/lib/lib_utils'
+import { awaitTime } from '@/lib/lib_utils' // 工具
 
 const value = ref<string>('Aa123456')
 const valuePhone = ref<string>('')

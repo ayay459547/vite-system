@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { CustomCharts } from '@/components'
+import { CustomCharts } from '@/components' // 系統組件
 
 const colors = ['#5470C6', '#91CC75', '#EE6666']
 

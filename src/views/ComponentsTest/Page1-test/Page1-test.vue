@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { UseHook } from '@/declare/hook'
 import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
-import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components'
+import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
 
-import { useLocalI18n } from '@/lib/lib_hook'
-import { deepClone } from '@/lib/lib_utils'
+import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
+import { deepClone } from '@/lib/lib_utils' // 工具
 import { useTableSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting'
 

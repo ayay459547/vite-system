@@ -5,7 +5,7 @@ import { vOnClickOutside } from '@vueuse/components'
 
 // import debounce from '@/lib/lib_debounce'
 import VFixed from '@/components/VFixed.vue'
-import { awaitTime } from '@/lib/lib_utils'
+import { awaitTime } from '@/lib/lib_utils' // 工具
 
 const mouseenter = 'mouseenter'
 const mouseleave = 'mouseleave'

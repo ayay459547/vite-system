@@ -158,8 +158,8 @@ const tableData2 = [
 
 ### Events ( emits )
 
-| 事件名         | 說明                         | 傳值類型                    |
-| -------------- | ---------------------------- | --------------------------- |
+| 事件名         | 說明                         | 傳參                         |
+| -------------- | --------------------------- | --------------------------- |
 | header-click   | 行被點擊                     | column, event               |
 | row-click      | 行被點擊                     | row, column, event          |
 | excel          | excel 按鈕被點擊             | { tableColumns, tableData } |
@@ -167,7 +167,7 @@ const tableData2 = [
 | sort-change    | 排序切換                     | { key, order }              |
 | page-change    | 換分頁                       | { page, pageSize }          |
 | size-change    | 換顯示筆數                   | { page, pageSize }          |
-| show-change    | 排序切換、換分頁、換顯示筆數 | { page, pageSize }          |
+| show-change    | 排序切換、換分頁、換顯示筆數  | { page, pageSize }          |
 | expand-change  | 展開的 column 欄位切換時     | row, expanded               |
 | header-dragend | header 欄位拖拉              | column, event               |
 | load           | table 滾到底(loadMore)       | { page, pageSize }          |
@@ -175,7 +175,7 @@ const tableData2 = [
 ### Exposes
 
 | 屬姓名         | 說明         | 類型     | 傳參           |
-| -------------- | ------------ | -------- | -------------- |
-| pageChange     | 換頁         | function | page, pageSize |
+| -------------- | ----------- | -------- | -------------- |
+| pageChange     | 換頁        | function | page, pageSize |
 | getTableParams | 取得表格屬性 | function |                |
 | setTableParams | 設定表格屬性 | function | { page, size } |

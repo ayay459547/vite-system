@@ -2,8 +2,8 @@
 import { inject, computed, ref, useSlots } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomButton, CustomPopover } from '@/components'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { CustomButton, CustomPopover } from '@/components' // 系統組件
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { object_reduce } from '@/lib/lib_object'
 
 // @ts-ignore

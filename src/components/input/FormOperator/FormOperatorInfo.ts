@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { Options as CommonOptions } from '@/components'
+import type { Options as CommonOptions } from '@/components' // 系統組件
 
 export const version = '__FormOperator_1.0.0__'
 

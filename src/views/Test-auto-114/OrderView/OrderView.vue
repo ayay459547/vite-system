@@ -2,7 +2,7 @@
 import { ref, inject, nextTick, reactive } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { WebViewTable, CustomTabs, CustomButton, CustomModal, CustomEmpty, CustomLink } from '@/components'
+import { WebViewTable, CustomTabs, CustomButton, CustomModal, CustomEmpty, CustomLink } from '@/components' // 系統組件
 
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'

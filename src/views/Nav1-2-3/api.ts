@@ -1,7 +1,7 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal, cutTableData } from '@/lib/lib_utils'
-import type { CustomTableTypes } from '@/components'
+import { swal, cutTableData } from '@/lib/lib_utils' // 工具
+import type { CustomTableTypes } from '@/components' // 系統組件
 
 import { fakeData } from './fakeData'
 

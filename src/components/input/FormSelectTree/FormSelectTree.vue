@@ -3,7 +3,7 @@ import { computed, useSlots, ref, inject } from 'vue'
 import { ElTreeSelect } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormSelectTreeInfo'

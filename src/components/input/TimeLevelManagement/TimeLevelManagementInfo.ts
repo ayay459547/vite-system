@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { CustomPopoverProps, CustomIconProps } from '@/components'
+import type { CustomPopoverProps, CustomIconProps } from '@/components' // 系統組件
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

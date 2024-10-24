@@ -2,14 +2,14 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomPopover/CustomPopover.md?raw'
-import type { Options, CustomPopoverProps } from '@/components'
+import type { Options, CustomPopoverProps } from '@/components' // 系統組件
 import {
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomPopover,
   CustomButton
-} from '@/components'
+} from '@/components' // 系統組件
 
 const isVisible = ref(false)
 

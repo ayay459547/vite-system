@@ -5,8 +5,8 @@ import { nextTick, reactive, computed, ref, inject } from 'vue'
 import type { UseHook } from '@/declare/hook'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import throttle from '@/lib/lib_throttle'
-import { isEmpty, getProxyData } from '@/lib/lib_utils'
-import { CustomPopover, CustomButton, FormTimePicker } from '@/components'
+import { isEmpty, getProxyData } from '@/lib/lib_utils' // 工具
+import { CustomPopover, CustomButton, FormTimePicker } from '@/components' // 系統組件
 
 import type { Types } from '../WeekScheduleInfo'
 

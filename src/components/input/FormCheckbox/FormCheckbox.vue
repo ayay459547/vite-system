@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 import { ElCheckboxGroup, ElCheckbox } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './FormCheckboxInfo'
 import { version, props as formCheckboxProps } from './FormCheckboxInfo'

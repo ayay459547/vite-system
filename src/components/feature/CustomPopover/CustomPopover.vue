@@ -2,7 +2,7 @@
 import { computed, ref, useSlots } from 'vue'
 import { ElPopover } from 'element-plus'
 
-import { getUuid, hasOwnProperty } from '@/lib/lib_utils'
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import { version, props as popoverProps } from './CustomPopoverInfo'
 

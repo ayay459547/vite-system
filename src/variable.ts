@@ -1,4 +1,4 @@
-import type { Options } from '@/components'
+import type { Options } from '@/components' // 系統組件
 
 // 配合後端格式
 export const operatorOptions: Options<string> = [

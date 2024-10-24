@@ -1,4 +1,4 @@
-import type { CustomIconProps } from '@/components'
+import type { CustomIconProps } from '@/components' // 系統組件
 import type { RouterType } from '@/router/setting'
 // import type { ScopeKey } from '@/i18n/i18n_setting'
 

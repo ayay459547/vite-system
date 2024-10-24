@@ -32,10 +32,12 @@ export declare namespace Props {
   type ShowArrow = boolean
   type Placement = Types.Placement
   type TargetAreaClickable = boolean
+
   type Steps = Array<Types.Step>
   type I18nModule = ScopeKey
 }
 export const props = {
+  // Element UI
   modelValue: {
     type: Boolean as PropType<Props.ModelValue>,
     required: true,
@@ -71,6 +73,7 @@ export const props = {
     default: false,
     description: '引導中是否可點擊 steps 中的 target'
   },
+  // Custom
   steps: {
     type: Array as PropType<Props.Steps>,
     required: false,
@@ -84,7 +87,8 @@ export const props = {
     required: false,
     default: defaultModuleType,
     description: `
-      label, options 使用 i18nLabel 時套用的翻譯模組
+      title, i18nTitle
+      steps 使用 i18nLabel 時套用的翻譯模組
     `
   }
 }

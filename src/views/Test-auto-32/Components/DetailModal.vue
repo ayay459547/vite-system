@@ -2,8 +2,8 @@
 import { type PropType, ref, onMounted, reactive, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { type CustomTimeLineProps, CustomTimeLine, SimpleTable } from '@/components'
-import { scrollToEl, isEmpty } from '@/lib/lib_utils'
+import { type CustomTimeLineProps, CustomTimeLine, SimpleTable } from '@/components' // 系統組件
+import { scrollToEl, isEmpty } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 
 import { getData } from './api'

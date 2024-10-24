@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { CustomDraggable, CustomButton, CustomBadge, CustomEmpty, CustomTag } from '@/components'
+import { CustomDraggable, CustomButton, CustomBadge, CustomEmpty, CustomTag } from '@/components' // 系統組件
 
 const options = [
   { id: 1, name: 'test1' },

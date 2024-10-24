@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 import GlobalView from '@/components/GlobalView.vue'
-import { CustomTooltip, SimpleQRcode } from '@/components'
+import { CustomTooltip, SimpleQRcode } from '@/components' // 系統組件
 
 import qrcode from '@/assets/images/chan.jpg?url'
 

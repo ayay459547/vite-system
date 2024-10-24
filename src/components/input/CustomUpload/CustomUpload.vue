@@ -2,14 +2,14 @@
 import { ref, onMounted, onBeforeUnmount, nextTick, inject, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomButton, CustomEmpty, CustomIcon } from '@/components'
+import { CustomButton, CustomEmpty, CustomIcon } from '@/components' // 系統組件
 import {
   getFileType,
   byteConvert,
   // readExcel,
   readImage
 } from '@/lib/lib_files'
-import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils'
+import { swal, isEmpty, getUuid, deepClone, getProxyData } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Types, Emits, Expose } from './CustomUploadInfo'

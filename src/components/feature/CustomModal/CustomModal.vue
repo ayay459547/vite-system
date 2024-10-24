@@ -14,9 +14,9 @@ import {
 import { storeToRefs } from 'pinia'
 
 import type { UseHook, SwalResult } from '@/declare/hook'
-import { useResizeObserver } from '@/lib/lib_hook'
-import { CustomButton, CustomTooltip } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { useResizeObserver } from '@/lib/lib_hook' // 自訂Composition API
+import { CustomButton, CustomTooltip } from '@/components' // 系統組件
+import { getUuid } from '@/lib/lib_utils' // 工具
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
 import { useCustomModalStore } from '@/stores/stores_CustomModal'

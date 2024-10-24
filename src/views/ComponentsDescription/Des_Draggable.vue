@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue'
 
 import markdown from '@/components/feature/CustomDraggable/CustomDraggable.md?raw'
-import { CustomDivider, CustomMarkdown, CustomButton, CustomDraggable } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { CustomDivider, CustomMarkdown, CustomButton, CustomDraggable } from '@/components' // 系統組件
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 const list1Default = [
   { id: '1', value: 'test-1' },

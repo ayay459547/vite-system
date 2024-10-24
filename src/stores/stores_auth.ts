@@ -7,7 +7,7 @@ import { defineStore } from 'pinia'
 import { ref, shallowRef, computed, shallowReactive } from 'vue'
 
 import { permission } from '@/lib/lib_permission'
-import { isEmpty, swal } from '@/lib/lib_utils'
+import { isEmpty, swal } from '@/lib/lib_utils' // 工具
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'

@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed } from 'vue'
 import type { TableColumnsItem } from '@/declare/columnSetting'
 
-import { CustomButton } from '@/components'
+import { CustomButton } from '@/components' // 系統組件
 
 const props = defineProps({
   index: {

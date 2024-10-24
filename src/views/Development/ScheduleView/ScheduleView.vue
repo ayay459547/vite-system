@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CustomTimeLine, CustomIcon, SimpleTable, CustomButton } from '@/components'
+import { CustomTimeLine, CustomIcon, SimpleTable, CustomButton } from '@/components' // 系統組件
 import { useSimpleTableSetting } from '@/lib/lib_columns'
-import { isEmpty, downloadFile } from '@/lib/lib_utils'
+import { isEmpty, downloadFile } from '@/lib/lib_utils' // 工具
 
 import { columnSetting } from './columns'
 

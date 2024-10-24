@@ -10,9 +10,9 @@ import {
   CustomPopover,
   CustomIcon,
   FormInput
-} from '@/components'
-import { useDraggable, useResizeObserver } from '@/lib/lib_hook'
-import { isEmpty, hasOwnProperty, deepClone, aesDecrypt } from '@/lib/lib_utils'
+} from '@/components' // 系統組件
+import { useDraggable, useResizeObserver } from '@/lib/lib_hook' // 自訂Composition API
+import { isEmpty, hasOwnProperty, deepClone, aesDecrypt } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { formatDatetime } from '@/lib/lib_format'
 import { getCookie } from '@/lib/lib_cookie'
@@ -206,7 +206,7 @@ const checkToken = (isIntervalCheck?: boolean) => {
 }
 
 // 以鍵盤切換語系
-const onKeyup = event => {
+const onKeyup = (event: KeyboardEvent) => {
   if(event.key === '*') {
     changeLang()
     event.preventDefault()
@@ -218,8 +218,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keyup', onKeyup)
 })
-
-
 
 defineExpose({
   addI18nUsageRecord: (record: any) => {
@@ -379,6 +377,8 @@ defineExpose({
     left: 0;
     width: fit-content;
     height: fit-content;
+    border-radius: 18px;
+    box-shadow: 0px 0px 6px 6px #9c9c9c;
   }
   &-container{
     width: 100%;

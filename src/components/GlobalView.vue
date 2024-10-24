@@ -11,9 +11,9 @@ import {
   nextTick
 } from 'vue'
 
-import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils'
+import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils' // 工具
 
-import { useEventBus } from '@/lib/lib_hook'
+import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
 import PageContent from '@/components/layout/PageContent.vue'
@@ -281,8 +281,7 @@ const login = async (userId: number) => {
 // 開發測試用 DevelopmentTest
 const developmentTestRef = ref()
 const isShowDevelopmentTest = ref(false)
-// @ts-ignore
-window.development = () => {
+const development = () => {
   if (systemEnv.value.mode === 'development') {
     isShowDevelopmentTest.value = !isShowDevelopmentTest.value
 
@@ -302,6 +301,26 @@ window.development = () => {
       }
     })
   }
+}
+// @ts-ignore
+window.development = development
+/**
+ * 按 Ctrl + Shift + -(數字鍵右上方)
+ * 開啟開發用工具
+ */
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.shiftKey && event.ctrlKey && event.key === '-') {
+    development()
+    event.preventDefault()
+  }
+}
+if (systemEnv.value.mode === 'development') {
+  onMounted(() => {
+    window.addEventListener('keydown', handleKeydown)
+  })
+  onBeforeMount(() => {
+    window.removeEventListener('keydown', handleKeydown)
+  })
 }
 
 // 向下傳送常用工具

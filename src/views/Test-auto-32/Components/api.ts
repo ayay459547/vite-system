@@ -1,6 +1,6 @@
 import type { Api, ApiRes, ViewParams } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format'
 
 import { columnSetting } from '../columns'

@@ -7,10 +7,10 @@ import {
   CustomDivider,
   CustomTree,
   CustomTreeV2
-} from '@/components'
+} from '@/components' // 系統組件
 
 import { useFormSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl } from '@/lib/lib_utils' // 工具
 
 import { ref } from 'vue'
 

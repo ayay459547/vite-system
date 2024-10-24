@@ -9,7 +9,7 @@ import {
   CustomInput,
   CustomIcon,
   CustomButton
-} from '@/components'
+} from '@/components' // 系統組件
 
 const typeOptions = [
   { label: 'fas', value: 'fas' },

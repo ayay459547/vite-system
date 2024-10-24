@@ -6,8 +6,8 @@ import type { UseHook } from '@/declare/hook'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { useFormListSetting } from '@/lib/lib_columns'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
-import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge, CustomTooltip, FormCheckbox, FormList } from '@/components'
-import { isEmpty, getUuid, hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge, CustomTooltip, FormCheckbox, FormList } from '@/components' // 系統組件
+import { isEmpty, getUuid, hasOwnProperty, getProxyData } from '@/lib/lib_utils' // 工具
 import { conditionOptions } from '@/variable'
 
 import type { Props } from './CustomSearchInfo'

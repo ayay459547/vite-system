@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { ref, shallowRef, onMounted } from 'vue'
 
 import type { EventOptions, EventItem } from '@/declare/hook'
-import { CustomPopover } from '@/components'
+import { CustomPopover } from '@/components' // 系統組件
 import throttle from '@/lib/lib_throttle'
 
 export declare namespace Types {

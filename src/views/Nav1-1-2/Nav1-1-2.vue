@@ -2,8 +2,7 @@
 import { ref, shallowRef, reactive, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components'
-import { useLocalI18n } from '@/lib/lib_hook'
+import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting'
 
@@ -17,9 +16,6 @@ import DetailModal from './Components/DetailModal.vue'
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()
 
-// const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
-const { i18nTranslate: pageTranslate } = useLocalI18n()
-
 // table
 const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
@@ -31,7 +27,7 @@ const {
 } = useFormSetting(columnSetting, 'filter')
 
 const tableOptions: TableOptions = {
-  title: pageTranslate('testTable'),
+  title: i18nTranslate('testTable'),
   version: '1.0.0',
   settingKey: 'nav1-1-2',
   size: 30
@@ -134,7 +130,7 @@ const onUserIdClick = (rowData: any) => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
-      :title="pageTranslate('todoList')"
+      :title="i18nTranslate('todoList')"
       @excel="download"
       @show-change="init"
     >

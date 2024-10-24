@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { VxeColumn } from 'vxe-table'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 import { version, props as vxeColumnProps } from './VxeColumnInfo'
 
 const scopedId = getUuid(version)

@@ -42,7 +42,7 @@ export const columnSetting = {
     // label: '工單緊急度',
     // i18nLabel: 'manufacturing-order-severity',
     table: {
-      width: 120,
+      width: 140,
       sortable: false
     },
     filter: {

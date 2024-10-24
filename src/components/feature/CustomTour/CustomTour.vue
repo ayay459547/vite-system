@@ -3,7 +3,7 @@ import { useSlots, computed, inject } from 'vue'
 import { ElTour, ElTourStep } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils'
+import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomTourInfo'
 import { version, props as tourProps } from './CustomTourInfo'
@@ -25,7 +25,7 @@ const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
-const getText = (text: string, i18nText: string) => {
+const getText = (text: string, i18nText: string | string[]) => {
   if (isEmpty(i18nText)) return text ?? ''
   return i18nTranslate(i18nText)
 }

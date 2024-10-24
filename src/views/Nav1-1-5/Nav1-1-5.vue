@@ -8,8 +8,8 @@ import {
   CustomDivider,
   // CustomDialog,
   CustomModal
-} from '@/components'
-import { useElementSize } from '@/lib/lib_hook'
+} from '@/components' // 系統組件
+import { useElementSize } from '@/lib/lib_hook' // 自訂Composition API
 
 import TestKeepAlive from './TestKeepAlive.vue'
 
@@ -31,8 +31,7 @@ onMounted(() => {
 })
 
 // 彈窗
-
-const isShow = ref(false)
+// const isShow = ref(false)
 
 const modalIsShow = ref(false)
 const modalIsShow2 = ref(false)
@@ -100,15 +99,15 @@ onMounted(() => {
 
     <CustomDivider />
 
-    <div class="flex-row i-ga-xs">
+    <!-- <div class="flex-row i-ga-xs">
       <CustomButton type="success" label="打開 Dialog" class="i-my-sm" @click="isShow = true" />
 
       <CustomButton type="warning" label="關閉 Dialog" class="i-my-sm" @click="isShow = false" />
 
-      <!-- <CustomDialog v-model="isShow" draggable modal>
+      <CustomDialog v-model="isShow" draggable modal>
         <h3>測試 CustomDialog</h3>
-      </CustomDialog> -->
-    </div>
+      </CustomDialog>
+    </div> -->
 
     <CustomDivider />
 

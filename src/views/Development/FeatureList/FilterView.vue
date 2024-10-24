@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, ref, onBeforeMount, computed } from 'vue'
 
-import { CustomInput, SimpleFilter } from '@/components'
+import { CustomInput, SimpleFilter } from '@/components' // 系統組件
 
 import { getOptions } from './api'
 

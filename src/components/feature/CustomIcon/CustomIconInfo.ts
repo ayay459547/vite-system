@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { CustomSize } from '@/components'
+import type { CustomSize } from '@/components' // 系統組件
 
 export const version = '__CustomIcon_1.0.0__'
 

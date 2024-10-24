@@ -11,7 +11,7 @@ import {
 
 import type { UseHook } from '@/declare/hook'
 
-import type { CustomTableProps } from '@/components'
+import type { CustomTableProps } from '@/components' // 系統組件
 import {
   CustomTable,
   CustomButton,
@@ -21,10 +21,10 @@ import {
   CustomTooltip,
   CustomModal,
   TimeLineTable
-} from '@/components'
+} from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
-import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils'
+import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Types } from './WebViewTableInfo'

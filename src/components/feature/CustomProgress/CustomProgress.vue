@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElProgress } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as progressProps } from './CustomProgressInfo'
 

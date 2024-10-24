@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { VxeColgroup } from 'vxe-table'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 import { version, props as vxeColgroupProps } from './VxeColgroupInfo'
 
 const scopedId = getUuid(version)

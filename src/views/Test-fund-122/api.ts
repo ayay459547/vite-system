@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { isEmpty, swal, deepClone, reverse } from '@/lib/lib_utils'
+import { isEmpty, swal, deepClone, reverse } from '@/lib/lib_utils' // 工具
 
 import { fakeTableData } from './fakeData'
 

@@ -11,10 +11,10 @@ import {
   CustomDraggable,
   CustomScrollbar,
   TimeLevelManagement
-} from '@/components'
+} from '@/components' // 系統組件
 
 import { formatDatetime } from '@/lib/lib_format'
-import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils'
+import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils' // 工具
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

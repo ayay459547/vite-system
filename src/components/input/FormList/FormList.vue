@@ -2,9 +2,9 @@
 import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { SimpleTable, CustomButton } from '@/components'
+import { SimpleTable, CustomButton } from '@/components' // 系統組件
 import { useSimpleTableSetting } from '@/lib/lib_columns'
-import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils'
+import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Emits, Expose } from './FormListInfo'
 import { version, props as formListProps } from './FormListInfo'

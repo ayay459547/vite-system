@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
 
-import { CustomCharts } from '@/components'
+import { CustomCharts } from '@/components' // 系統組件
 
 import { chart6Data } from './fakeData'
 

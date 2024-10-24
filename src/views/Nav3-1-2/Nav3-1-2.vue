@@ -1,10 +1,9 @@
 <script setup lang="tsx">
 import type { FunctionalComponent } from 'vue'
 import { cloneVNode } from 'vue'
-import { CustomTableV2 } from '@/components'
 
 import type { HeaderClassNameGetter, TableV2CustomizedHeaderSlotParam } from 'element-plus'
-import { TableV2FixedDir, TableV2Placeholder } from 'element-plus'
+import { TableV2FixedDir, TableV2Placeholder, ElTableV2, ElAutoResizer } from 'element-plus'
 
 const generateColumns = (length = 10, prefix = 'column-', props?: any) => {
   return  Array.from({ length }).map((_, columnIndex) => ({
@@ -37,6 +36,7 @@ const data = generateData(columns, 10000)
 
 const CustomizedHeader: FunctionalComponent<TableV2CustomizedHeaderSlotParam> = (bindProps: any) => {
   const { cells, columns, headerIndex } = bindProps
+  // console.log('CustomizedHeader => ', bindProps)
 
   if (headerIndex === 2) return cells
 
@@ -132,40 +132,46 @@ const headerClass = ({ headerIndex }: Parameters<HeaderClassNameGetter<any>>[0])
 
 <template>
   <div class="i-page">
-    <CustomTableV2
-      scrollbar-always-on
-      fixed
-      :columns="fixedColumns"
-      :data="data"
-      :header-height="[40, 40, 40]"
-      :footer-height="40"
-      :header-class="headerClass"
-    >
-      <template #header="props">
-        <CustomizedHeader v-bind="props" />
-      </template>
-
-      <template #row="props">
-        <Row v-bind="props" />
-      </template>
-
-      <template #footer>
-        <div
-          class="flex flex-center"
-          style="
-            justify-content: center;
-            height: 100%;
-            background-color: var(--el-color-primary-light-7);
-          "
+    <ElAutoResizer>
+      <template #default="{ height, width }">
+        <ElTableV2
+          scrollbar-always-on
+          :width="width"
+          :height="height"
+          fixed
+          :columns="fixedColumns"
+          :data="data"
+          :header-height="[40, 40, 40]"
+          :footer-height="40"
+          :header-class="headerClass"
         >
-          Display a message in the footer
-        </div>
-      </template>
+          <template #header="props">
+            <CustomizedHeader v-bind="props" />
+          </template>
 
-      <!-- <template #overlay="scope">
-        <div>{{ $log(scope) }} overlay</div>
-      </template> -->
-    </CustomTableV2>
+          <template #row="props">
+            <Row v-bind="props" />
+          </template>
+
+          <template #footer>
+            <div
+              class="flex flex-center"
+              style="
+                justify-content: center;
+                height: 100%;
+                background-color: var(--el-color-primary-light-7);
+              "
+            >
+              Display a message in the footer
+            </div>
+          </template>
+
+          <!-- <template #overlay="scope">
+            <div>{{ $log(scope) }} overlay</div>
+          </template> -->
+        </ElTableV2>
+      </template>
+    </ElAutoResizer>
   </div>
 </template>
 

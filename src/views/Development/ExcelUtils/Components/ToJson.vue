@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-import { CustomMarkdown, CustomButton, CustomUpload } from '@/components'
-import { isEmpty, downloadFile, swal } from '@/lib/lib_utils'
+import { CustomMarkdown, CustomButton, CustomUpload } from '@/components' // 系統組件
+import { isEmpty, downloadFile, swal } from '@/lib/lib_utils' // 工具
 
 // Excel轉JSON.xlsx
 import path from '@/assets/file/ExcelToJSON.xlsx?url'

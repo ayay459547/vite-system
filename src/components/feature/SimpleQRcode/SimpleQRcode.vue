@@ -2,7 +2,7 @@
 import { h, defineComponent } from 'vue'
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { object_filter } from '@/lib/lib_object'
 
 import { version, props as qrCodeProps } from './SimpleQRcodeInfo'

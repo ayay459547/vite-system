@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import type { VxeTablePropTypes } from 'vxe-table'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 export const version = '__VxeTable_1.0.0__'
 
@@ -43,6 +43,7 @@ export declare namespace Props {
   type FilterConfig = Record<string, any>
   type ScrollY = Record<string, any>
   type ScrollX = Record<string, any>
+  type ShowHeader = boolean
   type ShowOverflow = boolean
   type ShowHeaderOverflow = boolean
   type ShowFooterOverflow = boolean
@@ -155,6 +156,12 @@ export const props = {
       return {}
     },
     description: '設定'
+  },
+  showHeader: {
+    type: Boolean as PropType<Props.ShowHeader>,
+    required: false,
+    default: true,
+    description: '是否隱藏首行'
   },
   showOverflow: {
     type: Boolean as PropType<Props.ShowOverflow>,

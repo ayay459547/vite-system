@@ -1,7 +1,7 @@
 import type { Navigation } from '@/declare/routes'
 import { refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
-import { cutTableData } from '@/lib/lib_utils'
+import { cutTableData } from '@/lib/lib_utils' // 工具
 import { object_reduce } from '@/lib/lib_object'
 
 export type TableData = {

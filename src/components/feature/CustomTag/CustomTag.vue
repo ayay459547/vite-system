@@ -2,8 +2,8 @@
 import { useSlots } from 'vue'
 import { ElTag } from 'element-plus'
 
-import { CustomIcon } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { CustomIcon } from '@/components' // 系統組件
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomTagInfo'
 import { version, props as tagProps } from './CustomTagInfo'

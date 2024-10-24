@@ -3,7 +3,7 @@ import type { TabsPaneContext, TabPaneName } from 'element-plus'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import type { Option } from '@/components'
+import type { Option } from '@/components' // 系統組件
 
 export const version = '__CustomTabs_1.0.0__'
 

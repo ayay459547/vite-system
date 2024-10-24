@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GanttChart } from '@/components'
+import { GanttChart } from '@/components' // 系統組件
 </script>
 
 <template>

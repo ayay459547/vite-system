@@ -3,14 +3,14 @@ import type { PropType } from 'vue'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
-import type { Option } from '@/components'
+import type { Option } from '@/components' // 系統組件
 
 import type {
   FormTimePickerTypes,
   FormDatePickerTypes,
   FormDatePickerProps,
   FormAutocompleteProps
-} from '@/components'
+} from '@/components' // 系統組件
 
 export const version = '1.0.0'
 

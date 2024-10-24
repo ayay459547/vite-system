@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 
-import type { Option as CommonOption } from '@/components'
+import type { Option as CommonOption } from '@/components' // 系統組件
 
 export const version = '__FormCheckbox_1.0.0__'
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import { tipLog, getUuid } from '@/lib/lib_utils'
+import { tipLog, getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as markdownProps } from './CustomMarkdownInfo'
 

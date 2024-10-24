@@ -6,7 +6,7 @@ import {
   CustomButton,
   CustomIcon,
   CustomDivider
-} from '@/components'
+} from '@/components' // 系統組件
 import { vInfiniteScroll } from '@vueuse/components'
 
 const count = ref(10)

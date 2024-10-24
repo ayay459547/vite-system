@@ -2,7 +2,7 @@
 import { onMounted, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomButton, CustomCharts } from '@/components'
+import { CustomButton, CustomCharts } from '@/components' // 系統組件
 import { downloadMatrix } from '@/lib/lib_files'
 
 // import { storeToRefs } from 'pinia'

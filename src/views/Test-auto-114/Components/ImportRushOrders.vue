@@ -2,8 +2,8 @@
 import { ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomUpload, CustomButton, CustomCollapse, SimpleTable, CustomEmpty } from '@/components'
-import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils'
+import { CustomUpload, CustomButton, CustomCollapse, SimpleTable, CustomEmpty } from '@/components' // 系統組件
+import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 
 import { type UploadFileRes, uploadFile, updateInsertRushOrder } from './api'

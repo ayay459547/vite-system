@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { CustomCollapse, CustomDivider } from '@/components'
+import { CustomCollapse, CustomDivider } from '@/components' // 系統組件
 
 const active1 = ref(['options1', 'options2'])
 

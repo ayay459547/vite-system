@@ -5,7 +5,7 @@ import type { TreeNode } from 'element-plus'
 import { ElTreeV2 } from 'element-plus'
 // import type Node from 'element-plus/es/components/tree/src/model/node'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 

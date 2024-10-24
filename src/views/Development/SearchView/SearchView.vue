@@ -5,8 +5,8 @@ import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { useFormSetting } from '@/lib/lib_columns'
-import { CustomInput, CustomIcon, CustomButton } from '@/components'
-import { scrollToEl } from '@/lib/lib_utils'
+import { CustomInput, CustomIcon, CustomButton } from '@/components' // 系統組件
+import { scrollToEl } from '@/lib/lib_utils' // 工具
 import debounce from '@/lib/lib_debounce'
 
 import FeatureTree from './FeatureTree.vue'

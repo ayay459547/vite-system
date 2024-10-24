@@ -6,7 +6,7 @@ import type { UseHook } from '@/declare/hook'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import type { CustomTableTypes } from '@/components'
+import type { CustomTableTypes } from '@/components' // 系統組件
 import {
   CustomPopover,
   CustomButton,
@@ -15,7 +15,7 @@ import {
   CustomBadge,
   CustomIcon,
   CustomTooltip
-} from '@/components'
+} from '@/components' // 系統組件
 
 const props = defineProps({
   i18nModule: {

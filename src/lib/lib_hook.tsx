@@ -31,7 +31,7 @@ import {
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
 import Async_Error from '@/views/Common/Async_Error.vue'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 
 export type Variant = 'p' | 'text'
   | 'h1' | 'h3' | 'caption'

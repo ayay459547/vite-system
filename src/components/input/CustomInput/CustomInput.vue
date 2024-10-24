@@ -23,9 +23,9 @@ import {
   FormAutocomplete,
   FormOperator,
   CustomText
-} from '@/components'
+} from '@/components' // 系統組件
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils'
+import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format'
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'

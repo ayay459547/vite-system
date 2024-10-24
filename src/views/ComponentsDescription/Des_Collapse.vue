@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomCollapse/CustomCollapse.md?raw'
-import type { Options } from '@/components'
-import { CustomInput, CustomDivider, CustomMarkdown, CustomCollapse } from '@/components'
+import type { Options } from '@/components' // 系統組件
+import { CustomInput, CustomDivider, CustomMarkdown, CustomCollapse } from '@/components' // 系統組件
 
 const value = ref()
 

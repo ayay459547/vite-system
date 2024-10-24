@@ -8,7 +8,7 @@ import {
   CustomDivider,
   CustomMarkdown,
   CustomSwitch
-} from '@/components'
+} from '@/components' // 系統組件
 
 const value = ref(true)
 

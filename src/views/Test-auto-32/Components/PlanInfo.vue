@@ -2,7 +2,7 @@
 import { type PropType, onMounted, ref, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomTabs, CustomTable, CustomSearch } from '@/components'
+import { CustomTabs, CustomTable, CustomSearch } from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 

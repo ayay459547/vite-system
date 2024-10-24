@@ -5,12 +5,12 @@ import { storeToRefs } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
 import type { AuthData, UseHook } from '@/declare/hook'
-import { CustomModal } from '@/components'
-import { useAsyncComponent } from '@/lib/lib_hook'
+import { CustomModal } from '@/components' // 系統組件
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
 import { useLayoutStore } from '@/stores/stores_layout'
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { tipLog } from '@/lib/lib_utils'
+import { tipLog } from '@/lib/lib_utils' // 工具
 
 const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'), 'rect')
 const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'), 'rect')
@@ -136,7 +136,7 @@ const init = async () => {
         layout3Ref.value?.init()
         break
       default:
-        tipLog('找不到對應的Layout')
+      tipLog('找不到對應的Layout', [layout.value])
         break
     }
   }, 320)

@@ -6,9 +6,9 @@ import { useRouter } from 'vue-router'
 import type { UseHook } from '@/declare/hook'
 // 引入組件原型
 import { ElLink } from 'element-plus'
-import { CustomTooltip, CustomIcon } from '@/components'
+import { CustomTooltip, CustomIcon } from '@/components' // 系統組件
 // 工具包
-import { aesEncrypt, getUuid } from '@/lib/lib_utils'
+import { aesEncrypt, getUuid } from '@/lib/lib_utils' // 工具
 // 組件參數設定
 import { version, props as linkProps } from './CustomLinkInfo'
 

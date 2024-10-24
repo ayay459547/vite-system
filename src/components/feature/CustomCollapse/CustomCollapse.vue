@@ -3,8 +3,8 @@ import { useSlots, computed, inject } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomEmpty } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { CustomEmpty } from '@/components' // 系統組件
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomCollapseInfo'
 import { version, props as collapseProps } from './CustomCollapseInfo'

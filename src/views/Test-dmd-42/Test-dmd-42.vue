@@ -6,12 +6,12 @@ import type { UseHook } from '@/declare/hook'
 import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 
 import { formatDatetime } from '@/lib/lib_format'
-import { hasOwnProperty, isEmpty } from '@/lib/lib_utils'
+import { hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 import dayjs, { getWeekOfMonth } from '@/lib/lib_day'
 import throttle from '@/lib/lib_throttle'
 
-import { CustomDividerView, CustomInput, CustomEmpty } from '@/components'
-import { useAsyncComponent } from '@/lib/lib_hook'
+import { CustomDividerView, CustomInput, CustomEmpty } from '@/components' // 系統組件
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
 import type { FilterData } from './api'
 import { getData } from './api'

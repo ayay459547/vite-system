@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomCharts } from '@/components'
+import { CustomCharts } from '@/components' // 系統組件
 import { onMounted, ref } from 'vue'
 
 const options = () => {

@@ -2,8 +2,8 @@
 import { useSlots } from 'vue'
 import { ElButton } from 'element-plus'
 
-import { CustomIcon } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { CustomIcon } from '@/components' // 系統組件
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomButtonInfo'
 import { version, props as buttonProps } from './CustomButtonInfo'
@@ -41,7 +41,7 @@ const hasSlot = (prop: string): boolean => {
     :autofocus="props.autofocus"
     :autoInsertSpace="props.autoInsertSpace"
     :color="props.color"
-    class="button-container"
+    class="button button-container"
     :style="props.style"
     :class="[scopedId, `button-size-${props.size ?? 'default'}`]"
     @click="onClick"
@@ -65,7 +65,7 @@ const hasSlot = (prop: string): boolean => {
 
     <template v-if="props.label.length > 0 || hasSlot('default')" #default>
       <slot>
-        <span class="button-label" :class="`button-label-size-${props.iconSize}`" :style="{ color: props.textColor }">
+        <span class="button-label" :style="{ color: props.textColor }">
           {{ props.label }}
         </span>
       </slot>
@@ -76,7 +76,8 @@ const hasSlot = (prop: string): boolean => {
 <style lang="scss" scoped>
 :global(button[class*="__CustomButton"].el-button) {
   align-items: center;
-  line-height: inherit;
+  padding: 8px 12px !important;
+  gap: 6px;
 }
 :global(button[class*="__CustomButton"].el-button > span) {
   display: contents
@@ -111,32 +112,31 @@ button[class*="__CustomButton"] {
       @include icon-transform(translate, translateX(0), translateX(-4px));
     }
 
-    // 按鈕大小
     &-size-large {
       height: 36px;
-      gap: 4px;
+      line-height: 36px;
+      font-size: 1.1em;
+
+      :slotted(.button-label) {
+        font-size: 1em;
+      }
     }
     &-size-default {
       height: 32px;
-      gap: 2px;
+      line-height: 32px;
+      font-size: 1em;
+
+      :slotted(.button-label) {
+        font-size: 0.9em;
+      }
     }
     &-size-small {
       height: 28px;
-      gap: 0px;
-    }
+      line-height: 28px;
+      font-size: 0.9em;
 
-    // 文字大小
-    &-label {
-      display: inline-block;
-
-      &-size-large {
-        font-size: 1.2em;
-      }
-      &-size-default {
-        font-size: 1em;
-      }
-      &-size-small {
-        font-size: 0.95em;
+      :slotted(.button-label) {
+        font-size: 0.8em;
       }
     }
   }

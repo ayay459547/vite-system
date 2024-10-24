@@ -1,23 +1,49 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
 import { VxeTable } from 'vxe-table'
 import { VxeUI, VxeTooltip } from 'vxe-pc-ui'
 import 'vxe-pc-ui/styles/cssvar.scss'
 import 'vxe-table/styles/cssvar.scss'
 
-import zhTW from 'vxe-table/lib/locale/lang/zh-TW'
-// import zhCN from 'vxe-table/lib/locale/lang/zh-CN'
-// import enUS from 'vxe-table/lib/locale/lang/en-US'
-
 import { ElAutoResizer } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
-import { getUuid } from '@/lib/lib_utils'
+import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
+import { useLayoutStore } from '@/stores/stores_layout'
+
+import { getUuid } from '@/lib/lib_utils' // 工具
 import type { Types, Expose } from './VxeTableInfo'
 import { version, props as vxeTableProps } from './VxeTableInfo'
 
-VxeUI.setI18n('zh-TW', zhTW)
-VxeUI.setLanguage('zh-TW')
 VxeUI.component(VxeTooltip)
+
+const layoutStore = useLayoutStore()
+const { isDark } = storeToRefs(layoutStore)
+
+const colorToneBus = useEventBus<string>('colorTone')
+const colorToneBusListener = (event: string, colorTone: String) => {
+  switch (event) {
+    case 'colorToneChange':
+      if (colorTone === 'dark') {
+        VxeUI.setTheme('dark')
+      } else {
+        VxeUI.setTheme('light')
+      }
+      break
+  }
+}
+onBeforeMount(() => {
+  colorToneBus.on(colorToneBusListener)
+})
+onBeforeUnmount(() => {
+  colorToneBus.off(colorToneBusListener)
+})
+
+onMounted(() => {
+  if (isDark.value) {
+    VxeUI.setTheme('dark')
+  }
+})
 
 const scopedId = getUuid(version)
 
@@ -91,6 +117,7 @@ defineExpose({
           :filter-config="props.filterConfig"
           :scroll-y="props.scrollY"
           :scroll-x="props.scrollX"
+          :show-header="props.showHeader"
           :show-overflow="props.showOverflow"
           :show-header-overflow="props.showHeaderOverflow"
           :show-footer-overflow="props.showFooterOverflow"
@@ -107,15 +134,10 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:global(div[class*="__VxeTable"]) {
-  div.vxe-table--tooltip-wrapper {
-    z-index: 9999 !important;
+:global(div.vxe-cell) {
+  .vxe-cell--title,
+  .vxe-cell--label {
+    color: var(--el-text-color-primary);
   }
-}
-</style>
-
-<style lang="scss">
-div.vxe-table--tooltip-wrapper {
-  z-index: 9999 !important;
 }
 </style>

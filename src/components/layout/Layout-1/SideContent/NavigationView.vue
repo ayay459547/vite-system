@@ -6,10 +6,10 @@ import type { NavigationFailure } from 'vue-router'
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
-import { CustomIcon, CustomScrollbar, CustomTooltip, CustomText } from '@/components'
+import { CustomIcon, CustomScrollbar, CustomTooltip, CustomText } from '@/components' // 系統組件
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils' // 工具
 
 import SubNavigationView from './SubNavigationView.vue'
 

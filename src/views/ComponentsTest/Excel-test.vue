@@ -4,7 +4,7 @@ import ExcelJs from 'exceljs'
 
 import type { UseHook } from '@/declare/hook'
 import { useTableSetting } from '@/lib/lib_columns'
-import type { CustomIconProps, CustomButtonProps, CustomTooltipProps } from '@/components'
+import type { CustomIconProps, CustomButtonProps, CustomTooltipProps } from '@/components' // 系統組件
 import {
   CustomButton,
   CustomModal,
@@ -13,8 +13,8 @@ import {
   CustomPopover,
   CustomTable,
   CustomTooltip
-} from '@/components'
-import { downloadFile } from '@/lib/lib_utils'
+} from '@/components' // 系統組件
+import { downloadFile } from '@/lib/lib_utils' // 工具
 import type { TableOptions } from '@/declare/columnSetting'
 
 // WordTest.docx

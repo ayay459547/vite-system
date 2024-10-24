@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Types, Props, Expose } from './WeekScheduleInfo'

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 
-import { CustomIcon, CustomScrollbar } from '@/components'
-import { useResizeObserver } from '@/lib/lib_hook'
-import { getUuid, isEmpty } from '@/lib/lib_utils'
+import { CustomIcon, CustomScrollbar } from '@/components' // 系統組件
+import { useResizeObserver } from '@/lib/lib_hook' // 自訂Composition API
+import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 import throttle from '@/lib/lib_throttle'
 
 import type { Props, Emits, Expose } from './CustomDividerViewInfo'

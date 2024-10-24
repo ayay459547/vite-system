@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { CustomSearch, CustomDrawer, CustomButton, GroupSearch } from '@/components'
+import { CustomSearch, CustomDrawer, CustomButton, GroupSearch } from '@/components' // 系統組件
 import { useFormSetting } from '@/lib/lib_columns'
 
 type Form = {

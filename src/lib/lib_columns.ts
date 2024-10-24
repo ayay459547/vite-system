@@ -6,7 +6,7 @@ import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'
 
-import type { CustomTableTypes } from '@/components'
+import type { CustomTableTypes } from '@/components' // 系統組件
 import type {
   InputRefItem,
   // FormColumnsItem,
@@ -23,7 +23,7 @@ import type {
   // SimpleTableColumnsItem
 } from '@/declare/columnSetting'
 import { getColumnSetting } from '@/lib/lib_idb'
-import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty, message } from '@/lib/lib_utils'
+import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty, message } from '@/lib/lib_utils' // 工具
 import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
 
 /**

@@ -7,7 +7,7 @@ import {
   CustomIcon,
   CustomInput,
   CustomButton
-} from '@/components'
+} from '@/components' // 系統組件
 
 import type { Types } from './TimeLevelManagementInfo'
 import { props as managementProps } from './TimeLevelManagementInfo'

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, nextTick, reactive, onMounted } from 'vue'
 
-import { getType, getUuid, isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
+import { getType, getUuid, isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils' // 工具
 import { object_filter, object_every } from '@/lib/lib_object'
 
 import type { Types } from '../WeekScheduleInfo'

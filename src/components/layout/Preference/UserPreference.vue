@@ -4,8 +4,8 @@ import { inject, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook'
-import { useEventBus } from '@/lib/lib_hook'
-import { CustomIcon, FormRadio } from '@/components'
+import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
+import { CustomIcon, FormRadio } from '@/components' // 系統組件
 import { options as langOptions } from '@/i18n'
 import { useLocaleStore } from '@/stores/stores_locale'
 import { useLayoutStore } from '@/stores/stores_layout'
@@ -33,6 +33,7 @@ const emit = defineEmits(['layout-change'])
 const localeStore = useLocaleStore()
 const { systemLocale } = storeToRefs(localeStore)
 const i18nBus = useEventBus<string>('i18n')
+
 const langValue = computed({
   get() {
     return systemLocale.value
@@ -79,6 +80,8 @@ const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
 
 // 色調
+const colorToneBus = useEventBus<string>('colorTone')
+
 const colorToneOptions = [
   { label: 'light', value: 'light' },
   { label: 'dark', value: 'dark' }
@@ -90,6 +93,7 @@ const colorTone = computed({
   set(colorTone: string) {
     const _isDark = colorTone === 'dark'
     layoutStore.toggleDark(_isDark)
+    colorToneBus.emit('colorToneChange', colorTone)
   }
 })
 

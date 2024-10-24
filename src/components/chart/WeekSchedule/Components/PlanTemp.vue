@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { reactive } from 'vue'
 
 import throttle from '@/lib/lib_throttle'
-import { getUuid, isEmpty } from '@/lib/lib_utils'
+import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Types } from '../WeekScheduleInfo'
 

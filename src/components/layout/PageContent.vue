@@ -4,8 +4,8 @@ import { ref, computed, onBeforeMount } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute } from 'vue-router'
 
-import { useEventBus } from '@/lib/lib_hook'
-import { scrollToEl } from '@/lib/lib_utils'
+import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
+import { scrollToEl } from '@/lib/lib_utils' // 工具
 
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
 

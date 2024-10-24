@@ -15,11 +15,12 @@
 
 // reset
 @use './styles/normalize.css' as *;
-@use './reset.scss' as *;
+@use './styles/reset.scss' as *;
 
 // 顏色
 // $system-bg-color: #506d9c !default;
 @use './styles/color' as *;
+
 // 通用
 @use './styles/common' as *;
 @use './styles/flex' as *;
@@ -30,4 +31,8 @@
 @use './styles/z-index' as *;
 @use './styles/media' as *;
 
+// 工具
 @use './styles/utils' as *;
+
+// 列印
+@use './styles/print.scss' as *;

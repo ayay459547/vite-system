@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { onMounted, ref, customRef, computed } from 'vue'
 
-import type { CustomTableTypes } from '@/components'
-import { CustomBadge } from '@/components'
+import type { CustomTableTypes } from '@/components' // 系統組件
+import { CustomBadge } from '@/components' // 系統組件
 
 const props = defineProps({
   modelValue: {

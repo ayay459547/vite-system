@@ -4,9 +4,9 @@ import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 import { ElCard, ElBacktop } from 'element-plus'
 
-import { CustomTimeLine, CustomTag, CustomButton, SimpleQRcode, CustomSwitch } from '@/components'
+import { CustomTimeLine, CustomTag, CustomButton, SimpleQRcode, CustomSwitch } from '@/components' // 系統組件
 
-import { awaitTime, scrollToEl } from '@/lib/lib_utils'
+import { awaitTime, scrollToEl } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format'
 
 const options = [

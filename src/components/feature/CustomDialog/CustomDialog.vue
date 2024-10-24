@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 import { ElDialog } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props } from './CustomDialogInfo'
 import { version, props as dialogProps } from './CustomDialogInfo'

@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 
 import { ajax } from '@/lib/lib_ajax'
-import { CustomTable } from '@/components'
+import { CustomTable } from '@/components' // 系統組件
 
 interface Todos {
   completed: boolean

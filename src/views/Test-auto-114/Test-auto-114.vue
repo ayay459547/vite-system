@@ -4,7 +4,7 @@ import { ref, onMounted, reactive, inject, nextTick } from 'vue'
 // 引入類型
 import type { UseHook, SwalResult } from '@/declare/hook'
 // 引入組件
-import { CustomModal, CustomTabs, CustomEmpty, CustomButton } from '@/components'
+import { CustomModal, CustomTabs, CustomEmpty, CustomButton } from '@/components' // 系統組件
 // 引入權限
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
 // 插單:機台角度

@@ -3,8 +3,8 @@ import type { PropType } from 'vue'
 import { reactive, onMounted, inject, nextTick, ref, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomButton, CustomEmpty } from '@/components'
-import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils'
+import { CustomButton, CustomEmpty } from '@/components' // 系統組件
+import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { ResValidate } from './api'

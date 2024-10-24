@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import { CustomButton } from '@/components'
+import { CustomButton } from '@/components' // 系統組件
 
 import testExcelData from './test.xlsx?sheetjs'
 import { download1, download2, excleDownload1, excleDownload2, excleDownload3 } from './download'

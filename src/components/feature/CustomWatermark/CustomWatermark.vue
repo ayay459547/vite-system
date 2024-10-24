@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElWatermark } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as watermarkProps } from './CustomWatermarkInfo'
 

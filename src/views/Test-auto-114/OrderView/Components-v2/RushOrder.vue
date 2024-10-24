@@ -3,9 +3,9 @@ import type { PropType } from 'vue'
 import { ref, onMounted, inject, nextTick, reactive, computed } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { FormList, CustomInput, CustomButton, CustomModal } from '@/components'
+import { FormList, CustomInput, CustomButton, CustomModal } from '@/components' // 系統組件
 import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
-import { scrollToEl, isEmpty, hasOwnProperty, getProxyData } from '@/lib/lib_utils'
+import { scrollToEl, isEmpty, hasOwnProperty, getProxyData } from '@/lib/lib_utils' // 工具
 // import type { TableData } from '../api'
 import { workReportColumnSetting } from './columns'
 

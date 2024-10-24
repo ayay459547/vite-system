@@ -3,7 +3,7 @@ import { computed, onMounted, onBeforeUnmount, ref, watch, effectScope, inject }
 import { ElTimePicker } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

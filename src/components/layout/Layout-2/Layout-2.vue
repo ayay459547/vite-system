@@ -5,7 +5,7 @@ import { nextTick } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils' // 工具
 
 import MenuContent from './MenuContent.vue'
 

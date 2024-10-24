@@ -12,8 +12,8 @@ import {
   CustomTabs,
   CustomIcon,
   CustomSearch
-} from '@/components'
-import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils'
+} from '@/components' // 系統組件
+import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import dayjs from '@/lib/lib_day'
 

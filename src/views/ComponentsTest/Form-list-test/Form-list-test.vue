@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
 
-import { FormList, CustomInput } from '@/components'
+import { FormList, CustomInput } from '@/components' // 系統組件
 import { useFormListSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
+import { scrollToEl } from '@/lib/lib_utils' // 工具
 
 import { columnSetting } from './columns'
 

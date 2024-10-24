@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomModal/CustomModal.md?raw'
-import type { CustomModalProps } from '@/components'
-import { CustomInput, CustomDivider, CustomMarkdown, CustomModal, CustomButton } from '@/components'
+import type { CustomModalProps } from '@/components' // 系統組件
+import { CustomInput, CustomDivider, CustomMarkdown, CustomModal, CustomButton } from '@/components' // 系統組件
 
 const widthOptions = [
   { label: 'large', value: 'large' },

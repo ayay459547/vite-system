@@ -2,7 +2,7 @@ import {
   // properties,
   langMap
 } from '@/i18n'
-import { cutTableData, isEmpty } from '@/lib/lib_utils'
+import { cutTableData, isEmpty } from '@/lib/lib_utils' // 工具
 import { object_forEach, object_reduce } from '@/lib/lib_object'
 
 export type TableData = {

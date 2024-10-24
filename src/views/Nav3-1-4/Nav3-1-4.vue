@@ -7,9 +7,9 @@ import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { getData } from './api'
 import { columnSetting } from './columns'
 import { formatDatetime } from '@/lib/lib_format'
-import { hasOwnProperty } from '@/lib/lib_utils'
+import { hasOwnProperty } from '@/lib/lib_utils' // 工具
 import dayjs, { getWeekOfMonth } from '@/lib/lib_day'
-import { useAsyncComponent } from '@/lib/lib_hook'
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
 const VirtualTable = useAsyncComponent(() => import('./Components/VirtualTable.vue'), 'rect')
 

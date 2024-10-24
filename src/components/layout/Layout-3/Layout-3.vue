@@ -6,7 +6,7 @@ import { computed, nextTick, ref, onMounted } from 'vue'
 import type { Navigation } from '@/declare/routes'
 import type { AuthData } from '@/declare/hook'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { CustomDividerView } from '@/components'
+import { CustomDividerView } from '@/components' // 系統組件
 
 import SideContent from './SideContent/SideContent.vue'
 import HeaderContent from './HeaderContent/HeaderContent.vue'

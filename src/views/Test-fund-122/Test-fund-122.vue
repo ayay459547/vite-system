@@ -11,8 +11,8 @@ import {
   SimpleTable,
   GroupSearch,
   CustomSearch
-} from '@/components'
-import { useLocalI18n } from '@/lib/lib_hook'
+} from '@/components' // 系統組件
+import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'

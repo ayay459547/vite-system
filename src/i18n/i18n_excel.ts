@@ -3,7 +3,7 @@ import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
 // import { read, utils } from '@/lib/lib_files'
-import { isEmpty, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, hasOwnProperty } from '@/lib/lib_utils' // 工具
 import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 
 import type { LangMap } from '@/i18n'

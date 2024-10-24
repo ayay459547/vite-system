@@ -1,7 +1,7 @@
 import { openDB, deleteDB } from 'idb'
 import checkSystemVersionDiff from './checkSystemVersion'
 import { idbVersion, storeVersion } from '@/lib/lib_idb'
-import { deepClone, swal } from '@/lib/lib_utils'
+import { deepClone, swal } from '@/lib/lib_utils' // 工具
 
 /**
  * indexedDB 刪除換新

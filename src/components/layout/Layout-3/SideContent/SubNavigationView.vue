@@ -5,7 +5,7 @@ import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook'
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomScrollbar } from '@/components'
+import { CustomIcon, CustomScrollbar } from '@/components' // 系統組件
 import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'

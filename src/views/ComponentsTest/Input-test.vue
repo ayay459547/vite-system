@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFormSetting } from '@/lib/lib_columns'
-import { scrollToEl, isEmpty } from '@/lib/lib_utils'
-import { CustomInput, CustomButton } from '@/components'
+import { scrollToEl, isEmpty } from '@/lib/lib_utils' // 工具
+import { CustomInput, CustomButton } from '@/components' // 系統組件
 
 const columnSetting = {
   autocomplete: {

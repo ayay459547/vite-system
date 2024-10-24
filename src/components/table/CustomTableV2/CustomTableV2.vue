@@ -3,7 +3,7 @@ import { ref, useSlots } from 'vue'
 import type { ElTableV2 as ElTableV2Type, TableV2Instance } from 'element-plus'
 import { ElTableV2, ElAutoResizer } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as tableV2Props } from './CustomTableV2Info'
 

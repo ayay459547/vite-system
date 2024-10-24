@@ -2,7 +2,7 @@
 import { ref, computed, useSlots } from 'vue'
 import { ElTooltip } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as tooltipProps } from './CustomTooltipInfo'
 

@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { ElSwitch } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomSwitchInfo'
 import { version, props as switchProps } from './CustomSwitchInfo'

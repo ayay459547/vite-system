@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElBadge } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as badgeProps } from './CustomBadgeInfo'
 

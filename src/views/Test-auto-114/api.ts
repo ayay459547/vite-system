@@ -1,6 +1,6 @@
 import type { Api, ApiRes, ViewParams } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import type { Options } from '@/components'
+import type { Options } from '@/components' // 系統組件
 
 /**
  * 取得製程列表

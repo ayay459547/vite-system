@@ -3,7 +3,7 @@ import { ref, reactive, inject } from 'vue'
 
 // 全域功能類型
 import type { UseHook } from '@/declare/hook'
-// 引入組件
+// 組件
 import {
   WebViewTable, // 泛用表格
   CustomModal,
@@ -11,21 +11,21 @@ import {
   CustomButton,
   FormRadio,
   CustomLink // 跳轉
- } from '@/components'
- import { useAsyncComponent } from '@/lib/lib_hook'
+ } from '@/components' // 系統組件
+ import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
- // 引入工具
-import { isEmpty } from '@/lib/lib_utils'
+ // 工具
+import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format'
 
-// 引入表格設定類型
+// 表格設定類型
 import type { TableOptions } from '@/declare/columnSetting'
-// 引入資料格式化
+// 資料格式化
 import type { ResponseData, ExcelData, TableData } from './api'
 import { formatParams } from './api'
-// 引入欄位設定, 連結設定
+// 欄位設定, 連結設定
 import { columnSetting, linkSetting } from './columns'
-// 引入假資料
+// 假資料
 import fakeTableData from './fakeData.json'
 
 const DetailModal = useAsyncComponent(() => import('./Components/DetailModal.vue'), 'rect')
@@ -41,7 +41,7 @@ const tableOptions: TableOptions = {
   title: '工單細部排程預覽',
   i18nTitle: 'auto-32-SG',
   i18nModule: 'system',
-  version: '1.2.8',
+  version: '1.2.9',
   settingKey: 'auto-32-SG',
   isSorting: true
 }

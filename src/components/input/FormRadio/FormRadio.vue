@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { ElRadioGroup, ElRadio } from 'element-plus'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './FormRadioInfo'
 import { version, props as formRadioProps } from './FormRadioInfo'

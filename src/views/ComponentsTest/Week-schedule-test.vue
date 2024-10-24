@@ -2,7 +2,7 @@
 import { inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { WeekSchedule } from '@/components'
+import { WeekSchedule } from '@/components' // 系統組件
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()

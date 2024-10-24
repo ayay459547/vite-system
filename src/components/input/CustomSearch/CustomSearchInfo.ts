@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { CustomPopoverProps } from '@/components'
+import type { CustomPopoverProps } from '@/components' // 系統組件
 import { props as inputProps } from '@/components/input/CustomInput/CustomInputInfo'
 import type { Conditions as _Conditions } from '@/declare/columnSetting'
 

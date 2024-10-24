@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils'
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as emptyProps } from './CustomEmptyInfo'
 

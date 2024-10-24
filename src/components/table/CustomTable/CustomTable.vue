@@ -13,10 +13,11 @@ import { ElPagination } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import type { ColumnItem } from '@/declare/columnSetting'
-import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { object_findIndex } from '@/lib/lib_object'
 import { numberFormat } from '@/lib/lib_format'
+import { printElement } from '@/lib/lib_utils' // 工具
 import {
   CustomButton,
   CustomPopover,
@@ -24,7 +25,7 @@ import {
   CustomIcon,
   CustomTooltip,
   CustomText
-} from '@/components'
+} from '@/components' // 系統組件
 
 // 欄位設定
 import ColumnSetting from './Components/ColumnSetting.vue'
@@ -80,6 +81,12 @@ const onExcelClick = (type: 'all' | 'page') => {
     tableData: props.tableData
   })
   excelIsShow.value = false
+}
+
+// 列印
+const printData = () => {
+  const tableElement = document.querySelector(`.${scopedId} .el-table__inner-wrapper`)
+  printElement(tableElement)
 }
 
 // 每頁顯示筆數
@@ -687,7 +694,7 @@ onMounted(() => {
 
     <div class="__table-setting">
       <div class="setting-left">
-        <div style="width: 120px; overflow: hidden">
+        <div style="width: 85px; overflow: hidden">
           <CustomTooltip placement="top" :show-after="300">
             <template #content>
               <!-- 顯示更多 : 分頁 -->
@@ -724,8 +731,13 @@ onMounted(() => {
           popper-style="padding: 4px;"
         >
           <template #reference>
-            <CustomButton icon-name="file-excel" label="Excel" />
+            <CustomButton
+              plain
+              icon-name="file-excel"
+              label="Excel"
+            />
           </template>
+          <!-- 列印全部資料 列印分頁資料 -->
           <div class="__excel-list">
             <div class="__excel-item" @click="onExcelClick('all')">
               <CustomIcon name="table-list" class="icon" />
@@ -737,6 +749,14 @@ onMounted(() => {
             </div>
           </div>
         </CustomPopover>
+
+        <!-- Print: 開發中 尚未完成 -->
+        <CustomButton
+          style="display: none;"
+          icon-name="print"
+          @click="printData"
+        />
+
         <slot name="setting-left"></slot>
       </div>
 
@@ -979,7 +999,7 @@ $border-style: 1px solid var(--i-color-table-border);
         flex-wrap: wrap;
         align-items: center;
         width: fit-content;
-        gap: 8px;
+        gap: 4px;
       }
 
       &-left {

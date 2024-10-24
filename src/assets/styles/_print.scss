@@ -1,0 +1,21 @@
+@media print{
+  div,
+  table,
+  th,
+  tr,
+  td,
+  ul,
+  li,
+  a,
+  span,
+  button {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+  .noBreak {
+    break-inside: avoid;
+  }
+  .noPrint {
+    display: none;
+  }
+}

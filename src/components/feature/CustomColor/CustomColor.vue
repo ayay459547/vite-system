@@ -3,7 +3,7 @@
 import { computed } from 'vue'
 import { ElColorPicker } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props } from './CustomColorInfo'
 import { version, props as CustomColorInfo } from './CustomColorInfo'

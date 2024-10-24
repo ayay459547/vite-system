@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal } from '@/lib/lib_utils'
+import { swal } from '@/lib/lib_utils' // 工具
 
 import { fakeTableData } from './fakeData'
 

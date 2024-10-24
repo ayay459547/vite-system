@@ -3,7 +3,7 @@ import type {
   TempCustomInputExpose,
   CustomTableTypes,
   CustomTableProps
-} from '@/components'
+} from '@/components' // 系統組件
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
 

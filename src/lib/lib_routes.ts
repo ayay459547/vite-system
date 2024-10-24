@@ -2,9 +2,9 @@ import { useI18n } from 'vue-i18n'
 
 import type { UseHookReturn } from '@/declare/hook'
 import type { RouterTree, Navigation } from '@/declare/routes'
-import type { CustomIconProps } from '@/components'
+import type { CustomIconProps } from '@/components' // 系統組件
 import { type RouterType, routerTypeIcon } from '@/router/setting'
-import { isEmpty } from '@/lib/lib_utils'
+import { isEmpty } from '@/lib/lib_utils' // 工具
 
 /**
  * @author Caleb

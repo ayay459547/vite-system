@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useAsyncComponent } from '@/lib/lib_hook'
-import { getUuid, isEmpty } from '@/lib/lib_utils'
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
+import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import { version, props as iconProps } from './CustomIconInfo'
 
@@ -52,21 +52,21 @@ div[class*="__CustomIcon"].icon {
 
   &-size {
     &-large {
-      font-size: 1.2em;
+      font-size: 1.3em;
       .x-icon {
         font-size: 1.4em;
       }
     }
     &-default {
-      font-size: 1.1em;
+      font-size: 1.2em;
       .x-icon {
         font-size: 1.3em;
       }
     }
     &-small {
-      font-size: 0.95em;
+      font-size: 1.1em;
       .x-icon {
-        font-size: 1.1em;
+        font-size: 1.2em;
       }
     }
   }

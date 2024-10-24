@@ -3,8 +3,8 @@ import type { PropType } from 'vue'
 import { computed } from 'vue'
 import { ElAlert, ElAutoResizer } from 'element-plus'
 
-import type { Variant } from '@/lib/lib_hook'
-import { isEmpty } from '@/lib/lib_utils'
+import type { Variant } from '@/lib/lib_hook' // 自訂Composition API
+import { isEmpty } from '@/lib/lib_utils' // 工具
 
 const props = defineProps({
   variant: {

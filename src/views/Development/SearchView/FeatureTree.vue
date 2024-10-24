@@ -3,7 +3,7 @@ import { type PropType, defineComponent } from 'vue'
 import { mapStores } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomButton, CustomTooltip } from '@/components'
+import { CustomIcon, CustomButton, CustomTooltip } from '@/components' // 系統組件
 import { useRoutesStore } from '@/stores/stores_routes'
 
 export default defineComponent({

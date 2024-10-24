@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { swal, isEmpty } from '@/lib/lib_utils'
+import { swal, isEmpty } from '@/lib/lib_utils' // 工具
 
 // 表單資料
 export type FormData = {

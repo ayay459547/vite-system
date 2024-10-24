@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { reactive, computed, ref, onMounted, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import type { Options, Option } from '@/components'
+import type { Options, Option } from '@/components' // 系統組件
 import {
   GanttChart,
   CustomTabs,
@@ -12,8 +12,8 @@ import {
   CustomIcon,
   CustomPopover,
   CustomModal
-} from '@/components'
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils'
+} from '@/components' // 系統組件
+import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { getMilliseconds } from '@/lib/lib_day'
 import { formatDatetime } from '@/lib/lib_format'
 import { object_forEach, object_reduce } from '@/lib/lib_object'

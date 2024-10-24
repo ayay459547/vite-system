@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomDrawerInfo'
 import { version, props as drawerProps } from './CustomDrawerInfo'

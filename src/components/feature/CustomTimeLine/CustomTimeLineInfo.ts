@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import type { TimelineItemProps } from 'element-plus'
 
-import type { CustomSize } from '@/components'
+import type { CustomSize } from '@/components' // 系統組件
 
 export const version = '__CustomTimeLine_1.0.0__'
 

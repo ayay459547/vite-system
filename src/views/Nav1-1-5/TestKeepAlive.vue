@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomInput } from '@/components'
+import { CustomInput } from '@/components' // 系統組件
 
 const inputValue = ref('')
 </script>

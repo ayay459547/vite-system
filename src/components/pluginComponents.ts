@@ -39,7 +39,7 @@ const pluginComponents = {
     app.component(ElCollapseTransition.name, ElCollapseTransition)
 
     /**
-     * 建議從 import { Custom... } from '@/components' 引入
+     * 建議從 import { Custom... } from '@/components' // 系統組件 引入
      * 不引入直接可以用
      */
     app.component('CustomIcon', CustomIcon)

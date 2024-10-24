@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, Axi
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax'
-import { hasOwnProperty, isEmpty, swal, message } from '@/lib/lib_utils'
+import { hasOwnProperty, isEmpty, swal, message } from '@/lib/lib_utils' // 工具
 import { updateToken } from '@/lib/lib_cookie'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL

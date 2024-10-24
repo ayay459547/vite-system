@@ -3,7 +3,7 @@ import { useSlots, ref } from 'vue'
 import { ElTree } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Types, Emits, Expose } from './CustomTreeInfo'
 import { version, props as treeProps } from './CustomTreeInfo'

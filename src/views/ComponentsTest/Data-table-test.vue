@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { SimpleTable, CustomInput, CustomIcon } from '@/components'
+import { SimpleTable, CustomInput, CustomIcon } from '@/components' // 系統組件
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 
 const columnSetting = {

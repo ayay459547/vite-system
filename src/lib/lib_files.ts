@@ -10,7 +10,7 @@ import ExcelJs from 'exceljs'
 export type { Workbook, Worksheet, Column as ExcelColumn } from 'exceljs'
 export { default as ExcelJs } from 'exceljs'
 
-import { isEmpty, tipLog, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, tipLog, hasOwnProperty } from '@/lib/lib_utils' // 工具
 import { numberFormat } from '@/lib/lib_format'
 
 const systemType = (import.meta as any).env.VITE_API_SYSTEM_TYPE

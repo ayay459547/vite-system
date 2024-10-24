@@ -2,8 +2,8 @@
 import { ref, computed, useSlots, nextTick, onMounted } from 'vue'
 import { ElText } from 'element-plus'
 
-import { CustomTooltip } from '@/components'
-import { getUuid, isEmpty } from '@/lib/lib_utils'
+import { CustomTooltip } from '@/components' // 系統組件
+import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 import debounce from '@/lib/lib_debounce'
 import { version, props as textProps } from './CustomTextInfo'
 
@@ -72,7 +72,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 [class*="__CustomText"] {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   color: inherit;
   display: inline-block;
 

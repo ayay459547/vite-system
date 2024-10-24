@@ -9,7 +9,7 @@ import {
   CustomMarkdown,
   CustomIcon,
   CustomImage
-} from '@/components'
+} from '@/components' // 系統組件
 
 const fitOptions = [
   { label: 'cover', value: 'cover' },

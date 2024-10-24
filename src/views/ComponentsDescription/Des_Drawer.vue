@@ -2,14 +2,14 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
-import type { CustomDrawerProps } from '@/components'
+import type { CustomDrawerProps } from '@/components' // 系統組件
 import {
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomButton,
   CustomDrawer
-} from '@/components'
+} from '@/components' // 系統組件
 
 const directionOptions = [
   { label: 'rtl', value: 'rtl' },

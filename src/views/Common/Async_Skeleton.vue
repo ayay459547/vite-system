@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { computed } from 'vue'
 import { ElSkeleton, ElSkeletonItem, ElAutoResizer } from 'element-plus'
 
-import type { Variant } from '@/lib/lib_hook'
+import type { Variant } from '@/lib/lib_hook' // 自訂Composition API
 
 const props = defineProps({
   variant: {

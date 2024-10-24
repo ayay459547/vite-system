@@ -1,6 +1,6 @@
 import type { Component, PropType } from 'vue'
 
-import type { CustomSize } from '@/components'
+import type { CustomSize } from '@/components' // 系統組件
 
 export const version = '__CustomText_1.0.0__'
 

@@ -1,5 +1,3 @@
-import { useSlots } from 'vue'
-
 import type { SweetAlertOptions } from 'sweetalert2'
 import Swal from 'sweetalert2'
 
@@ -108,18 +106,55 @@ export const getUuid = (text?: string): string => {
   return uuidv4()
 }
 
+const mode = (import.meta as any).env.MODE
+
+export type ConsoleType = keyof Console
+
 /**
  * @author Caleb
- * @description 判斷 slot 是否存在
- * @param {String} prop slot 名稱
- * @returns {Boolean}
+ * @see https://developer.mozilla.org/zh-CN/docs/Web/API/console
+ * @description 系統用顯示log
+ * @param {*} value 任意值
+ * @param {ConsoleType} consoleType log類型
+ * @param {String} style 樣式
+ * @returns {String} 系統mode
  */
-export const hasSlot = (prop: string): boolean => {
-  const slots = useSlots()
-  return hasOwnProperty(slots, prop)
-}
+export const systemLog = (value: any, consoleType?: ConsoleType, style?: string): string => {
+  if (mode !== 'development') return mode
 
-const mode = (import.meta as any).env.MODE
+  /**
+   * 基本
+   * console.log()：最常用的，用來輸出訊息
+   * console.error()：用來輸出錯誤訊息，通常在 console 中以紅色顯示
+   * console.warn()：用來輸出警告訊息，通常以黃色顯示
+   * console.info()：用來輸出一般資訊，與 console.log 類似
+   *
+   * 特殊
+   * console.table()：以表格形式輸出數組或物件的內容
+   * console.dir()：用來顯示物件的屬性
+   * console.assert()：用來進行條件判斷，如果條件為 false，則輸出錯誤訊息
+   * console.group() + console.groupEnd()：用來將輸出訊息分組顯示
+   * console.clear()：清空 console
+   *
+   * Debug
+   * console.trace()：用來知道函數呼叫鍊
+   *
+   * 效能
+   * console.time() + console.timeLog() + console.timeEnd()：用來測量程式執行時間
+   * console.count() + console.countReset()：用來計算
+   */
+  if (typeof consoleType === 'string' && hasOwnProperty(console, consoleType)) {
+    if (typeof style === 'string' && style.length > 0) {
+      console[(consoleType as any)]('%c%s', style, value)
+    } else {
+      console[(consoleType as any)](value)
+    }
+  } else {
+    console.log(value)
+  }
+
+  return mode as string
+}
 
 /**
  * @author Caleb
@@ -127,117 +162,20 @@ const mode = (import.meta as any).env.MODE
  * @param {String} title 主要提示
  * @param {Array} messages 訊息列表
  */
-export const tipLog = (title: string = '', messages: any[] = []): string => {
+export const tipLog = (title: string = '', messages: any[] = [], consoleType?: ConsoleType, style?: string): string => {
   if (mode !== 'development') return mode
 
-  const style = `
+  const titleStyle = `
     font-size: 1.2em;
     color: #f89898;
   `
-  console.groupCollapsed('%c%s', style, `開發中提示：${title}`)
-  messages.forEach(message => {
-    if (typeof message === 'string') {
-      console.log('%c%s', style, message)
-    } else {
-      console.log(message)
-    }
-  })
+  const _style = (typeof style === 'string' && style.length > 0) ? style : ''
+
+  console.groupCollapsed('%c%s', titleStyle, `開發中提示：${title}`)
+  messages.forEach(message => systemLog(message, consoleType, _style))
   console.groupEnd()
 
   return mode as string
-}
-
-export type LogType = 'info' | 'warn' | 'error' | 'table' | 'trace'
-/**
- * @author Caleb
- * @description 系統用顯示log
- * @param {*} value 任意值
- * @param {String} type log類型
- * @param {String} style 樣式
- * @returns {String} 系統mode
- */
-export const systemLog = (value: any, type: LogType = 'info', style: string = ''): string => {
-  if (mode !== 'development') return mode
-
-  switch (type) {
-    case 'info':
-      console.info('%c%s', style, value)
-      break
-    case 'warn':
-      console.warn('%c%s', style, value)
-      break
-    case 'error':
-      console.error('%c%s', style, value)
-      break
-    case 'table':
-      console.table(value)
-      break
-    case 'trace': // 知道誰呼叫此函數
-      console.trace('%c%s', style, value)
-      break
-    default:
-      console.log('%c%s', style, value)
-      break
-  }
-
-  return mode as string
-}
-
-/**
- * @author Caleb
- * @description 數字每三位點一個逗點
- * @param {Number} num 數字
- * @returns {String}
- */
-const toLocaleString = (num: number): string => {
-  if (Number.isNaN(num) || typeof num !== 'number') return `${num}`
-  return num.toLocaleString()
-}
-export type NumberFormatType = 'round' | 'floor' | 'ceil' | 'none' | ''
-/**
- * @author Caleb
- * @description 數字格式化
- * @param {Number} num 輸入數字
- * @param {Object} options 設定
- *    type: round(四捨五入), floor(無條件捨去), ceil(無條件進位)
- *    toFixed 取小數點到第n位
- *    isString 是否轉文字
- *    isToLocaleString 是否要有三位一個逗點
- * @returns {Number} 格式化的數字
- */
-export const numberFormat = <T extends number | string>(
-  num: number,
-  options?: {
-    type?: NumberFormatType
-    toFixed?: number
-    isString?: boolean
-    isToLocaleString?: boolean
-  }
-): T => {
-  const { type = 'round', toFixed = 2, isString = false, isToLocaleString = false } = options ?? {}
-  if (isEmpty(num)) return '' as T
-
-  const _num = +(num + `e+${toFixed}`)
-
-  let res = 0
-  switch (type) {
-    case 'round':
-      res = +(Math.round(_num) + `e-${toFixed}`)
-      break
-    case 'floor':
-      res = +(Math.floor(_num) + `e-${toFixed}`)
-      break
-    case 'ceil':
-      res = +(Math.ceil(_num) + `e-${toFixed}`)
-      break
-    case 'none':
-    default:
-      res = num
-      break
-  }
-
-  if (isToLocaleString) return toLocaleString(res) as T
-  return (isString ? `${res}` : res) as T
 }
 
 /**
@@ -566,4 +504,38 @@ export const awaitTime = (time: number): Promise<number> => {
  */
 export const escapeRegExp = (string: string): string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/**
+ * @author Caleb
+ * @description 列印
+ * @param {Element} printElement 要列印的元素
+ */
+export const printElement = (printElement: Element) => {
+  // 獲取每個元素的計算樣式，並生成 CSS 規則
+  const styles = ''
+
+  // 列印
+  const iframe = document.createElement('iframe') as HTMLIFrameElement
+  iframe.style.display = 'none'
+  document.body.appendChild(iframe)
+
+  const iframeDoc = iframe.contentWindow.document
+  iframeDoc.open()
+
+  iframeDoc.write(`<html>
+    <head>
+      <style>${styles}</style>
+    </head>
+    <body>
+      ${printElement.innerHTML}
+    </body>
+  </html>`)
+
+  iframeDoc.close()
+
+  iframe.contentWindow.focus() // 確保 iframe 是焦點
+  iframe.contentWindow.print()  // 調用 iframe 的打印方法
+
+  document.body.removeChild(iframe)
 }

@@ -2,8 +2,8 @@
 import { ref, computed } from 'vue'
 
 import markdown from '@/components/feature/CustomButton/CustomButton.md?raw'
-import type { CustomButtonProps } from '@/components'
-import { CustomInput, CustomDivider, CustomMarkdown, CustomButton } from '@/components'
+import type { CustomButtonProps } from '@/components' // 系統組件
+import { CustomInput, CustomDivider, CustomMarkdown, CustomButton } from '@/components' // 系統組件
 
 const sizeOptions = [
   { label: 'large', value: 'large' },

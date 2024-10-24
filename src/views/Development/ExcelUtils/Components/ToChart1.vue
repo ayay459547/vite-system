@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from 'vue'
 
-import { CustomButton, CustomUpload, CustomCharts, CustomInput } from '@/components'
-import { isEmpty, downloadFile, swal } from '@/lib/lib_utils'
+import { CustomButton, CustomUpload, CustomCharts, CustomInput } from '@/components' // 系統組件
+import { isEmpty, downloadFile, swal } from '@/lib/lib_utils' // 工具
 
 // Excel轉柱狀圖.xlsx
 import path from '@/assets/file/ExcelToBar.xlsx?url'

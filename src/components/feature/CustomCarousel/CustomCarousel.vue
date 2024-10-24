@@ -2,7 +2,7 @@
 import { useSlots, ref } from 'vue'
 import { ElCarousel, ElCarouselItem } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Emits, Expose } from './CustomCarouselInfo'
 import { version, props as carouselProps } from './CustomCarouselInfo'

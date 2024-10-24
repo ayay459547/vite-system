@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue'
 
 import { useFormSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
-import { CustomIcon, CustomButton, CustomInput, CustomSearch } from '@/components'
+import { scrollToEl } from '@/lib/lib_utils' // 工具
+import { CustomIcon, CustomButton, CustomInput, CustomSearch } from '@/components' // 系統組件
 
 const columnSetting = {
   age: {

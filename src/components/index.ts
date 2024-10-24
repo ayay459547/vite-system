@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 // import { defineAsyncComponent } from 'vue'
 import type { ValidationOptions, ValidationResult } from 'vee-validate'
-import { useAsyncComponent } from '@/lib/lib_hook'
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
 // 通用
 export type CustomSize = 'large' | 'default' | 'small'
@@ -33,7 +33,25 @@ export type {
 } from './chart/WeekSchedule/WeekScheduleInfo'
 export const WeekSchedule = useAsyncComponent(() => import('./chart/WeekSchedule/WeekSchedule.vue'), 'rect')
 
+/**
+ * 階級式甘特圖
+ * 功能:
+ * 多欄位
+ * 多階級篩選
+ * 手動插單
+ */
+export const HierarchiesGantt = useAsyncComponent(() => import('./chart/HierarchiesGantt/HierarchiesGantt.vue'), 'rect')
+
 // 專案功能組件
+
+// 錨點
+export type {
+  Types as CustomAnchorTypes,
+  Props as CustomAnchorProps,
+  Emits as CustomAnchorEmits,
+  Expose as CustomAnchorExpose
+} from './feature/CustomAnchor/CustomAnchorInfo'
+export const CustomAnchor = useAsyncComponent(() => import('./feature/CustomAnchor/CustomAnchor.vue'), 'empty')
 
 // 區塊右上方顯示 數字/圖示/其他
 export type {
@@ -52,7 +70,7 @@ export type {
   Expose as CustomButtonExpose
 } from './feature/CustomButton/CustomButtonInfo'
 export { default as CustomButton } from './feature/CustomButton/CustomButton.vue'
-
+// 群組按鈕
 export type {
   Types as ButtonGroupTypes,
   Props as ButtonGroupProps,
@@ -194,7 +212,7 @@ export type {
   Emits as CustomModalEmits,
   Expose as CustomModalExpose
 } from './feature/CustomModal/CustomModalInfo'
-export const CustomModal = useAsyncComponent(() => import('./feature/CustomModal/CustomModal.vue'), 'p')
+export const CustomModal = useAsyncComponent(() => import('./feature/CustomModal/CustomModal.vue'), 'empty')
 
 // 彈出 區塊提示
 export type {
@@ -230,7 +248,7 @@ export type {
   Emits as CustomStepsEmits,
   Expose as CustomStepsExpose
 } from './feature/CustomSteps/CustomStepsInfo'
-export const CustomSteps = useAsyncComponent(() => import('./feature/CustomSteps/CustomSteps.vue'), 'rect')
+export const CustomSteps = useAsyncComponent(() => import('./feature/CustomSteps/CustomSteps.vue'), 'empty')
 
 // 分頁
 export type {
@@ -248,7 +266,7 @@ export type {
   Emits as CustomTagEmits,
   Expose as CustomTagExpose
 } from './feature/CustomTag/CustomTagInfo'
-export const CustomTag = useAsyncComponent(() => import('./feature/CustomTag/CustomTag.vue'), 'caption')
+export const CustomTag = useAsyncComponent(() => import('./feature/CustomTag/CustomTag.vue'), 'button')
 
 // 文字
 export type {
@@ -284,7 +302,7 @@ export type {
   Emits as CustomTourEmits,
   Expose as CustomTourExpose
 } from './feature/CustomTour/CustomTourInfo'
-export const CustomTour = useAsyncComponent(() => import('./feature/CustomTour/CustomTour.vue'), 'p')
+export const CustomTour = useAsyncComponent(() => import('./feature/CustomTour/CustomTour.vue'), 'empty')
 
 // 樹狀
 export type {
@@ -591,12 +609,3 @@ export type {
   Expose as WebViewTableExpose
 } from './table/WebViewTable/WebViewTableInfo'
 export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable/WebViewTable.vue'), 'rect')
-
-/**
- * 階級式甘特圖
- * 功能:
- * 多欄位
- * 多階級篩選
- * 手動插單
- */
-export const HierarchiesGantt = useAsyncComponent(() => import('./chart/HierarchiesGantt/HierarchiesGantt.vue'), 'rect')

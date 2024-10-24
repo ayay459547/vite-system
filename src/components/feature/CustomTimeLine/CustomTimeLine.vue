@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElTimeline, ElTimelineItem } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as timeLineProps } from './CustomTimeLineInfo'
 

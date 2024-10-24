@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
-import { CustomTable, CustomInput, CustomIcon } from '@/components'
+import { CustomTable, CustomInput, CustomIcon } from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'

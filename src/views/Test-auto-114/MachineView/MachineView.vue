@@ -2,7 +2,7 @@
 import { ref, inject, nextTick, reactive } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { WebViewTable, CustomButton, CustomModal } from '@/components'
+import { WebViewTable, CustomButton, CustomModal } from '@/components' // 系統組件
 
 import type { TableOptions } from '@/declare/columnSetting'
 

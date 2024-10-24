@@ -2,8 +2,8 @@
 import { ref, useSlots, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomDrawer, CustomButton } from '@/components'
-import { getUuid } from '@/lib/lib_utils'
+import { CustomDrawer, CustomButton } from '@/components' // 系統組件
+import { getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { version, props as groupSearchProps } from './GroupSearchInfo'

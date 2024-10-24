@@ -378,7 +378,7 @@ const routes: Array<RouterTree> = [
           },
           {
             name: 'nav3-1-2',
-            title: 'VirtralTable-1',
+            title: 'VirtralTable-ElementUI',
             component: () => import('@/views/Nav3-1-2/Nav3-1-2.vue'),
             meta: {
               keepAlive: false,
@@ -387,18 +387,8 @@ const routes: Array<RouterTree> = [
             }
           },
           {
-            name: 'nav3-1-3',
-            title: 'VirtralTable-2',
-            component: () => import('@/views/Nav3-1-3/Nav3-1-3.vue'),
-            meta: {
-              keepAlive: false,
-              systemType: ['new'],
-              icon: 'table-list'
-            }
-          },
-          {
             name: 'nav3-1-4',
-            title: 'VirtralTable-vxe-table',
+            title: 'VirtralTable-VxeTable',
             component: () => import('@/views/Nav3-1-4/Nav3-1-4.vue'),
             meta: {
               keepAlive: false,
@@ -476,6 +466,17 @@ const routes: Array<RouterTree> = [
       permission: totlaPermission
     },
     leaves: [
+      {
+        name: 'nav4-7',
+        title: 'Anchor錨點',
+        component: () => import('@/views/Nav4-7/Nav4-7.vue'),
+        meta: {
+          keepAlive: false,
+          systemType: ['new'],
+          icon: 'v',
+          permission: totlaPermission
+        }
+      },
       {
         name: 'nav4-6',
         title: '分隔顯示+引導',

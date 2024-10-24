@@ -9,7 +9,7 @@ import {
   CustomTable,
   CustomSearch,
   GroupSearch
-} from '@/components'
+} from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import type { TableOptions } from '@/declare/columnSetting'

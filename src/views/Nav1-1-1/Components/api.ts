@@ -1,6 +1,6 @@
 import type { Api } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { message } from '@/lib/lib_utils'
+import { message } from '@/lib/lib_utils' // 工具
 import type { TableData } from '../api'
 
 export const createData = async (postData: TableData) => {

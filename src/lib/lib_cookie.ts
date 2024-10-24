@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-import { aesEncrypt, aesDecrypt } from '@/lib/lib_utils'
+import { aesEncrypt, aesDecrypt } from '@/lib/lib_utils' // 工具
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 

@@ -7,10 +7,10 @@ import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
-import { isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils'
+import { isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
-import type { CustomTableProps } from '@/components'
-import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components'
+import type { CustomTableProps } from '@/components' // 系統組件
+import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components' // 系統組件
 
 const props = defineProps({
   i18nModule: {

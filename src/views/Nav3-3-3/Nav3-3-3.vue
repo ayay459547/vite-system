@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { ElTree } from 'element-plus'
 
-import { CustomTree, CustomDivider, CustomButton } from '@/components'
+import { CustomTree, CustomDivider, CustomButton } from '@/components' // 系統組件
 
 interface Tree {
   id: number

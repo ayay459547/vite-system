@@ -1,6 +1,6 @@
 import type { Component, PropType, CSSProperties } from 'vue'
 
-import type { CustomSize, CustomIconProps } from '@/components'
+import type { CustomSize, CustomIconProps } from '@/components' // 系統組件
 
 export const version = '__CustomButton_1.0.0__'
 

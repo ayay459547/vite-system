@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFormSetting } from '@/lib/lib_columns'
-import { scrollToEl } from '@/lib/lib_utils'
-import { CustomInput } from '@/components'
+import { scrollToEl } from '@/lib/lib_utils' // 工具
+import { CustomInput } from '@/components' // 系統組件
 
 import type { TableData } from '../api'
 import { createData } from './api'

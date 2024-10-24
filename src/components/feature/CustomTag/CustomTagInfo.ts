@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { CustomSize, CustomIconProps } from '@/components'
+import type { CustomSize, CustomIconProps } from '@/components' // 系統組件
 
 export const version = '__CustomTag_1.0.0__'
 

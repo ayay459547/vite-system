@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
 import debounce from '@/lib/lib_debounce'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { useLayoutStore } from '@/stores/stores_layout'
 
 import type { Types, Emits, Expose } from './CustomChartsInfo'

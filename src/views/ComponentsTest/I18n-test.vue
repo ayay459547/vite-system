@@ -3,8 +3,8 @@ import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import type { UseHook } from '@/declare/hook'
-import { CustomTabs } from '@/components'
-import { useLocalI18n } from '@/lib/lib_hook'
+import { CustomTabs } from '@/components' // 系統組件
+import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 
 const { t: testT } = useI18n()
 

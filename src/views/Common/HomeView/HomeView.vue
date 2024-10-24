@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomCharts, CustomCard } from '@/components'
+import { CustomCharts, CustomCard } from '@/components' // 系統組件
 import { textOptions } from './options'
 import { ElCalendar } from 'element-plus'
 

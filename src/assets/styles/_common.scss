@@ -42,6 +42,10 @@ $cursors: pointer, move, not-allowed, resize, s-resize, col-resize, no-drop, def
   }
 }
 
+.i-hidden {
+  display: none;
+}
+
 .i-page {
   width: 100%;
   height: 100%;

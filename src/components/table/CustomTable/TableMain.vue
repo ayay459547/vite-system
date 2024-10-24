@@ -6,8 +6,8 @@ import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
 import throttle from '@/lib/lib_throttle'
-import { CustomButton } from '@/components'
-import { isEmpty, getUuid } from '@/lib/lib_utils'
+import { CustomButton } from '@/components' // 系統組件
+import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits } from './CustomTableInfo'

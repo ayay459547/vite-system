@@ -5,9 +5,9 @@ import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { ElTabs, ElTabPane } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook'
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
-import type { Option } from '@/components'
+import type { Option } from '@/components' // 系統組件
 import type { Props } from './CustomTabsInfo'
 import { version, props as tabsProps } from './CustomTabsInfo'
 

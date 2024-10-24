@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { MoreFilled } from '@element-plus/icons-vue'
-import type { CustomTourProps } from '@/components'
-import { CustomDividerView, CustomTour, CustomButton, CustomDivider } from '@/components'
+import type { CustomTourProps } from '@/components' // 系統組件
+import { CustomDividerView, CustomTour, CustomButton, CustomDivider } from '@/components' // 系統組件
 
 const open = ref(false)
 const current = ref(0)

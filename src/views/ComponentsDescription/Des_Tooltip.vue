@@ -2,14 +2,14 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomTooltip/CustomTooltip.md?raw'
-import type { Options, CustomTooltipProps } from '@/components'
+import type { Options, CustomTooltipProps } from '@/components' // 系統組件
 import {
   CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomTooltip,
   CustomButton
-} from '@/components'
+} from '@/components' // 系統組件
 
 const isVisible = ref(false)
 

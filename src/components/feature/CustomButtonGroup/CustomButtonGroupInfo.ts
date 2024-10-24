@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-import type { CustomButtonProps } from '@/components'
+import type { CustomButtonProps } from '@/components' // 系統組件
 
 export const version = '__CustomButtonGroup_1.0.0__'
 

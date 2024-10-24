@@ -4,7 +4,7 @@ import { useSlots } from 'vue'
 
 import { ElTableColumn } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils'
+import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Props } from '../CustomTableInfo'
 
