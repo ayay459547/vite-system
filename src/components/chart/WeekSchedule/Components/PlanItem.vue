@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { nextTick, reactive, computed, ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import throttle from '@/lib/lib_throttle'
 import { isEmpty, getProxyData } from '@/lib/lib_utils' // 工具

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed, provide, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { useFormSetting } from '@/lib/lib_columns'

@@ -58,3 +58,13 @@ $cursors: pointer, move, not-allowed, resize, s-resize, col-resize, no-drop, def
   min-height: 100%;
   padding: 16px;
 }
+
+// ajax idb 錯誤提示
+.ajax-message,
+.idb-message {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: fit-content;
+  white-space: nowrap;
+}

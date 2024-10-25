@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
 
@@ -17,7 +17,7 @@ import UpdateModal from './Components/UpdateModal.vue'
 
 import { storeToRefs } from 'pinia'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission'
+import { getPermission } from '@/lib/lib_permission' // 權限
 
 // import i18nMessage from './i18n'
 

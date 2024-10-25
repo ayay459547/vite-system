@@ -11,12 +11,12 @@ import {
 } from 'vue'
 import { ElPagination } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { ColumnItem } from '@/declare/columnSetting'
 import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { object_findIndex } from '@/lib/lib_object'
-import { numberFormat } from '@/lib/lib_format'
+import { numberFormat } from '@/lib/lib_format' // 格式化
 import { printElement } from '@/lib/lib_utils' // 工具
 import {
   CustomButton,
@@ -509,7 +509,7 @@ const initShowColumns = async (setting?: any) => {
 
   setTimeout(() => {
     loading.value = false
-  }, 400) // 設 0.4s 才不會閃一下
+  }, 300) // 設 0.3s 才不會閃一下
 }
 
 onMounted(async () => {

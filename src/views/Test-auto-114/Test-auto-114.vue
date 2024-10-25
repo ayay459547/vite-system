@@ -2,11 +2,11 @@
 import { ref, onMounted, reactive, inject, nextTick } from 'vue'
 
 // 引入類型
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook' // 全域功能類型
 // 引入組件
 import { CustomModal, CustomTabs, CustomEmpty, CustomButton } from '@/components' // 系統組件
 // 引入權限
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 // 插單:機台角度
 import MachineView from './MachineView/MachineView.vue'
 // 插單:訂單角度

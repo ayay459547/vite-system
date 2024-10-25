@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, inject, computed, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { ColumnItem, SettingData } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -69,13 +69,37 @@ const showColumnList = computed<Array<ColumnItem>>({
   }
 })
 
+const defulatColumns = computed(() => {
+  return props.columns.map(column => {
+    // 只要顯示資料
+    return {
+      isShow: column?.isShow ?? true,
+      order: column?.order ?? 'none',
+      orderIndex: column?.orderIndex ?? -1,
+      key: column.key,
+      label: column.label,
+      i18nLabel: column.i18nLabel,
+      fixed: column?.fixed,
+      width: column?.width ?? null,
+      minWidth: column?.minWidth ?? null,
+      isOperations: column.isOperations
+    }
+  })
+})
+
+/**
+ * 取得欄位資料
+ * 1. 從 indexedDB 取得
+ * 2. 現在畫面資料
+ * 3. 預設資料
+ */
 const getColumnList = async () => {
-  try {
-    const getRes: SettingData = await getColumnSetting(props.settingKey)
-    return getRes?.columns ?? []
-  } catch (e) {
-    return []
-  }
+  const getRes: SettingData = await getColumnSetting(props.settingKey)
+  if (!isEmpty(getRes?.columns)) return getRes?.columns
+
+  if (!isEmpty(columnList.value)) return columnList.value
+
+  return defulatColumns.value
 }
 const setColumnList = (columns: Array<ColumnItem>) => {
   columnList.value = columns
@@ -197,21 +221,7 @@ const setDefaultColumnSetting = async () => {
   const settingData: SettingData = {
     version: props.version,
     settingKey: props.settingKey,
-    columns: props.columns.map(column => {
-      // 只要顯示資料
-      return {
-        isShow: column?.isShow ?? true,
-        order: column?.order ?? 'none',
-        orderIndex: column?.orderIndex ?? -1,
-        key: column.key,
-        label: column.label,
-        i18nLabel: column.i18nLabel,
-        fixed: column?.fixed,
-        width: column?.width ?? null,
-        minWidth: column?.minWidth ?? null,
-        isOperations: column.isOperations
-      }
-    })
+    columns: defulatColumns.value
   }
 
   await setColumnSetting(props.settingKey, settingData)
@@ -262,13 +272,12 @@ const drag = ref(false)
  * @param isEmitChange 是否 emit change 事件
  */
 const updateSetting = async (isEmitChange = true) => {
-  const temp = columnList.value
   await nextTick()
 
   const settingData: SettingData = {
     version: props.version,
     settingKey: props.settingKey,
-    columns: getProxyData(temp)
+    columns: getProxyData(columnList.value)
   }
   await setColumnSetting(props.settingKey, settingData)
 

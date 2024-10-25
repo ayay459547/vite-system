@@ -1,5 +1,5 @@
 import type { RouterTree } from '@/declare/routes'
-import { totlaPermission } from '@/lib/lib_permission'
+import { totlaPermission } from '@/lib/lib_permission' // 權限
 
 import { getInjectRoutes } from './setting'
 // 功能開發中

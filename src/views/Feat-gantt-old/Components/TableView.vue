@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useTableSetting } from '@/lib/lib_columns'
 import { CustomPopover, CustomButton, CustomTable } from '@/components' // 系統組件
 import { cutTableData } from '@/lib/lib_utils' // 工具

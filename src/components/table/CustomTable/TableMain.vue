@@ -4,7 +4,7 @@ import { useSlots, ref, inject, onMounted, onUnmounted, computed, watch, effectS
 import type { ElTable as ElTableType } from 'element-plus'
 import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import throttle from '@/lib/lib_throttle'
 import { CustomButton } from '@/components' // 系統組件
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具

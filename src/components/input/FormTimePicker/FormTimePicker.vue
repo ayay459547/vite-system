@@ -2,9 +2,9 @@
 import { computed, onMounted, onBeforeUnmount, ref, watch, effectScope, inject } from 'vue'
 import { ElTimePicker } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format' // 格式化
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormTimePickerInfo'

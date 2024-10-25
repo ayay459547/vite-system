@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, inject } from 'vue'
 
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomWatermark } from '@/components' // 系統組件
+import { defaultModuleType } from '@/i18n/i18n_setting'
+
 import type { ResizeObserverCallback } from '@/lib/lib_throttle'
 import throttle from '@/lib/lib_throttle'
+
+const useHook: UseHook = inject('useHook')
+const { i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
+})
 
 const imgStyle = ref('')
 const titleStyle = ref('')
@@ -48,7 +56,9 @@ onUnmounted(() => {
   <CustomWatermark :z-index="0">
     <div ref="container" class="_empty" @mousemove="throttleSetImgStyle">
       <div class="_empty-background" :style="imgStyle"></div>
-      <h1 class="_empty-title" :style="titleStyle">功能開發中</h1>
+      <h1 class="_empty-title" :style="titleStyle">
+        {{ i18nTranslate('功能開發中') }}
+      </h1>
 
       <img
         class="_empty-img"

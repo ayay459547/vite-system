@@ -1,51 +1,100 @@
 import dbPromise from './init/init_idb'
-import { isEmpty, swal } from '@/lib/lib_utils' // 工具
+import { message } from '@/lib/lib_utils' // 工具
 
 /**
  * @see https://github.com/jakearchibald/idb
- * IndexedDB
+ * Web IndexedDB
  */
 
-async function get(table: string, key: string) {
+const getMessage = (e: string, action: string, table: string, key: string = '') => {
+  return `<div class="idb-message">
+    <h2>Web IndexedDB Error</h2>
+    <div>${action} ${table} ${key}</div>
+    <div>${e}</div>
+  </div>`
+}
+
+export async function get(table: string, key: string) {
   try {
     return (await dbPromise).get(table, key)
+
   } catch (e) {
-    console.log(e)
-    swal({
-      icon: 'error',
-      title: `indexedDB get ${table}[${key}] error`,
-      text: e,
-      showCancelButton: false
+    console.trace(e)
+    message({
+      type: 'warning',
+      message: getMessage(e, 'get', table, key),
+      dangerouslyUseHTMLString: true,
+      duration: 2000
     })
 
-    return []
+    return undefined
   }
 }
-async function set(table: string, key: string, val: any) {
-  const tx = (await dbPromise).transaction(table, 'readwrite')
-  const store = tx.objectStore(table)
+export async function set(table: string, key: string, val: any) {
+  try {
+    const tx = (await dbPromise).transaction(table, 'readwrite')
+    const store = tx.objectStore(table)
 
-  const resKey = await store.put(val, key)
-  await tx.done
+    const resKey = await store.put(val, key)
+    await tx.done
 
-  return resKey
+    return resKey
+
+  } catch (e) {
+    console.trace(e)
+    message({
+      type: 'warning',
+      message: getMessage(e, 'set', table, key),
+      dangerouslyUseHTMLString: true,
+      duration: 2000
+    })
+
+    return key
+  }
 }
-async function del(table: string, key: string) {
-  return (await dbPromise).delete(table, key)
+export async function del(table: string, key: string) {
+  try {
+    return (await dbPromise).delete(table, key)
+
+  } catch (e) {
+    console.trace(e)
+    message({
+      type: 'warning',
+      message: getMessage(e, 'delete', table, key),
+      dangerouslyUseHTMLString: true,
+      duration: 2000
+    })
+
+    return undefined
+  }
 }
-async function clear(table: string) {
-  return (await dbPromise).clear(table)
+export async function clear(table: string) {
+  try {
+    return (await dbPromise).clear(table)
+
+  } catch (e) {
+    console.trace(e)
+    message({
+      type: 'warning',
+      message: getMessage(e, 'clear', table),
+      dangerouslyUseHTMLString: true,
+      duration: 2000
+    })
+
+    return undefined
+  }
 }
-async function keys(table: string) {
+export async function keys(table: string) {
   try {
     return (await dbPromise).getAllKeys(table)
+
   } catch (e) {
-    console.log(e)
-    swal({
-      icon: 'error',
-      title: `indexedDB ${table} getAllKeys error`,
-      text: e,
-      showCancelButton: false
+    console.trace(e)
+    message({
+      type: 'warning',
+      message: getMessage(e, 'getAllKeys', table),
+      dangerouslyUseHTMLString: true,
+      duration: 2000
     })
 
     return []
@@ -56,7 +105,7 @@ async function keys(table: string) {
  * 有新增或刪除表時 idbVersion + 1
  * Table版本 > DB版本 => 加入新表
  */
-export const idbVersion = 3
+export const idbVersion = 4
 /**
  * 管理新增加的 store
  * 已存在的 store 不用創建
@@ -80,88 +129,16 @@ export const storeVersion = {
     createVersion: 1,
     isDelete: false
   },
-  historyNavigation: {
-    version: '1.0.0',
-    createVersion: 1,
-    isDelete: true
-  },
-  i18nInfo: {
-    version: '1.0.0',
-    createVersion: 1,
-    isDelete: false
-  },
   pageSetting: {
     version: '1.0.0',
     createVersion: 2,
     isDelete: false
+  },
+  ganttSetting: {
+    version: '1.0.0',
+    createVersion: 4,
+    isDelete: false
   }
-}
-
-// 紀錄版本
-export const checkInitIdb = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(async () => {
-      try {
-        const storeList = await keysIDBVersion()
-
-        for (const storeName in storeVersion) {
-          const store = storeVersion[storeName]
-          const { version, createVersion, isDelete } = store
-
-          getIDBVersion(storeName).then(async info => {
-            if (
-              isEmpty(info) ||
-              info.version !== version ||
-              info.createVersion !== createVersion ||
-              info.isDelete !== isDelete
-            ) {
-              if (!isDelete) {
-                const clearKeys = await keys(storeName)
-                if (clearKeys.length > 0) {
-                  clear(storeName)
-                }
-              }
-
-              setIDBVersion(storeName, {
-                storeName,
-                version,
-                createVersion,
-                isDelete
-              })
-            }
-          })
-        }
-
-        resolve(storeList)
-      } catch (e) {
-        console.log(e)
-        swal({
-          icon: 'error',
-          title: 'checkInit indexedDB error',
-          text: e
-        })
-
-        reject([])
-      }
-    }, 0)
-  })
-}
-
-// iDB版本
-export async function getIDBVersion(key: string) {
-  return await get('iDBVersion', key)
-}
-export async function setIDBVersion(key: string, val: any) {
-  return await set('iDBVersion', key, val)
-}
-export async function delIDBVersion(key: string) {
-  return await del('iDBVersion', key)
-}
-export async function clearIDBVersion() {
-  return await clear('iDBVersion')
-}
-export async function keysIDBVersion() {
-  return await keys('iDBVersion')
 }
 
 // 表單欄位設定
@@ -181,23 +158,6 @@ export async function keysColumnSetting() {
   return await keys('columnSetting')
 }
 
-// 翻譯檔
-export async function getI18nInfo(key: string) {
-  return await get('i18nInfo', key)
-}
-export async function setI18nInfo(key: string, val: any) {
-  return await set('i18nInfo', key, val)
-}
-export async function delI18nInfo(key: string) {
-  return await del('i18nInfo', key)
-}
-export async function clearI18nInfo() {
-  return await clear('i18nInfo')
-}
-export async function keysI18nInfo() {
-  return await keys('i18nInfo')
-}
-
 // 頁面用的設定資料
 // 開發時 個人可依照需求自行調用
 export async function getPageSetting(key: string) {
@@ -214,4 +174,21 @@ export async function clearPageSetting() {
 }
 export async function keysPageSetting() {
   return await keys('pageSetting')
+}
+
+// 甘特圖設定
+export async function getGanttSetting(key: string) {
+  return await get('ganttSetting', key)
+}
+export async function setGanttSetting(key: string, val: any) {
+  return await set('ganttSetting', key, val)
+}
+export async function delGanttSetting(key: string) {
+  return await del('ganttSetting', key)
+}
+export async function clearGanttSetting() {
+  return await clear('ganttSetting')
+}
+export async function keysGanttSetting() {
+  return await keys('ganttSetting')
 }

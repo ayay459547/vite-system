@@ -4,7 +4,7 @@ import { computed, ref, inject, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { Navigation } from '@/declare/routes'
-import type { AuthData, UseHook } from '@/declare/hook'
+import type { AuthData, UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomModal } from '@/components' // 系統組件
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 

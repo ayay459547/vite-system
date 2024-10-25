@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 
 // import { read, utils } from '@/lib/lib_files'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils' // 工具
-import { setI18nInfo, getI18nInfo } from '@/lib/lib_idb'
 
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
@@ -23,8 +22,8 @@ import { scopeList, defaultModuleType } from './i18n_setting'
  * 3.重新寫入 i18n.json
  */
 
-import i18nJson from './i18n_table.json'
-import i18nXlsx from './i18n_table.xlsx?b64'
+import i18nJson from './i18n.json'
+import i18nXlsx from './i18n.xlsx?b64'
 
 // 測試用
 // import i18nJson from './i18n_test.json'
@@ -35,6 +34,7 @@ if (mode === 'development') {
   console.groupCollapsed('[init] i18nXlsx')
   console.log(i18nXlsx)
   console.log(i18nJson)
+  console.table(scopeList)
   console.groupEnd()
 }
 
@@ -45,20 +45,14 @@ export const initTranslateSrcFile = () => {
   if (isEmpty(excelJsonList)) return { langMap: {}, moduleMap }
 
   const scopeKeyList = []
+
   // 記錄不同模組翻譯檔版本
   scopeList.forEach(scopeItem => {
-    const { scopeKey: i18nModule, label, version } = scopeItem
+    const { scopeKey: i18nModule } = scopeItem
 
     scopeKeyList.push(i18nModule)
     // 使翻譯可區分模組 紀錄可用翻譯
     moduleMap[i18nModule] = new Set()
-
-    // 紀錄版本
-    getI18nInfo(i18nModule).then(info => {
-      if (isEmpty(info) || info.version !== version) {
-        setI18nInfo(i18nModule, { scopeKey: i18nModule, label, version })
-      }
-    })
   })
 
   const langMap = excelJsonList.reduce<LangMap>((resLangMap, excelJsonItem) => {

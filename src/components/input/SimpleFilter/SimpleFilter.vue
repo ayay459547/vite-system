@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { inject, computed, ref, useSlots } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomButton, CustomPopover } from '@/components' // 系統組件
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { object_reduce } from '@/lib/lib_object'

@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
-import { permission, totlaPermission, hasPermission } from '@/lib/lib_permission'
+import { permission, totlaPermission, hasPermission } from '@/lib/lib_permission' // 權限
 import { tipLog, isEmpty } from '@/lib/lib_utils' // 工具
 import { updateToken } from '@/lib/lib_cookie'
 

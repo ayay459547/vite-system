@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, computed } from 'vue'
 
-import type { UseHook, AuthData } from '@/declare/hook'
+import type { UseHook, AuthData } from '@/declare/hook' // 全域功能類型
 import { CustomIcon, CustomTooltip } from '@/components' // 系統組件
 import { getCookie } from '@/lib/lib_cookie'
 import { defaultModuleType } from '@/i18n/i18n_setting'

@@ -1,7 +1,15 @@
 import { openDB, deleteDB } from 'idb'
 import checkSystemVersionDiff from './checkSystemVersion'
-import { idbVersion, storeVersion } from '@/lib/lib_idb'
-import { deepClone, swal } from '@/lib/lib_utils' // 工具
+import {
+  idbVersion,
+  storeVersion,
+  get,
+  set,
+  // del,
+  keys,
+  clear
+} from '@/lib/lib_idb'
+import { deepClone, message, isEmpty } from '@/lib/lib_utils' // 工具
 
 /**
  * indexedDB 刪除換新
@@ -20,16 +28,23 @@ const initDB = async () => {
   }
 
   const _dbPromise = openDB(system, idbVersion, {
-    upgrade(db, oldVersion) {
+    upgrade(db, oldVersion, newVersion, transaction, event) {
       try {
+        console.log('upgrade', { db, oldVersion, newVersion, transaction, event })
+
         const tempStoreVersion = deepClone({}, storeVersion)
 
         // 已存在的db
         const objectStoreNames = db.objectStoreNames
         const len = objectStoreNames.length
+        const defaultStoreInfo = {
+          createVersion: '0.0.0',
+          isDelete: true
+        }
+
         for (let i = 0; i < len; i++) {
           const storeName = objectStoreNames[i]
-          const storeInfo = storeVersion[storeName]
+          const storeInfo = storeVersion[storeName] ?? defaultStoreInfo
 
           const { createVersion, isDelete } = storeInfo
           // 是否刪除
@@ -41,7 +56,8 @@ const initDB = async () => {
 
         // 尚未存在的db
         for (const storeName in tempStoreVersion) {
-          const storeInfo = storeVersion[storeName]
+          const storeInfo = storeVersion[storeName] ?? defaultStoreInfo
+
           const { createVersion, isDelete } = storeInfo
           // 加入版本 > 舊資料庫版本
           if (!isDelete && createVersion > oldVersion) {
@@ -51,24 +67,98 @@ const initDB = async () => {
       } catch (e) {
         console.log(e)
 
-        swal({
-          icon: 'error',
-          title: 'upgrade indexedDB error',
-          text: e
+        message({
+          type: 'warning',
+          message: `<div class="idb-message">
+            <h2>Web IndexedDB Error</h2>
+            <div>upgrade</div>
+            <div>${e}</div>
+          </div>`,
+          dangerouslyUseHTMLString: true,
+          duration: 2000
         })
       }
+    },
+    blocked(currentVersion, blockedVersion, event) {
+      console.log('blocked', { currentVersion, blockedVersion, event })
+    },
+    blocking(currentVersion, blockedVersion, event) {
+      console.log('blocking', { currentVersion, blockedVersion, event })
+    },
+    terminated() {
+      console.log('terminated')
     }
   })
 
   _dbPromise.then(idb => {
     console.groupCollapsed('[init] indexedDB')
-    console.table(idb)
+    console.log({ system, idbVersion })
+    console.log(idb)
     console.groupEnd()
   })
 
   return _dbPromise
 }
 
-const dbPromise = initDB()
+let dbPromise = initDB()
+
+// iDB版本
+async function getIDBVersion(key: string) {
+  return await get('iDBVersion', key)
+}
+async function setIDBVersion(key: string, val: any) {
+  return await set('iDBVersion', key, val)
+}
+// async function delIDBVersion(key: string) {
+//   return await del('iDBVersion', key)
+// }
+// async function clearIDBVersion() {
+//   return await clear('iDBVersion')
+// }
+async function keysIDBVersion() {
+  return await keys('iDBVersion')
+}
+
+// 確認indexDB是否建立成功
+const checkInitIdb = () => {
+  setTimeout(async () => {
+    const res = await keysIDBVersion()
+    if (isEmpty(res)) {
+      await deleteDB(system)
+    }
+
+    for (const storeName in storeVersion) {
+      const store = storeVersion[storeName]
+      const { version, createVersion, isDelete } = store
+
+      getIDBVersion(storeName).then(async info => {
+        if (
+          isEmpty(info) ||
+          info.version !== version ||
+          info.createVersion !== createVersion ||
+          info.isDelete !== isDelete
+        ) {
+          if (!isDelete) {
+            const clearKeys = await keys(storeName)
+            if (clearKeys.length > 0) {
+              clear(storeName)
+            }
+          }
+
+          setIDBVersion(storeName, {
+            storeName,
+            version,
+            createVersion,
+            isDelete
+          })
+        }
+      })
+    }
+
+    dbPromise = initDB()
+  }, 0)
+}
+
+checkInitIdb()
 
 export default dbPromise

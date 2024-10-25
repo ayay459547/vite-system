@@ -2,11 +2,11 @@
 import { onMounted, ref, inject, nextTick } from 'vue'
 
 // 全域功能類型
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { getData } from './api'
 import { columnSetting } from './columns'
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format' // 格式化
 import { hasOwnProperty } from '@/lib/lib_utils' // 工具
 import dayjs, { getWeekOfMonth } from '@/lib/lib_day'
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API

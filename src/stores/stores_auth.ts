@@ -6,12 +6,12 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef, computed, shallowReactive } from 'vue'
 
-import { permission } from '@/lib/lib_permission'
+import { permission } from '@/lib/lib_permission' // 權限
 import { isEmpty, swal } from '@/lib/lib_utils' // 工具
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
-import type { AuthData, PermissionData } from '@/declare/hook'
+import type { AuthData, PermissionData } from '@/declare/hook' // 全域功能類型
 
 import { defaultAuthData, getAuthData } from './api'
 

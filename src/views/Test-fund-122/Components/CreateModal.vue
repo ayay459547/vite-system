@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils' // 工具
 import { CustomInput } from '@/components' // 系統組件

@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { inject, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
 import { CustomIcon, FormRadio } from '@/components' // 系統組件
 import { options as langOptions } from '@/i18n'

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { VxeColgroup, VxeColumn } from '@/components' // 系統組件
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'

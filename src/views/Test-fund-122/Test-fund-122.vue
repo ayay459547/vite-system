@@ -2,7 +2,7 @@
 import { ref, shallowRef, inject, reactive, onMounted, computed, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import {
   CustomButton,
   CustomTable,
@@ -16,7 +16,7 @@ import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission'
+import { getPermission } from '@/lib/lib_permission' // 權限
 import type { TableOptions } from '@/declare/columnSetting'
 
 // import i18nMessage from './i18n'

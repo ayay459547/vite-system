@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { ref, shallowRef, inject } from 'vue'
 import type { NavigationFailure } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
 import { CustomIcon, CustomScrollbar, CustomTooltip, CustomText } from '@/components' // 系統組件

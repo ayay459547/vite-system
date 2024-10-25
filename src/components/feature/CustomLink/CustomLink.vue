@@ -3,7 +3,7 @@ import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 引入類型
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 // 引入組件原型
 import { ElLink } from 'element-plus'
 import { CustomTooltip, CustomIcon } from '@/components' // 系統組件

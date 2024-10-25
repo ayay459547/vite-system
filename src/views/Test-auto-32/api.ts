@@ -1,4 +1,4 @@
-import { formatDateTimeRange, formatOperator } from '@/lib/lib_format'
+import { formatDateTimeRange, formatOperator } from '@/lib/lib_format' // 格式化
 
 export interface Params {
   erpNo: string

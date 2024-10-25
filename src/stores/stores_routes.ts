@@ -6,7 +6,7 @@ import type { Navigation } from '@/declare/routes'
 import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
 import routes from '@/router/routes'
 
-import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission'
+import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission' // 權限
 
 export const useRoutesStore = defineStore('routes', () => {
   // 全部的路由

@@ -26,7 +26,7 @@ import { useLocaleStore } from '@/stores/stores_locale'
 
 // system init
 import { setCookie, removeCookie, setToken, clearToken } from '@/lib/lib_cookie'
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format' // 格式化
 
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -36,14 +36,14 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 
 // hook
-import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook'
+import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook' // 全域功能類型
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
 import { useGlobalI18n } from '@/i18n/i18n_excel'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { totlaPermission, getPermission } from '@/lib/lib_permission'
+import { totlaPermission, getPermission } from '@/lib/lib_permission' // 權限
 
 // 開發測試使用
 import DevelopmentTest from './DevelopmentTest/DevelopmentTest.vue'

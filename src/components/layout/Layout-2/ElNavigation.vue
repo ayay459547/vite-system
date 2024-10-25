@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { inject, computed } from 'vue'
 import { ElSubMenu, ElMenuItem } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
 import { useRoutesHook } from '@/lib/lib_routes'
 import { defaultModuleType } from '@/i18n/i18n_setting'

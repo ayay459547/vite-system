@@ -2,10 +2,10 @@
 import { computed, useSlots, ref, onMounted, inject } from 'vue'
 import { ElInput } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
-import type { NumberFormatType } from '@/lib/lib_format'
-import { numberFormat } from '@/lib/lib_format'
+import type { NumberFormatType } from '@/lib/lib_format' // 格式化
+import { numberFormat } from '@/lib/lib_format' // 格式化
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormInputInfo'

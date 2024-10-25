@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, inject, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

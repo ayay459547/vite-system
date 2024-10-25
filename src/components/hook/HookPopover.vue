@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, shallowRef, onMounted } from 'vue'
 
-import type { EventOptions, EventItem } from '@/declare/hook'
+import type { EventOptions, EventItem } from '@/declare/hook' // 全域功能類型
 import { CustomPopover } from '@/components' // 系統組件
 import throttle from '@/lib/lib_throttle'
 

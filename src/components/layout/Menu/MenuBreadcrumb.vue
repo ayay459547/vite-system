@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomIcon, CustomTooltip } from '@/components' // 系統組件
 import { defaultModuleType } from '@/i18n/i18n_setting'
 

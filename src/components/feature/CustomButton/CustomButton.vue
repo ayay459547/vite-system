@@ -76,13 +76,15 @@ const hasSlot = (prop: string): boolean => {
 <style lang="scss" scoped>
 :global(button[class*="__CustomButton"].el-button) {
   align-items: center;
-  padding: 8px 12px !important;
+  padding: 8px 12px;
   gap: 6px;
+}
+:global(button[class*="__CustomButton"].el-button.is-circle) {
+  padding: 8px;
 }
 :global(button[class*="__CustomButton"].el-button > span) {
   display: contents
 }
-
 :global(.el-button) {
   &+.el-button {
     margin-left: 0 !important;

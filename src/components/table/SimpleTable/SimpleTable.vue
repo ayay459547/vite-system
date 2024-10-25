@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import { h, inject, defineComponent } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomDraggable, CustomScrollbar } from '@/components' // 系統組件
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 import type { ScopeKey } from '@/i18n/i18n_setting'
@@ -391,6 +391,7 @@ export default defineComponent({
     position: sticky;
     top: 0;
     transform: translateY(-1px);
+    color: var(--el-text-color-primary);
   }
 
   &-body-container {

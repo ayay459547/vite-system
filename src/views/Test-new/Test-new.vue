@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook' // 全域功能類型
 import {
   CustomIcon,
   CustomModal,

@@ -10,7 +10,7 @@ import {
 } from 'vue'
 import { useField } from 'vee-validate'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import {
   FormInput,
   FormSelect,
@@ -26,7 +26,7 @@ import {
 } from '@/components' // 系統組件
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils' // 工具
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format' // 格式化
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 

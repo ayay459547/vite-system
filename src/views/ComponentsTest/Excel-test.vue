@@ -2,7 +2,7 @@
 import { inject, ref } from 'vue'
 import ExcelJs from 'exceljs'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useTableSetting } from '@/lib/lib_columns'
 import type { CustomIconProps, CustomButtonProps, CustomTooltipProps } from '@/components' // 系統組件
 import {

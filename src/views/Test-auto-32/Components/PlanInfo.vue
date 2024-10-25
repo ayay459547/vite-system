@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, onMounted, ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomTabs, CustomTable, CustomSearch } from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'

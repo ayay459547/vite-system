@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import { CustomIcon, CustomInput, CustomImage } from '@/components' // 系統組件
@@ -52,6 +52,7 @@ const login = ($event: MouseEvent | KeyboardEvent) => {
 const columnSetting = {
   account: {
     label: '帳號',
+    i18nLabel: 'input-account',
     fitler: {
       type: 'text',
       default: 'admin',
@@ -60,6 +61,7 @@ const columnSetting = {
   },
   password: {
     label: '密碼',
+    i18nLabel: 'input-password',
     fitler: {
       default: 'admin',
       showPassword: true,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick, inject, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomButton, CustomEmpty, CustomIcon } from '@/components' // 系統組件
 import {
   getFileType,

@@ -2,7 +2,7 @@
 import { ref, inject } from 'vue'
 import { ElAnchor, ElAnchorLink } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Emits, Expose } from './CustomAnchorInfo'

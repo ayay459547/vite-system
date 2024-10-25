@@ -9,7 +9,7 @@ import {
   reactive
 } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 
 import type { CustomTableProps } from '@/components' // 系統組件
 import {

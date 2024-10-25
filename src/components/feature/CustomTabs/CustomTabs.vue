@@ -4,7 +4,7 @@ import { ref, computed, inject } from 'vue'
 import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { ElTabs, ElTabPane } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Option } from '@/components' // 系統組件

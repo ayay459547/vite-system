@@ -4,7 +4,7 @@ import { computed, nextTick, ref, onMounted } from 'vue'
 // import type { RouteLocationNormalized } from 'vue-router'
 
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook'
+import type { AuthData } from '@/declare/hook' // 全域功能類型
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
 import SideContent from './SideContent/SideContent.vue'

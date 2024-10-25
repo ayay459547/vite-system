@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { ref, onMounted, inject, nextTick, reactive, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { FormList, CustomInput, CustomButton, CustomModal } from '@/components' // 系統組件
 import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
 import { scrollToEl, isEmpty, hasOwnProperty, getProxyData } from '@/lib/lib_utils' // 工具

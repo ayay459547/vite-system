@@ -7,7 +7,7 @@ import type {
 } from 'element-plus'
 
 import type { CustomIconProps } from '@/components' // 系統組件
-import type { Permission as PagePermission } from '@/lib/lib_permission'
+import type { Permission as PagePermission } from '@/lib/lib_permission' // 權限
 import type {
   ScopeKey,
   I18nTranslate as _I18nTranslate,

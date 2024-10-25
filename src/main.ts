@@ -15,20 +15,6 @@ import './lib/init/init_idb'
 import './lib/init/init_cookie'
 import './lib/init/init_localStorage'
 
-// worker
-const worker = new Worker(new URL('./worker.js', import.meta.url), {
-  type: 'module'
-})
-worker.postMessage('idb')
-worker.addEventListener(
-  'message',
-  function (e) {
-    console.log('[workder]', e.data)
-  },
-  false
-)
-// worker.terminate()
-
 // 去除 chrome 的touch事件警告
 import './lib/init/init_passiveEvents'
 

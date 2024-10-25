@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { reactive, shallowReactive, ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { ExcelColumn, WorkbookOptions } from '@/lib/lib_files'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { createWorkbook } from '@/lib/lib_files'

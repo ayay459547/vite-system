@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, inject } from 'vue'
-import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, permission } = useHook()

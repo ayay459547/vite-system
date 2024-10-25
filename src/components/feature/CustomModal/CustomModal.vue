@@ -13,7 +13,7 @@ import {
 } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook, SwalResult } from '@/declare/hook'
+import type { UseHook, SwalResult } from '@/declare/hook' // 全域功能類型
 import { useResizeObserver } from '@/lib/lib_hook' // 自訂Composition API
 import { CustomButton, CustomTooltip } from '@/components' // 系統組件
 import { getUuid } from '@/lib/lib_utils' // 工具

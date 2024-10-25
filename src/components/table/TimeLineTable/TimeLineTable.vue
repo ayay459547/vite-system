@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, shallowRef, onMounted, nextTick, computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import {
   VxeTable,
   VxeColgroup,
@@ -13,7 +13,7 @@ import {
   TimeLevelManagement
 } from '@/components' // 系統組件
 
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format' // 格式化
 import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils' // 工具
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
 import { defaultModuleType } from '@/i18n/i18n_setting'

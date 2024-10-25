@@ -2,7 +2,7 @@
 import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomTabs } from '@/components' // 系統組件
 import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 

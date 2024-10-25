@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
-import type { AuthData } from '@/declare/hook'
+import type { AuthData } from '@/declare/hook' // 全域功能類型
 
 import HamburgerIcon from './HamburgerIcon.vue'
 

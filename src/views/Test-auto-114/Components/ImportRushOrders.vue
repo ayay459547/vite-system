@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomUpload, CustomButton, CustomCollapse, SimpleTable, CustomEmpty } from '@/components' // 系統組件
 import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting } from '@/lib/lib_columns'

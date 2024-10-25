@@ -2,12 +2,12 @@
 import { ref, shallowRef, inject, reactive, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
 import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission'
+import { getPermission } from '@/lib/lib_permission' // 權限
 import type { TableOptions } from '@/declare/columnSetting'
 import { object_filter } from '@/lib/lib_object'
 

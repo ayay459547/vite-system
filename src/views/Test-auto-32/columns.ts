@@ -1,4 +1,4 @@
-import { numberFormat } from '@/lib/lib_format'
+import { numberFormat } from '@/lib/lib_format' // 格式化
 import { operatorOptions } from '@/variable'
 
 export const columnSetting = {

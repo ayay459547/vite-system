@@ -128,3 +128,20 @@ _YYYY_MM_DD_ 日期
 | vue-router         | 路由               | https://github.com/vuejs/router/blob/main/LICENSE |
 | vuedraggable       | 拖拉               | https://github.com/SortableJS/Vue.Draggable/blob/master/LICENSE |
 | xlsx               | Excel              | https://github.com/SheetJS/sheetjs/blob/github/LICENSE |
+
+
+### JSON 替換 fakeData 文字
+
+* 查詢尚未替換的檔案 vitesystemfakeData.ts
+
+* 替換1
+\s\s(?=[a-zA-Z])
+  "
+
+* 替換2
+:\s(?=.)
+": 
+
+* 替換3
+'
+"

@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, Axi
 import { ElMessage } from 'element-plus'
 
 import type { AjaxOptions } from '@/declare/ajax'
-import { hasOwnProperty, isEmpty, swal, message } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, isEmpty, message } from '@/lib/lib_utils' // 工具
 import { updateToken } from '@/lib/lib_cookie'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
@@ -23,6 +23,7 @@ const fakeApi = <ResData>(
         resolve(resFakeData)
       }, delay)
       // 直接返回假資料
+
     } else {
       setTimeout(() => {
         resolve(fakeData)
@@ -51,27 +52,24 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
       return config
     },
     (error: AxiosError<any>) => {
-      const title = 'Request Error'
-      console.log(`${title} => `, error)
+      const [apiUrl, errorStatus, errorMessage] = [
+        error?.request?.responseURL ?? '',
+        error?.response?.status ?? '',
+        error?.message ?? ''
+      ]
+
+      console.table(error)
       message({
         type: 'error',
-        message: title,
-        duration: 5000
+        message: `<div class="ajax-message">
+          <h2>API Request Error ( ${errorStatus} )</h2>
+          <div>${apiUrl}</div>
+          <div>${errorMessage}</div>
+        </div>`,
+        dangerouslyUseHTMLString: true,
+        duration: 10000
       })
 
-      const apiUrl = error?.request?.responseURL ?? ''
-      swal({
-        icon: 'error',
-        reverseButtons: true,
-        title,
-        showConfirmButton: false,
-        showCancelButton: false,
-        showDenyButton: false,
-        html: `<div>
-          <div>url: ${apiUrl}</div>
-          <div>message: ${error.message}</div>
-        </div>`
-      })
     }
   )
 
@@ -80,30 +78,23 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
       return res.data
     },
     (error: AxiosError<any>) => {
-      const title = 'Response Error'
-      console.log(`${title} => `, error)
+      const [apiUrl, errorStatus, errorMessage] = [
+        error?.request?.responseURL ?? '',
+        error?.response?.status ?? '',
+        error?.message ?? ''
+      ]
+
+      console.table(error)
       message({
         type: 'error',
-        message: title,
-        duration: 5000
+        message: `<div class="ajax-message">
+          <h2>API Response Error ( ${errorStatus} )</h2>
+          <div>${apiUrl}</div>
+          <div>${errorMessage}</div>
+        </div>`,
+        dangerouslyUseHTMLString: true,
+        duration: 10000
       })
-
-      // 暫時關閉
-      // const apiUrl = error?.request?.responseURL ?? ''
-      // const status = error?.response?.status ?? ''
-      // swal({
-      //   icon: 'error',
-      //   reverseButtons: true,
-      //   title,
-      //   showConfirmButton: false,
-      //   showCancelButton: false,
-      //   showDenyButton: false,
-      //   html: `<div>
-      //     <div>url: ${apiUrl}</div>
-      //     <div>message: ${error.message}</div>
-      //     <div>status: ${status}</div>
-      //   </div>`
-      // })
     }
   )
 
@@ -231,12 +222,13 @@ export class IWebScoket {
     } else {
       this.isReConnect = true
       const msg = `reconnect ${this.connectUrl} after ${delay} second`
+
+      console.log(msg)
       message({
         type: 'warning',
         message: msg,
         duration: delay
       })
-      console.log(msg)
 
       this.timer = setTimeout(() => {
         this.init(this.config)
@@ -250,12 +242,13 @@ export class IWebScoket {
       onopen()
     } else {
       const msg = `connect ${this.connectUrl} success`
+
+      console.log(msg)
       message({
         type: 'success',
         message: msg,
         duration: 3000
       })
-      console.log(msg)
     }
     this.connectCount++
 
@@ -266,12 +259,13 @@ export class IWebScoket {
       onclose()
     } else {
       const msg = `close ${this.connectUrl} connect`
+
+      console.log(msg)
       message({
         type: 'info',
         message: msg,
         duration: 3000
       })
-      console.log(msg)
     }
 
     this.isReConnect = false
@@ -291,12 +285,13 @@ export class IWebScoket {
       onerror()
     } else {
       const msg = `connect ${this.connectUrl} error`
+
+      console.log(msg)
       message({
         type: 'error',
         message: msg,
-        duration: 3000
+        duration: 10000
       })
-      console.log(msg)
     }
     this.isError = true
   }
@@ -323,7 +318,7 @@ export class IWebScoket {
       this.init(config)
     } else {
       ElMessage({
-        message: '瀏覽器不支援 WebSocket',
+        message: 'Not supported webSocket.',
         type: 'error'
       })
     }
@@ -344,11 +339,11 @@ export class IWebScoket {
       this.url = url
     } else {
       ElMessage({
-        message: '無法連線',
+        message: 'Unable to connect to the server.',
         type: 'error'
       })
 
-      throw new Error('url參數為空')
+      throw new Error('url Empty')
     }
     this.isReConnect = false
     this.isError = false

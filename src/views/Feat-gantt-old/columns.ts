@@ -1,4 +1,4 @@
-import { formatDatetime } from '@/lib/lib_format'
+import { formatDatetime } from '@/lib/lib_format' // 格式化
 
 const getDefaultDate = () => {
   const [start, end] = [new Date(), new Date()]

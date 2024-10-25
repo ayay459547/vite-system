@@ -3,9 +3,9 @@ import type { PropType } from 'vue'
 import { computed, inject } from 'vue'
 import { ElMenu, ElMenuItem } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook'
+import type { AuthData } from '@/declare/hook' // 全域功能類型
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { useRoutesHook } from '@/lib/lib_routes'
 import { defaultModuleType } from '@/i18n/i18n_setting'

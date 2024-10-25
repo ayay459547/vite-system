@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import Swal from 'sweetalert2'
-import type { UseHook } from '@/declare/hook'
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomButton, CustomTooltip, CustomPopover } from '@/components' // 系統組件
 import { ElTooltip, ElButton } from 'element-plus'
 
