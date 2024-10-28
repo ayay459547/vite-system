@@ -91,7 +91,9 @@ const initDB = async () => {
   })
 
   _dbPromise.then(idb => {
-    console.groupCollapsed('[init] indexedDB')
+    console.groupCollapsed('[init] indexedDB: Init')
+    console.log('初始化 indexedDB')
+    console.log('initDB()')
     console.log({ system, idbVersion })
     console.log(idb)
     console.groupEnd()
@@ -120,45 +122,53 @@ async function keysIDBVersion() {
 }
 
 // 確認indexDB是否建立成功
-const checkInitIdb = () => {
-  setTimeout(async () => {
-    const res = await keysIDBVersion()
-    if (isEmpty(res)) {
-      await deleteDB(system)
-    }
+const checkInitIdb = async () => {
+  const res = await keysIDBVersion()
+  console.groupCollapsed('[init] indexedDB: Check')
+  console.log('確認indexDB是否建立成功')
+  console.log('checkInitIdb()')
+  console.log(res)
 
-    for (const storeName in storeVersion) {
-      const store = storeVersion[storeName]
-      const { version, createVersion, isDelete } = store
+  if ([undefined, null].includes(res)) {
+    console.log('indexedDB Delete')
 
-      getIDBVersion(storeName).then(async info => {
-        if (
-          isEmpty(info) ||
-          info.version !== version ||
-          info.createVersion !== createVersion ||
-          info.isDelete !== isDelete
-        ) {
-          if (!isDelete) {
-            const clearKeys = await keys(storeName)
-            if (clearKeys.length > 0) {
-              clear(storeName)
-            }
-          }
-
-          setIDBVersion(storeName, {
-            storeName,
-            version,
-            createVersion,
-            isDelete
-          })
-        }
-      })
-    }
-
+    await deleteDB(system)
     dbPromise = initDB()
-  }, 0)
+  }
+
+  console.groupEnd()
+
+  for (const storeName in storeVersion) {
+    const store = storeVersion[storeName]
+    const { version, createVersion, isDelete } = store
+
+    getIDBVersion(storeName).then(async info => {
+      if (
+        isEmpty(info) ||
+        info.version !== version ||
+        info.createVersion !== createVersion ||
+        info.isDelete !== isDelete
+      ) {
+        if (!isDelete) {
+          const clearKeys = await keys(storeName)
+          if (clearKeys.length > 0) {
+            clear(storeName)
+          }
+        }
+
+        setIDBVersion(storeName, {
+          storeName,
+          version,
+          createVersion,
+          isDelete
+        })
+      }
+    })
+  }
 }
 
-checkInitIdb()
+setTimeout(() => {
+  checkInitIdb()
+}, 0)
 
 export default dbPromise

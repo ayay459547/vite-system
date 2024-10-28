@@ -7,7 +7,7 @@ import { getUuid } from '@/lib/lib_utils' // 工具
 import type { Props, Emits } from './CustomSwitchInfo'
 import { version, props as switchProps } from './CustomSwitchInfo'
 
-const scopedId = getUuid('__i-switch__')
+const scopedId = getUuid(version)
 
 const props = defineProps(switchProps)
 
@@ -26,8 +26,7 @@ const onChange: Emits.Change = (val: string | number | boolean) => {
 <template>
   <ElSwitch
     v-model="tempValue"
-    class="__i-switch __i-switch-container"
-    :class="`CustomSwitch_${version} ${scopedId}`"
+    :class="scopedId"
     :style="props.style"
     :active-text="props.activeText"
     :inactive-text="props.inactiveText"
@@ -41,17 +40,20 @@ const onChange: Emits.Change = (val: string | number | boolean) => {
 </template>
 
 <style lang="scss" scoped>
-:deep(.__i-switch) {
-  .el-switch__input {
-    span[aria-hidden] {
-      font-weight: 600;
+div[class*="__CustomSwitch"] {
+  font-weight: 600;
+
+  &.el-switch {
+    :deep(.el-switch__core) {
+      padding: 0 2px;
+    }
+
+    &.is-checked :deep(.el-switch__core .el-switch__inner) {
+      padding: 0 24px 0 6px;
+    }
+    :deep(.el-switch__core .el-switch__inner) {
+      padding: 0 6px 0 24px;
     }
   }
 }
-// .__switch {
-//   &-container {
-//     width: fit-content;
-//     height: fit-content;
-//   }
-// }
 </style>

@@ -74,72 +74,58 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-:global(button[class*="__CustomButton"].el-button) {
-  align-items: center;
-  padding: 8px 12px;
-  gap: 6px;
-}
-:global(button[class*="__CustomButton"].el-button.is-circle) {
-  padding: 8px;
-}
-:global(button[class*="__CustomButton"].el-button > span) {
-  display: contents
-}
-:global(.el-button) {
-  &+.el-button {
-    margin-left: 0 !important;
-  }
-}
-
-@mixin icon-transform($class-name, $style, $hover-style) {
-  .icon-#{$class-name} {
-    transform: $style;
-  }
-  &:hover .icon-#{$class-name} {
-    transform: $hover-style;
-  }
+:global(.el-button > span:not(class)){
+  display: contents !important;
 }
 
 button[class*="__CustomButton"] {
-  &.button {
-    &-container {
-      width: fit-content;
-      height: fit-content;
+  // 圖示
+  .icon {
+    transition-duration: 0.3s;
+  }
+  @mixin icon-transform($class-name, $style, $hover-style) {
+    .icon-#{$class-name} {
+      transform: $style;
+    }
+    &:hover .icon-#{$class-name} {
+      transform: $hover-style;
+    }
+  }
+  @include icon-transform(scale, scale(1.01), scale(1.25));
+  @include icon-transform(rotate, rotateZ(0), rotateZ(-90deg));
+  @include icon-transform(translate, translateX(0), translateX(-4px));
 
-      .icon {
-        transition-duration: 0.3s;
-      }
-      @include icon-transform(scale, scale(1.01), scale(1.25));
-      @include icon-transform(rotate, rotateZ(0), rotateZ(-90deg));
-      @include icon-transform(translate, translateX(0), translateX(-4px));
+  &.el-button {
+    align-items: center;
+    padding: 8px 12px;
+    gap: 6px;
+
+    &.is-circle {
+      padding: 8px;
     }
 
-    &-size-large {
-      height: 36px;
-      line-height: 36px;
-      font-size: 1.1em;
+    &+.el-button {
+      margin-left: 0 !important;
+    }
+  }
+
+  &.button {
+    @mixin button-size($btn-height, $label-size) {
+      height: $btn-height;
+      line-height: $btn-height;
 
       :slotted(.button-label) {
-        font-size: 1em;
+        font-size: $label-size;
       }
+    }
+    &-size-large {
+      @include button-size(36px, 1em)
     }
     &-size-default {
-      height: 32px;
-      line-height: 32px;
-      font-size: 1em;
-
-      :slotted(.button-label) {
-        font-size: 0.9em;
-      }
+      @include button-size(32px, 0.9em)
     }
     &-size-small {
-      height: 28px;
-      line-height: 28px;
-      font-size: 0.9em;
-
-      :slotted(.button-label) {
-        font-size: 0.8em;
-      }
+      @include button-size(28px, 0.8em)
     }
   }
 }

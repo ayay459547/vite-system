@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+export const version = '__CustomSwitch_1.0.0__'
 
 export declare namespace Types {
   type Size = '' | 'large' | 'default' | 'small'
