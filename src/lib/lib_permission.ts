@@ -1,4 +1,7 @@
-const mode = (import.meta as any).env.MODE
+import { object_reduce } from '@/lib/lib_object'
+
+// 是否給所有權限
+const isAllPermissionData = (import.meta as any).env.VITE_API_ALL_PERMISSION
 
 export type ChangePermission<Res> = (currentPermission: number, diffPermission: number) => Res
 
@@ -11,15 +14,11 @@ export const permission = {
   execute: 1 << 4
 }
 
-export const totlaPermission =
-  permission.read + permission.create + permission.update + permission.delete + permission.execute
+export const totlaPermission = object_reduce<number>(permission, (total: number, permissionValue: number) => {
+  return total += permissionValue
+}, 0)
 
-/**
- * 預設權限
- * 開發: 給全部
- * 打包: 0
- */
-export const defaultPermission = mode === 'development' ? totlaPermission : 0
+export const defaultPermission = isAllPermissionData === 'true' ? totlaPermission : 0
 
 export type Permission = {
   read: boolean

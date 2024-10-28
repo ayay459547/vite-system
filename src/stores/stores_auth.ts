@@ -6,63 +6,37 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef, computed, shallowReactive } from 'vue'
 
-import { permission } from '@/lib/lib_permission' // 權限
-import { isEmpty, swal } from '@/lib/lib_utils' // 工具
+import type { AuthData, PermissionData } from '@/declare/hook' // 全域功能類型
 import { getRouterLeafLayer } from '@/lib/lib_routes'
 import routes from '@/router/routes'
-import { getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
-import type { AuthData, PermissionData } from '@/declare/hook' // 全域功能類型
+
+import { permission } from '@/lib/lib_permission' // 權限
+import { isEmpty, swal } from '@/lib/lib_utils' // 工具
+import { formatDatetime } from '@/lib/lib_format' // 格式化
+import { setCookie, removeCookie, getToken, setToken, clearToken, getCookie } from '@/lib/lib_cookie'
 
 import { defaultAuthData, getAuthData } from './api'
 
+// 跳過登入
 const isSkipLogin = (import.meta as any).env.VITE_API_SKIP_LOGIN === 'true'
 
 export const useAuthStore = defineStore('auth', () => {
   // 是否已確認登入狀態
   const isCheckedStatus = ref(false)
 
-  // 登入狀態 看使用者資料
-  const isLogin = computed(() => {
-    return !isEmpty(authData.value?.user?.id)
-  })
-
   /**
    * 使用者資料相關
    * 使用者資料會帶動權限
    */
   const authData = shallowRef<AuthData>(defaultAuthData)
-  const setAuthData = (auth: AuthData) => {
-    authData.value = auth
-  }
-  const clearAuthData = () => {
-    authData.value = defaultAuthData
-  }
-
-  /**
-   * 確認狀態 目前是前端做
-   * 有可能串後端 api
-   */
-  const checkAuthStatus = async (): Promise<number | null> => {
-    const loginTime = getCookie('loginTime')
-
-    return await new Promise(resolve => {
-      const token = getToken(loginTime)
-
-      if (token !== null) {
-        const { userId } = token
-        setToken(userId, loginTime)
-        resolve(userId)
-      } else {
-        clearToken()
-        resolve(null)
-      }
-    })
-  }
+  const isLogin = computed(() => {
+    return !isEmpty(authData.value?.user?.id)
+  })
 
   /**
    * 依照使用者 id
    * 取得權限資料
-   * key(string): permissions(number)
+   * Map(route, permissions)
    */
   const routesPermission = shallowReactive(new Map<string, number>())
 
@@ -110,9 +84,41 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
+  // 登入
+  const setAuthStatus = (userId: number, loginTime = formatDatetime(new Date(), 'YYYY-MM-DD_HH:mm:ss')) => {
+    setCookie('loginTime', loginTime)
+    setToken(userId, loginTime)
+  }
+  // 登出
+  const clearAuthStatus = () => {
+    clearToken()
+    removeCookie('loginTime')
+  }
+  /**
+   * 確認狀態 目前是前端做
+   * 有可能串後端 api
+   */
+  const checkAuthStatus = async (): Promise<number | null> => {
+    const loginTime = getCookie('loginTime')
+
+    return await new Promise(resolve => {
+      const token = getToken(loginTime)
+
+      if (token !== null) {
+        const { userId } = token
+        setAuthStatus(userId, loginTime)
+        resolve(userId)
+
+      } else {
+        clearAuthStatus()
+        resolve(null)
+      }
+    })
+  }
+
   /**
    * 初始化系統使用者
-   * 初始化系統路由權限
+   * 初始化系統路由權限 Map(route, permissions)
    */
   const initSystemData = async () => {
     isCheckedStatus.value = false
@@ -126,9 +132,9 @@ export const useAuthStore = defineStore('auth', () => {
 
     const userId = await checkAuthStatus()
 
-    let authId = null
-    let permissionList = []
-    let authData = null
+    let authId: any = null
+    let permissionList: Array<any> = []
+    let tempAuthData: AuthData = defaultAuthData
 
     if (!isEmpty(userId)) {
       // 使用 token 初始化使用者資料
@@ -146,14 +152,14 @@ export const useAuthStore = defineStore('auth', () => {
 
       authId = user.id
       permissionList = roleFunction
-      authData = resData
+      tempAuthData = resData
     }
 
     if (!isEmpty(authId)) {
-      setAuthData(authData)
+      authData.value = tempAuthData
       setRoutesPermission(permissionList)
     } else {
-      clearAuthData()
+      authData.value = defaultAuthData
       clearRoutesPermission()
     }
 
@@ -167,6 +173,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     authData,
     routesPermission,
+
+    setAuthStatus,
+    clearAuthStatus,
+    checkAuthStatus,
     initSystemData
   }
 })

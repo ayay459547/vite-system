@@ -3,31 +3,31 @@ import type { Ref } from 'vue'
 import {
   ref,
   shallowReactive,
+  reactive,
   computed,
   provide,
-  onMounted,
   onBeforeMount,
+  onMounted,
   onBeforeUnmount,
   nextTick
 } from 'vue'
 
-import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime } from '@/lib/lib_utils' // 工具
+import { aesDecrypt, swal, notification, message, isEmpty, tipLog, awaitTime, getProxyData } from '@/lib/lib_utils' // 工具
 
-import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
+import {
+  useEventBus,
+  // useWindowFocus,
+  useNetwork
+} from '@/lib/lib_hook' // 自訂Composition API
+
 // layout
 import SystemLayout from '@/components/layout/SystemLayout.vue'
 import PageContent from '@/components/layout/PageContent.vue'
 
-// element ui plus config
-import { ElConfigProvider } from 'element-plus'
-
-// locale
-import { useLocaleStore } from '@/stores/stores_locale'
+import { ElConfigProvider } from 'element-plus' // element ui plus config
+import { useLocaleStore } from '@/stores/stores_locale' // locale
 
 // system init
-import { setCookie, removeCookie, setToken, clearToken } from '@/lib/lib_cookie'
-import { formatDatetime } from '@/lib/lib_format' // 格式化
-
 import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import { storeToRefs } from 'pinia'
@@ -43,7 +43,7 @@ import HookPopover from '@/components/hook/HookPopover.vue'
 import { useGlobalI18n } from '@/i18n/i18n_excel'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import { totlaPermission, getPermission } from '@/lib/lib_permission' // 權限
+import { defaultPermission, getPermission } from '@/lib/lib_permission' // 權限
 
 // 開發測試使用
 import DevelopmentTest from './DevelopmentTest/DevelopmentTest.vue'
@@ -82,10 +82,10 @@ const systemEnv = computed(() => {
     QUERY_KEY: _env.VITE_API_QUERY_KEY,
 
     // 只有 PageContent 不用 SystemLayout
-    isIframe: (_env.VITE_API_IFRAME === 'true'),
+    isIframe: (_env.VITE_API_IFRAME === 'true')
 
-    isSkipLogin: (_env.VITE_API_SKIP_LOGIN === 'true'),
-    isAllPermissionData: (_env.VITE_API_ALL_PERMISSION === 'true')
+    // isSkipLogin: (_env.VITE_API_SKIP_LOGIN === 'true'),
+    // isAllPermissionData: (_env.VITE_API_ALL_PERMISSION === 'true')
   }
 })
 
@@ -93,7 +93,7 @@ const systemEnv = computed(() => {
 const localeStore = useLocaleStore()
 
 const authStore = useAuthStore()
-const { initSystemData } = authStore
+const { setAuthStatus, clearAuthStatus, checkAuthStatus, initSystemData } = authStore
 const { authData, routesPermission } = storeToRefs(authStore)
 
 const routesStore = useRoutesStore()
@@ -118,6 +118,7 @@ const {
 const { initModuleLangMap, i18nTest, i18nTranslate, langMap } = useGlobalI18n()
 
 onMounted(() => {
+  loading(true, i18nTranslate('system-initialization', defaultModuleType))
   initModuleLangMap()
 })
 
@@ -147,6 +148,7 @@ onBeforeMount(() => {
 onBeforeUnmount(() => {
   i18nBus.off(i18nBusListener)
 })
+
 /**
  * 設定網頁 title 優先順序
  * 1. i18n Excel 中 views 的名稱
@@ -156,11 +158,35 @@ onBeforeUnmount(() => {
 const setWebTitle = () => {
   const currentTitle = (currentNavigation => {
     if (currentNavigation) {
-      const { name, title } = currentNavigation
+      const {
+        name,
+        title,
+        breadcrumbName,
+        breadcrumbTitle
+      } = currentNavigation
 
+      const [name1, name2, name3] = breadcrumbName
+      const [title1, title2, title3] = breadcrumbTitle
+
+      // nav2 / nav3
+      if(
+        name1 && name2 && name3 &&
+        title1 && title2 && title3
+      ) {
+        if (i18nTest(breadcrumbName)) {
+          return [name2, name3].map(_name => {
+            return i18nTranslate(_name, defaultModuleType)
+          }).join(' / ')
+        } else {
+          return [title2, title3].join(' / ')
+        }
+      }
+
+      // nav1 或 nav2 或 nav3
       if (i18nTest(name)) {
         return i18nTranslate(name, defaultModuleType)
       }
+
       if (title ?? false) return title
     }
 
@@ -191,7 +217,6 @@ const setNavigationData = (currentRoute: RouteLocationNormalized) => {
     setCurrentNavigation(currentRoute)
   }
 }
-
 
 const router = useRouter()
 /**
@@ -230,13 +255,8 @@ const initNavigationRoutes = async (routeName?: string) => {
 
   setLayoutInfo()
 }
-
 onBeforeMount(() => {
   initNavigationRoutes()
-})
-
-onMounted(() => {
-  loading(true, i18nTranslate('system-initialization', defaultModuleType))
 })
 
 // 路由切換
@@ -249,34 +269,46 @@ const setLayoutInfo = async () => {
   }
 }
 
-const pageContentRef = ref()
 // 登出
 const logout = async () => {
   await nextTick()
   loading(true, i18nTranslate('logout', defaultModuleType))
 
-  clearToken()
-  removeCookie('loginTime')
+  clearAuthStatus()
   initNavigationRoutes('login')
-
-  if (pageContentRef.value) {
-    pageContentRef.value.busOff()
-  }
 }
 // 登入
 const login = async (userId: number) => {
   await nextTick()
   loading(true, i18nTranslate('login', defaultModuleType))
 
-  const loginTime = formatDatetime(new Date(), 'YYYY-MM-DD_HH:mm:ss')
-  setCookie('loginTime', loginTime)
-  setToken(userId, loginTime)
+  setAuthStatus(userId)
   initNavigationRoutes('locatehome')
-
-  if (pageContentRef.value) {
-    pageContentRef.value.busOn()
-  }
 }
+
+// 網路狀態
+const network = reactive(useNetwork())
+
+/**
+ * 定期確認登入狀態
+ */
+let timer: any = null
+onMounted(() => {
+  // useWindowFocus
+  console.groupCollapsed('network')
+  console.table(getProxyData(network))
+  console.groupEnd()
+
+  timer = setInterval(async () => {
+    const userId = await checkAuthStatus()
+    if (isEmpty(userId)) {
+      logout()
+    }
+  }, 5 * 60 * 1000)
+})
+onBeforeUnmount(() => {
+  clearInterval(timer)
+})
 
 // 開發測試用 DevelopmentTest
 const developmentTestRef = ref()
@@ -318,7 +350,7 @@ if (systemEnv.value.mode === 'development') {
   onMounted(() => {
     window.addEventListener('keydown', handleKeydown)
   })
-  onBeforeMount(() => {
+  onBeforeUnmount(() => {
     window.removeEventListener('keydown', handleKeydown)
   })
 }
@@ -381,25 +413,32 @@ provide<UseHook>('useHook', (options = {}) => {
       })
     },
     permission: (routeName = null) => {
-      if (systemEnv.value.isAllPermissionData) return getPermission(totlaPermission)
+      let _pageName: string | null = routeName
+      let _pagePermission: number = defaultPermission
 
+      // 指定路由
       if (!isEmpty(routeName)) {
-        // 與路由守衛相同邏輯
         const routerPermission = navigationMap.value.get(routeName)
-        const pagePermission = routerPermission?.permission ?? 0
+        _pagePermission = (routerPermission?.permission ?? defaultPermission) as number
 
-        const _pagePermission = getPermission(pagePermission)
-        tipLog(`${routeName} 權限`, [routeName, _pagePermission])
+      // 當前路由
+      } else {
+        const {
+          name: routeName = '',
+          permission: pagePermission = defaultPermission
+        } = currentNavigation?.value ?? { name: '', permission: 0 }
 
-        return _pagePermission
+        _pageName = routeName
+        _pagePermission = pagePermission
       }
 
-      const { meta } = currentNavigation?.value ?? { meta: { permission: 0 } }
-      const { permission = 0 } = meta
-      const _pagePermission = getPermission(permission)
-      tipLog(`${currentNavigation?.value} 權限`, [currentNavigation?.value, _pagePermission])
-
-      return getPermission(permission)
+      const resPagePermission = getPermission(_pagePermission)
+      tipLog(`${_pageName} 權限`, [
+        routeName,
+        resPagePermission,
+        currentNavigation?.value
+      ])
+      return resPagePermission
     },
     env: () => {
       return systemEnv.value
@@ -448,7 +487,6 @@ provide<UseHook>('useHook', (options = {}) => {
 
       <template #content>
         <PageContent
-          ref="pageContentRef"
           :is-iframe="systemEnv.isIframe"
           @routeChange="routeChange"
           @login="login"

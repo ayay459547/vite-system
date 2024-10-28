@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/stores_auth'
 import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
-import { permission, totlaPermission, hasPermission } from '@/lib/lib_permission' // 權限
+import { permission, hasPermission } from '@/lib/lib_permission' // 權限
 import { tipLog, isEmpty } from '@/lib/lib_utils' // 工具
 import { updateToken } from '@/lib/lib_cookie'
 
@@ -18,7 +18,6 @@ import { commonRoutes } from './Common'
 const systemUrl = (import.meta as any).env.VITE_API_SYSTEM_URL
 
 const isSkipLogin = (import.meta as any).env.VITE_API_SKIP_LOGIN === 'true'
-const isAllPermission = (import.meta as any).env.VITE_API_ALL_PERMISSION === 'true'
 
 /**
  * @author Caleb
@@ -118,8 +117,7 @@ router.beforeEach(
      * 3. 系統預設
      * 4. 0 (無權限)
      */
-    const pagePermission = isAllPermission ?
-      totlaPermission : (routerPermission?.permission ?? 0)
+    const pagePermission = (routerPermission?.permission ?? 0)
 
     /**
      * iframe
@@ -151,6 +149,7 @@ router.beforeEach(
       // 已經登入 如果要進登入頁 自動跳回首頁
       if (to.name === 'login') {
         next({ name: 'locatehome' })
+
         // 沒有讀取的權限
       } else if (
         from.name &&

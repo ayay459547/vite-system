@@ -106,6 +106,7 @@ const validateCount = ref(0)
 onMounted(() => {
   validateCount.value = 0
 })
+
 // 驗證
 const validateField = (veeValue: Props.ModelValue) => {
   // 一開始不驗證
@@ -152,7 +153,9 @@ const validateField = (veeValue: Props.ModelValue) => {
 }
 
 const inputValue = computed({
-  get: () => props.modelValue,
+  get: () => {
+    return props.modelValue
+  },
   set: (value: Props.ModelValue) => {
     validateValue.value = value
     emit('update:modelValue', value)
@@ -172,8 +175,9 @@ const {
   handleReset, // 重置
   validate: _validate // 驗證
 } = useField<any>(props.validateKey, validateField, {
-  validateOnValueUpdate: true
-  // initialValue: inputValue,
+  validateOnValueUpdate: true,
+  initialValue: props.modelValue,
+  modelPropName: 'modelValue'
   // valueProp: inputValue
 })
 
@@ -200,6 +204,9 @@ const bindAttributes = computed(() => {
     clearable: props.clearable,
     disabled: props.disabled,
     rows: props.rows,
+    autosize: props.autosize,
+    autocomplete: props.autocomplete,
+    name: props.name,
     showPassword: props.showPassword,
     loading: props.loading,
     placeholder: props.placeholder,
@@ -269,7 +276,7 @@ const onEvent = computed(() => {
       emit('select', item)
     }
   }
-  if ([null, undefined, ''].includes(errorMessage.value)) {
+  if (isEmpty(errorMessage.value)) {
     return {
       ..._event,
       onInput: (value: any): void => {

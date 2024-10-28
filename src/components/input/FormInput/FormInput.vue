@@ -26,6 +26,9 @@ const bindAttributes = computed(() => {
     clearable: props.clearable,
     disabled: props.disabled,
     rows: props.rows,
+    autosize: props.autosize,
+    autocomplete: props.autocomplete,
+    name: props.name,
     showPassword: props.showPassword
   }
   if (!isEmpty(props.placeholder)) {

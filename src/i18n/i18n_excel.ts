@@ -22,8 +22,8 @@ import { scopeList, defaultModuleType } from './i18n_setting'
  * 3.重新寫入 i18n.json
  */
 
-import i18nJson from './i18n.json'
-import i18nXlsx from './i18n.xlsx?b64'
+import i18nJson from './i18n_table.json'
+import i18nXlsx from './i18n_table.xlsx?b64'
 
 // 測試用
 // import i18nJson from './i18n_test.json'

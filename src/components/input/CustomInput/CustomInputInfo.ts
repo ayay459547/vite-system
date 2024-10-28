@@ -3,7 +3,10 @@ import type { PropType } from 'vue'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
-import type { Option } from '@/components' // 系統組件
+import type {
+  Option,
+  FormInputProps
+} from '@/components' // 系統組件
 
 import type {
   FormTimePickerTypes,
@@ -35,6 +38,8 @@ export declare namespace Types {
 
 export declare namespace Props {
   type ModelValue = any | null | undefined
+    | FormInputProps.ModelValue
+
   type IsValidate = boolean
   type ValidateKey = string
   type Direction = 'column' | 'row'
@@ -59,8 +64,11 @@ export declare namespace Props {
   type Placeholder = string
   type Options = Option[]
 
-  type Rows = number
-  type ShowPassword = boolean
+  type Rows = FormInputProps.Rows
+  type Autosize = FormInputProps.Autosize
+  type Autocomplete = FormInputProps.Autocomplete
+  type Name = FormInputProps.Name
+  type ShowPassword = FormInputProps.ShowPassword
 
   type Loading = boolean
   type Remote = boolean
@@ -266,6 +274,18 @@ const elInput = {
     default: 2,
     description: `顯示的行數
       type="textarea" 才有效果 `
+  },
+  autosize: {
+    type: [Boolean, Object] as PropType<Props.Autosize>,
+    default: false
+  },
+  autocomplete: {
+    type: String as PropType<Props.Autocomplete>,
+    default: 'off'
+  },
+  name: {
+    type: String as PropType<Props.Name>,
+    default: undefined
   },
   showPassword: {
     type: Boolean as PropType<Props.ShowPassword>,

@@ -96,6 +96,9 @@ button[class*="__CustomButton"] {
   @include icon-transform(translate, translateX(0), translateX(-4px));
 
   &.el-button {
+    width: fit-content;
+    height: fit-content;
+
     align-items: center;
     padding: 8px 12px;
     gap: 6px;

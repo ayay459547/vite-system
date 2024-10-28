@@ -221,9 +221,9 @@ export class IWebScoket {
       this.isError = false
     } else {
       this.isReConnect = true
-      const msg = `reconnect ${this.connectUrl} after ${delay} second`
+      const msg = `reconnect after ${delay} second`
 
-      console.log(msg)
+      console.log('%c%s', 'font-size: 1.1em; color: #E6A23C;', `ws ${msg}: ${this.connectUrl}`)
       message({
         type: 'warning',
         message: msg,
@@ -241,9 +241,9 @@ export class IWebScoket {
     if (!isEmpty(onopen)) {
       onopen()
     } else {
-      const msg = `connect ${this.connectUrl} success`
+      const msg = 'connect success'
 
-      console.log(msg)
+      console.log('%c%s', 'font-size: 1.1em; color: #67C23A;', `ws ${msg}: ${this.connectUrl}`)
       message({
         type: 'success',
         message: msg,
@@ -258,9 +258,9 @@ export class IWebScoket {
     if (!isEmpty(onclose)) {
       onclose()
     } else {
-      const msg = `close ${this.connectUrl} connect`
+      const msg = 'close connect'
 
-      console.log(msg)
+      console.log('%c%s', 'font-size: 1.1em; color: #909399;', `ws ${msg}: ${this.connectUrl}`)
       message({
         type: 'info',
         message: msg,
@@ -284,9 +284,9 @@ export class IWebScoket {
     if (!isEmpty(onerror) && this.connectCount > 0) {
       onerror()
     } else {
-      const msg = `connect ${this.connectUrl} error`
+      const msg = 'connect error'
 
-      console.log(msg)
+      console.log('%c%s', 'font-size: 1.1em; color: #F56C6C;', `ws ${msg}: ${this.connectUrl}`)
       message({
         type: 'error',
         message: msg,
@@ -296,7 +296,8 @@ export class IWebScoket {
     this.isError = true
   }
   #onmessage(msg: MessageEvent) {
-    console.log(`get ${this.connectUrl} message`, msg)
+    console.log('%c%s', 'color: #409EFF;', `get message: ${this.connectUrl} (${msg})`)
+
     return msg
   }
 

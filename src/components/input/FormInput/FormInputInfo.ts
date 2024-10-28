@@ -19,17 +19,22 @@ export declare namespace Props {
   type Disabled = boolean
   type Type = string
   type Rows = number
+  type Autosize = boolean | { minRows?: number, maxRows?: number }
+  type Autocomplete = string
+  type Name = string
   type ShowPassword = boolean
   type Placeholder = string
 }
 export const props = {
   modelValue: {
     type: [String, Number, null] as PropType<Props.ModelValue>,
-    required: true
+    required: true,
+    description: '綁定值 v-model="..." '
   },
   errorMessage: {
     type: String as PropType<Props.ErrorMessage>,
-    default: ''
+    default: '',
+    description: '錯誤訊息'
   },
   // 數字
   onlyNumber: {
@@ -72,6 +77,18 @@ export const props = {
   rows: {
     type: Number as PropType<Props.Rows>,
     default: 2
+  },
+  autosize: {
+    type: [Boolean, Object] as PropType<Props.Autosize>,
+    default: false
+  },
+  autocomplete: {
+    type: String as PropType<Props.Autocomplete>,
+    default: 'off'
+  },
+  name: {
+    type: String as PropType<Props.Name>,
+    default: undefined
   },
   showPassword: {
     type: Boolean as PropType<Props.ShowPassword>,

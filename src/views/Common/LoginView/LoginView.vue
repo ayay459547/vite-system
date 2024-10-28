@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
+import { ElForm } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useFormSetting } from '@/lib/lib_columns'
@@ -18,35 +19,34 @@ const emit = defineEmits(['login'])
 
 const isLoading = ref(false)
 
-const login = ($event: MouseEvent | KeyboardEvent) => {
+const userLogin = ($event: Event) => {
   // 移除 form 原有事件處理
+  // console.log('userLogin', $event)
   $event.preventDefault()
 
-  validateForm()
-    .then(async () => {
-      const { account, password } = form
+  validateForm().then(async () => {
+    const { account, password } = form
 
-      isLoading.value = true
+    isLoading.value = true
 
-      const { status, msg, data: userId } = await loginSystem(account, password)
-      if (status !== 'success') {
-        swal({
-          icon: 'error',
-          title: i18nTranslate('error-getData', 'system'),
-          text: msg ?? i18nTranslate('warning-contactIT', 'system'),
-          showCancelButton: false
-        })
-      }
+    const { status, msg, data: userId } = await loginSystem(account, password)
+    if (status !== 'success') {
+      swal({
+        icon: 'error',
+        title: i18nTranslate('error-getData', 'iPASP_common'),
+        text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+        showCancelButton: false
+      })
+    }
 
-      if (!isEmpty(userId)) {
-        emit('login', userId)
-      }
+    if (!isEmpty(userId)) {
+      emit('login', userId)
+    }
 
-      isLoading.value = false
-    })
-    .catch(() => {
-      isLoading.value = false
-    })
+    isLoading.value = false
+  }).catch(() => {
+    isLoading.value = false
+  })
 }
 
 const columnSetting = {
@@ -63,10 +63,10 @@ const columnSetting = {
     label: '密碼',
     i18nLabel: 'input-password',
     fitler: {
+      // type: 'password',
       default: 'admin',
       showPassword: true,
-      required: true,
-      placeholder: ''
+      required: false
     }
   }
 }
@@ -114,32 +114,48 @@ const svg = `
           <!-- <img src="@/assets/images/Vue-logo.png" alt="vue" /> -->
         </div>
 
-        <CustomInput
-          v-model="form.account"
-          v-bind="formColumn.account"
-          :label="i18nTranslate('input-account', defaultModuleType)"
-          @keyup.enter="login"
+        <ElForm
+          class="fill-x flex-column i-ga-md"
+          autocomplete="on"
+          @submit.prevent="userLogin"
         >
-          <template #prefix>
-            <CustomIcon name="user" />
-          </template>
-        </CustomInput>
+          <CustomInput
+            v-model="form.account"
+            v-bind="formColumn.account"
+            :label="i18nTranslate('input-account', defaultModuleType)"
+            name="username"
+            autocomplete="username"
+            @keyup.enter="userLogin"
+            @clear="resetForm"
+          >
+            <template #prefix>
+              <CustomIcon name="user" />
+            </template>
+          </CustomInput>
 
-        <form style="display: contents" @submit="login">
           <CustomInput
             v-model="form.password"
             v-bind="formColumn.password"
             :label="i18nTranslate('input-password', defaultModuleType)"
+            name="password"
+            autocomplete="current-password"
+            @keyup.enter="userLogin"
+            @clear="resetForm"
           >
             <template #prefix>
               <CustomIcon name="unlock-keyhole" />
             </template>
           </CustomInput>
-        </form>
 
-        <button class="login-button" @click="login">
-          {{ i18nTranslate('login', defaultModuleType) }}
-        </button>
+          <button
+            native-type="submit"
+            class="login-button"
+            type="submit"
+            @click="userLogin"
+          >
+            {{ i18nTranslate('login', defaultModuleType) }}
+          </button>
+        </ElForm>
       </div>
     </div>
   </div>
