@@ -67,7 +67,7 @@ const emit = defineEmits([
   'mounted'
 ])
 
-const loading = ref(true)
+const isLoading = ref(true)
 const renderKey = ref(1)
 const isRender = ref(false)
 // const isResizing = ref(false)
@@ -471,13 +471,13 @@ const showColumns = shallowReactive([...props.tableColumns])
 // 初始化顯示欄位
 const initShowColumns = async (setting?: any) => {
   const {
-    //預設的Setting各項參數
-    isLoading = true
+    // 預設的Setting各項參數
+    isLoading: isUseLoading = true
     // scrollElement = null,
     // columnKey = null
   } = setting ?? {} //param沒有傳入則用空物件替代
 
-  loading.value = isLoading //是否使用Loading, 不輸入函數則預設為使用
+  isLoading.value = isUseLoading // 是否使用Loading, 不輸入函數則預設為使用
 
   if (columnSetting.value) {
     // 確認欄位設定
@@ -508,8 +508,8 @@ const initShowColumns = async (setting?: any) => {
   }
 
   setTimeout(() => {
-    loading.value = false
-  }, 300) // 設 0.3s 才不會閃一下
+    isLoading.value = false
+  }, 240) // 設定一段時間才取消 避免閃一下
 }
 
 onMounted(async () => {
@@ -668,7 +668,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-loading="loading" class="__table-wrapper" :class="`CustomTable_${version} ${scopedId}`">
+  <div v-loading="isLoading" class="__table-wrapper" :class="`CustomTable_${version} ${scopedId}`">
     <template v-if="hasSlot('prepend')">
       <div class="__table-prepend">
         <Transition name="fixed">

@@ -3,7 +3,6 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
-import CheckStatus from '@/views/Common/CheckStatus.vue'
 const NoPermissions = () => import('@/views/Common/NoPermissions.vue')
 const InProgress = () => import('@/views/Common/InProgress.vue')
 const Page_404 = () => import('@/views/Common/Page_404.vue')
@@ -39,12 +38,6 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     meta: { title: '登入' },
     path: `${systemUrl}/login`,
     component: LoginView
-  },
-  {
-    name: 'checkStatus',
-    meta: { title: '確認登入狀態中' },
-    path: `${systemUrl}/checkStatus`,
-    component: CheckStatus
   },
   {
     name: 'noPermissions',
@@ -85,5 +78,8 @@ export const commonRoutes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)',
     redirect: { name: 'page404' }
+    // beforeEnter: (to, from) => {
+    //   console.log('beforeEnter => ', { to, from })
+    // }
   }
 ]

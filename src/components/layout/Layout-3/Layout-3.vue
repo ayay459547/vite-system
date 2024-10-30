@@ -12,10 +12,6 @@ import SideContent from './SideContent/SideContent.vue'
 import HeaderContent from './HeaderContent/HeaderContent.vue'
 
 const props = defineProps({
-  isShow: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   showRoutes: {
     type: Array as PropType<Navigation[]>,
     default: () => {
@@ -175,7 +171,6 @@ onMounted(() => {
   <div class="layout-wrapper">
     <CustomDividerView
       ref="customDividerViewRef"
-      v-show="props.isShow"
       :left-width="defaultLeftWidth"
       @change="setDefaultLeftWidth"
     >
@@ -201,7 +196,7 @@ onMounted(() => {
       </template>
       <template #right>
         <!-- header + view -->
-        <div v-show="props.isShow" class="layout-right" :class="isNavOpen ? 'is-open' : 'is-close'">
+        <div class="layout-right" :class="isNavOpen ? 'is-open' : 'is-close'">
           <div class="layout-header">
             <HeaderContent
               v-model:is-open="isNavOpen"

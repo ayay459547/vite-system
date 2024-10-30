@@ -406,8 +406,15 @@ export const getProxyData = <T = any>(value: typeof Proxy | any): T => {
  * @returns {String} 回傳的值
  */
 export const aesEncrypt = (str: string, key: string): string => {
-  const ciphertext = cryptoJS.AES.encrypt(str, `${key}`).toString()
-  return ciphertext
+  try {
+    const encodeStr = encodeURIComponent(str)
+    const ciphertext = cryptoJS.AES.encrypt(encodeStr, `${key}`).toString()
+    return ciphertext
+
+  } catch (e) {
+    console.trace(e)
+    return ''
+  }
 }
 
 /**
@@ -420,13 +427,13 @@ export const aesEncrypt = (str: string, key: string): string => {
  */
 export const aesDecrypt = (str: string, key: string): string => {
   try {
-    const bytes = cryptoJS.AES.decrypt(str, `${key}`)
+    const decodeStr = decodeURIComponent(str)
+    const bytes = cryptoJS.AES.decrypt(decodeStr, `${key}`)
     const originalText = bytes.toString(cryptoJS.enc.Utf8)
     return originalText
 
   } catch (e) {
-    console.log(e)
-
+    console.trace(e)
     return null
   }
 }
@@ -460,11 +467,11 @@ export const copyText = async (text: string): Promise<string> => {
 
     return text
   } catch (e) {
-    console.log(e)
+    console.trace(e)
 
     ElNotification({
-      type: 'error',
-      title: 'Copy Error',
+      type: 'warning',
+      title: 'Copy Warning',
       message: text
     })
     return text

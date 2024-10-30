@@ -27,7 +27,6 @@ const onChange: Emits.Change = (val: string | number | boolean) => {
   <ElSwitch
     v-model="tempValue"
     :class="scopedId"
-    :style="props.style"
     :active-text="props.activeText"
     :inactive-text="props.inactiveText"
     :disabled="props.disabled"

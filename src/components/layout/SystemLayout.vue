@@ -23,10 +23,6 @@ const { i18nTranslate } = useHook({
 })
 
 const props = defineProps({
-  isShow: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   currentNavigation: {
     type: Object as PropType<Navigation>,
     default: () => {
@@ -90,7 +86,6 @@ const currentRouteName = computed(() => {
 
 const layoutAttr = computed(() => {
   return {
-    isShow: props.isShow,
     showRoutes: props.showRoutes,
     currentNavigation: props.currentNavigation,
 
@@ -136,7 +131,7 @@ const init = async () => {
         layout3Ref.value?.init()
         break
       default:
-      tipLog('找不到對應的Layout', [layout.value])
+        tipLog('找不到對應的Layout', [layout.value])
         break
     }
   }, 320)

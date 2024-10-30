@@ -1,26 +1,42 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, computed, onBeforeMount } from 'vue'
+import { computed } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useRoute } from 'vue-router'
 
-import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
+import type { Navigation } from '@/declare/routes'
 import { scrollToEl } from '@/lib/lib_utils' // 工具
 
+import { useRoutesStore } from '@/stores/stores_routes'
+
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
+// import Async_Error from '@/views/Common/Async_Error.vue'
 
 const props = defineProps({
+  isInitSystem: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   isIframe: {
     type: Boolean as PropType<boolean>,
     default: false
+  },
+  currentNavigation: {
+    type: Object as PropType<Navigation | null>,
+    default: null
+  },
+  navigationMap: {
+    type: Object as PropType<Map<string, Navigation>>,
+    default: () => {
+      return new Map()
+    }
   }
 })
 
 const emit = defineEmits([
-  'routeChange',
   'login',
   'setLayoutInfo',
-  'initNavigationRoutes'
+  'initSystemData'
 ])
 
 const pageScrollTop = () => {
@@ -32,52 +48,12 @@ const pageScrollTop = () => {
   }
 }
 
-// 切換頁面 打開遮罩
-// 暫時不行點擊任何東西
-const isDisabled = ref(false)
-let disabledTimeoutId: NodeJS.Timeout | null
-let loadingTimeoutId: NodeJS.Timeout | null
-
-const _isLoading = ref(false)
-const isLoading = computed({
-  set (v: boolean) {
-    if (disabledTimeoutId) {
-      clearInterval(disabledTimeoutId)
-    }
-    if (loadingTimeoutId) {
-      clearInterval(loadingTimeoutId)
-    }
-    _isLoading.value = v
-    isDisabled.value = v
-
-    // isDisabled 一段時間 自動關閉
-    if (v) {
-      disabledTimeoutId = setTimeout(() => {
-        isDisabled.value = false
-      }, 320)
-    }
-    // _isLoading 一段時間 自動關閉
-    if (v) {
-      loadingTimeoutId = setTimeout(() => {
-        _isLoading.value = false
-      }, 4800)
-    }
-  },
-  get () {
-    return _isLoading.value
-  }
-})
-
-const routeChange = (currentRoute: RouteLocationNormalized) => {
-  emit('routeChange', currentRoute)
-
-  setTimeout(() => {
-    // 換頁時 scrollbar 移動到最上面
-    pageScrollTop()
-
-    isLoading.value = false
-  }, 320)
-}
+const routesStore = useRoutesStore()
+const {
+  setBreadcrumbName,
+  setBreadcrumbTitle,
+  setCurrentNavigation
+} = routesStore
 
 const route = useRoute()
 const routeName = computed<any>(() => {
@@ -85,94 +61,92 @@ const routeName = computed<any>(() => {
   return route?.name ?? ''
 })
 
-const routerBus = useEventBus<string>('router')
-const routerBusListener = (event: string) => {
-  switch (event) {
-    case 'busRouterChange':
-      isLoading.value = true
-      break
+// 讀取當前路由變化 設置 麵包屑 + 當前路由
+const routeChange = (currentRoute: RouteLocationNormalized) => {
+  const { name } = props.currentNavigation ?? { name: '' }
+  if ([null, undefined, name, 'login'].includes(currentRoute.name as string)) return
+
+  const routeName = currentRoute.name as string
+
+  if (routeName === 'locatehome') {
+    setBreadcrumbName(['locatehome'])
+    setBreadcrumbTitle(['首頁'])
+
+    setCurrentNavigation(null)
+  } else if (props.navigationMap.has(routeName)) {
+    const currentRoute = props.navigationMap.get(routeName)
+    const { breadcrumbName: _breadcrumbName, breadcrumbTitle: _breadcrumbTitle } = currentRoute
+    // 麵包屑
+    setBreadcrumbName(_breadcrumbName ?? [])
+    setBreadcrumbTitle(_breadcrumbTitle ?? [])
+    // 當前路由
+    setCurrentNavigation(currentRoute)
   }
+
+  setTimeout(() => {
+    // 換頁時 scrollbar 移動到最上面
+    pageScrollTop()
+  }, 320)
 }
-onBeforeMount(() => {
-  routerBus.on(routerBusListener)
-})
 
 const login = (userId: number) => {
-  routerBus.on(routerBusListener)
   emit('login', userId)
 }
-
-defineExpose({
-  busOn () {
-    // 開啟 EventBus 監聽
-    routerBus.on(routerBusListener)
-  },
-  busOff () {
-    // 移除 EventBus 監聽
-    routerBus.off(routerBusListener)
-  }
-})
 
 const setLayoutInfo = () => {
   emit('setLayoutInfo')
 }
 
-const initNavigationRoutes = (routeName: string) => {
-  emit('initNavigationRoutes', routeName)
+const initSystemData = (routeName: string) => {
+  emit('initSystemData', routeName)
 }
 
 </script>
 
 <template>
   <div class="view-wrapper" :class="{'is-iframe': isIframe}">
-    <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
-    <div v-show="isDisabled" class="is-disabled">{{ routeName }}</div>
-    <main v-loading="isLoading" class="view-container">
+    <main class="view-container">
       <!-- 滾動到最上方 -->
-      <div class="__layout-scroll-top__"></div>
+      <div class="view-scroll __layout-scroll-top__">{{ routeName }}</div>
 
       <!-- 頁面功能 -->
-      <Suspense>
-        <template #default>
-          <RouterView v-slot="{ Component, route }">
-            <component
-              v-if="route.name === 'login'"
-              key="login"
-              :is="Component"
-              @login="login"
-            />
-            <component
-              v-else-if="route.name === 'locatehome'"
-              key="locatehome"
-              :is="Component"
-              @router-change="setLayoutInfo"
-            />
-            <component
-              v-else-if="route.name === 'nodoc-21'"
-              key="nodoc-21"
-              :is="Component"
-              @init-system="initNavigationRoutes('nodoc-21')"
-            />
-            <template v-else>
-              <KeepAlive>
-                <component
-                  v-if="(route?.meta?.keepAlive ?? false)"
-                  :key="route.name"
-                  :is="Component"
-                />
-              </KeepAlive>
-              <component
-                v-if="!(route?.meta?.keepAlive ?? false)"
-                :key="route.name"
-                :is="Component"
-              />
-            </template>
-          </RouterView>
-        </template>
-        <template #fallback>
+      <RouterView v-slot="{ Component, route }">
+        <div v-if="!props.isInitSystem" class="view-init">
           <Async_Skeleton />
+        </div>
+        <component
+          v-else-if="route.name === 'login'"
+          key="login"
+          :is="Component"
+          @login="login"
+        />
+        <component
+          v-else-if="route.name === 'locatehome'"
+          key="locatehome"
+          :is="Component"
+          @router-change="setLayoutInfo"
+        />
+        <component
+          v-else-if="route.name === 'nodoc-21'"
+          key="nodoc-21"
+          :is="Component"
+          @init-system="initSystemData('nodoc-21')"
+        />
+        <template v-else>
+          <KeepAlive>
+            <component
+              v-if="(route?.meta?.keepAlive ?? false)"
+              :key="route.name"
+              :is="Component"
+            />
+          </KeepAlive>
+          <component
+            v-if="!(route?.meta?.keepAlive ?? false)"
+            :key="route.name"
+            :is="Component"
+          />
         </template>
-      </Suspense>
+      </RouterView>
     </main>
   </div>
 </template>
@@ -198,13 +172,18 @@ const initNavigationRoutes = (routeName: string) => {
     position: relative;
     overflow: auto;
   }
-}
-
-.is-disabled {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--i-z-index-global-disabled);
-  color: #ffffff00;
+  &-scroll {
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+  }
+  &-init {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--i-z-index-login);
+  }
 }
 </style>

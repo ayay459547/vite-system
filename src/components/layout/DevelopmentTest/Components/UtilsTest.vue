@@ -8,7 +8,7 @@ import {
 } from '@/components' // 系統組件
 
 import { isEmpty, aesDecrypt } from '@/lib/lib_utils' // 工具
-import { getCookie } from '@/lib/lib_cookie'
+import { getCookie, clearToken } from '@/lib/lib_cookie'
 
 /**
  * 替換頁面文字
@@ -130,6 +130,14 @@ const checkToken = (isIntervalCheck?: boolean) => {
         plain
         size="large"
         @click="checkToken(false)"
+      />
+      <CustomButton
+        icon-name="pause"
+        label="clearToken"
+        type="danger"
+        plain
+        size="large"
+        @click="clearToken()"
       />
     </CustomButtonGroup>
   </div>

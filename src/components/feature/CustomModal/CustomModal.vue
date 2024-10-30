@@ -275,6 +275,8 @@ const throttleUpdateTransform = throttle(updateTransform, 8, { isNoTrailing: tru
 
 // 確認是否超出螢幕 要重設位置
 const fixModalOutSide = async () => {
+  if (!containerIsShow.value) return
+
   await nextTick()
   const contentRect = containerRef.value.getBoundingClientRect()
   const { x, y, width, height } = contentRect

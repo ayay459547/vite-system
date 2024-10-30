@@ -8,7 +8,6 @@ export declare namespace Types {
 
 export declare namespace Props {
   type ModelValue = boolean
-  type Style = string
   type ActiveText = string
   type InactiveText = string
   type Disabled = boolean
@@ -21,10 +20,6 @@ export const props = {
   modelValue: {
     type: Boolean as PropType<Props.ModelValue>,
     required: true
-  },
-  style: {
-    type: String as PropType<Props.Style>,
-    default: ''
   },
   activeText: {
     type: String as PropType<Props.ActiveText>,

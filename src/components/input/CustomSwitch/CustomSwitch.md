@@ -24,7 +24,6 @@ const value = ref(false)
 | 屬姓名       | 說明             | 類型            | 預設值 |
 | ------------ | ---------------- | --------------- | ------ |
 | modelValue   | v-modal 綁定的值 | boolean         | false  |
-| style        | 樣式             | string          | ''     |
 | activeText   | 啟用文字         | string          | ''     |
 | inactiveText | 不啟用文字       | string          | ''     |
 | disable      | 是否禁用         | boolean         | false  |

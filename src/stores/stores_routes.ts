@@ -1,19 +1,18 @@
-import type { ComputedRef, ShallowRef } from 'vue'
-import { shallowRef, computed } from 'vue'
+import type { ShallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defineStore } from 'pinia'
 
+import type { AuthData } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
-import { getRouterLeafLayer, refactorRoutes } from '@/lib/lib_routes'
-import routes from '@/router/routes'
-
+import {
+  // getRouterLeafLayer,
+  refactorRoutes
+} from '@/lib/lib_routes'
 import { permission, defaultPermission, hasPermission } from '@/lib/lib_permission' // 權限
 
-export const useRoutesStore = defineStore('routes', () => {
-  // 全部的路由
-  const allRoutes: ComputedRef<Navigation[]> = computed(() => {
-    return getRouterLeafLayer(routes, [1, 2, 3], false)
-  })
+import routes from '@/router/routes'
 
+export const useRoutesStore = defineStore('routes', () => {
   // 左側選單欄 確認是否 active
   const breadcrumbName: ShallowRef<string[]> = shallowRef([])
   const setBreadcrumbName = (newBreadcrumb: string[]) => {
@@ -32,18 +31,59 @@ export const useRoutesStore = defineStore('routes', () => {
     currentNavigation.value = route
   }
 
-  // Navigation 三層選單 + 歷史選單 用
+  // 路由資料 Map(string, route)
+  const navigationMap: ShallowRef<Map<string, Navigation>> = shallowRef(new Map())
+  // Navigation 選單
   const navigationRoutes: ShallowRef<Navigation[]> = shallowRef([])
 
   /**
-   * 路由資料
-   * 權限用
-   * key(route): value
+   * 設置 選單用資料 + 搜尋用 map
+   * @param authData 使用者資料
    */
-  const navigationMap: ShallowRef<Map<string, Navigation>> = shallowRef(new Map())
+  const setNavigationRoutes = (authData: AuthData) => {
+    const { roleFunction: permissionList } = authData
 
-  // 設置 選單用資料 + 搜尋用 map
-  const setNavigationRoutes = (routesPermission: Map<string, number>) => {
+    /**
+     * 依照使用者 id
+     * 取得權限資料
+     * Map(route, permissions)
+     */
+    const routesPermission = new Map<string, number>()
+
+    // 依照後端資料初始化權限
+    if (Array.isArray(permissionList) && permissionList.length > 0) {
+      // 設定路由權限
+      permissionList.forEach(permissionItem => {
+        const {
+          pk,
+          readPermissions,
+          createPermissions,
+          updatePermissions,
+          deletePermissions,
+          executePermissions
+        } = permissionItem
+
+        // 依據API權限 設定權限的總和
+        const routePermission = 0 +
+          (readPermissions ? permission.read : 0) +
+          (createPermissions ? permission.create : 0) +
+          (updatePermissions ? permission.update : 0) +
+          (deletePermissions ? permission.delete : 0) +
+          (executePermissions ? permission.execute : 0)
+
+        routesPermission.set(pk.functionID, routePermission)
+      })
+    } else {
+      // 清除
+      routesPermission.clear()
+
+      // 所有權限設定 0
+      // const routeList = getRouterLeafLayer(routes, [1, 2, 3], false)
+      // routeList.forEach(routeItem => {
+      //   routesPermission.set(routeItem.name, 0)
+      // })
+    }
+
     // 已經設定過的權限
     const permissionMap = new Map<string, number>()
     /**
@@ -52,8 +92,12 @@ export const useRoutesStore = defineStore('routes', () => {
      * 2. 取得子路由最大權限
      */
     const _getLeavesPermission = (route: Navigation): number | null => {
+      if (routesPermission.has(route.name)) {
+        const leavesPermission = routesPermission.get(route.name)
+        permissionMap.set(route.name, leavesPermission)
+        return leavesPermission
+      }
       if (permissionMap.has(route.name)) return permissionMap.get(route.name)
-      if (routesPermission.has(route.name)) return routesPermission.get(route.name)
 
       if (Array.isArray(route?.leaves)) {
         const _leavesPermission = route.leaves.reduce<number | null>((res, curr) => {
@@ -81,9 +125,11 @@ export const useRoutesStore = defineStore('routes', () => {
      */
     const _getRouterPermission = (route: Navigation, nodeName: string): number => {
       if (!permissionMap.has(nodeName)) {
+        const leavesMaxPermission = _getLeavesPermission(route)
+
         const nodePermission = [
           // 依據後端權限資料 算出最大值
-          _getLeavesPermission(route),
+          leavesMaxPermission,
           // 路由設定
           route?.meta?.permission,
           // 系統預設
@@ -134,8 +180,6 @@ export const useRoutesStore = defineStore('routes', () => {
   }
 
   return {
-    allRoutes,
-
     breadcrumbName,
     setBreadcrumbName,
     breadcrumbTitle,

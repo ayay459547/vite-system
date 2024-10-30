@@ -66,8 +66,9 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
           <div>${apiUrl}</div>
           <div>${errorMessage}</div>
         </div>`,
+        customClass: 'i-message',
         dangerouslyUseHTMLString: true,
-        duration: 10000
+        duration: 120000
       })
 
     }
@@ -92,8 +93,9 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
           <div>${apiUrl}</div>
           <div>${errorMessage}</div>
         </div>`,
+        customClass: 'i-message',
         dangerouslyUseHTMLString: true,
-        duration: 10000
+        duration: 120000
       })
     }
   )

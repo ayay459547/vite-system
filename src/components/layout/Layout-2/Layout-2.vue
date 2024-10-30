@@ -10,10 +10,6 @@ import { isEmpty } from '@/lib/lib_utils' // 工具
 import MenuContent from './MenuContent.vue'
 
 const props = defineProps({
-  isShow: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   showRoutes: {
     type: Array as PropType<Navigation[]>,
     default: () => {

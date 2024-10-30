@@ -33,8 +33,8 @@ const userLogin = ($event: Event) => {
     if (status !== 'success') {
       swal({
         icon: 'error',
-        title: i18nTranslate('error-getData', 'iPASP_common'),
-        text: msg ?? i18nTranslate('warning-contactIT', 'iPASP_common'),
+        title: i18nTranslate('error-getData', defaultModuleType),
+        text: msg ?? i18nTranslate('warning-contactIT', defaultModuleType),
         showCancelButton: false
       })
     }
@@ -79,7 +79,8 @@ interface Form {
 const {
   columns: formColumn,
   forms: form,
-  validate: validateForm
+  validate: validateForm,
+  reset: resetForm
 } = useFormSetting<Form>(columnSetting, 'fitler')
 
 const svg = `

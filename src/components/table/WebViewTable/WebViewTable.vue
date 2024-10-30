@@ -339,7 +339,7 @@ const init = async (params?: any, type?: string) => {
 
   setTimeout(() => {
     isLoading.value = false
-  }, 320)
+  }, 240)
 
   // 時間線表格 同步更新
   setTimeout(() => {

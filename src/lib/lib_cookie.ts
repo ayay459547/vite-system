@@ -1,8 +1,10 @@
 import Cookies from 'js-cookie'
 
 import { aesEncrypt, aesDecrypt } from '@/lib/lib_utils' // 工具
+// import { formatDatetime } from '@/lib/lib_format'
 
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
+const tokenTime = (import.meta as any).env.VITE_API_TOKEN_TIME
 
 /**
  * @see https://github.com/js-cookie/js-cookie
@@ -14,12 +16,10 @@ const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
 export const setCookie = (
   key: string,
   value: string,
-  options?: Partial<Cookies.CookieAttributes>
+  options: Partial<Cookies.CookieAttributes> = {}
 ) => {
-  const _options = { expires: 1 }
-
   Cookies.set(key, value, {
-    ..._options,
+    expires: 1,
     ...options
   })
 }
@@ -56,15 +56,15 @@ export interface Token {
  */
 export const getToken = (loginTime?: string): Token | null => {
   try {
-    const _token = getCookie('token')
-    if (['', null, undefined].includes(_token)) {
-      throw `getToken _token = "${_token}"`
+    const token = getCookie('token')
+    if (['', null, undefined].includes(token)) {
+      throw `getToken token = '${token}'`
     }
 
-    const temp = aesDecrypt(_token, `${privateKey}__${loginTime}`)
-    const userId = Number.parseInt(temp)
+    const _userId = aesDecrypt(token, `${privateKey}__${loginTime}`)
+    const userId = Number.parseInt(_userId)
     if (Number.isNaN(userId)) {
-      throw `isNaN data = "${temp}"`
+      throw `userId = '${_userId}'`
     }
 
     const userData = {
@@ -87,15 +87,27 @@ export const getToken = (loginTime?: string): Token | null => {
 export const setToken = (userId: number, loginTime: string) => {
   try {
     if (['', null, undefined].includes(loginTime)) {
-      throw `setToken loginTime = "${loginTime}"`
+      throw `setToken loginTime = '${loginTime}'`
     }
 
-    const _token = `${userId}`
-    const minutes = 20 // 設定 20 分鐘
-    const time = new Date(new Date().getTime() + minutes * 60 * 1000)
+    const token = aesEncrypt(`${userId}`, `${privateKey}__${loginTime}`)
 
-    setCookie('token', aesEncrypt(_token, `${privateKey}__${loginTime}`), {
-      expires: time
+    const minutes = Number.parseInt(tokenTime)
+
+    // 保存時間 (分鐘)
+    const expiresTime = new Date(new Date().getTime() + minutes * 60 * 1000)
+
+    // 保存時間: 測試(秒)
+    // const expiresTime = new Date(new Date().getTime() + minutes * 1000)
+
+    // console.log('minutes => ', {
+    //   minutes,
+    //   expiresTime,
+    //   formatExires: formatDatetime(expiresTime, 'HH:mm:ss')
+    // })
+
+    setCookie('token', token, {
+      expires: expiresTime
     })
   } catch (e) {
     console.log(e)
@@ -106,22 +118,28 @@ export const clearToken = () => {
   removeCookie('token')
 }
 
-let queue: any = null
-const _updateToken = () => {
-  const loginTime = getCookie('loginTime')
-  const token = getToken(loginTime)
-
-  const { userId = -1 } = token ?? {}
-
-  if (!Number.isNaN(userId) && userId > 0) {
-    setToken(userId, loginTime)
-  }
-}
 /**
  * 更新token(登入)狀態
  * 更新時機：換路由、送api
  * @param {String} type 使用者ID
  */
+let queue: any = null
+let updateTokenTimer: NodeJS.Timeout | number | undefined = null
+const _updateToken = () => {
+  queue.splice(0)
+
+  clearInterval(updateTokenTimer)
+  updateTokenTimer = null
+
+  // 更新token
+  const loginTime = getCookie('loginTime')
+  const token = getToken(loginTime)
+
+  const { userId = -1 } = token ?? {}
+  if (!Number.isNaN(userId) && userId > 0) {
+    setToken(userId, loginTime)
+  }
+}
 export const updateToken = (type?: string) => {
   if (queue === null) {
     queue = []
@@ -129,11 +147,12 @@ export const updateToken = (type?: string) => {
   }
   queue.push(type ?? 'updateToken')
 
-  setTimeout(() => {
-    if (queue.length > 0) {
-      queue.splice(0)
-
-      _updateToken()
-    }
-  }, 60 * 1000)
+  if (updateTokenTimer === null) {
+    // 一分鐘更新一次
+    updateTokenTimer = setInterval(() => {
+      if (queue.length > 0) {
+        _updateToken()
+      }
+    }, 60 * 1000)
+  }
 }

@@ -5,6 +5,7 @@
 $z-index-map: () !default;
 $z-index-map: map.merge(
   (
+    'message': 9999, // var(--i-z-index-message); // 在下方已使用
     'select-option': 4000, // var(--i-z-index-select-option);
     'loading': 3800, // var(--i-z-index-loading);
     'swal2': 3600, // 在下方已使用
@@ -23,6 +24,10 @@ $z-index-map: map.merge(
   ),
   $z-index-map
 );
+
+.i-message {
+  z-index: map.get($z-index-map, 'message') !important;
+}
 
 .el-notification {
   z-index: map.get($z-index-map, 'notification') !important;

@@ -16,7 +16,9 @@ import {
   useResizeObserver as _useResizeObserver,
   useMouse as _useMouse,
   useMouseInElement as _useMouseInElement,
-  useEventBus as _useEventBus
+  useEventBus as _useEventBus,
+  useWindowFocus as _useWindowFocus,
+  useNetwork as _useNetwork
 } from '@vueuse/core'
 
 import {
@@ -182,9 +184,23 @@ export const useEventBus: <T = any, P = any>(key: EventBusIdentifier<T>) => UseE
 }
 
 /**
+ * Reactively track window focus with `window.onfocus` and `window.onblur`.
+ *
+ * @see https://vueuse.org/useWindowFocus
+ */
+export const useWindowFocus = _useWindowFocus
+
+/**
+ * Reactive Network status.
+ *
+ * @see https://vueuse.org/useNetwork
+ * @param options
+ */
+export const useNetwork = _useNetwork
+
+/**
  * https://react.dev/reference/react/hooks
  */
-
 
 /**
  * @author Caleb

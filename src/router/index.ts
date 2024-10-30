@@ -1,5 +1,5 @@
 import { shallowRef } from 'vue'
-import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import type { RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -94,8 +94,7 @@ const router = createRouter({
 // 暫存使用者想去的路由名稱
 const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
-router.beforeEach(
-  (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+router.beforeEach((to, from, next) => {
     const routerBus = useEventBus<string>('router')
     routerBus.emit('busRouterChange')
 
@@ -103,7 +102,7 @@ router.beforeEach(
 
     // 使用者
     const authStore = useAuthStore()
-    const { isLogin, isCheckedStatus } = storeToRefs(authStore)
+    const { isLogin } = storeToRefs(authStore)
 
     // 路由
     const routesStore = useRoutesStore()
@@ -119,63 +118,70 @@ router.beforeEach(
      */
     const pagePermission = (routerPermission?.permission ?? 0)
 
+    // 防止無限遞迴
+    const callNext = (pageName: string) => {
+      if (!baseRoutesName.includes(to.name)) {
+        tempTo.value = null
+      }
+
+      if (to.name === pageName) {
+        next()
+      } else {
+        next({ name: pageName })
+      }
+    }
+
     /**
      * iframe
-     * src="...?views=page"
+     * src="...?views=page
      */
-    // const page = from?.redirectedFrom?.query?.views ?? ''
-    const page = to?.redirectedFrom?.query?.views ?? ''
-    if (!isEmpty(page) && typeof page === 'string') {
-      if (to.name === page) {
-        next()
-      } else {
-        next({ name: page })
-      }
+    const [
+      toPage
+      // fromPage
+    ] = [
+      to?.redirectedFrom?.query?.views ?? '',
+      from?.redirectedFrom?.query?.views ?? ''
+    ]
+    if (!isEmpty(toPage) && typeof toPage === 'string') {
+      tempTo.value = to
+      callNext(toPage)
+      return
     }
 
-    // 尚未確認登入狀態
-    if (!isCheckedStatus.value) {
-      if (to.name === 'checkStatus') {
-        next()
-      } else {
-        // 未登入先將想去的頁面暫存
-        if (to.name !== 'locatehome') {
-          tempTo.value = to
-        }
-
-        next({ name: 'checkStatus' })
+    // 未登入
+    if (!isLogin.value && !isSkipLogin) {
+      // 頁面暫存
+      if (!baseRoutesName.includes(to.name as string)) {
+        tempTo.value = to
       }
-    } else if (isLogin.value || isSkipLogin) {
-      // 已經登入 如果要進登入頁 自動跳回首頁
-      if (to.name === 'login') {
-        next({ name: 'locatehome' })
-
-        // 沒有讀取的權限
-      } else if (
-        from.name &&
-        !baseRoutesName.includes(to.name as string) &&
-        !hasPermission(pagePermission, permission.read)
-      ) {
-        next({ name: 'noPermissions' })
-
-        // 如果再未登入時有 想進的頁面 會優先進入
-      } else if (tempTo.value) {
-        const temp = tempTo.value
-        tempTo.value = null
-
-        next({ ...temp })
-        // 已登入
-      } else {
-        next()
-      }
-    } else {
-      // 未登入
-      if (to.name === 'login') {
-        next()
-      } else {
-        next({ name: 'login' })
-      }
+      callNext('login')
+      return
     }
+
+    // 沒有讀取的權限
+    if (
+      from.name &&
+      !baseRoutesName.includes(to.name as string) &&
+      !hasPermission(pagePermission, permission.read)
+    ) {
+      callNext('noPermissions')
+      return
+    }
+
+    if (tempTo.value) {
+      const temp = tempTo.value
+      tempTo.value = null
+      next({ ...temp })
+      return
+    }
+
+    // 如果要進登入頁 自動跳回首頁
+    if (to.name === 'login') {
+      callNext('locatehome')
+      return
+    }
+
+    next()
   }
 )
 
