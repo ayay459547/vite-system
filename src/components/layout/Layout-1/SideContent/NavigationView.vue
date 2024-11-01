@@ -263,7 +263,8 @@ defineExpose({
   &-item {
     width: 100%;
     min-height: 48px;
-    color: #fff;
+    color: var(--i-color-menu-color);
+    text-shadow: 2px 2px 4px #00000050;
     font-weight: 600;
     letter-spacing: 1px;
     background-color: var(--i-color-menu);

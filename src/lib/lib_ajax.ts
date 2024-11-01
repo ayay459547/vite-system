@@ -52,9 +52,9 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
       return config
     },
     (error: AxiosError<any>) => {
-      const [apiUrl, errorStatus, errorMessage] = [
+      const [apiUrl, errorCode, errorMessage] = [
         error?.request?.responseURL ?? '',
-        error?.response?.status ?? '',
+        error?.code ?? '',
         error?.message ?? ''
       ]
 
@@ -62,7 +62,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
       message({
         type: 'error',
         message: `<div class="ajax-message">
-          <h2>API Request Error ( ${errorStatus} )</h2>
+          <h2>API Request Error ( ${errorCode} )</h2>
           <div>${apiUrl}</div>
           <div>${errorMessage}</div>
         </div>`,

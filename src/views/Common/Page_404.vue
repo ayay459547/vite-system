@@ -27,10 +27,7 @@ const setImgStyle = (e: MouseEvent) => {
 const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) => void
 
 const container = ref(null)
-const centerPoint = reactive({
-  x: 0,
-  y: 0
-})
+const centerPoint = reactive({ x: 0, y: 0 })
 
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach(entry => {
@@ -57,7 +54,7 @@ onUnmounted(() => {
     <div ref="container" class="page" @mousemove="throttleSetImgStyle">
       <div class="page-circle"></div>
       <h1 class="page-title" :style="titleStyle">
-        {{ i18nTranslate('頁面不存在') }}
+        {{ i18nTranslate('page-page404') }}
       </h1>
 
       <img class="page-img" src="@/assets/images/common/page404.svg" alt="404" />
@@ -79,7 +76,7 @@ onUnmounted(() => {
     position: absolute;
     bottom: 22%;
     transition-duration: 0.3s;
-    font-size: 5em;
+    font-size: 3em;
     word-spacing: 6px;
     z-index: 3;
   }

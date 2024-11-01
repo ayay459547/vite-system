@@ -92,6 +92,7 @@ export default defineComponent({
       &-text {
         font-size: 1.6em;
         font-weight: 600;
+        text-shadow: 2px 2px 4px #00000050;
       }
     }
   }

@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import HomeView from '@/views/Common/HomeView/HomeView.vue'
 import LoginView from '@/views/Common/LoginView/LoginView.vue'
+
 const NoPermissions = () => import('@/views/Common/NoPermissions.vue')
 const InProgress = () => import('@/views/Common/InProgress.vue')
 const Page_404 = () => import('@/views/Common/Page_404.vue')
@@ -59,19 +60,19 @@ export const commonRoutes: Array<RouteRecordRaw> = [
   },
   {
     name: 'page404',
-    meta: { title: '404' },
+    meta: { title: '頁面不存在' },
     path: `${systemUrl}/page404`,
     component: Page_404
   },
   {
     name: 'Async_Skeleton',
-    meta: { title: '404' },
+    meta: { title: '載入組件' },
     path: `${systemUrl}/Async_Skeleton`,
     component: Async_Skeleton
   },
   {
     name: 'Async_Error',
-    meta: { title: '404' },
+    meta: { title: '載入組件錯誤' },
     path: `${systemUrl}/Async_Error`,
     component: Async_Error
   },

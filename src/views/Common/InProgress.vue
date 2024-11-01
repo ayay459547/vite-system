@@ -21,16 +21,13 @@ const setImgStyle = (e: MouseEvent) => {
   const diffX = centerPoint.x - clientX
   const diffY = centerPoint.y - clientY
 
-  imgStyle.value = `transform: translateX(${diffX / 32}px) translateY(${diffY / 32}px);`
-  titleStyle.value = `transform: translateX(${diffX / 12}px) translateY(${diffY / 12}px);`
+  // imgStyle.value = `transform: translateX(${diffX / 32}px) translateY(${diffY / 32}px);`
+  titleStyle.value = `transform: translateX(${diffX / 32}px) translateY(${diffY / 32}px);`
 }
 const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) => void
 
 const container = ref(null)
-const centerPoint = reactive({
-  x: 0,
-  y: 0
-})
+const centerPoint = reactive({ x: 0, y: 0 })
 
 const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
   entries.forEach(entry => {
@@ -57,7 +54,7 @@ onUnmounted(() => {
     <div ref="container" class="_empty" @mousemove="throttleSetImgStyle">
       <div class="_empty-background" :style="imgStyle"></div>
       <h1 class="_empty-title" :style="titleStyle">
-        {{ i18nTranslate('功能開發中') }}
+        {{ i18nTranslate('page-inProgress') }}
       </h1>
 
       <img
@@ -84,7 +81,7 @@ onUnmounted(() => {
     position: absolute;
     bottom: 22%;
     transition-duration: 0.3s;
-    font-size: 5em;
+    font-size: 3em;
     word-spacing: 6px;
     z-index: 3;
   }

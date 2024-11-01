@@ -52,7 +52,14 @@
         if ([null, undefined, ''].includes(buildVersion)) {
           console.log('[init] init build version')
           localStorage.setItem('buildVersion', 'v2000-01-01.1')
-          location.reload(true)
+          
+          // 重新整理
+          location.reload()
+          // location.replace(location.href)
+
+          // const href = location.pathname + '?cache=' + new Date().getTime()
+          // location.href = href
+          // window.location.assign(href)
         }
 
         console.log('build version：', buildVersion)

@@ -10,6 +10,15 @@ import {
 import { isEmpty, aesDecrypt } from '@/lib/lib_utils' // 工具
 import { getCookie, clearToken } from '@/lib/lib_cookie'
 
+const refresh = () => {
+  location.reload()
+  // location.replace(location.href)
+
+  // const href = location.pathname + '?cache=' + new Date().getTime()
+  // location.href = href
+  // window.location.assign(href)
+}
+
 /**
  * 替換頁面文字
  * 截圖 做簡報
@@ -81,6 +90,15 @@ const checkToken = (isIntervalCheck?: boolean) => {
 
 <template>
   <div>
+    <CustomButton
+      icon-name="rotate-right"
+      label="重整畫面"
+      type="info"
+      plain
+      size="large"
+      @click="refresh()"
+    />
+
     <!-- 替換文字 -->
     <div class="flex-column-center i-ga-xs i-py-md">
       <FormInput
@@ -132,8 +150,8 @@ const checkToken = (isIntervalCheck?: boolean) => {
         @click="checkToken(false)"
       />
       <CustomButton
-        icon-name="pause"
-        label="clearToken"
+        icon-name="remove"
+        label="清除登入狀態"
         type="danger"
         plain
         size="large"

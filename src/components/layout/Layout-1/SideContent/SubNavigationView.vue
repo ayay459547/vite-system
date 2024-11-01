@@ -203,6 +203,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
     gap: 16px;
     cursor: pointer;
     color: var(--i-color-menu-color);
+    text-shadow: 2px 2px 4px #00000050;
 
     h3 {
       font-size: 1.2em;
@@ -236,6 +237,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
   &-item {
     width: 100%;
     color: var(--i-color-menu-color);
+    text-shadow: 2px 2px 4px #00000050;
     background-color: var(--i-color-menu);
     transition-duration: 0.3s;
 
