@@ -23,16 +23,34 @@ const props = defineProps(formInputProps)
 const bindAttributes = computed(() => {
   const attributes: any = {
     type: props.type,
+    // maxlength: props.maxlength,
+    // minlength: props.minlength,
+    // showWordLimit: props.showWordLimit,
+    placeholder: props?.placeholder ?? i18nTranslate('pleaseInput'),
     clearable: props.clearable,
+    // formatter: props.formatter,
+    // parser: props.parser,
+    showPassword: props.showPassword,
     disabled: props.disabled,
+    // size: props.size,
+    // prefixIcon: props.prefixIcon,
+    // suffixIcon: props.suffixIcon,
     rows: props.rows,
     autosize: props.autosize,
     autocomplete: props.autocomplete,
     name: props.name,
-    showPassword: props.showPassword
-  }
-  if (!isEmpty(props.placeholder)) {
-    attributes.placeholder = props.placeholder
+    // readonly: props.readonly,
+    max: props.max,
+    min: props.min,
+    // step: props.step,
+    // resize: props.resize,
+    // autofocus: props.autofocus,
+    // form: props.form,
+    // ariaLabel: props.ariaLabel,
+    // tabindex: props.tabindex,
+    validateEvent: false
+    // inputStyle: props.inputStyle,
+    // label: props.label
   }
 
   return attributes
@@ -65,7 +83,7 @@ const onEvent: {
     let _value = value
 
     // 數字
-    if (props.onlyNumber) {
+    if (props.onlyNumber || props.type === 'number') {
       // 轉化數字
       if (typeof _value === 'string') {
         _value = Number.parseFloat(_value)
@@ -169,9 +187,7 @@ defineExpose({ focus, blur })
       ref="elInputRef"
       v-model="inputValue"
       class="__i-input__"
-      :placeholder="i18nTranslate('pleaseInput')"
       :class="[`validate-${validateRes}`]"
-      :validate-event="false"
       v-bind="bindAttributes"
       v-on="onEvent"
     >

@@ -90,7 +90,6 @@ const getStyle = (isChecked: boolean, color?: string) => {
         v-model="inputValue"
         class="__i-checkbox__"
         :class="[`validate-${validateRes}`]"
-        size="large"
         :validate-event="false"
         v-bind="bindAttributes"
         @change="onEvent.change"

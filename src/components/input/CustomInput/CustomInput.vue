@@ -503,6 +503,7 @@ const getSlot = (slotList: string[] = []) => {
 const renderInput = () => {
   switch (props.type) {
     case 'text':
+    case 'number':
     case 'textarea':
       return (
         <FormInput
@@ -761,6 +762,7 @@ const renderInput = () => {
       tipLog(`輸入框類型 ${props.type} 不存在`, [
         '以下為可用類型',
         'text',
+        'number',
         'textarea',
         'password',
         'select',
@@ -778,7 +780,7 @@ const renderInput = () => {
         'checkbox',
         'radio'
       ])
-      return <div></div>
+      return <div>{ props.type }</div>
   }
 }
 

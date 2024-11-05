@@ -18,7 +18,10 @@ import {
   useMouseInElement as _useMouseInElement,
   useEventBus as _useEventBus,
   useWindowFocus as _useWindowFocus,
-  useNetwork as _useNetwork
+  useNetwork as _useNetwork,
+  useEventSource as _useEventSource,
+  useWebSocket as _useWebSocket,
+  useWebWorker as _useWebWorker
 } from '@vueuse/core'
 
 import {
@@ -197,6 +200,41 @@ export const useWindowFocus = _useWindowFocus
  * @param options
  */
 export const useNetwork = _useNetwork
+
+/**
+ * Reactive wrapper for EventSource.
+ *
+ * @see https://vueuse.org/useEventSource
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource EventSource
+ * @param url
+ * @param events
+ * @param options
+ */
+export const useEventSource = _useEventSource
+
+/**
+ * Reactive WebSocket client.
+ *
+ * @see https://vueuse.org/useWebSocket
+ * @param url
+ */
+export const useWebSocket = _useWebSocket
+
+/**
+ * Simple Web Workers registration and communication.
+ *
+ * @see https://vueuse.org/useWebWorker
+ * @param url
+ * @param workerOptions
+ * @param options
+ */
+/**
+ * Simple Web Workers registration and communication.
+ *
+ * @see https://vueuse.org/useWebWorker
+ * @param worker
+ */
+export const useWebWorker = _useWebWorker
 
 /**
  * https://react.dev/reference/react/hooks

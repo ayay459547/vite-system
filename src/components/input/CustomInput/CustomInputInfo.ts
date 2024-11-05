@@ -20,6 +20,7 @@ export const version = '1.0.0'
 export declare namespace Types {
   type InputType =
     | 'text'
+    | 'number'
     | 'textarea'
     | 'password'
     | 'select'
