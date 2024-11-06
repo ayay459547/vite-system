@@ -3,7 +3,6 @@ import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
 
-import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 import { deepClone } from '@/lib/lib_utils' // 工具
 import { useTableSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/declare/columnSetting'
@@ -24,9 +23,6 @@ import { getPermission } from '@/lib/lib_permission' // 權限
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, swal, loading, eventList } = useHook()
 
-// const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
-const { i18nTranslate: pageTranslate } = useLocalI18n()
-
 // 權限
 const routesStore = useRoutesStore()
 const { currentNavigation } = storeToRefs(routesStore)
@@ -39,7 +35,7 @@ const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions: TableOptions = {
-  title: pageTranslate('testTable'),
+  title: i18nTranslate('testTable'),
   version: '1.0.4',
   settingKey: 'test'
 }
@@ -209,7 +205,7 @@ onActivated(() => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
-      :title="pageTranslate('testTable')"
+      :title="i18nTranslate('testTable')"
       @excel="download"
       @show-change="init"
       @row-contextmenu="

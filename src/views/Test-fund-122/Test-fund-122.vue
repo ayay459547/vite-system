@@ -12,7 +12,6 @@ import {
   GroupSearch,
   CustomSearch
 } from '@/components' // 系統組件
-import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -28,9 +27,7 @@ import CreateModal from './Components/CreateModal.vue'
 import UpdateModel from './Components/UpdateModel.vue'
 
 const useHook: UseHook = inject('useHook')
-const { swal, loading, eventList } = useHook()
-// const { i18nTranslate } = useLocalI18n(i18nMessage)
-const { i18nTranslate } = useLocalI18n()
+const { i18nTranslate, swal, loading, eventList } = useHook()
 
 // 權限
 const routesStore = useRoutesStore()

@@ -4,18 +4,8 @@ import { useI18n } from 'vue-i18n'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomTabs } from '@/components' // 系統組件
-import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 
 const { t: testT } = useI18n()
-
-const { i18nTranslate: pageTranslate } = useLocalI18n()
-// const { i18nTranslate: pageTranslate } = useLocalI18n({
-//   search123: {
-//     zhTw: '搜尋ZhTw',
-//     zhCn: '搜尋ZhCn',
-//     en: 'search777'
-//   }
-// })
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()
@@ -31,12 +21,12 @@ const tabs = [
 
 <template>
   <div class="input-test">
-    <h2 class="i-mb-md text-primary">{{ $t('test') }}</h2>
+    <h2 class="i-mb-md text-primary">{{ testT('test') }}</h2>
     <h2 class="i-mb-md text-success">{{ testT('test') }}</h2>
     <h2 class="i-mb-md text-danger">{{ i18nTranslate('search') }}</h2>
     <h2 class="i-mb-md text-success">{{ testT('search') }}</h2>
-    <h2 class="i-mb-md text-danger">{{ pageTranslate('search123') }}</h2>
-    <h2 class="i-mb-md text-primary">{{ pageTranslate('test') }}</h2>
+    <h2 class="i-mb-md text-danger">{{ i18nTranslate('search123') }}</h2>
+    <h2 class="i-mb-md text-primary">{{ i18nTranslate('test') }}</h2>
 
     <CustomTabs v-model="tab" :options="tabs"></CustomTabs>
     <CustomTabs v-model="tab" :options="tabs"></CustomTabs>

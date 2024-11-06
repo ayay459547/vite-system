@@ -3,7 +3,6 @@ import { ref, shallowRef, inject, reactive, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { useLocalI18n } from '@/lib/lib_hook' // 自訂Composition API
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
 import { useTableSetting } from '@/lib/lib_columns'
 import { useRoutesStore } from '@/stores/stores_routes'
@@ -22,9 +21,6 @@ import UpdateModal from './Components/UpdateModal.vue'
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, swal, loading, eventList } = useHook()
 
-// const { i18nTranslate: pageTranslate } = useLocalI18n(i18nMessage)
-const { i18nTranslate: pageTranslate } = useLocalI18n()
-
 // 權限
 const routesStore = useRoutesStore()
 const { currentNavigation } = storeToRefs(routesStore)
@@ -37,7 +33,7 @@ const tableData = shallowRef<TableData[]>([])
 const tableDataCount = ref(0)
 
 const tableOptions: TableOptions = {
-  title: pageTranslate('testTable'),
+  title: i18nTranslate('testTable'),
   version: '1.0.0',
   settingKey: 'nav1-1-1',
   isSorting: true
@@ -183,7 +179,7 @@ onMounted(() => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
-      :title="pageTranslate('testTable')"
+      :title="i18nTranslate('testTable')"
       @excel="download"
       @show-change="init"
       @row-contextmenu="

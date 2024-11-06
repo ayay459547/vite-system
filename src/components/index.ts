@@ -5,6 +5,7 @@ import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
 // 通用
 export type CustomSize = 'large' | 'default' | 'small'
+export type CustomEffect = 'dark' | 'light' | string
 export type CustomElType = '' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 export type { Option, Options } from '@/declare/columnSetting'
 
