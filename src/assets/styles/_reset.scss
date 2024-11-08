@@ -11,10 +11,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-form,
-h1, h2, h3, h4, h5, h6,
-ul, li, a, div,
-nav, main, label, span {
+:where(
+  h1, h2, h3, h4, h5, h6,
+  main, form, nav, a,
+  ul, li, label, div, span
+) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -22,14 +23,9 @@ nav, main, label, span {
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑',
     Arial, sans-serif;
-  
-  font-size: 1em;
-  @media (max-width: 992px) {
-    font-size: 0.99em;
-  }
 }
 
-input[type=number] {
+:where(input[type=number]) {
   /* 隱藏 Firefox 的箭頭 */
   appearance: none;
   -moz-appearance: textfield; /* 將樣式設置為文本框 */
@@ -43,22 +39,22 @@ input[type=number] {
   }  
 }
 
-label {
+:where(label) {
   font-weight: 600;
   & > span {
     font-weight: 600;
   }
 }
 
-a {
+:where(a) {
   text-decoration: none;
 }
 
-ul, li {
+:where(ul, li) {
   list-style: none;
 }
 
-b, strong {
+:where(b, strong) {
   font-size: 1.1em;
 }
 

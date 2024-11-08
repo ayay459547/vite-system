@@ -18,34 +18,29 @@ const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const bindAttributes = computed(() => {
-  const attributes: any = {
-    clearable: props.clearable,
-    disabled: props.disabled,
-    valueKey: props.valueKey,
-    fitInputWidth: props.fitInputWidth
-  }
-  if (!isEmpty(props.placeholder)) {
-    attributes.placeholder = props.placeholder
-  }
-
-  return attributes
-})
-
 const emit = defineEmits([
   'update:modelValue',
-  'select',
   'blur',
+  'focus',
+  'input',
+  'clear',
+  'select',
   'change'
 ])
 
 const onEvent: {
-  select: Emits.Select
   blur: Emits.Blur
+  focus: Emits.Focus
+  input: Emits.Input
+  clear: Emits.Clear
+  select: Emits.Select
   change: Emits.Change
 } = {
-  select: item => emit('select', item),
   blur: event => emit('blur', event),
+  focus: event => emit('focus', event),
+  input: value => emit('input', value),
+  clear: () => emit('clear'),
+  select: item => emit('select', item),
   change: value => emit('change', value)
 }
 
@@ -84,18 +79,37 @@ defineExpose({ focus, blur })
   <div class="__i-autocomplete__" :class="scopedId">
     <ElAutocomplete
       ref="elAutocompleteRef"
-      v-model="inputValue"
       class="__i-autocomplete__"
-      :placeholder="i18nTranslate('pleaseInput')"
       :class="[`validate-${validateRes}`]"
-      :validate-event="false"
-      :fetch-suggestions="fetchSuggestions"
-      v-bind="bindAttributes"
+      v-model="inputValue"
+      :placeholder="props.placeholder ?? i18nTranslate('pleaseInput')"
+      :clearable="props.clearable"
+      :disabled="props.disabled"
+      :value-key="props.valueKey"
+      :debounce="props.debounce"
+      :placement="props.placement"
+      :fetch-suggestions="props.fetchSuggestions"
+      :trigger-on-focus="props.triggerOnFocus"
+      :select-when-unmatched="props.selectWhenUnmatched"
+      :name="props.name"
+      :aria-label="props.ariaLabel"
+      :hide-loading="props.hideLoading"
+      :popper-class="props.popperClass"
+      :teleported="props.teleported"
+      :highlight-first-item="props.highlightFirstItem"
+      :fit-input-width="props.fitInputWidth"
       v-on="onEvent"
       @click.stop
     >
       <template v-if="hasSlot('default')" #default="scope">
         <slot name="default" v-bind="scope"></slot>
+      </template>
+      <!-- 圖示用 -->
+      <template v-if="hasSlot('prefix')" #prefix>
+        <slot name="prefix"></slot>
+      </template>
+      <template v-if="hasSlot('suffix')" #suffix>
+        <slot name="suffix"></slot>
       </template>
       <!-- 輸入框用 -->
       <template v-if="hasSlot('prepend')" #prepend>
@@ -104,12 +118,8 @@ defineExpose({ focus, blur })
       <template v-if="hasSlot('append')" #append>
         <slot name="append"></slot>
       </template>
-      <!-- 圖示用 -->
-      <template v-if="hasSlot('prefix')" #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="hasSlot('suffix')" #suffix>
-        <slot name="suffix"></slot>
+      <template v-if="hasSlot('loading')" #loading>
+        <slot name="loading"></slot>
       </template>
     </ElAutocomplete>
   </div>
