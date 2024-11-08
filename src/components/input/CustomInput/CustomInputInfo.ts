@@ -145,18 +145,11 @@ const custom = {
     default: false,
     description: '是否隱藏驗證錯誤訊息'
   },
-  onlyNumber: {
-    type: Boolean as PropType<Props.OnlyNumber>,
-    required: false,
-    default: false,
-    description: '是否只能輸入數字'
-  },
   round: {
     type: [Number, null] as PropType<Props.Round>,
     required: false,
     default: null,
     description: `
-      onlyNumber 必須為 true
       四捨五入 取小數點到第幾位`
   },
   floor: {
@@ -164,7 +157,6 @@ const custom = {
     required: false,
     default: null,
     description: `
-      onlyNumber 必須為 true
       無條件捨去 取小數點到第幾位`
   },
   ceil: {
@@ -172,24 +164,19 @@ const custom = {
     required: false,
     default: null,
     description: `
-      onlyNumber 必須為 true
       無條件進位 取小數點到第幾位`
   },
   max: {
     type: [Number, null] as PropType<Props.Max>,
     required: false,
     default: null,
-    description: `
-      onlyNumber 必須為 true
-      最大值`
+    description: '最大值'
   },
   min: {
     type: [Number, null] as PropType<Props.Min>,
     required: false,
     default: null,
-    description: `
-      onlyNumber 必須為 true
-      最小值`
+    description: '最小值'
   },
   required: {
     type: Boolean as PropType<Props.Required>,

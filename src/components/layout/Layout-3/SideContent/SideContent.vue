@@ -3,7 +3,6 @@ import type { PropType } from 'vue'
 import { computed, ref, nextTick } from 'vue'
 
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon } from '@/components' // 系統組件
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 
@@ -104,11 +103,7 @@ defineExpose({
     <div class="side-container">
       <div class="side-logo">
         <div class="side-logo-navigate">
-          <slot name="logo" :is-open="tempIsOpen"></slot>
-        </div>
-
-        <div class="side-logo-close" @click="tempIsOpen = false">
-          <CustomIcon name="close" />
+          <slot name="logo"></slot>
         </div>
       </div>
 
@@ -123,7 +118,7 @@ defineExpose({
 
       <div class="side-footer">
         <div class="side-footer-navigate">
-          <slot name="version" :is-open="tempIsOpen"></slot>
+          <slot name="version"></slot>
         </div>
       </div>
     </div>
@@ -172,17 +167,6 @@ defineExpose({
       white-space: nowrap;
       cursor: default;
       flex: 1;
-    }
-
-    &-close {
-      padding: 4px 8px;
-      margin: 0 6px;
-      cursor: pointer;
-      font-size: 1.5em;
-      // 大於 992px 不用顯示
-      @media (min-width: 992px) {
-        display: none;
-      }
     }
   }
 

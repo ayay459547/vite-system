@@ -55,24 +55,6 @@ export const useLocaleStore = defineStore('locale', () => {
     init()
   })
 
-  // @ts-ignore TEST 更換語言
-  window.changeLang = () => {
-    switch (systemLocale.value) {
-      case 'zhTw':
-        setSystemLocale('zhCn')
-        break
-      case 'zhCn':
-        setSystemLocale('en')
-        break
-      case 'en':
-        setSystemLocale('zhTw')
-        break
-      default:
-        setSystemLocale('zhTw')
-        break
-    }
-  }
-
   return {
     systemLocale,
     setSystemLocale,

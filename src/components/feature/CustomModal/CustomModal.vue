@@ -183,14 +183,31 @@ const transform = reactive({
 const containerRef = ref()
 const isFinishInit = ref(false)
 
+const wrapperStyle = computed(() => {
+  const style = {
+    transform: `translateX(${transform.x}) translateY(${transform.y})`,
+    'transition-duration': modalTransitionDuration.value,
+    'z-index': modalZIndex.value
+  }
+
+  if(props.useResize) {
+    if(resizeRect.height) style['height'] = Math.floor(resizeRect.height) + 'px'
+    if(resizeRect.width) style['width'] = Math.floor(resizeRect.width) + 'px'
+  }
+
+  return style
+})
+
+
+
 // 由於過場動畫
 // 所以需要再重設: 中心的 transform 值 + 移動的邊界值
 const setCenterAndLimit = () => {
   const contentRect = containerRef.value.getBoundingClientRect()
   const [centerX, cneterY] = [contentRect.width / 2, contentRect.height / 2]
 
-  centerRect.x = centerX
-  centerRect.y = cneterY
+  centerRect.x = centerX + 5
+  centerRect.y = cneterY + 5
 
   // 確保 modal 全顯示
   const [windowWidth, windowHeight] = [window.innerWidth, window.innerHeight]
@@ -247,6 +264,7 @@ const mousedownClient = reactive({
   clientY: 0
 })
 const updateTransform = (e: MouseEvent) => {
+  if(resizeInfo.isResizing) return
   const { clientX: mouseDownX, clientY: mouseDownY } = mousedownClient
 
   const { clientX: mouseMoveX, clientY: mouseMoveY } = e
@@ -377,6 +395,121 @@ const clickOutside = () => {
   }
 }
 
+
+// 調整Model大小 Resize
+const wrapperRef = ref()
+const resizeInfo = {
+  isResizing: false,
+  direction: ['', ''],
+  recordX: null,
+  recordY: null,
+  recordWidth: null,
+  recordHeight: null,
+  resizeWidth: null,
+  resizeHeight: null
+}
+const resizeRect = reactive({
+  width: null,
+  height: null
+})
+
+const onWrapperMousemove = (event: MouseEvent) => {
+  if(!props.useResize) return
+  if(isCollapse.value) return
+  if(resizeInfo.isResizing) return
+  const wrapperRect = wrapperRef.value.getBoundingClientRect()
+  const { x: eventX, y: eventY } = event
+  const { x: wrapperX, y: wrapperY, width, height } = wrapperRect
+
+  const clickSize = 3
+  const isClick = {
+    left: (eventX - wrapperX) <= clickSize,
+    top: (eventY - wrapperY) <= clickSize,
+    right: (eventX - wrapperX) >= (width - clickSize),
+    bottom: (eventY - wrapperY) >= (height - clickSize)
+  }
+
+  if (isClick.top)  resizeInfo.direction[0]  = 'n'
+  else if (isClick.bottom) resizeInfo.direction[0] = 's'
+  else resizeInfo.direction[0]  = ''
+  if(isClick.left) resizeInfo.direction[1]  = 'w'
+  else if(isClick.right)  resizeInfo.direction[1]  = 'e'
+  else resizeInfo.direction[1]  = ''
+  const direction =  resizeInfo.direction[0] +  resizeInfo.direction[1]
+
+  if(direction === '') wrapperRef.value.style.cursor = 'default'
+  else wrapperRef.value.style.cursor = direction + '-resize'
+  // console.log({ eventX, eventY }, { contentX, contentY, width, height }, isClick )
+  // setModalIndex()
+}
+const onWrapperMousedown = (event: MouseEvent) => {
+  setModalIndex()
+
+  if(resizeInfo.direction.some(text => text !== '')) {
+    console.log('DOWN!!')
+    const { clientX, clientY } = event
+    const { width, height } = containerRef.value.getBoundingClientRect()
+    resizeInfo.isResizing = true
+    resizeInfo.recordX = clientX
+    resizeInfo.recordY = clientY
+    resizeInfo.recordWidth = width
+    resizeInfo.recordHeight = height
+
+    window.addEventListener('mousemove', onResizeMousemove)
+    window.addEventListener('mouseup', onResizeMouseup)
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+const onResizeMousemove = (event: MouseEvent) => {
+  console.log('MOVE', resizeInfo)
+  const { direction } = resizeInfo
+  switch(direction[0]) {
+    case 'n': { //top
+      const { recordY, recordHeight } = resizeInfo
+      const { clientY } = event
+      const newHeight = recordHeight - (clientY - recordY)
+      resizeRect.height = newHeight
+      break
+    }
+    case 's': { //bottom
+      const { recordY, recordHeight } = resizeInfo
+      const { clientY } = event
+      const newHeight = recordHeight + (clientY - recordY)
+      resizeRect.height = newHeight
+      break
+    }
+  }
+  switch(direction[1]) {
+    case 'w': { // left
+      const { recordX, recordWidth } = resizeInfo
+      const { clientX } = event
+      const newWidth = recordWidth - (clientX - recordX)
+      resizeRect.width = newWidth
+      break
+    }
+    case 'e': { // right
+      const { recordX, recordWidth } = resizeInfo
+      const { clientX } = event
+      const newWidth = recordWidth + (clientX - recordX)
+      resizeRect.width = newWidth
+      break
+    }
+  }
+}
+const onResizeMouseup = () => {
+  resizeInfo.isResizing = false
+  window.removeEventListener('mousemove', onResizeMousemove)
+  window.removeEventListener('mouseup', onResizeMouseup)
+
+  containerRef.value.style.cursor = 'default'
+  resizeInfo.recordX = null
+  resizeInfo.recordY = null
+  resizeInfo.direction[0] = ''
+  resizeInfo.direction[1] = ''
+}
+
+
 // 移除事件
 const removeEvent = () => {
   window.removeEventListener('mousemove', throttleUpdateTransform)
@@ -439,15 +572,13 @@ onUnmounted(() => {
         :class="[
           `width-${props.widthSize}`,
           `height-${props.heightSize}`,
-          isFill ? 'width-isFill height-isFill' : '',
+          isFill ? 'width-isFill height-isFill isFill' : '',
           isCollapse ? 'width-isCollapse height-isCollapse isCollapse' : ''
         ]"
-        :style="{
-          transform: `translateX(${transform.x}) translateY(${transform.y})`,
-          'transition-duration': modalTransitionDuration,
-          'z-index': modalZIndex
-        }"
-        @mousedown="setModalIndex"
+        :style="wrapperStyle"
+        ref="wrapperRef"
+        @mousedown="onWrapperMousedown"
+        @mousemove="onWrapperMousemove"
         v-on-click-outside="clickOutside"
       >
         <Transition name="modal">
@@ -487,12 +618,14 @@ onUnmounted(() => {
                   v-show="!isCollapse && !props.clickOutside"
                   icon-x-type="fa"
                   icon-name="Minus"
+                  icon-size='small'
                   text
                   @click="setCollapse(true)"
                 />
                 <CustomButton
                   v-show="isCollapse || isFill"
                   icon-x-type="fa"
+                  icon-size='small'
                   icon-name="WindowRestoreRegular"
                   text
                   @click="setFill(false)"
@@ -500,6 +633,7 @@ onUnmounted(() => {
                 <CustomButton
                   v-show="isCollapse || !isFill"
                   icon-x-type="fa"
+                  icon-size='small'
                   icon-name="WindowMaximizeRegular"
                   text
                   @click="setFill(true)"
@@ -526,18 +660,16 @@ onUnmounted(() => {
             </div>
 
             <div v-show="!isCollapse" class="modal-body">
-              <KeepAlive :max="1">
-                <template v-if="props.isKeepAlive">
-                  <div v-show="tempValue" style="width: 100%; height: 100%">
-                    <slot :key="scopedId">Body</slot>
-                  </div>
-                </template>
-                <template v-else>
-                  <div v-if="tempValue" style="width: 100%; height: 100%">
-                    <slot :key="scopedId">Body</slot>
-                  </div>
-                </template>
-              </KeepAlive>
+              <template v-if="props.isKeepAlive">
+                <div v-show="tempValue" style="width: 100%; height: 100%">
+                  <slot :key="scopedId">Body</slot>
+                </div>
+              </template>
+              <template v-else>
+                <div v-if="tempValue" style="width: 100%; height: 100%">
+                  <slot :key="scopedId">Body</slot>
+                </div>
+              </template>
             </div>
 
             <div
@@ -612,10 +744,12 @@ onUnmounted(() => {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
+    padding: 5px;
     max: {
       width: 100%;
       height: 100%;
     }
+
     &.width {
       &-isFill {
         width: 100% !important;
@@ -691,6 +825,13 @@ onUnmounted(() => {
         }
       }
     }
+
+    &.isFill {
+      padding: 0px;
+    }
+    // &.isCollapse {
+    //   padding: 0px;
+    // }
   }
 
   &-container {
@@ -720,7 +861,7 @@ onUnmounted(() => {
     overflow: hidden;
     // border-bottom: 1px solid var(--el-text-color-disabled);
     box-shadow: 0px 0px 1px 1px var(--el-text-color-disabled);
-    z-index: 1;
+    z-index: var(--i-z-index-modal);
   }
   &-title {
     display: flex;

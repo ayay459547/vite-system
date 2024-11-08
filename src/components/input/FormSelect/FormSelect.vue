@@ -18,31 +18,6 @@ const { i18nTranslate } = useHook({
 
 const props = defineProps(formSelectProps)
 
-const bindAttributes = computed(() => {
-  const attributes: any = {
-    clearable: props.clearable,
-    disabled: props.disabled,
-    loading: props.loading,
-    remote: props.remote,
-    remoteMethod: props.remoteMethod,
-    remoteShowSuffix: props.remoteShowSuffix,
-    multiple: props.multiple,
-    multipleLimit: props.multipleLimit,
-    maxCollapseTags: props.maxCollapseTags,
-    collapseTags: props.multiple,
-    collapseTagsTooltip: props.multiple,
-    filterable: props.filterable,
-    reserveKeyword: props.reserveKeyword,
-    allowCreate: props.allowCreate,
-    defaultFirstOption: props.defaultFirstOption
-  }
-  if (!isEmpty(props.placeholder)) {
-    attributes.placeholder = props.placeholder
-  }
-
-  return attributes
-})
-
 const emit = defineEmits([
   'update:modelValue',
   'focus',
@@ -64,9 +39,7 @@ const onEvent: {
   focus: $event => emit('focus', $event),
   clear: (): void => emit('clear'),
   blur: $event => emit('blur', $event),
-  change: value => {
-    emit('change', value ?? '')
-  },
+  change: value => emit('change', value ?? ''),
   removeTag: tagValue => emit('remove-tag', tagValue),
   visibleChange: visible => emit('visible-change', visible)
 }
@@ -105,12 +78,49 @@ defineExpose({ focus, blur })
   <div class="__i-select__" :class="scopedId">
     <ElSelect
       ref="elSelectRef"
-      v-model="inputValue"
       class="__i-select__"
-      :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
       :class="[`validate-${validateRes}`]"
-      :validate-event="false"
-      v-bind="bindAttributes"
+      v-model="inputValue"
+      :multiple="props.multiple"
+      :disabled="props.disabled"
+      :value-key="props.valueKey"
+      :size="props.size"
+      :clearable="props.clearable"
+      :collapse-tags="props.collapseTags"
+      :collapse-tags-tooltip="props.collapseTagsTooltip"
+      :multiple-limit="props.multipleLimit"
+      :name="props.name"
+      :effect="props.effect"
+      :autocomplete="props.autocomplete"
+      :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
+      :filterable="props.filterable"
+      :allow-create="props.allowCreate"
+      :filter-method="props.filterMethod"
+      :remote="props.remote"
+      :remote-method="props.remoteMethod"
+      :remote-show-suffix="props.remoteShowSuffix"
+      :loading="props.loading"
+      :loading-text="props.loadingText"
+      :no-match-text="props.noMatchText"
+      :no-data-text="props.noDataText"
+      :popper-class="props.popperClass"
+      :reserve-keyword="props.reserveKeyword"
+      :default-first-option="props.defaultFirstOption"
+      :teleported="props.teleported"
+      :append-to="props.appendTo"
+      :persistent="props.persistent"
+      :automatic-dropdown="props.automaticDropdown"
+      :fit-input-width="props.fitInputWidth"
+      :tag-type="props.tagType"
+      :tag-effect="props.tagEffect"
+      :validate-event="props.validateEvent"
+      :placement="props.placement"
+      :fallback-placements="props.fallbackPlacements"
+      :max-collapse-tags="props.maxCollapseTags"
+      :popper-options="props.popperOptions"
+      :aria-label="props.ariaLabel"
+      :empty-values="props.emptyValues"
+      :value-on-clear="props.valueOnClear"
       v-on="onEvent"
     >
       <slot>

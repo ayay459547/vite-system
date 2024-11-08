@@ -197,11 +197,11 @@ export const getRushOrderList = async (
 ): Promise<ApiRes<RushOrder[]>> => {
   const resData = await ajax<Api<RushOrder[]>>(
     {
-      url: '/api/ipaspTable/retrieveIpaspTableFromView',
+      url: '/api/table/retrievetableFromView',
       method: 'post',
       data: {
         webfuno: 'auto_114',
-        designatedview: 'iPASPWebView_auto_114_machine_setting',
+        designatedview: 'WebView_auto_114_machine_setting',
         sortingMap: {
           machine_Id: 'Asc',
           sequence: 'Asc'

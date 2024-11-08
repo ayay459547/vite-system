@@ -143,7 +143,7 @@ const submit = () => {
                     ]"
                   >
                     <template #options="{ value, label }">
-                      <CustomTooltip :show-after="200">
+                      <CustomTooltip placement="bottom" :show-after="200">
                         <template #content>
                           <span class="__column-item-text">{{ label }}</span>
                         </template>

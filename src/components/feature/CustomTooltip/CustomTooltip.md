@@ -36,7 +36,7 @@ import { CustomTooltip, CustomButton } from '@/components'
 | appendTo           | Tooltip內容 指定DOM      | string  | HTMLElement | undefined |
 | content            | 顯示的內容               | string  | ''         |
 | rawContent         | 是否以 HTML 字串處理      | boolean | false     |
-| placement          | 出現位置                 | enum    | 'top'     |
+| placement          | 出現位置                 | enum    | 'bottom'  |
 | fallbackPlacements | Tooltip 可用的 positions | enum    | undefined |
 | visible            | 是否顯示                 | boolean | false     |
 | disabled           | 是否禁用                 | boolean | false     |

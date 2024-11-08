@@ -46,7 +46,7 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
     // root: path.resolve(__dirname, './src/'),
     build: {
       outDir: 'demo',
-      sourcemap: false,
+      sourcemap: true,
       cssCodeSplit: true,
       // assetsDir: '',
       // outDir: path.resolve(__dirname, ''),
@@ -59,12 +59,16 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
       },
       minify: 'esbuild'
     },
-    assetsInclude: ['**/*.xlsx'], // xlsx file should be treated as assets
+    assetsInclude: [
+      // xlsx file should be treated as assets
+      '**/*.xlsx'
+    ],
     plugins: [
       vue(),
       vueJsx(),
       {
         // this plugin handles ?b64 tags
+        // 系統產生翻譯用 json
         name: 'vite-b64-plugin',
         transform(code, id) {
           if (!id.match(/\?b64$/) || mode !== 'development') return
@@ -73,19 +77,25 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
           const i18n = JSON.parse(JSON.stringify(b64))
 
           const workBook = read(i18n)
-          const [wsTranslate] = [
+          const [
+            wsTranslate
+            // wsLiveBoard,
+            // wsViews
+            // wsAbbreviation
+          ] = [
             workBook.Sheets[workBook.SheetNames[0]]
             // workBook.Sheets[workBook.SheetNames[1]],
-            // workBook.Sheets[workBook.SheetNames[2]],
+            // workBook.Sheets[workBook.SheetNames[2]]
             // workBook.Sheets[workBook.SheetNames[3]]
           ]
           const moduleList = [
             ...utils.sheet_to_json(wsTranslate)
-            // ...utils.sheet_to_json(wsOptions),
             // ...utils.sheet_to_json(wsLiveBoard),
-            // ...utils.sheet_to_json(wsPage)
+            // ...utils.sheet_to_json(wsViews)
+            // ...utils.sheet_to_json(wsAbbreviation)
           ]
-          // // 將新的翻譯檔寫入
+
+          // 將新的翻譯檔寫入
           const jsonPath = id.replace(/\.xlsx\?b64/, '.json')
           writeFileSync(jsonPath, JSON.stringify(moduleList), { flag: 'w' })
           console.log('writeI18nJSON => ', jsonPath)
@@ -112,10 +122,7 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
           VxeResolver({ libraryName: 'vxe-pc-ui' })
         ]
       }),
-      // VueDevTools({
-      //   // openInEditorHost: 'http://localhost:3000',
-      //   // clientHost: 'http://localhost:3000'
-      // }),
+      // VueDevTools(),
       eslintPlugin({
         include: [
           './src/**/*.ts',
@@ -147,24 +154,24 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
       },
       warmup: {
         clientFiles: [
-          './src/components/layout/**/*.vue',
+          // './src/components/layout/**/*.vue',
           './src/lib/init/*.ts',
           './src/lib/*.ts'
         ]
-      },
-      hmr: {
-        overlay: false // 根據需要禁用錯誤覆蓋層
       }
+      // hmr: {
+      //   overlay: false // 根據需要禁用錯誤覆蓋層
+      // }
       // https: {
       //   key: fs.readFileSync('RootCA-key.pem'),
       //   cert: fs.readFileSync('RootCA.pem')
       // }
     },
     resolve: {
-      extensions: ['.tsx', '.json', '.js', '.ts'],
+      // extensions: ['.tsx', '.json', '.js', '.ts'],
       alias: {
-        '@': fileURLToPath(new URL('./src', (import.meta as any).url)),
-        $: fileURLToPath(new URL('./public', (import.meta as any).url)),
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        $: fileURLToPath(new URL('./public', import.meta.url)),
         'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
       }
     },

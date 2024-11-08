@@ -505,6 +505,7 @@ const renderInput = () => {
     case 'text':
     case 'number':
     case 'textarea':
+    case 'password':
       return (
         <FormInput
           ref={inputRef}
@@ -513,7 +514,6 @@ const renderInput = () => {
           // v-bind 綁定屬性
           {...bindAttributes.value}
           type={props.type}
-          onlyNumber={props.onlyNumber}
           round={props.round}
           floor={props.floor}
           ceil={props.ceil}
@@ -531,36 +531,6 @@ const renderInput = () => {
             ...getSlot(['prepend', 'append', 'prefix', 'suffix'])
           }}
         </FormInput>
-      )
-    case 'password':
-      return (
-        <form>
-          <FormInput
-            ref={inputRef}
-            modelValue={inputValue.value}
-            onUpdate:modelValue={($event: any) => (inputValue.value = $event)}
-            // v-bind 綁定屬性
-            {...bindAttributes.value}
-            type={props.type}
-            onlyNumber={props.onlyNumber}
-            round={props.round}
-            floor={props.floor}
-            ceil={props.ceil}
-            max={props.max}
-            min={props.min}
-            errorMessage={errorMessage.value}
-            // v-on 接收事件
-            onFocus={(e: any) => onEvent.value.onFocus(e)}
-            onClear={() => onEvent.value.onClear()}
-            onBlur={(e: any) => onEvent.value.onBlur(e)}
-            onChange={(e: any) => onEvent.value.onChange(e)}
-            onInput={(e: any) => onEvent.value.onInput(e)}
-          >
-            {{
-              ...getSlot(['prepend', 'append', 'prefix', 'suffix'])
-            }}
-          </FormInput>
-        </form>
       )
     case 'select':
       return (
@@ -733,7 +703,6 @@ const renderInput = () => {
           // v-bind 綁定屬性
           {...bindAttributes.value}
           options={props.options}
-          onlyNumber={props.onlyNumber}
           round={props.round}
           max={props.max}
           min={props.min}

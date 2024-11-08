@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 import type { AuthData } from '@/declare/hook' // 全域功能類型
-
-import HamburgerIcon from './HamburgerIcon.vue'
 
 const props = defineProps<{
   isOpen: boolean
@@ -21,16 +17,6 @@ const emit = defineEmits<{
   (e: 'setRouter', value: string[]): void
 }>()
 
-const tempIsOpen = computed<boolean>({
-  get() {
-    return props.isOpen
-  },
-  set(value) {
-    localStorage.setItem('isNavOpen', `${value}`)
-    emit('update:isOpen', value)
-  }
-})
-
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   emit('setRouter', targetRoutePath)
 }
@@ -39,7 +25,6 @@ const onBreadCrumbClick = (targetRoutePath: string[]) => {
 <template>
   <div class="header-container">
     <div class="header-left">
-      <HamburgerIcon v-model:isOpen="tempIsOpen" class="header-hamburger" />
       <RouterLink
         class="header-left-effect"
         :to="{ name: 'locatehome' }"

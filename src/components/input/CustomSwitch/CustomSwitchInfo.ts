@@ -8,6 +8,7 @@ export declare namespace Types {
 
 export declare namespace Props {
   type ModelValue = boolean
+  type Style = string
   type ActiveText = string
   type InactiveText = string
   type Disabled = boolean

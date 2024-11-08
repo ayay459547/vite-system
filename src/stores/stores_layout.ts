@@ -10,7 +10,7 @@ import { useDark, useToggle } from '@vueuse/core'
 /**
  * 布局
  */
-export type LayoutType = 'layout1' | 'layout2'
+export type LayoutType = 'layout1' | 'layout2' | 'layout3'
 
 export const useLayoutStore = defineStore('layout', () => {
   onBeforeMount(() => {
@@ -32,7 +32,8 @@ export const useLayoutStore = defineStore('layout', () => {
     value: LayoutType
   }> = [
     { label: '1', value: 'layout1' },
-    { label: '2', value: 'layout2' }
+    { label: '2', value: 'layout2' },
+    { label: '3', value: 'layout3' }
   ]
   // 當前 layout
   const layout = ref('layout1')

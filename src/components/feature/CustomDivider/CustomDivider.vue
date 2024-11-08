@@ -35,6 +35,10 @@ div[class*="__CustomDivider"].divider {
   &-container {
     width: 100%;
     margin: 16px 0 !important;
+
+    :deep(.el-divider__text) {
+      border-radius: 6px;
+    }
   }
 }
 </style>

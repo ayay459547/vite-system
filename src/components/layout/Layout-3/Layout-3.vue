@@ -185,11 +185,11 @@ onMounted(() => {
             :current-navigation="props.currentNavigation"
             :current-route-name="props.currentRouteName"
           >
-            <template #logo="{ isOpen }">
-              <slot name="logo" :is-open="isOpen"></slot>
+            <template #logo>
+              <slot name="logo"></slot>
             </template>
-            <template #version="{ isOpen }">
-              <slot name="version" :is-open="isOpen"></slot>
+            <template #version>
+              <slot name="version"></slot>
             </template>
           </SideContent>
         </div>

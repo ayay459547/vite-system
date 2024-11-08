@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { MoreFilled } from '@element-plus/icons-vue'
+// import { MoreFilled } from '@element-plus/icons-vue'
 import type { CustomTourProps } from '@/components' // 系統組件
 import { CustomDividerView, CustomTour, CustomButton, CustomDivider } from '@/components' // 系統組件
 
@@ -54,7 +54,7 @@ const onClose = () => {
               <CustomButton class="test-1">Upload</CustomButton>
             </div>
             <CustomButton ref="ref2" type="primary" class="test-2">Save</CustomButton>
-            <CustomButton ref="ref3" :icon="MoreFilled" class="test-3"/>
+            <!-- <CustomButton ref="ref3" :icon="MoreFilled" class="test-3"/> -->
           </div>
 
           <CustomTour

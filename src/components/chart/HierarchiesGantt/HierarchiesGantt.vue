@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div>HierarchiesGantt</div>
+  <div></div>
 </template>
 
 <style lang="scss" scoped>

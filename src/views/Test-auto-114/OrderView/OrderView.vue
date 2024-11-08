@@ -135,7 +135,7 @@ defineExpose({
     <WebViewTable
       ref="webViewTableRef"
       webfuno="auto_114"
-      designatedview="iPASPWebView_auto_114_erp"
+      designatedview="WebView_auto_114_erp"
       :table-options="tableOptions"
       :column-setting="columnSetting"
       :format-params="formatParams"

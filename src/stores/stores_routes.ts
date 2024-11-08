@@ -87,7 +87,6 @@ export const useRoutesStore = defineStore('routes', () => {
     // 已經設定過的權限
     const permissionMap = new Map<string, number>()
     /**
-     * 後端資料
      * 1. 後端資料
      * 2. 取得子路由最大權限
      */
@@ -121,7 +120,6 @@ export const useRoutesStore = defineStore('routes', () => {
      * 1. 後端資料
      * 2. 路由設定
      * 3. 系統預設
-     * 4. 0 (無權限)
      */
     const _getRouterPermission = (route: Navigation, nodeName: string): number => {
       if (!permissionMap.has(nodeName)) {
@@ -133,9 +131,7 @@ export const useRoutesStore = defineStore('routes', () => {
           // 路由設定
           route?.meta?.permission,
           // 系統預設
-          defaultPermission,
-          // 無權限
-          0
+          defaultPermission
         ].find(_permission => typeof _permission === 'number')
 
         permissionMap.set(nodeName, nodePermission)

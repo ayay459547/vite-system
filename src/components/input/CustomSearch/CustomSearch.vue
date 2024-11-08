@@ -118,7 +118,7 @@ const bindAttributes = computed(() => {
     // 專案客製化屬性
     type: props.type,
     options: props.options,
-    onlyNumber: props.onlyNumber,
+    // onlyNumber: props.onlyNumber,
     round: props.round,
     max: props.max,
     min: props.min,

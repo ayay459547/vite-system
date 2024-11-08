@@ -51,7 +51,6 @@ const getStyle = (isSelected: boolean, color?: string) => {
   <div class="__i-radio__" :class="scopedId">
     <ElRadioGroup
       v-model="inputValue"
-      size="large"
       class="__i-radio__"
       :class="[`validate-${validateRes}`]"
       :validate-event="false"

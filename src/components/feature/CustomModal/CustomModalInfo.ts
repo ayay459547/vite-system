@@ -24,6 +24,7 @@ export declare namespace Props {
   type HiddenFooter = boolean
   type HiddenSubmit = boolean
   type HiddenCancel = boolean
+  type UseResize = boolean
 }
 export const props = {
   modelValue: {
@@ -108,6 +109,11 @@ export const props = {
     type: Boolean as PropType<Props.HiddenCancel>,
     default: true,
     description: '是否隱藏 縮小按鈕'
+  },
+  useResize: {
+    type: Boolean as PropType<Props.UseResize>,
+    default: true,
+    description: '是否允許 調整視窗大小'
   }
 }
 

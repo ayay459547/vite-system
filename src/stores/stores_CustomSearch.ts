@@ -6,9 +6,8 @@ export const useCustomSearchStore = defineStore('customSearch', () => {
 
   // 搜尋用 輸入框 一次只顯示一個
   const setActiveScopedId = (scopedId: string) => {
-    if (!activeScopedIdSet.value.has(scopedId)) {
-      activeScopedIdSet.value.add(scopedId)
-    }
+    activeScopedIdSet.value.clear()
+    activeScopedIdSet.value.add(scopedId)
   }
   const removeActiveScopedId = (scopedId: string) => {
     return activeScopedIdSet.value.delete(scopedId)
