@@ -4,7 +4,7 @@ import { ref, reactive, onBeforeMount, nextTick, useSlots, computed, inject } fr
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { SimpleTable, CustomButton } from '@/components' // 系統組件
 import { useSimpleTableSetting } from '@/lib/lib_columns'
-import { swal, scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils' // 工具
+import { scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Emits, Expose } from './FormListInfo'
 import { version, props as formListProps } from './FormListInfo'
@@ -56,32 +56,17 @@ const tableColumns = ref()
 const showTableColumns = ref()
 
 const add: Emits.Add = () => {
-  if (tempValue.value.length >= props.max) {
-    return swal({
-      icon: 'warning',
-      title: '無法新增',
-      text: `資料列表不能超過 ${props.max} 筆資料`
-    })
-  }
+  if (tempValue.value.length >= props.max) return
 
   emit('add')
 
   nextTick(() => {
-    const lastRowClass = props.isDraggable
-      ? '.draggable.list-group-item:last-child'
-      : '.form-table [class*="data-table-row"]:last-child'
-    const newEl = document.querySelector(`div[class*="${scopedId}"] ${lastRowClass}`)
+    const newEl = document.querySelector(`div[class*="${scopedId}"] .draggable.list-group-item:last-child`)
     if (newEl) scrollToEl(newEl, { block: 'center' })
   })
 }
 const remove: Emits.Remove = (rowIndex: number) => {
-  if (tempValue.value.length < props.min + 1) {
-    return swal({
-      icon: 'warning',
-      title: '無法刪除',
-      text: `資料列表至少要有 ${props.min} 筆資料`
-    })
-  }
+  if (tempValue.value.length < props.min + 1) return
 
   emit('remove', rowIndex)
 }
@@ -117,10 +102,14 @@ onBeforeMount(() => {
   }
 
   if (props.isRemove || props.isDraggable) {
-    afterColumn['row_operations'] = { label: '操作' }
+    afterColumn['row_operations'] = {
+      label: '操作',
+      i18nLabel: 'operationCommands'
+    }
     afterColumn['row_operations'][props.tableKey] = {
       width: 90,
       align: 'center',
+      // fixed: 'right',
       isOperations: true
     }
   }
@@ -256,11 +245,11 @@ onBeforeMount(() => {
                 </slot>
                 <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
                   <CustomButton
-                    v-if="props.isRemove"
+                    v-if="props.isRemove && props.isEdit"
                     type="danger"
                     icon-name="trash-can"
                     text
-                    disabled
+                    :disabled="tempValue.length < props.min + 1"
                     @click="remove(scope.rowIndex)"
                   />
                 </slot>
@@ -279,11 +268,11 @@ onBeforeMount(() => {
                 </slot>
                 <slot name="column-remove" :scopedId="scopedId" v-bind="scope">
                   <CustomButton
-                    v-if="props.isRemove"
+                    v-if="props.isRemove && props.isEdit"
                     type="danger"
                     icon-name="trash-can"
                     text
-                    :disabled="!props.isEdit"
+                    :disabled="tempValue.length < props.min + 1"
                     @click="remove(scope.rowIndex)"
                   />
                 </slot>
@@ -300,7 +289,7 @@ onBeforeMount(() => {
           :label="i18nTranslate('add')"
           icon-name="plus"
           icon-move="rotate"
-          :disabled="!props.isEdit"
+          :disabled="tempValue.length >= props.max"
           @click="add"
         />
       </div>

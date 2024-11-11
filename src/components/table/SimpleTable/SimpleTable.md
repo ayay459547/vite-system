@@ -1,4 +1,5 @@
 # SimpleTable API
+__deprecated__ vue(h)寫法, 由於可讀性較差, 所以廢棄
 
 ### 使用範例
 

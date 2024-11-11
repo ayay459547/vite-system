@@ -8,7 +8,7 @@ const columnSetting = {
   date: {
     label: '生日',
     table: {
-      width: 150,
+      width: 220,
       align: 'center'
     },
     form: {
@@ -20,7 +20,7 @@ const columnSetting = {
   name: {
     label: '姓名',
     table: {
-      width: 150
+      width: 200
     },
     form: {
       default: null,
@@ -47,7 +47,7 @@ const columnSetting = {
 
 const { tableColumns } = useSimpleTableSetting(columnSetting, 'table')
 
-const tableData = [
+const tableData = ref([
   {
     id: 1,
     date: '2016-05-03',
@@ -84,7 +84,7 @@ const tableData = [
     name: 'Amy',
     address: 'address-1'
   }
-]
+])
 
 const text = ref('')
 
@@ -110,9 +110,38 @@ const onInput = (value: string) => {
     <h1>Data-table-test</h1>
 
     <div class="i-mt-xl">
-      <SimpleTable :table-data="tableData" :table-columns="tableColumns">
+      <SimpleTable
+        :table-data="tableData"
+        :table-columns="tableColumns"
+        :hideHeader="false"
+      >
+        <template #row-expand>
+          <div class="i-page">55688</div>
+        </template>
         <template #header-all="{ data }">
           {{ data + ' ==> header' }}
+        </template>
+        <template #column-all="{ data }">
+          {{ data + ' ==> column' }}
+        </template>
+      </SimpleTable>
+    </div>
+
+    <div class="i-mt-xl">
+      <SimpleTable
+        v-model="tableData"
+        :table-data="tableData"
+        :table-columns="tableColumns"
+        isDraggable
+      >
+        <template #row-expand="{ rowData }">
+          <div class="i-page">{{ 55688 + $log(rowData) }}</div>
+        </template>
+        <template #header-all="{ data }">
+          {{ data }}
+        </template>
+        <template #column-all="{ data }">
+          {{ data }}
         </template>
       </SimpleTable>
     </div>

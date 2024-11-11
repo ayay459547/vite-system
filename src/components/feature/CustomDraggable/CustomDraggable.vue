@@ -129,11 +129,11 @@ div[class*="__CustomDraggable"] {
   .list-group {
     // width: 100%;
     // height: 100%;
-    border-bottom: 1px solid #ffffff00;
+    // border-bottom: 1px solid #ffffff00;
 
     &-item {
       background-color: inherit;
-      border-bottom: 1px solid var(--el-border-color);
+      // border-bottom: 1px solid var(--el-border-color);
 
       &.stripe {
         &:nth-child(even) {
@@ -147,6 +147,10 @@ div[class*="__CustomDraggable"] {
           transition-duration: 0.3s;
         }
       }
+
+      // &:nth-last-child(1) {
+      //   border-bottom: none;
+      // }
     }
   }
 }

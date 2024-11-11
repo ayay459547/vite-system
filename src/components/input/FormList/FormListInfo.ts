@@ -67,7 +67,11 @@ export const props = {
   itemKey: {
     type: String as PropType<Props.ItemKey>,
     required: false,
-    default: 'key'
+    default: 'id',
+    description: `
+      CustomTable: rowKey
+      CustomDraggable: itemKey
+    `
   },
   isDraggable: {
     type: Boolean as PropType<Props.IsDraggable>,

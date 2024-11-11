@@ -80,6 +80,8 @@ onMounted(() => {
         is-draggable
         is-create
         is-remove
+        :min="1"
+        :max="10"
         @add="add"
         @remove="remove"
       >

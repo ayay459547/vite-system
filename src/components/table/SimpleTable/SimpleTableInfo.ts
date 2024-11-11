@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-export const version = '1.0.0'
+export const version = '__SimpleTable_2.0.0__'
 
 export declare namespace Types {
   type RowCallback<T> =
@@ -35,6 +35,7 @@ export declare namespace Props {
   type Handle = string | any
   type ItemKey = string | any
   type Move = Function | any
+  type Disabled = Function | boolean | undefined
 
   type TableData = Array<any> | any
   type TableColumns = Array<any> | any
@@ -62,7 +63,7 @@ export const props = {
   },
   handle: {
     type: String as PropType<Props.Handle>,
-    default: '.__draggable'
+    default: undefined
   },
   group: {
     type: String as PropType<Props.ModelValue>,
@@ -70,7 +71,11 @@ export const props = {
   },
   itemKey: {
     type: String as PropType<Props.ItemKey>,
-    default: 'key'
+    default: 'id',
+    description: `
+      CustomTable: rowKey
+      CustomDraggable: itemKey
+    `
   },
   move: {
     type: Function as PropType<Props.Move>,
@@ -79,6 +84,12 @@ export const props = {
     description: `
       用於draggable的移動後回調函式
     `
+  },
+  disabled: {
+    type: [Function, Boolean, undefined] as PropType<Props.Disabled>,
+    required: false,
+    default: false,
+    description: '定義是否可移動'
   },
   // 一般 table
   rowClassName: {
