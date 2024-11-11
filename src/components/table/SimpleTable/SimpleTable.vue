@@ -79,8 +79,8 @@ const getRowStyle = (options: any) => {
   const { rowData, rowIndex } = options
 
   let rowStyle = {}
-  if (typeof rowStyleCallback === 'function') {
-    rowStyle = rowStyle({
+  if (typeof props.rowStyle === 'function') {
+    rowStyle = props.rowStyle({
       row: rowData,
       rowIndex
     }, [])
@@ -93,8 +93,8 @@ const getRowClass = (options: any) => {
   const { rowData, rowIndex } = options
 
   let rowClass = ''
-  if (typeof rowClassName === 'function') {
-    rowClass = rowClassName({
+  if (typeof props.rowClassName === 'function') {
+    rowClass = props.rowClassName({
       row: rowData,
       rowIndex
     }, [])
@@ -113,8 +113,8 @@ const getCellStyle = (options: any) => {
 
   let cellStyle = {}
   // body 限定, header: -1
-  if (rowIndex >= 0 && typeof props.cellStyleCallback === 'function') {
-    cellStyle = props.cellStyleCallback({
+  if (rowIndex >= 0 && typeof props.cellStyle === 'function') {
+    cellStyle = props.cellStyle({
       row: rowData,
       rowIndex,
       column,
@@ -139,7 +139,7 @@ const getCellStyle = (options: any) => {
 const getCellClass = (options: any) => {
   const { rowData, rowIndex, column, columnIndex } = options
 
-  let cellClass = []
+  let cellClass: any = []
   // body 限定, header: -1
   if (rowIndex >= 0 && typeof props.cellClassName === 'function') {
     cellClass = props.cellClassName({
