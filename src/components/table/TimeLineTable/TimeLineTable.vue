@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, shallowRef, onMounted, nextTick, computed, inject } from 'vue'
+import { ref, shallowRef, onMounted, nextTick, computed, inject, useSlots } from 'vue'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import {
@@ -449,10 +449,26 @@ onMounted(() => {
   init()
 })
 
-defineExpose({
-  init,
-  changeKey
-})
+defineExpose({ init, changeKey })
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
+// slot
+const getSlot = (slotKey: string, isHeader: boolean) => {
+  if (isHeader) {
+    if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
+    if (hasSlot('header-all')) return 'header-all'
+
+  } else {
+    if (hasSlot(`column-${slotKey}`)) return `column-${slotKey}`
+    if (hasSlot('column-all')) return 'column-all'
+  }
+
+  return null
+}
 
 </script>
 
@@ -606,7 +622,23 @@ defineExpose({
           :min-width="column?.minWidth ?? baseWidth"
           :title="i18nTranslate(column?.i18nLabel ?? column.label)"
           class-name="time-line-group"
-        ></VxeColumn>
+        >
+          <template v-if="getSlot((column?.slotKey ?? column.key), true)" #header="scope">
+            <slot :name="getSlot((column?.slotKey ?? column.key), true)" v-bind="scope">
+              {{ i18nTranslate(column?.i18nLabel ?? column.label) }}
+            </slot>
+          </template>
+
+          <template v-if="getSlot((column?.slotKey ?? column.key), false)" #default="scope">
+            <slot
+              :name="getSlot((column?.slotKey ?? column.key), false)"
+              v-bind="scope"
+              :data="scope.row[column.key]"
+            >
+              {{ scope.row[column.key] }}
+            </slot>
+          </template>
+        </VxeColumn>
       </VxeColgroup>
 
       <!-- 日期線欄位 -->
@@ -615,7 +647,24 @@ defineExpose({
         :date-columns="dateColumns"
         :base-width="baseWidth"
         :i18n-module="props.i18nModule"
-      />
+        :get-slot="getSlot"
+      >
+        <template #header="{ scope, column }">
+          <slot :name="getSlot((column?.slotKey ?? column.key), true)" v-bind="scope">
+            {{ i18nTranslate(column.i18nLabel ?? column.label) }}
+          </slot>
+        </template>
+
+        <template #column="{ scope, column }">
+          <slot
+            :name="getSlot((column?.slotKey ?? column.key), false)"
+            v-bind="scope"
+            :data="scope.row[column.key]"
+          >
+            {{ scope.row[column.key] }}
+          </slot>
+        </template>
+      </GroupDateColumn>
 
       <!-- 測試顯示用 -->
       <!-- <VxeColumn

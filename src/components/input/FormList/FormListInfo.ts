@@ -152,6 +152,7 @@ export const props = {
 export declare namespace Emits {
   type Add = () => void
   type Remove = (rowIndex: number) => void
+  type ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => void
 }
 
 export declare namespace Expose {

@@ -1,11 +1,26 @@
 ## v1.0.0
 
+### v2024-11-12.1 (Caleb)
+* TimeLineTable
+  * 新增slot: header-{key}, header-all, column-{key}, column-all
+* TableMain
+  * 新增expose: clearSelection, toggleAllSelection, toggleRowExpansion, setCurrentRow, doLayout, scrollTo, setScrollTop, setScrollLeft, columns, updateKeyChildren
+
 ### v2024-11-11.1 (Caleb)
 * SimpleTable
   * 變更寫法: vue(h) => template
   * 新增slot: row-expand
     * 功能等同於CustomTable的slot row-expand
 
+### v2024-11-08.1 (Caleb)
+* FormInput
+  1. 新增props: maxlength, minlength, showWordLimit, formatter, parser, readonly, step, ariaLabel, tabindex, inputStyle
+  2. 移除props: onlyNumber
+* FormSelect: 新增props: valueKey, loadingText, noMatchText, noDataText, teleported, appendTo, persistent, automaticDropdown, fitInputWidth, emptyValues, valueOnClear
+* CustomPopover: 新增props: transition, showArrow, popperOptions, hideAfter, autoClose, tabindex, teleported, persistent
+* CustomDivider: 調整文字外寬 直角=>圓角
+* CustomModal: 調整header區 z-index, 防止底線被中間內容蓋住
+  
 ### v2024-08-21.1 (Caleb)
 * WebViewTable 通用查詢表格組件
   * 修正載入更多顯示錯誤

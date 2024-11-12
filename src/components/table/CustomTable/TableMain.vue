@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { useSlots, ref, inject, onMounted, onUnmounted, computed, watch, effectScope, nextTick } from 'vue'
-import type { ElTable as ElTableType } from 'element-plus'
+import type { ElTable as ElTableType, TableColumnCtx } from 'element-plus'
 import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
@@ -250,27 +250,88 @@ onUnmounted(() => {
 })
 
 const elTableRef = ref<InstanceType<typeof ElTableType>>()
-const resetScroll = (): void => {
-  elTableRef.value?.setScrollTop(0)
+
+// 用於多選表格，清空使用者的選擇
+const clearSelection = () => {
+  elTableRef.value?.clearSelection()
 }
-const toggleSelection = (rows: any[]): void => {
-  if (isEmpty(rows)) {
-    elTableRef.value?.clearSelection()
-  } else {
-    rows.forEach(row => {
-      elTableRef.value?.toggleRowSelection(row, undefined)
-    })
-  }
-}
+// 傳回目前選取的行
 const getSelectionRows = (): void => {
   const selectionRows = elTableRef.value?.getSelectionRows()
   return selectionRows ?? []
 }
+// 用於多選表格，切換某一行的選取狀態， 如果使用了第二個參數，則可直接設定這一行選取與否
+const toggleRowSelection = (row: any, selected?: boolean, ignoreSelectable = true) => {
+  elTableRef.value?.toggleRowSelection(row, selected, ignoreSelectable)
+}
+// 用於可擴展的表格或樹表格，如果某行擴展，則切換。 使用第二個參數，您可以直接設定該行應該被擴展或折疊。
+const toggleRowExpansion = (row: any, expanded?: boolean) => {
+  elTableRef.value?.toggleRowExpansion(row, expanded)
+}
+// 用於單選表格，設定某一行為選取行， 如果呼叫時不加參數，則會取消目前高亮行的選取狀態。
+const setCurrentRow = (row: any) => {
+  elTableRef.value?.setCurrentRow(row)
+}
+// 捲動到一組特定座標
+const scrollTo = (options: number | ScrollToOptions, yCoord?: number) => {
+  elTableRef.value?.scrollTo(options, yCoord)
+}
+// 設定垂直滾動位置
+const setScrollTop = (top?: number) => {
+  elTableRef.value?.setScrollTop(top)
+}
+// 設定水平滾動位置
+const setScrollLeft = (left?: number) => {
+  elTableRef.value?.setScrollLeft(left)
+}
+// 適用於 lazy Table, 需要設定 rowKey, 更新 key children
+const updateKeyChildren = (key: string, data: any[]) => {
+  elTableRef.value?.updateKeyChildren(key, data)
+}
+
+// 滾動到最上方
+const resetScroll = (): void => {
+  elTableRef.value?.setScrollTop(0)
+}
+// 設定checkbox
+const toggleSelection = (rows: any[]): void => {
+  if (isEmpty(rows)) {
+    clearSelection()
+  } else {
+    rows.forEach(row => {
+      toggleRowSelection(row)
+    })
+  }
+}
 
 defineExpose({
+  // element ui plus
+  clearSelection,
+  getSelectionRows,
+  // 用於多選表格，切換全選和全不選
+  toggleAllSelection: () => elTableRef.value?.toggleAllSelection(),
+  toggleRowExpansion,
+  setCurrentRow,
+
+  // 不使用 element plus ui 的排序
+  // clearSort: () => elTableRef.value?.clearSort(),
+  // sort: () => elTableRef.value?.sort(),
+
+  // 不使用 element plus ui 的過濾
+  // clearFilter:() => elTableRef.value?.clearFilter(),
+
+  // 對 Table 進行重新佈局。 當表格可見性變更時，您可能需要呼叫此方法以獲得正確的佈局
+  doLayout: () => elTableRef.value?.doLayout(),
+  scrollTo,
+  setScrollTop,
+  setScrollLeft,
+  // 取得表列的 context
+  columns: (elTableRef.value?.columns as unknown as TableColumnCtx<any>[]),
+  updateKeyChildren,
+
+  // custom
   resetScroll,
-  toggleSelection,
-  getSelectionRows
+  toggleSelection
 })
 </script>
 

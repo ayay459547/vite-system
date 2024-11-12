@@ -6,8 +6,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 export const version = '__SimpleTable_2.0.0__'
 
 export declare namespace Types {
-  type RowCallback<T> =
-  | ((
+  type RowCallback<T> = ((
       data: {
         row: any
         rowIndex: number
@@ -16,8 +15,7 @@ export declare namespace Types {
     ) => T)
   | null | undefined
 
-  type CellCallback<T> =
-  | ((
+  type CellCallback<T> = ((
       data: {
         row: any
         column: any
@@ -27,6 +25,12 @@ export declare namespace Types {
       ...payload: any[]
     ) => T)
   | null | undefined
+
+  type ExpandOptions = {
+    rowKey: number | string
+    row: any
+    rowIndex: number
+  }
 }
 
 export declare namespace Props {
@@ -130,6 +134,10 @@ export const props = {
   }
 }
 
-export declare namespace Emits {}
+export declare namespace Emits {
+  type ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => void
+}
 
-export declare namespace Expose {}
+export declare namespace Expose {
+  type SetExpand = (options: Types.ExpandOptions, expanded?: boolean) => void
+}

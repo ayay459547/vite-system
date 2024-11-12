@@ -5,13 +5,17 @@ import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomDraggable, CustomScrollbar, CustomIcon } from '@/components' // 系統組件
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
+import type { Types, Emits, Expose } from './SimpleTableInfo'
 import { version, props as simpleCustomTableProps } from './SimpleTableInfo'
 
 const scopedId = getUuid(version)
 
 const props = defineProps(simpleCustomTableProps)
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits([
+  'update:modelValue',
+  'expand-change'
+])
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -35,15 +39,7 @@ const tempValue = computed({
   }
 })
 
-const expandSet = reactive(new Set())
-const changeExpand = (data: any) => {
-  if (!expandSet.has(data)) {
-    expandSet.add(data)
-  } else {
-    expandSet.delete(data)
-  }
-}
-
+// 顯示欄位
 const showTableColumns = computed(() => {
   const showColumns = [...props.tableColumns]
 
@@ -60,6 +56,7 @@ const showTableColumns = computed(() => {
   return showColumns
 })
 
+// slot
 const getSlot = (slotKey: string, isHeader: boolean) => {
   if (slotKey === 'row-expand') return null
 
@@ -157,6 +154,31 @@ const getCellClass = (options: any) => {
   ]
 }
 
+// expand
+const expandSet = reactive(new Set())
+
+const changeExpand = (options: Types.ExpandOptions) => {
+  const { rowKey, row, rowIndex } = options
+  if (!expandSet.has(rowKey)) {
+    expandSet.add(rowKey)
+  } else {
+    expandSet.delete(rowKey)
+  }
+
+  onExpandChange(row, expandSet.has(rowKey), rowIndex, rowKey)
+}
+const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => {
+  emit('expand-change', row, expanded, rowIndex, rowKey)
+}
+
+const setExpand: Expose.SetExpand = (options?: Types.ExpandOptions, expanded?: boolean) => {
+  console.log({ options, expanded })
+}
+// const toggleRowExpansion = (row: any, expanded?: boolean) => {
+//   const tempRow = row[props.itemKey] ??
+// }
+defineExpose({ setExpand })
+
 </script>
 
 <template>
@@ -226,7 +248,11 @@ const getCellClass = (options: any) => {
                   <div
                     v-if="column.key === 'row-expand'"
                     class="row-expand"
-                    @click="changeExpand(rowData[props.itemKey])"
+                    @click="changeExpand({
+                      rowKey: rowData[props.itemKey],
+                      row: rowData,
+                      rowIndex
+                    })"
                   >
                     <CustomIcon
                       name="angle-right"
@@ -239,11 +265,11 @@ const getCellClass = (options: any) => {
               <div v-if="expandSet.has(rowData[props.itemKey])" class="simple-table-row-expand">
                 <slot
                   name="row-expand"
+                  :row-key="rowData[props.itemKey]"
                   :row="rowData"
                   :row-index="rowIndex"
-                >
-                  <span></span>
-                </slot>
+                  :expanded="expandSet.has(rowData[props.itemKey])"
+                ></slot>
               </div>
             </div>
           </template>

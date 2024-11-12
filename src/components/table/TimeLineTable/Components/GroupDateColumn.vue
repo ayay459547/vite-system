@@ -59,7 +59,15 @@ const { i18nTranslate } = useHook({
       :date-columns="props.dateColumns"
       :base-width="props.baseWidth"
       :i18n-module="props.i18nModule"
-    />
+    >
+      <template #header="scope">
+        <slot name="header" v-bind="scope"></slot>
+      </template>
+      <template #default="scope">
+        <slot name="column" v-bind="scope"></slot>
+      </template>
+    </GroupDateColumn>
+
     <template v-else>
       <VxeColumn
         v-for="column in props.dateColumns"
@@ -68,24 +76,16 @@ const { i18nTranslate } = useHook({
         :width="column?.width ?? props.baseWidth"
         :min-width="column?.minWidth ?? props.baseWidth"
         :title="i18nTranslate(column?.i18nLabel ?? column.label)"
-      ></VxeColumn>
+      >
+        <template #header="scope">
+          <slot name="header" :scope="scope" :column="column"></slot>
+        </template>
+        <template #default="scope">
+          <slot name="column" :scope="scope" :column="column"></slot>
+        </template>
+      </VxeColumn>
     </template>
   </VxeColgroup>
 </template>
 
-<style lang="scss">
-// div[class*="__TimeLineTable"] {
-//   tr[class*="vxe-header"] {
-//     th.time-line-group-date {
-//       position: relative;
-//       vertical-align: middle;
-//     }
-
-//     div.vxe-cell {
-//       position: sticky;
-//       left: 12px;
-//       top: 0px;
-//     }
-//   }
-// }
-</style>
+<style lang="scss"></style>

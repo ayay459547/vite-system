@@ -38,7 +38,12 @@ const getColumnSlot = (slotKey: string): string => {
 
 const props = defineProps(formListProps)
 
-const emit = defineEmits(['add', 'remove', 'update:modelValue'])
+const emit = defineEmits([
+  'add',
+  'remove',
+  'update:modelValue',
+  'expand-change'
+])
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook({
@@ -61,8 +66,14 @@ const add: Emits.Add = () => {
   emit('add')
 
   nextTick(() => {
-    const newEl = document.querySelector(`div[class*="${scopedId}"] .draggable.list-group-item:last-child`)
-    if (newEl) scrollToEl(newEl, { block: 'center' })
+    // 多層嵌套可取得最後一個
+    const newEls = document.querySelectorAll(`div[class*="${scopedId}"] .draggable.list-group-item:last-child`)
+    if (isEmpty(newEls)) return
+
+    const newEl = newEls[newEls.length - 1]
+    if (isEmpty(newEl)) return
+
+    scrollToEl(newEl, { block: 'center' })
   })
 }
 const remove: Emits.Remove = (rowIndex: number) => {
@@ -131,6 +142,11 @@ onBeforeMount(() => {
   showTableColumns.value = _showTableColumns
 })
 
+// SimpleTable
+const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => {
+  emit('expand-change', row, expanded, rowIndex, rowKey)
+}
+
 </script>
 
 <template>
@@ -181,7 +197,17 @@ onBeforeMount(() => {
           :group="props.draggableGroup ?? `${scopedId}`"
           :table-data="tempValue"
           :table-columns="showTableColumns"
+          @expand-change="onExpandChange"
         >
+          <template v-if="hasSlot('row-expand')" #row-expand="{ rowKey, row, rowIndex, expanded }">
+            <slot
+              name="row-expand"
+              :row-key="rowKey"
+              :row="row"
+              :row-index="rowIndex"
+              :expanded="expanded"
+            ></slot>
+          </template>
           <template #header-all="{ key, rowIndex, data, column: _column }">
             <slot name="header-all" :label="data" :row-index="rowIndex" :column="_column" :prop="key">
               <div v-show="_column.required" class="text-danger i-pr-xs">*</div>
