@@ -262,7 +262,7 @@ defineExpose({ setExpand })
                   </div>
                 </div>
               </div>
-              <div v-if="expandSet.has(rowData[props.itemKey])" class="simple-table-row-expand">
+              <div v-show="expandSet.has(rowData[props.itemKey])" class="simple-table-row-expand">
                 <slot
                   name="row-expand"
                   :row-key="rowData[props.itemKey]"

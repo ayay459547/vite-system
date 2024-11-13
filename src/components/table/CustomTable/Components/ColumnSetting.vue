@@ -388,9 +388,10 @@ const onDragend = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: 16px;
+    padding: 2px 2px 2px 16px;
     width: 100%;
     cursor: move;
+    border-bottom: 1px solid var(--el-border-color);
 
     &-left {
       width: calc(100% - 48px);

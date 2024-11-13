@@ -11,6 +11,7 @@ type ApiCommon<T> = {
   size?: number
   status?: ApiStatus | boolean
   msg?: any
+  message?: any
   errorMsg?: any
 }
 export type Api<T, O = {}> = ApiCommon<T> & Partial<O>

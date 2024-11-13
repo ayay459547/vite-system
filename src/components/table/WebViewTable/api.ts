@@ -5,7 +5,7 @@ import { message, isEmpty } from '@/lib/lib_utils' // 工具
 import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
-export const webViewUrl = '/api/table/retrieveTableFromView'
+export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
 
 export const getUrlParams = (params: Types.UrlParams) => {
   const { url = webViewUrl, baseURL = '' } = params
@@ -57,14 +57,17 @@ const getData = async (
       delay: 300
     }
   )
-  const { data, size: dataSize, status, msg } = resData
+  const {
+    data, size: dataSize, status,
+    msg, message: _message, errorMsg
+  } = resData
 
   if (status === 'success') {
     return [(data as any[]).map(callback), dataSize]
   } else {
     message({
       type: 'error',
-      message: msg ?? (status ?? 'api error'),
+      message: msg ?? _message ?? errorMsg ?? status,
       duration: 10000
     })
     return [[], 0]

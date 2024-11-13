@@ -90,7 +90,7 @@ const getStyle = (isSelected: boolean, color?: string) => {
   }
 
   .el-radio {
-    margin-right: 24px;
+    margin-right: 16px;
   }
 
   input[type="radio" i] {

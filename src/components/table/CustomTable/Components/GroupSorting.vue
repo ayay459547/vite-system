@@ -225,6 +225,7 @@ const submit = () => {
     padding: 6px 0 0 16px;
     width: 100%;
     cursor: move;
+    border-bottom: 1px solid var(--el-border-color);
 
     background-color: inherit;
     transition-duration: 0.3s;

@@ -419,7 +419,8 @@ const getTextValue = computed(() => {
       return inputValue.value
     case 'select':
     case 'select-tree':
-    case 'select-v2': {
+    case 'select-v2':
+    case 'radio': {
       const findCallback = (_option: any) => {
         if (Array.isArray(_option.options) && _option.options.length > 0) {
           return _option.options.find(findCallback)
@@ -460,19 +461,15 @@ const getTextValue = computed(() => {
       if (Array.isArray(inputValue.value)) {
         return inputValue.value.map(item => {
           const option = props.options.find(_option => _option.value === item)
-          return option.label
+          return getTranslateLabel(option)
         })
       } else {
         return `${inputValue.value}`
       }
-    case 'radio': {
-      const option = props.options.find(_option => _option.value === inputValue.value)
-      return option?.label ?? ''
-    }
     case 'operator': {
       const [selectValue = '', inputText = ''] = inputValue.value
       const option = props.options.find(_option => _option.value === selectValue)
-      return `${option?.label ?? ''}-${inputText}`
+      return `${getTranslateLabel(option)}-${inputText}`
     }
     default:
       return ''
