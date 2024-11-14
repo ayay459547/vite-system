@@ -107,7 +107,7 @@ const getStyle = (isChecked: boolean, color?: string) => {
 
 :deep(.__i-checkbox__) {
   .el-checkbox {
-    margin-right: 24px;
+    margin-right: 16px;
 
     .el-checkbox__label {
       padding-left: 8px;

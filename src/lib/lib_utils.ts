@@ -63,7 +63,7 @@ export const isEmpty = (value: any): boolean => {
       return value.size === 0
     case '[object Undefined]':
     case '[object Null]':
-        return true
+      return true
     case '[object Number]':
     case '[object BigInt]':
     case '[object Boolean]':

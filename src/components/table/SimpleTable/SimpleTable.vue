@@ -157,9 +157,10 @@ const getCellClass = (options: any) => {
 // expand
 const expandSet = reactive(new Set())
 
-const changeExpand = (options: Types.ExpandOptions) => {
+const changeExpand = (options: Types.ExpandOptions, expanded?: boolean) => {
   const { rowKey, row, rowIndex } = options
-  if (!expandSet.has(rowKey)) {
+  const _expanded = expanded ?? !expandSet.has(rowKey)
+  if (_expanded) {
     expandSet.add(rowKey)
   } else {
     expandSet.delete(rowKey)
@@ -171,13 +172,16 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
   emit('expand-change', row, expanded, rowIndex, rowKey)
 }
 
-const setExpand: Expose.SetExpand = (options?: Types.ExpandOptions, expanded?: boolean) => {
-  console.log({ options, expanded })
+// 用於可擴展的表格或樹表格，如果某行擴展，則切換。 使用第二個參數，您可以直接設定該行應該被擴展或折疊。
+const toggleRowExpansion: Expose.ToggleRowExpansion = (row: any, expanded?: boolean) => {
+  const rowKey = row[props.itemKey] ?? ''
+  const rowIndex = tempValue.value.findIndex(rowData => {
+    return rowKey === rowData[props.itemKey]
+  })
+
+  changeExpand({ rowKey, row, rowIndex }, expanded)
 }
-// const toggleRowExpansion = (row: any, expanded?: boolean) => {
-//   const tempRow = row[props.itemKey] ??
-// }
-defineExpose({ setExpand })
+defineExpose({ toggleRowExpansion })
 
 </script>
 

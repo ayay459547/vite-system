@@ -18,7 +18,7 @@ export declare namespace Props {
   type ClientX = number
   type ClientY = number
   type EventList = EventItem[]
-  type Options = Record<string, any>
+  type Options = EventOptions
 }
 
 export declare namespace Emits {
@@ -114,10 +114,8 @@ const deletePopover = () => {
   emit('close')
 }
 
-defineExpose({
-  openPopover,
-  closePopover
-})
+defineExpose({ openPopover, closePopover })
+
 </script>
 
 <template>

@@ -61,6 +61,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
         if (el) {
           refMap[key] = el
         }
+        return el
       },
       key,
       slotKey: key,
@@ -251,9 +252,12 @@ export const useFormListSetting = <T>(
   const refMap = shallowReactive<Record<string, any>>({})
   const formList = ref<Array<T>>([])
   const _initData = initData.map(item => {
+    const rowKey = getUuid()
     return {
+      id: rowKey,
+      key: rowKey,
       ...item,
-      key: getUuid()
+      __key__: rowKey
     }
   })
 
@@ -371,16 +375,22 @@ export const useFormListSetting = <T>(
         }
       })
     },
-    add: (value?: any) => {
+    add: (value?: any): any => {
+      const rowKey = getUuid()
       const newData = {
+        id: rowKey,
+        key: rowKey,
         ...defaultValue,
         ...value,
-        key: getUuid()
+        __key__: rowKey
       } as any
+
       formList.value.push(newData)
+      return newData
     },
-    remove: (rowIndex: number) => {
-      formList.value.splice(rowIndex, 1)
+    remove: (rowIndex: number): any | undefined => {
+      const removeData = formList.value.splice(rowIndex, 1)
+      return removeData[0]
     },
     clear: () => {
       formList.value.splice(0)

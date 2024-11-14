@@ -8,6 +8,10 @@ export declare namespace Types {}
 
 export declare namespace Props {
   type Label = string
+  type IconType = CustomIconProps.Type
+  type IconName = string
+  type IconMove = 'none' | 'translate' | 'rotate' | 'scale'
+
   type Type = 'primary' | 'success' | 'info' | 'warning' | 'danger'
   type Closeable = boolean
   type DisableTransitions = boolean
@@ -16,16 +20,30 @@ export declare namespace Props {
   type Size = CustomSize
   type Effect = 'dark' | 'light' | 'plain'
   type Round = boolean
-  type IconType = CustomIconProps.Type
-  type IconName = string
-  type IconMove = 'none' | 'translate' | 'rotate' | 'scale'
 }
 export const props = {
+  // custom
   label: {
     type: String as PropType<Props.Label>,
     required: false,
     default: ''
   },
+  iconType: {
+    type: String as PropType<Props.IconType>,
+    required: false,
+    default: 'fas'
+  },
+  iconName: {
+    type: String as PropType<Props.IconName>,
+    required: false,
+    default: ''
+  },
+  iconMove: {
+    type: String as PropType<Props.IconMove>,
+    required: false,
+    default: 'none'
+  },
+  // element plus ui
   type: {
     type: String as PropType<Props.Type>,
     required: false,
@@ -65,26 +83,12 @@ export const props = {
     type: Boolean as PropType<Props.Round>,
     required: false,
     default: false
-  },
-  iconType: {
-    type: String as PropType<Props.IconType>,
-    required: false,
-    default: 'fas'
-  },
-  iconName: {
-    type: String as PropType<Props.IconName>,
-    required: false,
-    default: ''
-  },
-  iconMove: {
-    type: String as PropType<Props.IconMove>,
-    required: false,
-    default: 'none'
   }
 }
 
 export declare namespace Emits {
-  type Click = ($event: Event) => void
+  type Click = (evt: MouseEvent) => void
+  type Close = (evt: MouseEvent) => void
 }
 
 export declare namespace Expose {}

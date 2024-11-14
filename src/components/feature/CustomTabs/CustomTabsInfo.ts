@@ -20,17 +20,28 @@ export declare namespace Props {
   type Editable = boolean
   type TabPosition = 'top' | 'right' | 'bottom' | 'left'
   type Stretch = boolean
+  type BeforeLeave = (activeName: TabPaneName, oldActiveName: TabPaneName) => void | boolean
 }
 export const props = {
-  modelValue: {
-    type: [String, Number, null] as PropType<Props.ModelValue>,
-    required: true,
-    description: 'v-model'
-  },
+  // custom
   options: {
     type: Array as PropType<Props.Options>,
     required: true,
     description: 'tabs 列表'
+  },
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: defaultModuleType,
+    description: `
+      list:label 使用 i18nLabel 時套用的翻譯模組
+    `
+  },
+  // element plus ui
+  modelValue: {
+    type: [String, Number, null] as PropType<Props.ModelValue>,
+    required: true,
+    description: 'v-model'
   },
   type: {
     type: String as PropType<Props.Type>,
@@ -64,13 +75,12 @@ export const props = {
     default: false,
     description: '是否自動撐開'
   },
-  i18nModule: {
-    type: String as PropType<ScopeKey>,
-    required: false,
-    default: defaultModuleType,
-    description: `
-      list:label 使用 i18nLabel 時套用的翻譯模組
-    `
+  beforeLeave: {
+    type: Function as PropType<Props.BeforeLeave>,
+    default: () => {
+      return () => true
+    },
+    description: '切換標籤之前的鉤子函數， 若傳回 false 或傳回被 reject 的 Promise，則阻止切換。'
   }
 }
 

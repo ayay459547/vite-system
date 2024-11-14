@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { VNodeRef } from 'vue'
 import { onMounted, reactive, ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
@@ -199,8 +200,7 @@ defineExpose({
         <ul class="schedule-day-list">
           <li
             v-for="dayItem in dayList"
-            :ref="`day-${dayItem.id}`"
-            :key="dayItem.id"
+            :key="`day-${dayItem.id}`"
             class="schedule-day-item"
             :class="[6, 7].includes(dayItem.id) ? 'text-danger' : ''"
           >
@@ -213,12 +213,10 @@ defineExpose({
           <PlanDay
             v-for="dayItem in dayList"
             :key="`PlanDay-${dayItem.id}`"
-            :ref="
-              el => {
-                planDayMapRef[`${dayItem.id}`] = el
-                return `${dayItem.id}`
-              }
-            "
+            :ref="(el: VNodeRef) => {
+              if (el) { planDayMapRef[`${dayItem.id}`] = el }
+              return el
+            }"
             :dayId="dayItem.id"
             :planList="planData[dayItem.id]"
             :scheduleContainer="scheduleContainer"

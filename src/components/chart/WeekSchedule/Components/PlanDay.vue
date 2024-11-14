@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { PropType, VNodeRef } from 'vue'
 import { ref, nextTick, reactive, onMounted } from 'vue'
 
 import { getType, getUuid, isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils' // 工具
@@ -265,12 +265,10 @@ const hourMapRef = reactive({})
     <PlanItemView
       v-for="(planTime, uuid) in planTimeMap"
       :key="`PlanItem-${uuid}`"
-      :ref="
-        el => {
-          planItemViewRef[`PlanItem-${uuid}`] = el
-          return `PlanItem-${uuid}`
-        }
-      "
+      :ref="(el: VNodeRef) => {
+        if (el) { planItemViewRef[`PlanItem-${uuid}`] = el }
+        return el
+      }"
       :planTime="planTime"
       @update:planTime="(v: Types.PlanTime) => { planTimeMap[uuid] = v }"
       :uuid="uuid"
@@ -285,13 +283,11 @@ const hourMapRef = reactive({})
     <!-- 背景表格 -->
     <div
       v-for="(row, hour) in 24"
-      :key="hour"
-      :ref="
-        el => {
-          hourMapRef[`${hour}`] = el
-          return `${hour}`
-        }
-      "
+      :key="`hour-${hour}`"
+      :ref="(el: VNodeRef) => {
+        if (el) { hourMapRef[`${hour}`] = el }
+        return el
+      }"
       class="schedule-block"
       @mousedown="createTempPlan($event, hour)"
     >

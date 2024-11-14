@@ -77,8 +77,8 @@ export const props = {
     type: String as PropType<Props.ItemKey>,
     default: 'id',
     description: `
-      CustomTable: rowKey
-      CustomDraggable: itemKey
+      功能類似 CustomTable: rowKey
+      對應到 CustomDraggable: itemKey
     `
   },
   move: {
@@ -140,4 +140,5 @@ export declare namespace Emits {
 
 export declare namespace Expose {
   type SetExpand = (options: Types.ExpandOptions, expanded?: boolean) => void
+  type ToggleRowExpansion = (row: any, expanded?: boolean) => void
 }

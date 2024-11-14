@@ -69,6 +69,7 @@ const elTabsRef = ref()
       :editable="props.editable"
       :tab-position="props.tabPosition"
       :stretch="props.stretch"
+      :before-leave="props.beforeLeave"
       @tab-click="onTabClick"
       @tab-change="onTabChange"
       @tab-remove="onTabRemove"

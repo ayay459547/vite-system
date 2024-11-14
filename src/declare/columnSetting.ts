@@ -51,8 +51,8 @@ export interface FormListSetting<T> {
   forms: Ref<Array<T>>
   reset: () => void
   validate: () => Promise<Array<any>>
-  add: (value?: any) => void
-  remove: (rowIndex: number) => void
+  add: (value?: any) => any
+  remove: (rowIndex: number) => any
   clear: () => void
 }
 

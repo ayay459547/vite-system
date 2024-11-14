@@ -101,7 +101,16 @@ const setCollapseList = (method?: string) => {
 const setCollapse: Expose.SetCollapse = (method?: string) => {
   setCollapseList(method)
 }
-defineExpose({ setCollapse })
+
+const SimpleTableRef = ref()
+const toggleRowExpansion: Expose.ToggleRowExpansion = (row: any, expanded?: boolean) => {
+  return SimpleTableRef.value?.toggleRowExpansion(row, expanded)
+}
+
+defineExpose({
+  setCollapse,
+  toggleRowExpansion
+})
 
 onBeforeMount(() => {
   if (props.isShowNo) {
@@ -188,6 +197,7 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
     <div class="__form-list__ form-content" v-show="!collapseList">
       <div class="__form-list__ form-table">
         <SimpleTable
+          ref="SimpleTableRef"
           v-model="tempValue"
           :item-key="props.itemKey"
           :is-draggable="isDraggable"

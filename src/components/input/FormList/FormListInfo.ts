@@ -2,6 +2,7 @@ import type { PropType } from 'vue'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { SimpleTableExpose } from '@/components'
 
 export const version = '__FormList_1.0.0__'
 
@@ -157,5 +158,7 @@ export declare namespace Emits {
 
 export declare namespace Expose {
   type SetCollapse = (method?: Types.CollapseMethod) => void
+
+  type ToggleRowExpansion = SimpleTableExpose.ToggleRowExpansion
 }
 

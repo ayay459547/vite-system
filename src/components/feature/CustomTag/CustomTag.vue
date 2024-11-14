@@ -12,9 +12,12 @@ const scopedId = getUuid(version)
 
 const props = defineProps(tagProps)
 
-const emit = defineEmits(['click'])
-const onClick: Emits.Click = ($event: Event) => {
-  emit('click', $event)
+const emit = defineEmits(['click', 'close'])
+const onClick: Emits.Click = (evt: MouseEvent) => {
+  emit('click', evt)
+}
+const onClose: Emits.Close = (evt: MouseEvent) => {
+  emit('close', evt)
 }
 
 const slots = useSlots()
@@ -31,13 +34,16 @@ const hasSlot = (prop: string): boolean => {
   >
     <ElTag
       :type="props.type"
-      :hit="props.hit"
       :closable="props.closeable"
-      :round="props.round"
+      :disable-transitions="props.disableTransitions"
+      :hit="props.hit"
       :color="props.color"
+      :size="props.size"
       :effect="props.effect"
+      :round="props.round"
       class="custom-tag"
       @click="onClick"
+      @close="onClose"
     >
       <template #default>
         <div v-if="hasSlot('default')">

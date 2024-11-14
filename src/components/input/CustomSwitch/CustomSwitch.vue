@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 import { ElSwitch } from 'element-plus'
 
 import { getUuid } from '@/lib/lib_utils' // 工具
@@ -21,21 +21,46 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const onChange: Emits.Change = (val: string | number | boolean) => {
   emit('change', val)
 }
+
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
+
 </script>
 
 <template>
   <ElSwitch
-    v-model="tempValue"
     :class="scopedId"
-    :active-text="props.activeText"
-    :inactive-text="props.inactiveText"
+    v-model="tempValue"
     :disabled="props.disabled"
     :loading="props.loading"
-    :width="props.width"
     :size="props.size"
-    :validate-event="false"
+    :width="props.width"
+    :inline-prompt="props.inlinePrompt"
+    :active-icon="props.activeIcon"
+    :inactive-icon="props.inactiveIcon"
+    :active-action-icon="props.activeActionIcon"
+    :inactive-action-icon="props.inactiveActionIcon"
+    :active-text="props.activeText"
+    :inactive-text="props.inactiveText"
+    :active-value="props.activeValue"
+    :inactive-value="props.inactiveValue"
+    :name="props.name"
+    :validate-event="props.validateEvent"
+    :before-change="props.beforeChange"
+    :id="props.id"
+    :tabindex="props.tabindex"
+    :aria-label="props.ariaLabel"
     @change="onChange"
-  ></ElSwitch>
+  >
+    <template v-if="hasSlot('active-action')" #active-action>
+      <slot name="active-action"></slot>
+    </template>
+    <template v-if="hasSlot('inactive-action')" #inactive-action>
+      <slot name="inactive-action"></slot>
+    </template>
+  </ElSwitch>
 </template>
 
 <style lang="scss" scoped>
