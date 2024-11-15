@@ -91,54 +91,6 @@ const systemEnv = computed(() => {
   }
 })
 
-/**
- * 設定網頁 title 優先順序
- * 1. i18n Excel 中 views 的名稱
- * 2. router 設定的 title
- * 3. 系統名稱
- */
- const setWebTitle = async () => {
-  await awaitTime(240)
-  const currentTitle = (currentNavigation => {
-    if (currentNavigation) {
-      const {
-        name,
-        title,
-        breadcrumbName,
-        breadcrumbTitle
-      } = currentNavigation
-
-      const [name1, name2, name3] = breadcrumbName
-      const [title1, title2, title3] = breadcrumbTitle
-
-      // nav2 / nav3
-      if(
-        name1 && name2 && name3 &&
-        title1 && title2 && title3
-      ) {
-        if (i18nTest(breadcrumbName)) {
-          return [name2, name3].map(_name => {
-            return i18nTranslate(_name, defaultModuleType)
-          }).join(' / ')
-        } else {
-          return [title2, title3].join(' / ')
-        }
-      }
-
-      // nav1 或 nav2 或 nav3
-      if (i18nTest(name)) {
-        return i18nTranslate(name, defaultModuleType)
-      }
-
-      if (title ?? false) return title
-    }
-
-    return systemEnv.value.system
-  })(currentNavigation.value)
-
-  document.title = currentTitle
-}
-
 // store
 const localeStore = useLocaleStore()
 
@@ -158,37 +110,28 @@ const {
   currentNavigation
 } = storeToRefs(routesStore)
 
-const i18nBus = useEventBus<string>('i18n')
-const i18nBusListener = (event: string) => {
-  switch (event) {
-    case 'langChange':
-      setWebTitle()
-      break
-  }
-}
-
 const isDisabled = ref(false)
+const isLoading = ref(false)
 const routerBus = useEventBus<string>('router')
 const routerBusListener = async (event: string) => {
   switch (event) {
-    case 'busRouterChange':
-      await awaitTime(8)
+    case 'beforeRouterChange':
+      isLoading.value = true // 載入組件時 開啟
+
       isDisabled.value = true
-
-      setWebTitle()
-
+      // 切換頁面 等待一段時間, 避免連點
       await awaitTime(800)
       isDisabled.value = false
       break
+    case 'routerChange':
+      isLoading.value = false // 載入組件後 關閉
+      break
   }
 }
-
 onBeforeMount(() => {
-  i18nBus.on(i18nBusListener)
   routerBus.on(routerBusListener)
 })
 onBeforeUnmount(() => {
-  i18nBus.off(i18nBusListener)
   routerBus.off(routerBusListener)
 })
 
@@ -463,9 +406,11 @@ provide<UseHook>('useHook', (options = {}) => {
       <template #content>
         <PageContent
           :is-init-system="isInitSystem"
+          :system-name="systemEnv.system"
           :is-iframe="systemEnv.isIframe"
-          :currentNavigation="currentNavigation"
-          :navigationMap="navigationMap"
+          :current-navigation="currentNavigation"
+          :navigation-map="navigationMap"
+          :is-loading="isLoading"
           @login="login"
           @setLayoutInfo="setLayoutInfo"
           @initSystemData="initSystemData"

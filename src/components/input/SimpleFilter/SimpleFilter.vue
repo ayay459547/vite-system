@@ -87,13 +87,10 @@ const SimpleFilterTemplate = () => (
 
             <div class={`${styles['filter-body']} ${props.class}`}>
               {columnList.value.length > 0
-                ? columnList.value
-                    .map(column => {
-                      const { key } = column
-
-                      return getSlot(key, column)
-                    })
-                    .filter(item => !isEmpty(item))
+                ? columnList.value.map(column => {
+                    const { key } = column
+                    return getSlot(key, column)
+                  }).filter(item => !isEmpty(item))
                 : 'empty'}
             </div>
 

@@ -253,21 +253,7 @@ export const props = {
     required: false,
     default: '',
     description: 'input 或 textarea 的 style'
-  },
-  // deprecated
-  // label: {
-  //   type: String as PropType<Props.Label>,
-  //   required: false,
-  //   default: false,
-  //   description: '等價於原生 input aria-label 屬性 (a11y, deprecated)'
-  // },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(value: string | number) => void>,
-  onInput: Function as PropType<(value: string | number) => void>
+  }
 }
 
 export declare namespace Emits {

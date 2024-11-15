@@ -115,53 +115,15 @@ const onVisibleClick = async (_isVisible: boolean) => {
 
 const bindAttributes = computed(() => {
   return {
+    ...props,
+    // i18nTranslate
+    i18nModule: props.i18nModule,
     // 專案客製化屬性
     type: props.type,
     options: props.options,
-    // onlyNumber: props.onlyNumber,
-    round: props.round,
-    max: props.max,
-    min: props.min,
-    isValidate: props.isValidate,
-    validateKey: props.validateKey,
-    hiddenErrorMessage: props.hiddenErrorMessage,
-    required: props.required,
-    validate: props.validate,
-    text: props.text,
-
+    // 不顯示 label
     label: '',
-    hiddenLabel: true,
-    // element ui plus 相關屬性直接綁定
-    clearable: props.clearable,
-    disabled: props.disabled,
-    rows: props.rows,
-    showPassword: props.showPassword,
-    loading: props.loading,
-    placeholder: props.placeholder,
-    // select
-    remote: props.remote,
-    remoteMethod: props.remoteMethod,
-    multiple: props.multiple,
-    multipleLimit: props.multipleLimit,
-    maxCollapseTags: props.maxCollapseTags,
-    collapseTags: props.multiple,
-    collapseTagsTooltip: props.multiple,
-    filterable: props.filterable,
-    allowCreate: props.allowCreate,
-    defaultFirstOption: props.defaultFirstOption,
-    // datePicker
-    format: props.format,
-    valueFormat: props.valueFormat,
-    shortcuts: props.shortcuts,
-    // timePicker
-    isRange: props.isRange,
-    rangeSeparator: props.rangeSeparator,
-    // autocomplete
-    valueKey: props.valueKey,
-    fitInputWidth: props.fitInputWidth,
-    fetchSuggestions: props.fetchSuggestions,
-    // i18nTranslate
-    i18nModule: props.i18nModule
+    hiddenLabel: true
   }
 })
 
@@ -292,27 +254,6 @@ const isDot = computed(() => {
   let isInputEmpty = false
 
   switch (props.type) {
-    case 'text':
-    case 'textarea':
-    case 'password':
-    case 'autocomplete':
-    case 'select':
-    case 'select-v2':
-    case 'year':
-    case 'month':
-    case 'date':
-    case 'dates':
-    case 'datetime':
-    case 'week':
-    case 'datetimerange':
-    case 'daterange':
-    case 'monthrange':
-    case 'time':
-    case 'timerange':
-    case 'checkbox':
-    case 'radio':
-      isInputEmpty = isEmpty(inpuValue.value)
-      break
     case 'operator':
       isInputEmpty = !(
         Array.isArray(inpuValue.value) &&
@@ -321,7 +262,7 @@ const isDot = computed(() => {
       )
       break
     default:
-      isInputEmpty = true
+      isInputEmpty = isEmpty(inpuValue.value)
       break
   }
 

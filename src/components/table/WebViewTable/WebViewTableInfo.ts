@@ -65,7 +65,7 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiurl 不存在時
-      url: /api/table/retrievetableFromView
+      url: /api/demoTable/retrievedemoTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },
@@ -144,6 +144,12 @@ export const props = {
       是否使用fakeData假資料
       如果為true則不送出API responseData會使用fakeData
     `
+  },
+  isLog: {
+    type: Boolean as PropType<Props.UseFakeData>,
+    required: false,
+    default: false,
+    description: '是否顯示 ajax 訊息'
   },
   fakeData: {
     type: Array as PropType<Props.FakeData>,

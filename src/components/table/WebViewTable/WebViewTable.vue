@@ -201,6 +201,7 @@ const download = async ({ type }) => {
     props.formatExcel, // Excel資料格式化
     props.fakeData, // 假資料
     props.useFakeData, // 是否使用假資料
+    props.isLog, // 是否console.log訊息
     urlParams // api 入口
   )
   if (props.downloadExcel) props.downloadExcel(tempData)
@@ -281,6 +282,7 @@ const initData = async (tableParams: any) => {
     props.formatTable, // 表格資料格式化
     props.fakeData, // 假資料
     props.useFakeData, // 是否使用假資料
+    props.isLog, // 是否console.log訊息
     urlParams // api 入口
   )
 

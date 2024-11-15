@@ -1,5 +1,4 @@
-import type { PropType } from 'vue'
-// import { CircleClose, ArrowDown } from '@element-plus/icons-vue'
+import type { PropType, Component } from 'vue'
 
 import type {
   Option as CommonOption,
@@ -53,9 +52,9 @@ export declare namespace Props {
   type AppendTo = string
   type Persistent = boolean
   type AutomaticDropdown = boolean
-  // type ClearIcon = string | Component
+  type ClearIcon = string | Component
   type FitInputWidth = boolean
-  // type SuffixIcon = string | Component
+  type SuffixIcon = string | Component
   type TagType = 'success' | 'info' | 'warning' | 'danger'
   type TagEffect = 'light' | 'dark' | 'plain'
   type ValidateEvent = boolean
@@ -245,7 +244,7 @@ export const props = {
     type: String as PropType<Props.AppendTo>,
     required: false,
     default: undefined,
-    description: '是否將下拉清單插入到body'
+    description: '下拉框掛載到哪個 DOM 元素'
   },
   persistent: {
     type: Boolean as PropType<Props.Persistent>,
@@ -259,24 +258,24 @@ export const props = {
     default: false,
     description: '對於不可搜尋的Select，是否在輸入框獲得焦點後自動彈出選項選單'
   },
-  // clearIcon: {
-  //   type: [String, Object] as PropType<Props.ClearIcon>,
-  //   required: false,
-  //   default: undefined,
-  //   description: '自訂清除圖示'
-  // },
+  clearIcon: {
+    type: [String, Object] as PropType<Props.ClearIcon>,
+    required: false,
+    default: undefined,
+    description: '自訂清除圖示'
+  },
   fitInputWidth: {
     type: Boolean as PropType<Props.FitInputWidth>,
     required: false,
     default: false,
     description: '下拉框的寬度是否與輸入框相同'
   },
-  // suffixIcon: {
-  //   type: [String, Object] as PropType<Props.SuffixIcon>,
-  //   required: false,
-  //   default: undefined,
-  //   description: '自訂後綴圖示組件'
-  // },
+  suffixIcon: {
+    type: [String, Object] as PropType<Props.SuffixIcon>,
+    required: false,
+    default: undefined,
+    description: '自訂後綴圖示組件'
+  },
   tagType: {
     type: String as PropType<Props.TagType>,
     required: false,
@@ -340,22 +339,7 @@ export const props = {
     required: false,
     default: undefined,
     description: '組件的空值配置 參考 Config Provider'
-  },
-  // deprecated
-  // suffixTransition: {
-  //   type: Boolean as PropType<Props.SuffixTransition>,
-  //   required: false,
-  //   default: true,
-  //   description: '下拉式選單顯示/消失時後綴圖示的動畫'
-  // },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(value: string | number) => void>,
-  'onRemove-tag': Function as PropType<(tagValue: any) => void>,
-  'onVisible-change': Function as PropType<(visible: boolean) => void>
+  }
 }
 
 export declare namespace Emits {

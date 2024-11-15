@@ -96,9 +96,9 @@ const tempTo = shallowRef<RouteLocationNormalized | null>(null)
 
 router.beforeEach((to, from, next) => {
     const routerBus = useEventBus<string>('router')
-    routerBus.emit('busRouterChange')
+    routerBus.emit('beforeRouterChange')
 
-    updateToken((to?.name ?? 'busRouterChange') as string)
+    updateToken((to?.name ?? 'routerChange') as string)
 
     // 使用者
     const authStore = useAuthStore()
@@ -135,13 +135,8 @@ router.beforeEach((to, from, next) => {
      * iframe
      * src="...?views=page
      */
-    const [
-      toPage
-      // fromPage
-    ] = [
-      to?.redirectedFrom?.query?.views ?? '',
-      from?.redirectedFrom?.query?.views ?? ''
-    ]
+    const toPage = to?.redirectedFrom?.query?.views ?? ''
+    // const fromPage = from?.redirectedFrom?.query?.views ?? ''
     if (!isEmpty(toPage) && typeof toPage === 'string') {
       tempTo.value = to
       callNext(toPage)

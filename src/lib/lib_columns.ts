@@ -271,9 +271,6 @@ export const useFormListSetting = <T>(
         if (el) {
           const validateKey = getUuid()
           refMap[validateKey] = el
-          if (el.setvalidateKey) {
-            el.setvalidateKey(validateKey)
-          }
         }
       },
       key,

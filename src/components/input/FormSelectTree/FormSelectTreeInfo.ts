@@ -108,15 +108,7 @@ export const props = {
   valuekey: {
     type: String as PropType<Props.ValueKey>,
     default: 'value'
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: FocusEvent) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: FocusEvent) => void>,
-  onChange: Function as PropType<(value: string | number) => void>,
-  'onRemove-tag': Function as PropType<(tagValue: any) => void>,
-  'onVisible-change': Function as PropType<(visible: boolean) => void>
+  }
 }
 
 export declare namespace Emits {

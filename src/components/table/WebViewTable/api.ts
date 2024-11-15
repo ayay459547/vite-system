@@ -5,7 +5,7 @@ import { message, isEmpty } from '@/lib/lib_utils' // 工具
 import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
-export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
+export const webViewUrl = '/api/demoTable/retrievedemoTableFromView'
 
 export const getUrlParams = (params: Types.UrlParams) => {
   const { url = webViewUrl, baseURL = '' } = params
@@ -39,6 +39,7 @@ const getData = async (
   params: any,
   fakeData: Props.FakeData,
   isFakeData: boolean,
+  isLog: boolean,
   url: Types.UrlParams
 ): Promise<Types.ResponseTableData> => {
   const resData = await ajax<Api<Array<Types.ResponseData>>>(
@@ -54,6 +55,7 @@ const getData = async (
         size: fakeData.length,
         status: 'success'
       },
+      isLog,
       delay: 300
     }
   )
@@ -80,9 +82,10 @@ export const getExcelData = async (
   formatExcel: Props.FormatExcel,
   fakeData: Props.FakeData,
   isFakeData: boolean,
+  isLog: boolean,
   url: Types.UrlParams
 ): Promise<Array<Types.ExcelData>> => {
-  const [excelData] = await getData(formatExcel, params, fakeData, isFakeData, url)
+  const [excelData] = await getData(formatExcel, params, fakeData, isFakeData, isLog, url)
   return excelData
 }
 
@@ -92,8 +95,9 @@ export const getTableData = async (
   formatTable: Props.FormatTable,
   fakeData: Props.FakeData,
   isFakeData: boolean,
+  isLog: boolean,
   url: Types.UrlParams
 ): Promise<Types.ResponseTableData> => {
-  const [tableData, tableDataCount] = await getData(formatTable, params, fakeData, isFakeData, url)
+  const [tableData, tableDataCount] = await getData(formatTable, params, fakeData, isFakeData, isLog, url)
   return [tableData, tableDataCount]
 }

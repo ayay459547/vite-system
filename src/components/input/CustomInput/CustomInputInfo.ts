@@ -5,17 +5,19 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
 import type {
   Option,
-  FormInputProps
-} from '@/components' // 系統組件
-
-import type {
+  FormInputProps,
   FormTimePickerTypes,
   FormDatePickerTypes,
   FormDatePickerProps,
   FormAutocompleteProps
 } from '@/components' // 系統組件
 
-export const version = '1.0.0'
+import { props as formInputProps } from '@/components/input/FormInput/FormInputInfo'
+import { props as formSelectProps } from '@/components/input/FormSelect/FormSelectInfo'
+import { props as formSelectV2Props } from '@/components/input/FormSelectV2/FormSelectV2Info'
+import { props as formSelectTreeProps } from '@/components/input/FormSelectTree/FormSelectTreeInfo'
+
+export const version = '__CustomInput_1.0.0__'
 
 export declare namespace Types {
   type InputType =
@@ -38,8 +40,7 @@ export declare namespace Types {
 }
 
 export declare namespace Props {
-  type ModelValue = any | null | undefined
-    | FormInputProps.ModelValue
+  type ModelValue = any
 
   type IsValidate = boolean
   type ValidateKey = string
@@ -220,143 +221,6 @@ const custom = {
   }
 }
 
-// element ui plus
-const elCommon = {
-  type: {
-    type: String as PropType<Props.Type>,
-    required: false,
-    default: 'text',
-    description: '輸入框類型'
-  },
-  clearable: {
-    type: Boolean as PropType<Props.Clearable>,
-    required: false,
-    default: false,
-    description: '是否顯示清除按鈕'
-  },
-  disabled: {
-    type: Boolean as PropType<Props.Disabled>,
-    required: false,
-    default: false,
-    description: '是否禁止輸入'
-  },
-  placeholder: {
-    type: String as PropType<Props.Placeholder>,
-    required: false,
-    description: '尚未填入時顯示文字'
-  },
-  options: {
-    type: Array as PropType<Props.Options>,
-    required: false,
-    default() {
-      return []
-    },
-    description: '選項'
-  }
-}
-
-const elInput = {
-  rows: {
-    type: Number as PropType<Props.Rows>,
-    required: false,
-    default: 2,
-    description: `顯示的行數
-      type="textarea" 才有效果 `
-  },
-  autosize: {
-    type: [Boolean, Object] as PropType<Props.Autosize>,
-    default: false
-  },
-  autocomplete: {
-    type: String as PropType<Props.Autocomplete>,
-    default: 'off'
-  },
-  name: {
-    type: String as PropType<Props.Name>,
-    default: undefined
-  },
-  showPassword: {
-    type: Boolean as PropType<Props.ShowPassword>,
-    required: false,
-    default: false,
-    description: `
-      切換是否顯示密碼的按鈕
-      type="password" 才有效果`
-  }
-}
-
-const elSelect = {
-  loading: {
-    type: Boolean as PropType<Props.Loading>,
-    required: false,
-    default: false,
-    description: '是否讀取中'
-  },
-  remote: {
-    type: Boolean as PropType<Props.Remote>,
-    required: false,
-    default: false,
-    description: '選項是否來自函數'
-  },
-  remoteMethod: {
-    type: Function as PropType<Props.RemoteMethod>,
-    required: false,
-    description: 'api 搜尋'
-  },
-  remoteShowSuffix: {
-    type: Boolean as PropType<Props.RemoteShowSuffix>,
-    required: false,
-    default: false,
-    description: 'api 搜尋 是否顯示箭頭'
-  },
-  multiple: {
-    type: Boolean as PropType<Props.Multiple>,
-    required: false,
-    default: false,
-    description: '是否多選'
-  },
-  multipleLimit: {
-    type: Number as PropType<Props.MultipleLimit>,
-    required: false,
-    default: 0,
-    description: '多選限制最多幾個'
-  },
-  maxCollapseTags: {
-    type: Number as PropType<Props.MaxCollapseTags>,
-    required: false,
-    default: 1,
-    description: '多選顯示標籤數量'
-  },
-  filterable: {
-    type: Boolean as PropType<Props.Filterable>,
-    required: false,
-    default: false,
-    description: '是否可輸入文字過濾'
-  },
-  reserveKeyword: {
-    type: Boolean as PropType<Props.ReserveKeyword>,
-    required: false,
-    default: false,
-    description: `
-      當 multiple === true && filterable === true
-      是否在選中一個選項後保留當前的搜尋關鍵字`
-  },
-  allowCreate: {
-    type: Boolean as PropType<Props.AllowCreate>,
-    required: false,
-    default: false,
-    description: '是否可依照輸入文字建立選項'
-  },
-  defaultFirstOption: {
-    type: Boolean as PropType<Props.DefaultFirstOption>,
-    required: false,
-    default: false,
-    description: `
-      是否在輸入框按下Enter時 選擇第一個符合項目
-      需配合 filterable 或 remote 使用`
-  }
-}
-
 const elDatePicker = {
   format: {
     type: String as PropType<Props.Format>,
@@ -428,15 +292,16 @@ const elAutocomplete = {
 }
 
 export const props = {
-  ...custom,
-  ...elCommon,
-  ...elInput,
-  ...elSelect,
+  ...formInputProps,
+  ...formSelectProps,
+  ...formSelectV2Props,
+  ...formSelectTreeProps,
   ...elDatePicker,
   ...elTimePicker,
   ...elCheckbox,
   ...elRadio,
-  ...elAutocomplete
+  ...elAutocomplete,
+  ...custom
 }
 
 export declare namespace Emits {}

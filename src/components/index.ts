@@ -366,7 +366,6 @@ export declare interface TempCustomInputExpose {
   value: Ref<string>
   handleReset: () => void
   validate: (opts?: Partial<ValidationOptions>) => Promise<ValidationResult>
-  setvalidateKey: (validateKey: string) => void
   getDom: () => Element
 }
 
