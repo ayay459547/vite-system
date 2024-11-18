@@ -1,10 +1,10 @@
 import type { PropType, Component } from 'vue'
+import type { Placement as ElPlacement } from 'element-plus'
 
 import type {
   Option as CommonOption,
   CustomSize,
-  CustomEffect,
-  CustomPopoverProps
+  CustomEffect
 } from '@/components' // 系統組件
 
 export const version = '__FormSelect_1.0.0__'
@@ -58,8 +58,8 @@ export declare namespace Props {
   type TagType = 'success' | 'info' | 'warning' | 'danger'
   type TagEffect = 'light' | 'dark' | 'plain'
   type ValidateEvent = boolean
-  type Placement = CustomPopoverProps.Placement
-  type FallbackPlacements = Array<CustomPopoverProps.Placement>
+  type Placement = ElPlacement
+  type FallbackPlacements = Array<ElPlacement>
   type MaxCollapseTags = number
   type PopperOptions = object
   type AriaLabel = string
@@ -71,10 +71,13 @@ export const props = {
   // custom
   errorMessage: {
     type: String as PropType<Props.ErrorMessage>,
-    default: ''
+    required: false,
+    default: '',
+    description: '錯誤訊息'
   },
   options: {
     type: Array as PropType<Props.Options>,
+    required: false,
     default() {
       return []
     },
@@ -121,13 +124,13 @@ export const props = {
     type: Boolean as PropType<Props.CollapseTags>,
     required: false,
     default: false,
-    description: '是否顯示清除按鈕'
+    description: '多選時是否將選取值以文字的形式展示'
   },
   collapseTagsTooltip: {
     type: Boolean as PropType<Props.CollapseTagsTooltip>,
     required: false,
     default: false,
-    description: '是否顯示清除按鈕'
+    description: '當滑鼠懸停於折疊標籤的文字時，是否顯示所有選取的標籤。 若要使用此屬性，collapse-tags屬性必須設定為 true'
   },
   multipleLimit: {
     type: Number as PropType<Props.MultipleLimit>,
@@ -160,13 +163,15 @@ export const props = {
   },
   filterable: {
     type: Boolean as PropType<Props.Filterable>,
-    default: false
+    required: false,
+    default: false,
+    description: '是否可篩選'
   },
   allowCreate: {
     type: Boolean as PropType<Props.AllowCreate>,
     required: false,
     default: false,
-    description: '輸入框佔位文字'
+    description: '是否允許建立新條目， 當使用該屬性時，filterable必須設為true'
   },
   filterMethod: {
     type: Function as PropType<Props.FilterMethod>,
@@ -238,7 +243,7 @@ export const props = {
     type: Boolean as PropType<Props.Teleported>,
     required: false,
     default: true,
-    description: '是否將下拉清單插入到body'
+    description: '是否使用 teleport。設定成 true則會被追加到 append-to 的位置'
   },
   appendTo: {
     type: String as PropType<Props.AppendTo>,
@@ -320,7 +325,10 @@ export const props = {
     default: () => {
       return {}
     },
-    description: 'popper.js 參數'
+    description: `
+      popper.js 参数
+      https://popper.js.org/docs/v2/
+    `
   },
   ariaLabel: {
     type: String as PropType<Props.AriaLabel>,

@@ -12,43 +12,21 @@ import { version, props as formDatePickerProps } from './FormDatePickerInfo'
 const scopedId = getUuid(version)
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate } = useHook({
+const { i18nTranslate, i18nTest } = useHook({
   i18nModule: defaultModuleType
 })
 
 const props = defineProps(formDatePickerProps)
 
-const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
-  if (!shortcuts) return []
-  return shortcuts.map(shortcut => {
-    return {
-      text: shortcut.text,
-      value: shortcut.value
-    }
-  })
-}
-
-const bindAttributes = computed(() => {
-  const attributes: any = {
-    type: props.type,
-    clearable: props.clearable,
-    disabled: props.disabled,
-    format: props.format,
-    valueFormat: props.valueFormat,
-    shortcuts: getTranslateShortcuts(props.shortcuts)
-  }
-  if (!isEmpty(props.placeholder)) {
-    attributes.placeholder = props.placeholder
-  }
-
-  return attributes
-})
-
 const emit = defineEmits([
   'update:modelValue',
+  'change',
   'blur',
   'focus',
-  'change'
+  'clear',
+  'calendar-change',
+  'panel-change',
+  'visible-change'
 ])
 
 const validateRes = computed<string>(() => {
@@ -63,59 +41,112 @@ const inputValue = computed({
   }
 })
 
+const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
+  if (!Array.isArray(shortcuts)) return []
+  return shortcuts.map(shortcut => {
+    const { i18nLabel, label, text, value } = shortcut
+
+    return {
+      text: i18nTest(i18nLabel) ? i18nTranslate(i18nLabel) : (label ?? text),
+      value
+    }
+  })
+}
+
+// event
+const onChange: Emits.Change = val => emit('change', val)
+const onBlur: Emits.Blur = e => emit('blur', e)
+const onFocus: Emits.Focus = e => emit('focus', e)
+const onClear: Emits.Clear = () => emit('clear')
+const onCalendarChange: Emits.CalendarChange = val => emit('calendar-change', val)
+const onPanelChange: Emits.PanelChange = date => emit('panel-change', date)
+const onVisibleChange: Emits.VisibleChange = visibility => emit('visible-change', visibility)
+
+// expose
+const elDatePickerRef = ref()
+const focus: Expose.Focus = () => {
+  elDatePickerRef.value?.focus()
+  elDatePickerRef.value?.handleOpen()
+}
+const blur: Expose.Blur = () => {
+  elDatePickerRef.value?.blur()
+  elDatePickerRef.value?.handleClose()
+}
+const handleOpen: Expose.HandleOpen = () => {
+  elDatePickerRef.value?.handleOpen()
+}
+const handleClose: Expose.HandleClose = () => {
+  elDatePickerRef.value?.handleClose()
+}
+defineExpose({ focus, blur, handleOpen, handleClose })
+
 // slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
-
-// event
-const onEvent: {
-  focus: Emits.Focus
-  blur: Emits.Blur
-  change: Emits.Change
-} = {
-  focus: $event => emit('focus', $event),
-  blur: $event => emit('blur', $event),
-  change: value => emit('change', value)
-}
-
-const elDatePickerRef = ref()
-
-const focus: Expose.Focus = () => {
-  if (elDatePickerRef.value) {
-    elDatePickerRef.value.focus()
-    elDatePickerRef.value.handleOpen()
-  }
-}
-const blur: Expose.Blur = () => {
-  if (elDatePickerRef.value) {
-    elDatePickerRef.value.handleClose()
-  }
-}
-defineExpose({ focus, blur })
-
 </script>
 
 <template>
-  <div class="__i-date-picker__" :class="scopedId">
+  <div :class="[scopedId, `validate-${validateRes}`]">
     <ElDatePicker
       ref="elDatePickerRef"
       v-model="inputValue"
-      class="__i-date-picker__"
-      :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
-      :start-placeholder="i18nTranslate('datetime-startTime')"
-      :end-placeholder="i18nTranslate('datetime-endTime')"
-      :class="[`validate-${validateRes}`]"
-      :validate-event="false"
-      v-bind="bindAttributes"
-      v-on="onEvent"
+      :readonly="props.readonly"
+      :disabled="props.disabled"
+      :size="props.size"
+      :editable="props.editable"
+      :clearable="props.clearable"
+      :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
+      :start-placeholder="props.startPlaceholder ?? i18nTranslate('datetime-startTime', defaultModuleType)"
+      :end-placeholder="props.endPlaceholder ?? i18nTranslate('datetime-endTime', defaultModuleType)"
+      :type="props.type"
+      :format="props.format"
+      :popper-class="props.popperClass"
+      :popper-options="props.popperOptions"
+      :range-separator="props.rangeSeparator"
+      :default-value="props.defaultValue"
+      :default-time="props.defaultTime"
+      :value-format="props.valueFormat"
+      :id="props.id"
+      :name="props.name"
+      :unlink-panels="props.unlinkPanels"
+      :prefix-icon="props.prefixIcon"
+      :clear-icon="props.clearIcon"
+      :validate-event="props.validateEvent"
+      :disabled-date="props.disabledDate"
+      :shortcuts="getTranslateShortcuts(props.shortcuts)"
+      :cell-class-name="props.cellClassName"
+      :teleported="props.teleported"
+      :empty-values="props.emptyValues"
+      :value-on-clear="props.valueOnClear"
+      :fallback-placements="props.fallbackPlacements"
+      :placement="props.placement"
+      @change="onChange"
+      @blur="onBlur"
+      @focus="onFocus"
+      @clear="onClear"
+      @calendar-change="onCalendarChange"
+      @panel-change="onPanelChange"
+      @visible-change="onVisibleChange"
     >
       <template v-if="hasSlot('default')" #default>
         <slot name="default"></slot>
       </template>
       <template v-if="hasSlot('range-separator')" #range-separator>
         <slot name="range-separator"></slot>
+      </template>
+      <template v-if="hasSlot('prev-month')" #prev-month>
+        <slot name="prev-month"></slot>
+      </template>
+      <template v-if="hasSlot('next-month')" #next-month>
+        <slot name="next-month"></slot>
+      </template>
+      <template v-if="hasSlot('prev-year')" #prev-year>
+        <slot name="prev-year"></slot>
+      </template>
+      <template v-if="hasSlot('next-year')" #next-year>
+        <slot name="next-year"></slot>
       </template>
     </ElDatePicker>
   </div>
@@ -124,40 +155,25 @@ defineExpose({ focus, blur })
 <style lang="scss" scoped>
 @use '../Form.scss' as *;
 
-:deep(.__i-date-picker__) {
-  &.el-date-editor {
+div[class*="__FormDatePicker"] {
+  :deep(.el-date-editor) {
     width: 100% !important;
     max-height: 32px !important;
     border-radius: 4px;
   }
-  &.validate-error.el-date-editor {
+  &.validate-error :deep(.el-date-editor) {
     @include validate-error(date-picker);
   }
 
-  .el-input__wrapper {
-    transition-duration: 0.3s;
-    box-shadow: 0 0 0 1px inherit inset;
-
-    position: relative;
+  :deep(.el-input__wrapper) {
+    @include validate-success(date-picker);
   }
-  .el-input__suffix {
-    position: absolute;
-    right: 8px;
-    top: 0px;
-  }
-  &.validate-error .el-input__wrapper {
+  &.validate-error :deep(.el-input__wrapper) {
     @include validate-error(date-picker);
   }
 }
 
-.__i-date-picker__ {
-  width: 100%;
-  height: 100%;
-}
-</style>
-
-<style lang="scss">
-.el-picker__popper {
+:global(.el-picker__popper) {
   z-index: var(--i-z-index-select-option) !important;
 }
 </style>

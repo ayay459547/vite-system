@@ -219,7 +219,11 @@ watch(isLogin, (newLogin, oldLogin) => {
       const authStatus = await checkAuthStatus()
 
       if (isEmpty(authStatus)) {
-        logout()
+        // 清除登入資訊 強制登出
+        // logout()
+
+        // 清除登入資訊 頁面重整會登出
+        clearAuthStatus()
         clearInterval(checkTimer)
       }
     }, expiresTime)

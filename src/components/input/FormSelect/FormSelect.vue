@@ -28,22 +28,6 @@ const emit = defineEmits([
   'visible-change'
 ])
 
-const onEvent: {
-  focus: Emits.Focus
-  clear: Emits.Clear
-  blur: Emits.Blur
-  change: Emits.Change
-  removeTag: Emits.RemoveTag
-  visibleChange: Emits.VisibleChange
-} = {
-  focus: $event => emit('focus', $event),
-  clear: (): void => emit('clear'),
-  blur: $event => emit('blur', $event),
-  change: value => emit('change', value ?? ''),
-  removeTag: tagValue => emit('remove-tag', tagValue),
-  visibleChange: visible => emit('visible-change', visible)
-}
-
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
   return 'error'
@@ -56,14 +40,16 @@ const inputValue = computed({
   }
 })
 
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty(slots, prop)
-}
+// event
+const onChange: Emits.Change = value => emit('change', value ?? '')
+const onVisibleChange: Emits.VisibleChange =  visible => emit('visible-change', visible)
+const onRemoveTag: Emits.RemoveTag =  tagValue => emit('remove-tag', tagValue)
+const onClear: Emits.Clear =  (): void => emit('clear')
+const onBlur: Emits.Blur =  event => emit('blur', event)
+const onFocus: Emits.Focus =  event => emit('focus', event)
 
+// expose
 const elSelectRef = ref()
-
 const focus: Expose.Focus = () => {
   elSelectRef.value?.focus()
 }
@@ -72,182 +58,180 @@ const blur: Expose.Blur = () => {
 }
 defineExpose({ focus, blur })
 
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return hasOwnProperty(slots, prop)
+}
 </script>
 
 <template>
-  <div class="__i-select__" :class="scopedId">
-    <ElSelect
-      ref="elSelectRef"
-      class="__i-select__"
-      :class="[`validate-${validateRes}`]"
-      v-model="inputValue"
-      :multiple="props.multiple"
-      :disabled="props.disabled"
-      :value-key="props.valueKey"
-      :size="props.size"
-      :clearable="props.clearable"
-      :collapse-tags="props.collapseTags"
-      :collapse-tags-tooltip="props.collapseTagsTooltip"
-      :multiple-limit="props.multipleLimit"
-      :name="props.name"
-      :effect="props.effect"
-      :autocomplete="props.autocomplete"
-      :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
-      :filterable="props.filterable"
-      :allow-create="props.allowCreate"
-      :filter-method="props.filterMethod"
-      :remote="props.remote"
-      :remote-method="props.remoteMethod"
-      :remote-show-suffix="props.remoteShowSuffix"
-      :loading="props.loading"
-      :loading-text="props.loadingText"
-      :no-match-text="props.noMatchText"
-      :no-data-text="props.noDataText"
-      :popper-class="props.popperClass"
-      :reserve-keyword="props.reserveKeyword"
-      :default-first-option="props.defaultFirstOption"
-      :teleported="props.teleported"
-      :append-to="props.appendTo"
-      :persistent="props.persistent"
-      :automatic-dropdown="props.automaticDropdown"
-      :clear-icon="props.clearIcon"
-      :fit-input-width="props.fitInputWidth"
-      :suffix-icon="props.suffixIcon"
-      :tag-type="props.tagType"
-      :tag-effect="props.tagEffect"
-      :validate-event="props.validateEvent"
-      :placement="props.placement"
-      :fallback-placements="props.fallbackPlacements"
-      :max-collapse-tags="props.maxCollapseTags"
-      :popper-options="props.popperOptions"
-      :aria-label="props.ariaLabel"
-      :empty-values="props.emptyValues"
-      :value-on-clear="props.valueOnClear"
-      v-on="onEvent"
-    >
-      <slot>
-        <template
-          v-for="item in props.options"
-          :key="`option-${item.value}-${scopedId}`"
+  <ElSelect
+    ref="elSelectRef"
+    :class="[scopedId, `validate-${validateRes}`]"
+    v-model="inputValue"
+    :multiple="props.multiple"
+    :disabled="props.disabled"
+    :value-key="props.valueKey"
+    :size="props.size"
+    :clearable="props.clearable"
+    :collapse-tags="props.collapseTags"
+    :collapse-tags-tooltip="props.collapseTagsTooltip"
+    :multiple-limit="props.multipleLimit"
+    :name="props.name"
+    :effect="props.effect"
+    :autocomplete="props.autocomplete"
+    :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
+    :filterable="props.filterable"
+    :allow-create="props.allowCreate"
+    :filter-method="props.filterMethod"
+    :remote="props.remote"
+    :remote-method="props.remoteMethod"
+    :remote-show-suffix="props.remoteShowSuffix"
+    :loading="props.loading"
+    :loading-text="props.loadingText"
+    :no-match-text="props.noMatchText"
+    :no-data-text="props.noDataText"
+    :popper-class="props.popperClass"
+    :reserve-keyword="props.reserveKeyword"
+    :default-first-option="props.defaultFirstOption"
+    :teleported="props.teleported"
+    :append-to="props.appendTo"
+    :persistent="props.persistent"
+    :automatic-dropdown="props.automaticDropdown"
+    :clear-icon="props.clearIcon"
+    :fit-input-width="props.fitInputWidth"
+    :suffix-icon="props.suffixIcon"
+    :tag-type="props.tagType"
+    :tag-effect="props.tagEffect"
+    :validate-event="props.validateEvent"
+    :placement="props.placement"
+    :fallback-placements="props.fallbackPlacements"
+    :max-collapse-tags="props.maxCollapseTags"
+    :popper-options="props.popperOptions"
+    :aria-label="props.ariaLabel"
+    :empty-values="props.emptyValues"
+    :value-on-clear="props.valueOnClear"
+    @change="onChange"
+    @visible-change="onVisibleChange"
+    @remove-tag="onRemoveTag"
+    @clear="onClear"
+    @blur="onBlur"
+    @focus="onFocus"
+  >
+    <slot>
+      <template
+        v-for="item in props.options"
+        :key="`option-${item.value}-${scopedId}`"
+      >
+        <ElOptionGroup
+          v-if="Array.isArray(item.options) && item.options.length > 0"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled"
         >
-          <ElOptionGroup
-            v-if="Array.isArray(item.options) && item.options.length > 0"
-            :label="item.label"
-            :value="item.value"
-            :disabled="item.disabled"
+          <ElOption
+            v-for="subItem in item.options"
+            :key="`sub-option-${subItem.value}-${scopedId}`"
+            :label="subItem.label"
+            :value="subItem.value"
+            :data="subItem.data"
+            :disabled="subItem.disabled"
           >
-            <ElOption
-              v-for="subItem in item.options"
-              :key="`sub-option-${subItem.value}-${scopedId}`"
+            <slot
+              name="options"
+              :is-selected="inputValue === subItem.value"
               :label="subItem.label"
               :value="subItem.value"
               :data="subItem.data"
-              :disabled="subItem.disabled"
+              v-bind="subItem"
             >
-              <template v-if="hasSlot('options')">
-                <slot
-                  name="options"
-                  :is-selected="inputValue === subItem.value"
-                  :label="subItem.label"
-                  :value="subItem.value"
-                  :data="subItem.data"
-                  v-bind="subItem"
-                ></slot>
-              </template>
-              <div v-else class="sub-options">{{ subItem.label }}</div>
-            </ElOption>
-          </ElOptionGroup>
+              <div class="sub-options">{{ subItem.label }}</div>
+            </slot>
+          </ElOption>
+        </ElOptionGroup>
 
-          <ElOption
-            v-else
+        <ElOption
+          v-else
+          :label="item.label"
+          :value="item.value"
+          :data="item.data"
+          :disabled="item.disabled"
+        >
+          <slot
+            name="options"
+            :is-selected="inputValue === item.value"
             :label="item.label"
             :value="item.value"
             :data="item.data"
-            :disabled="item.disabled"
+            v-bind="item"
           >
-            <template v-if="hasSlot('options')">
-              <slot
-                name="options"
-                :is-selected="inputValue === item.value"
-                :label="item.label"
-                :value="item.value"
-                :data="item.data"
-                v-bind="item"
-              ></slot>
-            </template>
-            <div v-else class="options">{{ item.label }}</div>
-          </ElOption>
-        </template>
+            <div class="options">{{ item.label }}</div>
+          </slot>
+        </ElOption>
+      </template>
+    </slot>
+    <template v-if="hasSlot('header')" #header>
+      <slot name="header"></slot>
+    </template>
+    <template v-if="hasSlot('footer') || props.remote" #footer>
+      <slot name="footer">
+        <span class="search-more">{{ props.remote ? i18nTranslate('search-forMore', defaultModuleType) : '' }}</span>
       </slot>
-      <template v-if="hasSlot('header')" #header>
-        <slot name="header"></slot>
-      </template>
-      <template v-if="hasSlot('footer') || props.remote" #footer>
-        <slot name="footer">
-          <span class="search-more">{{ props.remote ? i18nTranslate('search-forMore', defaultModuleType) : '' }}</span>
-        </slot>
-      </template>
-      <template v-if="hasSlot('prefix')" #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="hasSlot('empty')" #empty>
-        <slot name="empty"></slot>
-      </template>
-      <template v-if="hasSlot('label')" #label="{ label, value }">
-        <slot name="label" :label="label" :value="value"></slot>
-      </template>
-      <template v-if="hasSlot('tag')" #tag>
-        <slot name="tag"></slot>
-      </template>
-      <template v-if="hasSlot('loading')" #loading>
-        <slot name="loading"></slot>
-      </template>
-    </ElSelect>
-  </div>
+    </template>
+    <template v-if="hasSlot('prefix')" #prefix>
+      <slot name="prefix"></slot>
+    </template>
+    <template v-if="hasSlot('empty')" #empty>
+      <slot name="empty"></slot>
+    </template>
+    <template v-if="hasSlot('label')" #label="{ label, value }">
+      <slot name="label" :label="label" :value="value"></slot>
+    </template>
+    <template v-if="hasSlot('tag')" #tag>
+      <slot name="tag"></slot>
+    </template>
+    <template v-if="hasSlot('loading')" #loading>
+      <slot name="loading"></slot>
+    </template>
+  </ElSelect>
 </template>
 
 <style lang="scss" scoped>
 @use '../Form.scss' as *;
 
-:deep(.__i-select__) {
-  .el-input__wrapper {
-    transition-duration: 0.3s;
-    box-shadow: 0 0 0 1px inherit inset;
-
-    position: relative;
-  }
-  .el-input__suffix {
-    position: absolute;
-    right: 8px;
-    top: 0px;
-  }
-  &.validate-error .is-filterable,
-  &.validate-error .el-select__wrapper,
-  &.validate-error .el-input__wrapper {
-    @include validate-error(select);
-  }
-}
-.__i-select__ {
+div[class*="__FormSelect"] {
   width: 100%;
   height: 100%;
-}
 
-.search-more {
-  color: inherit;
-  opacity: 0.5;
-}
-.options,
-.sub-options {
-  font-size: 1em;
-}
-</style>
-
-<style lang="scss">
-.el-select__popper {
-  z-index: var(--i-z-index-select-option) !important;
-
-  .el-select-dropdown__item {
-    padding: 0 32px 0 20px;
+  :deep(.is-filterable),
+  :deep(.el-select__wrapper),
+  :deep(.el-input__wrapper) {
+    @include validate-success(select);
   }
+
+  &.validate-error {
+    :deep(.is-filterable),
+    :deep(.el-select__wrapper),
+    :deep(.el-input__wrapper) {
+      @include validate-error(select);
+    }
+  }
+
+  .search-more {
+    color: inherit;
+    opacity: 0.5;
+  }
+  .options,
+  .sub-options {
+    font-size: 1em;
+  }
+}
+
+:global(.el-select__popper) {
+  z-index: var(--i-z-index-select-option) !important;
+}
+:global(.el-select-dropdown__item) {
+  padding: 0 32px 0 20px;
 }
 </style>

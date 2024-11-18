@@ -18,42 +18,6 @@ const { i18nTranslate } = useHook({
 
 const props = defineProps(formSelectTreeProps)
 
-// tree
-const bindTreeAttributes = {
-  props: {
-    children: 'options',
-    // label: 'value'
-    label: 'label'
-  },
-  renderAfterExpand: true
-}
-
-const bindAttributes = computed(() => {
-  const attributes: any = {
-    ...bindTreeAttributes,
-    clearable: props.clearable,
-    disabled: props.disabled,
-    loading: props.loading,
-    remote: props.remote,
-    remoteMethod: props.remoteMethod,
-    remoteShowSuffix: props.remoteShowSuffix,
-    multiple: props.multiple,
-    multipleLimit: props.multipleLimit,
-    maxCollapseTags: props.maxCollapseTags,
-    collapseTags: props.multiple,
-    collapseTagsTooltip: props.multiple,
-    filterable: props.filterable,
-    reserveKeyword: props.reserveKeyword,
-    allowCreate: props.allowCreate,
-    defaultFirstOption: props.defaultFirstOption
-  }
-  if (!isEmpty(props.placeholder)) {
-    attributes.placeholder = props.placeholder
-  }
-
-  return attributes
-})
-
 const emit = defineEmits([
   'update:modelValue',
   'focus',
@@ -75,12 +39,11 @@ const onEvent: {
   focus: $event => emit('focus', $event),
   clear: (): void => emit('clear'),
   blur: $event => emit('blur', $event),
-  change: value => {
-    emit('change', value ?? '')
-  },
+  change: value => emit('change', value ?? ''),
   removeTag: tagValue => emit('remove-tag', tagValue),
   visibleChange: visible => emit('visible-change', visible)
 }
+
 const validateRes = computed<string>(() => {
   if (isEmpty(props.errorMessage)) return 'success'
   return 'error'
@@ -115,13 +78,58 @@ defineExpose({ focus, blur })
   <div class="__i-select-tree__" :class="[`validate-${validateRes}`, scopedId]">
     <ElTreeSelect
       ref="elSelectTreeRef"
-      v-model="inputValue"
       class="__i-select-tree__"
-      :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
-      :validate-event="false"
-      v-bind="bindAttributes"
+      v-model="inputValue"
+      :multiple="props.multiple"
+      :disabled="props.disabled"
+      :value-key="props.valueKey"
+      :size="props.size"
+      :clearable="props.clearable"
+      :collapse-tags="props.collapseTags"
+      :collapse-tags-tooltip="props.collapseTagsTooltip"
+      :multiple-limit="props.multipleLimit"
+      :name="props.name"
+      :effect="props.effect"
+      :autocomplete="props.autocomplete"
+      :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
+      :filterable="props.filterable"
+      :allow-create="props.allowCreate"
+      :filter-method="props.filterMethod"
+      :remote="props.remote"
+      :remote-method="props.remoteMethod"
+      :remote-show-suffix="props.remoteShowSuffix"
+      :loading="props.loading"
+      :loading-text="props.loadingText"
+      :no-match-text="props.noMatchText"
+      :no-data-text="props.noDataText"
+      :popper-class="props.popperClass"
+      :reserve-keyword="props.reserveKeyword"
+      :default-first-option="props.defaultFirstOption"
+      :teleported="props.teleported"
+      :append-to="props.appendTo"
+      :persistent="props.persistent"
+      :automatic-dropdown="props.automaticDropdown"
+      :clear-icon="props.clearIcon"
+      :fit-input-width="props.fitInputWidth"
+      :suffix-icon="props.suffixIcon"
+      :tag-type="props.tagType"
+      :tag-effect="props.tagEffect"
+      :validate-event="props.validateEvent"
+      :placement="props.placement"
+      :fallback-placements="props.fallbackPlacements"
+      :max-collapse-tags="props.maxCollapseTags"
+      :popper-options="props.popperOptions"
+      :aria-label="props.ariaLabel"
+      :empty-values="props.emptyValues"
+      :value-on-clear="props.valueOnClear"
       v-on="onEvent"
       :data="props.options"
+      :props="{
+        children: 'options',
+        // label: 'value'
+        label: 'label'
+      }"
+      :render-after-expand="true"
     >
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>
@@ -147,10 +155,18 @@ defineExpose({ focus, blur })
         <slot name="loading"></slot>
       </template>
 
-      <template #default="{ node, data }">
+      <template #default="{ node, data: item }">
         <div class="options">
-          <slot name="options" :node="node" :data="data" :bind="data">
-            <span>{{ data?.label ?? data?.value }}</span>
+          <slot
+            name="options"
+            :is-selected="inputValue === item.value"
+            :label="item.label"
+            :value="item.value"
+            :data="item.data"
+            v-bind="item"
+            :node="node"
+          >
+            <span>{{ item?.label ?? item?.value }}</span>
           </slot>
         </div>
       </template>
@@ -163,15 +179,7 @@ defineExpose({ focus, blur })
 
 .validate-error:deep(.__i-select-tree__) {
   .el-input__wrapper {
-    transition-duration: 0.3s;
-    box-shadow: 0 0 0 1px inherit inset;
-
-    position: relative;
-  }
-  .el-input__suffix {
-    position: absolute;
-    right: 8px;
-    top: 0px;
+    @include validate-success(select-tree);
   }
 
   .is-filterable,
@@ -189,10 +197,11 @@ defineExpose({ focus, blur })
 .sub-options {
   font-size: 1em;
 }
-</style>
 
-<style lang="scss">
-.el-select__popper {
+:global(.el-select__popper) {
   z-index: var(--i-z-index-select-option) !important;
+}
+:global(.el-select-dropdown__item) {
+  padding: 0 32px 0 20px;
 }
 </style>

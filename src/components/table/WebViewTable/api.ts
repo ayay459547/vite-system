@@ -5,7 +5,7 @@ import { message, isEmpty } from '@/lib/lib_utils' // 工具
 import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
-export const webViewUrl = '/api/demoTable/retrievedemoTableFromView'
+export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
 
 export const getUrlParams = (params: Types.UrlParams) => {
   const { url = webViewUrl, baseURL = '' } = params

@@ -257,15 +257,17 @@ export const props = {
 }
 
 export declare namespace Emits {
-  type Focus = ($event: FocusEvent) => void
-  type Clear = () => void
-  type Blur = ($event: FocusEvent) => void
+  type Blur = (event: FocusEvent) => void
+  type Focus = (event: FocusEvent) => void
   type Change = (value: Props.ModelValue) => void
   type Input = (value: Props.ModelValue) => void
-  type Click = ($event: MouseEvent) => void
+  type Clear = () => void
 }
 
 export declare namespace Expose {
-  type Focus = () => void
   type Blur = () => void
+  type Clear = () => void
+  type Focus = () => void
+  type ResizeTextarea = () => void
+  type Select = () => void
 }

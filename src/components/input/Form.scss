@@ -2,7 +2,36 @@
 
 $form-danger: #f56c6c;
 
-@mixin validate-error ($type) {
+@mixin validate-success($type) {
+  transition-duration: 0.3s;
+
+  @if (
+    $type == autocomplete or
+    $type == date-picker or
+    $type == input or
+    $type == select or
+    $type == select-tree or
+    $type == select-v2 or
+    $type == time-picker
+  ) {
+    box-shadow: 0 0 0 1px inherit inset;
+    background-color: inherit;
+  } @else if (
+    $type == checkbox or
+    $type == radio
+  ) {
+    border: 1px solid inherit;
+    background-color: inherit;
+
+  } @else if (
+    $type == operator
+  ) {
+    box-shadow: 0 0 0 1px inset !important;
+    background-color: inherit;
+  }
+}
+
+@mixin validate-error($type) {
   @if (
     $type == autocomplete or
     $type == date-picker or
@@ -14,7 +43,6 @@ $form-danger: #f56c6c;
   ) {
     box-shadow: 0 0 0 1px $form-danger inset;
     background-color: color.adjust($form-danger, $lightness: 20%);
-
   } @else if (
     $type == checkbox or
     $type == radio
@@ -29,4 +57,3 @@ $form-danger: #f56c6c;
     background-color: color.adjust($form-danger, $lightness: 20%);
   }
 }
-// @include validate-error(type);

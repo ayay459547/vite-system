@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { Placement as ElPlacement } from 'element-plus'
 
 export const version = '__FormAutocomplete_1.0.0__'
 
@@ -13,7 +14,7 @@ export declare namespace Props {
   type Disabled = boolean
   type ValueKey = string
   type Debounce = number
-  type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
+  type Placement = ElPlacement
   type FetchSuggestions = (queryString: string, callback: (data: any) => void) => void
   type TriggerOnFocus = boolean
   type SelectWhenUnmatched = boolean

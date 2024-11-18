@@ -49,9 +49,8 @@ const { i18nTranslate, i18nTest } = useHook({
 
 // i18nTranslate
 const getTranslateLabel = (object: any) => {
-  const label = i18nTest(object?.i18nLabel ?? '__none__') ?
-    i18nTranslate(object.i18nLabel) : object.label ?? ''
-  return label
+  const { i18nLabel = '__none__', label, value } = object
+  return i18nTest(i18nLabel) ? i18nTranslate(i18nLabel) : (label ?? value)
 }
 const getTranslateOptions = (options: any[]) => {
   if (!Array.isArray(options)) return null
@@ -65,16 +64,6 @@ const getTranslateOptions = (options: any[]) => {
     }
   })
   return i18nOptions
-}
-const getTranslateShortCuts = (shortcuts?: Array<any>) => {
-  if (!Array.isArray(shortcuts) || isEmpty(shortcuts)) return []
-
-  return shortcuts.map(shortcut => {
-    return {
-      text: i18nTest(shortcut.i18nLabel) ? i18nTranslate(shortcut.i18nLabel) : shortcut.text,
-      value: shortcut.value
-    }
-  })
 }
 
 const validateCount = ref(0)
@@ -145,7 +134,7 @@ const {
   handleChange, // 換值
   handleReset, // 重置
   validate: __veeValidate__ // 驗證
-} = useField<any>(props.validateKey, validateField, {
+} = useField<any>(`${props.validateKey}-${scopedId}`, validateField, {
   validateOnValueUpdate: true,
   initialValue: props.modelValue,
   modelPropName: 'modelValue'
@@ -198,7 +187,7 @@ const onEvent = {
 const inputRef = ref()
 
 defineExpose({
-  key: props.validateKey,
+  key: `${props.validateKey}-${scopedId}`,
   value: inputValue.value,
   handleReset: () => {
     validateCount.value = 0
@@ -244,10 +233,7 @@ const getTextValue = computed(() => {
     case 'monthrange':
       if (Array.isArray(inputValue.value)) {
         const [value1, value2] = inputValue.value
-        return `${formatDatetime(value1, props.format)} ~ ${formatDatetime(
-          value2,
-          props.format
-        )}`
+        return `${formatDatetime(value1, props.format)} ~ ${formatDatetime(value2, props.format)}`
       } else {
         return formatDatetime(inputValue.value, props.format)
       }
@@ -342,7 +328,6 @@ const renderInput = computed(() => {
         ref="inputRef"
         :options="getTranslateOptions(props.options)"
         :errorMessage="errorMessage"
-        :shortcuts="getTranslateShortCuts(props.shortcuts)"
         v-model="inputValue"
       >
         <template v-if="hasSlot('prepend')" #prepend="scope">

@@ -1,6 +1,5 @@
 import type { PropType } from 'vue'
-
-import type { CustomPopoverProps } from '@/components' // 系統組件
+import type { Placement as ElPlacement } from 'element-plus'
 
 export const version = '1.0.0'
 
@@ -10,7 +9,7 @@ export declare namespace Props {
   type Columns = Record<string, any>
   type Width = string | number
   type Class = string
-  type Placement = CustomPopoverProps.Placement
+  type Placement = ElPlacement
 }
 
 export const props = {

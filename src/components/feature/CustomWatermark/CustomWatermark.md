@@ -65,7 +65,7 @@ const subWatermark: SubWatermark[] = [
 | rotate  | 浮水印旋轉角度       | number            | -22                   |          |
 | zIndex  | 浮水印的 zIndex      | number            | 9                     |          |
 | image   | 浮水印的圖片         | string            | ''                    |          |
-| content | 浮水印的文字內容     | string / string[] | 'demo'               |          |
+| content | 浮水印的文字內容     | string / string[] | 'iPASP'               |          |
 | font    | 浮水印的字體設定     | Font              | Font                  |          |
 | gap     | 浮水印的間距         | [number, number]  | [100, 100]            |          |
 | offset  | 浮水印的起始位移     | [number, number]  | [ gap[0]/2, gap[1]/2] |          |

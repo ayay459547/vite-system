@@ -65,7 +65,7 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiurl 不存在時
-      url: /api/demoTable/retrievedemoTableFromView
+      url: /api/ipaspTable/retrieveIpaspTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },

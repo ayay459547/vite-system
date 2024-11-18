@@ -6,9 +6,8 @@ import type { ValidateType } from '@/lib/lib_validate'
 import type {
   Option,
   FormInputProps,
-  FormTimePickerTypes,
-  FormDatePickerTypes,
   FormDatePickerProps,
+  FormTimePickerProps,
   FormAutocompleteProps
 } from '@/components' // 系統組件
 
@@ -32,8 +31,8 @@ export declare namespace Types {
     | 'radio'
     | 'autocomplete'
     | 'operator'
-    | FormDatePickerTypes.DatePickerType
-    | FormTimePickerTypes.TimePickerType
+    | FormDatePickerProps.Type
+    | FormTimePickerProps.Type
 
   type InputShortcuts = FormDatePickerProps.Shortcuts
   type InputFetchSuggestions = FormAutocompleteProps.FetchSuggestions
@@ -250,12 +249,6 @@ const elDatePicker = {
 }
 
 const elTimePicker = {
-  isRange: {
-    type: Boolean as PropType<Props.IsRange>,
-    required: false,
-    default: false,
-    description: '是否可選區間'
-  },
   rangeSeparator: {
     type: String as PropType<Props.RangeSeparator>,
     default: '-',
@@ -301,6 +294,13 @@ export const props = {
   ...elCheckbox,
   ...elRadio,
   ...elAutocomplete,
+  // 不同input 有衝突的key
+  name: {
+    type: [String, Array] as PropType<string | [string, string]>,
+    required: false,
+    default: undefined,
+    description: '原生 name 屬性'
+  },
   ...custom
 }
 

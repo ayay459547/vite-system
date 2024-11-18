@@ -147,10 +147,7 @@ const getData: Expose.GetData = async () => {
   }
 }
 
-defineExpose({
-  init,
-  getData
-})
+defineExpose({ init, getData })
 
 </script>
 
