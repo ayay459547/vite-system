@@ -31,7 +31,7 @@ export default defineComponent({
     el: {
       type: Object as PropType<Element>,
       required: false,
-      default () {
+      default() {
         return document.querySelector('body > div')
       },
       description: 'hover Element'

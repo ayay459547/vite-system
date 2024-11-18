@@ -14,7 +14,7 @@ const props = defineProps({
   error: {
     type: Object as PropType<Error>,
     required: false,
-    default () {
+    default() {
       return {
         name: 'Error',
         message: 'Error'

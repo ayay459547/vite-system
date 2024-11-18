@@ -51,7 +51,7 @@ export const props = {
   },
   conditions: {
     type: Array as PropType<Props.Conditions>,
-    default () {
+    default() {
       return []
     },
     description: '條件搜尋列表'

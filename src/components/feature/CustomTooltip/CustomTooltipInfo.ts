@@ -1,29 +1,16 @@
 import type { PropType } from 'vue'
+import type { Placement as ElPlacement } from 'element-plus'
 
 export const version = '__CustomTooltip_1.0.0__'
 
-export declare namespace Types {
-  type Placement =
-    | 'top'
-    | 'top-start'
-    | 'top-end'
-    | 'bottom'
-    | 'bottom-start'
-    | 'bottom-end'
-    | 'left'
-    | 'left-start'
-    | 'left-end'
-    | 'right'
-    | 'right-start'
-    | 'right-end'
-}
+export declare namespace Types {}
 
 export declare namespace Props {
   type AppendTo = string | HTMLElement
   type Content = string
   type RawContent = boolean
-  type Placement = Types.Placement
-  type FallbackPlacements = Array<Types.Placement>
+  type Placement = ElPlacement
+  type FallbackPlacements = Array<ElPlacement>
   type Visible = boolean | null
   type Disabled = boolean
   type Offset = number
@@ -105,7 +92,7 @@ export const props = {
   popperOptions: {
     type: Object as PropType<Props.PopperOptions>,
     required: false,
-    default () {
+    default() {
       return {}
     },
     description: `

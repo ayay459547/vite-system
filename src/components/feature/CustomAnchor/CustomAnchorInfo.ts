@@ -75,7 +75,7 @@ export const props = {
   links: {
     type: Array as PropType<Props.Links>,
     required: false,
-    default () {
+    default() {
       return []
     },
     description: '連結'

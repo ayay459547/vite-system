@@ -1,4 +1,5 @@
 import type { PropType, CSSProperties } from 'vue'
+import type { Placement as ElPlacement } from 'element-plus'
 
 import type { CustomEffect } from '@/components' // 系統組件
 
@@ -12,11 +13,7 @@ export declare namespace Props {
   type Effect = CustomEffect
   type Content = string
   type Width = number | string
-  type Placement =
-    | 'top' | 'top-start' | 'top-end'
-    | 'bottom' | 'bottom-start' | 'bottom-end'
-    | 'left' | 'left-start' | 'left-end'
-    | 'right' | 'right-start' | 'right-end'
+  type Placement = ElPlacement
   type Disabled = boolean
   type Visible = boolean | null
   type Offset = number
@@ -105,7 +102,7 @@ export const props = {
   popperOptions: {
     type: Object as PropType<Props.PopperOptions>,
     required: false,
-    default () {
+    default() {
       return {}
     },
     description: `

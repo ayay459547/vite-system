@@ -1,5 +1,5 @@
 import type { PropType, Ref } from 'vue'
-import type { ElTourStep } from 'element-plus'
+import type { ElTourStep, Placement as ElPlacement } from 'element-plus'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -7,12 +7,6 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 export const version = '__CustomTour_1.0.0__'
 
 export declare namespace Types {
-  type Placement =
-    |'top' | 'top-start' | 'top-end'
-    |'bottom' | 'bottom-start' | 'bottom-end'
-    |'left' | 'left-start' | 'left-end'
-    |'right' | 'right-start' | 'right-end'
-
   type Step = typeof ElTourStep | {
     // Dom 元素
     target?: HTMLElement | string | (() => HTMLElement) | Ref<any>
@@ -21,7 +15,7 @@ export declare namespace Types {
     description?: string // 說明
     i18nDescription?: string | string[] // 說明: i18nTranslate
     showArrow?: boolean // 是否顯示箭頭
-    placement?: Types.Placement
+    placement?: ElPlacement
   }
 }
 
@@ -30,7 +24,7 @@ export declare namespace Props {
   type Current = number
   type ZIndex = number
   type ShowArrow = boolean
-  type Placement = Types.Placement
+  type Placement = ElPlacement
   type TargetAreaClickable = boolean
 
   type Steps = Array<Types.Step>
@@ -77,7 +71,7 @@ export const props = {
   steps: {
     type: Array as PropType<Props.Steps>,
     required: false,
-    default () {
+    default() {
       return []
     },
     description: '引導'

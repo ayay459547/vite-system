@@ -65,7 +65,7 @@ export const props = {
   options: {
     type: Array as PropType<Props.Options>,
     required: false,
-    default () {
+    default() {
       return []
     },
     description: '類型選項(暫時沒用到)'
@@ -73,7 +73,7 @@ export const props = {
   scheduleList: {
     type: Array as PropType<Props.ScheduleList>,
     required: false,
-    default () {
+    default() {
       return []
     },
     description: '資料列表'
