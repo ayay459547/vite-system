@@ -30,7 +30,7 @@ const scopedId = getUuid(version)
 
 const props = defineProps(inputProps)
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'click',
   'change',
   'input',
@@ -82,10 +82,13 @@ const validateField = (veeValue: Props.ModelValue) => {
   if (props.required) {
     switch (props.type) {
       case 'operator':
-        if (!Array.isArray(veeValue) || isEmpty(veeValue[0]) || isEmpty(veeValue[1])) {
-          // 此輸入框為必填
-          return 'required'
-        }
+      case 'daterange':
+      case 'timerange':
+        if (
+          !Array.isArray(veeValue) ||
+          isEmpty(veeValue[0]) ||
+          isEmpty(veeValue[1])
+        ) return 'required'
         break
       default:
         if (isEmpty(veeValue)) return 'required'
@@ -98,34 +101,32 @@ const validateField = (veeValue: Props.ModelValue) => {
   // 多個驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {
     for (const type of props.validate as ValidateType[]) {
-      const { test, msg } = validateFun[type](veeValue) as VeeRes
-      if (!test) return msg
+      const { test, label, i18nLabel } = validateFun[type](veeValue) as VeeRes
+      if (!test) return getTranslateLabel({ label, i18nLabel })
     }
   }
 
   // 單一驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { test, msg } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
-    if (!test) return msg
+    const { test, label, i18nLabel } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
+    if (!test) return getTranslateLabel({ label, i18nLabel })
   }
 
   return true
 }
 
 const inputValue = computed({
-  get: () => {
-    return props.modelValue
-  },
+  get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
     validateValue.value = value
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 
 /**
  * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
  * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
- * 每當useField值發生變化時，它都會發出update:modelValue事件，
+ * 每當useField值發生變化時，它都會發出update:model-value事件，
  * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
  */
 const {
@@ -150,6 +151,10 @@ const veeValidate = async () => {
   return __veeValidate__()
 }
 
+const validateRes = computed<string>(() => {
+  if (isEmpty(errorMessage.value)) return 'success'
+  return 'error'
+})
 const i18nErrorMessage = computed(() => {
   const keyword = errorMessage?.value ?? ''
 
@@ -318,7 +323,7 @@ const renderInput = computed(() => {
       <CustomText :label="getTranslateLabel(props)"></CustomText>
     </label>
 
-    <div class='input-main'>
+    <div class='input-main' :class="`validate-${validateRes}`">
       <div v-if="props.text" class='i-pt-xs'>{{ getTextValue }}</div>
       <component
         v-else
@@ -327,7 +332,6 @@ const renderInput = computed(() => {
         v-on="onEvent"
         ref="inputRef"
         :options="getTranslateOptions(props.options)"
-        :errorMessage="errorMessage"
         v-model="inputValue"
       >
         <template v-if="hasSlot('prepend')" #prepend="scope">
@@ -357,11 +361,26 @@ const renderInput = computed(() => {
         <template v-if="hasSlot('tag')" #tag="scope">
           <slot name="tag" v-bind="scope"></slot>
         </template>
+        <template v-if="hasSlot('loading')" #loading>
+          <slot name="loading"></slot>
+        </template>
         <template v-if="hasSlot('empty')" #empty="scope">
           <slot name="empty" v-bind="scope"></slot>
         </template>
         <template v-if="hasSlot('range-separator')" #range-separator="scope">
           <slot name="range-separator" v-bind="scope"></slot>
+        </template>
+        <template v-if="hasSlot('prev-month')" #prev-month>
+          <slot name="prev-month"></slot>
+        </template>
+        <template v-if="hasSlot('next-month')" #next-month>
+          <slot name="next-month"></slot>
+        </template>
+        <template v-if="hasSlot('prev-year')" #prev-year>
+          <slot name="prev-year"></slot>
+        </template>
+        <template v-if="hasSlot('next-year')" #next-year>
+          <slot name="next-year"></slot>
         </template>
         <template v-if="hasSlot('default')" #default="scope">
           <slot name="default" v-bind="scope"></slot>
@@ -375,6 +394,8 @@ const renderInput = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+@use './CustomInput.scss' as *;
+
 div[class*="__CustomInput"] {
   width: 100%;
   height: fit-content;
@@ -420,6 +441,30 @@ div[class*="__CustomInput"] {
       flex-direction: column;
       gap: 6px;
       width: 100%;
+
+      @include form-success(FormInput);
+      @include form-success(FormSelect);
+      @include form-success(FormSelectV2);
+      @include form-success(FormSelectTree);
+      @include form-success(FormDatePicker);
+      @include form-success(FormTimePicker);
+      @include form-success(FormAutocomplete);
+      @include form-success(FormOperator);
+      @include form-success(FormCheckbox);
+      @include form-success(FormRadio);
+
+      &.validate-error {
+        @include form-error(FormInput);
+        @include form-error(FormSelect);
+        @include form-error(FormSelectV2);
+        @include form-error(FormSelectTree);
+        @include form-error(FormDatePicker);
+        @include form-error(FormTimePicker);
+        @include form-error(FormAutocomplete);
+        @include form-error(FormOperator);
+        @include form-error(FormCheckbox);
+        @include form-error(FormRadio);
+      }
     }
 
     &-error {
@@ -428,5 +473,15 @@ div[class*="__CustomInput"] {
       height: 20px;
     }
   }
+}
+
+:global(.el-picker__popper) {
+  z-index: var(--i-z-index-select-option) !important;
+}
+:global(.el-select__popper) {
+  z-index: var(--i-z-index-select-option) !important;
+}
+:global(.el-select-dropdown__item) {
+  padding: 0 32px 0 20px;
 }
 </style>

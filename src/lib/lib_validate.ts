@@ -1,6 +1,7 @@
 export type VeeRes = {
   test: boolean
-  msg: string
+  label: string
+  i18nLabel: string
 }
 
 export type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
@@ -11,7 +12,8 @@ const validateFun = {
 
     return {
       test: regexp.test(value),
-      msg: '必需為數字'
+      label: '必需為數字',
+      i18nLabel: 'validate-number'
     }
   },
   identityCard: (value: string): VeeRes => {
@@ -19,7 +21,8 @@ const validateFun = {
 
     return {
       test: regexp.test(value),
-      msg: '需符合生分證格式'
+      label: '需符合生分證格式',
+      i18nLabel: 'validate-identityCard'
     }
   },
   phone: (value: string): VeeRes => {
@@ -27,7 +30,8 @@ const validateFun = {
 
     return {
       test: regexp.test(value),
-      msg: '必需為手機格式'
+      label: '必需為手機格式',
+      i18nLabel: 'validate-phone'
     }
   },
   password: (value: string): VeeRes => {
@@ -35,7 +39,8 @@ const validateFun = {
 
     return {
       test: regexp.test(value),
-      msg: '必需包含大小寫及數字，且超過8碼'
+      label: '必需包含大小寫及數字，且超過8碼',
+      i18nLabel: 'validate-password'
     }
   }
 }

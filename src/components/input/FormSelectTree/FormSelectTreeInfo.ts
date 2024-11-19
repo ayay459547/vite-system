@@ -11,7 +11,6 @@ export declare namespace Types {}
 
 export declare namespace Props {
   // custom
-  type ErrorMessage = FormSelectProps.ErrorMessage
   type Options = FormSelectProps.Options
   // select
   type ModelValue = FormSelectProps.ModelValue

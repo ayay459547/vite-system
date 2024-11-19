@@ -3,7 +3,7 @@ import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelectV2 } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormSelectV2Info'
@@ -19,7 +19,7 @@ const { i18nTranslate } = useHook({
 const props = defineProps(formSelectV2Props)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'focus',
   'blur',
   'clear',
@@ -28,15 +28,10 @@ const emit = defineEmits([
   'visible-change'
 ])
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value ?? '')
+    emit('update:model-value', value ?? '')
   }
 })
 
@@ -68,7 +63,7 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <ElSelectV2
     ref="elSelectV2Ref"
-    :class="[scopedId, `validate-${validateRes}`]"
+    :class="scopedId"
     v-model="inputValue"
     :options="props.options"
     :props="props.props"
@@ -161,29 +156,8 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-div[class*="__FormSelectV2"] {
-  width: 100%;
-  height: 100%;
-
-  :deep(.is-filterable),
-  :deep(.el-select__wrapper),
-  :deep(.el-input__wrapper) {
-    @include validate-success(select-v2);
-  }
-
-  &.validate-error {
-    :deep(.is-filterable),
-    :deep(.el-select__wrapper),
-    :deep(.el-input__wrapper) {
-      @include validate-error(select-v2);
-    }
-  }
-
-  .search-more {
-    color: inherit;
-    opacity: 0.5;
-  }
+.search-more {
+  color: inherit;
+  opacity: 0.5;
 }
 </style>

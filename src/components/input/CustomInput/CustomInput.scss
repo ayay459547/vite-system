@@ -1,0 +1,64 @@
+@use 'sass:color';
+
+$form-danger: #f56c6c;
+
+@mixin validate-error() {
+  box-shadow: 0 0 0 1px $form-danger inset;
+  background-color: color.adjust($form-danger, $lightness: 20%);
+}
+
+@mixin form-success($type) {
+  :deep(div[class*="#{$type}"]) {
+    width: 100%;
+    height: 100%;
+
+    @if ($type == FormInput or $type == FormAutocomplete) {
+      .el-input__suffix {
+        position: absolute;
+        right: 8px;
+        top: 0px;
+      }
+      .el-input-group__prepend {
+        padding: 0 12px;
+      }
+
+    } @else if ($type == FormDatePicker or $type == FormTimePicker) {
+      width: 100% !important;
+      max-height: 32px !important;
+      border-radius: 4px;
+    }
+
+    .el-input__wrapper,
+    .el-date-editor,
+    .is-filterable,
+    .el-select__wrapper {
+      transition-duration: 0.3s;
+      position: relative;
+    }
+  }
+}
+
+@mixin form-error($type) {
+  :deep(div[class*="#{$type}"]) {
+    .el-input__wrapper,
+    .el-input-group__prepend,
+    .el-input-group__append,
+    .is-filterable,
+    .el-select__wrapper,
+    .el-input--suffix,
+    .el-checkbox__inner,
+    .el-radio__inner {
+      @include validate-error();
+    }
+  }
+
+  :deep(.el-input-group) {
+    box-shadow: none !important;
+  }
+
+  @if ($type == FormDatePicker or $type == FormTimePicker) {
+    :deep(.el-date-editor) {
+      @include validate-error();
+    }
+  }
+}

@@ -88,7 +88,7 @@ export const formatDateTimeRange = <T>(key: string, value: any, options?: Format
  * @param {String} format 想要的格式
  * @returns {String} 格式化後的時間
  */
-export const formatDatetime = (value: string | number | Date, format: string = 'YYYY-MM-DD'): string => {
+export const formatDatetime = (value: string | number | Date, format: string = 'YYYY-MM-DD'): string | Date => {
   if (isEmpty(value)) return ''
   return dayjs(value).format(format)
 }
@@ -100,7 +100,7 @@ export const formatDatetime = (value: string | number | Date, format: string = '
  * @param {String} value 日期
  * @returns {String} 格式化後的時間
  */
-export const formatISO8601 = (value: string | number | Date): string => {
+export const formatISO8601 = (value: string | number | Date): string | Date => {
   if (isEmpty(value)) return ''
   return dayjs(value).toISOString()
 }

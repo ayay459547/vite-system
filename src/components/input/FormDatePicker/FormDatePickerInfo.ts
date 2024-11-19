@@ -17,8 +17,6 @@ export declare namespace Types {
 }
 
 export declare namespace Props {
-  type ErrorMessage = string
-
   type ModelValue = Types.BaseValue | [Types.BaseValue, Types.BaseValue]
   type Readonly = boolean
   type Disabled = boolean
@@ -57,13 +55,6 @@ export declare namespace Props {
   type Placement = ElPlacement
 }
 export const props = {
-  // custom
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
-    required: false,
-    default: '',
-    description: '錯誤訊息'
-  },
   // element ui plus
   modelValue: {
     type: [Array, String, null] as PropType<Props.ModelValue>,

@@ -15,11 +15,16 @@ import { props as formInputProps } from '@/components/input/FormInput/FormInputI
 import { props as formSelectProps } from '@/components/input/FormSelect/FormSelectInfo'
 import { props as formSelectV2Props } from '@/components/input/FormSelectV2/FormSelectV2Info'
 import { props as formSelectTreeProps } from '@/components/input/FormSelectTree/FormSelectTreeInfo'
+import { props as formDatePickerProps } from '@/components/input/FormDatePicker/FormDatePickerInfo'
+import { props as formTimePickerProps } from '@/components/input/FormTimePicker/FormTimePickerInfo'
+import { props as formAutocompleteProps } from '@/components/input/FormAutocomplete/FormAutocompleteInfo'
+import { props as formRadioProps } from '@/components/input/FormRadio/FormRadioInfo'
+import { props as formCheckboxProps } from '@/components/input/FormCheckbox/FormCheckboxInfo'
 
 export const version = '__CustomInput_1.0.0__'
 
 export declare namespace Types {
-  type InputType =
+  type InputType = string
     | 'text'
     | 'number'
     | 'textarea'
@@ -220,81 +225,23 @@ const custom = {
   }
 }
 
-const elDatePicker = {
-  format: {
-    type: String as PropType<Props.Format>,
-    required: false,
-    description: '顯示格式'
-  },
-  valueFormat: {
-    type: String as PropType<Props.ValueFormat>,
-    required: false,
-    description: '資料格式'
-  },
-  shortcuts: {
-    type: Array as PropType<Props.Shortcuts>,
-    required: false,
-    description: `
-      預設時間範圍選項
-      [
-        {
-          text: 選項文字
-          i18nLabel: i18nKey
-          value: 時間範圍
-        } 
-        , ...
-      ]
-    `
-  }
-}
-
-const elTimePicker = {
-  rangeSeparator: {
-    type: String as PropType<Props.RangeSeparator>,
-    default: '-',
-    description: '間格文字'
-  }
-}
-
-const elCheckbox = {
-  indeterminate: {
-    type: Boolean as PropType<Props.Indeterminate>,
-    required: false,
-    default: false,
-    description: '用在有選但非全選狀態'
-  }
-}
-
-const elRadio = {}
-
-const elAutocomplete = {
-  valueKey: {
-    type: String as PropType<Props.ValueKey>,
-    required: false,
-    default: 'value'
-  },
-  fitInputWidth: {
-    type: Boolean as PropType<Props.FitInputWidth>,
-    required: false,
-    default: false
-  },
-  fetchSuggestions: {
-    type: Function as PropType<Props.FetchSuggestions>,
-    required: false
-  }
-}
-
 export const props = {
   ...formInputProps,
   ...formSelectProps,
   ...formSelectV2Props,
   ...formSelectTreeProps,
-  ...elDatePicker,
-  ...elTimePicker,
-  ...elCheckbox,
-  ...elRadio,
-  ...elAutocomplete,
+  ...formDatePickerProps,
+  ...formTimePickerProps,
+  ...formAutocompleteProps,
+  ...formCheckboxProps,
+  ...formRadioProps,
   // 不同input 有衝突的key
+  type: {
+    type: String as PropType<Props.Type>,
+    required: false,
+    default: undefined,
+    description: '輸入框類型'
+  },
   name: {
     type: [String, Array] as PropType<string | [string, string]>,
     required: false,

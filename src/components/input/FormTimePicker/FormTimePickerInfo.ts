@@ -1,4 +1,5 @@
 import type { PropType, Component } from 'vue'
+import type { Dayjs } from 'dayjs'
 
 import type { CustomSize } from '@/components' // 系統組件
 
@@ -6,8 +7,6 @@ export const version = '__FormTimePicker_1.0.0__'
 
 export declare namespace Types {
   type BaseValue = string | Date | null
-
-  type TimePickerType = 'time' | 'timerange'
 
   type Shortcut = {
     i18nLabel?: string
@@ -18,7 +17,7 @@ export declare namespace Types {
 }
 
 export declare namespace Props {
-  type ErrorMessage = string
+  type Type = 'time' | 'timerange'
 
   type ModelValue = Types.BaseValue | [Types.BaseValue, Types.BaseValue]
   type Readonly = boolean
@@ -29,38 +28,34 @@ export declare namespace Props {
   type Placeholder = string
   type StartPlaceholder = string
   type EndPlaceholder = string
+  type IsRange = boolean
   type ArrowControl = boolean
-  type Type = Types.TimePickerType
-  type Format = string
   type PopperClass = string
   type RangeSeparator = string
+  type Format = string
   type DefaultValue = Date | [Date, Date]
   type ValueFormat = string
-  type DefaultTime = Date | [Date, Date]
-  type DateFormat = string
-  type TimeFormat = string
   type Id = string | [string, string]
   type Name = string | any
-  type UnlinkPanels = boolean
+  type AriaLabel = string
   type PrefixIcon =  string | Component
   type ClearIcon = string | Component
-  type Shortcuts = Array<Types.Shortcut>
-  type DisabledDate = (data: Date) => boolean
-  type CellClassName = (data: Date) => string
+  type DisabledHours = (role: string, comparingDate?: Dayjs) => number[]
+  type DisabledMinutes = (hour: number, role: string, comparingDate?: Dayjs) => number[]
+  type DisabledSeconds = (hour: number, minute: number, role: string, comparingDate?: Dayjs) => number[]
   type Teleported = boolean
+  type Tabindex = string | number
   type EmptyValues = Array<any>
   type ValueOnClear = string | number | boolean | Function
-  type ShowNow = boolean
 }
 export const props = {
   // custom
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
+  type: {
+    type: String as PropType<Props.Type>,
     required: false,
-    default: '',
-    description: '錯誤訊息'
+    default: 'time',
+    description: '顯示類型'
   },
-
   // element ui plus
   modelValue: {
     type: [Array, String, null] as PropType<Props.ModelValue>,
@@ -116,17 +111,29 @@ export const props = {
     default: undefined,
     description: '範圍選擇時結束日期的佔位內容'
   },
+  isRange: {
+    type: Boolean as PropType<Props.IsRange>,
+    required: false,
+    default: undefined,
+    description: '是否為時間範圍選擇'
+  },
   arrowControl: {
     type: Boolean as PropType<Props.ArrowControl>,
     required: false,
     default: false,
     description: '是否使用箭頭進行時間選擇'
   },
-  type: {
-    type: String as PropType<Props.Type>,
+  popperClass: {
+    type: String as PropType<Props.PopperClass>,
     required: false,
-    default: 'date',
-    description: '顯示類型'
+    default: '',
+    description: 'class'
+  },
+  rangeSeparator: {
+    type: String as PropType<Props.RangeSeparator>,
+    required: false,
+    default: '-',
+    description: '選擇範圍時的分隔符'
   },
   format: {
     type: String as PropType<Props.Format>,
@@ -137,18 +144,6 @@ export const props = {
       https://day.js.org/docs/en/display/format#list-of-all-available-formats
     `
   },
-  popperClass: {
-    type: String as PropType<Props.PopperClass>,
-    required: false,
-    default: undefined,
-    description: 'class'
-  },
-  rangeSeparator: {
-    type: String as PropType<Props.RangeSeparator>,
-    required: false,
-    default: '-',
-    description: '選擇範圍時的分隔符'
-  },
   defaultValue: {
     type: [String, Object] as PropType<Props.DefaultValue>,
     required: false,
@@ -158,33 +153,9 @@ export const props = {
   valueFormat: {
     type: String as PropType<Props.ValueFormat>,
     required: false,
-    default: 'YYYY-MM-DD',
+    default: 'HH:mm:ss',
     description: `
       資料格式化
-      https://day.js.org/docs/en/display/format#list-of-all-available-formats
-    `
-  },
-  defaultTime: {
-    type: [String, Object] as PropType<Props.DefaultTime>,
-    required: false,
-    default: undefined,
-    description: '範圍選擇時選取日期所使用的當日內具體時刻'
-  },
-  dateFormat: {
-    type: String as PropType<Props.DateFormat>,
-    required: false,
-    default: 'HH:mm:ss',
-    description: `
-      顯示格式化
-      https://day.js.org/docs/en/display/format#list-of-all-available-formats
-    `
-  },
-  timeFormat: {
-    type: String as PropType<Props.TimeFormat>,
-    required: false,
-    default: 'HH:mm:ss',
-    description: `
-      顯示格式化
       https://day.js.org/docs/en/display/format#list-of-all-available-formats
     `
   },
@@ -200,11 +171,11 @@ export const props = {
     default: undefined,
     description: '原生 name 屬性'
   },
-  unlinkPanels: {
-    type: Boolean as PropType<Props.UnlinkPanels>,
+  ariaLabel: {
+    type: String as PropType<Props.AriaLabel>,
     required: false,
-    default: false,
-    description: '在範圍選擇器取消兩個日期面板之間的連動'
+    default: undefined,
+    description: '等價於原生 input aria-label 屬性 (a11y)'
   },
   prefixIcon: {
     type: [String, Object] as PropType<Props.PrefixIcon>,
@@ -218,31 +189,35 @@ export const props = {
     default: undefined,
     description: '自訂清除圖示'
   },
-  shortcuts: {
-    type: Array as PropType<Props.Shortcuts>,
-    required: false,
-    default() {
-      return []
-    },
-    description: '設定快捷選項，需要傳入數組對象'
-  },
-  disabledDate: {
-    type: Function as PropType<Props.DisabledDate>,
+  disabledHours: {
+    type: Function as PropType<Props.DisabledHours>,
     required: false,
     default: undefined,
-    description: '一個用來判斷該日期是否被禁用的函數，接受一個 Date 物件作為參數。 應該回傳一個 Boolean 值'
+    description: '禁止選擇部分小時選項'
   },
-  cellClassName: {
-    type: Function as PropType<Props.CellClassName>,
+  disabledMinutes: {
+    type: Function as PropType<Props.DisabledMinutes>,
     required: false,
     default: undefined,
-    description: '設定自訂類別名'
+    description: '禁止選擇部分分鐘選項'
+  },
+  disabledSeconds: {
+    type: Function as PropType<Props.DisabledSeconds>,
+    required: false,
+    default: undefined,
+    description: '禁止選擇部分秒選項'
   },
   teleported: {
     type: Boolean as PropType<Props.Teleported>,
     required: false,
     default: true,
     description: '是否將 date-picker 的下拉清單插入至 body'
+  },
+  tabindex: {
+    type: [String, Number] as PropType<Props.Tabindex>,
+    required: false,
+    default: 0,
+    description: '輸入框的 tabindex'
   },
   emptyValues: {
     type: Array as PropType<Props.EmptyValues>,
@@ -255,12 +230,6 @@ export const props = {
     required: false,
     default: undefined,
     description: '組件的空值配置 參考 Config Provider'
-  },
-  showNow: {
-    type: Boolean as PropType<Props.ShowNow>,
-    required: false,
-    default: true,
-    description: '是否顯示 now 按鈕'
   }
 }
 
@@ -269,12 +238,13 @@ export declare namespace Emits {
   type Blur = (e: FocusEvent) => void
   type Focus = (e: FocusEvent) => void
   type Clear = () => void
-  type CalendarChange = (val: [Date, null | Date]) => void
   type VisibleChange = (visibility: boolean) => void
 }
 
 export declare namespace Expose {
   type Focus = () => void
   type Blur = () => void
+  type HandleOpen  = () => void
+  type HandleClose  = () => void
 }
 

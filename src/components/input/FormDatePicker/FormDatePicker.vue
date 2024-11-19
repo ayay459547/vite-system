@@ -3,7 +3,7 @@ import { computed, useSlots, ref, inject } from 'vue'
 import { ElDatePicker } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormDatePickerInfo'
@@ -19,7 +19,8 @@ const { i18nTranslate, i18nTest } = useHook({
 const props = defineProps(formDatePickerProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
+  'input',
   'change',
   'blur',
   'focus',
@@ -29,15 +30,10 @@ const emit = defineEmits([
   'visible-change'
 ])
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 
@@ -54,6 +50,7 @@ const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
 }
 
 // event
+const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
 const onChange: Emits.Change = val => emit('change', val)
 const onBlur: Emits.Blur = e => emit('blur', e)
 const onFocus: Emits.Focus = e => emit('focus', e)
@@ -88,92 +85,68 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="[scopedId, `validate-${validateRes}`]">
-    <ElDatePicker
-      ref="elDatePickerRef"
-      v-model="inputValue"
-      :readonly="props.readonly"
-      :disabled="props.disabled"
-      :size="props.size"
-      :editable="props.editable"
-      :clearable="props.clearable"
-      :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
-      :start-placeholder="props.startPlaceholder ?? i18nTranslate('datetime-startTime', defaultModuleType)"
-      :end-placeholder="props.endPlaceholder ?? i18nTranslate('datetime-endTime', defaultModuleType)"
-      :type="props.type"
-      :format="props.format"
-      :popper-class="props.popperClass"
-      :popper-options="props.popperOptions"
-      :range-separator="props.rangeSeparator"
-      :default-value="props.defaultValue"
-      :default-time="props.defaultTime"
-      :value-format="props.valueFormat"
-      :id="props.id"
-      :name="props.name"
-      :unlink-panels="props.unlinkPanels"
-      :prefix-icon="props.prefixIcon"
-      :clear-icon="props.clearIcon"
-      :validate-event="props.validateEvent"
-      :disabled-date="props.disabledDate"
-      :shortcuts="getTranslateShortcuts(props.shortcuts)"
-      :cell-class-name="props.cellClassName"
-      :teleported="props.teleported"
-      :empty-values="props.emptyValues"
-      :value-on-clear="props.valueOnClear"
-      :fallback-placements="props.fallbackPlacements"
-      :placement="props.placement"
-      @change="onChange"
-      @blur="onBlur"
-      @focus="onFocus"
-      @clear="onClear"
-      @calendar-change="onCalendarChange"
-      @panel-change="onPanelChange"
-      @visible-change="onVisibleChange"
-    >
-      <template v-if="hasSlot('default')" #default>
-        <slot name="default"></slot>
-      </template>
-      <template v-if="hasSlot('range-separator')" #range-separator>
-        <slot name="range-separator"></slot>
-      </template>
-      <template v-if="hasSlot('prev-month')" #prev-month>
-        <slot name="prev-month"></slot>
-      </template>
-      <template v-if="hasSlot('next-month')" #next-month>
-        <slot name="next-month"></slot>
-      </template>
-      <template v-if="hasSlot('prev-year')" #prev-year>
-        <slot name="prev-year"></slot>
-      </template>
-      <template v-if="hasSlot('next-year')" #next-year>
-        <slot name="next-year"></slot>
-      </template>
-    </ElDatePicker>
-  </div>
+  <ElDatePicker
+    ref="elDatePickerRef"
+    :class="scopedId"
+    v-model="inputValue"
+    :readonly="props.readonly"
+    :disabled="props.disabled"
+    :size="props.size"
+    :editable="props.editable"
+    :clearable="props.clearable"
+    :placeholder="props.placeholder ?? i18nTranslate('pleaseSelect', defaultModuleType)"
+    :start-placeholder="props.startPlaceholder ?? i18nTranslate('datetime-startTime', defaultModuleType)"
+    :end-placeholder="props.endPlaceholder ?? i18nTranslate('datetime-endTime', defaultModuleType)"
+    :type="props.type"
+    :format="props.format"
+    :popper-class="props.popperClass"
+    :popper-options="props.popperOptions"
+    :range-separator="props.rangeSeparator"
+    :default-value="props.defaultValue"
+    :default-time="props.defaultTime"
+    :value-format="props.valueFormat"
+    :id="props.id"
+    :name="props.name"
+    :unlink-panels="props.unlinkPanels"
+    :prefix-icon="props.prefixIcon"
+    :clear-icon="props.clearIcon"
+    :validate-event="props.validateEvent"
+    :disabled-date="props.disabledDate"
+    :shortcuts="getTranslateShortcuts(props.shortcuts)"
+    :cell-class-name="props.cellClassName"
+    :teleported="props.teleported"
+    :empty-values="props.emptyValues"
+    :value-on-clear="props.valueOnClear"
+    :fallback-placements="props.fallbackPlacements"
+    :placement="props.placement"
+    @input="onInput"
+    @change="onChange"
+    @blur="onBlur"
+    @focus="onFocus"
+    @clear="onClear"
+    @calendar-change="onCalendarChange"
+    @panel-change="onPanelChange"
+    @visible-change="onVisibleChange"
+  >
+    <template v-if="hasSlot('default')" #default="scope">
+      <slot name="default" v-bind="scope"></slot>
+    </template>
+    <template v-if="hasSlot('range-separator')" #range-separator>
+      <slot name="range-separator"></slot>
+    </template>
+    <template v-if="hasSlot('prev-month')" #prev-month>
+      <slot name="prev-month"></slot>
+    </template>
+    <template v-if="hasSlot('next-month')" #next-month>
+      <slot name="next-month"></slot>
+    </template>
+    <template v-if="hasSlot('prev-year')" #prev-year>
+      <slot name="prev-year"></slot>
+    </template>
+    <template v-if="hasSlot('next-year')" #next-year>
+      <slot name="next-year"></slot>
+    </template>
+  </ElDatePicker>
 </template>
 
-<style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-div[class*="__FormDatePicker"] {
-  :deep(.el-date-editor) {
-    width: 100% !important;
-    max-height: 32px !important;
-    border-radius: 4px;
-  }
-  &.validate-error :deep(.el-date-editor) {
-    @include validate-error(date-picker);
-  }
-
-  :deep(.el-input__wrapper) {
-    @include validate-success(date-picker);
-  }
-  &.validate-error :deep(.el-input__wrapper) {
-    @include validate-error(date-picker);
-  }
-}
-
-:global(.el-picker__popper) {
-  z-index: var(--i-z-index-select-option) !important;
-}
-</style>
+<style lang="scss" scoped></style>

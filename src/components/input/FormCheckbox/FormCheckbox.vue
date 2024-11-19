@@ -12,55 +12,44 @@ const scopedId = getUuid(version)
 
 const props = defineProps(formCheckboxProps)
 
-const bindAttributes = computed(() => {
-  return {
-    disabled: props.disabled,
-    indeterminate: props.indeterminate
-  }
-})
-
-const emit = defineEmits(['update:modelValue', 'change'])
-
-const onEvent: {
-  groupChange: Emits.Change<CheckboxGroupValueType>
-  change: Emits.Change<CheckboxValueType>
-} = {
-  groupChange: value => emit('change', value),
-  change: value => emit('change', value)
-}
-
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
+const emit = defineEmits([
+  'update:model-value',
+  'input',
+  'change'
+])
 
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 
-const getStyle = (isChecked: boolean, color?: string) => {
-  if (!isChecked) return {}
-
-  if (isEmpty(color)) return { color: '#409EFF' }
-
-  return { color }
+const bindAttributes = {
+  disabled: props.disabled,
+  indeterminate: props.indeterminate
 }
 
+// event
+const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
+const onGroupChange: Emits.Change<CheckboxGroupValueType> = value => emit('change', value)
+const onChange: Emits.Change<CheckboxValueType> = value => emit('change', value)
+
+const getStyle = (isChecked: boolean, color?: string) => {
+  if (!isChecked || isEmpty(color)) return {}
+  return { color }
+}
 </script>
 
 <template>
-  <div class="__i-checkbox__" :class="scopedId">
+  <div :class="scopedId">
     <template v-if="Array.isArray(inputValue)">
       <ElCheckboxGroup
         v-model="inputValue"
-        class="__i-checkbox__"
-        :class="[`validate-${validateRes}`]"
         :validate-event="false"
         v-bind="bindAttributes"
-        @change="onEvent.groupChange"
+        @input="onInput"
+        @change="onGroupChange"
       >
         <ElCheckbox
           v-for="item in options"
@@ -73,11 +62,11 @@ const getStyle = (isChecked: boolean, color?: string) => {
           <span :style="getStyle(inputValue.includes(item.value), item?.color)">
             <slot
               name="options"
+              v-bind="item"
               :is-checked="inputValue.includes(item.value)"
               :label="item.label"
               :value="item.value"
               :data="item.data"
-              :color="item?.color ?? '#ffffff'"
             >
               {{ item.label }}
             </slot>
@@ -88,11 +77,10 @@ const getStyle = (isChecked: boolean, color?: string) => {
     <template v-else>
       <ElCheckbox
         v-model="inputValue"
-        class="__i-checkbox__"
-        :class="[`validate-${validateRes}`]"
         :validate-event="false"
         v-bind="bindAttributes"
-        @change="onEvent.change"
+        @input="onInput"
+        @change="onChange"
       >
         <slot name="default">
           {{ props.label }}
@@ -103,23 +91,16 @@ const getStyle = (isChecked: boolean, color?: string) => {
 </template>
 
 <style lang="scss" scoped>
-@use '../Form.scss' as *;
+div[class*="FormCheckbox"] {
+  width: 100%;
+  height: fit-content;
 
-:deep(.__i-checkbox__) {
-  .el-checkbox {
+  :deep(.el-checkbox) {
     margin-right: 16px;
 
     .el-checkbox__label {
       padding-left: 8px;
     }
   }
-  &.validate-error .el-checkbox__inner {
-    @include validate-error(checkbox);
-  }
-}
-
-:where(.__i-checkbox__) {
-  width: 100%;
-  height: fit-content;
 }
 </style>

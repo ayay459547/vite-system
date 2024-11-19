@@ -3,7 +3,7 @@ import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelect, ElOptionGroup, ElOption } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormSelectInfo'
@@ -19,7 +19,7 @@ const { i18nTranslate } = useHook({
 const props = defineProps(formSelectProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'focus',
   'blur',
   'clear',
@@ -28,25 +28,20 @@ const emit = defineEmits([
   'visible-change'
 ])
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value ?? '')
+    emit('update:model-value', value)
   }
 })
 
 // event
-const onChange: Emits.Change = value => emit('change', value ?? '')
-const onVisibleChange: Emits.VisibleChange =  visible => emit('visible-change', visible)
-const onRemoveTag: Emits.RemoveTag =  tagValue => emit('remove-tag', tagValue)
-const onClear: Emits.Clear =  (): void => emit('clear')
-const onBlur: Emits.Blur =  event => emit('blur', event)
-const onFocus: Emits.Focus =  event => emit('focus', event)
+const onChange: Emits.Change = value => emit('change', value)
+const onVisibleChange: Emits.VisibleChange = visible => emit('visible-change', visible)
+const onRemoveTag: Emits.RemoveTag = tagValue => emit('remove-tag', tagValue)
+const onClear: Emits.Clear = () => emit('clear')
+const onBlur: Emits.Blur = event => emit('blur', event)
+const onFocus: Emits.Focus = event => emit('focus', event)
 
 // expose
 const elSelectRef = ref()
@@ -68,7 +63,7 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <ElSelect
     ref="elSelectRef"
-    :class="[scopedId, `validate-${validateRes}`]"
+    :class="scopedId"
     v-model="inputValue"
     :multiple="props.multiple"
     :disabled="props.disabled"
@@ -198,40 +193,8 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-div[class*="__FormSelect"] {
-  width: 100%;
-  height: 100%;
-
-  :deep(.is-filterable),
-  :deep(.el-select__wrapper),
-  :deep(.el-input__wrapper) {
-    @include validate-success(select);
-  }
-
-  &.validate-error {
-    :deep(.is-filterable),
-    :deep(.el-select__wrapper),
-    :deep(.el-input__wrapper) {
-      @include validate-error(select);
-    }
-  }
-
-  .search-more {
-    color: inherit;
-    opacity: 0.5;
-  }
-  .options,
-  .sub-options {
-    font-size: 1em;
-  }
-}
-
-:global(.el-select__popper) {
-  z-index: var(--i-z-index-select-option) !important;
-}
-:global(.el-select-dropdown__item) {
-  padding: 0 32px 0 20px;
+.search-more {
+  color: inherit;
+  opacity: 0.5;
 }
 </style>

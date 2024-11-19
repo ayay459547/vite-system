@@ -7,7 +7,6 @@ export const version = '__FormInput_1.0.0__'
 export declare namespace Types {}
 
 export declare namespace Props {
-  type ErrorMessage = string
   type Round = number
   type Floor = number
   type Ceil = number
@@ -47,12 +46,6 @@ export declare namespace Props {
 }
 export const props = {
   // custom
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
-    required: false,
-    default: '',
-    description: '錯誤訊息'
-  },
   round: {
     type: Number as PropType<Props.Round>,
     required: false,

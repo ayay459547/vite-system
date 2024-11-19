@@ -138,15 +138,15 @@ const validateField = (veeValue: Props.ModelValue) => {
   // 多個驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object Array]') {
     for (const type of props.validate as ValidateType[]) {
-      const { test, msg } = validateFun[type](veeValue) as VeeRes
-      if (!test) return msg
+      const { test, label, i18nLabel } = validateFun[type](veeValue) as VeeRes
+      if (!test) return getTranslateLabel({ label, i18nLabel })
     }
   }
 
   // 單一驗證格式
   if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { test, msg } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
-    if (!test) return msg
+    const { test, label, i18nLabel } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
+    if (!test) return getTranslateLabel({ label, i18nLabel })
   }
 
   return true

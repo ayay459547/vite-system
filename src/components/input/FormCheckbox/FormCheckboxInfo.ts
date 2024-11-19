@@ -16,45 +16,43 @@ export declare namespace Types {
 }
 
 export declare namespace Props {
-  type ModelValue = CheckboxValueType | CheckboxGroupValueType | any
-  type ErrorMessage = string
   type Options = Array<Types.Option>
   type Label = string
 
+  type ModelValue = CheckboxValueType | CheckboxGroupValueType | any
   type Disabled = boolean
   type Indeterminate = boolean
 }
 export const props = {
-  modelValue: {
-    type: [Array, String, Number, Boolean] as PropType<Props.ModelValue>,
-    required: true
-  },
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
-    default: ''
-  },
   options: {
     type: Array as PropType<Props.Options>,
+    required: false,
     default() {
       return []
-    }
+    },
+    description: '選項'
   },
   label: {
     type: String as PropType<Props.Label>,
     default: ''
   },
   // element ui plus
+  modelValue: {
+    type: [Array, String, Number, Boolean] as PropType<Props.ModelValue>,
+    required: false,
+    default: undefined,
+    description: '綁定值 v-model="..." '
+  },
   disabled: {
     type: Boolean as PropType<Props.Disabled>,
-    default: false
+    required: false,
+    default: false,
+    description: '是否禁用'
   },
   indeterminate: {
     type: Boolean as PropType<Props.Indeterminate>,
     default: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onChange: Function as PropType<(e: CheckboxGroupValueType | CheckboxValueType) => void>
+  }
 }
 
 export declare namespace Emits {

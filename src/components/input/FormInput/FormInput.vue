@@ -21,7 +21,7 @@ const { i18nTranslate } = useHook({
 const props = defineProps(formInputProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'focus',
   'blur',
   'clear',
@@ -30,15 +30,10 @@ const emit = defineEmits([
   'click'
 ])
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 
@@ -68,21 +63,22 @@ const onChange: Emits.Change = value => {
     let numberFormatType: NumberFormatType = ''
     let numberFormatToFixed = 0
     if (typeof _value === 'number') {
-      // 無條件捨去
-      if (!isEmpty(props.floor)) {
-        numberFormatType = 'floor'
-        numberFormatToFixed = props.floor
-      }
-      // 無條件進位
-      if (!isEmpty(props.ceil)) {
-        numberFormatType = 'ceil'
-        numberFormatToFixed = props.ceil
-      }
       // 四捨五入
       if (!isEmpty(props.round)) {
         numberFormatType = 'round'
         numberFormatToFixed = props.round
+
+      // 無條件進位
+      } else if (!isEmpty(props.ceil)) {
+        numberFormatType = 'ceil'
+        numberFormatToFixed = props.ceil
+
+        // 無條件捨去
+      } else if (!isEmpty(props.floor)) {
+        numberFormatType = 'floor'
+        numberFormatToFixed = props.floor
       }
+
       _value = numberFormat<number>(_value, {
         type: numberFormatType,
         toFixed: numberFormatToFixed
@@ -141,7 +137,7 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <ElInput
     ref="elInputRef"
-    :class="[scopedId, `validate-${validateRes}`]"
+    :class="scopedId"
     :type="props.type"
     v-model="inputValue"
     :maxlength="props.maxlength"
@@ -194,33 +190,4 @@ const hasSlot = (prop: string): boolean => {
   </ElInput>
 </template>
 
-<style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-div[class*="__FormInput"] {
-  width: 100%;
-  height: 100%;
-
-  :deep(.el-input__wrapper) {
-    @include validate-success(input);
-    position: relative;
-  }
-  &.validate-error {
-    :deep(.el-input__wrapper),
-    :deep(.el-input-group__prepend),
-    :deep(.el-input-group__append) {
-      @include validate-error(input);
-    }
-  }
-
-  :deep(.el-input__suffix) {
-    position: absolute;
-    right: 8px;
-    top: 0px;
-  }
-
-  :deep(.el-input-group__prepend) {
-    padding: 0 12px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -11,7 +11,6 @@ export declare namespace Types {
 
 export declare namespace Props {
   type ModelValue = [Types.OperatorOptions, Types.OperatorValue]
-  type ErrorMessage = string
   type OnlyNumber = boolean
   type Round = number | null
   type Max = number | null
@@ -25,10 +24,6 @@ export const props = {
   modelValue: {
     type: Array as unknown as PropType<Props.ModelValue>,
     required: true
-  },
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
-    default: ''
   },
   // 數字
   onlyNumber: {
@@ -72,14 +67,7 @@ export const props = {
   placeholder: {
     type: String as PropType<Props.Placeholder>,
     required: false
-  },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onFocus: Function as PropType<(e: any) => void>,
-  onClear: Function as PropType<() => void>,
-  onBlur: Function as PropType<(e: any) => void>,
-  onChange: Function as PropType<(value: any) => void>,
-  onInput: Function as PropType<(value: any) => void>
+  }
 }
 
 export declare namespace Emits {

@@ -3,7 +3,7 @@ import { computed, useSlots, ref, inject } from 'vue'
 import { ElTreeSelect } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import type { Props, Emits, Expose } from './FormSelectTreeInfo'
@@ -28,6 +28,14 @@ const emit = defineEmits([
   'visible-change'
 ])
 
+const inputValue = computed({
+  get: () => props.modelValue,
+  set: (value: Props.ModelValue) => {
+    emit('update:modelValue', value)
+  }
+})
+
+// event
 const onEvent: {
   focus: Emits.Focus
   clear: Emits.Clear
@@ -39,31 +47,13 @@ const onEvent: {
   focus: $event => emit('focus', $event),
   clear: (): void => emit('clear'),
   blur: $event => emit('blur', $event),
-  change: value => emit('change', value ?? ''),
+  change: value => emit('change', value),
   removeTag: tagValue => emit('remove-tag', tagValue),
   visibleChange: visible => emit('visible-change', visible)
 }
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
-const inputValue = computed({
-  get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value ?? '')
-  }
-})
-
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty(slots, prop)
-}
-
+// expose
 const elSelectTreeRef = ref()
-
 const focus: Expose.Focus = () => {
   elSelectTreeRef.value?.focus()
 }
@@ -72,13 +62,18 @@ const blur: Expose.Blur = () => {
 }
 defineExpose({ focus, blur })
 
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return hasOwnProperty(slots, prop)
+}
 </script>
 
 <template>
-  <div class="__i-select-tree__" :class="[`validate-${validateRes}`, scopedId]">
+  <div>
     <ElTreeSelect
       ref="elSelectTreeRef"
-      class="__i-select-tree__"
+      :class="scopedId"
       v-model="inputValue"
       :multiple="props.multiple"
       :disabled="props.disabled"
@@ -174,34 +169,4 @@ defineExpose({ focus, blur })
   </div>
 </template>
 
-<style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-.validate-error:deep(.__i-select-tree__) {
-  .el-input__wrapper {
-    @include validate-success(select-tree);
-  }
-
-  .is-filterable,
-  .el-select__wrapper,
-  .el-input__wrapper {
-    @include validate-error(select-tree);
-  }
-}
-
-.search-more {
-  color: inherit;
-  opacity: 0.5;
-}
-.options,
-.sub-options {
-  font-size: 1em;
-}
-
-:global(.el-select__popper) {
-  z-index: var(--i-z-index-select-option) !important;
-}
-:global(.el-select-dropdown__item) {
-  padding: 0 32px 0 20px;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -19,8 +19,6 @@ export declare namespace Types {
 }
 
 export declare namespace Props {
-  type ErrorMessage = string
-
   type ModelValue = string | number | boolean | null | Record<string, any> | Array<any>
   type Options = Array<Types.Option>
   type Props = {
@@ -75,13 +73,6 @@ export declare namespace Props {
   // type PopperAppendToBody  = boolean
 }
 export const props = {
-  // custom
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
-    required: false,
-    default: '',
-    description: '錯誤訊息'
-  },
   // element ui plus
   modelValue: {
     type: [String, Number, Boolean, Array, Object, null] as PropType<Props.ModelValue>,

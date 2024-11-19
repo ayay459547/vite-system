@@ -6,8 +6,6 @@ export const version = '__FormAutocomplete_1.0.0__'
 export declare namespace Types {}
 
 export declare namespace Props {
-  type ErrorMessage = string
-
   type ModelValue = string | number | null
   type Placeholder = string
   type Clearable = boolean
@@ -28,13 +26,6 @@ export declare namespace Props {
   // type PopperAppendToBody = boolean
 }
 export const props = {
-  // custom
-  errorMessage: {
-    type: String as PropType<Props.ErrorMessage>,
-    required: false,
-    default: '',
-    description: '錯誤訊息 驗證用'
-  },
   // element ui plus
   modelValue: {
     type: [String, Number, null] as PropType<Props.ModelValue>,
@@ -137,18 +128,7 @@ export const props = {
     required: false,
     default: false,
     description: '下拉框的寬度是否與輸入框相同'
-  },
-  // deprecated
-  // popperAppendToBody: {
-  //   type: Boolean as PropType<Props.PopperAppendToBody>,
-  //   required: false,
-  //   default: false,
-  //   description: '是否將下拉清單插入至body元素。在下拉清單的定位出現問題時，可將該屬性設為false'
-  // },
-  // tsx event
-  'onUpdate:modelValue': Function as PropType<(e: any) => void>,
-  onSelect: Function as PropType<(item: Props.ModelValue) => void>,
-  onChange: Function as PropType<(value: string | number) => void>
+  }
 }
 
 export declare namespace Emits {
@@ -161,7 +141,12 @@ export declare namespace Emits {
 }
 
 export declare namespace Expose {
-  type Focus = () => void
   type Blur = () => void
+  type Close = () => void
+  type Focus = () => void
+  type HandleSelect = (item: any) => Promise<void>
+  type HandleKeyEnter = () => Promise<void>
+  type Highlight = (itemIndex: number) => void
+  type GetData  = (queryString: string) => void
 }
 

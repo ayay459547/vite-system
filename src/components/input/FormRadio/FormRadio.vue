@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ElRadioGroup, ElRadio } from 'element-plus'
+import { ElRadioGroup, ElRadio, ElRadioButton } from 'element-plus'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 
@@ -11,94 +11,74 @@ const scopedId = getUuid(version)
 
 const props = defineProps(formRadioProps)
 
-const bindAttributes = computed(() => {
-  return {
-    disabled: props.disabled
-  }
-})
-
-const emit = defineEmits(['update:modelValue', 'change'])
-
-const onEvent: {
-  change: Emits.Change
-} = {
-  change: (value: Props.ModelValue): void => emit('change', value)
-}
-
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
+const emit = defineEmits([
+  'update:model-value',
+  'input',
+  'change'
+])
 
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 
+// event
+const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
+const onChange: Emits.Change = value => emit('change', value)
+
 const getStyle = (isSelected: boolean, color?: string) => {
-  if (!isSelected) return {}
-
-  if (isEmpty(color)) return { color: '#409EFF' }
-
+  if (!isSelected || isEmpty(color)) return {}
   return { color }
 }
-
 </script>
 
 <template>
-  <div class="__i-radio__" :class="scopedId">
-    <ElRadioGroup
-      v-model="inputValue"
-      class="__i-radio__"
-      :class="[`validate-${validateRes}`]"
-      :validate-event="false"
-      v-bind="bindAttributes"
-      v-on="onEvent"
+  <ElRadioGroup
+    :class="scopedId"
+    v-model="inputValue"
+    :size="props.size"
+    :disabled="props.disabled"
+    :text-color="props.textColor"
+    :fill="props.fill"
+    :validate-event="props.validateEvent"
+    :aria-label="props.ariaLabel"
+    :id="props.id"
+    :name="props.name"
+    @input="onInput"
+    @change="onChange"
+  >
+    <component
+      v-for="item in props.options"
+      :key="`radio-${item.value}-${scopedId}`"
+      :is="props.radioType !== 'radio' ? ElRadio : ElRadioButton"
+      v-bind="item"
     >
-      <ElRadio
-        v-for="item in props.options"
-        :key="`radio-${item.value}-${scopedId}`"
-        :label="item.value"
-        :value="item.value"
-        :disabled="item.disabled ?? false"
-      >
-        <div class="__i-radio__" :style="getStyle(inputValue === item.value, item?.color)">
-          <slot
-            name="options"
-            :is-selected="inputValue === item.value"
-            :label="item.label"
-            :value="item.value"
-            :data="item.data"
-            :color="item?.color ?? '#ffffff'"
-          >
-            {{ item.label }}
-          </slot>
-        </div>
-      </ElRadio>
-    </ElRadioGroup>
-  </div>
+      <div :style="getStyle(inputValue === item.value, item?.color)">
+        <slot
+          name="options"
+          v-bind="item"
+          :is-selected="inputValue === item.value"
+        >
+          {{ item.label }}
+        </slot>
+      </div>
+    </component>
+  </ElRadioGroup>
 </template>
 
 <style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-:deep(.__i-radio__) {
-  &.validate-error .el-radio__inner {
-    @include validate-error(radio);
-  }
-
-  .el-radio {
-    margin-right: 16px;
-  }
-
-  input[type="radio" i] {
-    margin: 3px 3px 0px 5px;
-  }
-}
-.__i-radio__ {
+div[class*="FormRadio"] {
   width: 100%;
   height: fit-content;
+
+  :deep(.el-radio) {
+    margin-right: 16px;
+
+    input[type="radio" i] {
+      margin: 3px 3px 0px 5px;
+    }
+  }
 }
 </style>

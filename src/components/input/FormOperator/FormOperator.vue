@@ -165,11 +165,6 @@ const onSelectEvent = {
   }
 }
 
-const validateRes = computed<string>(() => {
-  if (isEmpty(props.errorMessage)) return 'success'
-  return 'error'
-})
-
 // [select, input]
 const tempValue = customRef<Props.ModelValue>((track, trigger) => {
   return {
@@ -227,112 +222,85 @@ const onEnter = async () => {
 </script>
 
 <template>
-  <div class="__i-operator__" :class="scopedId" @click.stop>
-    <ElInput
-      ref="elInputRef"
-      v-model="inputValue"
-      class="__i-operator__"
-      :placeholder="i18nTranslate('pleaseInput')"
-      :class="[`validate-${validateRes}`]"
-      :validate-event="false"
-      v-bind="bindAttributes"
-      v-on="{
-        ...onEvent,
-        ...onInputEvent
-      }"
-      clearable
-      @keyup.enter="onEnter"
-    >
-      <!-- 輸入框用 -->
-      <template #prepend>
-        <div class="__i-prepend">
-          <div class="__i-select__">
-            <ElSelect
-              v-model="selectValue"
-              :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
-              :validate-event="false"
-              :options="props.options"
-              v-bind="bindAttributes"
-              v-on="{
-                ...onEvent,
-                ...onSelectEvent
-              }"
+  <ElInput
+    ref="elInputRef"
+    v-model="inputValue"
+    :class="scopedId"
+    :placeholder="i18nTranslate('pleaseInput')"
+    :validate-event="false"
+    v-bind="bindAttributes"
+    v-on="{...onEvent, ...onInputEvent}"
+    clearable
+    @keyup.enter="onEnter"
+    @click.stop
+  >
+    <!-- 輸入框用 -->
+    <template #prepend>
+      <div class="i-prepend">
+        <div class="i-select">
+          <ElSelect
+            v-model="selectValue"
+            :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
+            :validate-event="false"
+            :options="props.options"
+            v-bind="bindAttributes"
+            v-on="{
+              ...onEvent,
+              ...onSelectEvent
+            }"
+          >
+            <ElOption
+              v-for="item in props.options"
+              :key="`operator-${item.value}-${scopedId}`"
+              :label="item.label"
+              :value="item.value"
             >
-              <ElOption
-                v-for="item in props.options"
-                :key="`operator-${item.value}-${scopedId}`"
-                :label="item.label"
-                :value="item.value"
-              >
-                <template v-if="hasSlot('option')" #options>
-                  <slot name="option" :label="item.label" :value="item.value">
-                    {{ item.label }}
-                  </slot>
-                </template>
-              </ElOption>
-            </ElSelect>
-          </div>
+              <template v-if="hasSlot('option')" #options>
+                <slot name="option" :label="item.label" :value="item.value">
+                  {{ item.label }}
+                </slot>
+              </template>
+            </ElOption>
+          </ElSelect>
         </div>
-      </template>
+      </div>
+    </template>
 
-      <template v-if="hasSlot('append')" #append>
-        <slot name="append"></slot>
-      </template>
-      <!-- 圖示用 -->
-      <template v-if="hasSlot('prefix')" #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="hasSlot('suffix')" #suffix>
-        <slot name="suffix"></slot>
-      </template>
-    </ElInput>
-  </div>
+    <template v-if="hasSlot('append')" #append>
+      <slot name="append"></slot>
+    </template>
+    <!-- 圖示用 -->
+    <template v-if="hasSlot('prefix')" #prefix>
+      <slot name="prefix"></slot>
+    </template>
+    <template v-if="hasSlot('suffix')" #suffix>
+      <slot name="suffix"></slot>
+    </template>
+  </ElInput>
 </template>
 
 <style lang="scss" scoped>
-@use '../Form.scss' as *;
-
-:deep(.__i-operator__) {
-  .el-input__wrapper {
-    transition-duration: 0.3s;
-    box-shadow: 0 0 0 1px inherit inset;
-
-    position: relative;
-  }
-  .el-input__suffix {
-    position: absolute;
-    right: 8px;
-    top: 0px;
-  }
-  &.validate-error .el-input__wrapper,
-  &.validate-error .el-input--suffix .el-input__wrapper {
-    @include validate-error(operator);
-  }
-  .el-input--suffix .el-input__wrapper {
+div[class*="FormOperator"] {
+  :deep(.el-input--suffix .el-input__wrapper) {
     padding: 2px 12px;
   }
-  .el-input-group__prepend .el-select__wrapper {
-    box-shadow: none;
-  }
-
-  .el-input-group__prepend {
+  :deep(.el-input-group__prepend) {
     padding: 0;
   }
-  .el-input-group__prepend .el-select {
+  :deep(.el-input-group__prepend .el-select) {
     margin: 0;
   }
-}
 
-.__i {
-  &-operator__ {
-    width: 100%;
-    height: 100%;
-  }
-
-  &-select__ {
-    width: 100%;
-    max-width: 120px;
-    min-width: 90px !important;
+  .i {
+    &-prepend {
+      width: 100%;
+      height: 100%;
+    }
+    &-select {
+      width: 100%;
+      max-width: 120px;
+      min-width: 90px !important;
+    }
   }
 }
 </style>

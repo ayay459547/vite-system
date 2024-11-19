@@ -192,9 +192,7 @@ export const props = {
     type: [String, Object] as PropType<Props.Style>,
     default: '',
     description: '自訂樣式'
-  },
-  // tsx event
-  onClick: Function as PropType<(e: MouseEvent) => void>
+  }
 }
 
 export declare namespace Emits {
