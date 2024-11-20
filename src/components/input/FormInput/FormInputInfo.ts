@@ -50,28 +50,19 @@ export const props = {
     type: Number as PropType<Props.Round>,
     required: false,
     default: undefined,
-    description: `
-      type === 'number'
-      四捨五入 取小數點到第幾位
-    `
+    description: '四捨五入 取小數點到第幾位，type === number'
   },
   floor: {
     type: Number as PropType<Props.Floor>,
     required: false,
     default: undefined,
-    description: `
-      type === 'number'
-      無條件捨去 取小數點到第幾位
-    `
+    description: '無條件捨去 取小數點到第幾位，type === number'
   },
   ceil: {
     type: Number as PropType<Props.Ceil>,
     required: false,
     default: undefined,
-    description: `
-      type === 'number'
-      無條件進位 取小數點到第幾位
-    `
+    description: '無條件進位 取小數點到第幾位，type === number'
   },
   // element ui plus
   modelValue: {

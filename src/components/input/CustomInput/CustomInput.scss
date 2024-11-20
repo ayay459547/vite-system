@@ -10,7 +10,7 @@ $form-danger: #f56c6c;
 @mixin form-success($type) {
   :deep(div[class*="#{$type}"]) {
     width: 100%;
-    height: 100%;
+    height: fit-content;
 
     @if ($type == FormInput or $type == FormAutocomplete) {
       .el-input__suffix {
@@ -18,13 +18,12 @@ $form-danger: #f56c6c;
         right: 8px;
         top: 0px;
       }
-      .el-input-group__prepend {
+      .el-input-group__prepend,
+      .el-input-group__append {
         padding: 0 12px;
       }
 
     } @else if ($type == FormDatePicker or $type == FormTimePicker) {
-      width: 100% !important;
-      max-height: 32px !important;
       border-radius: 4px;
     }
 
@@ -45,10 +44,17 @@ $form-danger: #f56c6c;
     .el-input-group__append,
     .is-filterable,
     .el-select__wrapper,
-    .el-input--suffix,
     .el-checkbox__inner,
     .el-radio__inner {
       @include validate-error();
+    }
+
+    .el-radio.is-bordered {
+      border: 1px solid $form-danger;
+    }
+    .el-radio-button__inner {
+      border: 1px solid $form-danger;
+      background-color: color.adjust($form-danger, $lightness: 20%);
     }
   }
 

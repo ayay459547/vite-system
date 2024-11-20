@@ -521,6 +521,7 @@ const modal = reactive({
               <template #search-all="scope">
                 <slot name="search-all" :filter-column="filterColumn" v-bind="scope">
                   <CustomSearch
+                    v-if="hasOwnProperty(filter, scope.prop)"
                     class="grid-col-xs-24 grid-col-sm-12 grid-col-md-8 grid-col-lg-6"
                     v-model="filter[scope.prop]"
                     v-model:active="activeFilter[scope.prop]"
@@ -583,13 +584,13 @@ const modal = reactive({
               v-model:conditions="filterConditions[scope.prop]"
               v-bind="filterColumn[scope.prop]"
               :i18n-module="i18nModule"
-              :label="i18nTranslate(scope.column?.i18nLabel, i18nModule)"
+              :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
               :column-id="scope.prop"
               search
               @change="throttleInit($event, 'input')"
               @submit="throttleInit($event, 'input')"
             />
-            <span v-else>{{ i18nTranslate(scope.column?.i18nLabel) }}</span>
+            <span v-else>{{ i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label) }}</span>
           </div>
         </slot>
       </template>

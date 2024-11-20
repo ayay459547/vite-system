@@ -33,7 +33,7 @@ const bindAttributes = computed(() => {
 })
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'clear',
   'focus',
   'blur',
@@ -46,7 +46,7 @@ const isFocus = ref(false)
 let lastValue: any = ''
 
 onMounted(() => {
-  lastValue = props.modelValue[1]
+  lastValue = tempValue.value[1]
 })
 // 共用事件
 const onEvent: {
@@ -70,18 +70,32 @@ const onEvent: {
     }, 300)
   }
 }
+
+// [select, input]
+const tempValue = customRef<Props.ModelValue>((track, trigger) => {
+  return {
+    get: () => {
+      track()
+      if (isEmpty(props.modelValue)) return ['', ''] as Props.ModelValue
+      return props.modelValue
+    },
+    set: (value: Props.ModelValue) => {
+      emit('update:model-value', value)
+      trigger()
+    }
+  }
+})
+
 // 選擇框事件
 const onInputEvent = {
   input: (value: Types.OperatorValue) => {
     isFocus.value = true
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
+    const [_selectValue] = [...tempValue.value]
     emit('input', [_selectValue, value])
   },
   change: (value: Types.OperatorValue) => {
     isFocus.value = false
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
+    const [_selectValue, _inputValue] = [...tempValue.value]
 
     let _value = value
     // 數字
@@ -142,14 +156,12 @@ const onInputEvent = {
 const onSelectEvent = {
   input: (value: string | number): void => {
     isFocus.value = true
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
+    const [_selectValue] = [...tempValue.value]
     emit('input', [_selectValue, value])
   },
   change: (value: string) => {
     isFocus.value = false
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_selectValue, _inputValue] = [...props.modelValue] as Props.ModelValue
+    const [_selectValue, _inputValue] = [...tempValue.value]
 
     /**
      * select 有值 || 原本有值
@@ -165,49 +177,19 @@ const onSelectEvent = {
   }
 }
 
-// [select, input]
-const tempValue = customRef<Props.ModelValue>((track, trigger) => {
-  return {
-    get: () => {
-      track()
-      return props.modelValue
-    },
-    set: (value: Props.ModelValue) => {
-      emit('update:modelValue', value)
-      trigger()
-    }
-  }
-})
-
 const selectValue = computed({
-  get: () => props.modelValue[0],
+  get: () => tempValue.value[0],
   set: (value: Types.OperatorOptions) => {
-    tempValue.value = [value, props.modelValue[1]]
+    tempValue.value = [value, tempValue.value[1]]
   }
 })
 
 const inputValue = computed({
-  get: () => props.modelValue[1],
+  get: () => tempValue.value[1],
   set: (value: Types.OperatorValue) => {
-    tempValue.value = [props.modelValue[0], value]
+    tempValue.value = [tempValue.value[0], value]
   }
 })
-
-// slot
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return hasOwnProperty(slots, prop)
-}
-
-const elInputRef = ref()
-
-const focus: Expose.Blur = () => {
-  elInputRef.value?.focus()
-}
-const blur: Expose.Blur = () => {
-  elInputRef.value?.blur()
-}
-defineExpose({ focus, blur })
 
 // 紀錄上一次的 change input 值
 const prevChangeInput = ref<any>('')
@@ -219,6 +201,23 @@ const onEnter = async () => {
     emit('change', tempValue.value)
   }
 }
+
+// expose
+const elInputRef = ref()
+const focus: Expose.Blur = () => {
+  elInputRef.value?.focus()
+}
+const blur: Expose.Blur = () => {
+  elInputRef.value?.blur()
+}
+defineExpose({ focus, blur })
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return hasOwnProperty(slots, prop)
+}
+
 </script>
 
 <template>

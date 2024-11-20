@@ -190,4 +190,9 @@ const hasSlot = (prop: string): boolean => {
   </ElInput>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div[class*="FormInput"] {
+  width: 100%;
+  height: fit-content;
+}
+</style>

@@ -364,7 +364,7 @@ export { default as CustomInput } from './input/CustomInput/CustomInput.vue'
 export declare interface TempCustomInputExpose {
   key: string
   value: Ref<string>
-  handleReset: () => void
+  resetValidate: () => void
   validate: (opts?: Partial<ValidationOptions>) => Promise<ValidationResult>
   getDom: () => Element
 }

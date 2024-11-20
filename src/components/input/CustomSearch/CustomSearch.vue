@@ -7,20 +7,20 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import { useFormListSetting } from '@/lib/lib_columns'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge, CustomTooltip, FormCheckbox, FormList } from '@/components' // 系統組件
-import { isEmpty, getUuid, hasOwnProperty, getProxyData } from '@/lib/lib_utils' // 工具
+import { isEmpty, getUuid, getProxyData } from '@/lib/lib_utils' // 工具
 import { conditionOptions } from '@/variable'
 
 import type { Props } from './CustomSearchInfo'
 import { version, props as searchProps } from './CustomSearchInfo'
 
-const scopedId = getUuid('__i-search__')
+const scopedId = getUuid(version)
 
 const props = defineProps(searchProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'update:active',
-  'update:activeConditions',
+  'update:active-conditions',
   'update:conditions',
   'open',
   'close',
@@ -45,7 +45,7 @@ const inpuValue = computed({
     return props.modelValue
   },
   set(value: Props.ModelValue) {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 // const onInputChange = (inpuValue: Props.ModelValue) => {
@@ -113,19 +113,16 @@ const onVisibleClick = async (_isVisible: boolean) => {
   }, 0)
 }
 
-const bindAttributes = computed(() => {
-  return {
-    ...props,
-    // i18nTranslate
-    i18nModule: props.i18nModule,
-    // 專案客製化屬性
-    type: props.type,
-    options: props.options,
-    // 不顯示 label
-    label: '',
-    hiddenLabel: true
-  }
-})
+const bindAttributes = {
+  ...props,
+  // 不驗證
+  isValidate: false,
+  hiddenErrorMessage: true,
+  required: false,
+  // 不顯示 label
+  label: '',
+  hiddenLabel: true
+}
 
 // 條件搜尋
 const isActiveConditions = computed({
@@ -137,7 +134,7 @@ const isActiveConditions = computed({
     if (!value) {
       emit('change', inpuValue.value)
     }
-    emit('update:activeConditions', value)
+    emit('update:active-conditions', value)
 
     await nextTick()
     isVisible.value = true
@@ -273,16 +270,11 @@ const isDot = computed(() => {
 
 // 事件
 const onEvent = {
-  focus: (e: FocusEvent): void => {
-    emit('focus', e)
-  },
+  focus: (e: FocusEvent): void => emit('focus', e),
   clear: (): void => emit('clear'),
   blur: (e: FocusEvent): void => {
     emit('blur', e)
-
-    if (!isActiveConditions.value) {
-      onVisibleClick(false)
-    }
+    if (!isActiveConditions.value) onVisibleClick(false)
   },
   change: (value: string | number): void => emit('change', value),
   input: (value: string | number): void => emit('input', value),
@@ -291,32 +283,13 @@ const onEvent = {
   select: (value: string | number): void => emit('select', value)
 }
 
-// slot
-const slots = useSlots()
-const slotList = computed(() => {
-  return [
-    'prepend',
-    'append',
-    'prefix',
-    'suffix',
-    'header',
-    'footer',
-    'empty',
-    'default',
-    'range-separator',
-    'option'
-  ].filter(slotName => {
-    return hasOwnProperty(slots, slotName)
-  })
-})
-
 defineExpose({
   async validate() {
     await nextTick()
     return { valid: true }
   },
   getDom() {
-    return document.querySelector(`.${scopedId}`)
+    return document.querySelector(`div[class*="${scopedId}"]`)
   }
 })
 
@@ -329,10 +302,23 @@ const popverWidth = computed(() => {
   return isActiveConditions.value ? 500 : 350
 })
 
+// slot
+const slots = useSlots()
+const slotList = computed(() => {
+  return [
+    'prepend', 'append', 'prefix', 'suffix',
+    'options', 'header', 'footer',
+    'label', 'tag', 'loading', 'empty',
+    'range', 'prev', 'next', 'prev', 'next',
+    'default'
+  ].filter(slotName => {
+    return !!slots[slotName]
+  })
+})
 </script>
 
 <template>
-  <div :class="`CustomSearch_${version} ${scopedId}`" class="__search-wrapper">
+  <div :class="scopedId" class="__search-wrapper">
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="__search-title">
@@ -358,17 +344,17 @@ const popverWidth = computed(() => {
             <div class="__search-input">
               <CustomInput
                 ref="iconSearchRef"
-                v-model="inpuValue"
                 v-bind="bindAttributes"
                 v-on="onEvent"
+                v-model="inpuValue"
                 :disabled="!isActive"
               >
                 <template
                   v-for="slotName in slotList"
                   :key="`icon-search-${slotName}-${scopedId}`"
-                  #[slotName]
+                  #[slotName]="scope"
                 >
-                  <slot :name="slotName"></slot>
+                  <slot :name="slotName" v-bind="scope"></slot>
                 </template>
               </CustomInput>
 
@@ -430,9 +416,9 @@ const popverWidth = computed(() => {
                 />
 
                 <CustomButton
+                  :label="i18nTranslate('submit', defaultModuleType)"
                   type="primary"
                   plain
-                  :label="i18nTranslate('submit', defaultModuleType)"
                   icon-name="check"
                   icon-move="scale"
                   @click="submit"
@@ -461,13 +447,19 @@ const popverWidth = computed(() => {
         <CustomSwitch v-model="isActive" />
       </div>
 
-      <CustomInput ref="searchRef" v-model="inpuValue" v-bind="bindAttributes" v-on="onEvent">
+      <CustomInput
+        ref="searchRef"
+        v-bind="bindAttributes"
+        v-on="onEvent"
+        v-model="inpuValue"
+        :disabled="!isActive"
+      >
         <template
           v-for="slotName in slotList"
           :key="`search-${slotName}-${scopedId}`"
-          #[slotName]
+          #[slotName]="scope"
         >
-          <slot :name="slotName"></slot>
+          <slot :name="slotName" v-bind="scope"></slot>
         </template>
       </CustomInput>
     </template>

@@ -10,9 +10,9 @@ import {
   FormSelectTree,
   FormDatePicker,
   FormTimePicker,
-  FormCheckbox,
-  FormRadio,
   FormAutocomplete,
+  FormRadio,
+  FormCheckbox,
   FormOperator,
   CustomText
 } from '@/components' // 系統組件
@@ -123,6 +123,8 @@ const inputValue = computed({
   }
 })
 
+const validateKey = `${props.__key__}-${scopedId}`
+
 /**
  * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
  * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
@@ -133,9 +135,9 @@ const {
   errorMessage, // 錯誤訊息
   value: validateValue, // 值
   handleChange, // 換值
-  handleReset, // 重置
+  handleReset: resetValidate, // 重置
   validate: __veeValidate__ // 驗證
-} = useField<any>(`${props.validateKey}-${scopedId}`, validateField, {
+} = useField<any>(validateKey, validateField, {
   validateOnValueUpdate: true,
   initialValue: props.modelValue,
   modelPropName: 'modelValue'
@@ -192,11 +194,11 @@ const onEvent = {
 const inputRef = ref()
 
 defineExpose({
-  key: `${props.validateKey}-${scopedId}`,
+  key: validateKey,
   value: inputValue.value,
-  handleReset: () => {
+  resetValidate: () => {
     validateCount.value = 0
-    handleReset()
+    resetValidate()
   },
   validate: veeValidate,
   getDom: () => document.querySelector(`[class*="input-${scopedId}"]`),
@@ -269,11 +271,6 @@ const getTextValue = computed(() => {
   }
 })
 
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
-
 const renderInput = computed(() => {
   switch (props.type) {
     case 'text':
@@ -300,12 +297,12 @@ const renderInput = computed(() => {
     case 'time':
     case 'timerange':
       return FormTimePicker
-    case 'checkbox':
-      return FormCheckbox
-    case 'radio':
-      return FormRadio
     case 'autocomplete':
       return FormAutocomplete
+    case 'radio':
+      return FormRadio
+    case 'checkbox':
+      return FormCheckbox
     case 'operator':
       return FormOperator
     default:
@@ -314,6 +311,11 @@ const renderInput = computed(() => {
   }
 })
 
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
 </script>
 
 <template>
@@ -449,9 +451,9 @@ div[class*="__CustomInput"] {
       @include form-success(FormDatePicker);
       @include form-success(FormTimePicker);
       @include form-success(FormAutocomplete);
-      @include form-success(FormOperator);
-      @include form-success(FormCheckbox);
       @include form-success(FormRadio);
+      @include form-success(FormCheckbox);
+      @include form-success(FormOperator);
 
       &.validate-error {
         @include form-error(FormInput);
@@ -461,9 +463,9 @@ div[class*="__CustomInput"] {
         @include form-error(FormDatePicker);
         @include form-error(FormTimePicker);
         @include form-error(FormAutocomplete);
-        @include form-error(FormOperator);
-        @include form-error(FormCheckbox);
         @include form-error(FormRadio);
+        @include form-error(FormCheckbox);
+        @include form-error(FormOperator);
       }
     }
 

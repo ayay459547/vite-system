@@ -860,7 +860,7 @@ onMounted(() => {
             :resizing-key="scope.column.key"
           >
             <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
-              <label>{{ i18nTranslate(scope?.column?.i18nLabel ?? scope.label) }}</label>
+              <label>{{ i18nTranslate(scope?.column?.i18nLabel ?? scope?.column?.label) }}</label>
             </slot>
           </div>
 

@@ -1,6 +1,6 @@
 # CustomInput API
-__deprecated__ vue(tsx)寫法, 由於多定義額外的類型, 所以廢棄
-統一使用 template 寫法, 以方便維護
+CustomInput_1.0.0 vue(tsx)寫法
+CustomInput_2.0.0 統一使用 template 寫法, 以方便維護
 
 ### 使用範例
 

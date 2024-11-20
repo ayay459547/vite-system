@@ -156,6 +156,10 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
+div[class*="FormSelectV2"] {
+  width: 100%;
+  height: fit-content;
+}
 .search-more {
   color: inherit;
   opacity: 0.5;

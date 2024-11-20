@@ -134,6 +134,10 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+:global(.vxe-table .vxe-table--body-wrapper.body--wrapper) {
+  background-color: transparent !important;
+}
+
 :global(div.vxe-cell) {
   .vxe-cell--title,
   .vxe-cell--label {

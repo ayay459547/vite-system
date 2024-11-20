@@ -37,10 +37,10 @@ export interface FormSetting<T> {
   activeConditions: Record<string, boolean>
   conditions: Record<string, Conditions>
   resetForms: (defaultValue?: Partial<T> | any) => void
+  resetValidate: () => void
   reset: (defaultValue?: Partial<T> | any) => void
   getActiveForms: (isShowEmpty: boolean) => Partial<T>
   validate: () => Promise<Array<any>>
-  handleReset: () => void
   getConditionFilter: () => Conditions
 }
 

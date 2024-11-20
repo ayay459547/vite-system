@@ -10,7 +10,7 @@ export declare namespace Types {
 }
 
 export declare namespace Props {
-  type ModelValue = [Types.OperatorOptions, Types.OperatorValue]
+  type ModelValue = [Types.OperatorOptions, Types.OperatorValue] | any
   type OnlyNumber = boolean
   type Round = number | null
   type Max = number | null
@@ -22,8 +22,10 @@ export declare namespace Props {
 }
 export const props = {
   modelValue: {
-    type: Array as unknown as PropType<Props.ModelValue>,
-    required: true
+    type: Array as PropType<Props.ModelValue>,
+    required: false,
+    default: undefined,
+    description: '綁定值 v-model="..." '
   },
   // 數字
   onlyNumber: {

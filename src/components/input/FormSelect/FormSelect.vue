@@ -100,6 +100,8 @@ const hasSlot = (prop: string): boolean => {
     :tag-type="props.tagType"
     :tag-effect="props.tagEffect"
     :validate-event="props.validateEvent"
+    :offset="props.offset"
+    :show-arrow="props.showArrow"
     :placement="props.placement"
     :fallback-placements="props.fallbackPlacements"
     :max-collapse-tags="props.maxCollapseTags"
@@ -193,6 +195,10 @@ const hasSlot = (prop: string): boolean => {
 </template>
 
 <style lang="scss" scoped>
+div[class*="FormSelect"] {
+  width: 100%;
+  height: fit-content;
+}
 .search-more {
   color: inherit;
   opacity: 0.5;

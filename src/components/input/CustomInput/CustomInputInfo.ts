@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { Placement as ElPlacement } from 'element-plus'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -21,27 +22,9 @@ import { props as formAutocompleteProps } from '@/components/input/FormAutocompl
 import { props as formRadioProps } from '@/components/input/FormRadio/FormRadioInfo'
 import { props as formCheckboxProps } from '@/components/input/FormCheckbox/FormCheckboxInfo'
 
-export const version = '__CustomInput_1.0.0__'
+export const version = '__CustomInput_2.0.0__'
 
-export declare namespace Types {
-  type InputType = string
-    | 'text'
-    | 'number'
-    | 'textarea'
-    | 'password'
-    | 'select'
-    | 'select-tree'
-    | 'select-v2'
-    | 'checkbox'
-    | 'radio'
-    | 'autocomplete'
-    | 'operator'
-    | FormDatePickerProps.Type
-    | FormTimePickerProps.Type
-
-  type InputShortcuts = FormDatePickerProps.Shortcuts
-  type InputFetchSuggestions = FormAutocompleteProps.FetchSuggestions
-}
+export declare namespace Types {}
 
 export declare namespace Props {
   type ModelValue = any
@@ -63,8 +46,14 @@ export declare namespace Props {
   type Text = boolean
   type I18nModule = ScopeKey
   type I18nLabel = string
+  type __key__ = string
 
-  type Type = Types.InputType
+  type Type = string
+    | 'text' | 'number' | 'textarea' | 'password'
+    | 'select' | 'select-tree' | 'select-v2'
+    | 'checkbox' | 'radio' | 'autocomplete' | 'operator'
+    | FormDatePickerProps.Type
+    | FormTimePickerProps.Type
   type Clearable = boolean
   type Disabled = boolean
   type Placeholder = string
@@ -90,7 +79,7 @@ export declare namespace Props {
 
   type Format = string
   type ValueFormat = string
-  type Shortcuts = Types.InputShortcuts[]
+  type Shortcuts = FormDatePickerProps.Shortcuts
 
   type IsRange = boolean
   type RangeSeparator = string
@@ -99,10 +88,13 @@ export declare namespace Props {
 
   type ValueKey = string
   type FitInputWidth = boolean
-  type FetchSuggestions = Types.InputFetchSuggestions
+  type FetchSuggestions = FormAutocompleteProps.FetchSuggestions
+
+  type Placement = ElPlacement
+  type ShowArrow = boolean
 }
 
-const custom = {
+const customProps = {
   modelValue: {
     type: [Array, String, Number, Boolean, null, undefined] as PropType<Props.ModelValue>,
     required: true,
@@ -115,16 +107,6 @@ const custom = {
     description: `
       是否為驗證輸入框
       會引響高度 部分元素是否顯示`
-  },
-  validateKey: {
-    type: String as PropType<Props.ValidateKey>,
-    required: false,
-    default: 'field',
-    description: `
-      驗證用的 key 值
-      useField 綁定用
-      會以 class 綁定在 dom
-    `
   },
   direction: {
     type: String as PropType<Props.Direction>,
@@ -149,39 +131,6 @@ const custom = {
     required: false,
     default: false,
     description: '是否隱藏驗證錯誤訊息'
-  },
-  round: {
-    type: [Number, null] as PropType<Props.Round>,
-    required: false,
-    default: null,
-    description: `
-      四捨五入 取小數點到第幾位`
-  },
-  floor: {
-    type: [Number, null] as PropType<Props.Floor>,
-    required: false,
-    default: null,
-    description: `
-      無條件捨去 取小數點到第幾位`
-  },
-  ceil: {
-    type: [Number, null] as PropType<Props.Ceil>,
-    required: false,
-    default: null,
-    description: `
-      無條件進位 取小數點到第幾位`
-  },
-  max: {
-    type: [Number, null] as PropType<Props.Max>,
-    required: false,
-    default: null,
-    description: '最大值'
-  },
-  min: {
-    type: [Number, null] as PropType<Props.Min>,
-    required: false,
-    default: null,
-    description: '最小值'
   },
   required: {
     type: Boolean as PropType<Props.Required>,
@@ -222,6 +171,12 @@ const custom = {
       提供翻譯檔參照用的 i18nLabel
       翻譯結果有效時會把原先的 label 替換掉
     `
+  },
+  __key__: {
+    type: String as PropType<Props.__key__>,
+    required: false,
+    default: undefined,
+    description: 'validateKey 識別驗證的key'
   }
 }
 
@@ -239,7 +194,7 @@ export const props = {
   type: {
     type: String as PropType<Props.Type>,
     required: false,
-    default: undefined,
+    default: 'text',
     description: '輸入框類型'
   },
   name: {
@@ -248,7 +203,37 @@ export const props = {
     default: undefined,
     description: '原生 name 屬性'
   },
-  ...custom
+  format: {
+    type: String as PropType<Props.Format>,
+    required: false,
+    default: undefined,
+    description: `
+      顯示格式化
+      https://day.js.org/docs/en/display/format#list-of-all-available-formats
+    `
+  },
+  valueFormat: {
+    type: String as PropType<Props.ValueFormat>,
+    required: false,
+    default: undefined,
+    description: `
+      資料格式化
+      https://day.js.org/docs/en/display/format#list-of-all-available-formats
+    `
+  },
+  placement: {
+    type: String as PropType<Props.Placement>,
+    required: false,
+    default: undefined,
+    description: '下拉框出現的位置'
+  },
+  showArrow: {
+    type: Boolean as PropType<Props.ShowArrow>,
+    required: false,
+    default: undefined,
+    description: '下拉式選單是否顯示箭頭'
+  },
+  ...customProps
 }
 
 export declare namespace Emits {}

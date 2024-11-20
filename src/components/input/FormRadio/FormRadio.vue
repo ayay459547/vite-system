@@ -52,7 +52,7 @@ const getStyle = (isSelected: boolean, color?: string) => {
     <component
       v-for="item in props.options"
       :key="`radio-${item.value}-${scopedId}`"
-      :is="props.radioType !== 'radio' ? ElRadio : ElRadioButton"
+      :is="props.radioType !== 'button' ? ElRadio : ElRadioButton"
       v-bind="item"
     >
       <div :style="getStyle(inputValue === item.value, item?.color)">
@@ -76,7 +76,7 @@ div[class*="FormRadio"] {
   :deep(.el-radio) {
     margin-right: 16px;
 
-    input[type="radio" i] {
+    input[type="radio"] i {
       margin: 3px 3px 0px 5px;
     }
   }

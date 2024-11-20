@@ -306,7 +306,7 @@ export const props = {
   showArrow: {
     type: Boolean as PropType<Props.ShowArrow>,
     required: false,
-    default: false,
+    default: true,
     description: '下拉式選單是否顯示箭頭'
   },
   placement: {

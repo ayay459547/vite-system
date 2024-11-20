@@ -22,9 +22,120 @@ import type {
   SimpleTableSetting
   // SimpleTableColumnsItem
 } from '@/declare/columnSetting'
+
 import { getColumnSetting } from '@/lib/lib_idb'
 import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty, message } from '@/lib/lib_utils' // 工具
 import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
+
+/**
+ * @author Caleb
+ * @description 取得單一欄位所需資料
+ * @param {Object} column 欄位資料
+ * @param {Object} options 選項
+ *                 type: 類型 ex: table, form, filter
+ *                 key
+ * @param {Object} refMap 設定輸入框的ref (call by reference)
+ * @returns {Object}
+ */
+const getColumnData = (
+  column: Record<string, any>,
+  options: { type: string, key: string },
+  refMap: Record<string, any>
+): Record<string, any> => {
+  const { type, key } = options
+
+  let _column: any = {}
+  for (const attrKey in column) {
+    // 取得所有非物件類型的屬性
+    const attrValue = column[attrKey]
+    if (typeof attrValue !== 'object') {
+      _column[attrKey] = column[attrKey]
+    }
+  }
+  // 設定 指定類型下的所有屬性
+  _column = {
+    ..._column,
+    ...(column[type] ?? {})
+  }
+
+  // 子欄位
+  const _columns: any[] = []
+  if (!isEmpty(_column?.children)) {
+    object_forEach(_column?.children, (subClumn: Record<string, any>, subKey: string) => {
+      _columns.push(getColumnData(
+        { ...subClumn, __parentKey__: key },
+        { type, key: subKey },
+        refMap
+      ))
+    })
+  }
+
+  // 是否為操作用欄位 ex: 編輯/刪除
+  const _isOperations = _column?.isOperations ?? false
+
+  // 確保不要重複
+  const __checkDomSet__ = new Set()
+  return {
+    // 通用
+    ref: (el: InputRefItem) => {
+      if (
+        el &&
+        !__checkDomSet__.has(el) &&
+        typeof el?.getDom === 'function' // CustomInput
+      ) {
+        const validateKey = getUuid()
+        refMap[validateKey] = el
+        __checkDomSet__.add(el)
+      }
+      return el
+    },
+    key: key,
+    __key__: key,
+    label: _column?.label,
+    i18nLabel: _column?.i18nLabel,
+    i18nModule: _column?.i18nModule,
+
+    // CustomTable
+    prop: _column?.prop ?? key,
+    slotKey: _column?.slotKey ?? key,
+    resizable: _column?.resizable ?? true,
+    isOperations: _isOperations,
+    isShow: _column?.isShow ?? true,
+    columns: _columns,
+
+    // element ui 單排用
+    sortable: !_isOperations ? (_column?.sortable ?? false) : false,
+    // 專案用 多排
+    isSorting: !_isOperations ? (_column?.isSorting ?? true) : false, // 是否顯示排序
+    order: _column?.order ?? 'none', // ascending | descending | none
+    orderIndex: _column?.orderIndex ?? -1,
+
+    // VxeTable > VxeColumn
+    title: _column?.label ?? '',
+
+    // CustomInput
+    type: _column?.type ?? 'text', // 輸入框類型
+    default: _column?.default ?? null, // 預設值
+    isValidate: _column?.isValidate ?? true, // 是否需要驗證
+    required: _column?.required ?? false, // 是否必填
+    clearable: _column?.clearable ?? true, // 是否可清除
+    validate: _column?.validate ?? [], // 驗證類型 lib_validate
+
+    // CustomSearch
+    isCondition: _column?.isCondition ?? false, // 進階搜尋
+
+    // 其他
+    ..._column
+  }
+}
+
+// 確認是否有資料
+const checkColumns = (resColumns: any, columns: any, type: string) => {
+  if (isEmpty(resColumns)) {
+    systemLog(columns, 'table')
+    tipLog('無欄位資料', ['檢查 columns.ts 中的 欄位的 key', `傳入 type 值 => ${type}`])
+  }
+}
 
 /**
  * @author Caleb
@@ -36,124 +147,80 @@ import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
  * @returns {Ojbect}
  */
 export const useFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
+  // 欄位屬性
   const resColumns = {}
+  // 預設欄位資料
+  const __defaultValue__ = {}
+
   // 輸入框資料
   const resForms = reactive<Record<string, any>>({})
   // 搜尋: 是否啟用
   const resActiveForms = reactive<Record<string, boolean>>({})
 
-  // 搜尋: 是否啟用 多條件
+  // 進階搜尋: 是否啟用
   const resActiveConditions = reactive<Record<string, boolean>>({})
-
-  // 搜尋: 多條件
+  // 進階搜尋: 多條件
   const resConditions = reactive<Record<string, Conditions>>({})
 
   // ref
   const refMap = shallowReactive<Record<string, any>>({})
 
-  const getColumnData = (
-    column: Record<string, any>,
-    type: string,
-    key: string
-  ): Record<string, any> => {
-    return {
-      ref: (el: InputRefItem) => {
-        if (el) {
-          refMap[key] = el
-        }
-        return el
-      },
-      key,
-      slotKey: key,
-      type: 'text',
-      isValidate: true,
-      validateKey: key,
-      clearable: true,
-      default: null,
-      validate: [],
-      required: false,
-      resizable: true,
-      showOverflowTooltip: false,
-      label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
-      i18nModule: column?.i18nModule,
-      // 條件搜尋
-      isCondition: column?.isCondition ?? false,
-      ...column[type]
-    }
-  }
-
-  const defaultValue = {}
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, type, key)
+      const temp = getColumnData(column, { type, key }, refMap)
       resColumns[key] = temp
+      __defaultValue__[key] = temp?.default ?? null
 
-      resForms[key] = temp.default
-
+      resForms[key] = __defaultValue__[key]
       resActiveForms[key] = true
 
       resActiveConditions[key] = false
-
       resConditions[key] = []
-
-      defaultValue[key] = temp.default
     }
   })
 
-  if (isEmpty(resColumns)) {
-    systemLog(columns, 'table')
-    tipLog('無欄位資料', ['檢查 columns.ts 中的 欄位的 key', `傳入 type 值 => ${type}`])
+  // 資料 reset
+  const resetForms = (defaultValue?: any) => {
+    object_forEach(resForms, (value: any, key: string) => {
+      if (typeof defaultValue === 'object' && hasOwnProperty(defaultValue, key)) {
+        resForms[key] = defaultValue[key] ?? __defaultValue__[key]
+      } else {
+        resForms[key] = __defaultValue__[key]
+      }
+    })
   }
 
+  // 驗證 reset
+  const resetValidate = () => {
+    object_forEach(refMap, (input: InputRefItem) => {
+      if (typeof input?.resetValidate !== 'function') return
+      input.resetValidate()
+    })
+  }
+
+  checkColumns(resColumns, columns, type)
   return {
     refMap,
-    defaultValue: defaultValue as T,
+    defaultValue: __defaultValue__ as T,
     columns: resColumns,
     forms: resForms as T,
     activeForms: resActiveForms,
     activeConditions: resActiveConditions,
     conditions: resConditions,
-    // 驗證不會 reset
-    resetForms: (defaultValue?: Partial<T> | any) => {
-      object_forEach(resForms, (value: any, key: string) => {
-        resForms[key] = resColumns[key]?.default ?? null
-        if (
-          !isEmpty(defaultValue) &&
-          hasOwnProperty(defaultValue, key) &&
-          !isEmpty(defaultValue[key])
-        ) {
-          resForms[key] = defaultValue[key]
-        }
-      })
-    },
-    // 驗證也會 reset
-    reset: (defaultValue?: Partial<T> | any) => {
-      object_forEach(resForms, (value: any, key: string) => {
-        resForms[key] = resColumns[key]?.default ?? null
-        if (
-          !isEmpty(defaultValue) &&
-          hasOwnProperty(defaultValue, key) &&
-          !isEmpty(defaultValue[key])
-        ) {
-          resForms[key] = defaultValue[key]
-        }
-
-        resActiveForms[key] = true
-
-        if (typeof refMap[key]?.handleReset === 'function') {
-          refMap[key].handleReset()
-        }
-      })
+    resetForms,
+    resetValidate,
+    // 資料, 驗證 reset
+    reset: (defaultValue?: any) => {
+      resetForms(defaultValue)
+      resetValidate()
     },
     getActiveForms: (isShowEmpty: boolean = false) => {
       return object_filter(resForms, (value: any, key: string) => {
-        if (isShowEmpty) {
-          return resActiveForms[key]
-        }
+        if (isShowEmpty) return resActiveForms[key]
         return resActiveForms[key] && !isEmpty(value)
       })
     },
+    // 驗證
     validate: async (): Promise<any[]> => {
       const validateList = []
       const validateInput = []
@@ -162,18 +229,13 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       const errorList = []
 
       object_forEach(refMap, (input: InputRefItem) => {
-        const { key, value, validate, getDom } = input
+        if (typeof input?.getDom !== 'function') return
         // 只用有顯示的 input 才會被驗證
-        const el = getDom()
+        const el = input.getDom()
+        const { key, value, getDom } = input
         if (!isEmpty(el)) {
-          validateList.push(validate())
-          validateInput.push({
-            key,
-            value,
-            input,
-            el,
-            getDom
-          })
+          validateList.push(input.validate())
+          validateInput.push({ key, value, input, el, getDom })
         }
       })
 
@@ -210,13 +272,6 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
       })
     },
-    handleReset: () => {
-      object_forEach(resForms, (value: any, key: string) => {
-        if (typeof refMap[key]?.handleReset === 'function') {
-          refMap[key].handleReset()
-        }
-      })
-    },
     // 取得多條件搜尋的資訊
     getConditionFilter: () => {
       return object_reduce(resConditions, (res: Conditions, value: any, key: string) => {
@@ -248,10 +303,25 @@ export const useFormListSetting = <T>(
   type: string,
   initData: Array<any> = []
 ): FormListSetting<T> => {
+  // 欄位屬性
   const resColumns = {}
+  // 預設欄位資料
+  const __defaultValue__ = {}
+
+  // ref
   const refMap = shallowReactive<Record<string, any>>({})
+
+  object_forEach(columns, (column: Record<string, any>, key: string) => {
+    if (hasOwnProperty(column, type)) {
+      const temp = getColumnData(column, { type, key }, refMap)
+      resColumns[key] = temp
+      __defaultValue__[key] = temp?.default ?? null
+    }
+  })
+
+  // 列表資料
   const formList = ref<Array<T>>([])
-  const _initData = initData.map(item => {
+  const __initData__ = initData.map(item => {
     const rowKey = getUuid()
     return {
       id: rowKey,
@@ -260,56 +330,31 @@ export const useFormListSetting = <T>(
       __key__: rowKey
     }
   })
+  formList.value.push(...__initData__)
 
-  const getColumnData = (
-    column: Record<string, any>,
-    type: string,
-    key: string
-  ): Record<string, any> => {
-    return {
-      ref: (el: InputRefItem) => {
-        if (el) {
-          const validateKey = getUuid()
-          refMap[validateKey] = el
+  // 移除不存在的 input ref
+  const delRemoveInput = () => {
+    // event loop 確保最後執行
+    setTimeout(() => {
+      object_forEach(refMap, (input: InputRefItem, mapKey: string) => {
+        if (typeof input?.getDom !== 'function') return
+        const el = input.getDom()
+        if (isEmpty(el)) {
+          delete refMap[mapKey]
         }
-      },
-      key,
-      type: 'text',
-      isValidate: true,
-      validateKey: key,
-      clearable: true,
-      default: null,
-      validate: [],
-      required: false,
-      resizable: true,
-      showOverflowTooltip: false,
-      label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
-      i18nModule: column?.i18nModule,
-      ...column[type]
-    }
+      })
+    }, 0)
   }
 
-  const defaultValue = {}
-  object_forEach(columns, (column: Record<string, any>, key: string) => {
-    if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, type, key)
-      resColumns[key] = temp
-
-      defaultValue[key] = temp.default
-    }
-  })
-
-  formList.value.push(..._initData)
-
+  checkColumns(resColumns, columns, type)
   return {
     refMap,
-    defaultValue: defaultValue as T,
+    defaultValue: __defaultValue__ as T,
     columns: resColumns as Record<string, any>,
     forms: formList as Ref<Array<T>>,
     reset: () => {
       formList.value.splice(0)
-      formList.value.push(..._initData)
+      formList.value.push(...__initData__)
     },
     validate: async (): Promise<any[]> => {
       const validateList = []
@@ -318,23 +363,14 @@ export const useFormListSetting = <T>(
       const successList = []
       const errorList = []
 
-      const checkRepeatSet = new Set()
-      object_forEach(refMap, (input: InputRefItem, mapKey: string) => {
-        const { key, value, validate, getDom } = input
-        const el = getDom()
-        if (checkRepeatSet.has(el) || el === null) {
-          delete refMap[mapKey]
-        } else {
-          checkRepeatSet.add(el)
-
-          validateList.push(validate())
-          validateInput.push({
-            key,
-            value,
-            input,
-            el,
-            getDom
-          })
+      object_forEach(refMap, (input: InputRefItem) => {
+        if (typeof input?.getDom !== 'function') return
+        // 只用有顯示的 input 才會被驗證
+        const el = input.getDom()
+        const { key, value, getDom } = input
+        if (!isEmpty(el)) {
+          validateList.push(input.validate())
+          validateInput.push({ key, value, input, el, getDom })
         }
       })
 
@@ -377,7 +413,7 @@ export const useFormListSetting = <T>(
       const newData = {
         id: rowKey,
         key: rowKey,
-        ...defaultValue,
+        ...__defaultValue__,
         ...value,
         __key__: rowKey
       } as any
@@ -387,10 +423,12 @@ export const useFormListSetting = <T>(
     },
     remove: (rowIndex: number): any | undefined => {
       const removeData = formList.value.splice(rowIndex, 1)
-      return removeData[0]
+      delRemoveInput()
+      return Array.isArray(removeData) ? removeData[0] : null
     },
     clear: () => {
       formList.value.splice(0)
+      delRemoveInput()
     }
   }
 }
@@ -416,10 +454,7 @@ export const useTableSetting = (
     settingKey,
     page = 1,
     size = 100,
-    sort = {
-      key: null,
-      order: null
-    },
+    sort = { key: null, order: null },
     isSorting = false,
     isHiddenExcel = false,
     isHiddenColumnSetting = false,
@@ -428,64 +463,11 @@ export const useTableSetting = (
     i18nModule = defaultModuleType
   } = options
 
-  // 設定 table 用的 column
-  const getChildrenData = (columns: Record<string, any>, parentKey: string): Array<any> => {
-    const resChildren = []
-
-    object_forEach(columns, (child: Record<string, any>, childkey: string) => {
-      const _isOperations = child?.isOperations ?? false
-      resChildren.push({
-        key: childkey,
-        prop: childkey,
-        slotKey: childkey,
-        label: child?.label ?? '',
-        i18nLabel: child?.i18nLabel ?? (child?.label ?? childkey),
-        title: child?.label ?? '',
-        minWidth: 150,
-        // element ui 單排用
-        sortable: !_isOperations,
-        // 專案用 多排
-        isSorting: !_isOperations ? (child?.isSorting ?? true) : false, // 是否顯示排序
-        order: child?.isSorting ?? 'none', // ascending | descending | none
-        //
-        parentKey,
-        ...child
-      })
-    })
-    return resChildren
-  }
-  const getColumnData = (
-    column: Record<string, any>,
-    type: string,
-    key: string
-  ): Record<string, any> => {
-    const _isOperations = column[type]?.isOperations ?? false
-
-    return {
-      key,
-      prop: key,
-      slotKey: key,
-      isOperations: _isOperations,
-      label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? (column?.label ?? key),
-      title: column?.label ?? '',
-      isShow: column?.isShow ?? true,
-      minWidth: 150,
-      // element ui 單排用
-      sortable: !_isOperations ? (column[type]?.sortable ?? false) : false,
-      // 專案用 多排
-      isSorting: !_isOperations ? (column[type]?.isSorting ?? true) : false, // 是否顯示排序
-      // 專案用 多排 預設值
-      order: column[type]?.order ?? 'none', // ascending | descending | none
-      orderIndex: column[type]?.orderIndex ?? -1,
-      columns: getChildrenData(column[type]?.children ?? {}, key),
-      ...column[type]
-    }
-  }
   const resColumns = []
+
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, type, key)
+      const temp = getColumnData(column, { type, key }, {})
       if (temp.children ?? false) {
         delete temp.children
       }
@@ -498,23 +480,14 @@ export const useTableSetting = (
 
   // excel header 翻譯
   const getI18nTranslate = () => {
-    if (isHiddenExcel)
-      return {
-        i18nTranslate: (o: string) => {
-          return o
-        },
-        i18nTest: (o: string) => {
-          return o.length > 0
-        }
-      }
+    if (isHiddenExcel) return {
+      i18nTranslate: (text: string) => text,
+      i18nTest: (text: string) => text.length > 0
+    }
 
     const useHook: UseHook = inject('useHook')
     const { i18nTranslate, i18nTest } = useHook({ i18nModule })
-
-    return {
-      i18nTranslate,
-      i18nTest
-    }
+    return { i18nTranslate, i18nTest }
   }
 
   const { i18nTranslate, i18nTest } = getI18nTranslate()
@@ -605,6 +578,7 @@ export const useTableSetting = (
 
   const _tableRef = ref(null)
 
+  checkColumns(resColumns, columns, type)
   return {
     tableRef: _tableRef,
     tableSetting: {
@@ -613,6 +587,7 @@ export const useTableSetting = (
         if (el) {
           _tableRef.value = el
         }
+        return el
       },
       title,
       i18nTitle,
@@ -719,29 +694,11 @@ export const useSimpleTableSetting = (
   type: string,
   title?: ''
 ): SimpleTableSetting => {
-  // 設定 table 用的 column
-  const getColumnData = (
-    column: Record<string, any>,
-    type: string,
-    key: string
-  ): Record<string, any> => {
-    return {
-      key,
-      prop: key,
-      slotKey: key,
-      minWidth: 150,
-      label: column?.label ?? '',
-      i18nLabel: column?.i18nLabel ?? column?.label ?? key,
-      i18nModule: column?.i18nModule,
-      title: column?.label ?? '',
-      required: false,
-      ...column[type]
-    }
-  }
   const resColumns = []
+
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, type, key)
+      const temp = getColumnData(column, { type, key }, {})
       resColumns.push(temp)
     }
   })
@@ -808,6 +765,8 @@ export const useSimpleTableSetting = (
       a.click()
     })
   }
+
+  checkColumns(resColumns, columns, type)
   return {
     title,
     tableColumns: resColumns,
@@ -825,31 +784,4 @@ export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
   return object_reduce(columns, (prev: Array<string>, curr: any, currKey: string) => {
     return [...prev, currKey]
   }, [])
-}
-
-/**
- * @author Caleb
- * @description 格式化 columns 設定
- * @param {Ojbect} columns
- * @param {String} type 取得 columnSetting 中的類型
- * @param {Function} callback 返回格式
- * @returns {Ojbect} 新的格式 columns
- */
-export const formatColumns = (
-  columns: Record<string, any>,
-  type: string,
-  callback: (column: Record<string, any>, key: string) => Record<string, any>
-): Record<string, any> => {
-  return object_reduce(columns, (res: Record<string, any>, column: Record<string, any>, key: string) => {
-    res[key] = { ...column }
-    const _column = res[key]
-
-    if (hasOwnProperty(column, type)) {
-      const newColumn = callback(column[type], key)
-
-      _column[type] = newColumn ?? column[type]
-    }
-
-    return res
-  }, {})
 }

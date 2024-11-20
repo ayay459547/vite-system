@@ -4,7 +4,7 @@ import type { CustomPopoverProps } from '@/components' // 系統組件
 import { props as inputProps } from '@/components/input/CustomInput/CustomInputInfo'
 import type { Conditions as _Conditions } from '@/declare/columnSetting'
 
-export const version = '1.0.0'
+export const version = '__CustomSearch_1.0.0__'
 
 export declare namespace Types {}
 
@@ -20,6 +20,9 @@ export declare namespace Props {
 }
 
 export const props = {
+  // 輸入框的 props
+  ...inputProps,
+  // custom
   columnId: {
     type: String as PropType<Props.ColumnId>,
     default: '',
@@ -28,12 +31,12 @@ export const props = {
   modelValue: {
     type: [Array, String, Number, Boolean, null, undefined] as PropType<Props.ModelValue>,
     default: false,
-    description: '綁定值 v-model="..." '
+    description: 'v-model="..." '
   },
   active: {
     type: Boolean as PropType<Props.Active>,
     default: true,
-    description: `
+    description: ` v-model:active="..."
       是否啟用
       是: 拿到顯示的值
       否: 拿到 null`
@@ -47,14 +50,14 @@ export const props = {
   activeConditions: {
     type: Boolean as PropType<Props.Active>,
     default: false,
-    description: '是否啟用條件搜尋 checkbox'
+    description: 'v-model:active-conditions="..." , 是否啟用條件搜尋 checkbox'
   },
   conditions: {
     type: Array as PropType<Props.Conditions>,
     default() {
       return []
     },
-    description: '條件搜尋列表'
+    description: 'v-model:conditions="..." , 條件搜尋列表'
   },
   width: {
     type: [String, Number] as PropType<Props.Width>,
@@ -73,9 +76,7 @@ export const props = {
     required: false,
     default: false,
     description: '是否只顯示搜尋按鈕'
-  },
-  // 輸入框的 props
-  ...inputProps
+  }
 }
 
 export declare namespace Emits {}

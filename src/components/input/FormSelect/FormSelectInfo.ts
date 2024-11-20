@@ -57,6 +57,8 @@ export declare namespace Props {
   type TagType = 'success' | 'info' | 'warning' | 'danger'
   type TagEffect = 'light' | 'dark' | 'plain'
   type ValidateEvent = boolean
+  type Offset = number
+  type ShowArrow = boolean
   type Placement = ElPlacement
   type FallbackPlacements = Array<ElPlacement>
   type MaxCollapseTags = number
@@ -291,6 +293,18 @@ export const props = {
     required: false,
     default: false,
     description: '輸入時是否觸發表單的驗證'
+  },
+  offset: {
+    type: Number as PropType<Props.Offset>,
+    required: false,
+    default: 12,
+    description: '下拉選單偏移量'
+  },
+  showArrow: {
+    type: Boolean as PropType<Props.ShowArrow>,
+    required: false,
+    default: true,
+    description: '下拉式選單是否顯示箭頭'
   },
   placement: {
     type: String as PropType<Props.Placement>,

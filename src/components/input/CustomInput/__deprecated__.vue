@@ -162,6 +162,8 @@ const inputValue = computed({
   }
 })
 
+const validateKey = `${props.__key__}-${scopedId}`
+
 /**
  * https://vee-validate.logaretm.com/v4/guide/composition-api/validation/
  * 如果您useField在輸入組件中使用，您不必自己管理它，它會自動為您完成。
@@ -172,9 +174,9 @@ const {
   errorMessage, // 錯誤訊息
   value: validateValue, // 值
   handleChange, // 換值
-  handleReset, // 重置
+  handleReset: resetValidate, // 重置
   validate: _validate // 驗證
-} = useField<any>(props.validateKey, validateField, {
+} = useField<any>(validateKey, validateField, {
   validateOnValueUpdate: true,
   initialValue: props.modelValue,
   modelPropName: 'modelValue'
@@ -257,7 +259,7 @@ const validateRes = computed<string>(() => {
 
 const _domValidateKey = ref<string>('')
 const domValidateKey = computed(() => {
-  return _domValidateKey.value.length > 0 ? _domValidateKey.value : props.validateKey
+  return _domValidateKey.value.length > 0 ? _domValidateKey.value : validateKey
 })
 
 const inputRef = ref()
@@ -270,11 +272,11 @@ const autocompleteRef = ref()
 const operatorRef = ref()
 
 defineExpose({
-  key: props.validateKey,
+  key: validateKey,
   value: inputValue.value,
-  handleReset: () => {
+  resetValidate: () => {
     validateCount.value = 0
-    handleReset()
+    resetValidate()
   },
   validate,
   setvalidateKey(validateKey: string) {
