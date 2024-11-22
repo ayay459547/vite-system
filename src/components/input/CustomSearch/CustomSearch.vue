@@ -240,6 +240,8 @@ const submit = () => {
       emit('update:conditions', getProxyData(conditionList.value))
       emit('submit')
       onVisibleClick(!isVisible.value)
+    }).catch(e => {
+      console.log('CustomSearch submit: ', e)
     })
   }
 }

@@ -132,7 +132,7 @@ export const props = {
   rangeSeparator: {
     type: String as PropType<Props.RangeSeparator>,
     required: false,
-    default: '-',
+    default: '~',
     description: '選擇範圍時的分隔符'
   },
   format: {
@@ -222,13 +222,18 @@ export const props = {
   emptyValues: {
     type: Array as PropType<Props.EmptyValues>,
     required: false,
-    default: undefined,
+    default: () => {
+      return [
+        undefined, null, '', [],
+        [undefined, undefined], [null, null], ['', '']
+      ]
+    },
     description: '組件的空值配置 參考 Config Provider'
   },
   valueOnClear: {
     type: [String, Number, Boolean, Function] as PropType<Props.ValueOnClear>,
     required: false,
-    default: undefined,
+    default: null,
     description: '組件的空值配置 參考 Config Provider'
   }
 }

@@ -11,6 +11,7 @@ export declare namespace Types {
 
 export declare namespace Props {
   type ModelValue = [Types.OperatorOptions, Types.OperatorValue] | any
+  type Type = string
   type OnlyNumber = boolean
   type Round = number | null
   type Max = number | null
@@ -28,9 +29,11 @@ export const props = {
     description: '綁定值 v-model="..." '
   },
   // 數字
-  onlyNumber: {
-    type: Boolean as PropType<Props.OnlyNumber>,
-    default: false
+  type: {
+    type: String as PropType<Props.Type>,
+    required: false,
+    default: 'text',
+    description: '類型'
   },
   round: {
     type: [Number, null] as PropType<Props.Round>,

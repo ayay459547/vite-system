@@ -374,31 +374,29 @@ export const useFormListSetting = <T>(
         }
       })
 
-      await Promise.all(validateList)
-        .then(resList => {
-          resList.forEach((resItem, resIndex) => {
-            const { errors, valid } = resItem
-            const validateRes = {
-              ...validateInput[resIndex],
-              errors,
-              valid
-            }
+      await Promise.all(validateList).then(resList => {
+        resList.forEach((resItem, resIndex) => {
+          const { errors, valid } = resItem
+          const validateRes = {
+            ...validateInput[resIndex],
+            errors,
+            valid
+          }
 
-            if (valid) {
-              successList.push(validateRes)
-            } else {
-              errorList.push(validateRes)
-            }
-          })
+          if (valid) {
+            successList.push(validateRes)
+          } else {
+            errorList.push(validateRes)
+          }
         })
-        .catch(errors => {
-          message({
-            type: 'error',
-            message: errors,
-            duration: 10000
-          })
-          throw new Error(errors)
+      }).catch(errors => {
+        message({
+          type: 'error',
+          message: errors,
+          duration: 10000
         })
+        throw new Error(errors)
+      })
 
       return new Promise<any[]>((resolve, reject) => {
         if (errorList.length > 0) {

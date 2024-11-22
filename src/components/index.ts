@@ -1,6 +1,5 @@
 import type { Ref } from 'vue'
 // import { defineAsyncComponent } from 'vue'
-import type { ValidationOptions, ValidationResult } from 'vee-validate'
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
 // 通用
@@ -360,12 +359,18 @@ export type {
   Expose as CustomInputExpose
 } from './input/CustomInput/CustomInputInfo'
 export { default as CustomInput } from './input/CustomInput/CustomInput.vue'
+// export const CustomInput = useAsyncComponent(() => import('./input/CustomInput/CustomInput.vue'), 'h1')
 
 export declare interface TempCustomInputExpose {
   key: string
   value: Ref<string>
   resetValidate: () => void
-  validate: (opts?: Partial<ValidationOptions>) => Promise<ValidationResult>
+  validate: () => Promise<{
+    errors: string[]
+    valid: boolean
+    value?: any
+    validateKey?: string
+  }>
   getDom: () => Element
 }
 
@@ -437,6 +442,15 @@ export type {
   Expose as FormInputExpose
 } from './input/FormInput/FormInputInfo'
 export const FormInput = useAsyncComponent(() => import('./input/FormInput/FormInput.vue'), 'h1')
+
+// 棄用 FormInput type='number' 代替
+// export type {
+//   Types as FormNumberTypes,
+//   Props as FormNumberProps,
+//   Emits as FormNumberEmits,
+//   Expose as FormNumberExpose
+// } from './input/FormNumber/FormNumberInfo'
+// export const FormNumber = useAsyncComponent(() => import('./input/FormNumber/FormNumber.vue'), 'h1')
 
 export type {
   Types as FormOperatorTypes,

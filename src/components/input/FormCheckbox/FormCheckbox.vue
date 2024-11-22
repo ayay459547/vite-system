@@ -20,9 +20,7 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:model-value', value)
-  }
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 const bindAttributes = {
@@ -31,7 +29,6 @@ const bindAttributes = {
 }
 
 // event
-const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
 const onGroupChange: Emits.Change<CheckboxGroupValueType> = value => emit('change', value)
 const onChange: Emits.Change<CheckboxValueType> = value => emit('change', value)
 
@@ -48,7 +45,6 @@ const getStyle = (isChecked: boolean, color?: string) => {
         v-model="inputValue"
         :validate-event="false"
         v-bind="bindAttributes"
-        @input="onInput"
         @change="onGroupChange"
       >
         <ElCheckbox
@@ -79,7 +75,6 @@ const getStyle = (isChecked: boolean, color?: string) => {
         v-model="inputValue"
         :validate-event="false"
         v-bind="bindAttributes"
-        @input="onInput"
         @change="onChange"
       >
         <slot name="default">
@@ -97,6 +92,10 @@ div[class*="FormCheckbox"] {
 
   :deep(.el-checkbox) {
     margin-right: 16px;
+
+    &:last-of-type {
+      margin-right: 0px;
+    }
 
     .el-checkbox__label {
       padding-left: 8px;

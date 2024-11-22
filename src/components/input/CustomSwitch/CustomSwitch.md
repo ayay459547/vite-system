@@ -33,7 +33,7 @@ const value = ref(false)
 
 ### Events ( emit )
 
-| 事件名            | 說明       | 傳值類型 |
-| ----------------- | ---------- | -------- |
+| 事件名             | 說明       | 傳值類型 |
+| ------------------ | ---------- | -------- |
 | update:model-value | v-modal 用 | boolean  |
-| change            | 值變化     | boolean  |
+| change             | 值變化     | boolean  |

@@ -30,13 +30,10 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:model-value', value)
-  }
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 // event
-const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
 const onChange: Emits.Change = value => emit('change', value)
 const onBlur: Emits.Blur = e => emit('blur', e)
 const onFocus: Emits.Focus = e => emit('focus', e)
@@ -93,7 +90,6 @@ defineExpose({ focus, blur, handleOpen, handleClose   })
     :tabindex="props.tabindex"
     :empty-values="props.emptyValues"
     :value-on-clear="props.valueOnClear"
-    @input="onInput"
     @change="onChange"
     @blur="onBlur"
     @focus="onFocus"
@@ -102,4 +98,10 @@ defineExpose({ focus, blur, handleOpen, handleClose   })
   ></ElTimePicker>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+div[class*="FormTimePicker"] {
+  width: 100% !important;
+  height: fit-content;
+  border-radius: 4px;
+}
+</style>

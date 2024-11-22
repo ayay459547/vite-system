@@ -527,8 +527,8 @@ const modal = reactive({
                     v-model:active="activeFilter[scope.prop]"
                     v-bind="filterColumn[scope.prop]"
                     :i18n-module="i18nModule"
+                    :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
                     :column-id="scope.prop"
-                    :label="i18nTranslate(scope.column?.i18nLabel, i18nModule)"
                   />
                 </slot>
               </template>

@@ -32,9 +32,7 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:model-value', value)
-  }
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
@@ -147,4 +145,10 @@ const hasSlot = (prop: string): boolean => {
   </ElDatePicker>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+div[class*="FormDatePicker"] {
+  width: 100% !important;
+  height: fit-content;
+  border-radius: 4px;
+}
+</style>

@@ -19,13 +19,10 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:model-value', value)
-  }
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 // event
-const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
 const onChange: Emits.Change = value => emit('change', value)
 
 const getStyle = (isSelected: boolean, color?: string) => {
@@ -46,7 +43,6 @@ const getStyle = (isSelected: boolean, color?: string) => {
     :aria-label="props.ariaLabel"
     :id="props.id"
     :name="props.name"
-    @input="onInput"
     @change="onChange"
   >
     <component

@@ -99,7 +99,7 @@ const onInputEvent = {
 
     let _value = value
     // 數字
-    if (props.onlyNumber) {
+    if (props.type === 'number') {
       // 轉化數字
       if (typeof _value === 'string') {
         _value = Number.parseFloat(_value)
@@ -225,7 +225,7 @@ const hasSlot = (prop: string): boolean => {
     ref="elInputRef"
     v-model="inputValue"
     :class="scopedId"
-    :placeholder="i18nTranslate('pleaseInput')"
+    :placeholder="i18nTranslate('pleaseInput', defaultModuleType)"
     :validate-event="false"
     v-bind="bindAttributes"
     v-on="{...onEvent, ...onInputEvent}"
@@ -235,34 +235,30 @@ const hasSlot = (prop: string): boolean => {
   >
     <!-- 輸入框用 -->
     <template #prepend>
-      <div class="i-prepend">
-        <div class="i-select">
-          <ElSelect
-            v-model="selectValue"
-            :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
-            :validate-event="false"
-            :options="props.options"
-            v-bind="bindAttributes"
-            v-on="{
-              ...onEvent,
-              ...onSelectEvent
-            }"
-          >
-            <ElOption
-              v-for="item in props.options"
-              :key="`operator-${item.value}-${scopedId}`"
-              :label="item.label"
-              :value="item.value"
-            >
-              <template v-if="hasSlot('option')" #options>
-                <slot name="option" :label="item.label" :value="item.value">
-                  {{ item.label }}
-                </slot>
-              </template>
-            </ElOption>
-          </ElSelect>
-        </div>
-      </div>
+      <ElSelect
+        v-model="selectValue"
+        :placeholder="i18nTranslate('pleaseSelect', defaultModuleType)"
+        :validate-event="false"
+        :options="props.options"
+        v-bind="bindAttributes"
+        v-on="{
+          ...onEvent,
+          ...onSelectEvent
+        }"
+      >
+        <ElOption
+          v-for="item in props.options"
+          :key="`operator-${item.value}-${scopedId}`"
+          :label="item.label"
+          :value="item.value"
+        >
+          <template v-if="hasSlot('option')" #options>
+            <slot name="option" :label="item.label" :value="item.value">
+              {{ item.label }}
+            </slot>
+          </template>
+        </ElOption>
+      </ElSelect>
     </template>
 
     <template v-if="hasSlot('append')" #append>
@@ -278,27 +274,21 @@ const hasSlot = (prop: string): boolean => {
   </ElInput>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 div[class*="FormOperator"] {
-  :deep(.el-input--suffix .el-input__wrapper) {
+  width: 100%;
+  height: fit-content;
+
+  .el-input--suffix .el-input__wrapper {
     padding: 2px 12px;
   }
-  :deep(.el-input-group__prepend) {
+  .el-input-group__prepend {
     padding: 0;
-  }
-  :deep(.el-input-group__prepend .el-select) {
-    margin: 0;
-  }
+    max-width: 100px;
+    width: 100%;
 
-  .i {
-    &-prepend {
-      width: 100%;
-      height: 100%;
-    }
-    &-select {
-      width: 100%;
-      max-width: 120px;
-      min-width: 90px !important;
+    .el-select__wrapper {
+      box-shadow: none !important;
     }
   }
 }

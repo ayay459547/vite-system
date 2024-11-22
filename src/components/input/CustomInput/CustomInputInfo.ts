@@ -1,16 +1,8 @@
 import type { PropType } from 'vue'
-import type { Placement as ElPlacement } from 'element-plus'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
-import type {
-  Option,
-  FormInputProps,
-  FormDatePickerProps,
-  FormTimePickerProps,
-  FormAutocompleteProps
-} from '@/components' // 系統組件
 
 import { props as formInputProps } from '@/components/input/FormInput/FormInputInfo'
 import { props as formSelectProps } from '@/components/input/FormSelect/FormSelectInfo'
@@ -28,7 +20,6 @@ export declare namespace Types {}
 
 export declare namespace Props {
   type ModelValue = any
-
   type IsValidate = boolean
   type ValidateKey = string
   type Direction = 'column' | 'row'
@@ -47,51 +38,6 @@ export declare namespace Props {
   type I18nModule = ScopeKey
   type I18nLabel = string
   type __key__ = string
-
-  type Type = string
-    | 'text' | 'number' | 'textarea' | 'password'
-    | 'select' | 'select-tree' | 'select-v2'
-    | 'checkbox' | 'radio' | 'autocomplete' | 'operator'
-    | FormDatePickerProps.Type
-    | FormTimePickerProps.Type
-  type Clearable = boolean
-  type Disabled = boolean
-  type Placeholder = string
-  type Options = Option[]
-
-  type Rows = FormInputProps.Rows
-  type Autosize = FormInputProps.Autosize
-  type Autocomplete = FormInputProps.Autocomplete
-  type Name = FormInputProps.Name
-  type ShowPassword = FormInputProps.ShowPassword
-
-  type Loading = boolean
-  type Remote = boolean
-  type RemoteMethod = Function
-  type RemoteShowSuffix = boolean
-  type Multiple = boolean
-  type MultipleLimit = number
-  type MaxCollapseTags = number
-  type Filterable = boolean
-  type ReserveKeyword = boolean
-  type AllowCreate = boolean
-  type DefaultFirstOption = boolean
-
-  type Format = string
-  type ValueFormat = string
-  type Shortcuts = FormDatePickerProps.Shortcuts
-
-  type IsRange = boolean
-  type RangeSeparator = string
-
-  type Indeterminate = boolean
-
-  type ValueKey = string
-  type FitInputWidth = boolean
-  type FetchSuggestions = FormAutocompleteProps.FetchSuggestions
-
-  type Placement = ElPlacement
-  type ShowArrow = boolean
 }
 
 const customProps = {
@@ -175,12 +121,12 @@ const customProps = {
   __key__: {
     type: String as PropType<Props.__key__>,
     required: false,
-    default: undefined,
+    default: '',
     description: 'validateKey 識別驗證的key'
   }
 }
 
-export const props = {
+const formProps: any = {
   ...formInputProps,
   ...formSelectProps,
   ...formSelectV2Props,
@@ -190,51 +136,45 @@ export const props = {
   ...formAutocompleteProps,
   ...formCheckboxProps,
   ...formRadioProps,
-  // 不同input 有衝突的key
+  // 不同 input 有衝突的key
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<any>,
     required: false,
-    default: 'text',
-    description: '輸入框類型'
+    default: 'text'
   },
   name: {
-    type: [String, Array] as PropType<string | [string, string]>,
+    type: [String, Array] as PropType<any>,
     required: false,
-    default: undefined,
-    description: '原生 name 屬性'
+    default: undefined
   },
   format: {
-    type: String as PropType<Props.Format>,
+    type: String as PropType<any>,
     required: false,
-    default: undefined,
-    description: `
-      顯示格式化
-      https://day.js.org/docs/en/display/format#list-of-all-available-formats
-    `
+    default: undefined
   },
   valueFormat: {
-    type: String as PropType<Props.ValueFormat>,
+    type: String as PropType<any>,
     required: false,
-    default: undefined,
-    description: `
-      資料格式化
-      https://day.js.org/docs/en/display/format#list-of-all-available-formats
-    `
+    default: undefined
   },
   placement: {
-    type: String as PropType<Props.Placement>,
+    type: String as PropType<any>,
     required: false,
-    default: undefined,
-    description: '下拉框出現的位置'
+    default: undefined
   },
   showArrow: {
-    type: Boolean as PropType<Props.ShowArrow>,
+    type: Boolean as PropType<any>,
     required: false,
-    default: undefined,
-    description: '下拉式選單是否顯示箭頭'
+    default: undefined
   },
-  ...customProps
+  step: {
+    type: [String, Number] as PropType<any>,
+    required: false,
+    default: undefined
+  }
 }
+
+export const props = { ...formProps, ...customProps }
 
 export declare namespace Emits {}
 

@@ -326,7 +326,6 @@ const optimizeColumnWidth = (column: any) => {
     // 重新渲染欄位
     initShowColumns({ isLoading: true })
   })
-
   /*
   // 開始計算最適化寬度
   isResizing.value = true

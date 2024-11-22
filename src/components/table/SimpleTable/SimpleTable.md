@@ -1,6 +1,6 @@
 # SimpleTable API
-__deprecated__ vue(h)寫法, 由於可讀性較差, 所以廢棄
-統一使用 template 寫法, 以方便維護
+SimpleTable_1.0.0 vue(h)寫法
+SimpleTable_2.0.0 統一使用 template 寫法, 以方便維護
 
 ### 使用範例
 

@@ -356,13 +356,15 @@ export const props = {
   emptyValues: {
     type: Array as PropType<Props.EmptyValues>,
     required: false,
-    default: undefined,
+    default: () => {
+      return [undefined, null, '']
+    },
     description: '組件的空值配置 參考 Config Provider'
   },
   valueOnClear: {
     type: [String, Number, Boolean, Function] as PropType<Props.ValueOnClear>,
     required: false,
-    default: undefined,
+    default: null,
     description: '組件的空值配置 參考 Config Provider'
   }
 }

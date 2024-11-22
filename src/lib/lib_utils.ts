@@ -3,7 +3,6 @@ import Swal from 'sweetalert2'
 
 import type {
   NotificationOptions,
-  NotificationOptionsTyped,
   NotificationHandle,
   MessageOptions,
   MessageHandler
@@ -216,16 +215,23 @@ export const swal = (options: SweetAlertOptions): Promise<any> => {
  * @returns {NotificationHandle}
  */
 export const notification = (options: Partial<NotificationOptions>): NotificationHandle => {
-  const defaultOPtions = {
-    // 'success' | 'warning' | 'info' | 'error' | ''
-    type: '',
-    icon: '',
-    title: '',
-    message: ''
-  } as Partial<NotificationOptionsTyped>
-
   return ElNotification({
-    ...defaultOPtions,
+    // 預設值
+    title: '',
+    message: '',
+    dangerouslyUseHTMLString: false,
+    type: '', // 'success' | 'warning' | 'info' | 'error' | ''
+    icon: undefined,
+    customClass: '',
+    duration: 4500,
+    position: 'top-right', // 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+    showClose: true,
+    onClose: undefined,
+    onClick: undefined,
+    offset: 0,
+    appendTo: undefined,
+    zIndex: 0,
+    // 設定值
     ...options
   })
 }

@@ -1,70 +1,81 @@
 @use 'sass:color';
 
-$form-danger: #f56c6c;
+$danger-color: #f56c6c;
+$danger-border: 1px solid $danger-color;
 
-@mixin validate-error() {
-  box-shadow: 0 0 0 1px $form-danger inset;
-  background-color: color.adjust($form-danger, $lightness: 20%);
+@mixin validate-error($style) {
+  background-color: color.adjust($danger-color, $lightness: 20%);
+  @if ($style == 'border') {
+    border: $danger-border;
+
+  } @else if ($style == 'border-prepend') {
+    border-top: $danger-border;
+    border-bottom: $danger-border;
+    border-left: $danger-border;
+
+  } @else if ($style == 'border-append') {
+    border-top: $danger-border;
+    border-bottom: $danger-border;
+    border-right: $danger-border;
+
+  // input使用 覆蓋聚焦時的藍色
+  } @else if($style == 'shadow') {
+    box-shadow: 0 0 0 1px $danger-color inset;
+  }
 }
 
 @mixin form-success($type) {
   :deep(div[class*="#{$type}"]) {
-    width: 100%;
-    height: fit-content;
-
-    @if ($type == FormInput or $type == FormAutocomplete) {
-      .el-input__suffix {
-        position: absolute;
-        right: 8px;
-        top: 0px;
-      }
-      .el-input-group__prepend,
-      .el-input-group__append {
-        padding: 0 12px;
-      }
-
-    } @else if ($type == FormDatePicker or $type == FormTimePicker) {
-      border-radius: 4px;
-    }
+    font-style: inherit;
 
     .el-input__wrapper,
-    .el-date-editor,
     .is-filterable,
-    .el-select__wrapper {
+    .el-select__wrapper,
+    .el-checkbox__inner,
+    .el-radio__inner,
+    .el-radio.is-bordered,
+    .el-radio-button__inner,
+    .el-input-group__prepend,
+    .el-input-group__append {
       transition-duration: 0.3s;
-      position: relative;
     }
+  }
+
+  :deep(.el-date-editor) {
+    transition-duration: 0.3s;
   }
 }
 
 @mixin form-error($type) {
   :deep(div[class*="#{$type}"]) {
+    font-style: inherit;
+
     .el-input__wrapper,
-    .el-input-group__prepend,
-    .el-input-group__append,
     .is-filterable,
     .el-select__wrapper,
     .el-checkbox__inner,
     .el-radio__inner {
-      @include validate-error();
+      @include validate-error('shadow');
     }
 
-    .el-radio.is-bordered {
-      border: 1px solid $form-danger;
-    }
+    // FormRadio
+    .el-radio.is-bordered,
     .el-radio-button__inner {
-      border: 1px solid $form-danger;
-      background-color: color.adjust($form-danger, $lightness: 20%);
+      @include validate-error('border');
+    }
+
+    // slot prepend
+    .el-input-group__prepend {
+      @include validate-error('border-prepend');
+    }
+    // slot append
+    .el-input-group__append {
+      @include validate-error('border-append');
     }
   }
 
-  :deep(.el-input-group) {
-    box-shadow: none !important;
-  }
-
-  @if ($type == FormDatePicker or $type == FormTimePicker) {
-    :deep(.el-date-editor) {
-      @include validate-error();
-    }
+  // FormDatePicker FormTimePicker
+  :deep(.el-date-editor) {
+    @include validate-error('shadow');
   }
 }

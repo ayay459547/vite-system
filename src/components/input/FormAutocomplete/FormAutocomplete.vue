@@ -30,9 +30,7 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:model-value', value)
-  }
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 // event
@@ -101,7 +99,6 @@ const hasSlot = (prop: string): boolean => {
     @clear="onClear"
     @select="onSelect"
     @change="onChange"
-    @click.stop
   >
     <template v-if="hasSlot('default')" #default="scope">
       <slot name="default" v-bind="scope"></slot>
@@ -126,4 +123,19 @@ const hasSlot = (prop: string): boolean => {
   </ElAutocomplete>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+div[class*="FormAutocomplete"] {
+  width: 100%;
+  height: fit-content;
+
+  .el-input__suffix {
+    position: absolute;
+    right: 8px;
+    top: 0px;
+  }
+  .el-input-group__prepend,
+  .el-input-group__append {
+    padding: 0 12px;
+  }
+}
+</style>
