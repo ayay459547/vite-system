@@ -40,7 +40,7 @@ const scopedId = getUuid('__i-group-input__')
 
 const props = defineProps(inputProps)
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'click',
   'change',
   'input',
@@ -158,7 +158,7 @@ const inputValue = computed({
   },
   set: (value: Props.ModelValue) => {
     validateValue.value = value
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

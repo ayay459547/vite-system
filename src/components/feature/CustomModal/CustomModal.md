@@ -59,6 +59,6 @@ const onModalSubmit = () => {
 
 | 事件名            | 說明         | 傳值類型 |
 | ----------------- | ------------ | -------- |
-| update:modelValue | v-modal 用   | boolean  |
+| update:model-value | v-modal 用   | boolean  |
 | cancel            | 取消按鈕按下 |          |
 | submit            | 確認按鈕按下 |          |

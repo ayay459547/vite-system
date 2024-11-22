@@ -13,7 +13,7 @@ const scopedId = getUuid(version)
 const props = defineProps(simpleCustomTableProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'expand-change'
 ])
 
@@ -35,7 +35,7 @@ const tempValue = computed({
     return props.tableData
   },
   set: (value: any[]) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

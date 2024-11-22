@@ -19,7 +19,7 @@ const { i18nTranslate } = useHook({
 const props = defineProps(formSelectTreeProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'focus',
   'blur',
   'clear',
@@ -31,7 +31,7 @@ const emit = defineEmits([
 const inputValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

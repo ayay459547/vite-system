@@ -65,7 +65,7 @@ const list = ref([
 
 | 事件名            | 說明         | 傳值類型        |
 | ----------------- | ------------ | --------------- |
-| update:modelValue | v-modal 用   | boolean         |
+| update:model-value | v-modal 用   | boolean         |
 | start             | 開始移動     |                 |
 | add               | 新增資料     |                 |
 | remove            | 移除資料     |                 |

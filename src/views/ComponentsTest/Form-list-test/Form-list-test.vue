@@ -121,7 +121,7 @@ onMounted(() => {
           <CustomInput
             v-model="formList[rowIndex].age"
             v-bind="formColumn.age"
-            only-number
+            type="number"
             @change="sortList"
           ></CustomInput>
         </template>

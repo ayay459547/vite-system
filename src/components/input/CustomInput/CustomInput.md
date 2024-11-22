@@ -83,7 +83,7 @@ https://element-plus.org/en-US/component/input.html
 
 | 事件名            | 說明                    | 傳值類型   |
 | ----------------- | ----------------------- | ---------- | ---- |
-| update:modelValue | v-modal 用              | boolean    |
+| update:model-value | v-modal 用              | boolean    |
 | focus             | 當輸入框聚焦時          | FocusEvent |
 | clear             | 點擊 clearable 的按鈕時 |            |
 | blur              | 輸入框沒有聚焦時        | FocusEvent |

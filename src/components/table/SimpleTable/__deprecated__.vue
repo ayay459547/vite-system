@@ -106,12 +106,12 @@ function getColumnSlotNode(slots: Record<string, any>, columnKey: string, isHead
 }
 
 // SimpleTable.props = simpleCustomTableProps
-// SimpleTable.emits = ['update:modelValue']
+// SimpleTable.emits = ['update:model-value']
 
 export default defineComponent({
   name: 'SimpleTable',
   props: simpleCustomTableProps,
-  emits: ['update:modelValue'],
+  emits: ['update:model-value'],
   setup(props: any, context: any) {
     const SimpleTable = (): Component => {
       const { slots = {}, emit } = context
@@ -298,7 +298,7 @@ export default defineComponent({
               class: '__data-table-body',
               modelValue: props.tableData,
               'onUpdate:modelValue': (value: any) => {
-                emit('update:modelValue', value)
+                emit('update:model-value', value)
               },
               handle,
               itemKey,

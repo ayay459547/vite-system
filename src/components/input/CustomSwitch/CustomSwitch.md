@@ -35,5 +35,5 @@ const value = ref(false)
 
 | 事件名            | 說明       | 傳值類型 |
 | ----------------- | ---------- | -------- |
-| update:modelValue | v-modal 用 | boolean  |
+| update:model-value | v-modal 用 | boolean  |
 | change            | 值變化     | boolean  |

@@ -11,11 +11,11 @@ const scopedId = getUuid(version)
 
 const props = defineProps(dialogProps)
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:model-value'])
 
 const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 const slots = useSlots()

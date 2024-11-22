@@ -34,11 +34,11 @@ const scopedId = getUuid(version)
 
 const props = defineProps(modalProps)
 
-const emit = defineEmits(['update:modelValue', 'close', 'cancel', 'submit'])
+const emit = defineEmits(['update:model-value', 'close', 'cancel', 'submit'])
 
 const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 // 正在使用中的 modal 會被至頂

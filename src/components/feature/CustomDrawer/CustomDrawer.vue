@@ -12,7 +12,7 @@ const scopedId = getUuid(version)
 const props = defineProps(drawerProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'open',
   'opened',
   'close',
@@ -29,7 +29,7 @@ const tempValue = computed({
     return props.modelValue
   },
   set(value: boolean) {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

@@ -16,7 +16,7 @@ const scopedId = getUuid(version)
 const props = defineProps(tabsProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'tab-click',
   'tab-change',
   'tab-remove',
@@ -51,7 +51,7 @@ const getTranslateLabel = (option: Option) => {
 
 const tempValue: WritableComputedRef<Props.ModelValue> = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 const elTabsRef = ref()

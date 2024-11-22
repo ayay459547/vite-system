@@ -46,12 +46,12 @@ const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
 
-const emit = defineEmits(['update:modelValue', 'reset-sorting', 'submit'])
+const emit = defineEmits(['update:model-value', 'reset-sorting', 'submit'])
 
 const tempValue = computed({
   get: () => props.modelValue,
   set: (value: CustomTableTypes.Sorting[]) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

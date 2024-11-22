@@ -19,10 +19,10 @@ const props = defineProps(CustomColorInfo)
 
 const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:model-value', 'change'])
 
 </script>
 

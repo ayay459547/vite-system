@@ -50,7 +50,6 @@ const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
 }
 
 // event
-const onInput = () => emit('input', inputValue.value) // 預防CustomInput @input錯誤
 const onChange: Emits.Change = val => emit('change', val)
 const onBlur: Emits.Blur = e => emit('blur', e)
 const onFocus: Emits.Focus = e => emit('focus', e)
@@ -119,7 +118,6 @@ const hasSlot = (prop: string): boolean => {
     :value-on-clear="props.valueOnClear"
     :fallback-placements="props.fallbackPlacements"
     :placement="props.placement"
-    @input="onInput"
     @change="onChange"
     @blur="onBlur"
     @focus="onFocus"

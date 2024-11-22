@@ -13,7 +13,7 @@ const scopedId = getUuid(version)
 const props = defineProps(tourProps)
 
 const emit = defineEmits([
-  'update:modelValue',
+  'update:model-value',
   'update:current',
   'close',
   'finish',
@@ -33,7 +33,7 @@ const getText = (text: string, i18nText: string | string[]) => {
 const openValue = computed({
   get: () => props.modelValue,
   set: (value: Props.ModelValue) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 const currentValue = computed({

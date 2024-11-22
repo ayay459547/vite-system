@@ -23,7 +23,7 @@ const emit = defineEmits([
   'filter',
   'clone',
   'change',
-  'update:modelValue'
+  'update:model-value'
 ])
 
 const onUpdate: Emits.Update = ($event: any) => emit('update', $event)
@@ -45,7 +45,7 @@ const listValue = computed({
     return props.modelValue
   },
   set(value: any[]) {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

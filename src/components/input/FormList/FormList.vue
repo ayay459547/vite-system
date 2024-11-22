@@ -41,7 +41,7 @@ const props = defineProps(formListProps)
 const emit = defineEmits([
   'add',
   'remove',
-  'update:modelValue',
+  'update:model-value',
   'expand-change'
 ])
 
@@ -53,7 +53,7 @@ const { i18nTranslate } = useHook({
 const tempValue = computed({
   get: () => props.modelValue,
   set: (value: any[]) => {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 

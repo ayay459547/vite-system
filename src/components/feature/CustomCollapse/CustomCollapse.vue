@@ -18,14 +18,14 @@ const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:model-value', 'change'])
 const onChange: Emits.Change = (active: Props.ModelValue) => {
   emit('change', active)
 }
 
 const tempValue = computed<Props.ModelValue>({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:modelValue', value)
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
 const slots = useSlots()

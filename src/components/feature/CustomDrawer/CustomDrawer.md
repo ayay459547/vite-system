@@ -58,10 +58,10 @@ const size: ButtonSize = 'large'
 
 ### Events ( emit )
 
-| 事件名            | 說明       | 傳值類型 |
-| ----------------- | ---------- | -------- |
-| update:modelValue | v-modal 用 | boolean  |
-| open              | 打開時     |          |
-| opened            | 打開後     |          |
-| close             | 關閉時     |          |
-| closed            | 關閉後     |          |
+| 事件名             | 說明       | 傳值類型 |
+| ------------------ | ---------- | -------- |
+| update:model-value | v-modal 用 | boolean  |
+| open               | 打開時     |          |
+| opened             | 打開後     |          |
+| close              | 關閉時     |          |
+| closed             | 關閉後     |          |

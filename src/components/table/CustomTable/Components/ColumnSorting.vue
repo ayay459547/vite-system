@@ -22,7 +22,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:model-value', 'change'])
 
 const filterNoneColumnList = computed(() => {
   return props.modelValue.filter(item => item.order !== 'none')
@@ -49,7 +49,7 @@ const columnValue = customRef<CustomTableTypes.Sorting & { index?: number | stri
         ..._temp,
         ...value
       }
-      emit('update:modelValue', newValue)
+      emit('update:model-value', newValue)
       trigger() // 通知 vue 重新解析
     }
   }
