@@ -1,5 +1,15 @@
 ## v1.0.0
 
+### v2024-11-22.2 (Caleb)
+* package: 移除 vee-validate, @vee-validate/i18n
+* CustomInput: 移除 useField, 覆寫驗證
+* CustomTour:
+  1. 修正 ElTourStep 綁定參數警告
+  2. props: 新增 showArrow, contentStyle, showClose, closeOnPressEscape, scrollIntoViewOptions, targetAreaClickable
+
+### v2024-11-20.1 (Caleb)
+* 重構 CustomInput: tsx => vue template
+  
 ### v2024-11-12.1 (Caleb)
 * TimeLineTable
   * 新增slot: header-{key}, header-all, column-{key}, column-all

@@ -63,7 +63,6 @@ npm outdated
 | fortawesome        | 圖示                | https://github.com/FortAwesome/Font-Awesome/blob/6.x/LICENSE.txt |
 | v-md-editor        | README              | https://github.com/code-farmer-i/vue-markdown-editor/blob/dev/LICENSE |
 | js-cookie          | cookie              | https://github.com/js-cookie/js-cookie/blob/main/LICENSE |
-| vee-validate       | 資料驗證             | https://github.com/logaretm/vee-validate/blob/main/LICENSE |
 | vueuse             | 自訂CompositionApi  | https://github.com/vueuse/vueuse/blob/main/LICENSE |
 | axios              | ajax                | https://github.com/axios/axios/blob/v1.x/LICENSE |
 | click-outside-vue3 | 其他directive       | https://github.com/andymark-by/click-outside-vue3/blob/master/LICENSE |

@@ -8,7 +8,7 @@ import {
   nextTick,
   onMounted
 } from 'vue'
-import { useField } from 'vee-validate'
+// import { useField } from 'vee-validate'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import {
@@ -154,12 +154,16 @@ const validateField = (veeValue: Props.ModelValue) => {
 
 const inputValue = computed({
   get: () => {
+    // 有錯誤才驗證
+    handleChange(props.modelValue, isError.value)
     return props.modelValue
   },
   set: (value: Props.ModelValue) => {
-    validateValue.value = value
     emit('update:model-value', value)
   }
+})
+const isError = computed(() => {
+  return !isEmpty(errorMessage.value)
 })
 
 const validateKey = `${props.__key__}-${scopedId}`
@@ -170,27 +174,56 @@ const validateKey = `${props.__key__}-${scopedId}`
  * 每當useField值發生變化時，它都會發出update:modelValue事件，
  * 並且每當modelValueprop 發生變化時useField，值都會自動同步和驗證。
  */
-const {
-  errorMessage, // 錯誤訊息
-  value: validateValue, // 值
-  handleChange, // 換值
-  handleReset: resetValidate, // 重置
-  validate: _validate // 驗證
-} = useField<any>(validateKey, validateField, {
-  validateOnValueUpdate: true,
-  initialValue: props.modelValue,
-  modelPropName: 'modelValue'
-  // valueProp: inputValue
-})
+// const {
+//   errorMessage, // 錯誤訊息
+//   value: validateValue, // 值
+//   handleChange, // 換值
+//   handleReset: resetValidate, // 重置
+//   validate: _validate // 驗證
+// } = useField<any>(validateKey, validateField, {
+//   validateOnValueUpdate: true,
+//   initialValue: props.modelValue,
+//   modelPropName: 'modelValue'
+//   // valueProp: inputValue
+// })
 
-const validate = async () => {
-  // 驗證前 需確認驗證值 與 輸入值相同
-  if (validateValue.value !== inputValue.value) {
-    validateValue.value = inputValue.value
-  }
+// const validate = async () => {
+//   // 驗證前 需確認驗證值 與 輸入值相同
+//   if (validateValue.value !== inputValue.value) {
+//     validateValue.value = inputValue.value
+//   }
+//   await nextTick()
+
+//   return _validate()
+// }
+
+// 錯誤訊息
+const errorMessage = ref('')
+
+// 驗證
+const veeValidate = async () => {
   await nextTick()
+  validateCount.value++
+  const resValidate = validateField(inputValue.value)
+  if (typeof resValidate === 'boolean' && resValidate) {
+    errorMessage.value = ''
 
-  return _validate()
+    return { valid: true, errors: [], value: inputValue, validateKey }
+  } else {
+    errorMessage.value = `${resValidate}`
+    return { valid: false, errors: [resValidate], value: inputValue, validateKey }
+  }
+}
+
+// 調用驗證
+const handleChange = (value: any, isValidate: boolean) => {
+  if (isValidate) veeValidate()
+}
+
+// 重置驗證
+const resetValidate = () => {
+  validateCount.value = 0
+  errorMessage.value = ''
 }
 
 const i18nErrorMessage = computed(() => {
@@ -274,11 +307,8 @@ const operatorRef = ref()
 defineExpose({
   key: validateKey,
   value: inputValue.value,
-  resetValidate: () => {
-    validateCount.value = 0
-    resetValidate()
-  },
-  validate,
+  resetValidate,
+  validate: veeValidate,
   setvalidateKey(validateKey: string) {
     _domValidateKey.value = validateKey
   },

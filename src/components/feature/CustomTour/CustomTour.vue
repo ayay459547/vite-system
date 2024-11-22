@@ -32,29 +32,17 @@ const getText = (text: string, i18nText: string | string[]) => {
 
 const openValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => {
-    emit('update:model-value', value)
-  }
+  set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 const currentValue = computed({
   get: () => props.current,
-  set: (value: Props.Current) => {
-    emit('update:current', value)
-  }
+  set: (value: Props.Current) => emit('update:current', value)
 })
 
-const onClose: Emits.Close = (current: number) => {
-  emit('close', current)
-}
-const onFinish: Emits.Finish = () => {
-  emit('finish')
-}
-const onChange: Emits.Change = (current: number) => {
-  emit('change', current)
-}
-const onStepClose: Emits.StepClose = () => {
-  emit('step-close')
-}
+const onClose: Emits.Close = current => emit('close', current)
+const onFinish: Emits.Finish = () => emit('finish')
+const onChange: Emits.Change = current => emit('change', current)
+const onStepClose: Emits.StepClose = () => emit('step-close')
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
@@ -66,12 +54,17 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <div :class="scopedId">
     <ElTour
+      :show-arrow="props.showArrow"
+      :placement="props.placement"
+      :content-style="props.contentStyle"
+      :mask="props.mask"
       v-model="openValue"
       v-model:current="currentValue"
       :z-index="props.zIndex"
-      :show-arrow="props.showArrow"
-      :placement="props.placement"
-      :target-area-clickable="targetAreaClickable"
+      :show-close="props.showClose"
+      :close-icon="props.closeIcon"
+      :close-on-press-escape="props.closeOnPressEscape"
+      :target-area-clickable="props.targetAreaClickable"
       @close="onClose"
       @finish="onFinish"
       @change="onChange"
@@ -80,9 +73,18 @@ const hasSlot = (prop: string): boolean => {
         v-for="(step, stepIndex) in props.steps"
         :key="`${stepIndex}-${scopedId}`"
         :target="step.target"
+        :show-arrow="step.showArrow"
         :title="step.title"
         :description="step.description"
-        v-bind="step"
+        :placement="step.placement"
+        :content-style="step.contentStyle"
+        :mask="step.mask"
+        :type="step.type"
+        :next-button-props="step.nextButtonProps"
+        :prev-button-props="step.prevButtonProps"
+        :scroll-into-view-options="step.scrollIntoViewOptions"
+        :show-close="step.showClose"
+        :close-icon="step.closeIcon"
         @close="onStepClose"
       >
         <template #header>

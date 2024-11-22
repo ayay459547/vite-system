@@ -33,7 +33,7 @@ const fakeApi = <ResData>(
 }
 
 const timeout = 1000 * 60 * 30
-const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): PromiseLike<ResData> => {
+const axiosApi = async <ResData>(config: AxiosRequestConfig, baseUrl: string): PromiseLike<ResData> => {
   const instance = axios.create({
     baseURL: baseUrl,
     timeout,
@@ -48,9 +48,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
   })
 
   instance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig<any>) => {
-      return config
-    },
+    (config: InternalAxiosRequestConfig<any>) => config,
     (error: AxiosError<any>) => {
       const [apiUrl, errorCode, errorMessage] = [
         error?.request?.responseURL ?? '',
@@ -75,9 +73,7 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
   )
 
   instance.interceptors.response.use(
-    (res: AxiosResponse<any, any>) => {
-      return res.data
-    },
+    (res: AxiosResponse<any, any>) => res,
     (error: AxiosError<any>) => {
       const [apiUrl, errorStatus, errorMessage] = [
         error?.request?.responseURL ?? '',
@@ -100,7 +96,23 @@ const axiosApi = <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise
     }
   )
 
-  return instance(config)
+  try {
+    const resAjax = await instance(config)
+    const { data, status = -1, statusText = 'Error' } = resAjax ?? {}
+
+    return data ?? {
+      result: null,
+      data,
+      size: 0,
+      status: status,
+      msg: statusText,
+      message: statusText,
+      errorMsg: statusText
+    }
+
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 /**
@@ -223,14 +235,10 @@ export class IWebScoket {
       this.isError = false
     } else {
       this.isReConnect = true
-      const msg = `reconnect after ${delay} second`
 
+      const msg = `reconnect after ${delay} second`
       console.log('%c%s', 'font-size: 1.1em; color: #E6A23C;', `ws ${msg}: ${this.connectUrl}`)
-      message({
-        type: 'warning',
-        message: msg,
-        duration: delay
-      })
+      // message({ type: 'warning', message: msg, duration: delay })
 
       this.timer = setTimeout(() => {
         this.init(this.config)
@@ -244,13 +252,8 @@ export class IWebScoket {
       onopen()
     } else {
       const msg = 'connect success'
-
       console.log('%c%s', 'font-size: 1.1em; color: #67C23A;', `ws ${msg}: ${this.connectUrl}`)
-      message({
-        type: 'success',
-        message: msg,
-        duration: 3000
-      })
+      // message({ type: 'success', message: msg, duration: 3000 })
     }
     this.connectCount++
 
@@ -261,13 +264,8 @@ export class IWebScoket {
       onclose()
     } else {
       const msg = 'close connect'
-
       console.log('%c%s', 'font-size: 1.1em; color: #909399;', `ws ${msg}: ${this.connectUrl}`)
-      message({
-        type: 'info',
-        message: msg,
-        duration: 3000
-      })
+      // message({ type: 'info', message: msg, duration: 3000 })
     }
 
     this.isReConnect = false
@@ -287,13 +285,8 @@ export class IWebScoket {
       onerror()
     } else {
       const msg = 'connect error'
-
       console.log('%c%s', 'font-size: 1.1em; color: #F56C6C;', `ws ${msg}: ${this.connectUrl}`)
-      message({
-        type: 'error',
-        message: msg,
-        duration: 10000
-      })
+      // message({ type: 'error', message: msg, duration: 10000 })
     }
     this.isError = true
   }
