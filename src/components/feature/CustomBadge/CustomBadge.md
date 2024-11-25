@@ -1,4 +1,4 @@
-# CustomBadge
+## CustomBadge
 
 ### 使用範例
 
@@ -17,7 +17,7 @@ const type = ref<BadgeType>('primary')
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/badge.html#basic-usage](https://element-plus.org/en-US/component/badge.html#basic-usage)
 

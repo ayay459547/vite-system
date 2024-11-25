@@ -1,4 +1,4 @@
-# CustomButton
+## CustomButton
 
 ### 使用範例
 
@@ -18,7 +18,7 @@ const size: ButtonSize = 'large'
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/button.html](https://element-plus.org/en-US/component/button.html)
 

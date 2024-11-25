@@ -1,4 +1,4 @@
-# CustomEmpty
+## CustomEmpty
 
 ### 使用範例
 
@@ -19,7 +19,7 @@ import { CustomEmpty, CustomIcon } from '@/components'
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/empty.html](https://element-plus.org/en-US/component/empty.html)
 

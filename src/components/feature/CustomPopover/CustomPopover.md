@@ -1,4 +1,4 @@
-# CustomPopover API
+## CustomPopover API
 
 ### 使用範例
 
@@ -24,7 +24,7 @@ import { CustomPopover, CustomButton } from '@/components'
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 https://element-plus.org/zh-CN/component/popover.html
 

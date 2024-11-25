@@ -1,4 +1,4 @@
-# CustomInput API
+## CustomInput API
 CustomInput_1.0.0 vue(tsx)寫法
 CustomInput_2.0.0 統一使用 template 寫法, 以方便維護
 
@@ -53,7 +53,7 @@ const onInput = (value: string) => {
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 https://element-plus.org/en-US/component/input.html
 

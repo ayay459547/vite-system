@@ -1,4 +1,4 @@
-# CustomTootip API
+## CustomTootip API
 
 ### 使用範例
 
@@ -24,7 +24,7 @@ import { CustomTooltip, CustomButton } from '@/components'
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/tooltip.html]
 (https://element-plus.org/zh-US/component/tooltip.html)

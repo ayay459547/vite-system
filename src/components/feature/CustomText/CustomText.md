@@ -1,4 +1,4 @@
-# CustomText
+## CustomText
 
 ### 使用範例
 
@@ -15,7 +15,7 @@ import { CustomText } from '@/components'
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/text.html](https://element-plus.org/en-US/component/text.html)
 

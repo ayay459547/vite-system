@@ -1,4 +1,4 @@
-# CustomModal API
+## CustomModal API
 
 ### 使用範例
 

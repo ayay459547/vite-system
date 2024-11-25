@@ -1,4 +1,4 @@
-# CustomSwitch
+## CustomSwitch
 
 ### 使用範例
 
@@ -15,7 +15,7 @@ const value = ref(false)
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/switch.html#basic-usage](https://element-plus.org/en-US/component/switch.html#basic-usage)
 

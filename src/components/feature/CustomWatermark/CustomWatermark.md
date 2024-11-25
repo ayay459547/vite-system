@@ -1,4 +1,4 @@
-# CustomWatermark
+## CustomWatermark
 
 ### 使用範例
 
@@ -52,7 +52,7 @@ const subWatermark: SubWatermark[] = [
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/watermark.html](https://element-plus.org/en-US/component/watermark.html)
 

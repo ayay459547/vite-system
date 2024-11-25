@@ -1,4 +1,4 @@
-# CustomTable API
+## CustomTable API
 
 ### 使用範例
 
@@ -113,7 +113,7 @@ const tableData2 = [
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 [https://element-plus.org/en-US/component/table.html](https://element-plus.org/en-US/component/table.html)
 

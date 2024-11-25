@@ -1,4 +1,4 @@
-# CustomTag API
+## CustomTag API
 
 ### 使用範例
 
@@ -16,7 +16,7 @@ import { CustomTag } from '@/components'
 </template>
 ```
 
-## Element UI Plus
+### Element UI Plus
 
 https://element-plus.org/zh-US/component/tag.html
 
