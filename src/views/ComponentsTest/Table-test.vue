@@ -35,7 +35,7 @@ const tableOptions: TableOptions = {
 }
 const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
-const download = () => {
+const onExcelClick = () => {
   downloadExcel(tableData)
 }
 
@@ -84,7 +84,7 @@ const addData = () => {
       <CustomTable
         :table-data="tableData"
         v-bind="tableSetting"
-        @excel="download"
+        @excel="onExcelClick"
         @change-setting="initData"
       >
         <template #header-name="{ column }">

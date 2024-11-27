@@ -9,8 +9,6 @@ import type {
 } from 'element-plus'
 import { ElNotification, ElMessage } from 'element-plus'
 
-// import AES from 'crypto-js/aes'
-// import Utf8 from 'crypto-js/enc-utf8'
 import cryptoJS from 'crypto-js'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -342,7 +340,7 @@ export const scrollToEl = (
 ): void => {
   const setting: ScrollIntoViewOptions = {
     behavior: 'smooth',
-    block: 'start',
+    block: 'center',
     inline: 'nearest',
     ...options
   }

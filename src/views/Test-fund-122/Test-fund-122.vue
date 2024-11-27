@@ -63,7 +63,7 @@ const { tableSetting, downloadExcel, getParams } = useTableSetting(
 
 const { tableColumns: childColumns } = useSimpleTableSetting(childColumnSetting, 'table')
 
-const download = () => {
+const onExcelClick = () => {
   downloadExcel(tableData.value)
 }
 
@@ -199,7 +199,7 @@ onMounted(() => {
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
       :title="i18nTranslate('info')"
-      @excel="download"
+      @excel="onExcelClick"
       @show-change="throttleInit"
       @row-contextmenu="
         (row, column, event) => {

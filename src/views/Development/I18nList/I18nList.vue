@@ -22,7 +22,7 @@ const { tableSetting, downloadExcel, getParams } = useTableSetting(
   tableOptions
 )
 
-const download = () => {
+const onExcelClick = () => {
   downloadExcel(tableData.value)
 }
 
@@ -63,7 +63,7 @@ onMounted(() => {
         :table-data-count="tableDataCount"
         v-bind="tableSetting"
         is-show-no
-        @excel="download"
+        @excel="onExcelClick"
         @show-change="init()"
       >
         <template #header-all="{ prop }">

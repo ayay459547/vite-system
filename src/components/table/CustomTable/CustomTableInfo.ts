@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import type { TableColumnCtx } from 'element-plus'
 
-import type { TableColumnsItem } from '@/declare/columnSetting'
+import type { ColumnItem } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
@@ -62,7 +62,7 @@ export declare namespace Types {
     (page: number, pageSize: number, ...payload: any[]): void
   }
 
-  type TableColumn = TableColumnsItem
+  type TableColumn = ColumnItem
 }
 
 export declare namespace Props {

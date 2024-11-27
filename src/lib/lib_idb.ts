@@ -103,42 +103,22 @@ export async function keys(table: string) {
 
 /**
  * 有新增或刪除表時 idbVersion + 1
- * Table版本 > DB版本 => 加入新表
  */
-export const idbVersion = 4
+export const idbVersion = 6
 /**
- * 管理新增加的 store
- * 已存在的 store 不用創建
+ * 管理 store
+ * 版本記錄在 iDBVersion
  *
  * 資料表名稱: {
  *   version 目前版本 版本不同會清空
- *   createVersion 在什麼版本的 idbVersion 加入
- *   isDelete 是否刪除
  * }
- *
- * isDelete變更 需要變更 createVersion + idbVersion
  */
 export const storeVersion = {
-  iDBVersion: {
-    version: '1.0.0',
-    createVersion: 1,
-    isDelete: false
-  },
-  columnSetting: {
-    version: '1.0.0',
-    createVersion: 1,
-    isDelete: false
-  },
-  pageSetting: {
-    version: '1.0.0',
-    createVersion: 2,
-    isDelete: false
-  },
-  ganttSetting: {
-    version: '1.0.0',
-    createVersion: 4,
-    isDelete: false
-  }
+  iDBVersion: { version: '1.0.0' },
+  columnSetting: { version: '1.0.0' },
+  filterSetting: { version: '1.0.0' },
+  pageSetting: { version: '1.0.0' },
+  ganttSetting: { version: '1.0.0' }
 }
 
 // 表單欄位設定
@@ -156,6 +136,23 @@ export async function clearColumnSetting() {
 }
 export async function keysColumnSetting() {
   return await keys('columnSetting')
+}
+
+// 篩選設定
+export async function getFilterSetting(key: string) {
+  return await get('filterSetting', key)
+}
+export async function setFilterSetting(key: string, val: any) {
+  return await set('filterSetting', key, val)
+}
+export async function delFilterSetting(key: string) {
+  return await del('filterSetting', key)
+}
+export async function clearFilterSetting() {
+  return await clear('filterSetting')
+}
+export async function keysFilterSetting() {
+  return await keys('filterSetting')
 }
 
 // 頁面用的設定資料

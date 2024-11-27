@@ -44,7 +44,7 @@ const { tableSetting, downloadExcel, getParams } = useTableSetting(
   tableOptions
 )
 
-const download = async ({ type }) => {
+const onExcelClick = async ({ type }) => {
   let excelData = []
   const apiParam = object_filter(
     {
@@ -180,7 +180,7 @@ onMounted(() => {
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
       :title="i18nTranslate('testTable')"
-      @excel="download"
+      @excel="onExcelClick"
       @show-change="init"
       @row-contextmenu="
         (row, column, event) => {

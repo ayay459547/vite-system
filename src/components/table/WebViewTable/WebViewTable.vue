@@ -59,8 +59,7 @@ const emit = defineEmits([
   'selection-change',
   'row-contextmenu',
   // 'load',
-  'init-start', // 初始化開始
-  'init-end', // 初始化完成
+  'init', // 初始化完成
 
   'mounted' // WebViewTable mounted
 ])
@@ -126,7 +125,7 @@ const {
 
 const isLoading = ref(false)
 
-const download = async ({ type }) => {
+const onExcelClick = async ({ type }) => {
   isLoading.value = true
 
   const tableParams = getParams()
@@ -324,8 +323,6 @@ const onTableMounted = () => {
 }
 
 const init = async (params?: any, type?: string) => {
-  emit('init-start')
-
   isLoading.value = true
   if (type === 'input') {
     changePage(1)
@@ -350,9 +347,7 @@ const init = async (params?: any, type?: string) => {
     }
   }, 800)
 
-  emit('init-end', [resData, resDataCount])
-  // console.log('resData => ', resData)
-
+  emit('init', [resData, resDataCount])
   return [resData, resDataCount]
 }
 
@@ -477,7 +472,7 @@ const modal = reactive({
       :is-lazy-loading="islazyLoading"
       :lazy-loading-status="lazyLoadingStatus"
       :is-show-no="islazyLoading"
-      @excel="download"
+      @excel="onExcelClick"
       @expand-change="onExpandChange"
       @select="onSelect"
       @select-all="onSelectAll"

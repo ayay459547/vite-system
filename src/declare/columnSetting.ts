@@ -9,18 +9,6 @@ import type { ValidateType } from '@/lib/lib_validate'
 
 export interface InputRefItem extends Element, ComponentPublicInstance, TempCustomInputExpose {}
 
-export interface FormColumnsItem {
-  ref?: (el: InputRefItem) => void
-  key?: string
-  validateKey?: string
-  clearable?: boolean
-  default?: any
-  validate?: ValidateType[] | ValidateType
-  required?: boolean
-  resizable?: boolean
-  showOverflowTooltip?: boolean
-  label?: string
-}
 
 export interface ColumnTypeSetting<T, K extends string> {
   [key: string]: {
@@ -57,38 +45,44 @@ export interface FormListSetting<T> {
 }
 
 export interface ColumnItem {
+  __key__?: string // 系統用
+
+  // 通用
   key?: string
   prop?: string
-  slotKey?: string
-  title?: string
-  // 顯示文字
-  label: string
-  i18nLabel?: string
-  // 寬度
-  width?: number | null
-  minWidth?: number | null
-  // 對齊
-  align?: 'left' | 'center' | 'right'
-  // 定住
-  fixed?: 'left' | 'right'
-  // 是否顯示
-  isShow?: boolean
-  // 是否為操作用特殊欄位
-  isOperations?: boolean
-  // 是否排序
-  isSorting?: boolean
-  // 排序方式
-  order?: string | 'ascending' | 'descending' | 'none'
-  // 排序順位 越小越前面
-  orderIndex?: number
-  // 是否為特殊查詢
-  isCondition?: boolean
+  slotKey?: string // slot 名稱
+  title?: string // 顯示文字(滑鼠)
+  label: string // 顯示文字
+  i18nLabel?: string // 顯示文字(翻譯)
+  isOperations?: boolean // 是否為操作用特殊欄位
+
+  // table
+  width?: number | null // 寬度
+  minWidth?: number | null // 最小寬度
+  resizable?: boolean // 是否可變更表格大小
+  align?: 'left' | 'center' | 'right' // 對齊
+  fixed?: 'left' | 'right' // 定住
+  isShow?: boolean // 是否顯示
+
+  isSorting?: boolean // 是否排序
+  order?: string | 'ascending' | 'descending' | 'none' // 排序方式
+  orderIndex?: number // 排序順位 越小越前面
+
+  // form
+  ref?: (el: InputRefItem) => void
+  default?: any // 預設值
+  validate?: ValidateType[] | ValidateType // 驗證
+  required?: boolean // 是否必填
+  isCondition?: boolean // 是否為特殊查詢
+  clearable?: boolean // 使否顯示清除按鈕
 
   // TimeLineTable
   timeLineType?: 'group' | 'date' | 'none' | null | undefined
   timeIndex?: number
   isTimeLineDate?: boolean // 是否是日期欄位
   isTimeLineDateActive?: boolean // 是否正在使用的日期欄位(只有一個)
+
+  [key: string]: any
 }
 
 export interface Condition {
@@ -135,7 +129,8 @@ export interface TableSetting {
     params: CustomTableTypes.TableParams
     page?: number
     pageSize?: number
-    // 單一欄位的 sortable (原版)
+    // element ui 排序 (單一欄位的)
+    sortable?: boolean | 'custom'
     // 暫時不用 先保留功能
     sort?: CustomTableProps.Sort
     // 多欄位用的 isSorting (爆改版)
@@ -157,13 +152,7 @@ export interface TableSetting {
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }
 
-export interface TableColumnsItem extends ColumnItem {
-  // element ui 排序
-  sortable?: boolean | 'custom'
-  [key: string]: any
-}
-
-export interface SettingData {
+export interface TableIDBSetting {
   version: string
   settingKey: string
   columns: Array<ColumnItem>
@@ -173,18 +162,6 @@ export interface SimpleTableSetting {
   title: string
   tableColumns: any[]
   downloadExcel: (tableData: Record<string, any>[]) => void
-}
-
-export interface SimpleTableColumnsItem {
-  key: string
-  prop: string
-  slotKey: string
-  width?: number
-  minWidth?: number
-  label: string
-  i18nLabel?: string
-  title: string
-  [key: string]: any
 }
 
 export interface Option<T = (string | number | null | undefined)> extends Record<string, any> {

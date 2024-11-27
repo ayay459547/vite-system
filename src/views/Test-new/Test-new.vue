@@ -56,7 +56,7 @@ const {
 
 const isLoading = ref(true)
 
-const download = async ({ type }) => {
+const onExcelClick = async ({ type }) => {
   isLoading.value = true
   let params: any = null
   switch (type) {
@@ -223,7 +223,7 @@ const remove = (rowData: TableData) => {
       :table-data="tableData"
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
-      @excel="download"
+      @excel="onExcelClick"
       @show-change="throttleInit($event, 'table')"
       @row-contextmenu="
         (row, column, event) => {

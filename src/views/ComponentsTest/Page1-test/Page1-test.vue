@@ -41,7 +41,7 @@ const tableOptions: TableOptions = {
 }
 const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
-const download = () => {
+const onExcelClick = () => {
   downloadExcel(tableData.value)
 }
 
@@ -206,7 +206,7 @@ onActivated(() => {
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
       :title="i18nTranslate('testTable')"
-      @excel="download"
+      @excel="onExcelClick"
       @show-change="init"
       @row-contextmenu="
         (row, column, event) => {

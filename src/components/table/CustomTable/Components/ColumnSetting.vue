@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { ref, inject, computed, nextTick } from 'vue'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { ColumnItem, SettingData } from '@/declare/columnSetting'
+import type { ColumnItem, TableIDBSetting } from '@/declare/columnSetting'
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
@@ -94,7 +94,7 @@ const defulatColumns = computed(() => {
  * 3. 預設資料
  */
 const getColumnList = async () => {
-  const getRes: SettingData = await getColumnSetting(props.settingKey)
+  const getRes: TableIDBSetting = await getColumnSetting(props.settingKey)
   if (!isEmpty(getRes?.columns)) return getRes?.columns
 
   if (!isEmpty(columnList.value)) return columnList.value
@@ -218,7 +218,7 @@ const checkColumnSetting = async () => {
  * 順序 + 寬度
  */
 const setDefaultColumnSetting = async () => {
-  const settingData: SettingData = {
+  const settingData: TableIDBSetting = {
     version: props.version,
     settingKey: props.settingKey,
     columns: defulatColumns.value
@@ -274,7 +274,7 @@ const drag = ref(false)
 const updateSetting = async (isEmitChange = true) => {
   await nextTick()
 
-  const settingData: SettingData = {
+  const settingData: TableIDBSetting = {
     version: props.version,
     settingKey: props.settingKey,
     columns: getProxyData(columnList.value)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed } from 'vue'
-import type { TableColumnsItem } from '@/declare/columnSetting'
+import type { ColumnItem } from '@/declare/columnSetting'
 
 import { CustomButton } from '@/components' // 系統組件
 
@@ -13,7 +13,7 @@ const props = defineProps({
     description: '項次'
   },
   column: {
-    type: Object as PropType<TableColumnsItem>,
+    type: Object as PropType<ColumnItem>,
     required: false,
     default: () => {
       return {}

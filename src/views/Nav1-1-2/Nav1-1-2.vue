@@ -39,7 +39,7 @@ const { tableSetting, downloadExcel, getParams, changePage } = useTableSetting(
   tableOptions
 )
 
-const download = async ({ type }) => {
+const onExcelClick = async ({ type }) => {
   let excelData: any[] = []
   const apiParam = {
     ...(getParams(tableRef.value) as any)
@@ -131,7 +131,7 @@ const onUserIdClick = (rowData: any) => {
       :table-data-count="tableDataCount"
       v-bind="tableSetting"
       :title="i18nTranslate('todoList')"
-      @excel="download"
+      @excel="onExcelClick"
       @show-change="init"
     >
       <template #header-all="{ prop }">

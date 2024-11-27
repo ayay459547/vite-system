@@ -33,7 +33,7 @@ const fakeApi = <ResData>(
 }
 
 const timeout = 1000 * 60 * 30
-const axiosApi = async <ResData>(config: AxiosRequestConfig, baseUrl: string): PromiseLike<ResData> => {
+const axiosApi = async <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise<ResData> => {
   const instance = axios.create({
     baseURL: baseUrl,
     timeout,

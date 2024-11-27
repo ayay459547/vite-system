@@ -114,7 +114,7 @@ const tableOptions: TableOptions = {
 }
 const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
-const download = () => {
+const onExcelClick = () => {
   downloadExcel(tableData2)
 }
 
@@ -236,7 +236,11 @@ const isPopoverVisible = ref(false)
     </div>
 
     <div style="width: 800px; height: 400px">
-      <CustomTable :table-data="tableData2" v-bind="tableSetting" @excel="download">
+      <CustomTable
+        :table-data="tableData2"
+        v-bind="tableSetting"
+        @excel="onExcelClick"
+      >
         <template #header-all="{ column }">{{ column.label }}</template>
       </CustomTable>
     </div>

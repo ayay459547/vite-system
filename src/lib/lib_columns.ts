@@ -14,13 +14,11 @@ import type {
   FormListSetting,
   Conditions,
   ColumnItem,
-  SettingData,
+  TableIDBSetting,
   TableRef,
   TableOptions,
   TableSetting,
-  // TableColumnsItem,
   SimpleTableSetting
-  // SimpleTableColumnsItem
 } from '@/declare/columnSetting'
 
 import { getColumnSetting } from '@/lib/lib_idb'
@@ -506,7 +504,7 @@ export const useTableSetting = (
       views: [{ state: 'frozen', xSplit: 0, ySplit: 1 }]
     }) //在檔案中新增工作表 參數放自訂名稱
 
-    const getRes: SettingData = await getColumnSetting(settingKey)
+    const getRes: TableIDBSetting = await getColumnSetting(settingKey)
     const settingColumns = getRes.columns
 
     const excelColumns: Partial<ExcelColumn>[] = []
