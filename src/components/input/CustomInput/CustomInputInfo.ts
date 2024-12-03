@@ -1,4 +1,4 @@
-import type { PropType } from 'vue'
+import type { PropType, Ref } from 'vue'
 
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -178,4 +178,17 @@ export const props = { ...formProps, ...customProps }
 
 export declare namespace Emits {}
 
-export declare namespace Expose {}
+export declare namespace Expose {
+  type Key = string
+  type Value = Ref<any>
+  type ResetValidate = () => void
+  type Validate = () => Promise<{
+    errors: string[]
+    valid: boolean
+    value?: any
+    validateKey?: string
+  }>
+  type GetDom = () => Element
+  type Focus = () => void
+  type Blur = () => void
+}

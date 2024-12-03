@@ -8,21 +8,31 @@ import { createWorkbook } from '@/lib/lib_files'
 
 import type { CustomTableTypes } from '@/components' // 系統組件
 import type {
-  InputRefItem,
-  // FormColumnsItem,
+  ColumnItem, // 欄位屬性
+  InputRefItem, // 輸入框
+  // useFormSetting
+  FormOptions, // 可用選項
   FormSetting,
+  Conditions, // 進階搜尋
+  FormIDBSetting,
+  // useFormListSetting
   FormListSetting,
-  Conditions,
-  ColumnItem,
-  TableIDBSetting,
+  // useTableSetting
   TableRef,
   TableOptions,
   TableSetting,
+  TableIDBSetting,
+  // useSimpleTableSetting
   SimpleTableSetting
 } from '@/declare/columnSetting'
 
-import { getColumnSetting } from '@/lib/lib_idb'
-import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty, message } from '@/lib/lib_utils' // 工具
+import {
+  getColumnSetting, // 表格欄位
+  getFilterSetting,
+  setFilterSetting,
+  delFilterSetting
+} from '@/lib/lib_idb'
+import { systemLog, tipLog, getUuid, isEmpty, hasOwnProperty, message, getProxyData } from '@/lib/lib_utils' // 工具
 import { object_forEach, object_filter, object_reduce } from '@/lib/lib_object'
 
 /**
@@ -72,23 +82,24 @@ const getColumnData = (
   const _isOperations = _column?.isOperations ?? false
 
   // 確保不要重複
-  const __checkDomSet__ = new Set()
+  const _checkDomSet = new Set()
   return {
+    __key__: key,
+
     // 通用
     ref: (el: InputRefItem) => {
       if (
         el &&
-        !__checkDomSet__.has(el) &&
+        !_checkDomSet.has(el) &&
         typeof el?.getDom === 'function' // CustomInput
       ) {
         const validateKey = getUuid()
         refMap[validateKey] = el
-        __checkDomSet__.add(el)
+        _checkDomSet.add(el)
       }
       return el
     },
     key: key,
-    __key__: key,
     label: _column?.label,
     i18nLabel: _column?.i18nLabel,
     i18nModule: _column?.i18nModule,
@@ -144,36 +155,42 @@ const checkColumns = (resColumns: any, columns: any, type: string) => {
  * @param {String} type 取得 columnSetting 中的類型
  * @returns {Ojbect}
  */
-export const useFormSetting = <T>(columns: Record<string, any>, type: string): FormSetting<T> => {
+export const useFormSetting = <T>(
+  columns: Record<string, any>,
+  type: string,
+  options?: FormOptions
+): FormSetting<T> => {
+  const {
+    version = '',
+    settingKey = '',
+    i18nModule = defaultModuleType
+  } = options ?? {}
+
   // 欄位屬性
   const resColumns = {}
   // 預設欄位資料
   const __defaultValue__ = {}
 
-  // 輸入框資料
-  const resForms = reactive<Record<string, any>>({})
-  // 搜尋: 是否啟用
-  const resActiveForms = reactive<Record<string, boolean>>({})
-
-  // 進階搜尋: 是否啟用
-  const resActiveConditions = reactive<Record<string, boolean>>({})
-  // 進階搜尋: 多條件
-  const resConditions = reactive<Record<string, Conditions>>({})
+  // 一般搜尋
+  const resForms = reactive<Record<string, any>>({}) // 輸入框資料
+  const resActiveForms = reactive<Record<string, boolean>>({}) // 是否啟用
+  // 進階搜尋
+  const resActiveConditions = reactive<Record<string, boolean>>({}) // 是否啟用
+  const resConditions = reactive<Record<string, Conditions>>({}) // 多條件
 
   // ref
   const refMap = shallowReactive<Record<string, any>>({})
 
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, { type, key }, refMap)
-      resColumns[key] = temp
-      __defaultValue__[key] = temp?.default ?? null
+      const columnInfo = getColumnData({ i18nModule, ...column }, { type, key }, refMap)
+      __defaultValue__[key] = columnInfo?.default ?? null
+      resColumns[key] = columnInfo
 
       resForms[key] = __defaultValue__[key]
       resActiveForms[key] = true
-
       resActiveConditions[key] = false
-      resConditions[key] = []
+      resConditions[key] = [] // 沒有雙向綁定 不會即時更新在畫面上
     }
   })
 
@@ -185,6 +202,9 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
       } else {
         resForms[key] = __defaultValue__[key]
       }
+      resActiveForms[key] = true
+      resActiveConditions[key] = false
+      resConditions[key] = []
     })
   }
 
@@ -197,6 +217,63 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
   }
 
   checkColumns(resColumns, columns, type)
+
+  const updateIDB = async () => {
+    if (isEmpty(settingKey) || isEmpty(version)) return
+    const filterInfo: FormIDBSetting<T> = getProxyData({
+      version,
+      settingKey,
+      forms: resForms,
+      activeForms: resActiveForms,
+      activeConditions: resActiveConditions,
+      conditions: resConditions
+    })
+    const res = await setFilterSetting(settingKey, filterInfo)
+    return res
+  }
+  // indexedDB
+  const useIDBForms = async () => {
+    if (isEmpty(settingKey) || isEmpty(version)) return
+
+    const filterInfo = await getFilterSetting(settingKey) as FormIDBSetting<T>
+    if (isEmpty(filterInfo)) {
+      updateIDB()
+    } else {
+      const {
+        version: idb_version,
+        // settingKey,
+        forms: idb_forms,
+        activeForms: idb_activeForms,
+        activeConditions: idb_activeConditions,
+        conditions: idb_conditions
+      } = filterInfo
+
+      if (idb_version !== version) {
+        await delFilterSetting(settingKey)
+        updateIDB()
+      }
+
+      object_forEach(resForms, (value: any, key: string) => {
+        if (hasOwnProperty(idb_forms, key)) {
+          resForms[key] = idb_forms[key] ?? null
+        }
+        if (hasOwnProperty(idb_activeForms, key)) {
+          resActiveForms[key] = idb_activeForms[key] ?? true
+        }
+        if (hasOwnProperty(idb_activeConditions, key)) {
+          resActiveConditions[key] = idb_activeConditions[key] ?? false
+        }
+        if (hasOwnProperty(idb_conditions, key)) {
+          resConditions[key] = idb_conditions[key] ?? []
+        }
+      })
+    }
+  }
+
+  setTimeout(() => {
+    useIDBForms()
+  }, 0)
+
   return {
     refMap,
     defaultValue: __defaultValue__ as T,
@@ -205,7 +282,7 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
     activeForms: resActiveForms,
     activeConditions: resActiveConditions,
     conditions: resConditions,
-    resetForms,
+    resetForms, // 重置所有過濾條件
     resetValidate,
     // 資料, 驗證 reset
     reset: (defaultValue?: any) => {
@@ -237,30 +314,28 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
       })
 
-      await Promise.all(validateList)
-        .then(resList => {
-          resList.forEach((resItem, resIndex) => {
-            const { errors, valid } = resItem
-            const validateRes = {
-              ...validateInput[resIndex],
-              errors,
-              valid
-            }
-            if (valid) {
-              successList.push(validateRes)
-            } else {
-              errorList.push(validateRes)
-            }
-          })
+      await Promise.all(validateList).then(resList => {
+        resList.forEach((resItem, resIndex) => {
+          const { errors, valid } = resItem
+          const validateRes = {
+            ...validateInput[resIndex],
+            errors,
+            valid
+          }
+          if (valid) {
+            successList.push(validateRes)
+          } else {
+            errorList.push(validateRes)
+          }
         })
-        .catch(errors => {
-          message({
-            type: 'error',
-            message: errors,
-            duration: 10000
-          })
-          throw new Error(errors)
+      }).catch(errors => {
+        message({
+          type: 'error',
+          message: errors,
+          duration: 10000
         })
+        throw new Error(errors)
+      })
 
       return new Promise((resolve, reject) => {
         if (errorList.length > 0) {
@@ -282,7 +357,8 @@ export const useFormSetting = <T>(columns: Record<string, any>, type: string): F
         }
         return res
       }, [])
-    }
+    },
+    updateIDB
   }
 }
 
@@ -311,9 +387,9 @@ export const useFormListSetting = <T>(
 
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, { type, key }, refMap)
-      resColumns[key] = temp
-      __defaultValue__[key] = temp?.default ?? null
+      const columnInfo = getColumnData(column, { type, key }, refMap)
+      resColumns[key] = columnInfo
+      __defaultValue__[key] = columnInfo?.default ?? null
     }
   })
 
@@ -337,9 +413,7 @@ export const useFormListSetting = <T>(
       object_forEach(refMap, (input: InputRefItem, mapKey: string) => {
         if (typeof input?.getDom !== 'function') return
         const el = input.getDom()
-        if (isEmpty(el)) {
-          delete refMap[mapKey]
-        }
+        if (isEmpty(el)) { delete refMap[mapKey] }
       })
     }, 0)
   }
@@ -463,14 +537,14 @@ export const useTableSetting = (
 
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, { type, key }, {})
-      if (temp.children ?? false) {
-        delete temp.children
+      const columnInfo = getColumnData(column, { type, key }, {})
+      if (columnInfo.children ?? false) {
+        delete columnInfo.children
       }
-      if (temp.columns.length > 0) {
-        delete temp.prop
+      if (columnInfo.columns.length > 0) {
+        delete columnInfo.prop
       }
-      resColumns.push(temp)
+      resColumns.push(columnInfo)
     }
   })
 
@@ -524,9 +598,11 @@ export const useTableSetting = (
         const _currentColumn = columns[columnKey][type] ?? null
 
         if (_currentColumn) {
-          const width = _currentColumn?.width ?? 0
-          const minWidth = _currentColumn?.minWidth ?? 0
-          _columnWidth = Math.max(_columnWidth, width, minWidth)
+          _columnWidth = Math.max(
+            _columnWidth,
+            (_currentColumn?.width ?? 0),
+            (_currentColumn?.minWidth ?? 0)
+          )
 
           const align = _currentColumn?.align ?? 'left'
           excelColumns.push({
@@ -534,10 +610,7 @@ export const useTableSetting = (
             key: columnKey,
             hidden: !isShow,
             style: {
-              alignment: {
-                horizontal: align,
-                vertical: 'middle'
-              }
+              alignment: { horizontal: align, vertical: 'middle' }
             },
             width: Math.round(_columnWidth / 8)
           })
@@ -545,10 +618,6 @@ export const useTableSetting = (
       }
     })
     worksheet.columns = excelColumns
-
-    // tableData.forEach((rowData: any) => {
-    //   worksheet.addRow(rowData)
-    // })
     worksheet.addRows(tableData)
 
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
@@ -569,7 +638,9 @@ export const useTableSetting = (
   const tableParams = shallowReactive<CustomTableTypes.TableParams>({
     page,
     size,
-    sort
+    sort,
+    sortingList: [],
+    sortingMap: {}
   })
 
   const _tableRef = ref(null)
@@ -603,35 +674,29 @@ export const useTableSetting = (
     },
     downloadExcel,
     resetScroll: (tableRef?: TableRef) => {
-      if (tableRef) {
-        return tableRef?.resetScroll()
-      } else if (_tableRef.value !== null) {
-        return _tableRef.value?.resetScroll()
+      const __tableRef__ = tableRef ?? _tableRef.value
+      if (typeof __tableRef__?.resetScroll === 'function') {
+        return __tableRef__.resetScroll()
       }
     },
     toggleSelection: (rows: Array<any>, tableRef?: TableRef) => {
-      if (tableRef) {
-        return tableRef?.toggleSelection(rows)
-      } else if (_tableRef.value !== null) {
-        return _tableRef.value?.toggleSelection(rows)
+      const __tableRef__ = tableRef ?? _tableRef.value
+      if (typeof __tableRef__?.toggleSelection === 'function') {
+        return __tableRef__.toggleSelection(rows)
       }
     },
     getSelectionRows: (tableRef?: TableRef) => {
-      if (tableRef) {
-        return tableRef?.getSelectionRows()
-      } else if (_tableRef.value !== null) {
-        return _tableRef.value?.getSelectionRows()
+      const __tableRef__ = tableRef ?? _tableRef.value
+      if (typeof __tableRef__?.getSelectionRows === 'function') {
+        return __tableRef__.getSelectionRows()
       }
     },
     getParams: (tableRef?: TableRef): CustomTableTypes.TableParams => {
-      if (tableRef) {
-        return tableRef?.getTableParams()
-      } else if (_tableRef.value !== null) {
-        return _tableRef.value?.getTableParams()
+      const __tableRef__ = tableRef ?? _tableRef.value
+      if (typeof __tableRef__?.getTableParams === 'function') {
+        return __tableRef__.getTableParams()
       } else {
-        return {
-          ...tableParams
-        }
+        return {...tableParams}
       }
     },
     setParams: (
@@ -639,38 +704,21 @@ export const useTableSetting = (
         page?: number
         size?: number
         sort?: CustomTableTypes.Sort
+        sortingList?: CustomTableTypes.SortingList
       },
       tableRef?: TableRef
     ) => {
-      if (tableRef) {
-        tableRef?.setTableParams(params)
-      } else if (_tableRef.value !== null) {
-        _tableRef.value?.setTableParams(params)
-      } else {
-        tipLog('無法設定 Table 參數', [
-          '給 table 的 ref',
-          '從 CustomTable 上找 ref 屬性',
-          '如果沒有 自己給 ref="table"',
-          'const talbe = ref(null)',
-          '<CustomTable ref="table"></CustomTable>'
-        ])
+      const __tableRef__ = tableRef ?? _tableRef.value
+      if (typeof __tableRef__?.setTableParams === 'function') {
+        return __tableRef__.setTableParams(params)
       }
     },
     changePage: (page?: number, pageSize?: number, tableRef?: TableRef): void => {
+      const __tableRef__ = tableRef ?? _tableRef.value
       const { page: defaultPage, size: defaultSize } = tableParams
 
-      if (tableRef) {
-        tableRef?.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
-      } else if (_tableRef.value !== null) {
-        _tableRef.value?.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
-      } else {
-        tipLog('無法換頁', [
-          '給 table 的 ref',
-          '從 CustomTable 上找 ref 屬性',
-          '如果沒有 自己給 ref="table"',
-          'const talbe = ref(null)',
-          '<CustomTable ref="table"></CustomTable>'
-        ])
+      if (typeof __tableRef__?.pageChange === 'function') {
+        return __tableRef__.pageChange(page ?? defaultPage, pageSize ?? defaultSize)
       }
     }
   }
@@ -694,8 +742,8 @@ export const useSimpleTableSetting = (
 
   object_forEach(columns, (column: Record<string, any>, key: string) => {
     if (hasOwnProperty(column, type)) {
-      const temp = getColumnData(column, { type, key }, {})
-      resColumns.push(temp)
+      const columnInfo = getColumnData(column, { type, key }, {})
+      resColumns.push(columnInfo)
     }
   })
 
@@ -768,16 +816,4 @@ export const useSimpleTableSetting = (
     tableColumns: resColumns,
     downloadExcel
   }
-}
-
-/**
- * @author Caleb
- * @description 取的 Columns 所有key
- * @param {Ojbect} columns
- * @returns {Array}
- */
-export const getColumnsKey = (columns: Record<string, any>): Array<string> => {
-  return object_reduce(columns, (prev: Array<string>, curr: any, currKey: string) => {
-    return [...prev, currKey]
-  }, [])
 }

@@ -73,12 +73,7 @@ const setSortingValue = (order: CustomTableTypes.Order, key: string) => {
   const _temp = props.modelValue[columnIndex]
 
   const newValue = [...props.modelValue]
-  newValue[columnIndex] = {
-    ..._temp,
-    key,
-    order
-  }
-
+  newValue[columnIndex] = {..._temp, key, order}
   tempValue.value = newValue
 }
 
@@ -122,10 +117,7 @@ const submit = () => {
             item-key="key"
             class="__group-container __column-list"
             :handle="`.sorting-move`"
-            :style="{
-              maxHeight: props.settingHeight,
-              overflow: 'auto'
-            }"
+            :style="{ maxHeight: props.settingHeight, overflow: 'auto' }"
           >
             <template #item="{ element }">
               <div class="__column-item sorting-move" :class="element.order !== 'none' ? 'is-active' : ''">
@@ -163,10 +155,7 @@ const submit = () => {
                     :value="activeIndexMap[element.key]"
                     :hidden="activeIndexMap[element.key] <= 0"
                   >
-                    <CustomIcon
-                      x-type="tabler"
-                      name="ArrowsUpDown"
-                    />
+                    <CustomIcon x-type="tabler" name="ArrowsUpDown" />
                   </CustomBadge>
                 </div>
               </div>

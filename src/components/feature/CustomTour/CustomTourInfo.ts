@@ -12,7 +12,7 @@ export declare namespace Types {
   type Type = 'default' | 'primary'
   type _ScrollIntoViewOptions_ = boolean | ScrollIntoViewOptions
 
-  type Step = typeof ElTourStep | {
+  type Step = typeof ElTourStep & {
     target?: HTMLElement | string | (() => HTMLElement) | Ref<any> // Dom 元素
     showArrow?: boolean // 是否顯示箭頭
     title?: string // 標題
@@ -29,7 +29,7 @@ export declare namespace Types {
 
     i18nTitle?: string | string[] // 標題: i18nTranslate
     i18nDescription?: string | string[] // 說明: i18nTranslate
-  }
+  } | any
 }
 
 export declare namespace Props {

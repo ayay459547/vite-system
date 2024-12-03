@@ -1,4 +1,4 @@
-## CustomPopover API
+## CustomPopover
 
 ### 使用範例
 

@@ -23,7 +23,7 @@ import { formatDatetime } from '@/lib/lib_format' // 格式化
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
 import validateFun from '@/lib/lib_validate'
 
-import type { Props } from './CustomInputInfo'
+import type { Props, Expose } from './CustomInputInfo'
 import { version, props as inputProps } from './CustomInputInfo'
 
 const scopedId = getUuid(version)
@@ -123,8 +123,12 @@ const validateKey = `${props.__key__}${scopedId}`
 // 錯誤訊息
 const errorMessage = ref('')
 
+const isError = computed(() => {
+  return !isEmpty(errorMessage.value)
+})
+
 // 驗證
-const veeValidate = async () => {
+const veeValidate: Expose.Validate = async () => {
   await nextTick()
   validateCount.value++
   const resValidate = validateField(inputValue.value)
@@ -143,12 +147,6 @@ const handleChange = (value: any, isValidate: boolean) => {
   if (isValidate) veeValidate()
 }
 
-// 重置驗證
-const resetValidate = () => {
-  validateCount.value = 0
-  errorMessage.value = ''
-}
-
 const inputValue = computed({
   get: () => {
     // 有錯誤才驗證
@@ -160,16 +158,7 @@ const inputValue = computed({
   }
 })
 
-const isError = computed(() => {
-  return !isEmpty(errorMessage.value)
-})
-const i18nErrorMessage = computed(() => {
-  const keyword = errorMessage?.value ?? ''
-
-  if (i18nTest(keyword, defaultModuleType)) return i18nTranslate(keyword, defaultModuleType)
-  return keyword
-})
-
+// event
 const focus = (e: FocusEvent) => {
   emit('focus', e)
 }
@@ -199,14 +188,24 @@ const panelChange = (date: any) => emit('panel-change', date)
 
 const inputRef = ref()
 
+// expose
+const key: Expose.Key = validateKey
+const value: Expose.Value = inputValue.value
+const resetValidate: Expose.ResetValidate = () => {
+  validateCount.value = 0
+  errorMessage.value = ''
+}
+const getDom: Expose.GetDom = () => document.querySelector(`[class*="input-${scopedId}"]`)
+const onFocus: Expose.Focus = () => inputRef.value?.focus()
+const onBlur: Expose.Blur = () => inputRef.value?.blur()
 defineExpose({
-  key: validateKey,
-  value: inputValue.value,
-  resetValidate,
+  key,
+  value,
+  resetValidate, // 重置驗證
   validate: veeValidate,
-  getDom: () => document.querySelector(`[class*="input-${scopedId}"]`),
-  focus: () => inputRef.value?.focus(),
-  blur: () => inputRef.value?.blur()
+  getDom,
+  focus: onFocus,
+  blur: onBlur
 })
 
 // 選項文字
@@ -751,7 +750,7 @@ const hasSlot = (prop: string): boolean => {
         </template>
       </component>
       <span v-if="props.isValidate && !props.hiddenErrorMessage" class="input-error">
-        {{ i18nErrorMessage }}
+        {{ i18nTranslate(errorMessage, defaultModuleType) }}
       </span>
     </div>
   </div>

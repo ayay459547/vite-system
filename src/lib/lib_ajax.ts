@@ -135,7 +135,7 @@ export const ajax = <ResData>(
   config: AxiosRequestConfig,
   options: AjaxOptions<ResData> = {}
 ): PromiseLike<ResData> => {
-  const { isFakeData = false, fakeData = null, isLog = false, delay = 0, callback = null } = options
+  const { isFakeData = false, fakeData = null, isLog = null, delay = 0, callback = null } = options
 
   updateToken('ajax')
 
@@ -146,7 +146,7 @@ export const ajax = <ResData>(
       return fakeApi<ResData>(config, { fakeData, delay, callback })
     case 'auto':
     default:
-      if (isLog) {
+      if (isLog ?? isFakeData) {
         const style = `
           font-size: 1em;
           color: #409EFF;

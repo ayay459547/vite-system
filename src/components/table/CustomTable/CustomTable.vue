@@ -190,7 +190,6 @@ const onSortChange = (props: {
 const sortingList = ref<Types.SortingList>([])
 const emitSortingData = computed<Types.SortingMap>(() => {
   // return sortingList.value.filter(item => item.order !== 'none')
-
   return sortingList.value.reduce<Types.SortingMap>((res, curr) => {
     const { key, order } = curr
     switch (order) {
@@ -206,16 +205,27 @@ const emitSortingData = computed<Types.SortingMap>(() => {
   }, {})
 })
 
+// 有使用的往前
 const activeSort = () => {
   sortingList.value.sort((a, b) => {
-    if (['ascending', 'descending'].includes(a.order) && b.order === 'none') {
+    const { order: aOrder, orderIndex: aOrderIndex } = a ?? {}
+    const { order: bOrder, orderIndex: bOrderIndex } = b ?? {}
+    const aIsActive = ['ascending', 'descending'].includes(aOrder)
+    const bIsActive = ['ascending', 'descending'].includes(bOrder)
+
+    if (aIsActive && bIsActive) {
+      return (aOrderIndex ?? -1) - (bOrderIndex ?? -1)
+    } else if (aIsActive && !bIsActive) {
       return -1
+    } else if (!aIsActive && bIsActive) {
+      return 1
+    } else {
+      return 0
     }
-    return 1
   })
 }
 const initSortingList = async () => {
-  sortingList.value = props.tableColumns.reduce<Types.SortingList>((res, column) => {
+  sortingList.value = tempColumns.value.reduce<Types.SortingList>((res, column) => {
     const _isOperations = column?.isOperations ?? false
 
     if (!_isOperations && (column?.isSorting ?? true)) {
@@ -232,6 +242,29 @@ const initSortingList = async () => {
 
   activeSort()
   await awaitTime(120)
+}
+const resetSorting = () => {
+  sortingList.value = sortingList.value.map(sortingItem => {
+    return { ...sortingItem, order: 'none', orderIndex: -1 }
+  })
+}
+const onSortingChange = () => {
+  activeSort()
+  emit('sorting-change', getProxyData(emitSortingData.value))
+
+  sortingList.value.forEach((sortingItem, sortingIndex) => {
+    const headerKey = sortingItem?.key // 欄位Key值
+    const order = sortingItem?.order
+    const orderIndex = sortingIndex ?? sortingItem?.orderIndex
+    columnSetting.value?.setColumnOrder(headerKey, order, orderIndex)
+  })
+
+  onShowChange({
+    page: currentPage.value,
+    pageSize: pageSize.value,
+    sort: currentSort.value,
+    emitType: 'sorting-change'
+  })
 }
 
 // Header 欄位寬度最適化:調整子元素寬度
@@ -326,25 +359,6 @@ const optimizeColumnWidth = (column: any) => {
     // 重新渲染欄位
     initShowColumns({ isLoading: true })
   })
-  /*
-  // 開始計算最適化寬度
-  isResizing.value = true
-  await nextTick()
-
-  const headerKey = column?.key // 欄位Key值
-  const element = document.getElementById('header-' + headerKey) // 由Key取得對應欄位元素
-  if (!element) return
-
-  const isSorting = props.isSorting && (column?.isSorting ?? true) // 有無sorting按鍵
-  const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) // 設置元素與其子元素最適寬度
-
-  // 結束計算最適化寬度
-  isResizing.value = false
-  await nextTick()
-
-  columnSetting.value?.setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
-  await initShowColumns({ isLoading: false }) // 重新渲染欄位, isLoading:false 不使用isLoading
-  */
 }
 
 // Column All 欄位寬度最適化
@@ -353,51 +367,11 @@ const optimizeAllColumnWidth = () => {
     // 重新渲染欄位
     initShowColumns({ isLoading: true })
   })
-
-  /*
-  // 開始計算最適化寬度
-  isResizing.value = true
-  await nextTick()
-
-  const isSortingMap = new Map()
-  showColumns.forEach(column => {
-    isSortingMap.set(column.key, column?.isSorting ?? true)
-  })
-
-  slotKeyList.value.forEach(headerKey => {
-    const element = document.getElementById('header-' + headerKey) // 由Key取得對應欄位元素
-    if (element) {
-      const isSorting = props.isSorting && isSortingMap.get(headerKey) // 有無sorting按鍵
-      const newWidth = setElementWidth(element) + 24 + (isSorting ? 28 : 0) // 設置元素與其子元素最適寬度
-      if (columnSetting.value) {
-        columnSetting.value.setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
-      }
-    }
-  })
-
-  // 結束計算最適化寬度
-  isResizing.value = false
-  await nextTick()
-
-  // 重新渲染欄位
-  await initShowColumns()
-  */
 }
 
 // Emit
 const onRowClick: Emits.RowClick = (row, column, event) => {
   emit('row-click', row, column, event)
-}
-const onSortingChange = () => {
-  activeSort()
-  emit('sorting-change', getProxyData(emitSortingData.value))
-
-  onShowChange({
-    page: currentPage.value,
-    pageSize: pageSize.value,
-    sort: currentSort.value,
-    emitType: 'sorting-change'
-  })
 }
 const onHeaderClick: Emits.HeaderClick = (column, event) => {
   emit('header-click', column, event)
@@ -465,6 +439,7 @@ const showData = computed(() => {
 })
 
 const columnSetting = ref(null)
+const tempColumns = shallowRef([...props.tableColumns])
 const showColumns = shallowReactive([...props.tableColumns])
 
 // 初始化顯示欄位
@@ -482,10 +457,10 @@ const initShowColumns = async (setting?: any) => {
     // 確認欄位設定
     await columnSetting.value.checkColumnSetting()
 
-    const tempColumnList = (await (columnSetting.value?.getColumnList() ?? [])) as ColumnItem[]
-    columnSetting.value?.setColumnList(tempColumnList)
+    tempColumns.value = (await (columnSetting.value?.getColumnList() ?? [])) as ColumnItem[]
+    columnSetting.value?.setColumnList(tempColumns.value)
 
-    const resColumns = tempColumnList.reduce((resColumn, tempColumn) => {
+    const resColumns = tempColumns.value.reduce((resColumn, tempColumn) => {
       if (tempColumn.isShow) {
         const showColumn = props.tableColumns.find(column => {
           return tempColumn.key === column.key
@@ -513,20 +488,11 @@ const initShowColumns = async (setting?: any) => {
 
 onMounted(async () => {
   isRender.value = false
+  // 初始化欄位
+  await initShowColumns()
+
   // 初始化排序
   await initSortingList()
-  // 第一次依照欄位設定排序
-  sortingList.value.sort((a, b) => {
-    if (
-      ['ascending', 'descending'].includes(a.order) &&
-      ['ascending', 'descending'].includes(b.order)
-    ) {
-      return (a?.orderIndex ?? -1) - (b?.orderIndex ?? -1)
-    }
-    return 0
-  })
-
-  await initShowColumns()
 
   setTimeout(async () => {
     isRender.value = true
@@ -790,7 +756,7 @@ onMounted(() => {
           :i18n-module="props.i18nModule"
           :setting-width="props.settingWidth"
           :setting-height="`${tableHeight - 40}px`"
-          @reset-sorting="initSortingList"
+          @reset-sorting="resetSorting"
           @submit="onSortingChange"
         />
       </div>

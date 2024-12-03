@@ -83,7 +83,7 @@ const defulatColumns = computed(() => {
       width: column?.width ?? null,
       minWidth: column?.minWidth ?? null,
       isOperations: column.isOperations
-    }
+    } as ColumnItem
   })
 })
 
@@ -256,12 +256,23 @@ const setColumnWidth = (props: string, newWidth: number) => {
   updateSetting(false)
 }
 
+/**
+ * 當欄位排序變動時 設新的排序
+ * @param props column 的 key
+ * @param newWidth 新的排序
+ */
+const setColumnOrder = (props: string, newOrder: string, newOrderIndex: number) => {
+  setColumnInfo(props, { order: newOrder, orderIndex: newOrderIndex })
+  updateSetting(false)
+}
+
 defineExpose({
   checkColumnSetting,
   getColumnList,
   setColumnList,
   resetSetting,
-  setColumnWidth
+  setColumnWidth,
+  setColumnOrder
 })
 
 const drag = ref(false)
@@ -308,12 +319,7 @@ const onDragend = () => {
       </template>
 
       <div>
-        <div
-          :style="{
-            maxHeight: props.settingHeight,
-            overflow: 'auto'
-          }"
-        >
+        <div :style="{ maxHeight: props.settingHeight, overflow: 'auto' }">
           <CustomDraggable
             v-model="showColumnList"
             @start="drag = true"

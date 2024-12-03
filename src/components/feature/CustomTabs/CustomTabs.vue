@@ -23,21 +23,11 @@ const emit = defineEmits([
   'tab-add',
   'edit'
 ])
-const onTabClick = (pane: TabsPaneContext, ev: Event) => {
-  emit('tab-click', pane, ev)
-}
-const onTabChange =	(name: TabPaneName) => {
-  emit('tab-change', name)
-}
-const onTabRemove =	(name: TabPaneName) => {
-  emit('tab-remove', name)
-}
-const onTabAdd = () => {
-  emit('tab-add')
-}
-const onEdit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => {
-  emit('edit', paneName, action)
-}
+const onTabClick = (pane: TabsPaneContext, ev: Event) => emit('tab-click', pane, ev)
+const onTabChange =	(name: TabPaneName) => emit('tab-change', name)
+const onTabRemove =	(name: TabPaneName) => emit('tab-remove', name)
+const onTabAdd = () => emit('tab-add')
+const onEdit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => emit('edit', paneName, action)
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, i18nTest } = useHook({

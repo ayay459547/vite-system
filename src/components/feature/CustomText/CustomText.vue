@@ -41,7 +41,7 @@ onMounted(() => {
 
 <template>
   <CustomTooltip
-    placement="top-start"
+    placement="top"
     trigger="hover"
     :offset="6"
     :show-after="240"

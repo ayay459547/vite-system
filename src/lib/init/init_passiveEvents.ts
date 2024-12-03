@@ -1,4 +1,9 @@
 /**
+ * 使用 addEventListener 綁定事件
+ * 取消預設事件 passive = false 以優化效能
+ * @see https://chromestatus.com/feature/5745543795965952
+ *
+ * 代碼參考
  * @see https://stackoverflow.com/questions/46094912/added-non-passive-event-listener-to-a-scroll-blocking-touchstart-event
  */
 export const passiveEvents = function () {

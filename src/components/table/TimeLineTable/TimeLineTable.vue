@@ -73,11 +73,15 @@ const groupColumnsSortMap: {
   [key: string]: number
 } = {}
 
+const isMerge = ref(false)
 // 清除 Y軸欄位合併
 const clearMergeCells = () => {
   setTimeout(() => {
     vxeTableRef.value?.clearMergeCells()
   }, 0)
+  setTimeout(() => {
+    isMerge.value = false
+  }, 80)
 }
 // 設定 Y軸欄位合併
 const mergeCells = []
@@ -85,6 +89,9 @@ const setMergeCells = () => {
   setTimeout(() => {
     vxeTableRef.value?.setMergeCells(mergeCells)
   }, 80)
+  setTimeout(() => {
+    isMerge.value = true
+  }, 160)
 }
 
 // 重設 Y軸欄位合併
@@ -497,27 +504,10 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
         fixed="left"
       >
         <template #header>
-          <div class="flex-row i-ga-lg">
+          <div class="flex-row-center i-ga-lg">
             <h3>{{ i18nTranslate('setting', defaultModuleType) }}</h3>
 
-            <!-- 檢驗合併用 需要再打開 -->
-            <!-- <div class="test-merge">
-              <CustomButton
-                :label="i18nTranslate('setting', defaultModuleType)"
-                icon-name="table-cells-column-lock"
-                size="small"
-                @click="setMergeCells"
-              />
-
-              <CustomButton
-                :label="i18nTranslate('clear', defaultModuleType)"
-                icon-name="table-cells"
-                size="small"
-                @click="clearMergeCells"
-              />
-            </div> -->
-
-            <div class="flex-row i-ga-md">
+            <div class="flex-row-center i-ga-md">
               <CustomPopover
                 :offset="5"
                 :width="600"
@@ -609,6 +599,21 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
                 @activeChange="refreshColumn"
                 @baseChange="refreshColumn"
               />
+
+              <CustomButton
+                v-show="!isMerge"
+                icon-x-type="fluent"
+                icon-name="TableFreezeColumn28Regular"
+                text
+                @click="setMergeCells"
+              />
+              <CustomButton
+                v-show="isMerge"
+                icon-x-type="fluent"
+                icon-name="Table28Regular"
+                text
+                @click="clearMergeCells"
+              />
             </div>
           </div>
         </template>
@@ -647,7 +652,6 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
         :date-columns="dateColumns"
         :base-width="baseWidth"
         :i18n-module="props.i18nModule"
-        :get-slot="getSlot"
       >
         <template #header="{ scope, column }">
           <slot :name="getSlot((column?.slotKey ?? column.key), true)" v-bind="scope">

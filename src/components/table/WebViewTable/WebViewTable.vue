@@ -22,6 +22,7 @@ import {
   CustomModal,
   TimeLineTable
 } from '@/components' // 系統組件
+import type { FormOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import throttle from '@/lib/lib_throttle'
 import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils' // 工具
@@ -60,7 +61,6 @@ const emit = defineEmits([
   'row-contextmenu',
   // 'load',
   'init', // 初始化完成
-
   'mounted' // WebViewTable mounted
 ])
 
@@ -89,6 +89,14 @@ const onRowContextmenu = (row: any, column: any, event: Event) => {
 }
 
 // filter
+const formOptions: FormOptions = computed(() => {
+  const { version, settingKey, i18nModule } = props?.tableOptions ?? {}
+
+  if (!isEmpty(version) && !isEmpty(settingKey)) {
+    return { version, settingKey, i18nModule }
+  }
+  return {}
+})
 const {
   columns: filterColumn,
   forms: filter,
@@ -97,14 +105,20 @@ const {
   reset: resetFilter,
   activeConditions: activeConditions,
   conditions: filterConditions,
-  getConditionFilter
-} = useFormSetting<Types.FilterData>(props.columnSetting, props.filterKey)
+  getConditionFilter,
+  updateIDB: updateIDBFilter
+} = useFormSetting<Types.FilterData>(props.columnSetting, props.filterKey, formOptions.value)
 
-// 使用記得定義 columns
+// 另外設定過濾條件 不自動更新 indexedDB
+const isUpdateIDB = ref(true)
 const setFilter = (_filter: Types.FilterData) => {
-  for (const filterKey in _filter) {
-    if (hasOwnProperty(filter, filterKey)) {
-      filter[filterKey] = _filter[filterKey]
+  isUpdateIDB.value = false
+  resetFilter({})
+
+  if (typeof _filter !== 'object') return
+  for (const _filterKey in _filter) {
+    if (hasOwnProperty(filter, _filterKey)) {
+      filter[_filterKey] = _filter[_filterKey]
     }
   }
 }
@@ -125,6 +139,7 @@ const {
 
 const isLoading = ref(false)
 
+// 下載excel
 const onExcelClick = async ({ type }) => {
   isLoading.value = true
 
@@ -132,8 +147,6 @@ const onExcelClick = async ({ type }) => {
   const {
     page = 1,
     size = 100,
-    // sort = { key: null, order: null },
-    // sortingList = [],
     sortingMap = {}
   } = tableParams
 
@@ -213,8 +226,6 @@ const initData = async (tableParams: any) => {
   const {
     page = 1,
     size = 100,
-    // sort = { key: null, order: null },
-    // sortingList = [],
     sortingMap = {},
     emitType = ''
   } = tableParams
@@ -311,19 +322,13 @@ const _isShowTimeLineTable = computed(() => {
     })
 })
 
-/**
- * 確保 CustomTable 初始化 排序(initSortingList) + 欄位(initShowColumns)
- * 才可以送出api
- */
-const onTableMounted = () => {
-  if (props.isMountedInit) {
-    init(null, '')
-  }
-  emit('mounted')
-}
-
+// 初始化資料
 const init = async (params?: any, type?: string) => {
   isLoading.value = true
+  if (isUpdateIDB.value) {
+    await updateIDBFilter()
+  }
+
   if (type === 'input') {
     changePage(1)
   }
@@ -341,11 +346,11 @@ const init = async (params?: any, type?: string) => {
   }, 240)
 
   // 時間線表格 同步更新
-  setTimeout(() => {
-    if (modal.timeLine) {
+  if (modal.timeLine && timeLineTableRef.value) {
+    setTimeout(() => {
       timeLineTableRef.value?.init()
-    }
-  }, 800)
+    }, 800)
+  }
 
   emit('init', [resData, resDataCount])
   return [resData, resDataCount]
@@ -356,6 +361,20 @@ const throttleInit = throttle<typeof init>(init, 200, {
   isNoTrailing: true
 })
 
+/**
+ * 確保 CustomTable 初始化 排序(initSortingList) + 欄位(initShowColumns)
+ * 才可以送出api
+ */
+ const onTableMounted = async () => {
+  await nextTick()
+  emit('mounted')
+
+  if (props.isMountedInit) {
+    throttleInit(null, '')
+  }
+}
+
+// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]

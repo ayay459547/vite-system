@@ -1,4 +1,4 @@
-## CustomInput API
+## CustomInput
 CustomInput_1.0.0 vue(tsx)寫法
 CustomInput_2.0.0 統一使用 template 寫法, 以方便維護
 
@@ -81,11 +81,11 @@ https://element-plus.org/en-US/component/input.html
 
 ### Events ( emits )
 
-| 事件名             | 說明                    | 傳值類型   |
+| 事件名             | 說明                    | 傳值類型   | |
 | ------------------ | ----------------------- | ---------- | ---- |
-| update:model-value | v-modal 用              | boolean    |
-| focus              | 當輸入框聚焦時          | FocusEvent |
-| clear              | 點擊 clearable 的按鈕時 |            |
-| blur               | 輸入框沒有聚焦時        | FocusEvent |
+| update:model-value | v-modal 用              | boolean    | |
+| focus              | 當輸入框聚焦時          | FocusEvent | |
+| clear              | 點擊 clearable 的按鈕時 |            | |
+| blur               | 輸入框沒有聚焦時        | FocusEvent | |
 | change             | modelValue 發生改變時   | string     | null |
 | input              | 輸入框的值 發生改變時   | string     | null |

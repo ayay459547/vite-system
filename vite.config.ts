@@ -42,10 +42,10 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
   })
 
   return {
-    base: './',
+    base: './', // 路徑
     // root: path.resolve(__dirname, './src/'),
     build: {
-      outDir: 'demo',
+      outDir: 'demo', // 匯出資料夾名稱
       sourcemap: true,
       cssCodeSplit: true,
       // assetsDir: '',
@@ -135,10 +135,10 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
       })
     ],
     server: {
-      port: 4040,
+      port: 4040, // 服務器 port號
       host: '0.0.0.0',
-      open: true,
-      cors: true,
+      open: true, // 是否啟動服務時 打開瀏覽器
+      cors: true, // 是否跨域 配合 proxy 使用
       // https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
         '/api': {
@@ -153,18 +153,23 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
         }
       },
       warmup: {
+        ssrFiles: [],
         clientFiles: [
           // './src/components/layout/**/*.vue',
           './src/lib/init/*.ts',
           './src/lib/*.ts'
         ]
-      }
-      // hmr: {
-      //   overlay: false // 根據需要禁用錯誤覆蓋層
-      // }
+      },
+      hmr: {
+        // protocol: 'ws', // 使用 WebSocket 協議
+        // host: 'localhost',
+        // port: 3000, // 設定 HMR 使用的端口
+        // overlay: false // 根據需要禁用錯誤覆蓋層
+      },
+      https: false // 啟用 HTTPS
       // https: {
-      //   key: fs.readFileSync('RootCA-key.pem'),
-      //   cert: fs.readFileSync('RootCA.pem')
+      //   key: readFileSync('RootCA-key.pem'),
+      //   cert: readFileSync('RootCA.pem')
       // }
     },
     resolve: {

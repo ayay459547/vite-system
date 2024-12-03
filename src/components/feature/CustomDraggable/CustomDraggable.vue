@@ -41,7 +41,6 @@ const onChange: Emits.Change = ($event: Types.DraggableChange) => emit('change',
 const listValue = computed({
   get() {
     if (isEmpty(props.modelValue)) return []
-
     return props.modelValue
   },
   set(value: any[]) {

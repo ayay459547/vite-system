@@ -51,34 +51,16 @@ const props = defineProps(vxeTableProps)
 
 const vxeTableRef = ref()
 
-const refreshColumn: Expose.RefreshColumn = () => {
-  return vxeTableRef.value?.refreshColumn()
-}
-const updateData: Expose.UpdateData = () => {
-  return vxeTableRef.value?.updateData()
-}
-const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => {
-  return vxeTableRef.value?.setMergeCells(merges)
-}
-const removeMergeCells: Expose.RemoveMergeCells = (merges: Types.Merges) => {
-  return vxeTableRef.value?.removeMergeCells(merges)
-}
-const clearMergeCells: Expose.ClearMergeCells = () => {
-  return vxeTableRef.value?.clearMergeCells()
-}
+const refreshColumn: Expose.RefreshColumn = () => vxeTableRef.value?.refreshColumn()
+const updateData: Expose.UpdateData = () => vxeTableRef.value?.updateData()
+const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => vxeTableRef.value?.setMergeCells(merges)
+const removeMergeCells: Expose.RemoveMergeCells = (merges: Types.Merges) => vxeTableRef.value?.removeMergeCells(merges)
+const clearMergeCells: Expose.ClearMergeCells = () => vxeTableRef.value?.clearMergeCells()
 
-const clearScroll: Expose.ClearScroll = () => {
-  return vxeTableRef.value?.clearScroll()
-}
-const scrollTo: Expose.ScrollTo = (scrollLeft, scrollTop) => {
-  return vxeTableRef.value?.scrollTo(scrollLeft, scrollTop)
-}
-const scrollToRow: Expose.ScrollToRow = (row, fieldOrColumn) => {
-  return vxeTableRef.value?.scrollToRow(row, fieldOrColumn)
-}
-const scrollToColumn: Expose.ScrollToColumn = fieldOrColumn => {
-  return vxeTableRef.value?.scrollToColumn(fieldOrColumn)
-}
+const clearScroll: Expose.ClearScroll = () => vxeTableRef.value?.clearScroll()
+const scrollTo: Expose.ScrollTo = (scrollLeft, scrollTop) => vxeTableRef.value?.scrollTo(scrollLeft, scrollTop)
+const scrollToRow: Expose.ScrollToRow = (row, fieldOrColumn) => vxeTableRef.value?.scrollToRow(row, fieldOrColumn)
+const scrollToColumn: Expose.ScrollToColumn = fieldOrColumn => vxeTableRef.value?.scrollToColumn(fieldOrColumn)
 
 defineExpose({
   refreshColumn,
@@ -134,7 +116,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-:global(.vxe-table .vxe-table--body-wrapper.body--wrapper) {
+:global(.vxe-table .vxe-table--body-wrapper) {
   background-color: transparent !important;
 }
 

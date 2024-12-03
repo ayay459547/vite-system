@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 
 import { useNetwork } from '@/lib/lib_hook' // 自訂Composition API
 import { CustomIcon } from '@/components' // 系統組件
@@ -19,14 +19,17 @@ import { CustomIcon } from '@/components' // 系統組件
  *
  */
 const network = reactive(useNetwork())
-
+const isOnline  = computed(() => {
+  return network.isOnline
+})
 </script>
 
 <template>
   <div class="network-wifi">
     <CustomIcon
-      :class="network.isOnline ? 'success' : 'danger'"
-      name="wifi"
+      :class="isOnline ? 'success' : 'danger'"
+      x-type="material"
+      :name="isOnline ? 'WifiOutlined' : 'WifiOffTwotone'"
       size="large"
     />
   </div>
@@ -43,7 +46,7 @@ const network = reactive(useNetwork())
     height: fit-content;
     font-size: 0.8em;
     transition: 0.3s;
-    opacity: 0.6;
+    opacity: 0.7;
 
     &:hover {
       opacity: 1;

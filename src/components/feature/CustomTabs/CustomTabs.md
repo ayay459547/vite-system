@@ -1,4 +1,4 @@
-## CustomTabs API
+## CustomTabs
 
 ### 使用範例
 

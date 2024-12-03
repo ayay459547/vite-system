@@ -50,7 +50,7 @@ const getStyle = (isChecked: boolean, color?: string) => {
         <ElCheckbox
           v-for="item in options"
           :key="`${item.value}-${scopedId}`"
-          :label="item.value"
+          :label="item.label"
           :value="item.value"
           :validate-event="false"
           :disabled="item.disabled ?? false"

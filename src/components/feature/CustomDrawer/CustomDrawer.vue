@@ -25,10 +25,8 @@ const onClose: Emits.Close = () => emit('close')
 const onClosed: Emits.Closed = () => emit('closed')
 
 const tempValue = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value: boolean) {
+  get: () => props.modelValue,
+  set: (value: boolean) => {
     emit('update:model-value', value)
   }
 })

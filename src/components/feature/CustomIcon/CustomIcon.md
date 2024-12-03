@@ -1,4 +1,4 @@
-## CustomIcon API
+## CustomIcon
 
 ### 使用範例
 

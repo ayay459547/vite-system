@@ -1,4 +1,4 @@
-## CustomTable API
+## CustomTable
 
 ### 使用範例
 
@@ -49,7 +49,7 @@ const tableOptions = {
 }
 const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
 
-const onExcelClick = () => {
+const download = () => {
   downloadExcel(tableData2)
 }
 
@@ -106,11 +106,7 @@ const tableData2 = [
   </div>
 
   <div style="width: 800px; height: 500px;">
-    <CustomTable
-      :table-data="tableData2"
-      v-bind="tableSetting"
-      @excel="onExcelClick"
-    >
+    <CustomTable :table-data="tableData2" v-bind="tableSetting" @excel="download">
       <template #header-all="{ column }">{{ column.label }}</template>
     </CustomTable>
   </div>

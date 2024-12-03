@@ -1,49 +1,24 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
 import type {
-  TempCustomInputExpose,
+  CustomInputExpose,
   CustomTableTypes,
   CustomTableProps
 } from '@/components' // 系統組件
 import type { ScopeKey } from '@/i18n/i18n_setting'
 import type { ValidateType } from '@/lib/lib_validate'
 
-export interface InputRefItem extends Element, ComponentPublicInstance, TempCustomInputExpose {}
-
-
-export interface ColumnTypeSetting<T, K extends string> {
-  [key: string]: {
-    [keyType in K | 'label']: T | string
-  }
+// 選項
+export interface Option<T = (string | number | null | undefined)> extends Record<string, any> {
+  label: string
+  i18nLabel?: string
+  value: T
+  disabled?: boolean
+  data?: any
+  [key: string]: any
 }
+export type Options<T = (string | number | null | undefined)> = Array<Option<T>>
 
-export interface FormSetting<T> {
-  refMap: Record<string, any>
-  defaultValue: T
-  columns: Record<string, any>
-  forms: T
-  activeForms: Record<string, boolean>
-  activeConditions: Record<string, boolean>
-  conditions: Record<string, Conditions>
-  resetForms: (defaultValue?: Partial<T> | any) => void
-  resetValidate: () => void
-  reset: (defaultValue?: Partial<T> | any) => void
-  getActiveForms: (isShowEmpty: boolean) => Partial<T>
-  validate: () => Promise<Array<any>>
-  getConditionFilter: () => Conditions
-}
-
-export interface FormListSetting<T> {
-  refMap: Record<string, any>
-  defaultValue: T
-  columns: Record<string, any>
-  forms: Ref<Array<T>>
-  reset: () => void
-  validate: () => Promise<Array<any>>
-  add: (value?: any) => any
-  remove: (rowIndex: number) => any
-  clear: () => void
-}
-
+// 欄位屬性
 export interface ColumnItem {
   __key__?: string // 系統用
 
@@ -60,8 +35,8 @@ export interface ColumnItem {
   width?: number | null // 寬度
   minWidth?: number | null // 最小寬度
   resizable?: boolean // 是否可變更表格大小
-  align?: 'left' | 'center' | 'right' // 對齊
-  fixed?: 'left' | 'right' // 定住
+  align?:  string | 'left' | 'center' | 'right' // 對齊
+  fixed?: string | 'left' | 'right' // 定住
   isShow?: boolean // 是否顯示
 
   isSorting?: boolean // 是否排序
@@ -69,15 +44,16 @@ export interface ColumnItem {
   orderIndex?: number // 排序順位 越小越前面
 
   // form
-  ref?: (el: InputRefItem) => void
+  ref?: (el: InputRefItem) => InputRefItem
   default?: any // 預設值
   validate?: ValidateType[] | ValidateType // 驗證
   required?: boolean // 是否必填
   isCondition?: boolean // 是否為特殊查詢
   clearable?: boolean // 使否顯示清除按鈕
+  options?: Options // 選項
 
   // TimeLineTable
-  timeLineType?: 'group' | 'date' | 'none' | null | undefined
+  timeLineType?: string | 'group' | 'date' | 'none' | null | undefined
   timeIndex?: number
   isTimeLineDate?: boolean // 是否是日期欄位
   isTimeLineDateActive?: boolean // 是否正在使用的日期欄位(只有一個)
@@ -85,17 +61,77 @@ export interface ColumnItem {
   [key: string]: any
 }
 
-export interface Condition {
+// 輸入框
+export interface InputRefItem extends Element, ComponentPublicInstance {
+  key: CustomInputExpose.Key
+  value: CustomInputExpose.Value
+  resetValidate: CustomInputExpose.ResetValidate
+  validate: CustomInputExpose.Validate
+  getDom: CustomInputExpose.GetDom
+  focus: CustomInputExpose.Focus
+  blur: CustomInputExpose.Blur
+}
+
+// useFormSetting
+export interface FormOptions {
+  version?: string // 版本 indexedDB
+  settingKey?: string // 搜尋用的key
+  i18nModule?: ScopeKey // 翻譯模組
+  [key: string]: any
+}
+export type Conditions = Array<{
   conditionType: string
   filterValue: string
+}>
+interface ModelForm<T> {
+  forms: T
+  activeForms: Record<string, boolean>
+  activeConditions: Record<string, boolean>
+  conditions: Record<string, Conditions>
 }
-export type Conditions = Array<Condition>
+export interface FormSetting<T> extends ModelForm<T> {
+  refMap: Record<string, any>
+  defaultValue: T
+  columns: Record<string, any>
+  resetForms: (defaultValue?: Partial<T> | any) => void
+  resetValidate: () => void
+  reset: (defaultValue?: Partial<T> | any) => void
+  getActiveForms: (isShowEmpty: boolean) => Partial<T>
+  validate: () => Promise<Array<any>>
+  getConditionFilter: () => Conditions
+  updateIDB: () => void | Promise<any>
+}
+// indexedDB
+export interface FormIDBSetting<T> extends ModelForm<T> {
+  version: string
+  settingKey: string
+}
 
+// useFormListSetting
+export interface FormListOptions {
+  title?: string
+  i18nTitle?: string
+  version?: string
+  settingKey?: string
+  i18nModule?: ScopeKey // 翻譯模組
+  [key: string]: any
+}
+export interface FormListSetting<T> {
+  refMap: Record<string, any>
+  defaultValue: T
+  columns: Record<string, any>
+  forms: Ref<Array<T>>
+  reset: () => void
+  validate: () => Promise<Array<any>>
+  add: (value?: any) => any
+  remove: (rowIndex: number) => any
+  clear: () => void
+}
 
+// useTableSetting
 export interface TableRef extends Element, ComponentPublicInstance {
   [key: string]: any
 }
-
 export interface TableOptions {
   title: CustomTableProps.Title
   i18nTitle?: CustomTableProps.I18nTitle
@@ -117,11 +153,10 @@ export interface TableOptions {
   i18nModule?: CustomTableProps.I18nModule // 翻譯模組
   [key: string]: any
 }
-
 export interface TableSetting {
   tableRef: Ref<TableRef>
   tableSetting: {
-    ref: (el: TableRef) => void
+    ref: (el: TableRef) => TableRef
     title: string
     i18nTitle?: string
     version: string
@@ -151,26 +186,16 @@ export interface TableSetting {
   setParams: (params: CustomTableTypes.TableParams, tableRef?: TableRef) => void
   changePage: (page?: number, pageSize?: number, tableRef?: TableRef) => void
 }
-
+// indexedDB
 export interface TableIDBSetting {
   version: string
   settingKey: string
   columns: Array<ColumnItem>
 }
 
+// useSimpleTableSetting
 export interface SimpleTableSetting {
   title: string
   tableColumns: any[]
   downloadExcel: (tableData: Record<string, any>[]) => void
 }
-
-export interface Option<T = (string | number | null | undefined)> extends Record<string, any> {
-  label: string
-  i18nLabel?: string
-  value: T
-  disabled?: boolean
-  data?: any
-  [key: string]: any
-}
-
-export type Options<T = (string | number | null | undefined)> = Array<Option<T>>

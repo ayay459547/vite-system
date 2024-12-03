@@ -1,3 +1,3 @@
-# QRcode
+# SimpleQRcode
 
 ## https://www.npmjs.com/package/vue-qr

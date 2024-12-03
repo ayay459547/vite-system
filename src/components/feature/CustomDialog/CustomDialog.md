@@ -1,3 +1,1 @@
-## CustomDialog
-
-## 棄用
+## CustomDialog (棄用)

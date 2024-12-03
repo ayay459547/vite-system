@@ -4,7 +4,8 @@ import {
   ChartArea,
   Minus,
   WindowRestoreRegular,
-  WindowMaximizeRegular
+  WindowMaximizeRegular,
+  RulerHorizontal
 } from '@vicons/fa'
 
 export default {
@@ -13,5 +14,6 @@ export default {
   ChartArea,
   Minus,
   WindowRestoreRegular,
-  WindowMaximizeRegular
+  WindowMaximizeRegular,
+  RulerHorizontal
 }

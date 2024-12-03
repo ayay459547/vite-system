@@ -1,5 +1,5 @@
 import { numberFormat } from '@/lib/lib_format' // 格式化
-import { operatorOptions } from '@/variable'
+import { operatorOptions } from '@/declare/variable'
 
 export const columnSetting = {
   erpNo: {

@@ -100,7 +100,7 @@ export const formatDatetime = (value: string | number | Date, format: string = '
  * @param {String} value 日期
  * @returns {String} 格式化後的時間
  */
-export const formatISO8601 = (value: string | number | Date): string | Date => {
+export const formatISO8601 = (value: string | number | Date): string => {
   if (isEmpty(value)) return ''
   return dayjs(value).toISOString()
 }
@@ -128,7 +128,7 @@ const toLocaleString = (num: number): string => {
   if (Number.isNaN(num) || typeof num !== 'number') return `${num}`
   return num.toLocaleString()
 }
-export type NumberFormatType = 'round' | 'floor' | 'ceil' | 'none' | ''
+export type NumberFormatType = string | 'round' | 'floor' | 'ceil' | 'none' | ''
 /**
  * @author Caleb
  * @description 數字格式化

@@ -63,7 +63,7 @@ const { i18nTranslate } = useHook({
       <template #header="scope">
         <slot name="header" v-bind="scope"></slot>
       </template>
-      <template #default="scope">
+      <template #column="scope">
         <slot name="column" v-bind="scope"></slot>
       </template>
     </GroupDateColumn>

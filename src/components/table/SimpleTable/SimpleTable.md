@@ -1,4 +1,4 @@
-# SimpleTable API
+# SimpleTable
 SimpleTable_1.0.0 vue(h)寫法
 SimpleTable_2.0.0 統一使用 template 寫法, 以方便維護
 

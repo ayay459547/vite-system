@@ -1,4 +1,4 @@
-## CustomTag API
+## CustomTag
 
 ### 使用範例
 

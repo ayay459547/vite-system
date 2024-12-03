@@ -1,4 +1,4 @@
-## CustomTootip API
+## CustomTooltip
 
 ### 使用範例
 

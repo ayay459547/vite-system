@@ -63,14 +63,14 @@ const list = ref([
 
 ### Events ( emit )
 
-| 事件名            | 說明         | 傳值類型        |
-| ----------------- | ------------ | --------------- |
+| 事件名             | 說明         | 傳值類型        |
+| ------------------ | ------------ | --------------- |
 | update:model-value | v-modal 用   | boolean         |
-| start             | 開始移動     |                 |
-| add               | 新增資料     |                 |
-| remove            | 移除資料     |                 |
-| end               | 結束移動     |                 |
-| choose            | 點選時       |                 |
-| unchoose          | 放開點選     |                 |
-| clone             | clone 執行   |                 |
-| change            | 移動變動資料 | DraggableChange |
+| start              | 開始移動     |                 |
+| add                | 新增資料     |                 |
+| remove             | 移除資料     |                 |
+| end                | 結束移動     |                 |
+| choose             | 點選時       |                 |
+| unchoose           | 放開點選     |                 |
+| clone              | clone 執行   |                 |
+| change             | 移動變動資料 | DraggableChange |

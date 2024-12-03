@@ -26,9 +26,9 @@ const getText = (text: string, i18nText: string | string[]) => {
 const onChange: Emits.Change = (href: string) => {
   emit('change', href)
 }
-const onClick: Emits.Click = ($event: MouseEvent, href?: string) => {
-  emit('click', $event, href)
-  $event.preventDefault()
+const onClick: Emits.Click = (event: MouseEvent, href?: string) => {
+  emit('click', event, href)
+  event.preventDefault()
 }
 
 const anchorRef = ref()

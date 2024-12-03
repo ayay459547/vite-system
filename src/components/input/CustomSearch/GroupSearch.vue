@@ -8,7 +8,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { version, props as groupSearchProps } from './GroupSearchInfo'
 
-const scopedId = getUuid('__i-group-search__')
+const scopedId = getUuid(version)
 
 const props = defineProps(groupSearchProps)
 
@@ -43,7 +43,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="`GroupSearch_${version} ${scopedId}`" class="__group-search">
+  <div :class="scopedId" class="__group-search">
     <CustomButton
       :label="i18nTranslate('filter')"
       icon-name="filter"

@@ -21,7 +21,12 @@ import { v4 as uuidv4 } from 'uuid'
  * @returns {Boolean}
  */
 export const hasOwnProperty = (obj: any, key: string): boolean => {
-  return Object.prototype.hasOwnProperty.call(obj, key)
+  try {
+    return Object.prototype.hasOwnProperty.call(obj, key)
+  } catch (e) {
+    console.log(e)
+    return false
+  }
 }
 
 /**

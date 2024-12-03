@@ -87,8 +87,8 @@ const openPopover: Expose.OpenPopover = (clientX, clientY, eventList, options) =
     popoverWidth.value = 150
   }
 
-  window.addEventListener('wheel', throttleClosePopover)
-  window.addEventListener('resize', throttleClosePopover)
+  window.addEventListener('wheel', throttleClosePopover, { passive: true })
+  window.addEventListener('resize', throttleClosePopover, { passive: true })
 
   setTimeout(() => {
     visible.value = true

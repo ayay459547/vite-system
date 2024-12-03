@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 // import { defineAsyncComponent } from 'vue'
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
@@ -360,19 +359,6 @@ export type {
 } from './input/CustomInput/CustomInputInfo'
 export { default as CustomInput } from './input/CustomInput/CustomInput.vue'
 // export const CustomInput = useAsyncComponent(() => import('./input/CustomInput/CustomInput.vue'), 'h1')
-
-export declare interface TempCustomInputExpose {
-  key: string
-  value: Ref<string>
-  resetValidate: () => void
-  validate: () => Promise<{
-    errors: string[]
-    valid: boolean
-    value?: any
-    validateKey?: string
-  }>
-  getDom: () => Element
-}
 
 // 搜尋用組件
 export type {

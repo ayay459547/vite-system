@@ -11,7 +11,7 @@ export declare namespace Types {
     i18nTitle?: string | string[] // 標題: i18nTranslate
     href?: string // 連結
     links?: Link[]
-  }
+  } | any
 }
 
 export declare namespace Props {

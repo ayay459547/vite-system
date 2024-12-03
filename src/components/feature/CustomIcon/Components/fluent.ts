@@ -8,7 +8,9 @@ import {
   ClipboardArrowRight16Filled,
   EyeTracking16Filled,
   CalendarSearch20Filled,
-  DualScreenClock24Filled
+  DualScreenClock24Filled,
+  Table28Regular,
+  TableFreezeColumn28Regular
 } from '@vicons/fluent'
 
 export default {
@@ -21,5 +23,7 @@ export default {
   ClipboardArrowRight16Filled,
   EyeTracking16Filled,
   CalendarSearch20Filled,
-  DualScreenClock24Filled
+  DualScreenClock24Filled,
+  Table28Regular,
+  TableFreezeColumn28Regular
 }

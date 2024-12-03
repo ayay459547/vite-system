@@ -146,7 +146,7 @@ router.beforeEach((to, from, next) => {
     // 未登入
     if (!isLogin.value && !isSkipLogin) {
       // 頁面暫存
-      if (!baseRoutesName.includes(to.name as string)) {
+      if (!baseRoutesName.includes(to.name)) {
         tempTo.value = to
       }
       callNext('login')
@@ -154,11 +154,7 @@ router.beforeEach((to, from, next) => {
     }
 
     // 沒有讀取的權限
-    if (
-      from.name &&
-      !baseRoutesName.includes(to.name as string) &&
-      !hasPermission(pagePermission, permission.read)
-    ) {
+    if (!baseRoutesName.includes(to.name) && !hasPermission(pagePermission, permission.read)) {
       callNext('noPermissions')
       return
     }

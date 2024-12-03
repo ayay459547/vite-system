@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, useSlots, inject, onMounted } from 'vue'
+import { computed, ref, nextTick, useSlots, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
@@ -8,7 +8,7 @@ import { useFormListSetting } from '@/lib/lib_columns'
 import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
 import { CustomPopover, CustomSwitch, CustomInput, CustomButton, CustomBadge, CustomTooltip, FormCheckbox, FormList } from '@/components' // 系統組件
 import { isEmpty, getUuid, getProxyData } from '@/lib/lib_utils' // 工具
-import { conditionOptions } from '@/variable'
+import { conditionOptions } from '@/declare/variable'
 
 import type { Props } from './CustomSearchInfo'
 import { version, props as searchProps } from './CustomSearchInfo'
@@ -187,6 +187,7 @@ const {
   columns: formColumn,
   forms: formList,
   validate: validateForm,
+  reset: resetFormList,
   add,
   remove
 } = useFormListSetting<Form>(columnSetting, 'filter', [])
@@ -212,9 +213,24 @@ const addItem = () => {
   })
 }
 
-onMounted(() => {
-  add()
-})
+const onFormListMounted = async () => {
+  resetFormList()
+
+  if (Array.isArray(props.conditions) && !isEmpty(props.conditions)) {
+    props.conditions.forEach(item => {
+      const { condition: conditionType, value: filterValue } = item
+      // 至少有一種資料才新增
+      if (!isEmpty(conditionType) || !isEmpty(filterValue)) {
+        add({ conditionType, filterValue })
+      }
+    })
+  }
+
+  await nextTick()
+  if (isEmpty(formList.value)) {
+    add()
+  }
+}
 
 const conditionList = computed(() => {
   return formList.value.reduce((res, formItem) => {
@@ -265,9 +281,7 @@ const isDot = computed(() => {
       break
   }
 
-  return !isInputEmpty || (
-    isActiveConditions.value && props.conditions.length > 0
-  )
+  return !isInputEmpty || (isActiveConditions.value && !isEmpty(props.conditions))
 })
 
 // 事件
@@ -324,9 +338,23 @@ const slotList = computed(() => {
     <!-- 只顯示搜尋按鈕 -->
     <template v-if="props.search">
       <div class="__search-title">
-        <slot name="label">
-          <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
-        </slot>
+        <div class="__search-label">
+          <CustomTooltip
+            placement="top"
+            trigger="hover"
+            :offset="6"
+            :show-after="600"
+          >
+            <template #content>
+              <slot name="search-label">
+                <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
+              </slot>
+            </template>
+            <slot name="search-label">
+              <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
+            </slot>
+          </CustomTooltip>
+        </div>
 
         <CustomPopover
           :visible="isVisible"
@@ -386,6 +414,7 @@ const slotList = computed(() => {
                   is-remove
                   @add="addItem"
                   @remove="removeItem"
+                  @mounted="onFormListMounted"
                 >
                   <template #header-all="{ column }">
                     <div class="text-danger i-pr-xs">*</div>
@@ -431,6 +460,7 @@ const slotList = computed(() => {
 
           <template #reference>
             <div @click="onVisibleClick(!isVisible)">
+              <!-- 由於切換畫面跑版 所以分兩個 -->
               <CustomBadge v-if="isDot" is-dot>
                 <CustomButton icon-name="magnifying-glass" circle text />
               </CustomBadge>
@@ -480,24 +510,43 @@ const slotList = computed(() => {
 .__search {
   &-wrapper {
     width: 100%;
+    max-width: 100%;
     min-width: fit-content;
     height: fit-content;
   }
 
-  &-title,
-  &-input {
+  &-title {
+    width: calc(100% - 2px);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    word-break: break-word;
+    flex-wrap: nowrap;
+    gap: 2px;
+  }
+  &-label {
+    width: 100%;
+    flex: 0 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &-detail {
+    flex: 1;
+    width: 100%;
     height: fit-content;
     max-height: 50vh;
     overflow: auto;
     padding-right: 8px;
+  }
+
+  &-input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
   }
 
   &-footer {

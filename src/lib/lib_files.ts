@@ -43,10 +43,7 @@ export const byteConvert = (bytes: number): string => {
 
   const size = (i => {
     const _size = bytes / Math.pow(2, 10 * i)
-    return numberFormat<number>(_size, {
-      type: 'round',
-      toFixed: 2
-    })
+    return numberFormat<number>(_size, { type: 'round', toFixed: 2 })
   })(i)
 
   return `${size}${unit}`

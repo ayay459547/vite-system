@@ -45,10 +45,7 @@ const columnValue = customRef<CustomTableTypes.Sorting & { index?: number | stri
       const _temp = props.modelValue[columnIndex]
 
       const newValue = [...props.modelValue]
-      newValue[columnIndex] = {
-        ..._temp,
-        ...value
-      }
+      newValue[columnIndex] = {..._temp, ...value}
       emit('update:model-value', newValue)
       trigger() // 通知 vue 重新解析
     }
@@ -61,19 +58,11 @@ const onSortClick = (type: string) => {
   let newOrder: CustomTableTypes.Order = 'none'
 
   switch (type) {
-    case 'asc':
-      if (columnValue.value.order === 'ascending') {
-        newOrder = 'none'
-      } else {
-        newOrder = 'ascending'
-      }
+    case 'ascending': // 如果已經是升冪排序 變成取消
+      newOrder = columnValue.value.order === 'ascending' ? 'none' : 'ascending'
       break
-    case 'desc':
-      if (columnValue.value.order === 'descending') {
-        newOrder = 'none'
-      } else {
-        newOrder = 'descending'
-      }
+    case 'descending': // 如果已經是降冪排序 變成取消
+      newOrder = columnValue.value.order === 'descending' ? 'none' : 'descending'
       break
     case '':
     default:
@@ -87,24 +76,19 @@ const onSortClick = (type: string) => {
       break
   }
 
-  columnValue.value = {
-    key: props.prop,
-    order: newOrder
-  }
+  columnValue.value = { key: props.prop, order: newOrder }
   emit('change')
 }
 
 const onAscClick = () => {
-  onSortClick('asc')
+  onSortClick('ascending')
 }
 const onDescClick = () => {
-  onSortClick('desc')
+  onSortClick('descending')
 }
 
-// 'ascending' | 'descending'
 onMounted(() => {
   const { column } = props
-
   isShow.value = !(column?.isOperations ?? false)
 })
 </script>

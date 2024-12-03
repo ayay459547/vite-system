@@ -6,7 +6,9 @@ import {
   PreviewFilled,
   PrecisionManufacturingSharp,
   ZoomOutRound,
-  ZoomInRound
+  ZoomInRound,
+  WifiOutlined,
+  WifiOffTwotone
 } from '@vicons/material'
 
 export default {
@@ -17,5 +19,7 @@ export default {
   PreviewFilled,
   PrecisionManufacturingSharp,
   ZoomOutRound,
-  ZoomInRound
+  ZoomInRound,
+  WifiOutlined,
+  WifiOffTwotone
 }
