@@ -5,7 +5,8 @@ import {
   Minus,
   WindowRestoreRegular,
   WindowMaximizeRegular,
-  RulerHorizontal
+  RulerHorizontal,
+  CashRegister
 } from '@vicons/fa'
 
 export default {
@@ -15,5 +16,6 @@ export default {
   Minus,
   WindowRestoreRegular,
   WindowMaximizeRegular,
-  RulerHorizontal
+  RulerHorizontal,
+  CashRegister
 }

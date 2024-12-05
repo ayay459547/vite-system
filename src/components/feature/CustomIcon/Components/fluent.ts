@@ -10,7 +10,8 @@ import {
   CalendarSearch20Filled,
   DualScreenClock24Filled,
   Table28Regular,
-  TableFreezeColumn28Regular
+  TableFreezeColumn28Regular,
+  DeviceMeetingRoomRemote16Filled
 } from '@vicons/fluent'
 
 export default {
@@ -25,5 +26,6 @@ export default {
   CalendarSearch20Filled,
   DualScreenClock24Filled,
   Table28Regular,
-  TableFreezeColumn28Regular
+  TableFreezeColumn28Regular,
+  DeviceMeetingRoomRemote16Filled
 }

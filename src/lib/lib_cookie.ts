@@ -58,7 +58,8 @@ export const getToken = (loginTime?: string): Token | null => {
   try {
     const token = getCookie('token')
     if (['', null, undefined].includes(token)) {
-      throw `getToken token = '${token}'`
+      // throw `getToken token = '${token}'`
+      return null
     }
 
     const _userId = aesDecrypt(token, `${privateKey}__${loginTime}`)
@@ -87,7 +88,8 @@ export const getToken = (loginTime?: string): Token | null => {
 export const setToken = (userId: number, loginTime: string) => {
   try {
     if (['', null, undefined].includes(loginTime)) {
-      throw `setToken loginTime = '${loginTime}'`
+      // throw `setToken loginTime = '${loginTime}'`
+      return
     }
 
     const token = aesEncrypt(`${userId}`, `${privateKey}__${loginTime}`)

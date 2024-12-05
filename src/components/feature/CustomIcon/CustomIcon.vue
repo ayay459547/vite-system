@@ -33,14 +33,17 @@ const getIcon = computed(() => {
       `${props.iconClass}`,
     ]"
   >
-    <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />
-    <XIcon
-      v-else
-      class="x-icon"
-      :type="props.xType"
-      :name="props.name"
-    />
+    <slot>
+      <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />
+      <XIcon
+        v-else
+        class="x-icon"
+        :type="props.xType"
+        :name="props.name"
+      />
+    </slot>
   </div>
+  <!-- Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a> -->
 </template>
 
 <style lang="scss" scoped>

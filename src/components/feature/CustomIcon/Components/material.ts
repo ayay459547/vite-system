@@ -8,7 +8,9 @@ import {
   ZoomOutRound,
   ZoomInRound,
   WifiOutlined,
-  WifiOffTwotone
+  WifiOffTwotone,
+  AdfScannerRound,
+  FaxRound
 } from '@vicons/material'
 
 export default {
@@ -21,5 +23,7 @@ export default {
   ZoomOutRound,
   ZoomInRound,
   WifiOutlined,
-  WifiOffTwotone
+  WifiOffTwotone,
+  AdfScannerRound,
+  FaxRound
 }

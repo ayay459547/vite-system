@@ -30,6 +30,9 @@ const testName = 'folder-open'
 ### XIcon
 [https://www.xicons.org/#/](https://www.xicons.org/#/)
 
+### 使用 slot
+[https://www.svgrepo.com/](https://www.svgrepo.com/)
+
 ### Attributes ( props )
 
 | 屬姓名    | 說明       | 類型   | 預設值            |

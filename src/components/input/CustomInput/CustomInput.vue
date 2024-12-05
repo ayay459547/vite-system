@@ -668,11 +668,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div
-    :class="[scopedId, `input-${scopedId}`,
-    `input-${props.direction}`]"
-    :title="getTranslateLabel(props)"
-  >
+  <div :class="[scopedId, `input-${scopedId}`, `input-${props.direction}`]">
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.isValidate && props.required" class="input-prefix">*</span>
       <CustomText :label="getTranslateLabel(props)"></CustomText>

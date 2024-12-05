@@ -3,7 +3,8 @@ import {
   ChartMultitype,
   ChartMaximum,
   ZoomArea,
-  ZoomPan
+  ZoomPan,
+  FilterReset
 } from '@vicons/carbon'
 
 export default {
@@ -11,5 +12,6 @@ export default {
   ChartMultitype,
   ChartMaximum,
   ZoomArea,
-  ZoomPan
+  ZoomPan,
+  FilterReset
 }

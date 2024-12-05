@@ -47,17 +47,17 @@ const hasSlot = (prop: string): boolean => {
     @click="onClick"
   >
     <template v-if="hasSlot('icon') || (!props.loading && props.iconName.length > 0)" #icon>
-      <slot name="icon">
-        <CustomIcon
-          class="icon"
-          :class="`icon-${iconMove}`"
-          :size="props.iconSize"
-          :type="props.iconType"
-          :x-type="props.iconXType"
-          :name="props.iconName"
-          :style="{ color: props.textColor }"
-        />
-      </slot>
+      <CustomIcon
+        class="icon"
+        :class="`icon-${iconMove}`"
+        :size="props.iconSize"
+        :type="props.iconType"
+        :x-type="props.iconXType"
+        :name="props.iconName"
+        :style="{ color: props.textColor }"
+      >
+        <slot name="icon"></slot>
+      </CustomIcon>
     </template>
     <template v-if="hasSlot('loading')" #loading>
       <slot name="loading"></slot>

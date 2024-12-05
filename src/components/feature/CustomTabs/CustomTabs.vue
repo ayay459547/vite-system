@@ -79,6 +79,7 @@ const elTabsRef = ref()
             :is-selected="tempValue === item.value"
             :value="item.value"
             :label="item.label"
+            :i18nLabel="item.i18nLabel"
             :data="item.data"
             :disabled="item?.disabled"
           >
@@ -90,6 +91,7 @@ const elTabsRef = ref()
             :is-selected="tempValue === item.value"
             :value="item.value"
             :label="item.label"
+            :i18nLabel="item.i18nLabel"
             :data="item?.data"
             :disabled="item?.disabled"
           ></slot>

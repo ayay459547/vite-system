@@ -24,9 +24,12 @@ import {
 } from '@/components' // 系統組件
 import type { FormOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
+import { getColumnSetting } from '@/lib/lib_idb'
 import throttle from '@/lib/lib_throttle'
 import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
+
+import PdfModal from './Components/PdfModal.vue'
 
 import type { Types } from './WebViewTableInfo'
 import { version, props as webViewCustomTableProps } from './WebViewTableInfo'
@@ -66,7 +69,7 @@ const emit = defineEmits([
 
 const useHook: UseHook = inject('useHook')
 const i18nModule = props?.tableOptions?.i18nModule ?? defaultModuleType
-const { i18nTranslate } = useHook({ i18nModule })
+const { i18nTranslate, i18nTest } = useHook({ i18nModule })
 
 //emit event
 const onExpandChange = (row: any, expanded: boolean) => {
@@ -221,6 +224,108 @@ const onExcelClick = async ({ type }) => {
 
   isLoading.value = false
 }
+
+// 下載Pdf
+const pdfRef = ref()
+const onPdfClick = async type => {
+  modal.pdf = true
+
+  const tableParams = getParams()
+  const {
+    page = 1,
+    size = 100,
+    sortingMap = {}
+  } = tableParams
+
+  // api 入口
+  const urlParams = getUrlParams({
+    url: props.apiurl,
+    baseURL: props.baseurl
+  })
+  const isWebView = webViewUrl === urlParams.url
+
+  // 客製化 api
+  const webViewParams = getWebViewParams({
+    webfuno: props.webfuno,
+    funoviewsuffix: props.funoviewsuffix,
+    designatedview: props.designatedview
+  }, isWebView)
+
+  const filterData = getFilter(false)
+  // 參數格式化
+  const _params = props.formatParams({ ...filterData })
+  // 排序格式化
+  const _sortingMap = props.formatSorting(sortingMap)
+  // 條件搜尋
+  const conditions = getConditionFilter()
+
+  // 防呆
+  if (isWebView && isEmpty(webViewParams)) {
+    isLoading.value = false
+    return
+  }
+
+  const params: any = {
+    ..._params,
+    // page,
+    // size,
+    paging: {
+      page,
+      size
+    },
+    advanced: conditions,
+    sortingMap: _sortingMap,
+    ...webViewParams
+  }
+
+
+  switch (type) {
+    // 下載全部資料
+    case 'all':
+      params.paging = {
+        page: 1,
+        size: -1
+      }
+      break
+    case 'page':
+      // 懶加載 下載 1 ~ 目前看到的資料
+      if (islazyLoading.value) {
+        params.paging.size = tableDataCount.value
+        // 下載 當前分頁資料
+      }
+      break
+  }
+
+  const { settingKey, i18nTitle, title} = tableSetting
+
+  const pdfData = await getExcelData(
+    params, // 參數
+    props.formatExcel, // Excel資料格式化
+    props.fakeData, // 假資料
+    props.useFakeData, // 是否使用假資料
+    props.isLog, // 是否console.log訊息
+    urlParams // api 入口
+  )
+  const tempColumns = await getColumnSetting(settingKey)
+  const pdfColumns = tempColumns.columns.map(column => {
+    const { key, label, i18nLabel, isShow, isOperations } = column
+    if(isOperations) return null
+    const name = i18nTest(i18nLabel ?? '') ? i18nTranslate(i18nLabel) : label
+    return {
+      key,
+      name,
+      active: isShow
+    }
+  }).filter(column => column)
+  const pdfTitle = i18nTest(i18nTitle ?? '') ? i18nTranslate(i18nTitle) : title
+
+  pdfRef.value.setPdfSetting({
+    data: pdfData,
+    columns: pdfColumns,
+    title: pdfTitle
+  })
+}
+
 
 const initData = async (tableParams: any) => {
   const {
@@ -471,7 +576,8 @@ defineExpose({
 // modal
 // const detailRef = ref(null)
 const modal = reactive({
-  timeLine: false
+  timeLine: false,
+  pdf: false
 })
 
 </script>
@@ -492,6 +598,7 @@ const modal = reactive({
       :lazy-loading-status="lazyLoadingStatus"
       :is-show-no="islazyLoading"
       @excel="onExcelClick"
+      @pdf="onPdfClick"
       @expand-change="onExpandChange"
       @select="onSelect"
       @select-all="onSelectAll"
@@ -655,7 +762,12 @@ const modal = reactive({
         />
       </CustomTooltip>
     </div>
-
+    <!-- PDF下載 -->
+    <PdfModal
+      v-if="modal.pdf"
+      v-model="modal.pdf"
+      ref="pdfRef"
+    />
   </div>
 </template>
 

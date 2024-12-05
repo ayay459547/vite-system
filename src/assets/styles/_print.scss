@@ -19,3 +19,12 @@
     display: none;
   }
 }
+
+@page {
+  size: A4 portrait;
+  margin-top: 3cm;
+}
+
+@page :first {
+  // margin-left: 4cm;
+}

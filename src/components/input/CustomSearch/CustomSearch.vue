@@ -192,22 +192,26 @@ const {
   remove
 } = useFormListSetting<Form>(columnSetting, 'filter', [])
 
-const removeItem = (rowIndex: number) => {
-  if (formList.value.length > 1) {
-    remove(rowIndex)
-  } else {
-    isActiveConditions.value = false
-  }
-}
-
 const reset = () => {
   formList.value.splice(0)
   add()
+  emit('update:conditions', getProxyData(conditionList.value))
+  isActiveConditions.value = false
+}
+
+const removeItem = (rowIndex: number) => {
+  if (formList.value.length > 1) {
+    remove(rowIndex)
+    emit('update:conditions', getProxyData(conditionList.value))
+  } else {
+    reset()
+  }
 }
 
 const addItem = () => {
   validateForm().then(() => {
     add()
+    emit('update:conditions', getProxyData(conditionList.value))
   }).catch(e => {
     console.log('CustomSearch addItem: ', e)
   })

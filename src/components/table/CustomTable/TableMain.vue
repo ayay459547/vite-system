@@ -203,6 +203,18 @@ const load = () => {
     emit('load')
   }
 }
+// loading 樣式
+const svg = `<path
+  class="path"
+  d="
+    M 30 15
+    M 25.61 25.61
+    A 14 14, 0, 0, 1, 15 30
+    A 14 14, 0, 1, 1, 27.99 7.5
+  "
+  style="stroke-width: 2px; fill: rgba(0, 0, 0, 0)"
+/>`
+
 const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
     const {
@@ -333,6 +345,7 @@ defineExpose({
   resetScroll,
   toggleSelection
 })
+
 </script>
 
 <template>
@@ -395,7 +408,9 @@ defineExpose({
               <div
                 style="width: 100%; height: 50px"
                 v-loading="true"
+                :element-loading-spinner="svg"
                 element-loading-text="LOADING..."
+                element-loading-svg-view-box="-10, -10, 50, 50"
               ></div>
               <div style="width: 100%; height: 30px"></div>
             </div>
