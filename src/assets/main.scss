@@ -35,3 +35,9 @@
 
 // 列印
 @use './styles/print.scss' as *;
+
+// VueFlow
+@use '@vue-flow/core/dist/style.css' as *;
+@use '@vue-flow/core/dist/theme-default.css' as *;
+@use '@vue-flow/minimap/dist/style.css' as *;
+@use '@vue-flow/controls/dist/style.css' as *;

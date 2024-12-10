@@ -43,7 +43,6 @@ const getIcon = computed(() => {
       />
     </slot>
   </div>
-  <!-- Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a> -->
 </template>
 
 <style lang="scss" scoped>

@@ -50,7 +50,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <CustomWatermark :z-index="0">
+  <CustomWatermark :z-index="0" :font="{ fontSize: 18 }">
     <div ref="container" class="_empty" @mousemove="throttleSetImgStyle">
       <div class="_empty-background" :style="imgStyle"></div>
       <h1 class="_empty-title" :style="titleStyle">
