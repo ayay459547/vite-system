@@ -39,7 +39,10 @@ import {
   getUrlParams,
   getWebViewParams,
   getTableData,
-  getExcelData
+  getExcelData,
+  // 進階搜尋可用選項
+  webViewUrlOperator,
+  getColumnOperator
 } from './api'
 
 const scopedId = getUuid(version)
@@ -112,7 +115,7 @@ const {
   updateIDB: updateIDBFilter
 } = useFormSetting<Types.FilterData>(props.columnSetting, props.filterKey, formOptions.value)
 
-// 另外設定過濾條件 不自動更新 indexedDB
+// 另外設定過濾條件(ex: 跳頁查詢), 不自動更新 indexedDB
 const isUpdateIDB = ref(true)
 const setFilter = (_filter: Types.FilterData) => {
   isUpdateIDB.value = false
@@ -123,6 +126,39 @@ const setFilter = (_filter: Types.FilterData) => {
     if (hasOwnProperty(filter, _filterKey)) {
       filter[_filterKey] = _filter[_filterKey]
     }
+  }
+}
+const filterConditionMap = {}
+/**
+ * 初始化 進階搜尋 欄位資料
+ * dataType 影響輸入
+ * conditionOptions 有後端給
+ */
+const initFilterConditionMap = async () => {
+  // 清空可用選項
+  for (const columnKey in filterConditionMap) {
+    delete filterConditionMap[columnKey]
+  }
+
+  const urlParams = getUrlParams({
+    url: props.apiOperator ?? webViewUrlOperator,
+    baseURL: props.baseurl
+  })
+  const isWebView = webViewUrlOperator === urlParams.url
+
+  // 客製化 api
+  const webViewParams = getWebViewParams({
+    webfuno: props.webfuno,
+    funoviewsuffix: props.funoviewsuffix,
+    designatedview: props.designatedview
+  }, isWebView)
+
+  const columnOperatorMap = await getColumnOperator(webViewParams, urlParams)
+
+  // 設定可用選項
+  for (const columnKey in filterColumn) {
+    if (isEmpty(columnOperatorMap[columnKey])) continue
+    filterConditionMap[columnKey] = columnOperatorMap[columnKey]
   }
 }
 
@@ -137,8 +173,9 @@ const {
   getParams,
   changePage,
   getSelectionRows,
-  toggleSelection
-} = useTableSetting(props.columnSetting, props.tableKey, props.tableOptions)
+  toggleSelection,
+  getDisplayData
+} = useTableSetting(props.columnSetting, props.tableKey, props.tableOptions, { i18nTranslate, i18nTest } )
 
 const isLoading = ref(false)
 
@@ -211,9 +248,11 @@ const onExcelClick = async ({ type }) => {
       break
   }
 
+  const formatExcel = props.formatExcel ?? props.formatData
+
   const tempData = await getExcelData(
     params, // 參數
-    props.formatExcel, // Excel資料格式化
+    formatExcel, // Excel資料格式化
     props.fakeData, // 假資料
     props.useFakeData, // 是否使用假資料
     props.isLog, // 是否console.log訊息
@@ -227,9 +266,10 @@ const onExcelClick = async ({ type }) => {
 
 // 下載Pdf
 const pdfRef = ref()
+const isShowPdf = ref(false)
 const onPdfClick = async type => {
-  modal.pdf = true
-
+  isShowPdf.value = true
+  await nextTick()
   const tableParams = getParams()
   const {
     page = 1,
@@ -278,7 +318,6 @@ const onPdfClick = async type => {
     ...webViewParams
   }
 
-
   switch (type) {
     // 下載全部資料
     case 'all':
@@ -298,9 +337,10 @@ const onPdfClick = async type => {
 
   const { settingKey, i18nTitle, title} = tableSetting
 
+  const formatPdf = props.formatExcel ?? props.formatData
   const pdfData = await getExcelData(
     params, // 參數
-    props.formatExcel, // Excel資料格式化
+    formatPdf, // Excel資料格式化
     props.fakeData, // 假資料
     props.useFakeData, // 是否使用假資料
     props.isLog, // 是否console.log訊息
@@ -322,8 +362,13 @@ const onPdfClick = async type => {
   pdfRef.value.setPdfSetting({
     data: pdfData,
     columns: pdfColumns,
-    title: pdfTitle
+    title: pdfTitle,
+    downloadExcel: props.downloadExcel ?? downloadExcel
   })
+
+  setTimeout(() => {
+    modal.pdf = true
+  }, 300)
 }
 
 
@@ -389,12 +434,14 @@ const initData = async (tableParams: any) => {
     ...webViewParams
   }
 
+  const formatData = props.formatTable ?? props.formatData
+
   const [
     resData, // api 取得資料
     resDataCount // api 取得資料筆數
   ] = await getTableData(
     params,
-    props.formatTable, // 表格資料格式化
+    formatData, // 表格資料格式化
     props.fakeData, // 假資料
     props.useFakeData, // 是否使用假資料
     props.isLog, // 是否console.log訊息
@@ -473,6 +520,8 @@ const throttleInit = throttle<typeof init>(init, 200, {
  const onTableMounted = async () => {
   await nextTick()
   emit('mounted')
+
+  await initFilterConditionMap()
 
   if (props.isMountedInit) {
     throttleInit(null, '')
@@ -650,6 +699,7 @@ const modal = reactive({
                     :i18n-module="i18nModule"
                     :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
                     :column-id="scope.prop"
+                    :allow-conditions="filterConditionMap[scope.prop]"
                   />
                 </slot>
               </template>
@@ -707,6 +757,7 @@ const modal = reactive({
               :i18n-module="i18nModule"
               :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
               :column-id="scope.prop"
+              :allow-conditions="filterConditionMap[scope.prop]"
               search
               @change="throttleInit($event, 'input')"
               @submit="throttleInit($event, 'input')"
@@ -722,6 +773,17 @@ const modal = reactive({
       >
         <slot :name="getHeaderSlot(slotKey)" :filter-column="filterColumn" v-bind="scope"></slot>
       </template>
+
+      <template #column-all="{data, prop}">
+        {{ getDisplayData(data, prop) }}
+      </template>
+
+      <!-- <template v-for="slotKey in spanColumns"
+       :key="`view-column-slotKey-${slotKey}-${scopedId}`"
+       #[`column-${slotKey}`]="{prop, rowData}"
+      >
+        <SubTable data="getSubTableData(prop, rowData)"/>
+      </template> -->
 
       <template
         v-for="slotKey in tableSlotKeyList"
@@ -764,7 +826,7 @@ const modal = reactive({
     </div>
     <!-- PDF下載 -->
     <PdfModal
-      v-if="modal.pdf"
+      v-if="isShowPdf"
       v-model="modal.pdf"
       ref="pdfRef"
     />

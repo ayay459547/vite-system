@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import type { PropType, VNode } from 'vue'
-import { inject, nextTick, onBeforeMount, onBeforeUnmount } from 'vue'
+import { inject, nextTick, onBeforeMount, onBeforeUnmount, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
 import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils' // 工具
 import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
+import { permission, hasPermission } from '@/lib/lib_permission' // 權限
 
 import { useRoutesStore } from '@/stores/stores_routes'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
 // import Async_Error from '@/views/Common/Async_Error.vue'
+
+// 無此權限
+const NoPermissions = useAsyncComponent(() => import('@/views/Common/NoPermissions.vue'), 'rect')
+// 功能開發中
+const InProgress = useAsyncComponent(() => import('@/views/Common/InProgress.vue'), 'rect')
+// 功能維護中
+const FixView = useAsyncComponent(() => import('@/views/Common/FixView.vue'), 'rect')
 
 const useHook: UseHook = inject('useHook')
 const { i18nTest, i18nTranslate } = useHook({
@@ -158,23 +167,27 @@ const routeChange = () => {
   }
 
   // 切換路由 設定網頁 title
-  setTimeout(() => {
-    setWebTitle()
-  }, 80)
-
+  setWebTitle()
   // 換頁時 scrollbar 移動到最上面
-  setTimeout(() => {
-    pageScrollTop()
-  }, 320)
+  pageScrollTop()
 }
+
+/**
+ * 權限順序 (stores_routes)
+ * 1. 後端資料
+ * 2. 路由設定
+ * 3. 系統預設
+ * 4. 0 (無權限)
+ */
+ const pagePermission = computed(() => {
+  const routerPermission = props.navigationMap.get(route.name as string)
+  return (routerPermission?.permission ?? 0)
+})
 
 const routerBus = useEventBus<string>('router')
 const onVnodeMounted = (vNode: VNode) => {
   routerBus.emit('routerChange', vNode.key)
-
-  setTimeout(() => {
-    routeChange()
-  }, 300)
+  routeChange()
 }
 
 const login = (userId: number) => {
@@ -183,9 +196,9 @@ const login = (userId: number) => {
 const setLayoutInfo = () => {
   emit('setLayoutInfo')
 }
-const initSystemData = (routeName: string) => {
-  emit('initSystemData', routeName)
-}
+// const initSystemData = (routeName: string) => {
+//   emit('initSystemData', routeName)
+// }
 
 </script>
 
@@ -200,6 +213,7 @@ const initSystemData = (routeName: string) => {
         <div v-if="!props.isInitSystem" class="view-init">
           <Async_Skeleton />
         </div>
+        <!-- 登入 -->
         <component
           v-else-if="route.name === 'login'"
           key="login"
@@ -207,6 +221,7 @@ const initSystemData = (routeName: string) => {
           @login="login"
           @vue:mounted="onVnodeMounted"
         />
+        <!-- 首頁 -->
         <component
           v-else-if="route.name === 'locatehome'"
           key="locatehome"
@@ -215,23 +230,31 @@ const initSystemData = (routeName: string) => {
           @vue:mounted="onVnodeMounted"
         />
         <component
-          v-else-if="route.name === 'nodoc-21'"
-          key="nodoc-21"
+          v-else-if="route.name === 'page404'"
+          key="page404"
           :is="Component"
-          @init-system="initSystemData('nodoc-21')"
           @vue:mounted="onVnodeMounted"
         />
+
+        <NoPermissions
+          v-else-if="!hasPermission(pagePermission, permission.read)"
+          @vue:mounted="onVnodeMounted"
+        />
+        <InProgress v-else-if="route.meta.isInProgress" @vue:mounted="onVnodeMounted" />
+        <FixView v-else-if="route.meta.isFix" @vue:mounted="onVnodeMounted" />
+
+        <!-- 一般功能頁 -->
         <template v-else>
           <KeepAlive>
             <component
-              v-if="(route?.meta?.keepAlive ?? false)"
+              v-if="(route.meta.keepAlive)"
               :key="route.name"
               :is="Component"
               @vue:mounted="onVnodeMounted"
             />
           </KeepAlive>
           <component
-            v-if="!(route?.meta?.keepAlive ?? false)"
+            v-if="!(route.meta.keepAlive)"
             :key="route.name"
             :is="Component"
             @vue:mounted="onVnodeMounted"

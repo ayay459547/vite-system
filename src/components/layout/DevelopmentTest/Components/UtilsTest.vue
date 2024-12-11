@@ -89,29 +89,22 @@ const checkToken = (isIntervalCheck?: boolean) => {
 </script>
 
 <template>
-  <div>
-    <CustomButton
-      icon-name="rotate-right"
-      label="重整畫面"
-      type="info"
-      plain
-      size="large"
-      @click="refresh()"
-    />
-
+  <div class="flex-column i-ga-md">
     <!-- 替換文字 -->
-    <div class="flex-column-center i-ga-xs i-py-md">
-      <FormInput
-        v-model="regExpText"
-        placeholder="要替換的文字(RegExp)"
-        clearable
-      />
-      <CustomIcon name="arrow-down"/>
-      <FormInput
-        v-model="newText"
-        placeholder="替換後的文字"
-        clearable
-      />
+    <div class="flex-column i-ga-xs">
+      <div class="flex-row-center i-ga-xs">
+        <FormInput
+          v-model="regExpText"
+          placeholder="要替換的文字(RegExp)"
+          clearable
+        />
+        <CustomIcon name="arrow-right"/>
+        <FormInput
+          v-model="newText"
+          placeholder="替換後的文字"
+          clearable
+        />
+      </div>
       <CustomButton
         icon-name="language"
         label="替換"
@@ -158,9 +151,15 @@ const checkToken = (isIntervalCheck?: boolean) => {
         @click="clearToken()"
       />
     </CustomButtonGroup>
+
+    <CustomButton
+      icon-name="rotate-right"
+      label="重整畫面"
+      type="info"
+      plain
+      @click="refresh()"
+    />
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

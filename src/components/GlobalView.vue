@@ -75,6 +75,8 @@ const systemEnv = computed(() => {
     mode: _env.MODE,
     system: _env.VITE_API_SYSTEM_TYPE,
 
+    customer: _env.VITE_API_CUSTOMER,
+
     version: _env.VITE_API_VERSION,
     buildVersion: _env.VITE_API_BUILD_VERSION,
     baseUrl: _env.VITE_API_BASE_URL,

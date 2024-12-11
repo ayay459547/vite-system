@@ -6,6 +6,8 @@ import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
 export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
+// 進階搜尋可用選項
+export const webViewUrlOperator = '/api/ipaspTable/retrieveColumnOperatorFromView'
 
 export const getUrlParams = (params: Types.UrlParams) => {
   const { url = webViewUrl, baseURL = '' } = params
@@ -69,7 +71,7 @@ const getData = async (
   } else {
     message({
       type: 'error',
-      message: msg ?? _message ?? errorMsg ?? status,
+      message: msg ?? _message ?? errorMsg ?? 'WebView getData Error',
       duration: 10000
     })
     return [[], 0]
@@ -100,4 +102,42 @@ export const getTableData = async (
 ): Promise<Types.ResponseTableData> => {
   const [tableData, tableDataCount] = await getData(formatTable, params, fakeData, isFakeData, isLog, url)
   return [tableData, tableDataCount]
+}
+
+// 進階搜尋可用選項
+export const getColumnOperator = async (params: any, url: Types.UrlParams) => {
+  const resData = await ajax<Api<any>>(
+    {
+      ...url,
+      method: 'post',
+      data: { ...params }
+    },
+    {
+      isFakeData: false,
+      fakeData: {
+        data: {
+          machineId: [
+            'LessThanOrEqualTo',
+            'NotIn',
+            'IsNull'
+          ]
+        },
+        status: 'success'
+      },
+      isLog: false,
+      delay: 300
+    }
+  )
+  const { data, status, msg, message: _message, errorMsg } = resData
+
+  if (status === 'success') {
+    return data
+  } else {
+    message({
+      type: 'error',
+      message: msg ?? _message ?? errorMsg ?? 'WebView getColumnOperator Error',
+      duration: 10000
+    })
+    return {}
+  }
 }

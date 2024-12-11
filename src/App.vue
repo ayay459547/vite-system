@@ -5,7 +5,9 @@ import { useRouter } from 'vue-router'
 import GlobalView from '@/components/GlobalView.vue'
 import { CustomTooltip, SimpleQRcode } from '@/components' // 系統組件
 
-import qrcode from '@/assets/images/chan.jpg?url'
+import logo from '@/assets/images/Vue-logo?url'
+import qrcode from '@/assets/images/Vue-logo.png?url'
+import menuLogo from'@/assets/images/Vue-logo.png?url'
 
 export default defineComponent({
   name: 'AppView',
@@ -22,7 +24,9 @@ export default defineComponent({
 
     return {
       toHome,
-      qrcodeImg: qrcode
+      bgimg: logo,
+      qrcodeImg: qrcode,
+      menuLogoImage: menuLogo
     }
   }
 })
@@ -34,31 +38,35 @@ export default defineComponent({
       <template #logo="{ env }">
         <div class="menu-logo" @click="toHome">
           <img class="vue-img" src="@/assets/images/Vue-logo.png" alt="vue" />
-          <h2 class="vue-text">{{ env.system }}</h2>
+          <h2 class="vue-text">{{ env.customer }}</h2>
         </div>
       </template>
 
       <template #version="{ env }">
         <CustomTooltip
           :width="200"
-          trigger="hover"
-          placement="top"
+          trigger="click"
+          placement="top-start"
           class="menu-footer-tip"
           popper-class="menu-footer-popper"
         >
           <template #content>
             <div class="tip-list">
-              <SimpleQRcode
-                text="https://github.com/ayay459547/"
-                :size="250"
-                :logoSrc="qrcodeImg"
-              />
+              <h3 class="tip-item system">{{ env.system }}</h3>
+
+              <SimpleQRcode text="https://vuejs.org/" :size="250" :logoSrc="qrcodeImg" />
+
+              <span class="tip-item build-version">{{ env.buildVersion }}</span>
             </div>
           </template>
           <template #default>
             <div class="menu-footer">
-              <span>{{ `${env.system}` }}</span>
-              <span>{{ `${env.version}` }}</span>
+              <div class="gear-img">
+                <img src="@/assets/images/Vue-logo.png" alt="menu-logo" />
+              </div>
+              <div class="gear-ipasp flex-row align-center content-between">
+                <span>{{ `${env.version}` }}</span>
+              </div>
             </div>
           </template>
         </CustomTooltip>
@@ -72,49 +80,125 @@ export default defineComponent({
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+
+  .menu {
+    &-logo {
+      // width: 100%;
+      min-width: fit-content;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      padding: 0 8px;
+      cursor: pointer;
+
+      .ipasp {
+        &-img {
+          width: 40px;
+        }
+        &-text {
+          font-size: 1.6em;
+          font-weight: 600;
+          text-shadow: 2px 2px 4px #00000050;
+        }
+      }
+    }
+
+    &-footer {
+      padding: 4px;
+      border-radius: 6px;
+      margin: 2px;
+      transition-duration: 0.3s;
+      width: fit-content;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.3em;
+      font-weight: 600;
+
+      &-tip {
+        display: contents;
+      }
+
+      &:hover {
+        color: #bbc5d3;
+      }
+    }
+  }
+}
+.tip-ipasp {
+  transition: 0.3s color;
+  color: var(--i-color-menu);
+
+  &:hover {
+    color: var(--i-color-menu-hover);
+  }
+}
+.gear {
+  &-img {
+    width: 52px;
+    padding: 2px;
+    border-radius: 8px;
+
+    & > img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &-ipasp {
+    gap: 80px;
+  }
 }
 
-.menu {
-  &-logo {
-    width: fit-content;
-    height: 58px;
+.tip-img {
+  width: 32px;
+  height: 32px;
+
+  & > img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.tip {
+  &-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    color: var(--el-text-color-primary);
+    background-color: var(--el-bg-color);
+    padding: 6px 0 12px;
+    font-size: 1.5em;
+    font-weight: 600;
+  }
+  &-item {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 16px;
-    padding: 0 8px;
-    cursor: pointer;
+    margin: 0 20px;
 
-    .vue {
-      &-img {
-        width: 40px;
-      }
-      &-text {
-        font-size: 1.6em;
-        font-weight: 600;
-        text-shadow: 2px 2px 4px #00000050;
-      }
+    &.system{
+      width: 100%;
+      text-align: center;
     }
-  }
-
-  &-footer {
-    color: #ddd;
-    padding: 8px;
-    border-radius: 6px;
-    letter-spacing: 2px;
-    display: flex;
-    gap: 16px;
+    &.build-version {
+      font-size: 0.7em;
+      opacity: 0.5;
+      display: inline-block;
+      padding-top: 12px;
+    }
   }
 }
 
-.header {
-  &-right {
-    color: #535353;
-    transition-duration: 0.3s;
+.locatehome {
+  color: #535353;
+  transition-duration: 0.3s;
 
-    &:hover {
-      color: #409eff;
-    }
+  &:hover {
+    color: #409eff;
   }
 }
 </style>

@@ -5,10 +5,8 @@ import { storeToRefs } from 'pinia'
 
 import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
 import { useAuthStore } from '@/stores/stores_auth'
-import { useRoutesStore } from '@/stores/stores_routes'
 import type { RouterTree } from '@/declare/routes'
 import routes from '@/router/routes'
-import { permission, hasPermission } from '@/lib/lib_permission' // 權限
 import { tipLog, isEmpty } from '@/lib/lib_utils' // 工具
 import { updateToken } from '@/lib/lib_cookie'
 
@@ -49,6 +47,8 @@ const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
           meta: {
             title,
             keepAlive: false,
+            isInProgress: false, // 功能開發中
+            isFix: false, // 功能維護中
             ...meta
           },
           props: (route: RouteLocationNormalized) => {
@@ -104,20 +104,6 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
     const { isLogin } = storeToRefs(authStore)
 
-    // 路由
-    const routesStore = useRoutesStore()
-    const { navigationMap } = storeToRefs(routesStore)
-    const routerPermission = navigationMap.value.get(to.name as string)
-
-    /**
-     * 權限順序 (stores_routes)
-     * 1. 後端資料
-     * 2. 路由設定
-     * 3. 系統預設
-     * 4. 0 (無權限)
-     */
-    const pagePermission = (routerPermission?.permission ?? 0)
-
     // 防止無限遞迴
     const callNext = (pageName: string) => {
       if (!baseRoutesName.includes(to.name)) {
@@ -146,16 +132,10 @@ router.beforeEach((to, from, next) => {
     // 未登入
     if (!isLogin.value && !isSkipLogin) {
       // 頁面暫存
-      if (!baseRoutesName.includes(to.name)) {
+      if (!baseRoutesName.includes(to.name as string)) {
         tempTo.value = to
       }
       callNext('login')
-      return
-    }
-
-    // 沒有讀取的權限
-    if (!baseRoutesName.includes(to.name) && !hasPermission(pagePermission, permission.read)) {
-      callNext('noPermissions')
       return
     }
 

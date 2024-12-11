@@ -68,7 +68,7 @@ export const props = {
   placement: {
     type: String as PropType<Props.Placement>,
     required: false,
-    default: 'top',
+    default: 'bottom',
     description: '出現位置'
   },
   search: {

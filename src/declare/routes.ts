@@ -1,25 +1,22 @@
 import type { CustomIconProps } from '@/components' // 系統組件
 import type { RouterType } from '@/router/setting'
-// import type { ScopeKey } from '@/i18n/i18n_setting'
 
 interface Meta {
   // 是否放在 <KeepAlive></KeepAlive> 中
   keepAlive?: boolean
 
-  // 路由圖示 (目前只有第一層用到圖示)
+  // 打包類型 對應預設圖示
   systemType?: RouterType[]
 
-  // 路由圖示
+  // 路由圖示 (目前只有第一層用到圖示)
   icon?: string | [CustomIconProps.Type, string]
 
-  // i18n Excel檔案(i18n.xlsx) 對應的模組
-  // i18nModule?: ScopeKey
+  permission?: number // 路由預設權限 (2進制)
 
-  // 路由預設權限 (2進制)
-  permission?: number
+  isInProgress?: boolean // 功能開發中
+  isFix?: boolean // 功能維護中
 
-  // 備註
-  note?: string
+  note?: string // 備註
 }
 
 interface BaseTree {
