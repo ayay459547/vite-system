@@ -2,14 +2,6 @@ import type { RouterTree } from '@/declare/routes'
 import { totlaPermission } from '@/lib/lib_permission' // 權限
 
 import { getInjectRoutes } from './setting'
-// 功能開發中
-export function InProgress() {
-  return import('@/views/Common/InProgress.vue')
-}
-// 功能維護中
-export function FixView() {
-  return import('@/views/Common/FixView.vue')
-}
 
 // 組件說明
 import descriptionRoutes from './description'

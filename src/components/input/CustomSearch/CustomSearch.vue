@@ -113,7 +113,7 @@ const onVisibleClick = async (_isVisible: boolean) => {
   }, 0)
 }
 
-const bindAttributes = {
+const bindAttributes: Record<string, any> = {
   ...props,
   // 不驗證
   isValidate: false,
@@ -150,7 +150,6 @@ const columnSetting = {
     },
     filter: {
       type: 'select',
-      options: conditionOptions,
       default: '',
       validate: [],
       required: true,
@@ -173,6 +172,40 @@ const columnSetting = {
     }
   }
 }
+// 依據後端資料 限制使用選項
+const allowConditionOptions = computed(() => {
+  if (isEmpty(props.allowConditions)) return conditionOptions
+  return conditionOptions.filter(conditionOption => {
+    return props.allowConditions.includes(conditionOption.value)
+  })
+})
+// 依序不同類型的資料 顯示不童書入框
+const filterValueType = computed(() => {
+  const inputType = bindAttributes?.type ?? ''
+
+  switch (inputType) {
+    case 'year':
+      return 'year'
+    case 'month':
+    case 'monthrange':
+      return 'month'
+    case 'week':
+      return 'week'
+    case 'date':
+    case 'dates':
+    case 'daterange':
+      return 'date'
+    case 'datetime':
+    case 'datetimerange':
+      return 'datetime'
+    case 'time':
+    case 'timerange':
+      return 'time'
+    case 'text':
+    default:
+      return 'text'
+  }
+})
 
 const noValueList = ['isBlank', 'notBlank', 'isNull', 'notNull']
 
@@ -314,7 +347,7 @@ defineExpose({
 })
 
 const translateLabel = computed(() => {
-  return i18nTest(props?.i18nLabel) ? i18nTranslate(props.i18nLabel) : props.label
+  return i18nTest(props?.i18nLabel) ? i18nTranslate(props.i18nLabel) : (props?.label ?? '')
 })
 
 const popverWidth = computed(() => {
@@ -350,13 +383,9 @@ const slotList = computed(() => {
             :show-after="600"
           >
             <template #content>
-              <slot name="search-label">
-                <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
-              </slot>
+              <label>{{ translateLabel }}</label>
             </template>
-            <slot name="search-label">
-              <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
-            </slot>
+            <label>{{ translateLabel }}</label>
           </CustomTooltip>
         </div>
 
@@ -369,9 +398,7 @@ const slotList = computed(() => {
         >
           <div class="__search-detail">
             <div class="__search-title">
-              <slot name="search-label">
-                <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
-              </slot>
+              <label class="__search-label">{{ translateLabel }}</label>
               <CustomSwitch v-model="isActive" />
             </div>
 
@@ -428,6 +455,7 @@ const slotList = computed(() => {
                     <CustomInput
                       v-model="formList[rowIndex].conditionType"
                       v-bind="formColumn.conditionType"
+                      :options="allowConditionOptions"
                     ></CustomInput>
                   </template>
                   <template #column-filterValue="{ rowIndex }">
@@ -435,6 +463,7 @@ const slotList = computed(() => {
                       v-if="!noValueList.includes(formList[rowIndex].conditionType)"
                       v-model="formList[rowIndex].filterValue"
                       v-bind="formColumn.filterValue"
+                      :type="filterValueType"
                     ></CustomInput>
                     <div v-else></div>
                   </template>
@@ -477,9 +506,7 @@ const slotList = computed(() => {
     <!-- 直接全部顯示 -->
     <template v-else>
       <div class="__search-title">
-        <slot name="search-label">
-          <label v-if="!isEmpty(translateLabel)">{{ translateLabel }}</label>
-        </slot>
+        <label class="__search-label">{{ translateLabel }}</label>
         <CustomSwitch v-model="isActive" />
       </div>
 

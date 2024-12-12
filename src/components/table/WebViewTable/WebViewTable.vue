@@ -153,7 +153,11 @@ const initFilterConditionMap = async () => {
     designatedview: props.designatedview
   }, isWebView)
 
-  const columnOperatorMap = await getColumnOperator(webViewParams, urlParams)
+  // 如果是 SQL View, 必需要有參數
+  let columnOperatorMap = {}
+  if (isWebView && !isEmpty(webViewParams)) {
+    columnOperatorMap = await getColumnOperator(webViewParams, urlParams)
+  }
 
   // 設定可用選項
   for (const columnKey in filterColumn) {

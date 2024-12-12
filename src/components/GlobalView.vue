@@ -235,37 +235,16 @@ watch(isLogin, (newLogin, oldLogin) => {
 // 開發測試用 DevelopmentTest
 const developmentTestRef = ref()
 const isShowDevelopmentTest = ref(false)
-const development = () => {
-  if (systemEnv.value.mode === 'development') {
-    isShowDevelopmentTest.value = !isShowDevelopmentTest.value
 
-  } else {
-    swal({
-      title: 'Input System Title',
-      input: 'text',
-      showCancelButton: true,
-      showConfirmButton: true
-    }).then((result: any) => {
-      const { isConfirmed, value } = result
 
-      if (isConfirmed && value === systemEnv.value.system) {
-        isShowDevelopmentTest.value = !isShowDevelopmentTest.value
-      } else {
-        isShowDevelopmentTest.value = false
-      }
-    })
-  }
-}
-// @ts-ignore
-window.development = development
 /**
- * 按 Ctrl + Shift + -(數字鍵右上方)
+ * 按 Ctrl + Shift + Alt + -(數字鍵右上方)
  * 開啟開發用工具
  */
-const handleKeydown = (event: KeyboardEvent) => {
-  if (event.shiftKey && event.ctrlKey && event.key === '-') {
-    development()
+ const handleKeydown = (event: KeyboardEvent) => {
+  if (event.shiftKey && event.ctrlKey && event.altKey && event.key === '-') {
     event.preventDefault()
+    isShowDevelopmentTest.value = !isShowDevelopmentTest.value
   }
 }
 if (systemEnv.value.mode === 'development') {

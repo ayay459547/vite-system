@@ -150,7 +150,7 @@ defineExpose({
 
         </div>
         <div class="pdf-setting-item">
-          <div class="item-row title"> {{ i18nTranslate('columnSetting') }} </div>
+          <div class="item-row title"> {{ i18nTranslate('column-setting') }} </div>
           <div>
             <CustomDraggable
               v-model="pdfColumns"

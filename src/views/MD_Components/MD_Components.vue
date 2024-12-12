@@ -10,7 +10,6 @@ import CustomCard from '@/components/feature/CustomCard/CustomCard.md?raw'
 import CustomCarousel from '@/components/feature/CustomCarousel/CustomCarousel.md?raw'
 import CustomCollapse from '@/components/feature/CustomCollapse/CustomCollapse.md?raw'
 import CustomColor from '@/components/feature/CustomColor/CustomColor.md?raw'
-import CustomDialog from '@/components/feature/CustomDialog/CustomDialog.md?raw'
 import CustomDivider from '@/components/feature/CustomDivider/CustomDivider.md?raw'
 import CustomDividerView from '@/components/feature/CustomDividerView/CustomDividerView.md?raw'
 import CustomDraggable from '@/components/feature/CustomDraggable/CustomDraggable.md?raw'
@@ -46,7 +45,6 @@ import FormCheckbox from '@/components/input/FormCheckbox/FormCheckbox.md?raw'
 import FormDatePicker from '@/components/input/FormDatePicker/FormDatePicker.md?raw'
 import FormInput from '@/components/input/FormInput/FormInput.md?raw'
 import FormList from '@/components/input/FormList/FormList.md?raw'
-import FormNumber from '@/components/input/FormNumber/FormNumber.md?raw'
 import FormOperator from '@/components/input/FormOperator/FormOperator.md?raw'
 import FormRadio from '@/components/input/FormRadio/FormRadio.md?raw'
 import FormSelect from '@/components/input/FormSelect/FormSelect.md?raw'
@@ -57,7 +55,6 @@ import SimpleFilterInfo from '@/components/input/SimpleFilter/SimpleFilter.md?ra
 import TimeLevelManagement from '@/components/input/TimeLevelManagement/TimeLevelManagement.md?raw'
 // table
 import CustomTable from '@/components/table/CustomTable/CustomTable.md?raw'
-import CustomTableV2 from '@/components/table/CustomTableV2/CustomTableV2.md?raw'
 import SimpleTable from '@/components/table/SimpleTable/SimpleTable.md?raw'
 import TimeLineTable from '@/components/table/TimeLineTable/TimeLineTable.md?raw'
 import VxeTable from '@/components/table/VxeTable/VxeTable.md?raw'
@@ -81,7 +78,6 @@ const links = [
   { title: 'CustomCarousel', href: '#CustomCarousel', text: CustomCarousel },
   { title: 'CustomCollapse', href: '#CustomCollapse', text: CustomCollapse },
   { title: 'CustomColor', href: '#CustomColor', text: CustomColor },
-  { title: 'CustomDialog', href: '#CustomDialog', text: CustomDialog },
   { title: 'CustomDivider', href: '#CustomDivider', text: CustomDivider },
   { title: 'CustomDividerView', href: '#CustomDividerView', text: CustomDividerView },
   { title: 'CustomDraggable', href: '#CustomDraggable', text: CustomDraggable },
@@ -117,7 +113,6 @@ const links = [
   { title: 'FormDatePicker', href: '#FormDatePicker', text: FormDatePicker },
   { title: 'FormInput', href: '#FormInput', text: FormInput },
   { title: 'FormList', href: '#FormList', text: FormList },
-  { title: 'FormNumber', href: '#FormNumber', text: FormNumber },
   { title: 'FormOperator', href: '#FormOperator', text: FormOperator },
   { title: 'FormRadio', href: '#FormRadio', text: FormRadio },
   { title: 'FormSelect', href: '#FormSelect', text: FormSelect },
@@ -128,7 +123,6 @@ const links = [
   { title: 'TimeLevelManagement', href: '#TimeLevelManagement', text: TimeLevelManagement },
   // table
   { title: 'CustomTable', href: '#CustomTable', text: CustomTable },
-  { title: 'CustomTableV2', href: '#CustomTableV2', text: CustomTableV2 },
   { title: 'SimpleTable', href: '#SimpleTable', text: SimpleTable },
   { title: 'TimeLineTable', href: '#TimeLineTable', text: TimeLineTable },
   { title: 'VxeTable', href: '#VxeTable', text: VxeTable },

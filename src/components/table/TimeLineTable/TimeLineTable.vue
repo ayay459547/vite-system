@@ -629,7 +629,11 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
           class-name="time-line-group"
         >
           <template v-if="getSlot((column?.slotKey ?? column.key), true)" #header="scope">
-            <slot :name="getSlot((column?.slotKey ?? column.key), true)" v-bind="scope">
+            <slot
+              :name="getSlot((column?.slotKey ?? column.key), true)"
+              v-bind="scope"
+              :column="column"
+            >
               {{ i18nTranslate(column?.i18nLabel ?? column.label) }}
             </slot>
           </template>
@@ -638,6 +642,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
             <slot
               :name="getSlot((column?.slotKey ?? column.key), false)"
               v-bind="scope"
+              :column="column"
               :data="scope.row[column.key]"
             >
               {{ scope.row[column.key] }}
@@ -654,7 +659,11 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
         :i18n-module="props.i18nModule"
       >
         <template #header="{ scope, column }">
-          <slot :name="getSlot((column?.slotKey ?? column.key), true)" v-bind="scope">
+          <slot
+            :name="getSlot((column?.slotKey ?? column.key), true)"
+            v-bind="scope"
+            :column="column"
+          >
             {{ i18nTranslate(column.i18nLabel ?? column.label) }}
           </slot>
         </template>
@@ -663,6 +672,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
           <slot
             :name="getSlot((column?.slotKey ?? column.key), false)"
             v-bind="scope"
+            :column="column"
             :data="scope.row[column.key]"
           >
             {{ scope.row[column.key] }}

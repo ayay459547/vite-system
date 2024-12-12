@@ -16,6 +16,21 @@ export type {
 } from './chart/CustomCharts/CustomChartsInfo'
 export const CustomCharts = useAsyncComponent(() => import('./chart/CustomCharts/CustomCharts.vue'), 'rect')
 
+// VueFlow
+export type {
+  Types as CustomFlowTypes,
+  Props as CustomFlowProps,
+  Emits as CustomFlowEmits,
+  Expose as CustomFlowExpose
+} from './chart/CustomFlow/CustomFlowInfo'
+export const CustomFlow = useAsyncComponent(() => import('./chart/CustomFlow/CustomFlow.vue'), 'rect')
+// 背景
+export const FlowBackground = useAsyncComponent(() => import('./chart/CustomFlow/Components/FlowBackground.vue'), 'rect')
+// 右下小圖
+export const FlowMiniMap = useAsyncComponent(() => import('./chart/CustomFlow/Components/FlowMiniMap.vue'), 'rect')
+// 控制按鈕
+export const FlowControls = useAsyncComponent(() => import('./chart/CustomFlow/Components/FlowControls.vue'), 'rect')
+
 export type {
   Types as GanttChartTypes,
   Props as GanttChartProps,
@@ -105,7 +120,10 @@ export type {
 } from './feature/CustomCollapse/CustomCollapseInfo'
 export const CustomCollapse = useAsyncComponent(() => import('./feature/CustomCollapse/CustomCollapse.vue'), 'rect')
 
-// 棄用 CustomModal 代替
+/**
+ * 棄用 CustomModal 代替
+ * @deprecated
+ */
 // export type {
 //   Types as CustomDialogTypes,
 //   Props as CustomDialogProps,
@@ -429,7 +447,10 @@ export type {
 } from './input/FormInput/FormInputInfo'
 export const FormInput = useAsyncComponent(() => import('./input/FormInput/FormInput.vue'), 'h1')
 
-// 棄用 FormInput type='number' 代替
+/**
+ * 棄用 FormInput type='number' 代替
+ * @deprecated
+ */
 // export type {
 //   Types as FormNumberTypes,
 //   Props as FormNumberProps,
@@ -534,15 +555,16 @@ export type {
 export { default as CustomTable } from './table/CustomTable/CustomTable.vue'
 
 /**
- * 虛擬表格
+ * 虛擬表格 VxeTable 代替
+ * @deprecated
  */
-export type {
-  Types as CustomTableV2Types,
-  Props as CustomTableV2Props,
-  Emits as CustomTableV2Emits,
-  Expose as CustomTableV2Expose
-} from './table/CustomTableV2/CustomTableV2Info'
-export const CustomTableV2 = useAsyncComponent(() => import('./table/CustomTableV2/CustomTableV2.vue'), 'rect')
+// export type {
+//   Types as CustomTableV2Types,
+//   Props as CustomTableV2Props,
+//   Emits as CustomTableV2Emits,
+//   Expose as CustomTableV2Expose
+// } from './table/CustomTableV2/CustomTableV2Info'
+// export const CustomTableV2 = useAsyncComponent(() => import('./table/CustomTableV2/CustomTableV2.vue'), 'rect')
 
 /**
  * 簡易表格

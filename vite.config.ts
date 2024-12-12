@@ -155,7 +155,6 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
       warmup: {
         ssrFiles: [],
         clientFiles: [
-          // './src/components/layout/**/*.vue',
           './src/lib/init/*.ts',
           './src/lib/*.ts'
         ]
@@ -168,8 +167,8 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
       },
       https: false // 啟用 HTTPS
       // https: {
-      //   key: readFileSync('RootCA-key.pem'),
-      //   cert: readFileSync('RootCA.pem')
+      //   key: readFileSync('../.pem'),
+      //   cert: readFileSync('../.pem')
       // }
     },
     resolve: {

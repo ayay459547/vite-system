@@ -29,6 +29,7 @@ export declare namespace Types {
 export declare namespace Props {
   type Baseurl = string
   type Apiurl = string
+  type ApiOperator = string
   type Webfuno = string
   type Funoviewsuffix = string
   type Designatedview = string
@@ -39,6 +40,7 @@ export declare namespace Props {
   type FormatParams = (params: Types.Params) => any
   type FormatExcel = (row: any) => any
   type FormatTable = (row: any) => any
+  type FormatData = (row: any) => any
   type FormatSorting = (row: any) => any
   type UseFakeData = boolean
   type FakeData = Array<any>
@@ -65,6 +67,19 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiurl 不存在時
+      url: /api/ipaspTable/retrieveIpaspTableFromView
+      webfuno, funoviewsuffix,  designatedview有效
+    `
+  },
+  apiOperator: {
+    type: String as PropType<Props.ApiOperator>,
+    required: false,
+    description: `api url 參數: 進階搜尋選項
+      apiOperator 存在時
+      url: props.apiurl
+      webfuno, funoviewsuffix, designatedview無效
+
+      apiOperator 不存在時
       url: /api/ipaspTable/retrieveIpaspTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
@@ -121,14 +136,23 @@ export const props = {
   formatExcel: {
     type: Function as PropType<Props.FormatExcel>,
     required: false,
-    default: (row: any) => row,
+    // default: (row: any) => row,
     description: '自訂Excel資料格式'
   },
   formatTable: {
     type: Function as PropType<Props.FormatTable>,
     required: false,
-    default: (row: any) => row,
+    // default: (row: any) => row,
     description: '自訂Table資料格式'
+  },
+  formatData: {
+    type: Function as PropType<Props.FormatData>,
+    required: false,
+    default: (row: any) => row,
+    description: `
+      自訂Data資料格式 適用於Excel, Table
+      優先序低於formatExcel, formatTable
+    `
   },
   formatSorting: {
     type: Function as PropType<Props.FormatSorting>,

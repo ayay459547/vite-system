@@ -1,6 +1,6 @@
 import type { Api, ViewParams } from '@/declare/ajax'
 import { ajax } from '@/lib/lib_ajax'
-import { message, isEmpty } from '@/lib/lib_utils' // 工具
+import { message, isEmpty, tipLog } from '@/lib/lib_utils' // 工具
 
 import type { Types, Props } from './WebViewTableInfo'
 
@@ -24,11 +24,11 @@ export const getWebViewParams = (params: ViewParams, isWebView: boolean) => {
 
   // view 後端指定參數
   if (isEmpty(webfuno) && isEmpty(designatedview)) {
-    message({
-      type: 'error',
-      message: 'webfuno and designatedview is empty',
-      duration: 10000
-    })
+    tipLog('WebViewTable', [
+      'getWebViewParams: webfuno  designatedview 都為空值',
+      params,
+      `isWebView: ${isWebView}`
+    ])
     return {}
   }
 

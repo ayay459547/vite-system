@@ -14,6 +14,7 @@ export declare namespace Props {
   type IsCondition = boolean
   type ColumnId = string
   type Conditions = _Conditions
+  type AllowConditions = string[]
   type Width = string | number
   type Placement = CustomPopoverProps.Placement
   type Search = boolean
@@ -25,16 +26,19 @@ export const props = {
   // custom
   columnId: {
     type: String as PropType<Props.ColumnId>,
+    required: false,
     default: '',
     description: 'key'
   },
   modelValue: {
     type: [Array, String, Number, Boolean, null, undefined] as PropType<Props.ModelValue>,
+    required: false,
     default: false,
     description: 'v-model="..." '
   },
   active: {
     type: Boolean as PropType<Props.Active>,
+    required: false,
     default: true,
     description: ` v-model:active="..."
       是否啟用
@@ -49,15 +53,25 @@ export const props = {
   },
   activeConditions: {
     type: Boolean as PropType<Props.Active>,
+    required: false,
     default: false,
     description: 'v-model:active-conditions="..." , 是否啟用條件搜尋 checkbox'
   },
   conditions: {
     type: Array as PropType<Props.Conditions>,
-    default() {
+    required: false,
+    default: () => {
       return []
     },
     description: 'v-model:conditions="..." , 條件搜尋列表'
+  },
+  allowConditions: {
+    type: Array as PropType<Props.AllowConditions>,
+    required: false,
+    default: () => {
+      return []
+    },
+    description: '允許使用的條件 api'
   },
   width: {
     type: [String, Number] as PropType<Props.Width>,
