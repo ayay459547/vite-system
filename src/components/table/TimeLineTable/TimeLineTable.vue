@@ -8,8 +8,7 @@ import {
   VxeColumn,
   CustomIcon,
   CustomPopover,
-  CustomDraggable,
-  CustomScrollbar,
+  CustomButton,
   TimeLevelManagement
 } from '@/components' // 系統組件
 
@@ -18,9 +17,12 @@ import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils' //
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
+import { getProxyData } from '@/lib/lib_utils' // 工具
+import { setPageSetting, getPageSetting } from '@/lib/lib_idb'
 import type { Types, Expose } from './TimeLineTableInfo'
 import { version, props as timeLineCustomTableProps } from './TimeLineTableInfo'
 
+import ColumnSetting from './Components/ColumnSetting.vue'
 import DraggableItem from './Components/DraggableItem.vue'
 import GroupDateColumn from './Components/GroupDateColumn.vue'
 
@@ -200,6 +202,20 @@ const refreshColumn = async () => {
   await nextTick()
   initData()
   renderKey.value++
+}
+
+// 欄位設定
+const settingReset = async () => {
+  const defaultColumnValue = getDefaultColumnValue()
+  await setSettingValue(getProxyData(defaultColumnValue))
+  init(false)
+}
+const settingSubmit = (columnValue: any) => {
+  groupColumns.value = columnValue?.groupValue ?? []
+  dateColumns.value = columnValue?.dateValue ?? []
+  otherColumns.value = columnValue?.otherValue ?? []
+  setSettingValue(columnValue)
+  refreshColumn()
 }
 
 const isLoading = ref(true)
@@ -401,19 +417,21 @@ const initData = async () => {
 
     return 0
   })
+  // console.log(showData.value)
 
   await nextTick()
   setTimeout(() => {
     resetMergeCells()
-  }, 800)
+  }, 320)
 
   setTimeout(() => {
     isShow.value = true
     isLoading.value = false
-  }, 1600)
+  }, 560)
 }
 
-const init: Expose.Init = async () => {
+// 取得預設欄位設定
+const getDefaultColumnValue = () => {
   const _groupColumns = []
   const _dateColumns = []
   const _otherColumns = []
@@ -438,9 +456,50 @@ const init: Expose.Init = async () => {
     const [aIndex, bIndex] = [a?.timeIndex ?? -1, b?.timeIndex ?? -1]
     return aIndex - bIndex
   }
-  groupColumns.value = _groupColumns.sort(sortCallback)
-  dateColumns.value = _dateColumns.sort(sortCallback)
-  otherColumns.value = _otherColumns.sort(sortCallback)
+
+  return {
+    groupValue: _groupColumns.sort(sortCallback),
+    dateValue: _dateColumns.sort(sortCallback),
+    otherValue: _otherColumns.sort(sortCallback)
+  }
+}
+
+// 從idb取欄位資訊
+const getSettingValue = async(isCheck: boolean) => {
+  const defaultColumnValue = getDefaultColumnValue()
+  if (isEmpty(props.settingKey) || isEmpty(props.version)) return defaultColumnValue
+
+  try {
+    const idbValue = await getPageSetting(`TimeLineTable_${props.settingKey}`)
+
+    // 確認版本
+    const isReset = (idbValue.version !== props.version)
+    if (isCheck && isReset) {
+      settingReset()
+    }
+
+    return idbValue?.columnValue ?? defaultColumnValue
+  } catch (e) {
+    return defaultColumnValue
+  }
+}
+// 從idb設定欄位資訊
+const setSettingValue = async (columnValue: any) => {
+  if (isEmpty(props.settingKey) || isEmpty(props.version)) return
+
+  await setPageSetting(`TimeLineTable_${props.settingKey}`, {
+    settingKey: props.settingKey,
+    version: props.version,
+    columnValue
+  })
+}
+
+// 初始化欄位 + 資料
+const init: Expose.Init = async (isCheck?: boolean) => {
+  const columnValue = await getSettingValue(isCheck ?? false)
+  groupColumns.value = columnValue.groupValue
+  dateColumns.value = columnValue.dateValue
+  otherColumns.value = columnValue.otherValue
 
   // 設定時間線的key
   const timeLineDateColumn = props.tableColumns.find(column => {
@@ -453,10 +512,10 @@ const init: Expose.Init = async () => {
 }
 
 onMounted(() => {
-  init()
+  init(true)
 })
 
-defineExpose({ init, changeKey })
+defineExpose({ init, initData, changeKey })
 
 // slot
 const slots = useSlots()
@@ -480,11 +539,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
 </script>
 
 <template>
-  <div
-    v-loading="isLoading"
-    class="time-line"
-    :class="scopedId"
-  >
+  <div v-loading="isLoading" class="time-line" :class="scopedId">
     <VxeTable
       v-show="isShow"
       ref="vxeTableRef"
@@ -504,7 +559,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
         fixed="left"
       >
         <template #header>
-          <div class="flex-row-center i-ga-lg">
+          <div class="flex-row-center i-ga-md">
             <h3>{{ i18nTranslate('setting', defaultModuleType) }}</h3>
 
             <div class="flex-row-center i-ga-md">
@@ -513,76 +568,25 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
                 :width="600"
                 placement="right-start"
               >
-                <CustomScrollbar always>
-                  <div class="time-line-draggable grid-row">
-                    <!-- 群組欄位 -->
-                    <div class="draggable-list grid-col-xs-12 group">
-                      <label>{{ i18nTranslate('column-group', defaultModuleType) }}</label>
-                      <CustomDraggable
-                        v-model="groupColumns"
-                        :group="{ name: 'columns', pull: true, put: true }"
-                        stripe
-                        height="100%"
-                        @change="refreshColumn"
-                      >
-                        <template #item="{ element: elementItem, index }">
-                          <DraggableItem
-                            :index="index"
-                            :column="elementItem"
-                            :timeLineDateKey="timeLineDateKey"
-                            @changeKey="changeKey"
-                          >
-                            <label>{{ `${index + 1}. ${i18nTranslate(elementItem?.i18nLabel ?? elementItem.label)}` }}</label>
-                          </DraggableItem>
-                        </template>
-                      </CustomDraggable>
-                    </div>
-
-                    <!-- 日期線欄位 -->
-                    <div class="draggable-list grid-col-xs-12 date">
-                      <label>{{ i18nTranslate('column-dateLine', defaultModuleType) }}</label>
-                      <CustomDraggable
-                        v-model="dateColumns"
-                        :group="{ name: 'columns', pull: true, put: true }"
-                        stripe
-                        @change="refreshColumn"
-                      >
-                        <template #item="{ element: elementItem, index }">
-                          <DraggableItem
-                            :index="index"
-                            :column="elementItem"
-                            :timeLineDateKey="timeLineDateKey"
-                            @changeKey="changeKey"
-                          >
-                            <label>{{ `${index + 1}. ${i18nTranslate(elementItem?.i18nLabel ?? elementItem.label)}` }}</label>
-                          </DraggableItem>
-                        </template>
-                      </CustomDraggable>
-                    </div>
-
-                    <!-- 未使用欄位 -->
-                    <div class="draggable-list grid-col-xs-24 other">
-                      <label>{{ i18nTranslate('column-unuse', defaultModuleType) }}</label>
-                      <CustomDraggable
-                        v-model="otherColumns"
-                        :group="{ name: 'columns', pull: true, put: true }"
-                        stripe
-                        @change="refreshColumn"
-                      >
-                        <template #item="{ element: elementItem, index }">
-                          <DraggableItem
-                            :index="index"
-                            :column="elementItem"
-                            :timeLineDateKey="timeLineDateKey"
-                            @changeKey="changeKey"
-                          >
-                            <label>{{ `${index + 1}. ${i18nTranslate(elementItem?.i18nLabel ?? elementItem.label)}` }}</label>
-                          </DraggableItem>
-                        </template>
-                      </CustomDraggable>
-                    </div>
-                  </div>
-                </CustomScrollbar>
+                <!-- 欄位設定 -->
+                <ColumnSetting
+                  :groupColumns="groupColumns"
+                  :dateColumns="dateColumns"
+                  :otherColumns="otherColumns"
+                  @reset="settingReset"
+                  @submit="settingSubmit"
+                >
+                  <template #DraggableItem="{ element, index }">
+                    <DraggableItem
+                      :index="index"
+                      :column="element"
+                      :timeLineDateKey="timeLineDateKey"
+                      @changeKey="changeKey"
+                    >
+                      <label>{{ `${index + 1}. ${i18nTranslate(element?.i18nLabel ?? element.label)}` }}</label>
+                    </DraggableItem>
+                  </template>
+                </ColumnSetting>
                 <template #reference>
                   <CustomIcon
                     class="cursor-pointer"
@@ -658,24 +662,27 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
         :base-width="baseWidth"
         :i18n-module="props.i18nModule"
       >
-        <template #header="{ scope, column }">
+        <template #header="{ scope, column, date }">
           <slot
             :name="getSlot((column?.slotKey ?? column.key), true)"
             v-bind="scope"
             :column="column"
+            :row-key="`${date}-${column.key}`"
           >
             {{ i18nTranslate(column.i18nLabel ?? column.label) }}
           </slot>
         </template>
 
-        <template #column="{ scope, column }">
+        <template #column="{ scope, column, date }">
           <slot
             :name="getSlot((column?.slotKey ?? column.key), false)"
             v-bind="scope"
             :column="column"
-            :data="scope.row[column.key]"
+            :row-key="`${date}-${column.key}`"
+            :data="scope.row[`${date}-${column.key}`]"
           >
-            {{ scope.row[column.key] }}
+            <!-- 實際顯示資料 => 日期 + key -->
+            {{ scope.row[`${date}-${column.key}`] ?? '' }}
           </slot>
         </template>
       </GroupDateColumn>
@@ -694,56 +701,11 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
 </template>
 
 <style lang="scss" scoped>
-$max-height: calc(100vh - 240px);
 
 .time-line {
   width: 100%;
   height: 100%;
   padding: 16px;
-
-  &-draggable {
-    width: 100%;
-    height: 100%;
-    max-height: $max-height;
-    padding-right: 8px;
-    gap: 12px 0;
-  }
-}
-
-.draggable {
-  &-list {
-    width: 100%;
-    height: 100%;
-    background-color: var(--i-color-system-page);
-    padding: 8px;
-    border: 1px solid var(--el-color-info-light-7) {
-      radius: 6px;
-    };
-
-    &.group,
-    &.date {
-      position: sticky;
-      top: 0;
-      z-index: 3;
-      min-height: calc($max-height / 3);
-    }
-
-    &.other {
-      opacity: 0.9;
-      z-index: 1;
-      min-height: calc($max-height / 3);
-    }
-  }
-
-  &-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    height: 100%;
-    padding: 8px;
-  }
 }
 </style>
 

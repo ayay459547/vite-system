@@ -12,6 +12,8 @@ export declare namespace Types {
 
 export declare namespace Props {
   type I18nModule = ScopeKey
+  type Version = string
+  type SettingKey = string
   type TableColumns = Array<Types.TableColumn>
   type TableData = any[]
 }
@@ -22,6 +24,22 @@ export const props = {
     required: false,
     default: defaultModuleType,
     description: 'i18nModule'
+  },
+  version: {
+    type: String as PropType<Props.Version>,
+    required: false,
+    default: '',
+    description: `
+      欄位設定 版本
+      如果版本更換 會重置欄位設定`
+  },
+  settingKey: {
+    type: String as PropType<Props.SettingKey>,
+    required: false,
+    default: '',
+    description: `
+      欄位設定 在 indexedDB 上的 key
+      建議參考路由 避免重複使用 key`
   },
   tableColumns: {
     type: Array as PropType<Props.TableColumns>,
@@ -44,5 +62,5 @@ export const props = {
 export declare namespace Emits {}
 
 export declare namespace Expose {
-  type Init = () => void
+  type Init = (isCheck?: boolean) => void
 }

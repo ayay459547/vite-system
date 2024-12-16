@@ -78,10 +78,20 @@ const { i18nTranslate } = useHook({
         :title="i18nTranslate(column?.i18nLabel ?? column.label)"
       >
         <template #header="scope">
-          <slot name="header" :scope="scope" :column="column"></slot>
+          <slot
+            name="header"
+            :scope="scope"
+            :column="column"
+            :date="groupDateColumn.key"
+          ></slot>
         </template>
         <template #default="scope">
-          <slot name="column" :scope="scope" :column="column"></slot>
+          <slot
+            name="column"
+            :scope="scope"
+            :column="column"
+            :date="groupDateColumn.key"
+          ></slot>
         </template>
       </VxeColumn>
     </template>
