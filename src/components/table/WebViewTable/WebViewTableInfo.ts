@@ -67,7 +67,7 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiurl 不存在時
-      url: /api/ipaspTable/retrieveIpaspTableFromView
+      url: /api/systemTable/retrievesystemTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },
@@ -80,7 +80,7 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiOperator 不存在時
-      url: /api/ipaspTable/retrieveIpaspTableFromView
+      url: /api/systemTable/retrievesystemTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },

@@ -5,9 +5,9 @@ import { message, isEmpty, tipLog } from '@/lib/lib_utils' // 工具
 import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
-export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
+export const webViewUrl = '/api/systemTable/retrievesystemTableFromView'
 // 進階搜尋可用選項
-export const webViewUrlOperator = '/api/ipaspTable/retrieveColumnOperatorFromView'
+export const webViewUrlOperator = '/api/systemTable/retrieveColumnOperatorFromView'
 
 export const getUrlParams = (params: Types.UrlParams) => {
   const { url = webViewUrl, baseURL = '' } = params

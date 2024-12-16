@@ -64,7 +64,7 @@ export default defineComponent({
               <div class="gear-img">
                 <img src="@/assets/images/Vue-logo.png" alt="menu-logo" />
               </div>
-              <div class="gear-ipasp flex-row align-center content-between">
+              <div class="gear-menu flex-row align-center content-between">
                 <span>{{ `${env.version}` }}</span>
               </div>
             </div>
@@ -93,7 +93,7 @@ export default defineComponent({
       padding: 0 8px;
       cursor: pointer;
 
-      .ipasp {
+      .menu {
         &-img {
           width: 40px;
         }
@@ -128,7 +128,7 @@ export default defineComponent({
     }
   }
 }
-.tip-ipasp {
+.tip-menu {
   transition: 0.3s color;
   color: var(--i-color-menu);
 
@@ -148,7 +148,7 @@ export default defineComponent({
     }
   }
 
-  &-ipasp {
+  &-menu {
     gap: 80px;
   }
 }
