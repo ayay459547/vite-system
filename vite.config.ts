@@ -79,18 +79,15 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
           const workBook = read(i18n)
           const [
             wsTranslate
-            // wsLiveBoard,
             // wsViews
             // wsAbbreviation
           ] = [
             workBook.Sheets[workBook.SheetNames[0]]
-            // workBook.Sheets[workBook.SheetNames[1]],
+            // workBook.Sheets[workBook.SheetNames[1]]
             // workBook.Sheets[workBook.SheetNames[2]]
-            // workBook.Sheets[workBook.SheetNames[3]]
           ]
           const moduleList = [
             ...utils.sheet_to_json(wsTranslate)
-            // ...utils.sheet_to_json(wsLiveBoard),
             // ...utils.sheet_to_json(wsViews)
             // ...utils.sheet_to_json(wsAbbreviation)
           ]

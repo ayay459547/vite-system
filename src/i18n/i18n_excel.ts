@@ -22,12 +22,8 @@ import { scopeList, defaultModuleType } from './i18n_setting'
  * 3.重新寫入 i18n.json
  */
 
-import i18nJson from './i18n_table.json'
-import i18nXlsx from './i18n_table.xlsx?b64'
-
-// 測試用
-// import i18nJson from './i18n_test.json'
-// import i18nXlsx from './i18n_test.xlsx?b64'
+import i18nJson from './i18n.json'
+import i18nXlsx from './i18n.xlsx?b64'
 
 const mode = (import.meta as any).env.MODE
 if (mode === 'development') {
@@ -40,11 +36,11 @@ if (mode === 'development') {
 
 export const initTranslateSrcFile = () => {
   const excelJsonList = i18nJson as any[]
-  const moduleMap = {}
+  const moduleMap: Record<string, Set<any>> = {}
 
   if (isEmpty(excelJsonList)) return { langMap: {}, moduleMap }
 
-  const scopeKeyList = []
+  const scopeKeyList: any[] = []
 
   // 記錄不同模組翻譯檔版本
   scopeList.forEach(scopeItem => {
@@ -101,9 +97,9 @@ export const useGlobalI18n = (): GlobalI18n => {
   // 模組
   const moduleMap = shallowRef<Record<string, any>>({})
   // 翻譯
-  const globalI18n = ref<Partial<Composer>>({
-    t: () => '',
-    te: () => false
+  const globalI18n = ref({
+    t: (i18nKey: string) => `${i18nKey}`,
+    te: (i18nKey: string) => (typeof i18nKey === 'string')
   })
 
   const initModuleLangMap = () => {
@@ -114,11 +110,11 @@ export const useGlobalI18n = (): GlobalI18n => {
     const _globalI18n = useI18n({
       useScope: 'global',
       messages
-    }) as Partial<Composer>
+    })
 
     langMap.value = _langMap
     moduleMap.value = _moduleMap
-    globalI18n.value = _globalI18n
+    globalI18n.value = _globalI18n as any
   }
 
   // 將翻譯的key轉成array

@@ -1,5 +1,4 @@
 import { createI18n } from 'vue-i18n'
-import { object_reduce } from '@/lib/lib_object'
 
 export type LangMap = Record<string, {
   zhTw: string
@@ -14,21 +13,19 @@ export type Messages = {
 }
 
 export const getI18nMessages = (langMap: LangMap): Messages => {
-  return object_reduce(
-    langMap,
-    (res: Messages, value: Record<string, any>, key: string) => {
-      for (const userLanguage in value) {
-        res[userLanguage][key] = value[userLanguage]
-      }
+  const res: any = {
+    zhTw: {},
+    zhCn: {},
+    en: {}
+  }
 
-      return res
-    },
-    {
-      zhTw: {},
-      zhCn: {},
-      en: {}
+  for (const langKey in langMap) {
+    const langValue: any = langMap[langKey]
+    for (const userLanguage in langValue) {
+      res[userLanguage][langKey] = langValue[userLanguage]
     }
-  )
+  }
+  return res as Messages
 }
 
 export const options = [
