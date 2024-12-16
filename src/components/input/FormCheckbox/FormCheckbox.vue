@@ -23,11 +23,6 @@ const inputValue = computed({
   set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
-const bindAttributes = {
-  disabled: props.disabled,
-  indeterminate: props.indeterminate
-}
-
 // event
 const onGroupChange: Emits.Change<CheckboxGroupValueType> = value => emit('change', value)
 const onChange: Emits.Change<CheckboxValueType> = value => emit('change', value)
@@ -44,7 +39,8 @@ const getStyle = (isChecked: boolean, color?: string) => {
       <ElCheckboxGroup
         v-model="inputValue"
         :validate-event="false"
-        v-bind="bindAttributes"
+        :disabled="props.disabled"
+        :indeterminate="props.indeterminate"
         @change="onGroupChange"
       >
         <ElCheckbox
@@ -74,7 +70,8 @@ const getStyle = (isChecked: boolean, color?: string) => {
       <ElCheckbox
         v-model="inputValue"
         :validate-event="false"
-        v-bind="bindAttributes"
+        :disabled="props.disabled"
+        :indeterminate="props.indeterminate"
         @change="onChange"
       >
         <slot name="default">

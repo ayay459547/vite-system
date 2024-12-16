@@ -76,6 +76,11 @@ const setSortingValue = (order: CustomTableTypes.Order, key: string) => {
   newValue[columnIndex] = {..._temp, key, order}
   tempValue.value = newValue
 }
+const options = [
+  { label: i18nTranslate('order-ascending', defaultModuleType), value: 'ascending' },
+  { label: i18nTranslate('none-var', defaultModuleType), value: 'none' },
+  { label: i18nTranslate('order-descending', defaultModuleType), value: 'descending' }
+]
 
 const resetSorting = () => {
   emit('reset-sorting')
@@ -128,11 +133,7 @@ const submit = () => {
                     :validate-key="`GroupSorting:${element.key}`"
                     :label="i18nTranslate(element?.i18nLabel ?? element.label)"
                     type="radio"
-                    :options="[
-                      { label: i18nTranslate('order-ascending', defaultModuleType), value: 'ascending' },
-                      { label: i18nTranslate('none-var', defaultModuleType), value: 'none' },
-                      { label: i18nTranslate('order-descending', defaultModuleType), value: 'descending' }
-                    ]"
+                    :options="options"
                   >
                     <template #options="{ value, label }">
                       <CustomTooltip placement="bottom" :show-after="200">

@@ -2,10 +2,10 @@ import type { RouterTree } from '@/declare/routes'
 
 const testRoutes: RouterTree[] = [
   {
-    name: 'development',
+    name: 'system',
     title: '開發工具',
     meta: {
-      systemType: ['development'],
+      systemType: ['system'],
       icon: 'code'
     },
     leaves: [
@@ -15,7 +15,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/Development/FeatureList/FeatureList.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development']
+          systemType: ['system']
         }
       },
       {
@@ -24,7 +24,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/Development/I18nList/I18nList.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development']
+          systemType: ['system']
         }
       },
       {
@@ -33,7 +33,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/Development/ExcelUtils/ExcelUtils.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development']
+          systemType: ['system']
         }
       },
       {
@@ -42,7 +42,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/Development/SearchView/SearchView.vue'),
         meta: {
           keepAlive: true,
-          systemType: ['development']
+          systemType: ['system']
         }
       },
       {
@@ -51,7 +51,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/Development/ScheduleView/ScheduleView.vue'),
         meta: {
           keepAlive: true,
-          systemType: ['development']
+          systemType: ['system']
         }
       }
     ]

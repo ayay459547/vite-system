@@ -314,7 +314,7 @@ const onDragend = () => {
       <template #reference>
         <CustomButton
           icon-name="list-check"
-          :label="i18nTranslate('column-setting', defaultModuleType)"
+          :label="i18nTranslate('columnSetting', defaultModuleType)"
         />
       </template>
 

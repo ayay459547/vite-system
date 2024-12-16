@@ -5,7 +5,7 @@ const testRoutes: RouterTree[] = [
     name: 'test-page',
     title: '測試',
     meta: {
-      systemType: ['development', 'test'],
+      systemType: ['test'],
       icon: 'vial'
     },
     leaves: [
@@ -23,7 +23,7 @@ const testRoutes: RouterTree[] = [
         name: 'test-caleb',
         title: 'Caleb',
         meta: {
-          systemType: ['new'],
+          systemType: ['system'],
           icon: 'paw'
         },
         leaves: [
@@ -33,7 +33,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/ExcelTest/ExcelTest.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'file-excel'
             }
           },
@@ -43,7 +43,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart1.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'chart-pie'
             }
           },
@@ -53,7 +53,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart2.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'satellite-dish'
             }
           },
@@ -63,7 +63,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart3.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'chart-column'
             }
           },
@@ -73,7 +73,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart4.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'chart-simple'
             }
           },
@@ -83,7 +83,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart5.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'chart-line'
             }
           },
@@ -93,7 +93,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart6.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'square-poll-vertical'
             }
           },
@@ -103,7 +103,7 @@ const testRoutes: RouterTree[] = [
             component: () => import('@/views/TestPage/Caleb/TestChart7.vue'),
             meta: {
               keepAlive: false,
-              systemType: ['development', 'test'],
+              systemType: ['system', 'test'],
               icon: 'tornado'
             }
           }
@@ -115,7 +115,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/TestPage/DiffTest.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['new'],
+          systemType: ['system'],
           icon: ['fab', 'react']
         }
       }
@@ -125,17 +125,37 @@ const testRoutes: RouterTree[] = [
     name: 'charts-test',
     title: '圖表測試',
     meta: {
-      systemType: ['development', 'test'],
+      systemType: ['system', 'test'],
       icon: 'chart-simple'
     },
     leaves: [
+      {
+        name: 'chart-ColorPicker',
+        title: '顏色選擇圖',
+        component: () => import('@/views/ChartsTest/ColorPicker/ColorPicker.vue'),
+        meta: {
+          keepAlive: false,
+          systemType: ['system', 'test'],
+          icon: 'chart-pie'
+        }
+      },
+      {
+        name: 'chart-flow',
+        title: 'Flow 圖',
+        component: () => import('@/views/ChartsTest/FlowView/FlowView.vue'),
+        meta: {
+          keepAlive: false,
+          systemType: ['system', 'test'],
+          icon: 'chart-pie'
+        }
+      },
       {
         name: 'chart-1',
         title: '南丁格爾玫瑰圖',
         component: () => import('@/views/ChartsTest/Chart1View.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development', 'test'],
+          systemType: ['system', 'test'],
           icon: 'chart-pie'
         }
       },
@@ -145,7 +165,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ChartsTest/Chart2View.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development', 'test'],
+          systemType: ['system', 'test'],
           icon: 'chart-column'
         }
       }
@@ -155,7 +175,7 @@ const testRoutes: RouterTree[] = [
     name: 'components-test',
     title: '組件測試',
     meta: {
-      systemType: ['development', 'test'],
+      systemType: ['system', 'test'],
       icon: 'flask-vial'
     },
     leaves: [
@@ -165,7 +185,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Search-test.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -174,7 +194,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Page1-test/Page1-test.vue'),
         meta: {
           keepAlive: true,
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -183,7 +203,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Form-list-test/Form-list-test.vue'),
         meta: {
           keepAlive: true,
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -192,7 +212,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Week-schedule-test.vue'),
         meta: {
           keepAlive: false,
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -201,7 +221,7 @@ const testRoutes: RouterTree[] = [
         component: () => import('@/views/ComponentsTest/Ajax-test.vue'),
         meta: {
           keepAlive: true,
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -209,7 +229,7 @@ const testRoutes: RouterTree[] = [
         title: '純資料表單測試',
         component: () => import('@/views/ComponentsTest/Data-table-test.vue'),
         meta: {
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -217,7 +237,7 @@ const testRoutes: RouterTree[] = [
         title: '輸入框測試',
         component: () => import('@/views/ComponentsTest/Input-test.vue'),
         meta: {
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -225,7 +245,7 @@ const testRoutes: RouterTree[] = [
         title: '彈窗測試',
         component: () => import('@/views/ComponentsTest/Alert-test.vue'),
         meta: {
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -233,7 +253,7 @@ const testRoutes: RouterTree[] = [
         title: 'i18n翻譯測試',
         component: () => import('@/views/ComponentsTest/I18n-test.vue'),
         meta: {
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -241,7 +261,7 @@ const testRoutes: RouterTree[] = [
         title: '表單測試',
         component: () => import('@/views/ComponentsTest/Table-test.vue'),
         meta: {
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -249,7 +269,7 @@ const testRoutes: RouterTree[] = [
         title: 'Excel測試',
         component: () => import('@/views/ComponentsTest/Excel-test.vue'),
         meta: {
-          systemType: ['development', 'test']
+          systemType: ['system', 'test']
         }
       },
       {
@@ -257,7 +277,7 @@ const testRoutes: RouterTree[] = [
         title: '教育訓練',
         component: () => import('@/views/Educate-test.vue'),
         meta: {
-          systemType: ['development', 'test'],
+          systemType: ['system', 'test'],
           icon: 'feather'
         }
       }

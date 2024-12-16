@@ -24,11 +24,11 @@ const isSkipLogin = (import.meta as any).env.VITE_API_SKIP_LOGIN === 'true'
  * @returns {Array} vue-router 指定格式
  */
 const treeToRoutes = (routes: RouterTree[]): RouteRecordRaw[] => {
-  const res = []
+  const res: any[] = []
 
   // 有重複的 name 給予提示
   const nameSet = new Set()
-  const tipList = []
+  const tipList: any[] = []
 
   const _treeToRoutes = (routes: RouterTree[], res: RouteRecordRaw[]): void => {
     routes.forEach(route => {

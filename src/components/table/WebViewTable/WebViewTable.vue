@@ -689,6 +689,7 @@ const modal = reactive({
             <GroupSearch
               :columns="filterColumn"
               class="grid-row"
+              :size="480"
               @reset="resetFilter"
               @submit="throttleInit(null, 'input')"
             >
@@ -699,6 +700,8 @@ const modal = reactive({
                     class="grid-col-xs-24 grid-col-sm-12 grid-col-md-8 grid-col-lg-6"
                     v-model="filter[scope.prop]"
                     v-model:active="activeFilter[scope.prop]"
+                    v-model:activeConditions="activeConditions[scope.prop]"
+                    v-model:conditions="filterConditions[scope.prop]"
                     v-bind="filterColumn[scope.prop]"
                     :i18n-module="i18nModule"
                     :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
