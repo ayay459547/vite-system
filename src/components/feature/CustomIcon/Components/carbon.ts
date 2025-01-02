@@ -7,7 +7,7 @@ import {
   FilterReset
 } from '@vicons/carbon'
 
-export default {
+const carbon: Record<string, any> = {
   ChartTreemap,
   ChartMultitype,
   ChartMaximum,
@@ -15,3 +15,5 @@ export default {
   ZoomPan,
   FilterReset
 }
+
+export default carbon

@@ -23,7 +23,7 @@ const InProgress = useAsyncComponent(() => import('@/views/Common/InProgress.vue
 // 功能維護中
 const FixView = useAsyncComponent(() => import('@/views/Common/FixView.vue'), 'rect')
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -87,15 +87,15 @@ const pageScrollTop = () => {
         breadcrumbTitle
       } = currentNavigation
 
-      const [name1, name2, name3] = breadcrumbName
-      const [title1, title2, title3] = breadcrumbTitle
+      const [name1, name2, name3] = breadcrumbName ?? []
+      const [title1, title2, title3] = breadcrumbTitle ?? []
 
       // nav2 / nav3
       if(
         name1 && name2 && name3 &&
         title1 && title2 && title3
       ) {
-        if (i18nTest(breadcrumbName)) {
+        if (Array.isArray(breadcrumbName) && i18nTest(breadcrumbName)) {
           return [name2, name3].map(_name => {
             return i18nTranslate(_name, defaultModuleType)
           }).join(' / ')
@@ -143,7 +143,7 @@ const {
 
 // 當前路由
 const route = useRoute()
-const defaultRouter = {
+const defaultRouter: Record<string, string> = {
   locatehome: '首頁',
   login: '登入'
 }
@@ -159,11 +159,11 @@ const routeChange = () => {
 
   } else if (props.navigationMap.has(routeName)) {
     const currentRoute = props.navigationMap.get(routeName)
-    const { breadcrumbName, breadcrumbTitle } = currentRoute
+    const { breadcrumbName, breadcrumbTitle } = currentRoute ?? {}
 
     setBreadcrumbName(breadcrumbName ?? [])
     setBreadcrumbTitle(breadcrumbTitle ?? [])
-    setCurrentNavigation(currentRoute)
+    setCurrentNavigation(currentRoute ?? null)
   }
 
   // 切換路由 設定網頁 title
@@ -181,7 +181,7 @@ const routeChange = () => {
  */
  const pagePermission = computed(() => {
   const routerPermission = props.navigationMap.get(route.name as string)
-  return (routerPermission?.permission ?? 0)
+  return (routerPermission?.meta?.permission ?? 0)
 })
 
 const routerBus = useEventBus<string>('router')
@@ -196,9 +196,9 @@ const login = (userId: number) => {
 const setLayoutInfo = () => {
   emit('setLayoutInfo')
 }
-// const initSystemData = (routeName: string) => {
-//   emit('initSystemData', routeName)
-// }
+const initSystemData = (routeName: string) => {
+  emit('initSystemData', routeName)
+}
 
 </script>
 
@@ -243,18 +243,26 @@ const setLayoutInfo = () => {
         <InProgress v-else-if="route.meta.isInProgress" @vue:mounted="onVnodeMounted" />
         <FixView v-else-if="route.meta.isFix" @vue:mounted="onVnodeMounted" />
 
+        <!-- 權限 -->
+        <component
+          v-else-if="route.name === 'nodoc-21'"
+          key="nodoc-21"
+          :is="Component"
+          @init-system="initSystemData('nodoc-21')"
+          @vue:mounted="onVnodeMounted"
+        />
         <!-- 一般功能頁 -->
         <template v-else>
           <KeepAlive>
             <component
-              v-if="(route.meta.keepAlive)"
+              v-if="(route.meta.isKeepAlive)"
               :key="route.name"
               :is="Component"
               @vue:mounted="onVnodeMounted"
             />
           </KeepAlive>
           <component
-            v-if="!(route.meta.keepAlive)"
+            v-if="!(route.meta.isKeepAlive)"
             :key="route.name"
             :is="Component"
             @vue:mounted="onVnodeMounted"

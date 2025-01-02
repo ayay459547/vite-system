@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElWatermark } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import { version, props as watermarkProps } from './CustomWatermarkInfo'
 
@@ -23,11 +23,11 @@ const subProps = props.sub.map(_props => {
     ]
   }
 
-  const subWidth = _props.width ?? props.width
-  const subHeight = _props.height ?? props.height
+  const subWidth = _props.width ?? props?.width ?? 0
+  const subHeight = _props.height ?? props?.height ?? 0
 
   const subSize = displaySize(subWidth, subHeight)
-  const mainSize = displaySize(props.width, props.height, props.gap)
+  const mainSize = displaySize(props?.width ?? 0, props?.height ?? 0, props.gap)
 
   const gap: [number, number] = [
     subSize[0] > mainSize[0] ? props.gap[0] : (mainSize[0] - subSize[0]) / 2,
@@ -36,12 +36,12 @@ const subProps = props.sub.map(_props => {
   const width = subSize[0] > mainSize[0] ? props.width : subWidth
   const height = subSize[1] > mainSize[1] ? props.height : subHeight
 
-  const offset: [number, number] = _props.shift
-    ? [
-        props.offset[0] + _props.shift[0] * cos - _props.shift[1] * sin,
-        props.offset[1] + _props.shift[0] * sin + _props.shift[1] * cos
-      ]
-    : props.offset
+  const _offset: [number, number] = Array.isArray(props.offset) ? props.offset : [0, 0]
+  const offset: [number, number] = Array.isArray(_props.shift) ?
+    [
+      _offset[0] + _props.shift[0] * cos - _props.shift[1] * sin,
+      _offset[1] + _props.shift[0] * sin + _props.shift[1] * cos
+    ] : _offset
 
   const font = Object.assign({ ...props.font }, _props.font)
 
@@ -60,7 +60,7 @@ const subProps = props.sub.map(_props => {
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 

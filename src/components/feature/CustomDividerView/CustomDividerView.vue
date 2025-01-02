@@ -33,14 +33,17 @@ let reSizeEvent = ($event: Event) => {
 let beforeMoveWidth = 0
 const getClientInfo = ($event: MouseEvent | TouchEvent): MouseEvent | Touch => {
   switch ($event.type) {
-    case 'mousedown':
-    case 'mousemove': {
-      return $event as MouseEvent
-    }
+    // 使用觸控
     case 'touchstart':
     case 'touchmove': {
       const event = $event as TouchEvent
       return event.changedTouches[0]
+    }
+    // 使用滑鼠
+    case 'mousedown':
+    case 'mousemove':
+    default: {
+      return $event as MouseEvent
     }
   }
 }

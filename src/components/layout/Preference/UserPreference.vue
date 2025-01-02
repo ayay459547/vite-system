@@ -15,7 +15,7 @@ import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
 import Layout3 from './Layout-3.vue'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })

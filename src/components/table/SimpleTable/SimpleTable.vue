@@ -17,7 +17,7 @@ const emit = defineEmits([
   'expand-change'
 ])
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -27,7 +27,7 @@ const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
 
-const tempValue = computed({
+const tempValue = computed<any[]>({
   get: () => {
     if(!isEmpty(props.modelValue)) {
       return props.modelValue
@@ -119,7 +119,7 @@ const getCellStyle = (options: any) => {
     }, [])
   }
 
-  let showStyle = {...cellStyle}
+  let showStyle: Record<string, any> = {...cellStyle}
   if (width > 0) {
     showStyle['width'] = `${width}px`
     showStyle['max-width'] = `${width}px`

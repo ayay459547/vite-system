@@ -35,8 +35,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:isLevel2Open', 'change-map'])
 
-const navHeight = 39.5
-const useHook: UseHook = inject('useHook')
+const navHeight = 36
+const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -106,6 +106,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
             </div>
 
             <div
+              v-if="Array.isArray(routerItem.leaves)"
               class="nav-sub-list"
               :class="props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               :style="{
@@ -303,7 +304,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
     width: 100%;
     overflow: hidden;
     transition-duration: 0.3s;
-    will-change: min-height max-height;
+    will-change: min-height, max-height;
     &.is-close {
       min-height: 0 !important;
       max-height: 0 !important;

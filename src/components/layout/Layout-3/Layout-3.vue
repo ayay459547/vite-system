@@ -78,7 +78,7 @@ defineExpose({
   init
 })
 
-const customDividerViewRef = ref(null)
+const customDividerViewRef = ref<typeof CustomDividerView>()
 let defaultLeftWidth = ref(350)
 const setDefaultLeftWidth = (currentLeftWidth: number) => {
   defaultLeftWidth.value = currentLeftWidth
@@ -127,7 +127,7 @@ const isNavOpen = computed({
   }
 })
 
-let timeoutId: NodeJS.Timeout | null
+let timeoutId: number | undefined
 const _isNavHover = ref('false')
 const isNavHover = computed({
   set: (isHover: boolean) => {
@@ -156,13 +156,13 @@ onMounted(() => {
   if ([null, undefined, ''].includes(isNavOpenLocale)) {
     localStorage.setItem('isNavOpen', 'false')
   }
-  _isNavOpen.value = localStorage.getItem('isNavOpen')
+  _isNavOpen.value = localStorage.getItem('isNavOpen') ?? ''
 
   const isNavHoverLocale = localStorage.getItem('isNavHover')
   if ([null, undefined, ''].includes(isNavHoverLocale)) {
     localStorage.setItem('isNavHover', 'false')
   }
-  _isNavHover.value = localStorage.getItem('isNavHover')
+  _isNavHover.value = localStorage.getItem('isNavHover') ?? ''
 })
 
 </script>

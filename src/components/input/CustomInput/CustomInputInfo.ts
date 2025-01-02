@@ -188,7 +188,7 @@ export declare namespace Expose {
     value?: any
     validateKey?: string
   }>
-  type GetDom = () => Element
+  type GetDom = () => Element | null
   type Focus = () => void
   type Blur = () => void
 }

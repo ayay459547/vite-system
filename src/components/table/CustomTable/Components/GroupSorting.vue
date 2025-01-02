@@ -41,7 +41,7 @@ const props = defineProps({
   }
 })
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })

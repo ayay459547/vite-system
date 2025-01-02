@@ -1,4 +1,4 @@
-import type { Component, PropType } from 'vue'
+import type { PropType } from 'vue'
 
 import type { CustomSize } from '@/components' // 系統組件
 
@@ -11,7 +11,7 @@ export declare namespace Props {
   type Type = '' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
   type Truncated = boolean
   type LineClamp = number
-  type Tag = string | Component
+  type Tag = string
 
   type Label = string
 }
@@ -42,7 +42,7 @@ export const props = {
     description: '最大行數'
   },
   tag: {
-    type: [String, Object] as PropType<Props.Tag>,
+    type: String as PropType<Props.Tag>,
     required: false,
     default: 'span',
     description: '自訂元素標籤'

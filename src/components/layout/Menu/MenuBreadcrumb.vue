@@ -7,7 +7,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 
 type TextAlign = 'start' | 'end'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })

@@ -11,10 +11,13 @@ import {
   DualScreenClock24Filled,
   Table28Regular,
   TableFreezeColumn28Regular,
-  DeviceMeetingRoomRemote16Filled
+  DeviceMeetingRoomRemote16Filled,
+  ClipboardTaskListLtr20Regular,
+  ContentSettings24Regular,
+  BoxCheckmark24Regular
 } from '@vicons/fluent'
 
-export default {
+const fluent: Record<string, any> = {
   Question16Filled,
   Engine24Filled,
   GanttChart20Filled,
@@ -27,5 +30,10 @@ export default {
   DualScreenClock24Filled,
   Table28Regular,
   TableFreezeColumn28Regular,
-  DeviceMeetingRoomRemote16Filled
+  DeviceMeetingRoomRemote16Filled,
+  ClipboardTaskListLtr20Regular,
+  ContentSettings24Regular,
+  BoxCheckmark24Regular
 }
+
+export default fluent

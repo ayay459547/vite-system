@@ -13,7 +13,7 @@ const scopedId = getUuid(version)
 
 const props = defineProps(formAutocompleteProps)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -37,8 +37,8 @@ const inputValue = computed({
 const onBlur: Emits.Blur = event => emit('blur', event)
 const onFocus: Emits.Focus = event => emit('blur', event)
 const onInput: Emits.Input = value => emit('input', value)
-const onClear: Emits.Clear =  () => emit('clear')
-const onSelect: Emits.Select =  event => emit('focus', event)
+const onClear: Emits.Clear = () => emit('clear')
+const onSelect: Emits.Select = event => emit('focus', event)
 const onChange: Emits.Change = value => emit('change', value)
 
 // expose

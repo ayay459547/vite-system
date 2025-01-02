@@ -20,7 +20,9 @@ import {
   CustomInput,
   CustomTooltip,
   CustomModal,
-  TimeLineTable
+  TimeLineTable,
+  DownloadModal,
+  SubTable
 } from '@/components' // 系統組件
 import type { FormOptions } from '@/declare/columnSetting'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
@@ -28,8 +30,6 @@ import { getColumnSetting } from '@/lib/lib_idb'
 import throttle from '@/lib/lib_throttle'
 import { hasOwnProperty, getProxyData, isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
-
-import PdfModal from './Components/PdfModal.vue'
 
 import type { Types } from './WebViewTableInfo'
 import { version, props as webViewCustomTableProps } from './WebViewTableInfo'
@@ -53,7 +53,7 @@ const emit = defineEmits([
   // 'header-click',
   'row-click',
   // 'excel',
-  // 'columns-change',
+  'columns-change',
   // 'sort-change',
   // 'sorting-change',
   // 'page-change',
@@ -70,11 +70,11 @@ const emit = defineEmits([
   'mounted' // WebViewTable mounted
 ])
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const i18nModule = props?.tableOptions?.i18nModule ?? defaultModuleType
 const { i18nTranslate, i18nTest } = useHook({ i18nModule })
 
-//emit event
+// emit event
 const onExpandChange = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
 }
@@ -89,6 +89,9 @@ const onSelectionChange = (selection: any) => {
 }
 const onRowClick = (row:any, column: any, event: any) => {
   emit('row-click', row, column, event)
+}
+const onColumnsChange = (showColumns: any) => {
+  emit('columns-change', showColumns)
 }
 const onRowContextmenu = (row: any, column: any, event: Event) => {
   emit('row-contextmenu', row, column, event)
@@ -113,7 +116,11 @@ const {
   conditions: filterConditions,
   getConditionFilter,
   updateIDB: updateIDBFilter
-} = useFormSetting<Types.FilterData>(props.columnSetting, props.filterKey, formOptions.value)
+} = useFormSetting<Types.FilterData>(
+  props.columnSetting ?? {},
+  props.filterKey,
+  formOptions.value
+)
 
 // 另外設定過濾條件(ex: 跳頁查詢), 不自動更新 indexedDB
 const isUpdateIDB = ref(true)
@@ -128,7 +135,7 @@ const setFilter = (_filter: Types.FilterData) => {
     }
   }
 }
-const filterConditionMap = {}
+const filterConditionMap: Record<string, any> = {}
 /**
  * 初始化 進階搜尋 欄位資料
  * dataType 影響輸入
@@ -154,16 +161,24 @@ const initFilterConditionMap = async () => {
   }, isWebView)
 
   // 如果是 SQL View, 必需要有參數
-  let columnOperatorMap = {}
+  let columnOperatorMap: Record<string, any> = {}
   if (isWebView && !isEmpty(webViewParams)) {
     columnOperatorMap = await getColumnOperator(webViewParams, urlParams)
   }
 
   // 設定可用選項
   for (const columnKey in filterColumn) {
-    if (isEmpty(columnOperatorMap[columnKey])) continue
+    if (!Array.isArray(columnOperatorMap[columnKey])) continue
     filterConditionMap[columnKey] = columnOperatorMap[columnKey]
   }
+}
+// 依據後端資料 決定是否可進階搜尋
+const getIsCondition = (columnKey: string) => {
+  if (Array.isArray(filterConditionMap[columnKey])) {
+    return filterConditionMap[columnKey].length > 0
+  }
+  // 無後端資料 使用欄位設定
+  return filterColumn[columnKey]?.isCondition ?? false
 }
 
 // table
@@ -178,16 +193,20 @@ const {
   changePage,
   getSelectionRows,
   toggleSelection,
-  getDisplayData
-} = useTableSetting(props.columnSetting, props.tableKey, props.tableOptions, { i18nTranslate, i18nTest } )
+  getDisplayData,
+  spanInfo
+} = useTableSetting(
+  props.columnSetting ?? {},
+  props.tableKey,
+  props.tableOptions ?? {},
+  { i18nTranslate, i18nTest }
+)
 
 const isLoading = ref(false)
 
-// 下載excel
-const onExcelClick = async ({ type }) => {
-  isLoading.value = true
 
-  const tableParams = getParams()
+const getDownloadTableData = async (type: string) => {
+  const tableParams = getParams() ?? {}
   const {
     page = 1,
     size = 100,
@@ -196,8 +215,8 @@ const onExcelClick = async ({ type }) => {
 
   // api 入口
   const urlParams = getUrlParams({
-    url: props.apiurl,
-    baseURL: props.baseurl
+    baseURL: props.baseurl,
+    url: props.apiurl
   })
   const isWebView = webViewUrl === urlParams.url
 
@@ -254,7 +273,7 @@ const onExcelClick = async ({ type }) => {
 
   const formatExcel = props.formatExcel ?? props.formatData
 
-  const tempData = await getExcelData(
+  const downloadData = await getExcelData(
     params, // 參數
     formatExcel, // Excel資料格式化
     props.fakeData, // 假資料
@@ -262,8 +281,28 @@ const onExcelClick = async ({ type }) => {
     props.isLog, // 是否console.log訊息
     urlParams // api 入口
   )
-  if (props.downloadExcel) props.downloadExcel(tempData)
-  else downloadExcel(tempData)
+
+  const keys = Object.keys(props.columnSetting ?? {})
+  downloadData.forEach(rowData => {
+    keys.forEach(key => {
+      if(hasOwnProperty(rowData, key)) {
+        const prop = key
+        rowData[key] = getDisplayData(rowData, prop)
+      }
+    })
+  })
+
+  return downloadData
+}
+
+// 下載excel
+const onExcelClick = async ({ type }: any) => {
+  isLoading.value = true
+  // 取得要下載的表格資料
+  const downloadData = await getDownloadTableData(type)
+  // 生成Excel
+  if (props.downloadExcel) props.downloadExcel(downloadData)
+  else downloadExcel(downloadData ?? [])
 
   isLoading.value = false
 }
@@ -271,103 +310,30 @@ const onExcelClick = async ({ type }) => {
 // 下載Pdf
 const pdfRef = ref()
 const isShowPdf = ref(false)
-const onPdfClick = async type => {
+const onPdfClick = async (type: string) => {
   isShowPdf.value = true
   await nextTick()
-  const tableParams = getParams()
-  const {
-    page = 1,
-    size = 100,
-    sortingMap = {}
-  } = tableParams
-
-  // api 入口
-  const urlParams = getUrlParams({
-    url: props.apiurl,
-    baseURL: props.baseurl
-  })
-  const isWebView = webViewUrl === urlParams.url
-
-  // 客製化 api
-  const webViewParams = getWebViewParams({
-    webfuno: props.webfuno,
-    funoviewsuffix: props.funoviewsuffix,
-    designatedview: props.designatedview
-  }, isWebView)
-
-  const filterData = getFilter(false)
-  // 參數格式化
-  const _params = props.formatParams({ ...filterData })
-  // 排序格式化
-  const _sortingMap = props.formatSorting(sortingMap)
-  // 條件搜尋
-  const conditions = getConditionFilter()
-
-  // 防呆
-  if (isWebView && isEmpty(webViewParams)) {
-    isLoading.value = false
-    return
-  }
-
-  const params: any = {
-    ..._params,
-    // page,
-    // size,
-    paging: {
-      page,
-      size
-    },
-    advanced: conditions,
-    sortingMap: _sortingMap,
-    ...webViewParams
-  }
-
-  switch (type) {
-    // 下載全部資料
-    case 'all':
-      params.paging = {
-        page: 1,
-        size: -1
-      }
-      break
-    case 'page':
-      // 懶加載 下載 1 ~ 目前看到的資料
-      if (islazyLoading.value) {
-        params.paging.size = tableDataCount.value
-        // 下載 當前分頁資料
-      }
-      break
-  }
-
   const { settingKey, i18nTitle, title} = tableSetting
-
-  const formatPdf = props.formatExcel ?? props.formatData
-  const pdfData = await getExcelData(
-    params, // 參數
-    formatPdf, // Excel資料格式化
-    props.fakeData, // 假資料
-    props.useFakeData, // 是否使用假資料
-    props.isLog, // 是否console.log訊息
-    urlParams // api 入口
-  )
+  // 取得要下載的表格資料
+  const downloadData = await getDownloadTableData(type)
   const tempColumns = await getColumnSetting(settingKey)
-  const pdfColumns = tempColumns.columns.map(column => {
-    const { key, label, i18nLabel, isShow, isOperations } = column
+  const pdfColumns = tempColumns.columns.map((column: any) => {
+    const { label, i18nLabel, isShow, isOperations } = column
     if(isOperations) return null
     const name = i18nTest(i18nLabel ?? '') ? i18nTranslate(i18nLabel) : label
     return {
-      key,
+      ...column,
       name,
       active: isShow
     }
-  }).filter(column => column)
-  const pdfTitle = i18nTest(i18nTitle ?? '') ? i18nTranslate(i18nTitle) : title
+  }).filter((column: any) => column)
+  const pdfTitle = i18nTest(i18nTitle ?? '') ? i18nTranslate(i18nTitle ?? '') : title
 
   pdfRef.value.setPdfSetting({
-    data: pdfData,
+    data: downloadData,
     columns: pdfColumns,
     title: pdfTitle,
-    downloadExcel: props.downloadExcel ?? downloadExcel
+    spanInfo
   })
 
   setTimeout(() => {
@@ -375,6 +341,16 @@ const onPdfClick = async type => {
   }, 300)
 }
 
+
+const getColumnsWidth = (prop: string) => {
+  const columsWidth = spanInfo.basePropSubTableInfoMap.get(prop).columnsWidth
+  return columsWidth
+}
+
+const onColumnWidthChange = async (prop: string, newWidth: number) => {
+  const subTableInfo = spanInfo.basePropSubTableInfoMap.get(prop)
+  if(subTableInfo) subTableInfo.columnsWidth[prop] = newWidth
+}
 
 const initData = async (tableParams: any) => {
   const {
@@ -469,7 +445,6 @@ const initData = async (tableParams: any) => {
   return [resData, resDataCount]
 }
 
-// const customTableRef = ref()
 const timeLineTableRef = ref()
 const _isShowTimeLineTable = computed(() => {
   return props.isShowTimeLineTable &&
@@ -643,13 +618,14 @@ const modal = reactive({
   >
     <!-- 一般表格 -->
     <CustomTable
-      ref="customTableRef"
       :table-data="tableData"
       :table-data-count="tableDataCount"
+      :spanMethod="spanInfo.spanMethod"
       v-bind="tableSetting"
       :is-lazy-loading="islazyLoading"
       :lazy-loading-status="lazyLoadingStatus"
       :is-show-no="islazyLoading"
+      use-download-modal
       @excel="onExcelClick"
       @pdf="onPdfClick"
       @expand-change="onExpandChange"
@@ -657,10 +633,12 @@ const modal = reactive({
       @select-all="onSelectAll"
       @selection-change="onSelectionChange"
       @row-click="onRowClick"
+      @columns-change="onColumnsChange"
       @row-contextmenu="onRowContextmenu"
       @show-change="throttleInit($event, 'table')"
       @load="throttleInit($event, 'table')"
       @mounted="onTableMounted"
+      @column-width-change="onColumnWidthChange"
     >
       <template v-if="!props.isHiddenPrepend" #prepend>
         <div class="flex-row i-ga-xs content-between">
@@ -707,6 +685,7 @@ const modal = reactive({
                     :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
                     :column-id="scope.prop"
                     :allow-conditions="filterConditionMap[scope.prop]"
+                    :is-condition="getIsCondition(scope.prop)"
                   />
                 </slot>
               </template>
@@ -765,6 +744,7 @@ const modal = reactive({
               :label="i18nTranslate(scope.column?.i18nLabel ?? scope.column?.label, i18nModule)"
               :column-id="scope.prop"
               :allow-conditions="filterConditionMap[scope.prop]"
+              :is-condition="getIsCondition(scope.prop)"
               search
               @change="throttleInit($event, 'input')"
               @submit="throttleInit($event, 'input')"
@@ -781,8 +761,20 @@ const modal = reactive({
         <slot :name="getHeaderSlot(slotKey)" :filter-column="filterColumn" v-bind="scope"></slot>
       </template>
 
-      <template #column-all="{data, prop}">
-        {{ getDisplayData(data, prop) }}
+      <template #column-all="{row, prop}">
+        {{ getDisplayData(row, prop) }}
+      </template>
+
+      <template v-for="columnKey in spanInfo.leftProps" :key="columnKey"
+        #[columnKey]="{ row, prop }"
+      >
+        <SubTable
+          v-if="!isLoading"
+          :columnKey="prop"
+          :rowData="row"
+          :spanInfo="spanInfo"
+          :columnsWidth="getColumnsWidth(prop)"
+        />
       </template>
 
       <!-- <template v-for="slotKey in spanColumns"
@@ -832,7 +824,7 @@ const modal = reactive({
       </CustomTooltip>
     </div>
     <!-- PDF下載 -->
-    <PdfModal
+    <DownloadModal
       v-if="isShowPdf"
       v-model="modal.pdf"
       ref="pdfRef"

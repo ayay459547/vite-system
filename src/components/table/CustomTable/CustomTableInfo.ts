@@ -13,6 +13,11 @@ export declare namespace Types {
     key: null | string
     order: null | 'ascending' | 'descending'
   }
+  /**
+   * 資料顯示類型
+   * custom: 依據api切資料
+   * auto: 依據 page 和 pageSize 切資料
+   */
   type ShowType = 'custom' | 'auto'
 
   // 資料處理的格式
@@ -28,7 +33,7 @@ export declare namespace Types {
   // 送 api 的格式
   type SortingMap = Record<string, Types.Order>
 
-  type TableParams =  {
+  type TableParams = {
     page?: number
     size?: number
     sort?: Types.Sort
@@ -102,6 +107,7 @@ export declare namespace Props {
   type Sort = Types.Sort
   type ShowType = Types.ShowType
   type IsHiddenExcel = boolean
+  type UseDownloadModal = boolean
   type IsShowNo = boolean
   type IsSorting = boolean
   type IsCondition = boolean
@@ -194,31 +200,31 @@ export const props = {
     description: '資料存在 children 時 預設是否展開'
   },
   spanMethod: {
-    type: Function as PropType<Props.SpanMethod>,
+    type: [Function, null] as PropType<Props.SpanMethod>,
     required: false,
     default: null,
     description: '資料跨欄'
   },
   rowClassName: {
-    type: Function as PropType<Props.RowClassName>,
+    type: [Function, null] as PropType<Props.RowClassName>,
     required: false,
     default: null,
     description: '自訂 rowClass'
   },
   rowStyle: {
-    type: Function as PropType<Props.RowStyle>,
+    type: [Function, null] as PropType<Props.RowStyle>,
     required: false,
     default: null,
     description: '自訂 rowStyle'
   },
   cellClassName: {
-    type: Function as PropType<Props.CellClassName>,
+    type: [Function, null] as PropType<Props.CellClassName>,
     required: false,
     default: null,
     description: '自訂 cellClass'
   },
   cellStyle: {
-    type: Function as PropType<Props.CellStyle>,
+    type: [Function, null] as PropType<Props.CellStyle>,
     required: false,
     default: null,
     description: '自訂 cellStyle'
@@ -280,6 +286,12 @@ export const props = {
     required: false,
     default: false,
     description: '是否隱藏下載Excel'
+  },
+  useDownloadModal: {
+    type: Boolean as PropType<Props.UseDownloadModal>,
+    required: false,
+    default: false,
+    description: '是否使用Pdf,Excel下載介面'
   },
   isShowNo: {
     type: Boolean as PropType<Props.IsShowNo>,

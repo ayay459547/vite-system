@@ -12,13 +12,8 @@ const scopedId = getUuid(version)
 
 const props = defineProps(CustomColorInfo)
 
-// const slots = useSlots()
-// const hasSlot = (prop: string): boolean => {
-//   return !!slots[prop]
-// }
-
 const tempValue = computed<Props.ModelValue>({
-  get: () => props.modelValue,
+  get: () => (props?.modelValue ?? ''),
   set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 

@@ -13,7 +13,7 @@ import { ElPagination } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { ColumnItem } from '@/declare/columnSetting'
-import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils' // 工具
+import { isEmpty, getProxyData, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 import { object_findIndex } from '@/lib/lib_object'
 import { numberFormat } from '@/lib/lib_format' // 格式化
@@ -42,7 +42,7 @@ const scopedId = getUuid('__i-table__')
 
 const props = defineProps(tableProps)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate, message } = useHook({
   i18nModule: props.i18nModule
 })
@@ -64,6 +64,7 @@ const emit = defineEmits([
   'select-all',
   'selection-change',
   'row-contextmenu',
+  'column-width-change',
   'load',
   'mounted'
 ])
@@ -72,16 +73,6 @@ const isLoading = ref(true)
 const renderKey = ref(1)
 const isRender = ref(false)
 // const isResizing = ref(false)
-
-const columnMap = computed(() => {
-  if (Array.isArray(props.tableColumns) && props.tableColumns.length > 0) {
-    return props.tableColumns.reduce((res, column) => {
-      res[column.key] = column
-      return res
-    }, {})
-  }
-  return {}
-})
 
 // 點擊 excel
 const excelIsShow = ref(false)
@@ -96,7 +87,7 @@ const onExcelClick = (type: 'all' | 'page') => {
 
 // 點擊 pdf
 const isHiddenPdf = () => {
-  if(props.isHiddenExcel) return true
+  if(!props.useDownloadModal) return true
 }
 const pdfIsShow = ref(false)
 const onPdfClick = (type: 'all' | 'page') => {
@@ -107,7 +98,9 @@ const onPdfClick = (type: 'all' | 'page') => {
 // 列印
 const printData = () => {
   const tableElement = document.querySelector(`.${scopedId} .el-table__inner-wrapper`)
-  printElement(tableElement)
+  if (tableElement) {
+    printElement(tableElement)
+  }
 }
 
 // 每頁顯示筆數
@@ -213,13 +206,16 @@ const emitSortingData = computed<Types.SortingMap>(() => {
   // return sortingList.value.filter(item => item.order !== 'none')
   return sortingList.value.reduce<Types.SortingMap>((res, curr) => {
     const { key, order } = curr
-    switch (order) {
-      case 'ascending':
-        res[key] = 'Asc'
-        break
-      case 'descending':
-        res[key] = 'Desc'
-        break
+
+    if (typeof key === 'string') {
+      switch (order) {
+        case 'ascending':
+          res[key] = 'Asc'
+          break
+        case 'descending':
+          res[key] = 'Desc'
+          break
+      }
     }
 
     return res as Types.SortingMap
@@ -231,8 +227,8 @@ const activeSort = () => {
   sortingList.value.sort((a, b) => {
     const { order: aOrder, orderIndex: aOrderIndex } = a ?? {}
     const { order: bOrder, orderIndex: bOrderIndex } = b ?? {}
-    const aIsActive = ['ascending', 'descending'].includes(aOrder)
-    const bIsActive = ['ascending', 'descending'].includes(bOrder)
+    const aIsActive = ['ascending', 'descending'].includes(aOrder ?? '')
+    const bIsActive = ['ascending', 'descending'].includes(bOrder ?? '')
 
     if (aIsActive && bIsActive) {
       return (aOrderIndex ?? -1) - (bOrderIndex ?? -1)
@@ -262,17 +258,11 @@ const initSortingList = async () => {
   }, [])
 
   activeSort()
-  await awaitTime(120)
+  await nextTick()
 }
-
 const resetSorting = () => {
   sortingList.value = sortingList.value.map(sortingItem => {
-    const column = columnMap.value[sortingItem.key]
-    return {
-      ...sortingItem,
-      order: column?.order ?? 'none',
-      orderIndex: column?.orderIndex ?? -1
-    }
+    return { ...sortingItem, order: 'none', orderIndex: -1 }
   })
 }
 const onSortingChange = () => {
@@ -339,12 +329,12 @@ const setElementWidth = (column: any, trIndex: number): Promise<any> => {
           const columnElement = thElement.querySelector('div[resizing-key]')
 
           if (isEmpty(columnElement)) return false
-          return `${headerKey}` === columnElement.getAttribute('resizing-key')
+          return `${headerKey}` === columnElement?.getAttribute('resizing-key')
         })
 
         await nextTick()
         if (!isEmpty(resizingIndex)) {
-          const cellIndex = Number.parseInt(resizingIndex) + 1
+          const cellIndex = Number.parseInt(`${resizingIndex}`) + 1
           const headerColumnElement = document.querySelectorAll(`.${scopedId} tr:nth-child(${trIndex}) th:nth-child(${cellIndex})`)
           const bodyColumnElements = document.querySelectorAll(`.${scopedId} tr td:nth-child(${cellIndex})`)
 
@@ -356,7 +346,7 @@ const setElementWidth = (column: any, trIndex: number): Promise<any> => {
 
           newWidth = columnElements.reduce((maxWidth: number, curElement: Element) => {
             const cellElements = curElement.querySelector('.cell')
-            const curWidth = !isEmpty(cellElements) ? cellElements?.scrollWidth : 0
+            const curWidth = cellElements?.scrollWidth ?? 0
             const childWidth = 0 // 尚未計算子欄位寬度
             return Math.max(curWidth + 18, childWidth, maxWidth)
           }, 0)
@@ -365,20 +355,27 @@ const setElementWidth = (column: any, trIndex: number): Promise<any> => {
           //   element.classList.remove('__is-resizing__') // 移除類別
           // })
           // await nextTick()
-          columnSetting.value?.setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
+          setColumnWidth(headerKey, newWidth) // 欄位設定套用最適化寬度
         }
         resolve(newWidth)
       }, 0)
     } catch (e) {
       message({
         type: 'error',
-        message: e,
+        message: `${e}`,
         duration: 10000
       })
       reject(originWidth)
     }
   })
 }
+
+const setColumnWidth = async (prop: any, newWidth: number) => {
+  columnSetting.value?.setColumnWidth(prop, newWidth)
+  await nextTick()
+  emit('column-width-change', prop, newWidth )
+}
+
 
 // Column 欄位寬度最適化
 const optimizeColumnWidth = (column: any) => {
@@ -409,7 +406,7 @@ const onExpandChange: Emits.ExpandChange = (row, expanded) => {
 const onHeaderDragend: Emits.HeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   if (columnSetting.value) {
     const props = column?.rawColumnKey ?? column?.property
-    columnSetting.value.setColumnWidth(props, newWidth)
+    setColumnWidth(props, newWidth)
   }
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
@@ -434,7 +431,6 @@ const onLoad = () => {
     sortingMap: getProxyData(emitSortingData.value)
   })
 }
-
 /**
  * 更換設定
  * 顯示筆數
@@ -465,7 +461,7 @@ const showData = computed(() => {
   }
 })
 
-const columnSetting = ref(null)
+const columnSetting = ref<typeof ColumnSetting>()
 const tempColumns = shallowRef([...props.tableColumns])
 const showColumns = shallowReactive([...props.tableColumns])
 
@@ -476,18 +472,18 @@ const initShowColumns = async (setting?: any) => {
     isLoading: isUseLoading = true
     // scrollElement = null,
     // columnKey = null
-  } = setting ?? {} //param沒有傳入則用空物件替代
+  } = setting ?? {} // param沒有傳入則用空物件替代
 
   isLoading.value = isUseLoading // 是否使用Loading, 不輸入函數則預設為使用
 
   if (columnSetting.value) {
     // 確認欄位設定
-    await columnSetting.value.checkColumnSetting()
+    await columnSetting.value?.checkColumnSetting()
 
     tempColumns.value = (await (columnSetting.value?.getColumnList() ?? [])) as ColumnItem[]
     columnSetting.value?.setColumnList(tempColumns.value)
 
-    const resColumns = tempColumns.value.reduce((resColumn, tempColumn) => {
+    const resColumns = tempColumns.value.reduce<any[]>((resColumn, tempColumn) => {
       if (tempColumn.isShow) {
         const showColumn = props.tableColumns.find(column => {
           return tempColumn.key === column.key
@@ -528,7 +524,7 @@ onMounted(async () => {
   }, 0)
 })
 
-const tableMainRef = ref(null)
+const tableMainRef = ref<typeof TableMain>()
 const resetScroll = () => {
   tableMainRef.value?.resetScroll()
 }
@@ -567,14 +563,14 @@ defineExpose({
         option.value === size
       })
 
-      if (_index >= 0) {
+      if (_index >= 0 && typeof size === 'number') {
         pageSize.value = size
       }
     }
-    if (!isEmpty(sort)) {
+    if (typeof sort === 'string') {
       currentSort.value = sort
     }
-    if (!isEmpty(_sortingList)) {
+    if (Array.isArray(_sortingList)) {
       sortingList.value = _sortingList
     }
   }
@@ -708,8 +704,37 @@ onMounted(() => {
 
         <!-- 顯示更多 -->
         <div v-if="props.isLazyLoading">
-          <label>{{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}</label>
+          <label>
+            {{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}
+          </label>
         </div>
+
+        <!-- Download -->
+        <!-- <CustomPopover
+          v-if="!isHiddenPdf()"
+          v-model:visible="pdfIsShow"
+          placement="bottom"
+          :width="150"
+          trigger="click"
+          popper-style="padding: 4px;"
+        >
+          <template #reference>
+            <CustomButton
+              plain
+              icon-name="file-arrow-down"
+            />
+          </template>
+          <div class="__excel-list">
+            <div class="__excel-item" @click="onPdfClick('all')">
+              <CustomIcon name="table-list" class="icon" />
+              <div class="text">{{ i18nTranslate('all-data', defaultModuleType) }}</div>
+            </div>
+            <div class="__excel-item" @click="onPdfClick('page')">
+              <CustomIcon type="far" name="file-lines" class="icon" />
+              <div class="text">{{ i18nTranslate('page-data', defaultModuleType) }}</div>
+            </div>
+          </div>
+        </CustomPopover> -->
 
         <div class="flex-row-center">
           <!-- Excel -->
@@ -798,6 +823,7 @@ onMounted(() => {
             @click="printData"
           />
         </div>
+
 
         <slot name="setting-left"></slot>
       </div>
@@ -945,7 +971,9 @@ onMounted(() => {
         />
       </div>
       <div class="__table-pagination-right">
-        <span>{{`${i18nTranslate('total-amount', defaultModuleType)}：${props.tableDataCount}`}}</span>
+        <span>{{
+          `${i18nTranslate('total-amount', defaultModuleType)}：${props.tableDataCount}`
+        }}</span>
       </div>
     </div>
   </div>
@@ -1091,7 +1119,7 @@ $border-style: 1px solid var(--i-color-table-border);
     }
 
     &-resizing {
-      //僅在resize時使用的Class，層級最優先
+      // 僅在resize時使用的Class，層級最優先
       &-child,
       &-parent {
         width: min-content !important;

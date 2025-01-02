@@ -3,13 +3,29 @@ import {
   ChartDonut4,
   ChartDonut,
   ArrowsVertical,
-  ArrowsUpDown
+  ArrowsUpDown,
+  Bulb,
+  Sitemap,
+  Loader,
+  BrowserCheck,
+  ExclamationMark,
+  PlugConnected,
+  DevicesPc
 } from '@vicons/tabler'
 
-export default {
+const tabler: Record<string, any> = {
   ChartArrowsVertical,
   ChartDonut4,
   ChartDonut,
   ArrowsVertical,
-  ArrowsUpDown
+  ArrowsUpDown,
+  Bulb,
+  Sitemap,
+  Loader,
+  BrowserCheck,
+  ExclamationMark,
+  PlugConnected,
+  DevicesPc
 }
+
+export default tabler

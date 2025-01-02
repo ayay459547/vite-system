@@ -17,14 +17,14 @@ const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Lay
 const Layout3 = useAsyncComponent(() => import('@/components/layout/Layout-3/Layout-3.vue'), 'rect')
 const UserPreference = useAsyncComponent(() => import('@/components/layout/Preference/UserPreference.vue'), 'rect')
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
 const props = defineProps({
   currentNavigation: {
-    type: Object as PropType<Navigation>,
+    type: [Object, null] as PropType<Navigation | null>,
     default: () => {
       return {}
     }

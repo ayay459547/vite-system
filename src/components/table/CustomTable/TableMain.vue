@@ -15,7 +15,7 @@ import type { Props, Emits } from './CustomTableInfo'
 const scopedId = getUuid('__table-main__')
 
 // slot
-const slots = useSlots()
+const slots: Record<string, any> = useSlots()
 const hasSlot = (prop: string): boolean => {
   return !!slots[prop]
 }
@@ -134,7 +134,7 @@ const props = defineProps({
   }
 })
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -216,17 +216,14 @@ const svg = `<path
 />`
 
 const IOcallback = throttle((entries: IntersectionObserverEntry[]) => {
-  entries.forEach((entry: IntersectionObserverEntry & { isVisible: boolean }) => {
-    const {
-      isIntersecting
-      // isVisible
-    } = entry
+  entries.forEach((entry: IntersectionObserverEntry) => {
+    const { isIntersecting } = entry
     if (isIntersecting) {
       load()
     }
   })
 }, 300) as IntersectionObserverCallback
-let IO = null
+let IO: any = null
 
 const scope = effectScope()
 const isLazyLoading = computed(() => {
@@ -364,8 +361,8 @@ defineExpose({
           :size="props.tableSize"
           :default-expand-all="props.defaultExpandAll"
           :default-sort="{
-            prop: props.sort.key,
-            order: props.sort.order
+            prop: props.sort?.key ?? '',
+            order: props.sort?.order ?? 'ascending'
           }"
           :span-method="props.spanMethod"
           :row-class-name="props.rowClassName"
@@ -580,7 +577,6 @@ defineExpose({
                 </ElTableColumn>
               </ElTableColumn>
             </template>
-
             <!-- header 沒有子欄位 -->
             <template v-else>
               <ElTableColumn
@@ -617,7 +613,7 @@ defineExpose({
                   <slot
                     :name="`column-${column.slotKey}`"
                     :label="column.label"
-                    :data="scope.row[column.key]"
+                    :data="scope.row[column?.key ?? '']"
                     :row="scope.row"
                     :row-index="scope.$index"
                     :column="column"
@@ -628,7 +624,7 @@ defineExpose({
                   <slot
                     name="column-all"
                     :label="column.label"
-                    :data="scope.row[column.key]"
+                    :data="scope.row[column?.key ?? '']"
                     :row="scope.row"
                     :row-index="scope.$index"
                     :column="column"
@@ -683,6 +679,7 @@ defineExpose({
 
         height: 100%;
         color: var(--el-text-color-primary);
+
         & > div {
           width: 100%;
           height: 100%;
@@ -842,9 +839,15 @@ $dark-color: (
 
 // 顏色設定
 html {
+  .el-table {
+    --el-table-border-color: #E4E7ED;
+  }
   @include set-css-vars($light-color);
 }
 html.dark {
+  .el-table {
+    --el-table-border-color: #606266;
+  }
   @include set-css-vars($dark-color);
 }
 </style>

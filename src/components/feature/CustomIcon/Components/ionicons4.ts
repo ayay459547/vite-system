@@ -3,7 +3,9 @@ import {
   IosPie
 } from '@vicons/ionicons4'
 
-export default {
+const ionicons4: Record<string, any> = {
   MdPulse,
   IosPie
 }
+
+export default ionicons4

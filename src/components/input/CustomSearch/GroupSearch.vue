@@ -3,7 +3,7 @@ import { ref, useSlots, inject } from 'vue'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomDrawer, CustomButton } from '@/components' // 系統組件
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { version, props as groupSearchProps } from './GroupSearchInfo'
@@ -14,7 +14,7 @@ const props = defineProps(groupSearchProps)
 
 const isShow = ref(false)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -32,7 +32,7 @@ const onSubmitClick = () => {
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 
 defineExpose({

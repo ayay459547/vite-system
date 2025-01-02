@@ -3,7 +3,7 @@ import { useSlots } from 'vue'
 import { ElTag } from 'element-plus'
 
 import { CustomIcon } from '@/components' // 系統組件
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomTagInfo'
 import { version, props as tagProps } from './CustomTagInfo'
@@ -22,9 +22,8 @@ const onClose: Emits.Close = (evt: MouseEvent) => {
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

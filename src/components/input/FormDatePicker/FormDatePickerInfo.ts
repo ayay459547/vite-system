@@ -42,7 +42,7 @@ export declare namespace Props {
   type Id = string | [string, string]
   type Name = string | [string, string] | any
   type UnlinkPanels = boolean
-  type PrefixIcon =  string | Component
+  type PrefixIcon = string | Component
   type ClearIcon = string | Component
   type ValidateEvent = boolean
   type DisabledDate = (data: Date) => boolean

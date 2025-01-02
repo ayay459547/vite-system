@@ -2,7 +2,7 @@
 import { useSlots, ref } from 'vue'
 import { ElCarousel, ElCarouselItem } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Emits, Expose } from './CustomCarouselInfo'
 import { version, props as carouselProps } from './CustomCarouselInfo'
@@ -18,10 +18,10 @@ const onChange: Emits.Change = (curIndex: number, prevIndex: number) => {
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 
-const carouselRef = ref(null)
+const carouselRef = ref<typeof ElCarousel>()
 /**
  * 切換至指定的 Carousel
  * @param {Number|String} item
@@ -29,15 +29,15 @@ const carouselRef = ref(null)
  * string: name of item
  */
 const setActiveItem: Expose.SetActiveItem = item => {
-  carouselRef?.value.setActiveItem(item)
+  carouselRef.value?.setActiveItem(item)
 }
 // 切換至上一張 Carousel
 const prev: Expose.Prev = () => {
-  carouselRef?.value.prev()
+  carouselRef.value?.prev()
 }
 // 切換至下一張 Carousel
 const next: Expose.Next = () => {
-  carouselRef?.value.next()
+  carouselRef.value?.next()
 }
 defineExpose({ setActiveItem, prev, next })
 </script>

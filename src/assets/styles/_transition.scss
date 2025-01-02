@@ -1,22 +1,24 @@
-// 動畫效果 (vue 內建) <Transition name="類型"></Transition>
-
-/** 使用範例
-  <Transition name="modal">
-    ...
-  </Transition>
-  */
+/**
+ * 動畫效果 (vue 內建) <Transition name="類型"></Transition>
+ *
+ * 使用範例
+ * <Transition name="modal">
+ *   ...
+ * </Transition>
+ **/
 
 /**
-  element ui plus
-  Transition name="el-fade-in-linear"
-  Transition name="el-fade-in-linear"
-
-  Transition name="el-zoom-in-center"
-  Transition name="el-zoom-in-top"
-  Transition name="el-zoom-in-bottom"
+ * Element Plus UI 支援
+ *
+ * <Transition name="el-fade-in-linear"></Transition>
+ * <Transition name="el-fade-in-linear"></Transition>
+ *
+ * <Transition name="el-zoom-in-center"></Transition>
+ * <Transition name="el-zoom-in-top"></Transition>
+ * <Transition name="el-zoom-in-bottom"></Transition>
  */
 
-// Transition name="modal"
+// <Transition name="modal"></Transition>
 .modal-enter-active {
   transition-duration: 0.25s ease;
   animation: modal-in 0.25s;
@@ -60,18 +62,15 @@
   }
 }
 
-// Transition name="fixed"
-.fixed-enter-active,
-.fixed-leave-active {
+// <Transition name="fixed"></Transition>
+.fixed-enter-active, .fixed-leave-active {
   transition: opacity 0.3s ease;
 }
-
-.fixed-enter-from,
-.fixed-leave-to {
+.fixed-enter-from, .fixed-leave-to {
   opacity: 0;
 }
 
-// slide
+// <Transition name="slide-{up | down | left | right}"></Transition>
 @mixin slideTranslate($name, $from-translate, $to-translate) {
   .slide-#{$name}-enter-active,
   .slide-#{$name}-leave-active {
@@ -89,41 +88,36 @@
   }
 }
 
-// Transition name="slide-up" mode="out-in"
+// <Transition name="slide-up" mode="out-in"></Transition>
 @include slideTranslate('up', translateY(30px), translateY(-30px));
 
-// Transition name="slide-down" mode="out-in"
+// <Transition name="slide-down" mode="out-in"></Transition>
 @include slideTranslate('down', translateY(-30px), translateY(30px));
 
-// Transition name="slide-left" mode="out-in"
+// <Transition name="slide-left" mode="out-in"></Transition>
 @include slideTranslate('left', translateX(30px), translateX(-30px));
 
-// Transition name="slide-right" mode="out-in"
+// <Transition name="slide-right" mode="out-in"></Transition>
 @include slideTranslate('right', translateX(-30px), translateX(30px));
 
-// Transition name="fade"
-.fade-enter-active,
-.fade-leave-active {
+// <Transition name="fade"></Transition>
+.fade-enter-active, .fade-leave-active {
   transition: opacity 0.3s ease;
 }
-
-.fade-enter-from,
-.fade-leave-to {
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
 
-// TransitionGroup name="list" tag="ul"
-.list-enter-active,
-.list-leave-active {
+// <TransitionGroup name="list" tag="ul"></TransitionGroup>
+.list-enter-active, .list-leave-active {
   transition: all 0.5s ease;
 }
-.list-enter-from,
-.list-leave-to {
+.list-enter-from, .list-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
 
-// TransitionGroup name="flip-list" tag="ul"
+// <TransitionGroup name="flip-list" tag="ul"></TransitionGroup>
 .flip-list-move {
   transition: transform 0.5s;
 }

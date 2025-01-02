@@ -11,7 +11,7 @@ import { version, props as formDatePickerProps } from './FormDatePickerInfo'
 
 const scopedId = getUuid(version)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: defaultModuleType
 })

@@ -1,33 +1,22 @@
-// @forward 'element-plus/theme-chalk/src/dark/var.scss' with (
-//   $bg-color: (
-//     'page': #424243,
-//     '': #5b5b5b,
-//     'overlay': #1d1e1f
-//   ),
-//   $mask-color: (
-//     '': #505050cc,
-//     'extra-light': #4c4c4c4d,
-//   )
-// );
-
-// import dark theme
-@use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
-
-// reset
-@use './styles/normalize.css' as *;
-@use './styles/reset.scss' as *;
-
 // 顏色
-// $system-bg-color: #506d9c !default;
 @use './styles/color' as *;
 
 // 通用
 @use './styles/common' as *;
+
+// display: flex 相關
 @use './styles/flex' as *;
+
+// 網格系統(24)
 @use './styles/grid-system' as *;
+
+// 切換動畫
 @use './styles/transition' as *;
 
+// 顯示層級
 @use './styles/z-index' as *;
+
+// 螢幕寬度
 @use './styles/media' as *;
 
 // 工具
@@ -35,9 +24,3 @@
 
 // 列印
 @use './styles/print.scss' as *;
-
-// VueFlow
-@use '@vue-flow/core/dist/style.css' as *;
-@use '@vue-flow/core/dist/theme-default.css' as *;
-@use '@vue-flow/minimap/dist/style.css' as *;
-@use '@vue-flow/controls/dist/style.css' as *;

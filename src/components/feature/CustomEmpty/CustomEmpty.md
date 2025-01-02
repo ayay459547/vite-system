@@ -9,11 +9,11 @@ import { CustomEmpty, CustomIcon } from '@/components'
 
 <template>
   <div>
-    <CustomEmpty :image-size="60" description="empty-test">
+    <CustomEmpty :image-size="60" description="description">
       <template #image>
         <CustomIcon name="cube" />
       </template>
-      <span>{{ 'test' }}</span>
+      <div>CustomEmpty</div>
     </CustomEmpty>
   </div>
 </template>
@@ -38,3 +38,11 @@ import { CustomEmpty, CustomIcon } from '@/components'
 | default     | 顯示內容     |
 | image       | 圖片顯示內容 |
 | description | 文字顯示內容 |
+
+### Events ( emit )
+
+無
+
+### Expose
+
+無

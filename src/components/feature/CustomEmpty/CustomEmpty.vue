@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElEmpty } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import { version, props as emptyProps } from './CustomEmptyInfo'
 
@@ -17,10 +17,7 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div
-    class="empty-container"
-    :class="scopedId"
-  >
+  <div class="empty-container" :class="scopedId">
     <ElEmpty
       :image="props.image"
       :description="props.description"

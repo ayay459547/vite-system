@@ -6,16 +6,15 @@ import { CustomButton, CustomPopover } from '@/components' // 系統組件
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { object_reduce } from '@/lib/lib_object'
 
-// @ts-ignore
 import styles from './SimpleFilter.module.scss'
 
 import { version, props as simpleFilterProps } from './SimpleFilterInfo'
 
 const props = defineProps(simpleFilterProps)
 const emit = defineEmits(['reset', 'submit'])
-const slots = useSlots()
+const slots: Record<string, any> = useSlots()
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook()
 
 const scopedId = getUuid('__i-simple-filter__')

@@ -11,7 +11,7 @@ import { version, props as formSelectTreeProps } from './FormSelectTreeInfo'
 
 const scopedId = getUuid(version)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })

@@ -13,7 +13,7 @@ import { aesEncrypt, getUuid } from '@/lib/lib_utils' // 工具
 import { version, props as linkProps } from './CustomLinkInfo'
 
 // 接收 GlobalView.vue 的 useHook
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { env, i18nTranslate, i18nTest } = useHook()
 
 const scopedId = getUuid(version)
@@ -26,7 +26,7 @@ const newWindow = (link: any) => {
   const fromPage = link?.fromPage ?? props.fromPage
   const toPage = link.toPage
   const storageKey = link?.storageKey ?? props?.storageKey
-  const data =  link?.data ?? props?.data
+  const data = link?.data ?? props?.data
   const isModal = link?.isModal ?? false
 
   const currentEnv = env()

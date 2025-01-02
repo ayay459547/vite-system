@@ -3,7 +3,9 @@ import {
   StatsChartSharp
 } from '@vicons/ionicons5'
 
-export default {
+const ionicons5: Record<string, any> = {
   BarChartOutline,
   StatsChartSharp
 }
+
+export default ionicons5

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import { ElDrawer } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
-import type { Emits } from './CustomDrawerInfo'
+import type { Emits, Expose } from './CustomDrawerInfo'
 import { version, props as drawerProps } from './CustomDrawerInfo'
 
 const scopedId = getUuid(version)
@@ -16,13 +16,25 @@ const emit = defineEmits([
   'open',
   'opened',
   'close',
-  'closed'
+  'closed',
+  'open-auto-focus',
+  'close-auto-focus'
 ])
 
 const onOpen: Emits.Open = () => emit('open')
 const onOpened: Emits.Opened = () => emit('opened')
 const onClose: Emits.Close = () => emit('close')
 const onClosed: Emits.Closed = () => emit('closed')
+const onOpenAutoFocus: Emits.OpenAutoFocus = () => emit('open-auto-focus')
+const onCloseAutoFocus: Emits.CloseAutoFocus = () => emit('close-auto-focus')
+
+const ElDrawerRef = ref()
+const handleClose: Expose.HandleClose = () => {
+  if (ElDrawerRef.value) {
+    ElDrawerRef.value.handleClose()
+  }
+}
+defineExpose({ handleClose })
 
 const tempValue = computed({
   get: () => props.modelValue,
@@ -33,37 +45,47 @@ const tempValue = computed({
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 
 <template>
   <div class="drawer-container" :class="scopedId">
     <ElDrawer
+      ref="ElDrawerRef"
       v-model="tempValue"
-      :direction="props.direction"
-      :title="props.title"
+      :append-to-body="props.appendToBody"
+      :append-to="props.appendTo"
+      :lock-scroll="props.lockScroll"
+      :before-close="props.beforeClose"
+      :close-on-click-modal="props.closeOnClickModal"
+      :close-on-press-escape="props.closeOnPressEscape"
+      :open-delay="props.openDelay"
+      :close-delay="props.closeDelay"
       :destroy-on-close="props.destroyOnClose"
-      :custom-class="props.customClass"
       :modal="props.modal"
-      :modal-class="props.modalClass"
+      :direction="props.direction"
+      :show-close="props.showClose"
       :size="props.size"
+      :title="props.title"
+      :with-header="props.withHeader"
+      :modal-class="props.modalClass"
+      :z-index="props.zIndex"
+      :header-aria-level="props.headerAriaLevel"
       class="drawer-main"
       @open="onOpen"
       @opened="onOpened"
       @close="onClose"
       @closed="onClosed"
+      @open-auto-focus="onOpenAutoFocus"
+      @close-auto-focus="onCloseAutoFocus"
     >
       <template v-if="hasSlot('default')" #default>
         <slot name="default"></slot>
       </template>
-      <!-- header title 擇一使用 -->
       <template v-if="hasSlot('header')" #header>
         <slot name="header"></slot>
       </template>
-      <!-- <template v-if="hasSlot('title')" #title>
-        <slot name="title"></slot>
-      </template> -->
       <template v-if="hasSlot('footer')" #footer>
         <slot name="footer"></slot>
       </template>

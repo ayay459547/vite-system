@@ -12,7 +12,7 @@ import { version, props as formOperatorProps } from './FormOperatorInfo'
 
 const scopedId = getUuid(version)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -217,7 +217,6 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

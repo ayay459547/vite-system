@@ -2,39 +2,17 @@ import { ref, shallowRef } from 'vue'
 import type { Composer } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 
-// import { read, utils } from '@/lib/lib_files'
 import { isEmpty, hasOwnProperty } from '@/lib/lib_utils' // 工具
-
 import type { LangMap } from '@/i18n'
 import { getI18nMessages } from '@/i18n'
 
 import type { I18nTranslate, I18nTest } from './i18n_setting'
 import { scopeList, defaultModuleType } from './i18n_setting'
 
-/**
- * 如果不需要 更新翻譯檔
- * 註解 .xlsx?b64
- *
- * 只有啟動服務時有效 限定development
- * 讀取 ?b64
- * 1.將 i18n.xlsx 轉 base64
- * 2.base64 轉 json
- * 3.重新寫入 i18n.json
- */
-
+// transformExcel.ts: 將 excel 轉換成 json
 import i18nJson from './i18n.json'
-import i18nXlsx from './i18n.xlsx?b64'
 
-const mode = (import.meta as any).env.MODE
-if (mode === 'development') {
-  console.groupCollapsed('[init] i18nXlsx')
-  console.log(i18nXlsx)
-  console.log(i18nJson)
-  console.table(scopeList)
-  console.groupEnd()
-}
-
-export const initTranslateSrcFile = () => {
+const initI18n = () => {
   const excelJsonList = i18nJson as any[]
   const moduleMap: Record<string, Set<any>> = {}
 
@@ -78,14 +56,13 @@ export const initTranslateSrcFile = () => {
   return { langMap, moduleMap }
 }
 
-export type GlobalI18n = Partial<
-  Composer & {
-    initModuleLangMap: () => void
-    i18nTranslate: I18nTranslate
-    i18nTest: I18nTest
-    langMap: Record<string, any>
-  }
->
+export type GlobalI18n = Partial<Composer> & {
+  initModuleLangMap: () => void
+  i18nTranslate: I18nTranslate
+  i18nTest: I18nTest
+  langMap: Record<string, any>
+}
+
 /**
  * @author Caleb
  * @description 針對各模組 設定翻譯
@@ -103,7 +80,7 @@ export const useGlobalI18n = (): GlobalI18n => {
   })
 
   const initModuleLangMap = () => {
-    const { langMap: _langMap, moduleMap: _moduleMap } = initTranslateSrcFile()
+    const { langMap: _langMap, moduleMap: _moduleMap } = initI18n()
 
     const messages = getI18nMessages(_langMap)
 

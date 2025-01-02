@@ -97,19 +97,19 @@ export const props = {
   },
   // 一般 table
   rowClassName: {
-    type: Function as PropType<Props.RowClassName>,
+    type: [Function, null] as PropType<Props.RowClassName>,
     description: 'row class callback'
   },
   rowStyle: {
-    type: Function as PropType<Props.RowStyle>,
+    type: [Function, null] as PropType<Props.RowStyle>,
     description: 'row style callback'
   },
   cellClassName: {
-    type: Function as PropType<Props.CellClassName>,
+    type: [Function, null] as PropType<Props.CellClassName>,
     description: 'cell class callback'
   },
   cellStyle: {
-    type: Function as PropType<Props.CellStyle>,
+    type: [Function, null] as PropType<Props.CellStyle>,
     description: 'cell style callback'
   },
   i18nModule: {

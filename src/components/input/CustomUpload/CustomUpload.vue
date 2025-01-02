@@ -18,7 +18,7 @@ import { getFileTypeList, getIconClass } from './variable'
 
 import FilesView from './FilesView.vue'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })

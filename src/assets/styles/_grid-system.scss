@@ -1,15 +1,15 @@
 /**
-  網格系統
-  目前主流為切24格
-  使用範例
-  <div class="grid-row">
-    <div class="grid-col-xs-24 grid-col-md-8"></div>
-    <div class="grid-col-xs-24 grid-col-md-8"></div>
-    <div class="grid-col-xs-24 grid-col-md-8"></div>
-    <div class="grid-col-xs-24 grid-col-md-12"></div>
-    <div class="grid-col-xs-24 grid-col-md-12"></div>
-  </div>
-*/
+ * 網格系統, 目前主流為切24格
+ *
+ * 使用範例
+ * <div class="grid-row">
+ *   <div class="grid-col-xs-24 grid-col-md-8"></div>
+ *   <div class="grid-col-xs-24 grid-col-md-8"></div>
+ *   <div class="grid-col-xs-24 grid-col-md-8"></div>
+ *   <div class="grid-col-xs-24 grid-col-md-12"></div>
+ *   <div class="grid-col-xs-24 grid-col-md-12"></div>
+ * </div>
+ **/
 
 $grid-system-map: (
   xs: 0,

@@ -29,6 +29,7 @@ export declare namespace Types {
 export declare namespace Props {
   type ID = string
   type Data = Array<any>
+  type EmptyText = string
   type FooterData = Array<any>
 
   type RowClassName = string | ((params: Types.RowClassCallbackParams) => any) | undefined
@@ -72,6 +73,12 @@ export const props = {
       return []
     },
     description: '資料'
+  },
+  emptyText: {
+    type: String as PropType<Props.EmptyText>,
+    required: false,
+    default: undefined,
+    description: '無資料顯示文字'
   },
   footerData: {
     type: Array as PropType<Props.FooterData>,

@@ -10,10 +10,13 @@ import {
   WifiOutlined,
   WifiOffTwotone,
   AdfScannerRound,
-  FaxRound
+  FaxRound,
+  DisplaySettingsFilled,
+  SecurityFilled,
+  FactoryOutlined
 } from '@vicons/material'
 
-export default {
+const material: Record<string, any> = {
   BubbleChartSharp,
   PivotTableChartRound,
   AreaChartTwotone,
@@ -25,5 +28,10 @@ export default {
   WifiOutlined,
   WifiOffTwotone,
   AdfScannerRound,
-  FaxRound
+  FaxRound,
+  DisplaySettingsFilled,
+  SecurityFilled,
+  FactoryOutlined
 }
+
+export default material

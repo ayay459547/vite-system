@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
   CustomButton,
   CustomButtonGroup,
@@ -7,6 +7,7 @@ import {
   FormInput
 } from '@/components' // 系統組件
 
+import dayjs from '@/lib/lib_day'
 import { isEmpty, aesDecrypt } from '@/lib/lib_utils' // 工具
 import { getCookie, clearToken } from '@/lib/lib_cookie'
 
@@ -40,14 +41,27 @@ const replaceText = () => {
 
   node = walker.nextNode()
   while (!isEmpty(node)) {
-    if (node.nodeType === Node.TEXT_NODE) {
+    if (node !== null && node.nodeType === Node.TEXT_NODE) {
       // 替換文本
-      node.textContent = node.textContent.replace(regex, `${newText.value}`)
+      node.textContent = (node?.textContent ?? '').replace(regex, `${newText.value}`)
     }
     node = walker.nextNode()
   }
 }
 
+/**
+ * dayjs format
+ */
+const beforeFormatText = ref(new Date())
+const formatText = ref('YYYY-MM-DD')
+const afterFormatText = computed(() => {
+  if (
+    isEmpty(beforeFormatText.value) ||
+    isEmpty(formatText.value)
+  ) return ''
+
+  return dayjs(beforeFormatText.value).format(formatText.value)
+})
 
 // 登入狀態
 const privateKey = (import.meta as any).env.VITE_API_PRIVATE_KEY
@@ -59,7 +73,7 @@ let timer: any = null
  */
 const checkToken = (isIntervalCheck?: boolean) => {
   const loginTime = getCookie('loginTime')
-  const _token = getCookie('token')
+  const _token = getCookie('token') ?? ''
   const temp = aesDecrypt(_token, `${privateKey}__${loginTime}`)
 
   const log = () => {
@@ -92,6 +106,7 @@ const checkToken = (isIntervalCheck?: boolean) => {
   <div class="flex-column i-ga-md">
     <!-- 替換文字 -->
     <div class="flex-column i-ga-xs">
+      <h3>網頁替換文字 測試</h3>
       <div class="flex-row-center i-ga-xs">
         <FormInput
           v-model="regExpText"
@@ -116,7 +131,34 @@ const checkToken = (isIntervalCheck?: boolean) => {
       />
     </div>
 
+    <!-- day format -->
+    <div class="flex-column i-ga-xs">
+      <h3>Dayjs Format 測試</h3>
+      <div class="flex-row-center i-ga-xs">
+        <FormInput
+          v-model="beforeFormatText"
+          placeholder="Format前的文字"
+          clearable
+          class="flex-3"
+        />
+        <FormInput
+          v-model="formatText"
+          placeholder="Format 格式"
+          clearable
+          class="flex-2"
+        />
+      </div>
+      <div class="flex-center">
+        <CustomIcon name="arrow-down"/>
+      </div>
+      <div class="border-info i-pa-xs">
+        <span>Format後的文字 : </span>
+        <b>{{ afterFormatText }}</b>
+      </div>
+    </div>
+
     <!-- 登入狀態 -->
+    <h3>登入狀態 測試</h3>
     <CustomButtonGroup>
       <CustomButton
         icon-name="user-shield"
@@ -150,15 +192,15 @@ const checkToken = (isIntervalCheck?: boolean) => {
         size="large"
         @click="clearToken()"
       />
+      <CustomButton
+        icon-name="rotate-right"
+        label="重整畫面"
+        type="info"
+        plain
+        size="large"
+        @click="refresh()"
+      />
     </CustomButtonGroup>
-
-    <CustomButton
-      icon-name="rotate-right"
-      label="重整畫面"
-      type="info"
-      plain
-      @click="refresh()"
-    />
   </div>
 </template>
 

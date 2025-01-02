@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElTimeline, ElTimelineItem } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import { version, props as timeLineProps } from './CustomTimeLineInfo'
 
@@ -12,9 +12,8 @@ const props = defineProps(timeLineProps)
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

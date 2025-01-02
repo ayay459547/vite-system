@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
@@ -15,9 +17,7 @@ const props = defineProps(iconProps)
 const getIcon = computed(() => {
   if (
     Array.isArray(props.icon) &&
-    props.icon.filter(
-      item => !['', undefined, null].includes(item)
-    ).length === 2
+    props.icon.filter(item => !['', undefined, null].includes(item)).length === 2
   ) return props.icon
 
   return [props.type, props.name]

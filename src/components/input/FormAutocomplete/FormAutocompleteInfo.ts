@@ -147,6 +147,6 @@ export declare namespace Expose {
   type HandleSelect = (item: any) => Promise<void>
   type HandleKeyEnter = () => Promise<void>
   type Highlight = (itemIndex: number) => void
-  type GetData  = (queryString: string) => void
+  type GetData = (queryString: string) => void
 }
 

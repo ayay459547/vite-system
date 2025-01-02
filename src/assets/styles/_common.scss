@@ -12,12 +12,12 @@ $tool-map: (
 );
 
 /**
-  使用範例
-  <div class="flex-row i-ga-lg">
-    <div class="i-pa-xxs"></div>
-    <div class="i-ma-md"></div>
-  </div>
- */
+ * 使用範例
+ * <div class="flex-row i-ga-lg">
+ *   <div class="i-pa-xxs"></div>
+ *   <div class="i-ma-md"></div>
+ * </div>
+ **/
 @each $size, $value in $tool-map {
   .i-pa-#{$size} {
     padding: $value !important;

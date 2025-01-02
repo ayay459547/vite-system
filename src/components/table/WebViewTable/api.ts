@@ -5,12 +5,12 @@ import { message, isEmpty, tipLog } from '@/lib/lib_utils' // 工具
 import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
-export const webViewUrl = '/api/systemTable/retrievesystemTableFromView'
+export const webViewUrl = '/api/demoTable/retrievedemoTableFromView'
 // 進階搜尋可用選項
-export const webViewUrlOperator = '/api/systemTable/retrieveColumnOperatorFromView'
+export const webViewUrlOperator = '/api/demoTable/retrieveColumnOperatorFromView'
 
 export const getUrlParams = (params: Types.UrlParams) => {
-  const { url = webViewUrl, baseURL = '' } = params
+  const { baseURL = '', url = webViewUrl } = params
 
   if (!isEmpty(baseURL)) return { url, baseURL }
   return { url }
@@ -120,7 +120,8 @@ export const getColumnOperator = async (params: any, url: Types.UrlParams) => {
             'LessThanOrEqualTo',
             'NotIn',
             'IsNull'
-          ]
+          ],
+          machineName: []
         },
         status: 'success'
       },

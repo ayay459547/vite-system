@@ -6,7 +6,7 @@ import { CustomIcon, CustomTooltip } from '@/components' // 系統組件
 import { getCookie } from '@/lib/lib_cookie'
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { eventList, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })

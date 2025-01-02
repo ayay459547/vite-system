@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import {
-  ref,
-  shallowReactive,
-  computed,
-  provide,
+  ref, shallowReactive, computed,
   onBeforeMount, onMounted, onBeforeUnmount,
-  nextTick,
-  watch
+  provide, nextTick, watch
 } from 'vue'
 
 import {
@@ -29,7 +25,7 @@ import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 
 // hook
-import type { UseHook, UseHookReturn, CustomPopoverQueue } from '@/declare/hook' // 全域功能類型
+import type { UseHook, UseHookOptions, UseHookReturn, CustomPopoverQueue } from '@/declare/hook' // 全域功能類型
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
@@ -210,12 +206,12 @@ const logout = async () => {
 const expiresTime = Number.parseInt(systemEnv.value.tokenTime) * 60 * 1000
 // 保存時間: 測試(秒)
 // const expiresTime = Number.parseInt(systemEnv.value.tokenTime) * 1000
-let checkTimer: NodeJS.Timeout | number | undefined = null
+let checkTimer: number | undefined
 // 定期檢查登入狀態
 watch(isLogin, (newLogin, oldLogin) => {
   if (newLogin !== oldLogin && isLogin.value) {
     clearInterval(checkTimer)
-    checkTimer = null
+    checkTimer = undefined
 
     checkTimer = setInterval(async () => {
       const authStatus = await checkAuthStatus()
@@ -236,12 +232,11 @@ watch(isLogin, (newLogin, oldLogin) => {
 const developmentTestRef = ref()
 const isShowDevelopmentTest = ref(false)
 
-
 /**
  * 按 Ctrl + Shift + Alt + -(數字鍵右上方)
  * 開啟開發用工具
  */
- const handleKeydown = (event: KeyboardEvent) => {
+const handleKeydown = (event: KeyboardEvent) => {
   if (event.shiftKey && event.ctrlKey && event.altKey && event.key === '-') {
     event.preventDefault()
     isShowDevelopmentTest.value = !isShowDevelopmentTest.value
@@ -257,8 +252,8 @@ if (systemEnv.value.mode === 'development') {
 }
 
 // 向下傳送常用工具
-provide<UseHook>('useHook', (options = {}) => {
-  const { i18nModule = defaultModuleType } = options
+const useHook: UseHook = (options?: UseHookOptions) => {
+  const { i18nModule = defaultModuleType } = options ?? {}
 
   return {
     loading,
@@ -288,7 +283,7 @@ provide<UseHook>('useHook', (options = {}) => {
         queueId: queueId.value,
         clientX,
         clientY,
-        eventList,
+        eventList: (eventList ?? []),
         options
       })
       queueId.value++
@@ -318,19 +313,15 @@ provide<UseHook>('useHook', (options = {}) => {
       let _pagePermission: number = defaultPermission
 
       // 指定路由
-      if (!isEmpty(routeName)) {
+      if (!isEmpty(routeName) && typeof routeName === 'string') {
         const routerPermission = navigationMap.value.get(routeName)
-        _pagePermission = (routerPermission?.permission ?? defaultPermission) as number
+        _pagePermission = (routerPermission?.meta?.permission ?? defaultPermission) as number
 
       // 當前路由
       } else {
-        const {
-          name: routeName = '',
-          permission: pagePermission = defaultPermission
-        } = currentNavigation?.value ?? { name: '', permission: 0 }
-
+        const { name: routeName = '', meta } = currentNavigation?.value ?? { name: '', meta: { permission: 0 } }
         _pageName = routeName
-        _pagePermission = pagePermission
+        _pagePermission = meta?.permission ?? defaultPermission
       }
 
       const resPagePermission = getPermission(_pagePermission)
@@ -350,19 +341,21 @@ provide<UseHook>('useHook', (options = {}) => {
     redirectInfo: () => {
       const route = useRoute()
       const fromQuery = route.query ?? {}
-      const [fromPage = '', fromData = ''] = [
+      const [fromPage, fromData] = [
         Array.isArray(fromQuery.from) ? fromQuery.from.join(',') : fromQuery.from,
         Array.isArray(fromQuery.data) ? fromQuery.data.join(',') : fromQuery.data
       ]
       const queryData = isEmpty(fromData) ? '' : aesDecrypt(fromData as string, systemEnv.value.QUERY_KEY)
 
       return {
-        fromPage,
+        fromPage: (fromPage ?? ''),
         queryData
       }
     }
   }
-})
+}
+provide<UseHook>('useHook', useHook)
+
 </script>
 
 <template>

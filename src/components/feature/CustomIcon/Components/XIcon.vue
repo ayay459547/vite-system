@@ -42,8 +42,10 @@ const defaultIcon: ComponentOptionsMixin = fluent.Question16Filled
 // 取得+渲染組件
 const getComponent = (iconComponent: ComponentOptionsMixin): Component => {
   const { name, render } = iconComponent
-
-  return h(name, render())
+  if (typeof name === 'string' && typeof render === 'function') {
+    return h(name, render())
+  }
+  return h('div', {})
 }
 
 // 取得圖示
@@ -54,7 +56,7 @@ const getIcon = (): Component => {
   switch (props.type) {
     case 'fluent': {
       if (hasOwnProperty(fluent, props.name)) {
-        renderIcon = fluent[props.name]
+        renderIcon = fluent[`${props.name}`]
       }
       break
     }
@@ -107,11 +109,7 @@ const getIcon = (): Component => {
 </script>
 
 <template>
-  <Icon
-    :size="props.size"
-    :color="props.color"
-    :tag="props.tag"
-  >
+  <Icon :size="props.size" :color="props.color" :tag="props.tag">
     <component :is="getIcon"></component>
   </Icon>
 </template>

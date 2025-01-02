@@ -16,21 +16,6 @@ export type {
 } from './chart/CustomCharts/CustomChartsInfo'
 export const CustomCharts = useAsyncComponent(() => import('./chart/CustomCharts/CustomCharts.vue'), 'rect')
 
-// VueFlow
-export type {
-  Types as CustomFlowTypes,
-  Props as CustomFlowProps,
-  Emits as CustomFlowEmits,
-  Expose as CustomFlowExpose
-} from './chart/CustomFlow/CustomFlowInfo'
-export const CustomFlow = useAsyncComponent(() => import('./chart/CustomFlow/CustomFlow.vue'), 'rect')
-// 背景
-export const FlowBackground = useAsyncComponent(() => import('./chart/CustomFlow/Components/FlowBackground.vue'), 'rect')
-// 右下小圖
-export const FlowMiniMap = useAsyncComponent(() => import('./chart/CustomFlow/Components/FlowMiniMap.vue'), 'rect')
-// 控制按鈕
-export const FlowControls = useAsyncComponent(() => import('./chart/CustomFlow/Components/FlowControls.vue'), 'rect')
-
 export type {
   Types as GanttChartTypes,
   Props as GanttChartProps,
@@ -631,3 +616,13 @@ export type {
   Expose as WebViewTableExpose
 } from './table/WebViewTable/WebViewTableInfo'
 export const WebViewTable = useAsyncComponent(() => import('./table/WebViewTable/WebViewTable.vue'), 'rect')
+
+// export type {
+//   // Types as DownloadModal,
+//   // Props as DownloadModal,
+//   // Emits as DownloadModal,
+//   // Expose as DownloadModalExpose
+// } from './table/DownloadModal/DownloadModal'
+export { default as DownloadModal } from './table/DownloadModal/DownloadModal.vue'
+
+export { default as SubTable } from './table/SubTable/SubTable.vue'

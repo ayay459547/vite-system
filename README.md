@@ -4,6 +4,10 @@
 ```sh
 #### 安裝套件
 npm install
+#### 強制安裝依賴，忽略衝突和錯誤的依賴關係
+npm install --force
+#### 使用舊版的依賴解析策略，忽略對等依賴衝突
+npm install --legacy-peer-deps
 
 #### 代碼類型檢查
 npm run type-check

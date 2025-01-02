@@ -29,7 +29,7 @@ const onTabRemove =	(name: TabPaneName) => emit('tab-remove', name)
 const onTabAdd = () => emit('tab-add')
 const onEdit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => emit('edit', paneName, action)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })

@@ -4,7 +4,7 @@ import { ElCollapse, ElCollapseItem } from 'element-plus'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { CustomEmpty } from '@/components' // 系統組件
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomCollapseInfo'
 import { version, props as collapseProps } from './CustomCollapseInfo'
@@ -13,7 +13,7 @@ const scopedId = getUuid(version)
 
 const props = defineProps(collapseProps)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -30,7 +30,7 @@ const tempValue = computed<Props.ModelValue>({
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 

@@ -32,7 +32,7 @@ const scopedId = getUuid(version)
 
 const props = defineProps(timeLineCustomTableProps)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -480,6 +480,7 @@ const getSettingValue = async(isCheck: boolean) => {
 
     return idbValue?.columnValue ?? defaultColumnValue
   } catch (e) {
+    console.log(e)
     return defaultColumnValue
   }
 }

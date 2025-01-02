@@ -14,7 +14,7 @@ import { props as managementProps } from './TimeLevelManagementInfo'
 
 const props = defineProps(managementProps)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
@@ -40,7 +40,7 @@ const timeLevelActive = computed(() => {
 
 const setTimeLevelActive = (timeLevel: Types.TimeLevelOption) => {
   // 切換 checkBox
-  timeLevel.active =  !timeLevel.active
+  timeLevel.active = !timeLevel.active
   emit('activeChange')
 }
 const setBaseLevel = (timeLevel: Types.TimeLevelOption) => {

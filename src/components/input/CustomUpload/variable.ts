@@ -1,6 +1,6 @@
 import type { Types } from './CustomUploadInfo'
 
-export const fileTypeMap = {
+export const fileTypeMap: Record<string, any> = {
   image: ['image/png', 'image/jpeg'],
   word: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
   excel: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
@@ -15,7 +15,7 @@ export const fileTypeMap = {
  * @returns {Array} 所有檔案類型
  */
 export const getFileTypeList = (fileTypeList: Types.FileType[]): string[] => {
-  return fileTypeList.reduce((res, fileType) => {
+  return fileTypeList.reduce<string[]>((res, fileType) => {
     return [...res, ...fileTypeMap[fileType]]
   }, [])
 }

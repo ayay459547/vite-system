@@ -9,7 +9,7 @@ import {
   CashRegister
 } from '@vicons/fa'
 
-export default {
+const fa: Record<string, any> = {
   Uncharted,
   ChartLine,
   ChartArea,
@@ -19,3 +19,5 @@ export default {
   RulerHorizontal,
   CashRegister
 }
+
+export default fa

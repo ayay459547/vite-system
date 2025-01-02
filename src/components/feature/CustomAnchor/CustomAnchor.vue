@@ -14,7 +14,7 @@ const props = defineProps({ ...anchorProps })
 
 const emit = defineEmits(['change', 'click'])
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })

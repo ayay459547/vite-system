@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 import { ElSwitch } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomSwitchInfo'
 import { version, props as switchProps } from './CustomSwitchInfo'
@@ -12,7 +12,7 @@ const scopedId = getUuid(version)
 const props = defineProps(switchProps)
 
 const tempValue = computed<Props.ModelValue>({
-  get: () => props.modelValue,
+  get: () => (props?.modelValue ?? false),
   set: (value: Props.ModelValue) => emit('update:model-value', value)
 })
 
@@ -24,9 +24,8 @@ const onChange: Emits.Change = (val: string | number | boolean) => {
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
-
 </script>
 
 <template>

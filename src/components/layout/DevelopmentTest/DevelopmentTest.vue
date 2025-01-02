@@ -7,7 +7,7 @@ import { useDraggable, useResizeObserver } from '@/lib/lib_hook' // 自訂Compos
 import { isEmpty, hasOwnProperty, deepClone } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
 
-import I18nTest from './Components/I18nTest.vue'
+import PreferencesTest from './Components/PreferencesTest.vue'
 import IndexedDBTest from './Components/IndexedDBTest.vue'
 import UtilsTest from './Components/UtilsTest.vue'
 
@@ -46,7 +46,7 @@ useResizeObserver(document.querySelector('body #app') as any, () => {
 })
 
 // 紀錄頁面 使用的翻譯
-const i18nUsageRecord = {}
+const i18nUsageRecord: Record<string, any> = {}
 
 defineExpose({
   addI18nUsageRecord: (record: any) => {
@@ -77,9 +77,9 @@ defineExpose({
   }
 })
 
-const tab = ref('I18nTest')
+const tab = ref('PreferencesTest')
 const tabs = [
-  { label: 'i18n', value: 'I18nTest' },
+  { label: 'i18n', value: 'PreferencesTest' },
   { label: 'iDB', value: 'IndexedDBTest' },
   { label: '其他', value: 'UtilsTest' }
 ]
@@ -90,7 +90,7 @@ const tabs = [
   <div ref="developmentTestRef" class="development-btn" :style="style">
     <CustomPopover
       :visible="isVisible"
-      :width="550"
+      :width="650"
       :offset="6"
       trigger="click"
       placement="top"
@@ -107,8 +107,8 @@ const tabs = [
 
           <KeepAlive>
             <Transition name="fade" mode="out-in">
-              <I18nTest
-                v-if="tab === 'I18nTest'"
+              <PreferencesTest
+                v-if="tab === 'PreferencesTest'"
                 :i18n-usage-record="i18nUsageRecord"
               />
               <IndexedDBTest v-else-if="tab === 'IndexedDBTest'" />
@@ -145,7 +145,7 @@ const tabs = [
   &-container{
     width: 100%;
     height: 40vh;
-    min-height: 400px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     overflow: auto;

@@ -13,7 +13,7 @@ import { isEmpty } from '@/lib/lib_utils' // 工具
 
 import SubNavigationView from './SubNavigationView.vue'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -65,12 +65,13 @@ const changeMap = (name: string): void => {
 // 第二層子路由預設全部打開
 const setLevel2Router = (level1Router: Navigation): void => {
   const { leaves } = level1Router
+  const _leaves = leaves ?? []
 
   isLevel2Open.value = true
   level2Nav.value = level1Router
-  level2List.value = leaves
+  level2List.value = _leaves
 
-  leaves.forEach(leaf => {
+  _leaves.forEach(leaf => {
     if (!Object.prototype.hasOwnProperty.call(level2OpenMap.value, leaf.name)) {
       level2OpenMap.value[leaf.name] = true
     }
@@ -88,7 +89,11 @@ const breadCrumbSetLevel2 = (breadCrumb: string[]) => {
     return level1Item.name === level1Name
   })
 
-  if (!isEmpty(level1Router) && !isEmpty(level2Name)) {
+  if (
+    typeof level1Router === 'object' &&
+    !isEmpty(level1Router) &&
+    !isEmpty(level2Name)
+  ) {
     setLevel2Router(level1Router)
     isLevel2Open.value = true
   }
@@ -131,7 +136,7 @@ defineExpose({
                 :offset="12"
                 :show-after="160"
               >
-                <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+                <CustomIcon v-bind="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
                 <template #content>
                   <div>{{ getRouteTitle(level1Item) }}</div>
                 </template>
@@ -160,7 +165,7 @@ defineExpose({
                 :offset="12"
                 :show-after="160"
               >
-                <CustomIcon :icon="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
+                <CustomIcon v-bind="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
                 <template #content>
                   <div>{{ getRouteTitle(level1Item) }}</div>
                 </template>

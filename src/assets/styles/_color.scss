@@ -84,19 +84,19 @@ html {
 }
 
 /**
-  使用範例
-  <div class="text-primary">primary</div>
-  <div class="hover-text-primary">hover-primary</div>
-
-  <div class="bg-primary">primary</div>
-  <div class="hover-bg-primary">hover-primary</div>
-
-  <div class="border-primary">primary</div>
-  <div class="hover-border-primary">hover-primary</div>
-
-  <div class="card-primary">primary</div>
-  <div class="hover-card-primary">hover-primary</div>
- */
+ * 使用範例
+ * <div class="text-primary">primary</div>
+ * <div class="hover-text-primary">hover-primary</div>
+ *
+ * <div class="bg-primary">primary</div>
+ * <div class="hover-bg-primary">hover-primary</div>
+ *
+ * <div class="border-primary">primary</div>
+ * <div class="hover-border-primary">hover-primary</div>
+ *
+ * <div class="card-primary">primary</div>
+ * <div class="hover-card-primary">hover-primary</div>
+ **/
  @each $type, $color in $color-map {
   .text-#{$type} {
     color: $color !important;

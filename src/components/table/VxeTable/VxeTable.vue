@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
+import { ref, onBeforeMount, onBeforeUnmount, onMounted, inject } from 'vue'
 import { VxeTable } from 'vxe-table'
 import { VxeUI, VxeTooltip } from 'vxe-pc-ui'
 import 'vxe-pc-ui/styles/cssvar.scss'
@@ -8,12 +8,19 @@ import 'vxe-table/styles/cssvar.scss'
 import { ElAutoResizer } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
+import type { UseHook } from '@/declare/hook' // 全域功能類型
 import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
 import { useLayoutStore } from '@/stores/stores_layout'
+import { defaultModuleType } from '@/i18n/i18n_setting'
 
 import { getUuid } from '@/lib/lib_utils' // 工具
 import type { Types, Expose } from './VxeTableInfo'
 import { version, props as vxeTableProps } from './VxeTableInfo'
+
+const useHook = inject('useHook') as UseHook
+const { i18nTranslate } = useHook({
+  i18nModule: defaultModuleType
+})
 
 VxeUI.component(VxeTooltip)
 
@@ -21,7 +28,7 @@ const layoutStore = useLayoutStore()
 const { isDark } = storeToRefs(layoutStore)
 
 const colorToneBus = useEventBus<string>('colorTone')
-const colorToneBusListener = (event: string, colorTone: String) => {
+const colorToneBusListener = (event: string, colorTone: string) => {
   switch (event) {
     case 'colorToneChange':
       if (colorTone === 'dark') {
@@ -49,18 +56,18 @@ const scopedId = getUuid(version)
 
 const props = defineProps(vxeTableProps)
 
-const vxeTableRef = ref()
+const VxeTableRef = ref<typeof VxeTable | any>()
 
-const refreshColumn: Expose.RefreshColumn = () => vxeTableRef.value?.refreshColumn()
-const updateData: Expose.UpdateData = () => vxeTableRef.value?.updateData()
-const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => vxeTableRef.value?.setMergeCells(merges)
-const removeMergeCells: Expose.RemoveMergeCells = (merges: Types.Merges) => vxeTableRef.value?.removeMergeCells(merges)
-const clearMergeCells: Expose.ClearMergeCells = () => vxeTableRef.value?.clearMergeCells()
+const refreshColumn: Expose.RefreshColumn = () => VxeTableRef.value?.refreshColumn()
+const updateData: Expose.UpdateData = () => VxeTableRef.value?.updateData()
+const setMergeCells: Expose.SetMergeCells = (merges: Types.Merges) => VxeTableRef.value?.setMergeCells(merges)
+const removeMergeCells: Expose.RemoveMergeCells = (merges: Types.Merges) => VxeTableRef.value?.removeMergeCells(merges)
+const clearMergeCells: Expose.ClearMergeCells = () => VxeTableRef.value?.clearMergeCells()
 
-const clearScroll: Expose.ClearScroll = () => vxeTableRef.value?.clearScroll()
-const scrollTo: Expose.ScrollTo = (scrollLeft, scrollTop) => vxeTableRef.value?.scrollTo(scrollLeft, scrollTop)
-const scrollToRow: Expose.ScrollToRow = (row, fieldOrColumn) => vxeTableRef.value?.scrollToRow(row, fieldOrColumn)
-const scrollToColumn: Expose.ScrollToColumn = fieldOrColumn => vxeTableRef.value?.scrollToColumn(fieldOrColumn)
+const clearScroll: Expose.ClearScroll = () => VxeTableRef.value?.clearScroll()
+const scrollTo: Expose.ScrollTo = (scrollLeft, scrollTop) => VxeTableRef.value?.scrollTo(scrollLeft, scrollTop)
+const scrollToRow: Expose.ScrollToRow = (row, fieldOrColumn) => VxeTableRef.value?.scrollToRow(row, fieldOrColumn)
+const scrollToColumn: Expose.ScrollToColumn = fieldOrColumn => VxeTableRef.value?.scrollToColumn(fieldOrColumn)
 
 defineExpose({
   refreshColumn,
@@ -82,11 +89,12 @@ defineExpose({
     <ElAutoResizer>
       <template #default="{ height }">
         <VxeTable
-          ref="vxeTableRef"
+          ref="VxeTableRef"
           :height="height ?? 0"
           :max-height="9999"
           :id="props.id"
           :data="props.data"
+          :empty-text="props.emptyText ?? i18nTranslate('empty-data', defaultModuleType)"
           :footer-data="props.footerData"
           :row-class-name="props.rowClassName"
           :cell-class-name="props.cellClassName"

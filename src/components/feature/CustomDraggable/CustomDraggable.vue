@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 import Draggable from 'vuedraggable'
 
-import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Types, Emits } from './CustomDraggableInfo'
 import { version, props as draggableProps } from './CustomDraggableInfo'
@@ -50,7 +50,7 @@ const listValue = computed({
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 

@@ -5,7 +5,7 @@ import type { NavigationFailure } from 'vue-router'
 
 import type { UseHook } from '@/declare/hook' // 全域功能類型
 import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomScrollbar } from '@/components' // 系統組件
+import { CustomIcon, CustomScrollbar, CustomTooltip } from '@/components' // 系統組件
 import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -35,8 +35,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:isLevel2Open', 'change-map'])
 
-const navHeight = 40
-const useHook: UseHook = inject('useHook')
+const navHeight = 36
+const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -76,6 +76,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
   <div class="nav-wrapper">
     <div class="nav-title" @click="titleClick">
       <CustomIcon :icon="['fas', 'angle-left']" />
+
       <h3>{{ props.title }}</h3>
     </div>
 
@@ -89,7 +90,12 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                 class="nav-item-left"
                 :class="{ active: props.currentRouteName.level2 === routerItem.name }"
               >
-                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+                <CustomTooltip :show-after="800">
+                  <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+                  <template #content>
+                    <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+                  </template>
+                </CustomTooltip>
               </div>
 
               <CustomIcon
@@ -100,6 +106,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
             </div>
 
             <div
+              v-if="Array.isArray(routerItem.leaves)"
               class="nav-sub-list"
               :class="props.openMap[routerItem.name] ? 'is-open' : 'is-close'"
               :style="{
@@ -127,7 +134,12 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                     )
                   "
                 >
-                  <span class="item-title">{{ getRouteTitle(leaf) }}</span>
+                  <CustomTooltip :show-after="800">
+                    <span class="item-title">{{ getRouteTitle(leaf) }}</span>
+                    <template #content>
+                      <span class="item-title">{{ getRouteTitle(leaf) }}</span>
+                    </template>
+                  </CustomTooltip>
                 </div>
 
                 <div class="nav-item-right"></div>
@@ -155,7 +167,12 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                 )
               "
             >
-              <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+              <CustomTooltip :show-after="800">
+                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+                <template #content>
+                  <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
+                </template>
+              </CustomTooltip>
             </div>
 
             <div class="nav-item-right"></div>
@@ -184,18 +201,16 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
     padding: 12px 22px;
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 16px;
     cursor: pointer;
     color: var(--i-color-menu-color);
+    text-shadow: 2px 2px 4px #00000050;
 
-    & > h3 {
-      font-size: 1.4em;
+    h3 {
+      font-size: 1.2em;
       letter-spacing: 1px;
       transform: translateX(0);
       transition-duration: 0.3s;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
 
     &:hover {
@@ -223,6 +238,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
   &-item {
     width: 100%;
     color: var(--i-color-menu-color);
+    text-shadow: 2px 2px 4px #00000050;
     background-color: var(--i-color-menu);
     transition-duration: 0.3s;
 
@@ -253,7 +269,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
       .item-title {
         width: 100%;
         display: inline-block;
-        font-size: 1.3em;
+        font-size: 1.25em;
         transform: translateX(0);
         transition-duration: 0.3s;
 
@@ -288,7 +304,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
     width: 100%;
     overflow: hidden;
     transition-duration: 0.3s;
-    will-change: min-height max-height;
+    will-change: min-height, max-height;
     &.is-close {
       min-height: 0 !important;
       max-height: 0 !important;

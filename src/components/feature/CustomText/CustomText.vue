@@ -3,7 +3,7 @@ import { ref, computed, useSlots, nextTick, onMounted } from 'vue'
 import { ElText } from 'element-plus'
 
 import { CustomTooltip } from '@/components' // 系統組件
-import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 import debounce from '@/lib/lib_debounce'
 import { version, props as textProps } from './CustomTextInfo'
 
@@ -13,7 +13,7 @@ const props = defineProps(textProps)
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 
 const isTruncated = ref(false)
@@ -36,7 +36,6 @@ const debounceResize = debounce(resize, 120)
 onMounted(() => {
   debounceResize()
 })
-
 </script>
 
 <template>

@@ -19,7 +19,7 @@ import { CustomIcon } from '@/components' // 系統組件
  *
  */
 const network = reactive(useNetwork())
-const isOnline  = computed(() => {
+const isOnline = computed(() => {
   return network.isOnline
 })
 </script>
@@ -40,8 +40,8 @@ const isOnline  = computed(() => {
   &-wifi {
     position: fixed;
     z-index: 9999;
-    bottom: 12px;
-    right: 12px;
+    bottom: 8px;
+    right: 8px;
     width: fit-content;
     height: fit-content;
     font-size: 0.8em;

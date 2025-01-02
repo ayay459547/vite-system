@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElImage } from 'element-plus'
 
-import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomImageInfo'
 import { version, props as imageProps } from './CustomImageInfo'

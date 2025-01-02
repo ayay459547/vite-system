@@ -21,7 +21,7 @@ const showRoutes = computed(() => {
   return props.subRoute?.leaves ?? []
 })
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })

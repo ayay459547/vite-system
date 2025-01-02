@@ -38,7 +38,7 @@ export declare namespace Props {
   type Id = string | [string, string]
   type Name = string | any
   type AriaLabel = string
-  type PrefixIcon =  string | Component
+  type PrefixIcon = string | Component
   type ClearIcon = string | Component
   type DisabledHours = (role: string, comparingDate?: Dayjs) => number[]
   type DisabledMinutes = (hour: number, role: string, comparingDate?: Dayjs) => number[]
@@ -249,7 +249,7 @@ export declare namespace Emits {
 export declare namespace Expose {
   type Focus = () => void
   type Blur = () => void
-  type HandleOpen  = () => void
-  type HandleClose  = () => void
+  type HandleOpen = () => void
+  type HandleClose = () => void
 }
 

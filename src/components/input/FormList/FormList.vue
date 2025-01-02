@@ -55,7 +55,7 @@ const emit = defineEmits([
   'expand-change'
 ])
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -181,7 +181,7 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
       v-if="hasSlot('title') || !isEmpty(props.label)"
       class="__form-list__ form-top"
     >
-      <div  class="__form-list__ form-title">
+      <div class="__form-list__ form-title">
         <slot name="title" :label="props.label">
           <span>{{ props.label }}</span>
         </slot>

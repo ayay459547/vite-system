@@ -1,22 +1,21 @@
 import { fileURLToPath, URL } from 'node:url'
-// https://docs.sheetjs.com/docs/demos/static/vitejs/
-import { readFileSync, writeFileSync } from 'fs'
-import { read, utils } from 'xlsx'
-// import path from 'path'
-// import { resolve } from 'path'
 
-import type { UserConfigExport, UserConfig } from 'vite'
+import type { UserConfigExport, UserConfig, UserConfigFnObject } from 'vite'
 import { defineConfig, loadEnv } from 'vite'
 import { lazyImport, VxeResolver } from 'vite-plugin-lazy-import'
 
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
-import eslintPlugin from 'vite-plugin-eslint'
+// import eslintPlugin from 'vite-plugin-eslint'
 // import VueDevTools from 'vite-plugin-vue-devtools'
 
+// @ts-ignore
+import { transformI18n, transformRoutes } from './transformExcel'
+
 // https://vitejs.dev/config/
-const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
+const userConfigFnObject: UserConfigFnObject = defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const buildVersion = env.VITE_API_BUILD_VERSION
   const nowDate = new Date()
@@ -32,29 +31,43 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
     `${nowDate.getMinutes()}`.padStart(2, '0'),
     `${nowDate.getSeconds()}`.padStart(2, '0')
   ]
+  const isDevelopment = mode === 'development'
 
-  console.log({
-    buildVersion,
-    mode,
-    command,
-    timestamp,
-    dateTime: `${year}-${month}-${day} ${hour}:${min}:${second}`
+  console.log('\n', '------------------------------------------------------------------------', '\n')
+  console.log('\x1B[33m%s\x1B[0m \x1B[36m%s\x1B[0m', '前端服務器資訊', `(執行時間: ${year}-${month}-${day} ${hour}:${min}:${second})`)
+  console.table({
+    '版本': buildVersion,
+    '時間': timestamp,
+    '指令': command,
+    '模式': mode
   })
+  console.log('\x1B[43m%s\x1B[0m', '注意版本是否有更新')
+  console.log('\n', '------------------------------------------------------------------------', '\n')
+
 
   return {
     base: './', // 路徑
     // root: path.resolve(__dirname, './src/'),
     build: {
-      outDir: 'demo', // 匯出資料夾名稱
-      sourcemap: true,
+      outDir: 'portal', // 匯出資料夾名稱
+      sourcemap: false,
       cssCodeSplit: true,
-      // assetsDir: '',
-      // outDir: path.resolve(__dirname, ''),
+      chunkSizeWarningLimit: 3000,
       rollupOptions: {
         output: {
-          chunkFileNames: `static/js/[name].[hash].${buildVersion}.${timestamp}.js`,
-          entryFileNames: `static/js/[name].[hash].${buildVersion}.${timestamp}.js`,
-          assetFileNames: `static/[ext]/[name].[hash].${buildVersion}.${timestamp}.[ext]`
+          // chunkFileNames: `static/js/[name].[hash].${buildVersion}.${timestamp}.js`,
+          // entryFileNames: `static/js/[name].[hash].${buildVersion}.${timestamp}.js`,
+          // assetFileNames: `static/[ext]/[name].[hash].${buildVersion}.${timestamp}.[ext]`
+
+          // 由於 buildVersion + timestamp 會不斷更新, 所以移除 [hash]
+          chunkFileNames: `static/js/[name].${buildVersion}.${timestamp}.js`,
+          entryFileNames: `static/js/[name].${buildVersion}.${timestamp}.js`,
+          assetFileNames: `static/[ext]/[name].${buildVersion}.${timestamp}.[ext]`,
+          manualChunks (id) {
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString()
+            }
+          }
         }
       },
       minify: 'esbuild'
@@ -66,70 +79,28 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
     plugins: [
       vue(),
       vueJsx(),
-      {
-        // this plugin handles ?b64 tags
-        // 系統產生翻譯用 json
-        name: 'vite-b64-plugin',
-        transform(code, id) {
-          if (!id.match(/\?b64$/) || mode !== 'development') return
-          const path = id.replace(/\?b64/, '')
-          const b64 = readFileSync(path, 'base64')
-          const i18n = JSON.parse(JSON.stringify(b64))
-
-          const workBook = read(i18n)
-          const [
-            wsTranslate
-            // wsViews
-            // wsAbbreviation
-          ] = [
-            workBook.Sheets[workBook.SheetNames[0]]
-            // workBook.Sheets[workBook.SheetNames[1]]
-            // workBook.Sheets[workBook.SheetNames[2]]
-          ]
-          const moduleList = [
-            ...utils.sheet_to_json(wsTranslate)
-            // ...utils.sheet_to_json(wsViews)
-            // ...utils.sheet_to_json(wsAbbreviation)
-          ]
-
-          // 將新的翻譯檔寫入
-          const jsonPath = id.replace(/\.xlsx\?b64/, '.json')
-          writeFileSync(jsonPath, JSON.stringify(moduleList), { flag: 'w' })
-          console.log('writeI18nJSON => ', jsonPath)
-
-          return `export default JSON.parse('${JSON.stringify({
-            excelPath: path,
-            jsonPath
-          })}')`
-        }
-      },
-      {
-        // this plugin handles ?sheetjs tags
-        name: 'vite-sheet',
-        transform(code, id) {
-          if (!id.match(/\?sheetjs$/)) return
-          const wb = read(readFileSync(id.replace(/\?sheetjs$/, '')))
-          const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
-          return `export default JSON.parse('${JSON.stringify(data)}')`
-        }
-      },
+      vueDevTools(),
       lazyImport({
         resolvers: [
           VxeResolver({ libraryName: 'vxe-table' }),
           VxeResolver({ libraryName: 'vxe-pc-ui' })
         ]
       }),
-      // VueDevTools(),
-      eslintPlugin({
-        include: [
-          './src/**/*.ts',
-          './src/*.ts',
-          './src/**/*.tsx',
-          './src/*.tsx',
-          './src/**/*.vue',
-          './src/*.vue'
-        ]
-      })
+      {
+        name: 'custom-middleware',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (/i18n.json/.test(req?.url ?? '')) {
+              // 將 i18n excel 轉換成 json
+              transformI18n()
+            } else if (/routes.json/.test(req?.url ?? '')) {
+              // 將 routes excel 轉換成 json
+              transformRoutes()
+            }
+            next()
+          })
+        }
+      }
     ],
     server: {
       port: 4040, // 服務器 port號
@@ -187,12 +158,13 @@ const viteConfig: UserConfigExport = defineConfig(({ command, mode }) => {
           silenceDeprecations: ['legacy-js-api']
         }
       },
-      devSourcemap: false // 在開發模式下啟用 source map
+      devSourcemap: isDevelopment // 在開發模式下啟用 source map
     },
     optimizeDeps: {
-      // include: ['element-plus']
+      include: ['vue', 'axios'] // 指定需要預打包的依賴
     }
   }
 })
+const viteConfig: UserConfigExport = defineConfig(userConfigFnObject)
 
 export default viteConfig as UserConfig

@@ -22,7 +22,7 @@ export declare namespace Types {
 
   type UrlParams = {
     baseURL?: string
-    url: string
+    url?: string
   }
 }
 
@@ -67,7 +67,7 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiurl 不存在時
-      url: /api/systemTable/retrievesystemTableFromView
+      url: /api/demoTable/retrievedemoTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },
@@ -80,7 +80,7 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiOperator 不存在時
-      url: /api/systemTable/retrievesystemTableFromView
+      url: /api/demoTable/retrievedemoTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },
@@ -189,7 +189,7 @@ export const props = {
     default: true,
     description: '是否在 onMounted 初始化'
   },
-  //Custom Download Excel
+  // Custom Download Excel
   downloadExcel: {
     type: Function as PropType<Props.DownloadExcel>,
     required: false,

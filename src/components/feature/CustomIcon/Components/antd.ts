@@ -1,9 +1,15 @@
 import {
   DotChartOutlined,
-  RadarChartOutlined
+  RadarChartOutlined,
+  DashboardOutlined,
+  CloudServerOutlined
 } from '@vicons/antd'
 
-export default {
+const antd: Record<string, any> = {
   DotChartOutlined,
-  RadarChartOutlined
+  RadarChartOutlined,
+  DashboardOutlined,
+  CloudServerOutlined
 }
+
+export default antd

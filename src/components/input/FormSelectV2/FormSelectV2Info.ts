@@ -64,13 +64,13 @@ export declare namespace Props {
   type Placement = ElPlacement
   type FallbackPlacements = Array<ElPlacement>
   type CollapseTagsTooltip = boolean
-  type MaxCollapseTags  = number
+  type MaxCollapseTags = number
   type TagType = 'success' | 'info' | 'warning' | 'danger'
   type TagEffect = 'light' | 'dark' | 'plain'
   type AriaLabel = string
   type EmptyValues = Array<any>
   type ValueOnClear = string | number | boolean | Function
-  // type PopperAppendToBody  = boolean
+  // type PopperAppendToBody = boolean
 }
 export const props = {
   // element ui plus

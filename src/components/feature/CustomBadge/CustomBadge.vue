@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElBadge } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 
 import { version, props as badgeProps } from './CustomBadgeInfo'
 
@@ -12,7 +12,7 @@ const props = defineProps({ ...badgeProps })
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 

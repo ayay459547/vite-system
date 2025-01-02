@@ -32,6 +32,7 @@ $z-index-map: map.merge(
 .el-notification {
   z-index: map.get($z-index-map, 'notification') !important;
 }
+
 .swal2-container.swal2-backdrop-show {
   z-index: map.get($z-index-map, 'swal2');
 }
@@ -39,6 +40,7 @@ $z-index-map: map.merge(
 html {
   // @include utils.set-css-var-value(('z-index', 'loading'), 3000)
   // --i-z-index-loading: 3000;
+
   @each $type, $z-index in $z-index-map {
     @include utils.set-css-var-value(('z-index', $type), $z-index);
   }

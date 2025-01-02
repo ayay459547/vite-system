@@ -17,7 +17,7 @@ import {
 } from '@/components' // 系統組件
 
 import { defaultModuleType } from '@/i18n/i18n_setting'
-import { isEmpty, tipLog, getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty, isEmpty, tipLog } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 
 import type { VeeRes, ValidateType } from '@/lib/lib_validate'
@@ -44,7 +44,7 @@ const emit = defineEmits([
   'panel-change'
 ])
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
@@ -55,7 +55,7 @@ const getTranslateLabel = (object: any) => {
   const { i18nLabel = '__none__', label, value } = object ?? {}
   return i18nTest(i18nLabel) ? i18nTranslate(i18nLabel) : (label ?? value)
 }
-const getTranslateOptions = (options: any[]) => {
+const getTranslateOptions = (options: any[]): any => {
   if (!Array.isArray(options)) return null
 
   const i18nOptions = options.map(option => {
@@ -213,7 +213,7 @@ const __getOptionsText__ = (value: any) => {
   if (isEmpty(props.options)) return `${value}`
   if (isEmpty(value)) return ''
 
-  const findOptions = (options: any[], findValue: any) => {
+  const findOptions = (options: any[], findValue: any): any => {
     if (isEmpty(options) || isEmpty(value)) return
 
     for(const _option of options) {
@@ -660,10 +660,9 @@ const renderInput = computed(() => {
   }
 })
 
-// slot
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 

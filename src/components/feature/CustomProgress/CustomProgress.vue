@@ -28,8 +28,8 @@ const props = defineProps(progressProps)
     :striped-flow ="props.stripedFlow"
     :class="scopedId"
   >
-    <template #default>
-      <slot></slot>
+    <template #default="scope">
+      <slot v-bind="scope"></slot>
     </template>
   </ElProgress>
 </template>

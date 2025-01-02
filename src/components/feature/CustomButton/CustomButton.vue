@@ -3,7 +3,7 @@ import { useSlots } from 'vue'
 import { ElButton } from 'element-plus'
 
 import { CustomIcon } from '@/components' // 系統組件
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomButtonInfo'
 import { version, props as buttonProps } from './CustomButtonInfo'
@@ -19,7 +19,7 @@ const onClick: Emits.Click = ($event: Event) => {
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 </script>
 
@@ -115,7 +115,6 @@ button[class*="__CustomButton"] {
   &.button {
     @mixin button-size($btn-height, $label-size) {
       height: $btn-height;
-      line-height: $btn-height;
 
       :slotted(.button-label) {
         font-size: $label-size;

@@ -25,7 +25,7 @@ import { defaultModuleType } from '@/i18n/i18n_setting'
 import type { Props } from './CustomModalInfo'
 import { version, props as modalProps, minModalIndex } from './CustomModalInfo'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook 
 const { swal, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -429,13 +429,13 @@ const onWrapperMousemove = (event: MouseEvent) => {
     bottom: (eventY - wrapperY) >= (height - clickSize)
   }
 
-  if (isClick.top)  resizeInfo.direction[0]  = 'n'
+  if (isClick.top)  resizeInfo.direction[0] = 'n'
   else if (isClick.bottom) resizeInfo.direction[0] = 's'
-  else resizeInfo.direction[0]  = ''
-  if(isClick.left) resizeInfo.direction[1]  = 'w'
-  else if(isClick.right)  resizeInfo.direction[1]  = 'e'
-  else resizeInfo.direction[1]  = ''
-  const direction =  resizeInfo.direction[0] +  resizeInfo.direction[1]
+  else resizeInfo.direction[0] = ''
+  if(isClick.left) resizeInfo.direction[1] = 'w'
+  else if(isClick.right)  resizeInfo.direction[1] = 'e'
+  else resizeInfo.direction[1] = ''
+  const direction = resizeInfo.direction[0] +  resizeInfo.direction[1]
 
   if(direction === '') wrapperRef.value.style.cursor = 'default'
   else wrapperRef.value.style.cursor = direction + '-resize'
@@ -446,7 +446,6 @@ const onWrapperMousedown = (event: MouseEvent) => {
   setModalIndex()
 
   if(resizeInfo.direction.some(text => text !== '')) {
-    console.log('DOWN!!')
     const { clientX, clientY } = event
     const { width, height } = containerRef.value.getBoundingClientRect()
     resizeInfo.isResizing = true
@@ -462,17 +461,17 @@ const onWrapperMousedown = (event: MouseEvent) => {
   }
 }
 const onResizeMousemove = (event: MouseEvent) => {
-  console.log('MOVE', resizeInfo)
+  // console.log('MOVE', resizeInfo)
   const { direction } = resizeInfo
   switch(direction[0]) {
-    case 'n': { //top
+    case 'n': { // top
       const { recordY, recordHeight } = resizeInfo
       const { clientY } = event
       const newHeight = recordHeight - (clientY - recordY)
       resizeRect.height = newHeight
       break
     }
-    case 's': { //bottom
+    case 's': { // bottom
       const { recordY, recordHeight } = resizeInfo
       const { clientY } = event
       const newHeight = recordHeight + (clientY - recordY)
@@ -760,39 +759,23 @@ onUnmounted(() => {
       &-fill,
       &-large {
         width: 85%;
-        @media (max-width: 992px) {
-          width: 90%;
-        }
-        @media (max-width: 576px) {
-          width: 95%;
-        }
+        @media (max-width: 992px) { width: 90% }
+        @media (max-width: 576px) { width: 95% }
       }
       &-default {
         width: 65%;
-        @media (max-width: 992px) {
-          width: 70%;
-        }
-        @media (max-width: 576px) {
-          width: 90%;
-        }
+        @media (max-width: 992px) { width: 70% }
+        @media (max-width: 576px) { width: 90% }
       }
       &-small {
         width: 650px;
-        @media (max-width: 992px) {
-          width: 65%;
-        }
-        @media (max-width: 576px) {
-          width: 85%;
-        }
+        @media (max-width: 992px) { width: 65% }
+        @media (max-width: 576px) { width: 85% }
       }
       &-extraSmall {
         width: 450px;
-        @media (max-width: 992px) {
-          width: 65%;
-        }
-        @media (max-width: 576px) {
-          width: 85%;
-        }
+        @media (max-width: 992px) { width: 65% }
+        @media (max-width: 576px) { width: 85% }
       }
     }
     &.height {
