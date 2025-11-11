@@ -4,12 +4,12 @@
 
 // 系統顏色
 $light-color: (
-  'system': #506d9c,
+  'system': #2b68a8,
   'system-bg': #eceff5,
   'system-page': #ffffff,
   'system-border': #7c95bc,
 
-  'menu': #506d9c,
+  'menu': #2b68a8,
   'menu-sub': #5b79ab,
   'menu-hover': #6582b0,
   'menu-color': #ffffff,
@@ -23,8 +23,8 @@ $light-color: (
 
 $dark-color: (
   'system': #476596,
-  'system-bg': #373737,
-  'system-page': #454545,
+  'system-bg': #3f3f3f,
+  'system-page': #4d4d4d,
   'system-border': #7c95bc,
 
   'menu': #45608c,
@@ -96,7 +96,7 @@ html {
  *
  * <div class="card-primary">primary</div>
  * <div class="hover-card-primary">hover-primary</div>
- **/
+ */
  @each $type, $color in $color-map {
   .text-#{$type} {
     color: $color !important;

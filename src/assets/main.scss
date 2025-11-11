@@ -4,10 +4,10 @@
 // 通用
 @use './styles/common' as *;
 
-// display: flex 相關
+// display: flex
 @use './styles/flex' as *;
 
-// 網格系統(24)
+// display: grid
 @use './styles/grid-system' as *;
 
 // 切換動畫

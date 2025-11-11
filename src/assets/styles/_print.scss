@@ -1,7 +1,14 @@
-@media print{
-  div, span,
-  table, th, tr, td,
-  ul, li, a, button {
+@media print {
+  div,
+  span,
+  table,
+  th,
+  tr,
+  td,
+  ul,
+  li,
+  a,
+  button {
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }

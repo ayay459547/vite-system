@@ -1,13 +1,6 @@
 @use 'sass:map';
 @use './utils' as utils;
 
-// $extra-small: 576px;
-// $small: 576px;
-// $medium: 768px;
-// $large: 992px;
-// $x-large: 1200px;
-// $xx-large: 1400px;
-
 $media-map: () !default;
 // 依照 bootstrap 標準
 $media-map: map.merge(

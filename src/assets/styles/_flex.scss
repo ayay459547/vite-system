@@ -1,15 +1,28 @@
 // flex 排版工具
-  
+
 %flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/**
+ * 使用範例
+ * <div class="flex-row"></div>
+ * <div class="flex-row-center"></div>
+ *
+ * <div class="flex-column"></div>
+ * <div class="flex-column-center"></div>
+ *
+ * <div class="flex-center"></div>
+ *
+ * <div class="flex-wrap"></div>
+ * <div class="flex-nowrap"></div>
+ * <div class="flex-reverse"></div>
+ */
 .flex {
   &-row {
     display: flex;
-
     &-center {
       @extend %flex-center;
     }
@@ -29,47 +42,60 @@
     @extend %flex-center;
   }
 
-  &-wrap {
-    flex-wrap: wrap;
-  }
-  &-nowrap {
-    flex-wrap: nowrap;
-  }
-  &-reverse {
-    flex-wrap: wrap-reverse;
+  @each $name, $value in (
+    wrap: wrap,
+    nowrap: nowrap,
+    reverse: wrap-reverse
+  ) {
+    &-#{$name} {
+      flex-wrap: $value;
+    }
   }
 }
 
+/**
+ * 使用範例
+ * <div class="flex-row">
+ *   <div class="content-center"></div>
+ *   <div class="content-between"></div>
+ *   <div class="content-start"></div>
+ *   <div class="content-end"></div>
+ *   <div class="content-evenly"></div>
+ *   <div class="content-around"></div>
+ * </div>
+ */
 .content {
-  &-center {
-    justify-content: center;
-  }
-  &-between {
-    justify-content: space-between;
-  }
-  &-start {
-    justify-content: flex-start;
-  }
-  &-end {
-    justify-content: flex-end;
-  }
-  &-evenly {
-    justify-content: space-evenly;
-  }
-  &-around {
-    justify-content: space-around;
+  @each $key, $value in (
+    center: center,
+    between: space-between,
+    start: flex-start,
+    end: flex-end,
+    evenly: space-evenly,
+    around: space-around
+  ) {
+    &-#{$key} {
+      justify-content: $value;
+    }
   }
 }
 
+/**
+ * 使用範例
+ * <div class="flex-row">
+ *   <div class="align-center"></div>
+ *   <div class="align-start"></div>
+ *   <div class="align-end"></div>
+ * </div>
+ */
 .align {
-  &-center {
-    align-items: center;
-  }
-  &-start {
-    align-items: flex-start;
-  }
-  &-end {
-    align-items: flex-end;
+  @each $name, $value in (
+    center: center,
+    start: flex-start,
+    end: flex-end
+  ) {
+    &-#{$name} {
+      align-items: $value;
+    }
   }
 }
 
@@ -88,6 +114,13 @@
   }
 }
 
+/**
+ * 使用範例
+ * <div class="flex-row">
+ *   <div class="flex-1"></div>
+ *   <div class="flex-2"></div>
+ * </div>
+ */
 @for $i from 0 through 10 {
   .flex-#{$i} {
     flex: $i;

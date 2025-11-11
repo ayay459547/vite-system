@@ -16,7 +16,8 @@ $z-index-map: map.merge(
     'tour': 2350, // var(--i-z-index-tour);
     'drawer': 2300, // var(--i-z-index-drawer);
     'login': 2100, // var(--i-z-index-login);
-    'modal': 2005, // 對應 CustomModal 的 minModalIndex
+    'modal': 2005, // var(--i-z-index-modal); 對應 CustomModal 的 minModalIndex
+    'table-selection-popover': 2004, // var(--i-z-index-table-selection-popover);
     'side': 2003, // var(--i-z-index-side);
     'v-loading': 2000, // element-ul 設定的
     'v-fixed': 99, // var(--i-z-index-v-fixed);

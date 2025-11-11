@@ -17,7 +17,7 @@ $tool-map: (
  *   <div class="i-pa-xxs"></div>
  *   <div class="i-ma-md"></div>
  * </div>
- **/
+ */
 @each $size, $value in $tool-map {
   .i-pa-#{$size} {
     padding: $value !important;
@@ -90,6 +90,10 @@ $cursors: pointer, move, not-allowed, resize, s-resize, col-resize, no-drop, def
   }
 }
 
+.cursor-events-none {
+  pointer-events: none !important;
+}
+
 .user-select-none {
   user-select: 'none';
   -webkit-user-select: 'none';
@@ -99,10 +103,32 @@ $cursors: pointer, move, not-allowed, resize, s-resize, col-resize, no-drop, def
 
 @for $i from 0 through 10 {
   .opacity-#{$i} {
-    opacity: math.div($i, 10);
+    opacity: #{math.div($i, 10)};
+  }
+
+  .rem-0-#{$i} {
+    font-size: #{math.div($i, 10)}rem;
+  }
+  .rem-1-#{$i} {
+    font-size: #{1 + math.div($i, 10)}rem;
+  }
+  .rem-#{$i} {
+    font-size: #{$i}rem;
+  }
+
+  .em-0-#{$i} {
+    font-size: #{math.div($i, 10)}em;
+  }
+  .em-1-#{$i} {
+    font-size: #{1 + math.div($i, 10)}em;
+  }
+  .em-#{$i} {
+    font-size: #{$i}em;
   }
 }
-
+/**
+ * 文字
+ */
 .text {
   &-hidden {
     color: #ffffff00 !important;
@@ -113,22 +139,54 @@ $cursors: pointer, move, not-allowed, resize, s-resize, col-resize, no-drop, def
     text-overflow: ellipsis;
   }
 }
-
+/**
+ * 隱藏
+ */
 .i-hidden {
   display: none !important;
 }
-
+/**
+ * 頁面 預設內距為16px
+ */
 .i-page {
   width: 100%;
   height: 100%;
   padding: 16px;
 }
-
+/**
+ * 彈窗內滿版 預設內距為16px
+ */
 .i-modal {
   width: 100%;
   height: fit-content;
   min-height: 100%;
   padding: 16px;
+}
+
+/**
+ * 替代 i18nTranslate('operationCommands')
+ */
+.i-selection-operations {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 0.8em;
+    color: #909399;
+  }
+
+  &-column {
+    width: 100%;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer;
+  }
 }
 
 // ajax idb 錯誤提示

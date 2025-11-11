@@ -22,6 +22,7 @@
   justify-content: flex-end;
 }
 
+/* 讀取畫面 顯示三顆球 */
 .loader-circle {
   width: 20px;
   height: 20px;
@@ -33,7 +34,15 @@
   animation: circle 0.5s alternate infinite ease;
   visibility: hidden;
 }
-
+.loader-circle:nth-child(2) {
+  left: 45%;
+  animation-delay: 0.2s;
+}
+.loader-circle:nth-child(3) {
+  left: auto;
+  right: 15%;
+  animation-delay: 0.3s;
+}
 @keyframes circle {
   0% {
     visibility: visible;
@@ -42,29 +51,17 @@
     border-radius: 50px 50px 25px 25px;
     transform: scaleX(1.7);
   }
-
   40% {
     height: 20px;
     border-radius: 50%;
     transform: scaleX(1);
   }
-
   100% {
     top: 0;
   }
 }
 
-.loader-circle:nth-child(2) {
-  left: 45%;
-  animation-delay: 0.2s;
-}
-
-.loader-circle:nth-child(3) {
-  left: auto;
-  right: 15%;
-  animation-delay: 0.3s;
-}
-
+/* 讀取畫面 顯示三顆球 的陰影 */
 .loader-shadow {
   width: 20px;
   height: 4px;
@@ -78,32 +75,27 @@
   filter: blur(1px);
   animation: shadow 0.5s alternate infinite ease;
 }
-
-@keyframes shadow {
-  0% {
-    transform: scaleX(1.5);
-  }
-
-  40% {
-    transform: scaleX(1);
-    opacity: 0.7;
-  }
-
-  100% {
-    transform: scaleX(0.2);
-    opacity: 0.4;
-  }
-}
-
 .loader-shadow:nth-child(4) {
   left: 45%;
   animation-delay: 0.2s;
 }
-
 .loader-shadow:nth-child(5) {
   left: auto;
   right: 15%;
   animation-delay: 0.3s;
+}
+@keyframes shadow {
+  0% {
+    transform: scaleX(1.5);
+  }
+  40% {
+    transform: scaleX(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scaleX(0.2);
+    opacity: 0.4;
+  }
 }
 
 /* 版本 */
@@ -185,9 +177,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-:where(h1, h2, h3, h4, h5, h6,
+:where(
+  h1, h2, h3, h4, h5, h6,
   main, form, nav, a,
-  ul, li, label, div, span) {
+  ul, li, label, div, span
+) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -215,17 +209,20 @@
 }
 
 :where(label),
-:where(label)>span {
+:where(label) > span {
   font-weight: 600;
+  font-size: 1rem;
 }
 
 :where(ul, li) {
   list-style: none;
 }
 
+/* ScorllBar */
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 8px; /* 直向滾動 */
+  height: 8px; /* 橫向滾動 */
 }
 
 ::-webkit-scrollbar-track {
@@ -239,6 +236,7 @@
   border-radius: 10px;
 }
 
+/* swal */
 div:where(.swal2-icon) {
   box-sizing: content-box !important;
   margin: 2.5em auto .6em !important;
@@ -264,12 +262,15 @@ body {
 /**
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
+ * 3. Default Font Size
  */
 html {
   /* 1 */
   line-height: 1;
   /* 2 */
   -webkit-text-size-adjust: 100%;
+  /* 3 */
+  font-size: 16px;
 }
 
 /**
@@ -297,7 +298,6 @@ h1 {
 hr {
   /* 1 */
   box-sizing: content-box;
-  /* 1 */
   height: 0;
   /* 2 */
   overflow: visible;
@@ -333,21 +333,15 @@ abbr[title] {
   /* 1 */
   border-bottom: none;
   /* 2 */
-  text-decoration: underline;
-  /* 2 */
   text-decoration: underline dotted;
 }
 
 /**
- * 1. Add the correct font weight in Chrome, Edge, and Safari.
- * 2. 設定預設大小
+ * Add the correct font weight in Chrome, Edge, and Safari.
  */
 b,
 strong {
-  /* 1 */
   font-weight: bolder;
-  /* 2 */
-  font-size: 1.1em;
 }
 
 /**
@@ -408,9 +402,7 @@ select,
 textarea {
   /* 1 */
   font-family: inherit;
-  /* 1 */
   font-size: 100%;
-  /* 1 */
   line-height: 1;
   /* 2 */
   margin: 0;
@@ -534,7 +526,6 @@ textarea {
 [type='search'] {
   /* 1 */
   appearance: textfield;
-  /* 1 */
   -webkit-appearance: textfield;
   /* 2 */
   outline-offset: -2px;
