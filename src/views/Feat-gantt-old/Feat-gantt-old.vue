@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, inject, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { SimpleFilter, CustomInput, CustomButton } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { CustomButton } from '@/components/feature' // 系統組件
+import { CustomInput, SimpleFilter } from '@/components/input' // 系統組件
 import { useFormSetting } from '@/lib/lib_columns'
-import throttle from '@/lib/lib_throttle'
+import { throttle } from '@/lib/lib_lodash'
 
 import { columnSetting } from './columns'
 import { type TableData, getData } from './api'
@@ -75,7 +76,11 @@ const init = async () => {
     isLoading.value = false
   }, 500)
 }
-const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
+
+const throttleInit = throttle<typeof init>(init, 200, {
+  // leading: false,
+  trailing: false
+})
 
 const filterRef = ref()
 onMounted(() => {

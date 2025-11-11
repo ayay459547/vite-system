@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { onMounted, reactive, ref, inject, nextTick, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useFormListSetting } from '@/lib/lib_columns'
 import type { Option, Options } from '@/components' // 系統組件
 import { CustomInput, FormList } from '@/components' // 系統組件
@@ -65,7 +65,7 @@ const props = defineProps({
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest, swal } = useHook({
   i18nModule: 'fund_common'
 })

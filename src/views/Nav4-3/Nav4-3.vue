@@ -2,7 +2,7 @@
 import { ref, onMounted, inject } from 'vue'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, permission } = useHook()

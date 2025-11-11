@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, shallowRef, inject, reactive, onMounted, computed, nextTick } from 'vue'
-import { storeToRefs } from 'pinia'
+import { ref, shallowRef, inject, reactive, onMounted, onBeforeMount, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import {
   CustomButton,
   CustomTable,
@@ -13,10 +12,9 @@ import {
   CustomSearch
 } from '@/components' // 系統組件
 import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
-import throttle from '@/lib/lib_throttle'
-import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission' // 權限
-import type { TableOptions } from '@/declare/columnSetting'
+import { throttle } from '@/lib/lib_lodash'
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
+import type { TableOptions } from '@/types/types_columnSetting'
 
 // import i18nMessage from './i18n'
 import type { TableData } from './api'
@@ -27,13 +25,12 @@ import CreateModal from './Components/CreateModal.vue'
 import UpdateModel from './Components/UpdateModel.vue'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, swal, loading, eventList } = useHook()
+const { i18nTranslate, swal, loading, eventList, permission } = useHook()
 
 // 權限
-const routesStore = useRoutesStore()
-const { currentNavigation } = storeToRefs(routesStore)
-const userPermission = computed(() => {
-  return getPermission(currentNavigation.value?.permission ?? 0)
+const userPermission = ref<Permission>(getPermission(defaultPermission))
+onBeforeMount(() => {
+  userPermission.value = permission()
 })
 
 // filter
@@ -175,7 +172,11 @@ const init = async () => {
 
   isLoading.value = false
 }
-const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
+
+const throttleInit = throttle<typeof init>(init, 200, {
+  // leading: false,
+  trailing: false
+})
 
 onMounted(() => {
   throttleInit()

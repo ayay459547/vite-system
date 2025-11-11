@@ -2,13 +2,13 @@
 import { onMounted, ref, inject, nextTick } from 'vue'
 
 // 全域功能類型
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 import { hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 import dayjs, { getWeekOfMonth } from '@/lib/lib_day'
-import throttle from '@/lib/lib_throttle'
+import { throttle } from '@/lib/lib_lodash'
 
 import { CustomDividerView, CustomInput, CustomEmpty } from '@/components' // 系統組件
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
@@ -199,7 +199,10 @@ const {
   forms: filter
 } = useFormSetting<FilterData>(columnSetting, 'filter')
 
-const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
+const throttleInit = throttle<typeof init>(init, 200, {
+  // leading: false,
+  trailing: false
+})
 
 onMounted(() => {
   throttleInit()

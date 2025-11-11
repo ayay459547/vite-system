@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { ref, shallowRef, inject, reactive, onActivated, computed } from 'vue'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { ref, shallowRef, inject, reactive, onActivated, onBeforeMount } from 'vue'
 import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
 
 import { deepClone } from '@/lib/lib_utils' // 工具
 import { useTableSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/types/types_columnSetting'
 
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
@@ -13,21 +13,17 @@ import { columnSetting } from './columns'
 
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModal from './Components/UpdateModal.vue'
-
-import { storeToRefs } from 'pinia'
-import { useRoutesStore } from '@/stores/stores_routes'
-import { getPermission } from '@/lib/lib_permission' // 權限
+import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 
 // import i18nMessage from './i18n'
 
 const useHook: UseHook = inject('useHook')
-const { i18nTranslate, swal, loading, eventList } = useHook()
+const { i18nTranslate, swal, loading, eventList, permission } = useHook()
 
 // 權限
-const routesStore = useRoutesStore()
-const { currentNavigation } = storeToRefs(routesStore)
-const userPermission = computed(() => {
-  return getPermission(currentNavigation.value?.permission ?? 0)
+const userPermission = ref<Permission>(getPermission(defaultPermission))
+onBeforeMount(() => {
+  userPermission.value = permission()
 })
 
 // table

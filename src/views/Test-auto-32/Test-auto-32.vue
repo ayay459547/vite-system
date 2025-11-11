@@ -2,7 +2,7 @@
 import { ref, reactive, inject } from 'vue'
 
 // 全域功能類型
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 // 組件
 import {
   WebViewTable, // 泛用表格
@@ -19,7 +19,7 @@ import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 
 // 表格設定類型
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/types/types_columnSetting'
 // 資料格式化
 import type { ResponseData, ExcelData, TableData } from './api'
 import { formatParams } from './api'

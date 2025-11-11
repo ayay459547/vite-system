@@ -2,7 +2,7 @@
 import { ref, onMounted, reactive, inject, nextTick } from 'vue'
 
 // 引入類型
-import type { UseHook, SwalResult } from '@/declare/hook' // 全域功能類型
+import type { UseHook, SwalResult } from '@/types/types_hook' // 全域功能類型
 // 引入組件
 import { CustomModal, CustomTabs, CustomEmpty, CustomButton } from '@/components' // 系統組件
 // 引入權限

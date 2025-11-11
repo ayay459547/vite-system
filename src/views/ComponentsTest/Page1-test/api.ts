@@ -1,4 +1,4 @@
-import type { Api } from '@/declare/ajax'
+import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export type TableData = {

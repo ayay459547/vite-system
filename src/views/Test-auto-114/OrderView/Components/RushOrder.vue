@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { reactive, onMounted, inject, nextTick, ref, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { CustomButton, CustomEmpty } from '@/components' // 系統組件
 import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'

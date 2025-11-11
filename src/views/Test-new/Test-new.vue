@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
-import type { UseHook, SwalResult } from '@/declare/hook' // 全域功能類型
+import type { UseHook, SwalResult } from '@/types/types_hook' // 全域功能類型
 import {
   CustomIcon,
   CustomModal,
@@ -11,8 +11,8 @@ import {
   GroupSearch
 } from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
-import throttle from '@/lib/lib_throttle'
+import type { TableOptions } from '@/types/types_columnSetting'
+import { throttle } from '@/lib/lib_lodash'
 
 import { columnSetting } from './columns'
 import type { TableData } from './api'
@@ -24,7 +24,7 @@ import DetailModal from './Components/DetailModal.vue'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate, eventList, swal } = useHook({
-  i18nModule: 'view'
+  i18nModule: 'system'
 })
 
 const tableOptions: TableOptions = {
@@ -33,7 +33,7 @@ const tableOptions: TableOptions = {
   i18nTitle: 'createTest',
   version: '1.0.3',
   settingKey: 'caleb-new-test-1',
-  i18nModule: 'view',
+  i18nModule: 'system',
   // 其他屬性
   isSorting: true,
   isHiddenExcel: false,
@@ -113,7 +113,11 @@ const init = async (params?: any, type?: string) => {
     isLoading.value = false
   }, 300)
 }
-const throttleInit = throttle<typeof init>(init, 200, { isNoTrailing: true })
+
+const throttleInit = throttle<typeof init>(init, 200, {
+  // leading: false,
+  trailing: false
+})
 
 onMounted(() => {
   throttleInit(null, '')

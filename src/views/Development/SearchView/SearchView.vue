@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { type ComputedRef, computed, provide, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { Navigation } from '@/declare/routes'
-import { useRoutesStore } from '@/stores/stores_routes'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
+import { useRoutesStore } from '@/stores/useRoutesStore'
 import { useFormSetting } from '@/lib/lib_columns'
 import { CustomInput, CustomIcon, CustomButton } from '@/components' // 系統組件
 import { scrollToEl } from '@/lib/lib_utils' // 工具
-import debounce from '@/lib/lib_debounce'
+import { debounce } from '@/lib/lib_lodash'
 
 import FeatureTree from './FeatureTree.vue'
 

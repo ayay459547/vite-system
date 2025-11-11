@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { reactive, computed, ref, onMounted, nextTick, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import type { Options, Option } from '@/components' // 系統組件
 import {
   GanttChart,
@@ -396,8 +396,8 @@ const initGantt = async (type?: Tab) => {
             const text6 = `${i18nTranslate('select-status')} : ${tempStatus}`
 
             return `
-            <div 
-              class="gantt-tooltip" 
+            <div
+              class="gantt-tooltip"
               style="display: flex; flex-direction: column; gap: 8px;"
             >
               <div style="font-size: 1.2em;">${mo}</div>
