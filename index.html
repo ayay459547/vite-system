@@ -24,7 +24,7 @@
         <div class="loader-shadow"></div>
       </div>
     </div>
-    
+
     <div class="app-table browser-version">
       <div class="app-navigator"></div>
       <table>
@@ -38,31 +38,31 @@
         <tbody></tbody>
       </table>
     </div>
+    </div>
   </div>
 
   <script>
     (function () {
-      const demo = 'Demo'
-      console.groupCollapsed('[init] Demo')
+      const demo = `DEMO`
+      console.groupCollapsed('📌 demo')
       console.log(demo)
 
       // 確認打包版本
       function checkBuildVerison() {
-        var buildVersion = localStorage.getItem('buildVersion')
+        // 參考 lib_storage 設定 storageKey
+        const storageKeyPrefix = 'demo'
+        const storageKey = `${storageKeyPrefix}__buildVersion`
+
+        const buildVersion = localStorage.getItem(storageKey)
         if ([null, undefined, ''].includes(buildVersion)) {
-          console.log('[init] init build version')
-          localStorage.setItem('buildVersion', 'v2000-01-01.1')
-          
+          console.log('📌 init build version')
+          localStorage.setItem(storageKey, 'v2000-01-01.1')
+
           // 重新整理
-          location.reload()
-          // location.replace(location.href)
-
-          // const href = location.pathname + '?cache=' + new Date().getTime()
-          // location.href = href
-          // window.location.assign(href)
+          window.location.reload()
         }
-
-        console.log('build version：', buildVersion)
+        // 打包版本
+        console.log('📌 build version：', buildVersion)
       }
 
       // 確認瀏覽器版本
