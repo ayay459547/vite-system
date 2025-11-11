@@ -1,93 +1,114 @@
+/**
+ * @see https://github.com/axios/axios
+ * @see https://axios-http.com/
+ */
+
 import axios from 'axios'
 import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import { ElMessage } from 'element-plus'
 
-import type { AjaxOptions } from '@/declare/ajax'
-import { hasOwnProperty, isEmpty, message } from '@/lib/lib_utils' // 工具
-import { updateToken } from '@/lib/lib_cookie'
+import type { AjaxOptions, Api } from '@/types/types_ajax'
+import { hasOwnProperty, isEmpty, message, fetchFakeData } from '@/lib/lib_utils' // 工具
+import { refreshToken } from '@/lib/lib_token'
 
 const baseURL = (import.meta as any).env.VITE_API_BASE_URL
 const connectApi = (import.meta as any).env.VITE_API_CONNECT_API
 
-const fakeApi = <ResData>(
+// 虛擬api
+const fakeApi = <ResData = any, ResDataMore = any>(
   config: AxiosRequestConfig,
   options: AjaxOptions<ResData>
-): PromiseLike<ResData> => {
-  const { fakeData, delay, callback } = options
+): PromiseLike<Api<ResData, ResDataMore>> => {
+  const {
+    fakeData, // 假資料(包含狀態, 其他)
+    fakeDataPath,
+    delay, // 回傳假資料的時間
+    callback // 自訂回傳假資料
+  } = options
 
-  return new Promise(resolve => {
+  return new Promise(async resolve => {
+    let resFakeData = fakeData?.data ?? null
+    // get 取假資料
+    if (typeof fakeDataPath === 'string' && fakeDataPath.length > 0) {
+      resFakeData = await fetchFakeData(fakeDataPath)
+    }
+
     // 自訂回傳資料
     if (typeof callback === 'function') {
-      const resFakeData = callback(config, fakeData)
+      resFakeData = await callback(resFakeData, config)
       setTimeout(() => {
-        resolve(resFakeData)
+        resolve({ ...fakeData, data: resFakeData } as Api<ResData, ResDataMore>)
       }, delay)
-      // 直接返回假資料
 
+    // 直接返回假資料
     } else {
       setTimeout(() => {
-        resolve(fakeData)
+        resolve({ ...fakeData, data: resFakeData } as Api<ResData, ResDataMore>)
       }, delay)
     }
   })
 }
 
 const timeout = 1000 * 60 * 30
-const axiosApi = async <ResData>(config: AxiosRequestConfig, baseUrl: string): Promise<ResData> => {
+// 真實api
+const axiosApi = async <ResData = any, ResDataMore = any>(config: AxiosRequestConfig, baseUrl: string = baseURL): Promise<Api<ResData, ResDataMore>> => {
+  // 建立
   const instance = axios.create({
     baseURL: baseUrl,
     timeout,
     // 允許帶 cookie
     withCredentials: true,
     headers: {
+      // Expires: '0',
+      'Cache-Control': 'no-cache',
       'Content-Type': 'application/json;charset=utf8'
-      // 'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-      // Pragma: 'no-cache',
-      // Expires: '0'
     }
   })
 
+  // 攔截 request
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig<any>) => config,
     (error: AxiosError<any>) => {
       const [apiUrl, errorCode, errorMessage] = [
-        error?.request?.responseURL ?? '',
-        error?.code ?? '',
-        error?.message ?? ''
+        error?.request?.responseURL ?? 'undefined',
+        error?.code ?? 'undefined',
+        error?.message ?? 'undefined'
       ]
 
-      console.table(error)
+      console.log('🆖 API Request Error', error)
       message({
         type: 'error',
         message: `<div class="ajax-message">
           <h2>API Request Error ( ${errorCode} )</h2>
-          <div>${apiUrl}</div>
-          <div>${errorMessage}</div>
+          <div>url: ${apiUrl}</div>
+          <div>message: ${errorMessage}</div>
         </div>`,
         customClass: 'i-message',
         dangerouslyUseHTMLString: true,
         duration: 120000
       })
-
     }
   )
 
+  // 攔截 response
   instance.interceptors.response.use(
     (res: AxiosResponse<any, any>) => res,
     (error: AxiosError<any>) => {
-      const [apiUrl, errorStatus, errorMessage] = [
-        error?.request?.responseURL ?? '',
-        error?.response?.status ?? '',
-        error?.message ?? ''
+      const [apiUrl, errorCode, errorMessage, errorStatus] = [
+        error?.request?.responseURL ?? 'undefined',
+        error?.code ?? 'undefined',
+        error?.message ?? 'undefined',
+        error?.response?.status ?? 'undefined'
       ]
 
-      console.table(error)
+      console.log('🆖 API Response Error', error)
       message({
         type: 'error',
         message: `<div class="ajax-message">
-          <h2>API Response Error ( ${errorStatus} )</h2>
-          <div>${apiUrl}</div>
-          <div>${errorMessage}</div>
+          <h2>API Response Error ( ${errorCode } )</h2>
+          <div>url: ${apiUrl}</div>
+          <div>message: ${errorMessage}</div>
+          <div>status: ${errorStatus}</div>
         </div>`,
         customClass: 'i-message',
         dangerouslyUseHTMLString: true,
@@ -96,22 +117,44 @@ const axiosApi = async <ResData>(config: AxiosRequestConfig, baseUrl: string): P
     }
   )
 
+  // 送出api
   try {
     const resAjax = await instance(config)
-    const { data, status = -1, statusText = 'Error' } = resAjax ?? {}
+    const { data, status = -1 } = resAjax ?? {}
 
-    return data ?? {
-      result: null,
-      data,
-      size: 0,
-      status: status,
-      msg: statusText,
-      message: statusText,
-      errorMsg: statusText
-    }
+    // 統一處理後端API格式
+    const {
+      data: __data__ = null,
+      size = 0,
+      status: __status__ = null,
+      // 目前後端有給的訊息格式
+      msg = null,
+      message = null,
+      errorMsg = null
+    } = data ?? {}
 
-  } catch (e) {
-    console.log(e)
+    const isSuccess = (
+      status > 0 &&
+      ['success', true].includes(__status__)
+    )
+
+    return {
+      ...data,
+      data: __data__ ?? data?.result,
+      size,
+      status: isSuccess ? 'success' : 'error',
+      msg: msg ?? message ?? errorMsg
+    } as Api<ResData, ResDataMore>
+
+  } catch (error) {
+    console.log('🆖 axios instance error', error)
+
+    return {
+      data: null,
+      size: -1,
+      status: 'error',
+      msg: `${error}`
+    } as Api<ResData, ResDataMore>
   }
 }
 
@@ -126,63 +169,69 @@ const axiosApi = async <ResData>(config: AxiosRequestConfig, baseUrl: string): P
  *              data: 傳到後端資料
  * @param {AjaxOptions<ResData>} options
  *              isFakeData: 是否取的假資料
+ *              fakeDataPath: 假資料的位置 (fetch 取資料)
  *              fakeData: 如果是取假資料 返回的資料
- *              status: 資料返回狀態
+ *                  data: 資料
+ *                  status: 資料返回狀態
+ *              isLog: 顯示資訊(沒設定使用isFakeData判斷)
+ *              delay: 模擬延遲取得資料
  *              callback: 自訂回傳假資料
  * @returns {PromiseLike<ResData>}
  */
-export const ajax = <ResData>(
+export const ajax = <ResData, ResDataMore = {}>(
   config: AxiosRequestConfig,
   options: AjaxOptions<ResData> = {}
-): PromiseLike<ResData> => {
-  const { isFakeData = false, fakeData = null, isLog = null, delay = 0, callback = null } = options
+): PromiseLike<Api<ResData, ResDataMore>> => {
+  const {
+    isFakeData = false,
+    fakeDataPath = null,
+    fakeData = null,
+    isLog = null,
+    delay = 0,
+    callback = null
+  } = options
 
-  updateToken('ajax')
+  // 刷新 Token
+  const apiUrl = `API: ${config?.baseURL ?? baseURL}${config.url}`
+  refreshToken(apiUrl)
 
   switch (connectApi) {
     case 'true':
-      return axiosApi<ResData>(config, baseURL)
+      return axiosApi<ResData, ResDataMore>(config, baseURL)
     case 'false':
-      return fakeApi<ResData>(config, { fakeData, delay, callback })
+      return fakeApi<ResData, ResDataMore>(config, { ...options, fakeData, delay, callback })
     case 'auto':
     default:
       if (isLog ?? isFakeData) {
-        const style = `
-          font-size: 1em;
-          color: #409EFF;
-        `
-        const { url, method, data } = config
-
-        console.group('%c%s', style, 'api 資訊')
-        console.log('%c%s', style, `url: ${url}`)
-        console.log('%c%s', style, `method: ${method}`)
-        console.log('%c%s', style, `data: ${data}`)
-        console.table(data)
+        console.groupCollapsed('%c%s', 'color: #409EFF', `📧 API 資訊: (${config.method}) ${config.url}`)
+        console.log('config: ', config)
+        console.log('isFakeData: ', isFakeData)
+        console.log('fakeDataPath: ', fakeDataPath)
+        console.log('fakeData: ', fakeData)
         console.groupEnd()
       }
       if (isFakeData) {
-        return fakeApi<ResData>(config, { fakeData, delay, callback })
+        return fakeApi<ResData, ResDataMore>(config, { ...options, fakeData, delay, callback })
       } else {
-        return axiosApi<ResData>(config, baseURL)
+        return axiosApi<ResData, ResDataMore>(config, baseURL)
       }
   }
 }
 
 export default ajax
 
-const baseWS = (import.meta as any).env.VITE_API_BASE_WS
-const baseWSURL = (import.meta as any).env.VITE_API_BASE_WS_URL
-
-export type WebSocketConfig = {
+type WebSocketConfig = {
   baseWs?: string
   baseUrl?: string
   url: string
   onopen?: Function
   onclose?: Function
   onerror?: Function
-  onmessage?: Function
+  onmessage?: ((this: WebSocket, ev: MessageEvent) => any) | null
 }
 /**
+ * @deprecated 棄用 使用 useWebSocket 代替
+ *             使用 自訂 Composition Api (Hook) 替代 class 寫法
  * @author Caleb
  * @see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
  * @description WebScoket
@@ -196,37 +245,24 @@ export type WebSocketConfig = {
  *   ws.value.init()
  */
 export class IWebScoket {
-  // WebSocket
-  socket: WebSocket | null
-  // 設定
-  config: WebSocketConfig
+  socket: WebSocket // WebSocket
+  config: WebSocketConfig // 設定
 
-  // 路徑前綴
-  baseWs: string
-  // 基本路徑
-  baseUrl: string
-  // 路徑
-  url: string
-  // 連結路徑
-  connectUrl: string
+  baseWs: string // 路徑前綴
+  baseUrl: string // 基本路徑
+  url: string // 路徑
+  connectUrl: string // 連結路徑
 
-  // 是否重新連接
-  isReConnect: boolean
-  // 是否錯誤 會觸發1分鐘後重新連接
-  isError: boolean
-  // 是否關閉 close 將不再重新連接
-  isClose: boolean
-  // 送出訊息次數
-  sendMessageCount: number
+  isReConnect: boolean // 是否重新連接
+  isError: boolean // 是否錯誤 會觸發1分鐘後重新連接
+  isClose: boolean // 是否關閉 close 將不再重新連接
 
+  sendMessageCount: number // 送出訊息次數
   connectCount: number
 
-  // 計時器
-  timer: NodeJS.Timeout | null
+  timer: number | undefined // 計時器
 
-  /**
-   * 重新連接
-   */
+  // 重新連接
   #reconnect(delay: number) {
     if (this.isReConnect) return
 
@@ -238,7 +274,6 @@ export class IWebScoket {
 
       const msg = `reconnect after ${delay} second`
       console.log('%c%s', 'font-size: 1.1em; color: #E6A23C;', `ws ${msg}: ${this.connectUrl}`)
-      // message({ type: 'warning', message: msg, duration: delay })
 
       this.timer = setTimeout(() => {
         this.init(this.config)
@@ -248,24 +283,22 @@ export class IWebScoket {
 
   // 預設事件
   #onopen(onopen: Function | undefined) {
-    if (!isEmpty(onopen)) {
+    if (typeof onopen === 'function') {
       onopen()
     } else {
       const msg = 'connect success'
       console.log('%c%s', 'font-size: 1.1em; color: #67C23A;', `ws ${msg}: ${this.connectUrl}`)
-      // message({ type: 'success', message: msg, duration: 3000 })
     }
     this.connectCount++
 
     this.isReConnect = false
   }
   #onclose(onclose: Function | undefined) {
-    if (!isEmpty(onclose)) {
+    if (typeof onclose === 'function') {
       onclose()
     } else {
       const msg = 'close connect'
       console.log('%c%s', 'font-size: 1.1em; color: #909399;', `ws ${msg}: ${this.connectUrl}`)
-      // message({ type: 'info', message: msg, duration: 3000 })
     }
 
     this.isReConnect = false
@@ -281,12 +314,11 @@ export class IWebScoket {
   }
   #onerror(onerror: Function | undefined) {
     // 至少要連過一次 才會執行
-    if (!isEmpty(onerror) && this.connectCount > 0) {
+    if (typeof onerror === 'function' && this.connectCount > 0) {
       onerror()
     } else {
       const msg = 'connect error'
       console.log('%c%s', 'font-size: 1.1em; color: #F56C6C;', `ws ${msg}: ${this.connectUrl}`)
-      // message({ type: 'error', message: msg, duration: 10000 })
     }
     this.isError = true
   }
@@ -298,17 +330,20 @@ export class IWebScoket {
 
   constructor(config: WebSocketConfig) {
     this.baseWs = ''
-    this.baseUrl = ''
+    this.baseUrl = window.location.host
     this.url = ''
+    this.connectUrl = ''
 
-    this.socket = null
+    this.socket = new WebSocket(this.connectUrl)
     this.config = config
 
     this.isReConnect = false
     this.isError = false
     this.isClose = false
+
     this.sendMessageCount = 0
     this.connectCount = 0
+    this.timer = undefined
 
     if (hasOwnProperty(window, 'WebSocket')) {
       this.init(config)
@@ -329,8 +364,8 @@ export class IWebScoket {
 
     const { baseWs, baseUrl, url, onopen, onclose, onerror, onmessage } = config
 
-    this.baseWs = baseWs ?? `${baseWS}`
-    this.baseUrl = baseUrl ?? `${isEmpty(baseWSURL) ? window.location.host : baseWSURL}`
+    this.baseWs = baseWs ?? 'ws://'
+    this.baseUrl = baseUrl ?? window.location.host
     if (!isEmpty(url)) {
       this.url = url
     } else {
@@ -363,7 +398,7 @@ export class IWebScoket {
    * @param {*} data 送出資料
    */
   send(data: any) {
-    let _timer: NodeJS.Timeout | null = null
+    let _timer: number | undefined = undefined
 
     try {
       // 可送出訊息
@@ -391,30 +426,16 @@ export class IWebScoket {
     }
   }
 
-  /**
-   * 重連 WebSocket
-   * 手動關閉 會在1秒後重新連接
-   */
+  // 重連 WebSocket, 手動關閉 會在1秒後重新連接
   reconnect() {
     clearTimeout(this.timer)
     this.socket.close()
   }
 
-  /**
-   * 關閉 WebSocket
-   * 手動關閉
-   */
+  // 關閉 WebSocket, 手動關閉
   close() {
     this.isClose = true
     clearTimeout(this.timer)
     this.socket.close()
   }
 }
-
-// 尚未封裝
-export type EventSourceConfig = {}
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource
- * @description EventSource
- */
-export class IEventSource {}

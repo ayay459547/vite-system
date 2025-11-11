@@ -1,15 +1,35 @@
+/**
+ * 使用瀏覽器 Web IndexedDB
+ * @see https://github.com/jakearchibald/idb
+ * @see https://www.npmjs.com/package/idb
+ */
+
 import { openDB, deleteDB } from 'idb'
+
 import checkSystemVersionDiff from './checkSystemVersion'
-import {
-  idbVersion,
-  storeVersion,
-  get,
-  set,
-  del,
-  keys,
-  clear
-} from '@/lib/lib_idb'
-import { deepClone, message, isEmpty, hasOwnProperty } from '@/lib/lib_utils' // 工具
+import { get, set, del, keys, clear } from '@/lib/lib_idb'
+import { deepClone, message, isEmpty, hasOwnProperty, webReload } from '@/lib/lib_utils' // 工具
+
+/**
+ * 有新增或刪除表時 idbVersion + 1
+ */
+const idbVersion = 7
+/**
+ * 管理 store
+ * 版本記錄在 iDBVersion
+ *
+ * 資料表名稱: {
+ *   version 目前版本 版本不同會清空
+ * }
+ */
+const storeVersion: Record<string, any> = {
+  iDBVersion: { version: '1.0.0' },
+  columnSetting: { version: '1.0.1' },
+  filterSetting: { version: '1.0.0' },
+  pageSetting: { version: '1.0.0' },
+  ganttSetting: { version: '1.0.0' },
+  dataOptions: { version: '1.0.2' }
+}
 
 /**
  * indexedDB 刪除換新
@@ -22,14 +42,16 @@ const { isChange, system } = checkSystemVersionDiff()
 
 const initDB = async () => {
   if (isChange) {
-    console.log('[init] init DB')
-
-    await deleteDB(system)
+    await deleteDB(system).then(() => {
+      console.log('💾 delete indexedDB success')
+    }).catch(e => {
+      console.log('💾 delete indexedDB error', e)
+    })
   }
   try {
     const _dbPromise = openDB(system, idbVersion, {
       upgrade(db, oldVersion, newVersion, transaction, event) {
-        console.log('upgrade', { db, oldVersion, newVersion, transaction, event })
+        console.log('💾 upgrade', { db, oldVersion, newVersion, transaction, event })
 
         const tempStoreVersion = deepClone({}, storeVersion)
 
@@ -53,23 +75,23 @@ const initDB = async () => {
         }
       },
       blocked(currentVersion, blockedVersion, event) {
-        console.log('blocked', { currentVersion, blockedVersion, event })
+        console.log('💾 blocked', { currentVersion, blockedVersion, event })
       },
       blocking(currentVersion, blockedVersion, event) {
-        console.log('blocking', { currentVersion, blockedVersion, event })
+        console.log('💾 blocking', { currentVersion, blockedVersion, event })
       },
       terminated() {
-        console.log('terminated')
+        console.log('💾 terminated')
       }
     })
 
     _dbPromise.then(idb => {
-      console.groupCollapsed('[init] indexedDB: Init')
-      console.log('初始化 indexedDB')
-      console.log('initDB()')
+      console.groupCollapsed('💾 init indexedDB success')
       console.log({ system, idbVersion })
       console.log(idb)
       console.groupEnd()
+    }).catch(e => {
+      console.log('💾 init indexedDB error', e)
     })
 
     return _dbPromise
@@ -90,7 +112,7 @@ const initDB = async () => {
   }
 }
 
-let dbPromise = initDB()
+let dbPromise: any = initDB()
 
 // iDB版本
 async function getIDBVersion(key: string) {
@@ -106,32 +128,45 @@ async function clearIDBVersion() {
   return await clear('iDBVersion')
 }
 async function keysIDBVersion() {
-  return await keys('iDBVersion')
+  try {
+    return (await (dbPromise as any)).getAllKeys('iDBVersion')
+  } catch (e: any) {
+    console.log('💾', e)
+  }
 }
 
-// 確認indexDB是否建立成功
+/**
+ * 1. 確認indexDB是否建立成功
+ * 2. 系統版本/名稱 變更 清除資料
+ * 3. 設定當前版本, 如果 store 版本不同, 清除資料
+ * 4. 移除不存在的 store
+ */
 const checkInitIdb = async () => {
   const storeNameList = await keysIDBVersion()
-  console.groupCollapsed('[init] indexedDB: Check')
-  console.log('確認indexDB是否建立成功')
-  console.log('checkInitIdb()')
-  console.log(storeNameList)
+  /**
+   * idbVersion 高版本 => 低版本 會出現此情況
+   * 如果原本 是新版本網頁 => 降回舊版本網頁
+   * indexedDB 不允許 idbVersion 往下降版
+   */
 
-  if ([undefined, null].includes(storeNameList)) {
-    console.log('indexedDB Delete')
-
-    await deleteDB(system)
+  // 1. 確認indexDB是否建立成功
+  if (storeNameList === null || storeNameList === undefined) {
+    // 重新建立idb
+    await deleteDB(system).then(() => {
+      console.log('💾 delete indexedDB success')
+    }).catch(e => {
+      console.log('💾 delete indexedDB error', e)
+    })
     dbPromise = initDB()
+    webReload()
   }
 
-  console.groupEnd()
-
-  // 系統版本/名稱 變更 清除資料
+  // 2. 系統版本/名稱 變更 清除資料
   if (isChange) {
     clearIDBVersion()
   }
 
-  // 設定當前版本
+  // 3. 設定當前版本, 如果 store 版本不同, 清除資料
   for (const storeName in storeVersion) {
     const store = storeVersion[storeName]
     const { version } = store
@@ -148,7 +183,7 @@ const checkInitIdb = async () => {
     })
   }
 
-  // 移除不存在的 store
+  // 4. 移除不存在的 store
   for (const i in storeNameList) {
     const storeKey = storeNameList[i]
     const storeName = `${storeKey}`

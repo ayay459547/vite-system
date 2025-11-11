@@ -6,78 +6,84 @@ export type FormatOperatorOptions = {
   selectPrefix?: string
   returnType?: 'object' | 'array'
 }
-/**
- * @author Caleb
- * @description 運算 (配合 WebViewTable 通用api格式)
- *  {
- *    operator_{key}: value[0],
- *    select_{key}: value[1]
- *  }
- * @param {String} key 關鍵字
- * @param {Any} value 值(陣列才有效)
- * @returns {Object} 格式化後的資料
- */
-export const formatOperator = <T>(key: string, value: any, options?: FormatOperatorOptions): T | any => {
-  const {
-    operatorPrefix = 'operator_',
-    selectPrefix = 'select_',
-    returnType = 'object'
-  } = options ?? {}
 
-  const [_operator, _select] = Array.isArray(value) ? value : []
-
-  const entries = [
-    [`${operatorPrefix}${key}`, _operator ?? ''],
-    [`${selectPrefix}${key}`, _select ?? '']
-  ]
-
-  switch (returnType) {
-    case 'array':
-      return [_operator, _select]
-    case 'object':
-    default:
-      return Object.fromEntries(entries)
-  }
-}
-
-type FormatDateTimeRangeOptions = {
+export type FormatDateTimeRangeOptions = {
   startPrefix?: string
   endPrefix?: string
   returnType?: 'object' | 'array'
 }
+
 /**
- * @author Caleb
  * @description 日期 (配合 WebViewTable 通用api格式)
- *  {
- *    isStartDate_{key}: value[0],
- *    isEndDate_{key}: value[1]
- *  }
- * @param {String} key 關鍵字
- * @param {Any} value 值(陣列才有效)
- * @returns {Object} 格式化後的資料
  */
-export const formatDateTimeRange = <T>(key: string, value: any, options?: FormatDateTimeRangeOptions): T | any => {
-  const {
-    startPrefix = 'isStartDate_',
-    endPrefix = 'isEndDate_',
-    // startPrefix = 'isStartDateTime_',
-    // endPrefix = 'isEndDateTime_',
-    returnType = 'object'
-  } = options ?? {}
+export const webViewFormat = {
+  /**
+   * @author Caleb
+   * @description 運算 (配合 WebViewTable 通用api格式)
+   *   {
+   *     operator_{key}: value[0],
+   *     select_{key}: value[1]
+   *   }
+   * @param {String} key 關鍵字
+   * @param {*} value 值(陣列才有效)
+   * @returns {Object} 格式化後的資料
+   */
+  operator: <T>(key: string, value: ([any, any] | any), options?: FormatOperatorOptions): T | any => {
+    const {
+      operatorPrefix = 'operator_',
+      selectPrefix = 'select_',
+      returnType = 'object'
+    } = options ?? {}
 
-  const [_startDate, _endDate] = Array.isArray(value) ? value : []
+    const [_operator, _select] = Array.isArray(value) ? value : [null, value]
 
-  const entries = [
-    [`${startPrefix}${key}`, _startDate ?? ''],
-    [`${endPrefix}${key}`, _endDate ?? '']
-  ]
+    const entries = [
+      [`${operatorPrefix}${key}`, _operator],
+      [`${selectPrefix}${key}`, _select]
+    ]
 
-  switch (returnType) {
-    case 'array':
-      return [_startDate, _endDate]
-    case 'object':
-    default:
-      return Object.fromEntries(entries)
+    switch (returnType) {
+      case 'array':
+        return [_operator, _select]
+      case 'object':
+      default:
+        return Object.fromEntries(entries)
+    }
+  },
+  /**
+   * @author Caleb
+   * @description 日期 (配合 WebViewTable 通用api格式)
+   *   {
+   *     isStartDate_{key}: value[0],
+   *     isEndDate_{key}: value[1]
+   *   }
+   * @param {String} key 關鍵字
+   * @param {*} value 值(陣列才有效)
+   * @returns {Object} 格式化後的資料
+   */
+  dateTimeRange: <T>(key: string, value: ([any, any] | any), options?: FormatDateTimeRangeOptions): T | any => {
+    const {
+      startPrefix = 'isStartDate_',
+      endPrefix = 'isEndDate_',
+      // startPrefix = 'isStartDateTime_',
+      // endPrefix = 'isEndDateTime_',
+      returnType = 'object'
+    } = options ?? {}
+
+    const [_startDate, _endDate] = Array.isArray(value) ? value : [null, null]
+
+    const entries = [
+      [`${startPrefix}${key}`, _startDate],
+      [`${endPrefix}${key}`, _endDate]
+    ]
+
+    switch (returnType) {
+      case 'array':
+        return [_startDate, _endDate]
+      case 'object':
+      default:
+        return Object.fromEntries(entries)
+    }
   }
 }
 

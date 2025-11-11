@@ -13,7 +13,8 @@ export const passiveEvents = function () {
       (this as any).func = func
       if (typeof capture !== 'boolean') {
         capture = capture || {}
-        capture.passive = false
+        // 新增 Interact.js 後, capture.passive 會噴錯
+        // capture.passive = false
       }
       (this as any).func(type, fn, capture)
     }

@@ -1,16 +1,15 @@
 import checkSystemVersionDiff from './checkSystemVersion'
-import { hasOwnProperty } from '@/lib/lib_utils' // 工具
+import { hasOwnProperty, webReload } from '@/lib/lib_utils' // 工具
+import { setLocalStorage, getLocalStorage, clearLocalStorage } from '@/lib/lib_storage'
 
 const buildVersion = (import.meta as any).env.VITE_API_BUILD_VERSION
 
 // 打包版本 如果不同 會清除瀏覽器快取 並刷新
-const oldBuildVersion = localStorage.getItem('buildVersion')
+const oldBuildVersion = getLocalStorage('buildVersion')
 if (buildVersion !== oldBuildVersion) {
-  console.log('[init] init build version')
-  localStorage.setItem('buildVersion', buildVersion)
+  console.log('💾 init buildVersion')
+  setLocalStorage('buildVersion', buildVersion)
 
-  // @ts-ignore
-  location.reload(true)
   if (hasOwnProperty(window, 'caches')) {
     window.caches.keys().then(keyList => {
         return Promise.all(
@@ -19,7 +18,7 @@ if (buildVersion !== oldBuildVersion) {
       }
     )
   }
-
+  webReload()
 }
 
 /**
@@ -32,11 +31,11 @@ if (buildVersion !== oldBuildVersion) {
 const { isChange, system, systemVersion } = checkSystemVersionDiff()
 
 if (isChange) {
-  console.log('[init] init localStorage')
+  console.log('💾 init localStorage')
 
-  localStorage.clear()
-  localStorage.setItem('system', system)
-  localStorage.setItem('version', systemVersion)
+  clearLocalStorage()
+  setLocalStorage('system', system)
+  setLocalStorage('version', systemVersion)
   // 預設色調 淺色
-  localStorage.setItem('color-tone', 'light')
+  setLocalStorage('color-tone', 'light')
 }

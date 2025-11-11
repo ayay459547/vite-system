@@ -1,98 +1,9 @@
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { nextTick } from 'vue'
+import type { Options } from '@/components'
 import dayjs from 'dayjs'
 import { getGanttSetting, setGanttSetting } from '@/lib/lib_idb'
 // import { isArray } from 'element-plus/es/utils'
-
-export type YItem = YItemGroup | YItemItem | YItemStick
-export interface YItemStick {
-  name: string
-  type: 'search' | 'edit'
-  tab: string | null
-  depth: 0
-  // key: string // Uuid(type)
-  children?: []
-  orders: Array<any>
-  displayRush: false
-}
-export interface YItemItem  {
-  name: string
-  tab: string | null
-  type: 'item'
-  key: string // Uuid(type)
-  depth: number
-  parent?: YItemGroup
-  orders: Array<any>
-  orderFilters: Array<any>
-  isRushalble: boolean
-  rushableCause: string
-  rushableOrders: Array<string>
-  displayRush: boolean
-}
-export interface YItemGroup  {
-  name: string
-  tab: string | null
-  type: 'group'
-  key: string // Uuid(type)
-  depth: number
-  parent?: YItemGroup
-  // orders: Array<any>
-  // orderFilters: Array<any>
-  levelFilters: Array<any>
-  children?: Array<YItem>
-  isOpen: boolean
-  isRushalble: false
-  rushableCause: string
-  rushableOrders: []
-  displayRush: boolean
-}
-export interface GanttData {
-  isLoading: boolean
-  timeRange: [string, string]
-  orders: Array<any>
-  marks: Array<any>
-  yItems: Array<YItem>
-  filterColumns: Array<any>
-  processRushableMachines: Map<string, Array<string>> // processId -> Rushable Machine List
-  selectOrders: Array<any>
-}
-export interface YItems  {
-  name: string
-  tab: string | null
-  type: 'group'
-  key: string // Uuid(type)
-  depth: number
-  parent?: YItemGroup
-  // orders: Array<any>
-  // orderFilters: Array<any>
-  preLevelFilters: Array<any>
-  curLevelFilters: Array<any>
-  nextLevelFilters: Array<any>
-  //
-  children?: Array<YItems>
-  isOpen: boolean
-  isRushalble: false
-  rushableCause: string
-  rushableOrders: []
-  displayRush: boolean
-}
-export interface Order {
-  key: string
-  startTimeValue: number //second
-  endTimeValue: number //second
-  //draw Type
-  isEdited: boolean
-  isEditing: boolean
-  isIndicate: boolean
-
-  //
-  orderIds: string
-  moiIndex: number
-  machineIds: string
-  processId: string
-  //
-  markIndex: number
-}
 
 export interface GanttSetting {
   key: string
@@ -104,16 +15,24 @@ export interface GanttSetting {
   timeRange: TimeRange
 }
 export interface LevelFilter {
-  label: String | null
+  label: string | null
   param: string
   values: Array<any>
+}
+export interface MarkSetting {
+  name: string
+  i18nLabel: string
+  type: string
+  value: any
+  color: string
 }
 export interface OrderMark {
   name: string
   isActive: boolean
   color: string
-
 }
+
+
 export interface TimeMark {
   label: string
   timeString: string // 2024-10-09 00:00",
@@ -147,11 +66,15 @@ export interface HierarchiesFilter {
   orderFilters: Array<OrderFilter>
 }
 
+export type ParamType = 'string' | 'number' | 'boolean' | 'set' | 'select' | 'time' | 'timeset' |''
+
+
+
 // IndexDB
-const lastVersion = '1.0.3'
-export const getPageGanttSetting  = async (pageKey: string) => {
+const lastVersion = '1.0.8'
+export const getPageGanttSetting = async (pageKey: string) => {
   try {
-    const resData = await getGanttSetting(pageKey)
+    const resData: any = await getGanttSetting(pageKey)
     const {
       orderMarks,
       timeMarks,
@@ -162,7 +85,7 @@ export const getPageGanttSetting  = async (pageKey: string) => {
     } = resData
 
     if(version !== lastVersion) return null
-    const orderMarksSetting = orderMarks.map(mark => {
+    const orderMarksSetting = orderMarks.map((mark: any) => {
       const  { name, isActive, color, orderFilters } = mark
       return {
         name,
@@ -171,7 +94,7 @@ export const getPageGanttSetting  = async (pageKey: string) => {
         orderFilters: JSON.parse(orderFilters)
       }
     })
-    const filtersSetting = levelFilters.map(filter => {
+    const filtersSetting = levelFilters.map((filter: any) => {
       const  { name, active, hierarchies, orderFilters } = filter
       return {
         name,
@@ -180,7 +103,7 @@ export const getPageGanttSetting  = async (pageKey: string) => {
         orderFilters: JSON.parse(orderFilters)
       }
     })
-    const orderPhasesSetting = orderPhases.map(phase => {
+    const orderPhasesSetting = orderPhases.map((phase: any) => {
       const  { name, active, rangeParams, timeSteps } = phase
       return {
         name,
@@ -204,12 +127,13 @@ export const getPageGanttSetting  = async (pageKey: string) => {
       timeRange: timeRangeSetting
     }
   } catch (e) {
+    console.log(e)
     return null
   }
 }
-export const setPageGanttSetting  = async (pageKey: string, data) => {
+export const setPageGanttSetting = async (pageKey: string, data: any) => {
   const { orderMarks, timeMarks, levelFilters, orderPhases, timeRange } = data
-  const orderMarksSetting = orderMarks.map(mark => {
+  const orderMarksSetting = orderMarks.map((mark: any) => {
     const  { name, isActive, color, orderFilters } = mark
     return {
       name,
@@ -218,7 +142,7 @@ export const setPageGanttSetting  = async (pageKey: string, data) => {
       orderFilters: JSON.stringify(orderFilters)
     }
   })
-  const filtersSetting = levelFilters.map(filter => {
+  const filtersSetting = levelFilters.map((filter: any) => {
     const  { name, active, hierarchies, orderFilters } = filter
     return {
       name,
@@ -228,8 +152,8 @@ export const setPageGanttSetting  = async (pageKey: string, data) => {
       orderFilters: JSON.stringify(orderFilters)
     }
   })
-  const orderPhasesSetting = orderPhases.map(phase => {
-    const  { name, active, timeSteps, rangeParams }   = phase
+  const orderPhasesSetting = orderPhases.map((phase: any) => {
+    const  { name, active, timeSteps, rangeParams } = phase
     return {
       name,
       active,
@@ -245,7 +169,6 @@ export const setPageGanttSetting  = async (pageKey: string, data) => {
     timeRange: JSON.stringify(timeRange.timeRange ?? ['', ''])
   }
 
-//
   const ganttSetting = {
     key: pageKey,
     version: lastVersion,
@@ -259,34 +182,43 @@ export const setPageGanttSetting  = async (pageKey: string, data) => {
   await setGanttSetting(pageKey, ganttSetting)
 }
 
-// 建立預設欄位物件與群組
-export const getDefaultLevelFiltersSetting = () => {
-  const defaultRootsFilter = predefinedLevelFilterOptions.map(
+/**
+ * @author Howard
+ * @description 建立預設欄位物件與群組
+ */
+export const createDefaultLevelFiltersSetting = setting => {
+  const defaultRootsFilter = setting.map(
     option => {
       const label = option.label
-      const active = option.value === 'process'
-      const levelFilters =  getPredefinedLevelFilter(option.value)
+      const active = option.active
+      const levelFilters = option.levelFilters
+      const i18nLabel = option.i18nLabel
       return {
         label,
+        i18nLabel,
         name: label,
         active,
         levelFilters,
+        key: getUuid('filter'),
         //
         hierarchies: levelFilters.map(levelFilter => levelFilter.param),
         orderFilters: []
       }
     }
   )
-  // console.log(defaultRootsFilter)
 
   return defaultRootsFilter
 }
-export const applyLevelFiltersSetting = levelFilters => {
+
+export const applyLevelFiltersSetting = (levelFilters: any[]) => {
   levelFilters.forEach(filter => filter.key = getUuid('filter'))
   return levelFilters
 }
 
-//ROOTITEM
+/**
+ * @author Howard
+ * @description ROOTITEM
+ */
 export const createNewRootYItem = () => {
   const newRootYItem = {
     key: getUuid('root'),
@@ -294,7 +226,7 @@ export const createNewRootYItem = () => {
     hierarchies: ['orderIds'],
     orderFilters: []
   }
-  //name
+  // name
   // newRootYItem.hierarchies = ['orderIds']
   // newRootYItem.orderFilters = []
   // console.log(newRootYItem)
@@ -302,8 +234,11 @@ export const createNewRootYItem = () => {
 
 }
 
-// 重設Orders的對應Marks
-export const initOrdersMark = async (orders, marks) => {
+/**
+ * @author Howard
+ * @description 重設Orders的對應Marks
+ */
+export const initOrdersMark = async (orders: any[], marks: any[]) => {
   await nextTick()
   // Reset Order.marks
   orders.forEach(order => order.marks.splice(0))
@@ -316,56 +251,12 @@ export const initOrdersMark = async (orders, marks) => {
     matchOrders.forEach(order => { order.marks.push(mark)})
   })
 }
-// 建立預設Marks
-export const createDefaultMarks = orders => {
-  const marksSetting = [
-    { i18nLabel: 'gantt-state-0', name: '未開工', type: 'select', value: 0, color: '#72A3C2' },
-    // { name: '已結清', value: 1, color: '#FFD700' }, //Gold
-    { i18nLabel: 'gantt-state-3', name: '生產中', type: 'select', value: 3, color: '#3094D2' },
-    { i18nLabel: 'gantt-state-2', name: '已完工', type: 'select', value: 2, color: '#2CC509' }, //GreenYellow
-    //i18nLabel: '',  { name: '已發放', value: 4, color: '#FFA500 '}, //Orange
-    //i18nLabel: '',  { name: '未發放', value: 5, color: '#FA8072'}, //Salmon
-    { i18nLabel: 'gantt-state-6', name: '暫緩',  type: 'select', value: 6, color: '#696969' }, //DimGray
-    { i18nLabel: 'gantt-state-999', name: '結案', type: 'select', value: 999, color: '#702599' } //DodgerBlue
 
-  ]
-
-  const marks = marksSetting.map(mark => {
-    return {
-      label: mark.name,
-      i18nLabel: mark.i18nLabel,
-      name: mark.name,
-      isActive: true,
-      key: getUuid('mark'),
-      orderFilters: [
-        {
-          param: 'status',
-          type: mark.type,
-          operator: 'equal',
-          value: [mark.value]
-        }
-      ],
-      color: mark.color
-    }
-  })
-
-  initOrdersMark(orders, marks)
-  return marks
-}
-
-export const getDefaultOrderMarksSetting = () => {
-  const marksSetting = [
-    { i18nLabel: 'gantt-state-0', name: '未開工', type: 'select', value: 0, color: '#72A3C2' },
-    // { name: '已結清', value: 1, color: '#FFD700' }, //Gold
-    { i18nLabel: 'gantt-state-3', name: '生產中', type: 'select', value: 3, color: '#3094D2' },
-    { i18nLabel: 'gantt-state-2', name: '已完工', type: 'select', value: 2, color: '#2CC509' }, //GreenYellow
-    //i18nLabel: '',  { name: '已發放', value: 4, color: '#FFA500 '}, //Orange
-    //i18nLabel: '',  { name: '未發放', value: 5, color: '#FA8072'}, //Salmon
-    { i18nLabel: 'gantt-state-6', name: '暫緩',  type: 'select', value: 6, color: '#696969' }, //DimGray
-    { i18nLabel: 'gantt-state-999', name: '結案', type: 'select', value: 999, color: '#702599' } //DodgerBlue
-
-  ]
-
+/**
+ * @author Howard
+ * @description 建立預設Marks
+ */
+export const createDefaultOrderMarks = marksSetting => {
   const marks = marksSetting.map(mark => {
     return {
       label: mark.name,
@@ -388,27 +279,44 @@ export const getDefaultOrderMarksSetting = () => {
   return marks
 }
 
-export const applyOrderMarksSetting = (orders, marks) => {
-
+export const applyOrderMarksSetting = (orders: any[], marks: any[]) => {
   initOrdersMark(orders, marks)
   return marks
 }
 
-// 建立選擇框設定
-export const createFilterColumns = (orders, dataParams) => {
-  const columns = Object.values(dataParams) as any
+/**
+ * @author Howard
+ * @description 建立選擇框設定
+ */
+export const createFilterColumns = (orders: any[], dataParams: any) => {
+  const columns = Object.values(dataParams) as any[]
   return columns.map(column => {
     const { param, label, i18nLabel, type, options } = column
     if(options) return { param, label, i18nLabel, type, options }
 
     const set = new Set()
-    orders.forEach(order => {
-      if(hasOwnProperty(order, param)) {
-        set.add(order[param])
+    switch(type) {
+      case 'set': {
+        orders.forEach(order => {
+          if(hasOwnProperty(order, param)) {
+            const valueList = order[param]
+            valueList.forEach(value => { set.add(value)})
+          }
+        })
+        break
       }
-    })
+      default: {
+        orders.forEach(order => {
+          if(hasOwnProperty(order, param)) {
+            set.add(order[param])
+          }
+        })
+      }
+    }
+
 
     const setArray = Array.from(set)
+
     switch(type) {
       case 'number': setArray.sort((a, b) => Number(a) - Number(b)); break
       default: setArray.sort(); break
@@ -447,123 +355,12 @@ export const createFilterColumns = (orders, dataParams) => {
   // return columns
 }
 
-// 新建欄位物件
-export const createNewYItem = (type, depth?) => {
-  switch (type) {
-    case 'item' :
-      return {
-        name: 'New Column',
-        key: getUuid('item'),
-        tab: '',
-        type: 'item',
-        depth: depth ?? 0,
-        isRushable: false,
-        rushableCause: '欄位無對應機台',
-        orders: [],
-        orderFilters: []
-      }
-    case 'group' :
-      return  {
-        name: 'New Group',
-        key: getUuid('group'),
-        tab: '',
-        type: 'group',
-        depth: depth ?? 0,
-        isRushable: false,
-        rushableCause: '群組無法執行插單',
-        isOpen: false,
-        sideOpen: true,
-        children: [],
-        levelFilters: []
-      }
-    case 'search' :
-      return {
-        name: '搜尋結果',
-        key: getUuid('item'),
-        type: 'item',
-        depth: depth ?? 0,
-        isRushable: false,
-        rushableCause: '搜尋欄位無法插單',
-        orders: [],
-        orderFilters: []
-      }
-  }
-}
 
 
-export const setYItemDepth = (item, func) => {
-  const next = func(item)
-  if(!next) return
-  if(item.type === 'group') {
-    item.children.forEach(child => setYItemDepth(child, func))
-  }
-}
-
-export const predefinedLevelFilterOptions = [
-  { i18nLabel: 'manufacturing-order', label: '工單', value: 'order'},
-  { i18nLabel: 'process', label: '製程', value: 'process'},
-  { i18nLabel: 'machine', label: '機台', value: 'machine'}
-]
-export const getPredefinedLevelFilter = optionValue => {
-  switch (optionValue) {
-    case 'process' : {
-      return [
-        {
-          label: '製程維度',
-          tab: '製程',
-          param: 'processId',
-          values: []
-        },
-        {
-          label: null,
-          tab: '機台',
-          param: 'machineId',
-          values: []
-        },
-        {
-          label: null,
-          tab: '工單',
-          param: 'orderIds',
-          values: []
-        }
-      ]
-    }
-    case 'machine' : {
-      return [
-        {
-          label: '機台維度',
-          tab: '機台',
-          param: 'machineId',
-          values: []
-        },
-        {
-          label: null,
-          tab: '工單',
-          param: 'orderIds',
-          values: []
-        }
-      ]
-    }
-    case 'order': {
-      return [
-        {
-          label: '工單維度',
-          tab: '工單',
-          param: 'orderIds',
-          values: []
-        }
-      ]
-    }
-  }
-}
-
-export const getOrderKey = order => {
-  const { orderIds, moiIndex } = order
-  if(!orderIds || !moiIndex) return null
-  return `${orderIds}_${moiIndex}`
-}
-
-// default HIERARCHIESFILTER
+/**
+ * @author Howard
+ * @description default HIERARCHIESFILTER
+ */
 export const defaultHierarchiesFilters: Array<HierarchiesFilter> = [
   {
     name: '工單維度',
@@ -585,7 +382,6 @@ export const defaultHierarchiesFilters: Array<HierarchiesFilter> = [
   }
 ]
 
-
 export interface RootYItem {
   name: string
   key: string // Uuid(root)
@@ -596,12 +392,14 @@ export interface RootYItem {
   path: Array<Path>
   orderFilters: Array<OrderFilter>
 }
-export const inYItemFilter = (yItem, yItemFilter) => {
+export const inYItemFilter = (yItem: any, yItemFilter: any) => {
   const { param, type, operator, value: filterValue } = yItemFilter
-  if(yItem.param !== param) return true //Param不相同則無視
+  // console.log(yItem, yItemFilter)
+  if(yItem.param !== param) return true // Param不相同則無視
 
   const yItemValue = yItem.value
   const pattern = type + '-' + operator
+
 
   switch (pattern) {
     case 'string-like': return yItemValue.includes(filterValue)
@@ -618,12 +416,34 @@ export const inYItemFilter = (yItem, yItemFilter) => {
       if(yItemValue > dayjs(filterValue[1]).unix()) return false
       return true
     }
+    case 'timeset-after': {
+      const filterTime = dayjs(filterValue).unix()
+      return !yItemValue.some(time => {
+        const start = time[0]
+        return start <= filterTime
+      })
+    }
+    case 'timeset-before': {
+      const filterTime = dayjs(filterValue).unix()
+      return !yItemValue.some(time => {
+        const end = time[1]
+        return end >= filterTime
+      })
+    }
+    case 'timeset-include': {
+      const filterTime = dayjs(filterValue).unix()
+      return yItemValue.some(time => {
+        const start = time[0]
+        const end = time[1]
+        return start <= filterTime && end >= filterTime
+      })
+    }
     case 'select-equal': return filterValue.includes(yItemValue)
     case 'select-notEqual': return !filterValue.includes(yItemValue)
     default: return true // Filter無效則不過濾
   }
 }
-export const applyYItemFilters = (yItems, yItemFilters) => {
+export const applyYItemFilters = (yItems: any[], yItemFilters: any[]) => {
   if(yItemFilters.length === 0) return yItems.concat()
   const applyYItems = yItems.filter(yItem => {
     return !yItemFilters.some(filter => !inYItemFilter(yItem, filter))
@@ -632,22 +452,25 @@ export const applyYItemFilters = (yItems, yItemFilters) => {
   return applyYItems
 }
 
-
-
 // Path
 export interface Path {
   param: string
   value: string | number | boolean
+  type: ParamType
 }
-const inPathFilter = (order, filter:Path) => {
-  const { param, value: filterValue } = filter
+const inPathFilter = (order: any, filter: Path) => {
+  const { param, value: filterValue, type } = filter
   if(!hasOwnProperty(order, param)) return false
   const orderValue = order[param]
-  return orderValue === filterValue
+
+  switch (type) {
+    case 'set': return orderValue.includes(filterValue)
+    default: return orderValue === filterValue
+  }
 }
-export const applyPathFilters = (orders, path:Array<Path>) => {
+export const applyPathFilters = (orders: any[], path:Array<Path>) => {
   if(path.length === 0) return orders.concat()
-  const applyOrders  = orders.filter(order => {
+  const applyOrders = orders.filter(order => {
     return !path.some(filter => !inPathFilter(order, filter))
   })
   return applyOrders
@@ -656,11 +479,11 @@ export const applyPathFilters = (orders, path:Array<Path>) => {
 export interface OrderFilter {
   key?: string
   param: string
-  type: 'string' | 'number' | 'time' | 'boolean' | ''
+  type: ParamType
   operator:  string
   value: Array<any> | string | number | null
 }
-export const inOrderFilter = (order, orderFilter) => {
+export const inOrderFilter = (order: any, orderFilter: any) => {
   const { param, type, operator, value: filterValue } = orderFilter
   if(!hasOwnProperty(order, param)) return false
   const orderValue = order[param]
@@ -681,12 +504,36 @@ export const inOrderFilter = (order, orderFilter) => {
       if(orderValue > dayjs(filterValue[1]).unix()) return false
       return true
     }
+    case 'timeset-after': {
+      const filterTime = dayjs(filterValue).unix()
+      return !orderValue.some(time => {
+        const start = time[0]
+        return start <= filterTime
+      })
+    }
+    case 'timeset-before': {
+      const filterTime = dayjs(filterValue).unix()
+      return !orderValue.some(time => {
+        const end = time[1]
+        return end >= filterTime
+      })
+    }
+    case 'timeset-include': {
+      const filterTime = dayjs(filterValue).unix()
+      return orderValue.some(time => {
+        const start = time[0]
+        const end = time[1]
+        return start <= filterTime && end >= filterTime
+      })
+    }
     case 'select-equal': return filterValue.includes(orderValue)
     case 'select-notEqual': return !filterValue.includes(orderValue)
+    case 'set-include': return orderValue.some(value => filterValue.includes(value))
+    case 'set-exclude': return !orderValue.some(value => filterValue.includes(value))
     default: return true // Filter無效則不過濾
   }
 }
-export const applyOrderFilters = (orders, orderFilters:Array<OrderFilter>) => {
+export const applyOrderFilters = (orders: any[], orderFilters:Array<OrderFilter>) => {
   if(orderFilters.length === 0) return orders.concat()
   const applyOrders = orders.filter(order => {
     return !orderFilters.some(filter => !inOrderFilter(order, filter))
@@ -695,29 +542,44 @@ export const applyOrderFilters = (orders, orderFilters:Array<OrderFilter>) => {
   return applyOrders
 }
 
-const getOrderFilterValueType = (orderFilter:OrderFilter) => {
+export type OrderFilterValue = 'String' | 'Array' | 'Number' | 'TimeRange' | 'ERROR'
+const getOrderFilterValueType = (orderFilter:OrderFilter): OrderFilterValue => {
   const { type, operator } = orderFilter
   const pattern = type + '-' + operator
 
   switch (pattern) {
+    // String
     case 'string-like':
     case 'string-notLike': return 'String'
     case 'string-equal':
     case 'string-notEqual': return 'Array'
+    // Number
     case 'number-equal':
     case 'number-greatterThanOrEqualTo':
     case 'number-lessThanOrEqualTo': return 'Number'
+    // Time
     case 'time-after':
     case 'time-before': return 'String'
     case 'time-between': return 'TimeRange'
+    // Timeset
+    case 'timeset-after':
+    case 'timeset-before':
+    case 'timeset-include': return 'String'
+    // Select
     case 'select-equal':
     case 'select-notEqual': return 'Array'
+    // Set
+    case 'set-include':
+    case 'set-exclude': return 'Array'
     default : return 'ERROR'
   }
 }
 
-// 建立新的OrderFilter, 預設為空
-export const createEmptyOrderFilter = ():OrderFilter => {
+/**
+ * @author Howard
+ * @description 建立新的OrderFilter, 預設為空
+ */
+export const createEmptyOrderFilter = (): OrderFilter => {
   return  {
     key: getUuid('filter'),
     param: '',
@@ -727,21 +589,20 @@ export const createEmptyOrderFilter = ():OrderFilter => {
   }
 }
 
-
-export const isOrderFilterValid = (orderFilter:OrderFilter): boolean => {
+export const isOrderFilterValid = (orderFilter: OrderFilter): boolean => {
   const { param, value } = orderFilter
   if(param === '') return false
   if(value === null) return false
   const valueType = getOrderFilterValueType(orderFilter)
   switch (valueType) {
     case 'Array': return !isEmpty(value)
-    case 'String': return value !== ''
     case 'Number':
-    case 'TimeRange': return  value[0] !== '' && value[1] !== ''
+    case 'String': return value !== ''
+    case 'TimeRange': return Array.isArray(value) && value[0] !== '' && value[1] !== ''
     default: return false
   }
 }
-export const operatorOptions = {
+export const operatorOptions: Record<string, Options> = {
   number: [
     { label: '>=', value: 'greatterThanOrEqualTo' },
     { label: '<=', value: 'lessThanOrEqualTo' },
@@ -758,22 +619,45 @@ export const operatorOptions = {
     { label: 'Before', value: 'before' },
     { label: 'Between', value: 'between' }
   ],
+  timeset: [
+    { label: 'After', value: 'after' },
+    { label: 'Before', value: 'before' },
+    { label: 'Include', value: 'include' }
+  ],
   select: [
     { label: '=', value: 'equal' },
     { label: '!=', value: 'notEqual' }
+  ],
+  set: [
+    { label: 'Include', value: 'include' },
+    { label: 'Exclude', value: 'exclude' }
   ]
 }
 
-// Type: Time
-export const converTimeStringToValue = (timeString:string) : number => {
+/**
+ * @author Howard
+ * @description Type: Time
+ */
+
+export type TimeSet = Array<{ start: string, end: string}>
+export const converTimeSetToValue = (timeSet: TimeSet) => {
+  return timeSet.map(time => {
+    const { start, end } = time
+    return [
+      converTimeStringToValue(start),
+      converTimeStringToValue(end)
+    ]
+  })
+}
+export const converTimeStringToValue = (timeString: string): number | null => {
   if(!timeString) return null
   return dayjs(timeString).unix()
 }
-export const convertTimeValueToString = (timeValue:number) => {
+export const convertTimeValueToString = (timeValue: number) => {
   if(!timeValue) return null
   return dayjs.unix(timeValue).format('YYYY-MM-DD HH:mm')
 }
-export const getDataTimeRange = (data, rangeParams) => {
+export const getDataTimeRange = (data: any, rangeParams: any) => {
   const [ param1, param2 ] = rangeParams
   const time1 = data[param1]
   const time2 = data[param2]
@@ -781,4 +665,10 @@ export const getDataTimeRange = (data, rangeParams) => {
   if(!time1 || !time2) return null
   if(time1 > time2) return null
   return [time1, time2]
+}
+
+export const getOrderKey = (order: any) => {
+  const { orderIds, moiIndex } = order
+  if(!orderIds || !moiIndex) return null
+  return `${orderIds}_${moiIndex}`
 }

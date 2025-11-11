@@ -1,3 +1,9 @@
+/**
+ * 日期時間工具
+ * @see https://github.com/iamkun/dayjs
+ * @see https://day.js.org/en/
+ */
+
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
@@ -8,9 +14,7 @@ dayjs.extend(duration)
 dayjs.extend(weekOfYear)
 dayjs.extend(isoWeek)
 
-// @ts-ignore
-window.dayjs = dayjs
-
+export type Dayjs = dayjs.Dayjs
 export type DateType = string | Date | dayjs.Dayjs
 
 /**

@@ -1,9 +1,7 @@
 import { useI18n } from 'vue-i18n'
 
-import type { UseHookReturn } from '@/declare/hook' // 全域功能類型
-import type { RouterTree, Navigation } from '@/declare/routes'
-import type { CustomIconProps } from '@/components' // 系統組件
-import { type RouterType, routerTypeIcon } from '@/router/setting'
+import type { UseHookReturn } from '@/types/types_hook' // 全域功能類型
+import type { RouterTree, Navigation } from '@/types/types_routes'
 import { isEmpty } from '@/lib/lib_utils' // 工具
 
 /**
@@ -19,7 +17,7 @@ export const getRouterLeafLayer = (
   level = [1, 2, 3],
   hasLeaves = true
 ): Array<RouterTree> => {
-  const res = []
+  const res: any[] = []
 
   const _getRouterLeaf = (
     routes: RouterTree[] = [],
@@ -34,9 +32,9 @@ export const getRouterLeafLayer = (
 
     if (currLevel > Math.max(...getLevel)) return // 超過指定層數就結束
 
-    const nextLeaves = []
+    const nextLeaves: any[] = []
 
-    routes.forEach(routerItem => {
+    routes.forEach((routerItem: any) => {
       if (getLevel.includes(currLevel)) {
         const pushItem = { ...routerItem }
         // 去掉子路由
@@ -78,7 +76,7 @@ export const getRouterLeafLayer = (
 export const refactorRoutes = <T>(
   callback: (
     leafNode: RouterTree,
-    parentsNode: T
+    parentsNode: T | null
   ) => {
     refactorNode: T // 重構後的格式
     isShow: boolean // 是否顯示
@@ -102,7 +100,7 @@ export const refactorRoutes = <T>(
             leaves: []
           })
 
-          _refactorRoutes(route.leaves, currentNode, (res[len - 1] as any).leaves)
+          _refactorRoutes((route?.leaves ?? []), currentNode, (res[len - 1] as any).leaves)
         } else {
           res.push({ ...currentNode })
         }
@@ -114,28 +112,17 @@ export const refactorRoutes = <T>(
   return res
 }
 
-const getIcon = (icon: [CustomIconProps.Type, string] | string): [CustomIconProps.Type, string] => {
-  if (typeof icon === 'string') return ['fas', icon]
-  return icon
-}
-const getLastTypeIcon = (systemType: RouterType[]): [CustomIconProps.Type, string] => {
-  const lastType = systemType[systemType.length - 1]
-  return routerTypeIcon[lastType]
-}
-
 /**
  * @author Caleb
  * @description 取得路由的圖示 如果沒有圖示 使用類型的圖示
  * @param {Object} nav 路由
  * @returns {Array} 圖示
  */
-const getRouteIcon = (nav: Navigation | null | undefined): [CustomIconProps.Type, string] => {
-  // 如果是 locatehome
-  if ([null, undefined].includes(nav)) return ['fas', 'list']
-
-  const meta = nav?.meta
-  if (!isEmpty(meta.icon)) return getIcon(meta.icon)
-  return getLastTypeIcon(meta.systemType)
+const getRouteIcon = (nav: Navigation | null | undefined | any): any => {
+  if ([null, undefined].includes(nav)) return ['fas', 'question']
+  const meta = nav.meta
+  if (!isEmpty(meta.icon)) return meta.icon
+  return { icon: ['fas', 'hashtag'] }
 }
 
 /**
@@ -144,7 +131,7 @@ const getRouteIcon = (nav: Navigation | null | undefined): [CustomIconProps.Type
  * @param {Object} nav 路由
  * @returns {String} 文字
  */
-const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18nTest }): string => {
+const getRouteTitle = (nav: Navigation | null | undefined | any, { i18nTranslate, i18nTest }: any): string => {
   if ([null, undefined].includes(nav)) return i18nTranslate('system-module') as unknown as string
 
   if (i18nTest(nav.name)) return i18nTranslate(nav.name) as unknown as string
@@ -152,8 +139,8 @@ const getRouteTitle = (nav: Navigation | null | undefined, { i18nTranslate, i18n
 }
 
 export const useRoutesHook = (params?: {
-  i18nTranslate?: UseHookReturn.I18nTranslate
-  i18nTest?: UseHookReturn.I18nTest
+  i18nTranslate?: UseHookReturn['i18nTranslate']
+  i18nTest?: UseHookReturn['i18nTest']
 }) => {
   const { i18nTranslate, i18nTest } = params ?? {}
 

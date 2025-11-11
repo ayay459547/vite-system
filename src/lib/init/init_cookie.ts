@@ -1,5 +1,5 @@
 import checkSystemVersionDiff from './checkSystemVersion'
-import { removeCookie } from '@/lib/lib_cookie'
+import { removeCookie } from '@/lib/lib_storage'
 
 /**
  * cookie 刷新
@@ -11,7 +11,7 @@ import { removeCookie } from '@/lib/lib_cookie'
 const { isChange } = checkSystemVersionDiff()
 
 if (isChange) {
-  console.log('init cookie')
+  console.log('💾 init cookie')
 
   removeCookie('token')
 }

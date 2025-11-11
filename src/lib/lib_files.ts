@@ -1,9 +1,13 @@
-// https://docs.sheetjs.com/docs/demos/frontend/bundler/vitejs
-// import * as XLSX from 'xlsx/xlsx.mjs'
-// import XLSX from 'xlsx'
+/**
+ * excel 工具
+ * @see https://docs.sheetjs.com/docs/demos/frontend/bundler/vitejs
+ */
+
 import type { Range } from 'xlsx'
-import { writeFile, read, utils } from 'xlsx'
-export { default as XLSX, read, utils } from 'xlsx'
+import {
+  // default as XLSX,
+  writeFile, read, utils
+} from 'xlsx'
 
 import type { WorkbookProperties, CalculationProperties, Workbook } from 'exceljs'
 import ExcelJs from 'exceljs'
@@ -18,20 +22,20 @@ const systemType = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 /**
  * @author Caleb
  * @description 將bytes做轉換
- * @param {Number} bytes 檔案大小
+ * @param {Number} byte 檔案大小
  * @returns {String} format後的檔案大小
  */
-export const byteConvert = (bytes: number): string => {
-  if (Number.isNaN(bytes)) return ''
+export const byteConvert = (byte: number): string => {
+  if (Number.isNaN(byte)) return ''
 
-  const symbols = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const symbols = ['byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 
   const exp = (() => {
     /**
      * 對數運算 (換底公式)
-     * log 2 (bytes) = log 2 (bytes) / log 2 2
+     * log 2 (byte) = log 2 (byte) / log 2 2
      */
-    const _exp = Math.floor(Math.log(bytes) / Math.log(2))
+    const _exp = Math.floor(Math.log(byte) / Math.log(2))
     return numberFormat<number>(_exp, {
       type: 'round',
       toFixed: 0
@@ -42,11 +46,23 @@ export const byteConvert = (bytes: number): string => {
   const unit = symbols[i]
 
   const size = (i => {
-    const _size = bytes / Math.pow(2, 10 * i)
+    const _size = byte / Math.pow(2, 10 * i)
     return numberFormat<number>(_size, { type: 'round', toFixed: 2 })
   })(i)
 
   return `${size}${unit}`
+}
+
+// 點擊上傳限制顯示檔案使用
+export const fileTypeMap = {
+  image: ['image/png', 'image/jpeg'],
+  docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+  zip: ['', 'application/x-zip-compressed'],
+  '7z': [''],
+  pdf: ['', 'application/pdf'],
+  json: ['', 'application/json']
 }
 
 /**
@@ -65,25 +81,13 @@ export const getFileType = (file: File): string => {
     // webkitRelativePath
   } = file
 
-  if (type.startsWith('image/')) return 'image'
+  // 圖片類型 image: 配合 CustomImage 顯示
+  if (typeof type === 'string' && type.startsWith('image')) return 'image'
 
-  const regexp = /\.\w*$/
-  const fileType = name.match(regexp)[0] ?? ''
-
-  switch (fileType.toLocaleLowerCase()) {
-    case '.xlsx':
-      return 'excel'
-    case '.docx':
-      return 'word'
-    case '.pptx':
-      return 'powerpoint'
-    case '.zip':
-    case '.7z':
-      return 'zip'
-    default:
-      // return fileType.substring(1)
-      return 'file'
-  }
+  // 其他類型: 配合 CustomSvg 顯示
+  const matchRes = name.match(/\.\w*$/)
+  const fileType = Array.isArray(matchRes) ? matchRes[0] : ''
+  return fileType.split('.')[1]
 }
 
 /**
@@ -107,7 +111,7 @@ export const readImage = async (file: File): Promise<string> => {
 
   const reader = new FileReader()
   return new Promise(resolve => {
-    reader.onload = event => {
+    reader.onload = (event: FileReader | any) => {
       const imgSrc = event.target.result as string
       img.setAttribute('src', imgSrc)
       resolve(imgSrc)
@@ -166,7 +170,7 @@ const excelDataToMatrix = (excelData: any[]) => {
   if (!isEmpty(excelData)) {
     const oldKeyList = Object.keys(excelData[0])
 
-    const firstRowData = oldKeyList.reduce((res, oldKey, keyIndex) => {
+    const firstRowData = oldKeyList.reduce((res: any[], oldKey, keyIndex) => {
       const excleColumn = numberToExcelColumn(keyIndex + 1)
       res[keyIndex] = excleColumn
       return res
@@ -184,13 +188,13 @@ const excelDataToMatrix = (excelData: any[]) => {
 /**
  * 原數據以第一行作為 object 的 key
  * 將原數據 key 轉換成 A B C...
- **/
+ */
 const excelDataToMap = (excelData: any[]) => {
   const resExcelData = []
   if (!isEmpty(excelData)) {
     const oldKeyList = Object.keys(excelData[0])
 
-    const firstRowData = oldKeyList.reduce((res, oldKey, keyIndex) => {
+    const firstRowData = oldKeyList.reduce((res: any, oldKey, keyIndex) => {
       const excleColumn = numberToExcelColumn(keyIndex + 1)
       res[excleColumn] = oldKey
       return res
@@ -200,7 +204,7 @@ const excelDataToMap = (excelData: any[]) => {
     const newExcelData = excelData.map(rowData => {
       const valueList = Object.values(rowData)
 
-      return valueList.reduce((res, value, valueIndex) => {
+      return valueList.reduce((res: any, value, valueIndex) => {
         const excleColumn = numberToExcelColumn(valueIndex + 1)
         res[excleColumn] = value
         return res
@@ -218,9 +222,8 @@ const excelDataToMap = (excelData: any[]) => {
 export const readExcel = async (file: File): Promise<any> => {
   const reader = new FileReader()
   return new Promise(resolve => {
-    reader.onload = event => {
+    reader.onload = (event: any) => {
       const result = event.target.result
-
       const workbook = read(result, { type: 'binary' })
 
       const excel = []

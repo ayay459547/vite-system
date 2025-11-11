@@ -1,24 +1,22 @@
-import { object_reduce } from '@/lib/lib_object'
-
 // 是否給所有權限
 const isAllPermissionData = (import.meta as any).env.VITE_API_ALL_PERMISSION
 
 export type ChangePermission<Res> = (currentPermission: number, diffPermission: number) => Res
 
 // 系統所有權限種類 (2進制)
-export const permission = {
-  read: 1 << 0,
-  create: 1 << 1,
-  update: 1 << 2,
-  delete: 1 << 3,
-  execute: 1 << 4
+export enum PermissionEnum {
+  Read = 1 << 0,
+  Create = 1 << 1,
+  Update = 1 << 2,
+  Delete = 1 << 3,
+  Execute = 1 << 4
 }
 
-export const totlaPermission = object_reduce<number>(permission, (total: number, permissionValue: number) => {
-  return total += permissionValue
+export const totalPermission = Object.values(PermissionEnum).reduce((total, value) => {
+  return total + (typeof value === 'number' ? value : 0)
 }, 0)
 
-export const defaultPermission = isAllPermissionData === 'true' ? totlaPermission : 0
+export const defaultPermission = isAllPermissionData === 'true' ? totalPermission : 0
 
 export type Permission = {
   read: boolean
@@ -27,13 +25,20 @@ export type Permission = {
   delete: boolean
   execute: boolean
 }
+
+/**
+ * @author Caleb
+ * @description 取得權限
+ * @param {Number} permissionTotal 當前權限
+ * @returns {Permission}
+ */
 export const getPermission = (permissionTotal: number): Permission => {
   return {
-    read: hasPermission(permissionTotal, permission.read),
-    create: hasPermission(permissionTotal, permission.create),
-    update: hasPermission(permissionTotal, permission.update),
-    delete: hasPermission(permissionTotal, permission.delete),
-    execute: hasPermission(permissionTotal, permission.execute)
+    read: hasPermission(permissionTotal, PermissionEnum.Read),
+    create: hasPermission(permissionTotal, PermissionEnum.Create),
+    update: hasPermission(permissionTotal, PermissionEnum.Update),
+    delete: hasPermission(permissionTotal, PermissionEnum.Delete),
+    execute: hasPermission(permissionTotal, PermissionEnum.Execute)
   }
 }
 
@@ -70,7 +75,7 @@ export const createPermission: ChangePermission<number> = (
  * @description 更新權限
  * @param {Number} currentPermission 當前權限
  * @param {Number} diffPermission 想要更新的權限號碼總和
- * @returns {Number} 經過 互斥或閘 更新
+ * @returns {Number}
  */
 export const updatePermission: ChangePermission<number> = (
   currentPermission: number,

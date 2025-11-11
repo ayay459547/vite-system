@@ -3,8 +3,8 @@ export interface ResizeObserverCallback {
 }
 
 export type ThrottleOptions = {
-  isNoLeading?: boolean
-  isNoTrailing?: boolean
+  leading?: boolean
+  trailing?: boolean
 }
 /**
  * @author Caleb
@@ -12,8 +12,8 @@ export type ThrottleOptions = {
  * @param {Function} callback 回調函數
  * @param {Number} delay 延遲
  * @param {Object} options 選用設定
- *                 isNoLeading: 是否不執行第一次回調函數
- *                 isNoTrailing: 是否不執行setTimeout的回調函數
+ *                 leading: 是否執行第一次回調函數
+ *                 trailing: 是否執行setTimeout的回調函數
  * @returns {Object} 包含回調函數的Proxy
  */
 export const throttle = <T = Function>(
@@ -22,44 +22,24 @@ export const throttle = <T = Function>(
   options: ThrottleOptions = {}
 ): T => {
   let now: number
-  let timeoutId: NodeJS.Timeout | null
-  let lastTime: number | null
+  let timeoutId: number | undefined
+  let lastTime: number | undefined
 
   const defaultOptions: ThrottleOptions = {
-    isNoLeading: false,
-    isNoTrailing: false,
+    leading: true,
+    trailing: true,
     ...options
   }
-  let { isNoLeading } = defaultOptions
-  const { isNoTrailing } = defaultOptions
-
-  const scopeData = {
-    clearLastTime() {
-      lastTime = null
-    }
-  }
+  let { leading } = defaultOptions
+  const { trailing } = defaultOptions
 
   return new Proxy(() => {}, {
-    set(obj, key, value) {
-      if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
-        scopeData[key] = value
-      } else {
-        obj[key] = value
-      }
-      return true
-    },
-    get(obj, key) {
-      if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
-        return scopeData[key]
-      }
-      return obj[key]
-    },
     apply(obj, thisArg, params) {
       now = +new Date()
 
       // 如果不是第一次執行 && 現在時間 < 上次執行時先 + 延遲時間
       if (lastTime && now < lastTime + delay) {
-        if (isNoTrailing) return
+        if (!trailing) return
 
         clearTimeout(timeoutId)
         timeoutId = setTimeout(() => {
@@ -67,11 +47,11 @@ export const throttle = <T = Function>(
           callback.call(thisArg, ...params)
         }, delay)
       } else {
-        if (isNoLeading) {
-          isNoLeading = false
-        } else {
+        if (leading) {
           lastTime = now
           callback.call(thisArg, ...params)
+        } else {
+          leading = false
         }
       }
     }

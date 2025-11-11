@@ -1,7 +1,7 @@
 /* 讓 object 有類似 array 的方法 */
 import { hasOwnProperty } from '@/lib/lib_utils' // 工具
 
-type That = Object | Array<any> | Record<string, any>
+type That = Array<any> | Record<string, any> | any
 
 /**
  * @author Caleb
@@ -153,7 +153,7 @@ export const object_reduce = <T extends any>(that: That, callback: Function, tem
  *
  * console.log(res) // 'b'
  */
-export const object_findIndex = <T extends (number | string | null)>(that: That, callback: Function, thisArg?: any): T => {
+export const object_findIndex = <T extends (number | string | null)>(that: That, callback: Function, thisArg?: any): T | undefined => {
   thisArg = thisArg || window
 
   for (const key in that) {

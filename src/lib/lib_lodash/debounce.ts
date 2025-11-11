@@ -10,25 +10,9 @@ export interface ResizeObserverCallback {
  * @returns {Function}
  */
 export const debounce = <T = Function>(callback: Function, delay: number): T => {
-  let timeoutId: NodeJS.Timeout | null
-
-  const scopeData = {}
+  let timeoutId: number | undefined
 
   return new Proxy(() => {}, {
-    set(obj, key, value) {
-      if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
-        scopeData[key] = value
-      } else {
-        obj[key] = value
-      }
-      return true
-    },
-    get(obj, key) {
-      if (Object.prototype.hasOwnProperty.call(scopeData, key)) {
-        return scopeData[key]
-      }
-      return obj[key]
-    },
     apply(obj, thisArg, params) {
       if (timeoutId) {
         clearInterval(timeoutId)
