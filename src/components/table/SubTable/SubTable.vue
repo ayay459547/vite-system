@@ -1,22 +1,23 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { ref, onMounted } from 'vue'
 
 const props = defineProps({
   rowData: {
-    type: Object
+    type: Object as PropType<Record<string, any>>
   },
   columnKey: {
-    type: String
+    type: String as PropType<string>
   },
   spanInfo: {
-    type: Object
+    type: Object as PropType<Record<string, any>>
   },
   columnsWidth: {
-    type: Object
+    type: Object as PropType<Record<string, any>>
   }
 })
 
-const tableRef = ref()
+const tableRef = ref<HTMLDivElement>()
 const tableData = ref([])
 const columns = ref([])
 const getDisplayData = ref()
@@ -25,7 +26,6 @@ onMounted(() => {
   tableData.value = props.spanInfo.getSubTableData(props.rowData, props.columnKey)
   columns.value = props.spanInfo.getSubColumns(props.columnKey)
   getDisplayData.value = props.spanInfo.getSubDisplayData
-
 })
 
 </script>
@@ -39,7 +39,7 @@ onMounted(() => {
     >
       <template v-for="prop in columns" :key="prop">
         <div class="sub-ceil" :style="`width: ${props.columnsWidth[prop]}px`">
-          {{  getDisplayData(rowData, subRowData, prop)  }}
+          {{ getDisplayData(rowData, subRowData, prop) }}
         </div>
       </template>
     </div>

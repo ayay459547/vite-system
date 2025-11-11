@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import { ref, shallowRef, onMounted, nextTick, computed, inject, useSlots } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import {
-  VxeTable,
-  VxeColgroup,
-  VxeColumn,
-  CustomIcon,
-  CustomPopover,
-  CustomButton,
-  TimeLevelManagement
-} from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+
+import VxeTable from '@/components/table/VxeTable/VxeTable.vue'
+import VxeColgroup from '@/components/table/VxeTable/VxeColgroup/VxeColgroup.vue'
+import VxeColumn from '@/components/table/VxeTable/VxeColumn/VxeColumn.vue'
+
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import TimeLevelManagement from '@/components/input/TimeLevelManagement/TimeLevelManagement.vue'
 
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 import { hasOwnProperty, isEmpty, getUuid, deepClone } from '@/lib/lib_utils' // 工具
 import dayjs, { getQuarter, getWeekOfYear } from '@/lib/lib_day'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import { getProxyData } from '@/lib/lib_utils' // 工具
 import { setPageSetting, getPageSetting } from '@/lib/lib_idb'
-import type { Types, Expose } from './TimeLineTableInfo'
+import type { Types, Emits, Expose } from './TimeLineTableInfo'
 import { version, props as timeLineCustomTableProps } from './TimeLineTableInfo'
 
 import ColumnSetting from './Components/ColumnSetting.vue'
@@ -32,7 +32,7 @@ const scopedId = getUuid(version)
 
 const props = defineProps(timeLineCustomTableProps)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -62,11 +62,10 @@ const acviteTimeLevelList = computed(() => {
 const emit = defineEmits(['changeKey'])
 
 const timeLineDateKey = ref('')
-const changeKey = async (newDateKey: string) => {
+const changeKey: Emits['changeKey'] = async (newDateKey: string) => {
   timeLineDateKey.value = newDateKey
-
-  emit('changeKey', newDateKey)
   await nextTick()
+  emit('changeKey', newDateKey)
   refreshColumn()
 }
 
@@ -79,7 +78,7 @@ const isMerge = ref(false)
 // 清除 Y軸欄位合併
 const clearMergeCells = () => {
   setTimeout(() => {
-    vxeTableRef.value?.clearMergeCells()
+    VxeTableRef.value?.clearMergeCells()
   }, 0)
   setTimeout(() => {
     isMerge.value = false
@@ -89,7 +88,7 @@ const clearMergeCells = () => {
 const mergeCells = []
 const setMergeCells = () => {
   setTimeout(() => {
-    vxeTableRef.value?.setMergeCells(mergeCells)
+    VxeTableRef.value?.setMergeCells(mergeCells)
   }, 80)
   setTimeout(() => {
     isMerge.value = true
@@ -123,7 +122,6 @@ const resetMergeCells = () => {
       }
       mergeMap[mergeKey].__rowspan__ += 1
     })
-
   })
 
   Object.values(mergeMap).forEach(mergeCell => {
@@ -196,7 +194,7 @@ const dateColumns = shallowRef([])
 // 其他欄位 none
 const otherColumns = shallowRef([])
 
-const vxeTableRef = ref()
+const VxeTableRef = ref<InstanceType<typeof VxeTable>>()
 const renderKey = ref(0)
 const refreshColumn = async () => {
   await nextTick()
@@ -257,19 +255,19 @@ const weekRegex = new RegExp(weekPrefix)
 const initData = async () => {
   isLoading.value = true
 
-  for (let sortMapKey in groupColumnsSortMap) {
+  for (const sortMapKey in groupColumnsSortMap) {
     delete groupColumnsSortMap[sortMapKey]
   }
   showData.value = []
   matrixMap.clear()
 
   // 日期群組
-  const _dateGroup = {}
+  const __dateGroup__ = {}
 
-  const _tableData = deepClone(props.tableData, [])
+  const __tableData__ = deepClone([], props.tableData)
 
   let rowIndex = -1
-  const tableMap = _tableData.reduce((resMap, item) => {
+  const tableMap = __tableData__.reduce((resMap, item, index) => {
     if(
       // 沒該日期欄位資料 || 資料是空
       !hasOwnProperty(item, timeLineDateKey.value) ||
@@ -278,7 +276,7 @@ const initData = async () => {
       return resMap
     }
 
-    let tempRef = _dateGroup
+    let tempRef = __dateGroup__
     // 最小群組日期
     let groupDate = ''
 
@@ -379,6 +377,9 @@ const initData = async () => {
     }
     const rowData = resMap.get(rowKey)
 
+    // 紀錄資料來源在props.table對應的index
+    rowData[`${groupDate}-sourceIndex`] = index
+
     dateColumns.value.forEach(dateColumn => {
       // 對應 GroupDateColumn field
       const field = `${groupDate}-${dateColumn.key}`
@@ -401,11 +402,11 @@ const initData = async () => {
   }, new Map())
 
   // 日期群組
-  groupDateColumns.value = getGroupDateColumns(_dateGroup)
+  groupDateColumns.value = getGroupDateColumns(__dateGroup__)
 
   // 排序資料
   showData.value = Array.from(tableMap.values()).sort((a, b) => {
-    for (let groupColumn of groupColumns.value) {
+    for (const groupColumn of groupColumns.value) {
       const [a_sortMapKey, b_sortMapKey] = [
         `${groupColumn.key}-${a[groupColumn.key]}`,
         `${groupColumn.key}-${b[groupColumn.key]}`
@@ -414,10 +415,8 @@ const initData = async () => {
         return groupColumnsSortMap[a_sortMapKey] - groupColumnsSortMap[b_sortMapKey]
       }
     }
-
     return 0
   })
-  // console.log(showData.value)
 
   await nextTick()
   setTimeout(() => {
@@ -452,7 +451,7 @@ const getDefaultColumnValue = () => {
     }
   })
 
-  const sortCallback = (a: Types.TableColumn, b: Types.TableColumn) => {
+  const sortCallback = (a: Types['tableColumn'], b: Types['tableColumn']) => {
     const [aIndex, bIndex] = [a?.timeIndex ?? -1, b?.timeIndex ?? -1]
     return aIndex - bIndex
   }
@@ -465,7 +464,7 @@ const getDefaultColumnValue = () => {
 }
 
 // 從idb取欄位資訊
-const getSettingValue = async(isCheck: boolean) => {
+const getSettingValue = async(isCheckSetting: boolean) => {
   const defaultColumnValue = getDefaultColumnValue()
   if (isEmpty(props.settingKey) || isEmpty(props.version)) return defaultColumnValue
 
@@ -474,7 +473,7 @@ const getSettingValue = async(isCheck: boolean) => {
 
     // 確認版本
     const isReset = (idbValue.version !== props.version)
-    if (isCheck && isReset) {
+    if (isCheckSetting && isReset) {
       settingReset()
     }
 
@@ -496,8 +495,8 @@ const setSettingValue = async (columnValue: any) => {
 }
 
 // 初始化欄位 + 資料
-const init: Expose.Init = async (isCheck?: boolean) => {
-  const columnValue = await getSettingValue(isCheck ?? false)
+const init: Expose['init'] = async (isCheckSetting?: boolean) => {
+  const columnValue = await getSettingValue(isCheckSetting ?? false)
   groupColumns.value = columnValue.groupValue
   dateColumns.value = columnValue.dateValue
   otherColumns.value = columnValue.otherValue
@@ -537,13 +536,30 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
   return null
 }
 
+// Slot #column-key="{ dateRow }" for date
+const getDateRow = (row, date) => {
+  const sourceIndexKey = date + '-sourceIndex'
+  const sourceIndex = row[sourceIndexKey]
+  return (sourceIndex >= 0) ? props.tableData[sourceIndex] : null
+}
+
+// Slot #column-key="{ groupRow }" for group
+// 將群組包含的tableRows包裝成陣列回傳
+// const getGroupRows = (scope) => {
+//   /*
+//   const { rowIndex, columnIndex } = scope
+//   const [ startRowIndex , endRowIndex ] = getRowIndexRange(rowIndex, columnIndex , mergeCells) 取得 GroupDateColumn的row範圍
+//   const sourceTableData = getSourceTableData(startRowIndex , endRowIndex, dateGroup?)
+//   return sourceTableData
+//   */
+// }
 </script>
 
 <template>
   <div v-loading="isLoading" class="time-line" :class="scopedId">
     <VxeTable
       v-show="isShow"
-      ref="vxeTableRef"
+      ref="VxeTableRef"
       :key="renderKey"
       show-overflow
       show-header-overflow
@@ -610,7 +626,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
                 icon-x-type="fluent"
                 icon-name="TableFreezeColumn28Regular"
                 text
-                @click="setMergeCells"
+                @click="resetMergeCells"
               />
               <CustomButton
                 v-show="isMerge"
@@ -638,6 +654,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
               :name="getSlot((column?.slotKey ?? column.key), true)"
               v-bind="scope"
               :column="column"
+              :column-type="'group'"
             >
               {{ i18nTranslate(column?.i18nLabel ?? column.label) }}
             </slot>
@@ -649,6 +666,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
               v-bind="scope"
               :column="column"
               :data="scope.row[column.key]"
+              :column-type="'group'"
             >
               {{ scope.row[column.key] }}
             </slot>
@@ -669,6 +687,7 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
             v-bind="scope"
             :column="column"
             :row-key="`${date}-${column.key}`"
+            :column-type="'date'"
           >
             {{ i18nTranslate(column.i18nLabel ?? column.label) }}
           </slot>
@@ -681,6 +700,8 @@ const getSlot = (slotKey: string, isHeader: boolean) => {
             :column="column"
             :row-key="`${date}-${column.key}`"
             :data="scope.row[`${date}-${column.key}`]"
+            :column-type="'date'"
+            :date-row="getDateRow(scope.row, date)"
           >
             <!-- 實際顯示資料 => 日期 + key -->
             {{ scope.row[`${date}-${column.key}`] ?? '' }}

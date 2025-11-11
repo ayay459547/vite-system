@@ -10,8 +10,12 @@ import {
   inject
 } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { SimpleTable, CustomButton } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import SimpleTable from '@/components/table/SimpleTable/SimpleTable.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { scrollToEl, hasOwnProperty, getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
@@ -51,11 +55,15 @@ const emit = defineEmits([
   'mounted',
   'add',
   'remove',
+  'clear',
   'update:model-value',
-  'expand-change'
+  'expand-change',
+  'start',
+  'end',
+  'change'
 ])
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -70,14 +78,14 @@ const tempValue = computed({
 const tableColumns = ref()
 const showTableColumns = ref()
 
-const add: Emits.Add = () => {
+const add: Emits['add'] = () => {
   if (tempValue.value.length >= props.max) return
 
   emit('add')
 
   nextTick(() => {
     // 多層嵌套可取得最後一個
-    const newEls = document.querySelectorAll(`div[class*="${scopedId}"] .draggable.list-group-item:last-child`)
+    const newEls = document.querySelectorAll(`div[class*="${scopedId}"] .custom-draggable-item:last-child`)
     if (isEmpty(newEls)) return
 
     const newEl = newEls[newEls.length - 1]
@@ -86,10 +94,14 @@ const add: Emits.Add = () => {
     scrollToEl(newEl, { block: 'center' })
   })
 }
-const remove: Emits.Remove = (rowIndex: number) => {
+const remove: Emits['remove'] = (rowIndex: number) => {
   if (tempValue.value.length < props.min + 1) return
-
   emit('remove', rowIndex)
+}
+const clear: Emits['clear'] = () => {
+  tempValue.value = []
+  emit('clear')
+  add()
 }
 
 const beforeColumn = reactive({})
@@ -108,12 +120,12 @@ const setCollapseList = (method?: string) => {
 }
 
 // 展開或折疊 FormList
-const setCollapse: Expose.SetCollapse = (method?: string) => {
+const setCollapse: Expose['setCollapse'] = (method?: string) => {
   setCollapseList(method)
 }
 
-const SimpleTableRef = ref()
-const toggleRowExpansion: Expose.ToggleRowExpansion = (row: any, expanded?: boolean) => {
+const SimpleTableRef = ref<InstanceType<typeof SimpleTable>>()
+const toggleRowExpansion: Expose['toggleRowExpansion'] = (row: any, expanded?: boolean) => {
   return SimpleTableRef.value?.toggleRowExpansion(row, expanded)
 }
 
@@ -166,9 +178,12 @@ onMounted(() => {
 })
 
 // SimpleTable
-const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => {
+const expandChange: Emits['expandChange'] = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => {
   emit('expand-change', row, expanded, rowIndex, rowKey)
 }
+const onSimpleTableStart: Emits['start'] = $event => emit('start', $event)
+const onSimpleTableEnd: Emits['end'] = $event => emit('end', $event)
+const onSimpleTableChange: Emits['change'] = $event => emit('change', $event)
 
 </script>
 
@@ -183,7 +198,7 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
     >
       <div class="__form-list__ form-title">
         <slot name="title" :label="props.label">
-          <span>{{ props.label }}</span>
+          <label>{{ props.label }}</label>
         </slot>
       </div>
 
@@ -221,7 +236,10 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
           :group="props.draggableGroup ?? `${scopedId}`"
           :table-data="tempValue"
           :table-columns="showTableColumns"
-          @expand-change="onExpandChange"
+          @expand-change="expandChange"
+          @start="onSimpleTableStart"
+          @end="onSimpleTableEnd"
+          @change="onSimpleTableChange"
         >
           <template v-if="hasSlot('row-expand')" #row-expand="{ rowKey, row, rowIndex, expanded }">
             <slot
@@ -275,8 +293,30 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
           </template>
           <template #header-row_operations="scope">
             <slot name="column-operations" v-bind="scope">
-              <span>{{ i18nTranslate('operationCommands') }}</span>
-              <!-- <span>{{ scope.data }}</span> -->
+              <CustomPopover
+                trigger="click"
+                :show-after="300"
+                :offset="8"
+                popper-class="form-list-popover"
+              >
+                <template #reference>
+                  <div class="i-selection-operations-header cursor-pointer">
+                    <CustomIcon name="gear" />
+                  </div>
+                </template>
+                <div class="flex-column i-ga-xs">
+                  <label>{{ i18nTranslate('operationCommands') }}</label>
+                  <CustomButton
+                    v-if="props.isRemove && props.isEdit"
+                    type="danger"
+                    icon-name="trash-can"
+                    plain
+                    :label="i18nTranslate('clear')"
+                    :disabled="tempValue.length < props.min + 1"
+                    @click="clear"
+                  />
+                </div>
+              </CustomPopover>
             </slot>
           </template>
           <template #column-row_operations="scope">
@@ -349,6 +389,11 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
 </template>
 
 <style lang="scss" scoped>
+:global(.el-popper.form-list-popover) {
+  width: fit-content !important;
+  min-width: fit-content !important;
+}
+
 .__form-list__ {
   &.form {
     &-top {
@@ -362,6 +407,10 @@ const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowInde
       height: 100%;
       display: flex;
       align-items: center;
+      font-size: 0.9rem;
+      label {
+        font-size: 0.9rem;
+      }
     }
 
     &-container {

@@ -33,6 +33,13 @@ const hasSlot = (prop: string): boolean => {
     <template v-if="hasSlot('default')" #default>
       <slot></slot>
     </template>
+    <template v-if="hasSlot('content')" #content="scoped">
+      <slot
+        name="content"
+        v-bind="scoped"
+        :value="scoped.value"
+      ></slot>
+    </template>
   </ElBadge>
 </template>
 

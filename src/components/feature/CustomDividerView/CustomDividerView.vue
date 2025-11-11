@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 
-import { CustomIcon, CustomScrollbar } from '@/components' // 系統組件
+import { CustomIcon, CustomScrollbar } from '@/components/feature' // 系統組件: 功能
 import { useResizeObserver } from '@/lib/lib_hook' // 自訂Composition API
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
-import throttle from '@/lib/lib_throttle'
+import { throttle } from '@/lib/lib_lodash'
 
 import type { Props, Emits, Expose } from './CustomDividerViewInfo'
 import { version, props as dividerViewProps } from './CustomDividerViewInfo'
@@ -17,10 +17,10 @@ const draggableWidth = 10
 const draggableWidthStyle = `${draggableWidth}px`
 
 // 外框
-const containerRef = ref()
+const containerRef = ref<HTMLDivElement>()
 
 // 目前拖拉的位置
-const draggablePosition = ref<Props.DraggablePosition>('center')
+const draggablePosition = ref<Props['draggablePosition']>('center')
 
 // 是否是拖拉中
 const isMove = ref(false)
@@ -61,7 +61,7 @@ const onDraggableMousedown = ($event: MouseEvent | TouchEvent) => {
     // 變化高度
     const _moveX = mouseMoveX - mouseDownX
     currentLeftWidth.value = beforeMoveWidth + _moveX
-  }, 24, { isNoLeading: true })
+  }, 24, { leading: false })
 
   reSizeEvent = throttleMousemoveEvent
 
@@ -80,7 +80,7 @@ const onDraggableMousedown = ($event: MouseEvent | TouchEvent) => {
 }
 
 const emit = defineEmits(['change'])
-const onChange: Emits.Change = async () => {
+const onChange: Emits['change'] = async () => {
   await nextTick()
   emit('change', defaultWidth.custom)
 }
@@ -131,11 +131,16 @@ const onRightClick = () => {
   }
 }
 
+const toPosition = (newPosition: Props['draggablePosition']) => {
+  defaultWidth.custom = defaultWidth[newPosition]
+  draggablePosition.value = newPosition
+}
+
 /**
  * 右邊是 flex 彈性
  * 左邊是 px 設定固定值
  * 透過拖拉改變
- **/
+ */
 const defaultWidth = reactive({
   left: 0,
   center: 0,
@@ -143,32 +148,29 @@ const defaultWidth = reactive({
   custom: 0
 })
 const currentLeftWidth = computed<any>({
-  get () {
+  get: () => {
     switch (draggablePosition.value) {
-      case 'left':
-        return `${defaultWidth.left}px`
-      case 'center':
-        return `${defaultWidth.center}px`
-      case 'right':
-        return `${defaultWidth.right}px`
+      case 'left': return `${defaultWidth.left}px`
+      case 'center': return `${defaultWidth.center}px`
+      case 'right': return `${defaultWidth.right}px`
       case 'custom':
-      default:
-        return `${defaultWidth.custom}px`
+      default: return `${defaultWidth.custom}px`
     }
   },
-  set (v: number) {
+  set: (v: number) => {
     defaultWidth.custom = v
   }
 })
 
 // 重設定中心寬度
-const initDefaultCenter: Expose.InitDefaultCenter = () => {
+const initDefaultCenter: Expose['initDefaultCenter'] = () => {
   if (typeof props.leftWidth === 'number' && props.leftWidth > 0) {
     defaultWidth.center = props.leftWidth
   }
 }
 defineExpose({
-  initDefaultCenter
+  initDefaultCenter,
+  toPosition
 })
 
 // 設定預設寬度
@@ -286,7 +288,7 @@ div[class*="__CustomDividerView"] {
   .divider-view {
     &-draggable {
       width: v-bind(draggableWidthStyle);
-      height: 100%;
+      // min-height: 100%;
       background-color: var(--el-color-info-light-9);
       position: relative;
       border-radius: 6px;

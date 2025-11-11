@@ -7,72 +7,72 @@ import { props as formSelectProps } from '@/components/input/FormSelect/FormSele
 
 export const version = '__FormSelectTree_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
+export interface Props {
   // custom
-  type Options = FormSelectProps.Options
+  options: FormSelectProps['options']
   // select
-  type ModelValue = FormSelectProps.ModelValue
-  type Multiple = FormSelectProps.Multiple
-  type Disabled = FormSelectProps.Disabled
-  type ValueKey = FormSelectProps.ValueKey
-  type Size = FormSelectProps.Size
-  type Clearable = FormSelectProps.Clearable
-  type CollapseTags = FormSelectProps.CollapseTags
-  type CollapseTagsTooltip = FormSelectProps.CollapseTagsTooltip
-  type MultipleLimit = FormSelectProps.MultipleLimit
-  type Name = FormSelectProps.Name
-  type Effect = FormSelectProps.Effect
-  type Autocomplete = FormSelectProps.Autocomplete
-  type Placeholder = FormSelectProps.Placeholder
-  type Filterable = FormSelectProps.Filterable
-  type AllowCreate = FormSelectProps.AllowCreate
-  type FilterMethod = FormSelectProps.FilterMethod
-  type Remote = FormSelectProps.Remote
-  type RemoteMethod = FormSelectProps.RemoteMethod
-  type RemoteShowSuffix = FormSelectProps.RemoteShowSuffix
-  type Loading = FormSelectProps.Loading
-  type LoadingText = FormSelectProps.LoadingText
-  type NoMatchText = FormSelectProps.NoMatchText
-  type NoDataText = FormSelectProps.NoDataText
-  type PopperClass = FormSelectProps.PopperClass
-  type ReserveKeyword = FormSelectProps.ReserveKeyword
-  type DefaultFirstOption = FormSelectProps.DefaultFirstOption
-  type Teleported = FormSelectProps.Teleported
-  type AppendTo = FormSelectProps.AppendTo
-  type Persistent = FormSelectProps.Persistent
-  type AutomaticDropdown = FormSelectProps.AutomaticDropdown
-  type ClearIcon = FormSelectProps.ClearIcon
-  type FitInputWidth = FormSelectProps.FitInputWidth
-  type SuffixIcon = FormSelectProps.SuffixIcon
-  type TagType = FormSelectProps.TagType
-  type TagEffect = FormSelectProps.TagEffect
-  type ValidateEvent = FormSelectProps.ValidateEvent
-  type Placement = FormSelectProps.Placement
-  type FallbackPlacements = FormSelectProps.FallbackPlacements
-  type MaxCollapseTags = FormSelectProps.MaxCollapseTags
-  type PopperOptions = FormSelectProps.PopperOptions
-  type AriaLabel = FormSelectProps.AriaLabel
-  type EmptyValues = FormSelectProps.EmptyValues
-  type ValueOnClear = FormSelectProps.ValueOnClear
+  modelValue: FormSelectProps['modelValue']
+  multiple: FormSelectProps['multiple']
+  disabled: FormSelectProps['disabled']
+  valueKey: FormSelectProps['valueKey']
+  size: FormSelectProps['size']
+  clearable: FormSelectProps['clearable']
+  collapseTags: FormSelectProps['collapseTags']
+  collapseTagsTooltip: FormSelectProps['collapseTagsTooltip']
+  multipleLimit: FormSelectProps['multipleLimit']
+  name: FormSelectProps['name']
+  effect: FormSelectProps['effect']
+  autocomplete: FormSelectProps['autocomplete']
+  placeholder: FormSelectProps['placeholder']
+  filterable: FormSelectProps['filterable']
+  allowCreate: FormSelectProps['allowCreate']
+  filterMethod: FormSelectProps['filterMethod']
+  remote: FormSelectProps['remote']
+  remoteMethod: FormSelectProps['remoteMethod']
+  remoteShowSuffix: FormSelectProps['remoteShowSuffix']
+  loading: FormSelectProps['loading']
+  loadingText: FormSelectProps['loadingText']
+  noMatchText: FormSelectProps['noMatchText']
+  noDataText: FormSelectProps['noDataText']
+  popperClass: FormSelectProps['popperClass']
+  reserveKeyword: FormSelectProps['reserveKeyword']
+  defaultFirstOption: FormSelectProps['defaultFirstOption']
+  teleported: FormSelectProps['teleported']
+  appendTo: FormSelectProps['appendTo']
+  persistent: FormSelectProps['persistent']
+  automaticDropdown: FormSelectProps['automaticDropdown']
+  clearIcon: FormSelectProps['clearIcon']
+  fitInputWidth: FormSelectProps['fitInputWidth']
+  suffixIcon: FormSelectProps['suffixIcon']
+  tagType: FormSelectProps['tagType']
+  tagEffect: FormSelectProps['tagEffect']
+  validateEvent: FormSelectProps['validateEvent']
+  placement: FormSelectProps['placement']
+  fallbackPlacements: FormSelectProps['fallbackPlacements']
+  maxCollapseTags: FormSelectProps['maxCollapseTags']
+  popperOptions: FormSelectProps['popperOptions']
+  ariaLabel: FormSelectProps['ariaLabel']
+  emptyValues: FormSelectProps['emptyValues']
+  valueOnClear: FormSelectProps['valueOnClear']
   // tree
 }
 export const props = {
   ...formSelectProps
 }
 
-export declare namespace Emits {
-  type Focus = FormSelectEmits.Focus
-  type Clear = FormSelectEmits.Clear
-  type Blur = FormSelectEmits.Blur
-  type Change = FormSelectEmits.Change
-  type RemoveTag = FormSelectEmits.RemoveTag
-  type VisibleChange = FormSelectEmits.VisibleChange
+export interface Emits {
+  focus: FormSelectEmits['focus']
+  clear: FormSelectEmits['clear']
+  blur: FormSelectEmits['blur']
+  change: FormSelectEmits['change']
+  removeTag: FormSelectEmits['removeTag']
+  visibleChange: FormSelectEmits['visibleChange']
 }
 
-export declare namespace Expose {
-  type Focus = FormSelectExpose.Focus
-  type Blur = FormSelectExpose.Blur
+export interface Expose {
+  focus: FormSelectExpose['focus']
+  blur: FormSelectExpose['blur']
 }
 

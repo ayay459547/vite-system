@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { inject, computed, ref, useSlots, nextTick, onMounted } from 'vue'
+import { inject, computed, ref, useSlots, nextTick } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import {
-  FormInput,
-  FormSelect,
-  FormSelectV2,
-  FormSelectTree,
-  FormDatePicker,
-  FormTimePicker,
-  FormAutocomplete,
-  FormRadio,
-  FormCheckbox,
-  FormOperator,
-  CustomText
-} from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import FormInput from '@/components/input/FormInput/FormInput.vue'
+import FormSelect from '@/components/input/FormSelect/FormSelect.vue'
+import FormSelectV2 from '@/components/input/FormSelectV2/FormSelectV2.vue'
+import FormSelectTree from '@/components/input/FormSelectTree/FormSelectTree.vue'
+import FormDatePicker from '@/components/input/FormDatePicker/FormDatePicker.vue'
+import FormTimePicker from '@/components/input/FormTimePicker/FormTimePicker.vue'
+import FormAutocomplete from '@/components/input/FormAutocomplete/FormAutocomplete.vue'
+import FormRadio from '@/components/input/FormRadio/FormRadio.vue'
+import FormCheckbox from '@/components/input/FormCheckbox/FormCheckbox.vue'
+import FormOperator from '@/components/input/FormOperator/FormOperator.vue'
+
+import CustomText from '@/components/feature/CustomText/CustomText.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
+import ModalSelect from '@/components/input/ModalSelect/ModalSelect.vue'
+
+import { defaultModuleType } from '@/declare/declare_i18n'
 import { getUuid, hasOwnProperty, isEmpty, tipLog } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 
-import type { VeeRes, ValidateType } from '@/lib/lib_validate'
-import validateFun from '@/lib/lib_validate'
-
 import type { Props, Expose } from './CustomInputInfo'
 import { version, props as inputProps } from './CustomInputInfo'
+import { useValidate, useModalSelect } from './hook'
 
 const scopedId = getUuid(version)
 
@@ -41,17 +41,18 @@ const emit = defineEmits([
   'visible-change',
   'select',
   'calendar-change',
-  'panel-change'
+  'panel-change',
+  'modal-select-submit'
 ])
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
 
 // i18nTranslate
 const getTranslateLabel = (object: any) => {
-  if (isEmpty(object)) return
+  if (isEmpty(object)) return ''
   const { i18nLabel = '__none__', label, value } = object ?? {}
   return i18nTest(i18nLabel) ? i18nTranslate(i18nLabel) : (label ?? value)
 }
@@ -69,66 +70,18 @@ const getTranslateOptions = (options: any[]): any => {
   return i18nOptions
 }
 
-const validateCount = ref(0)
-onMounted(() => {
-  validateCount.value = 0
-})
-
+const isDomVisible = ref(false)
 // 驗證
-const validateField = (veeValue: Props.ModelValue) => {
-  // 一開始不驗證
-  if (validateCount.value === 0) {
-    validateCount.value++
-    return true
-  }
-  // 必填
-  if (props.required) {
-    switch (props.type) {
-      case 'operator':
-      case 'daterange':
-      case 'timerange':
-        if (
-          !Array.isArray(veeValue) ||
-          isEmpty(veeValue[0]) ||
-          isEmpty(veeValue[1])
-        ) return 'required'
-        break
-      default:
-        if (isEmpty(veeValue)) return 'required'
-        break
-    }
-  }
-  // 非必填
-  if (isEmpty(veeValue)) return true
-
-  // 多個驗證格式
-  if (Object.prototype.toString.call(props.validate) === '[object Array]') {
-    for (const type of props.validate as ValidateType[]) {
-      const { test, label, i18nLabel } = validateFun[type](veeValue) as VeeRes
-      if (!test) return getTranslateLabel({ label, i18nLabel })
-    }
-  }
-
-  // 單一驗證格式
-  if (Object.prototype.toString.call(props.validate) === '[object String]') {
-    const { test, label, i18nLabel } = validateFun[props.validate as ValidateType](veeValue) as VeeRes
-    if (!test) return getTranslateLabel({ label, i18nLabel })
-  }
-
-  return true
-}
-
 const validateKey = `${props.__key__}${scopedId}`
-
-// 錯誤訊息
-const errorMessage = ref('')
-
-const isError = computed(() => {
-  return !isEmpty(errorMessage.value)
-})
+const {
+  validateCount,
+  validateField,
+  errorMessage,
+  isError
+} = useValidate(props, i18nTest)
 
 // 驗證
-const veeValidate: Expose.Validate = async () => {
+const veeValidate: Expose['validate'] = async () => {
   await nextTick()
   validateCount.value++
   const resValidate = validateField(inputValue.value)
@@ -138,7 +91,7 @@ const veeValidate: Expose.Validate = async () => {
     return { valid: true, errors: [], value: inputValue, validateKey }
   } else {
     errorMessage.value = `${resValidate}`
-    return { valid: false, errors: [resValidate], value: inputValue, validateKey }
+    return { valid: false, errors: [`${resValidate}`], value: inputValue, validateKey }
   }
 }
 
@@ -153,13 +106,27 @@ const inputValue = computed({
     handleChange(props.modelValue, isError.value)
     return props.modelValue
   },
-  set: (value: Props.ModelValue) => {
+  set: (value: Props['modelValue']) => {
     emit('update:model-value', value)
   }
 })
 
+// ModalSelect
+const isUseModalSelect = computed(() => {
+  return !isEmpty(props.modalSelect)
+})
+const {
+  valueModalSelect,
+  openWatchModalSelect,
+  stopWatchModalSelect
+} = useModalSelect(
+  isUseModalSelect.value,
+  () => { inputRef.value?.blur() }
+)
+
 // event
 const focus = (e: FocusEvent) => {
+  openWatchModalSelect()
   emit('focus', e)
 }
 const clear = () => emit('clear')
@@ -169,6 +136,7 @@ const blur = async (e: FocusEvent) => {
   // 確保畫面更新完才做驗證
   // 太快做驗證會一瞬間 出現紅色
   await nextTick()
+  stopWatchModalSelect()
   setTimeout(() => {
     handleChange(inputValue.value, true)
   }, 300)
@@ -187,17 +155,22 @@ const calendarChange = (val: any) => emit('calendar-change', val)
 const panelChange = (date: any) => emit('panel-change', date)
 
 const inputRef = ref()
+const modalRef = ref()
 
 // expose
-const key: Expose.Key = validateKey
-const value: Expose.Value = inputValue.value
-const resetValidate: Expose.ResetValidate = () => {
+const key: Expose['key'] = validateKey
+const value: Expose['value'] = inputValue.value
+const resetValidate: Expose['resetValidate'] = () => {
   validateCount.value = 0
   errorMessage.value = ''
 }
-const getDom: Expose.GetDom = () => document.querySelector(`[class*="input-${scopedId}"]`)
-const onFocus: Expose.Focus = () => inputRef.value?.focus()
-const onBlur: Expose.Blur = () => inputRef.value?.blur()
+const getDom: Expose['getDom'] = () => document.querySelector(`[class*="input-${scopedId}"]`)
+const onFocus: Expose['focus'] = () => inputRef.value?.focus()
+const onBlur: Expose['blur'] = () => inputRef.value?.blur()
+const openModal: Expose['openModal'] = () => {
+  modalRef.value.openModal()
+}
+
 defineExpose({
   key,
   value,
@@ -205,7 +178,8 @@ defineExpose({
   validate: veeValidate,
   getDom,
   focus: onFocus,
-  blur: onBlur
+  blur: onBlur,
+  openModal
 })
 
 // 選項文字
@@ -362,10 +336,10 @@ const renderInput = computed(() => {
           filterMethod: props.filterMethod,
           loading: props.loading,
           loadingText: props.loadingText,
-          reserveKeyword: props.reserveKeyword,
           noMatchText: props.noMatchText,
           noDataText: props.noDataText,
           popperClass: props.popperClass,
+          reserveKeyword: props.reserveKeyword,
           teleported: props.teleported,
           appendTo: props.appendTo,
           persistent: props.persistent,
@@ -618,6 +592,8 @@ const renderInput = computed(() => {
         components: FormCheckbox,
         props: {
           label: props.label,
+          i18nLabel: props.i18nLabel,
+          i18nModule: props.i18nModule,
           modelValue: props.modelValue,
           disabled: props.disabled,
           indeterminate: props.indeterminate,
@@ -628,13 +604,13 @@ const renderInput = computed(() => {
       }
     }
     case 'operator': {
-      const [selectValue, inputText] = inputValue.value
+      const [selectValue, inputText] = Array.isArray(inputValue.value) ? inputValue.value : ['', '']
       const selectText = __getOptionsText__(selectValue)
 
       return {
         components: FormOperator,
         props: {
-          type: props.type,
+          type: props.operatorType,
           round: props.round,
           max: props.max,
           min: props.min,
@@ -648,8 +624,8 @@ const renderInput = computed(() => {
       }
     }
     default: {
-
       tipLog(`輸入框類型 ${props.type} 不存在`, [props])
+
       return {
         components: FormInput,
         props: { ...props },
@@ -667,92 +643,140 @@ const hasSlot = (prop: string): boolean => {
 </script>
 
 <template>
-  <div :class="[scopedId, `input-${scopedId}`, `input-${props.direction}`]">
+  <div
+    :class="[scopedId, `input-${scopedId}`, `input-${props.direction}`]"
+    v-element-visibility="(isVisible: boolean) => {
+      // 元素不存在 驗證訊息不顯示
+      isDomVisible = isVisible
+    }"
+  >
     <label v-if="!props.hiddenLabel" class="input-label">
       <span v-if="props.isValidate && props.required" class="input-prefix">*</span>
       <CustomText :label="getTranslateLabel(props)"></CustomText>
     </label>
 
-    <div class='input-main' :class="`validate-${isError ? 'error' : 'success'}`">
-      <div v-if="props.text" class='input-text'>
-        <span v-if="!isEmpty(renderInput.text)">{{ renderInput.text }}</span>
-        <span v-else class="opacity-3">{{ i18nTranslate('none-var', defaultModuleType) }}</span>
+    <!-- 驗證訊息使用彈出顯示 -->
+    <CustomTooltip
+      :visible="isDomVisible && !isEmpty(errorMessage)"
+      :disabled="!props.isValidate && props.hiddenErrorMessage"
+      placement="top-end"
+      popper-class="custom-input-tooltip"
+      :offset="2"
+      :show-after="300"
+      :show-arrow="false"
+      :teleported="false"
+    >
+      <div class='input-main' :class="`validate-${isError ? 'error' : 'success'}`">
+        <div v-if="props.text" class='input-text'>
+          <span v-if="!isEmpty(renderInput.text)">{{ renderInput.text }}</span>
+          <span v-else class="opacity-3">{{ i18nTranslate('none-var', defaultModuleType) }}</span>
+        </div>
+
+        <component
+          v-else
+          :is="renderInput.components"
+          v-bind="renderInput.props"
+          v-on="renderInput.event"
+          ref="inputRef"
+          v-model="inputValue"
+          class="input-visible"
+        >
+          <template v-if="hasSlot('prepend')" #prepend="scope">
+            <slot name="prepend" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('append')" #append="scope">
+            <slot name="append" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('prefix') || isUseModalSelect" #prefix="scope">
+            <slot name="prefix" v-bind="scope"></slot>
+            <ModalSelect
+              v-if="isUseModalSelect"
+              v-model="valueModalSelect"
+              v-bind="props?.modalSelect ?? {}"
+              :search-type="props?.modalSelect?.searchType"
+              :multiple="props?.modalSelect?.multiple"
+              :multiple-limit="props?.modalSelect?.multipleLimit"
+              @submit="(selectedValue) => {
+                if (!Array.isArray(selectedValue)) return
+                emit('modal-select-submit', selectedValue)
+              }"
+              ref="modalRef"
+            />
+          </template>
+          <template v-if="hasSlot('suffix')" #suffix="scope">
+            <slot name="suffix" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('decrease-icon')" #decrease-icon>
+            <slot name="decrease-icon"></slot>
+          </template>
+          <template v-if="hasSlot('increase-icon')" #increase-icon>
+            <slot name="increase-icon"></slot>
+          </template>
+          <template v-if="hasSlot('options')" #options="scope">
+            <slot name="options" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('header')" #header="scope">
+            <slot name="header" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('footer')" #footer="scope">
+            <slot name="footer" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('label')" #label="scope">
+            <slot name="label" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('tag')" #tag="scope">
+            <slot name="tag" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('loading')" #loading>
+            <slot name="loading"></slot>
+          </template>
+          <template v-if="hasSlot('empty')" #empty="scope">
+            <slot name="empty" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('range-separator')" #range-separator="scope">
+            <slot name="range-separator" v-bind="scope"></slot>
+          </template>
+          <template v-if="hasSlot('prev-month')" #prev-month>
+            <slot name="prev-month"></slot>
+          </template>
+          <template v-if="hasSlot('next-month')" #next-month>
+            <slot name="next-month"></slot>
+          </template>
+          <template v-if="hasSlot('prev-year')" #prev-year>
+            <slot name="prev-year"></slot>
+          </template>
+          <template v-if="hasSlot('next-year')" #next-year>
+            <slot name="next-year"></slot>
+          </template>
+          <template v-if="hasSlot('default')" #default="scope">
+            <slot name="default" v-bind="scope"></slot>
+          </template>
+        </component>
       </div>
-      <component
-        v-else
-        :is="renderInput.components"
-        v-bind="renderInput.props"
-        v-on="renderInput.event"
-        ref="inputRef"
-        v-model="inputValue"
-      >
-        <template v-if="hasSlot('prepend')" #prepend="scope">
-          <slot name="prepend" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('append')" #append="scope">
-          <slot name="append" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('prefix')" #prefix="scope">
-          <slot name="prefix" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('suffix')" #suffix="scope">
-          <slot name="suffix" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('decrease-icon')" #decrease-icon>
-          <slot name="decrease-icon"></slot>
-        </template>
-        <template v-if="hasSlot('increase-icon')" #increase-icon>
-          <slot name="increase-icon"></slot>
-        </template>
-        <template v-if="hasSlot('options')" #options="scope">
-          <slot name="options" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('header')" #header="scope">
-          <slot name="header" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('footer')" #footer="scope">
-          <slot name="footer" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('label')" #label="scope">
-          <slot name="label" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('tag')" #tag="scope">
-          <slot name="tag" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('loading')" #loading>
-          <slot name="loading"></slot>
-        </template>
-        <template v-if="hasSlot('empty')" #empty="scope">
-          <slot name="empty" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('range-separator')" #range-separator="scope">
-          <slot name="range-separator" v-bind="scope"></slot>
-        </template>
-        <template v-if="hasSlot('prev-month')" #prev-month>
-          <slot name="prev-month"></slot>
-        </template>
-        <template v-if="hasSlot('next-month')" #next-month>
-          <slot name="next-month"></slot>
-        </template>
-        <template v-if="hasSlot('prev-year')" #prev-year>
-          <slot name="prev-year"></slot>
-        </template>
-        <template v-if="hasSlot('next-year')" #next-year>
-          <slot name="next-year"></slot>
-        </template>
-        <template v-if="hasSlot('default')" #default="scope">
-          <slot name="default" v-bind="scope"></slot>
-        </template>
-      </component>
-      <span v-if="props.isValidate && !props.hiddenErrorMessage" class="input-error">
-        {{ i18nTranslate(errorMessage, defaultModuleType) }}
-      </span>
-    </div>
+      <!-- 驗證訊息 -->
+      <template #content>
+        <span>{{ i18nTranslate(errorMessage, defaultModuleType) }}</span>
+      </template>
+    </CustomTooltip>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@use 'sass:color';
 @use './CustomInput.scss' as *;
+$tooltip-border-color: color.adjust($danger-color, $lightness: 20%);
+$tooltip-bg-color: color.adjust($danger-color, $lightness: 25%);
+
+:global(.el-popper.custom-input-tooltip) {
+  color: $danger-color;
+  box-shadow: 0 0 0 1px $tooltip-border-color inset;
+  background-color: $tooltip-bg-color !important;
+  pointer-events: none !important;
+}
+// :global(.el-popper.custom-input-tooltip .el-popper__arrow::before) {
+//   box-shadow: 1px -1px 0px 0px $tooltip-border-color inset;
+//   background-color: $tooltip-bg-color !important;
+// }
 
 div[class*="CustomInput"] {
   width: 100%;
@@ -763,20 +787,15 @@ div[class*="CustomInput"] {
   // overflow: hidden;
 
   &.input {
+    min-width: 0; // 讓 input 遵守 grid 大小
+    width: 100%; // 讓 input 填滿網格
+
     &-row {
       flex-direction: row;
-      align-items: flex-start;
-
-      .__input-label {
-        transform: translateY(8px);
-      }
+      align-items: center;
     }
     &-column {
       flex-direction: column;
-
-      .__input-label {
-        transform: translateY(2px);
-      }
     }
   }
   .input {
@@ -827,11 +846,11 @@ div[class*="CustomInput"] {
 
     &-text {
       line-height: 32px;
+      font-size: 0.9rem;
     }
-    &-error {
-      color: var(--i-color-danger);
-      width: 100%;
-      height: 20px;
+
+    &-visible {
+      content-visibility: auto;
     }
   }
 }
@@ -840,6 +859,9 @@ div[class*="CustomInput"] {
   z-index: var(--i-z-index-select-option) !important;
 }
 :global(.el-select__popper) {
+  z-index: var(--i-z-index-select-option) !important;
+}
+:global(.el-autocomplete__popper) {
   z-index: var(--i-z-index-select-option) !important;
 }
 :global(.el-select-dropdown__item) {

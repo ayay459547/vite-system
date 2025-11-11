@@ -17,10 +17,10 @@ const emit = defineEmits<{
 const tempVisible = ref(false)
 
 const tempValue = computed({
-  get() {
+  get: () => {
     return typeof props.visible === 'boolean' ? props.visible : tempVisible.value
   },
-  set(value: boolean) {
+  set: (value: boolean) => {
     tempVisible.value = value
     emit('update:visible', value)
   }
@@ -30,10 +30,20 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
+
+const ElTooltipRef = ref<InstanceType<typeof ElTooltip>>()
+const updatePopper = () => {
+  ElTooltipRef.value?.updatePopper()
+}
+
+defineExpose({
+  updatePopper
+})
 </script>
 
 <template>
   <ElTooltip
+    ref="ElTooltipRef"
     :append-to="props.appendTo"
     effect="light"
     :content="props.content"
@@ -60,7 +70,7 @@ const hasSlot = (prop: string): boolean => {
     :aria-label="props.ariaLabel"
     :class="scopedId"
   >
-    <template #default>
+    <template v-if="hasSlot('default')" #default>
       <slot></slot>
     </template>
     <template v-if="hasSlot('content')" #content>

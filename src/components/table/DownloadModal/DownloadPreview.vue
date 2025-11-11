@@ -7,9 +7,9 @@ import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import dayjs from 'dayjs'
 
+import { defaultLang } from '@/declare/declare_i18n'
 import { isEmpty } from '@/lib/lib_utils'
 import { setPdfLangFont } from '@/lib/lib_pdf'
-
 
 const _env = (import.meta as any).env
 const customerString = _env.VITE_API_CUSTOMER
@@ -150,15 +150,13 @@ onMounted(async () => {
   }, 300)
 })
 
-const paperRef = ref<any>()
+const paperRef = ref<HTMLDivElement>()
 const pdfTableData = ref<any[]>([])
 const webTableData = ref<any[]>([])
-
 
 /**
  * @author Howard
  * @description 單位轉換(dpi:72)
- *              更新日期: 2024-12-31, author: Caleb, content: 添加類型
  * @param {Number} value 轉換前值
  * @param {String} unit1 轉換前單位
  * @param {String} unit2 轉換後單位
@@ -183,13 +181,13 @@ const round100 = (value : number) => {
   return Math.round(value * 100) / 100
 }
 
-const tableRef = ref()
-const tableHeaderRef = ref()
-const tableBodyRef = ref()
+const tableRef = ref<HTMLDivElement>()
+const tableHeaderRef = ref<HTMLTableSectionElement>()
+const tableBodyRef = ref<HTMLTableSectionElement>()
 
 const tableColumnsWidth = ref<any[]>([])
 
-const columnRef = ref()
+const columnRef = ref<HTMLTableRowElement>()
 
 
 const getTableColumnsWidthStyle = (columnIndex: number) => {
@@ -207,7 +205,8 @@ const initPage = async () => {
   isLoading.value = true
   await nextTick()
   const pageCutRowIndexs = [0]
-  const rowElement = tableBodyRef.value.children
+  const __rowElement__ = tableBodyRef.value.children
+  const rowElement = Array.from(__rowElement__)
   const headerHeight = tableHeaderRef.value.offsetHeight
   // const headerElement = tableHeaderRef.value.children
   // const baseHeaderElement = headerElement[headerElement.length - 1
@@ -264,10 +263,11 @@ const initPage = async () => {
     // tableColumnsWidth.value = tempColumns
 
     if(columnRef.value) {
-      const tableColumns: any[] = columnRef.value.children
-      const columnsWidth: any[] = []
+      const __tableColumns__ = columnRef.value.children
+      const tableColumns = Array.from(__tableColumns__)
+      const columnsWidth: number[] = []
       tableColumns.forEach(column => {
-        columnsWidth.push(column.offsetWidth)
+        columnsWidth.push((column as HTMLElement).offsetWidth)
       })
       tableColumnsWidth.value = columnsWidth
       // console.log(columnsWidth)
@@ -306,7 +306,7 @@ const printPdf = async () => {
     })
 
     //  AutoTable Setting (Size Unit: pt)
-    const font = await setPdfLangFont(doc, 'zhTw')
+    const font = await setPdfLangFont(doc, defaultLang)
 
     const head = props.headerRow.map((row: any[]) => {
       return row.map(column => {
@@ -332,9 +332,9 @@ const printPdf = async () => {
     // console.log(props.spanTableData)
 
 
-    const padding = sizeUnitConvert(4, 'px', 'pt') //round100(sizeUnitConvert(4, 'px', 'pt'))
-    const fontSize = Math.ceil(sizeUnitConvert(10, 'px', 'pt')) /// 1.15  // round100()
-    const lineWidth = sizeUnitConvert(1, 'px', 'pt') //round100()
+    const padding = sizeUnitConvert(4, 'px', 'pt') // round100(sizeUnitConvert(4, 'px', 'pt'))
+    const fontSize = Math.ceil(sizeUnitConvert(10, 'px', 'pt')) // 1.15  // round100()
+    const lineWidth = sizeUnitConvert(1, 'px', 'pt') // round100()
     const autoTableSetting: Record<string, any> = {
       margin: 24,
       head,
@@ -550,9 +550,14 @@ defineExpose({
             </tr>
           </thead> -->
           <tbody ref="tableBodyRef">
-            <tr v-for="row, rowIndex in spanTableData" :key="row.key" :ref="el => {
-              if(rowIndex === 0) columnRef = el
-            }">
+            <tr
+              v-for="row, rowIndex in spanTableData"
+              :key="row.key"
+              :ref="(el: HTMLTableRowElement) => {
+                if(rowIndex === 0) columnRef = el
+                return el
+              }"
+            >
               <template v-for="column in row" :key="column.key">
                 <td class="table-cell"
                   v-if="displayTableCell(column)"

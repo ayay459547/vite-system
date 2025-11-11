@@ -3,19 +3,18 @@ import type { PropType } from 'vue'
 import { computed, nextTick, ref, onMounted } from 'vue'
 // import type { RouteLocationNormalized } from 'vue-router'
 
-import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import { setLocalStorage, getLocalStorage } from '@/lib/lib_storage'
+import { isEmpty } from '@/lib/lib_utils'
 
 import SideContent from './SideContent/SideContent.vue'
-import HeaderContent from './HeaderContent/HeaderContent.vue'
+import HeaderContent from './HeaderContent.vue'
 
 const props = defineProps({
   showRoutes: {
     type: Array as PropType<Navigation[]>,
-    default: () => {
-      return []
-    }
+    default: () => []
   },
   currentNavigation: {
     type: Object as PropType<Navigation>,
@@ -32,45 +31,20 @@ const props = defineProps({
         level3: ''
       }
     }
-  },
-  authData: {
-    type: Object as PropType<AuthData>,
-    default: () => {
-      return {
-        user: {},
-        role: {},
-        roleFunction: [],
-        groups: []
-      } as AuthData
-    }
-  },
-  breadcrumbName: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
-  },
-  breadcrumbTitle: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
   }
 })
 
-const emit = defineEmits(['logout', 'preference'])
-
-const sideRef = ref()
+const SideContentRef = ref<InstanceType<typeof SideContent>>()
 
 const init = async () => {
   await nextTick()
-
-  sideRef.value?.init()
+  if (isEmpty(props.currentNavigation)) return
+  SideContentRef.value?.init()
 }
 
 const onRouterChange = async () => {
   await nextTick()
-  sideRef.value.setOpen(false)
+  SideContentRef.value?.setOpen(false)
 }
 
 defineExpose({
@@ -80,39 +54,30 @@ defineExpose({
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   if (targetRoutePath.length === 0) {
     isNavOpen.value = false
-    sideRef.value?.setOpen(false)
+    SideContentRef.value?.setOpen(false)
   }
 
   // level1 被點擊
   if (targetRoutePath.length === 1) {
     isNavOpen.value = true
-    sideRef.value?.setOpen(false)
+    SideContentRef.value?.setOpen(false)
     // level2 被點擊
   } else if (targetRoutePath.length === 2) {
     isNavOpen.value = true
-    sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
+    SideContentRef.value?.breadCrumbSetLevel2(targetRoutePath)
     // level3 被點擊
   } else {
     isNavOpen.value = true
-    sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
+    SideContentRef.value?.breadCrumbSetLevel2(targetRoutePath)
   }
 }
-
-// 如果是另開視窗 將選單縮起來
-// const setModalView = async (currentRoute: RouteLocationNormalized) => {
-//   const isModal = currentRoute?.query?.isModal ?? 'false'
-
-//   if (isModal === 'true') {
-//     console.log()
-//   }
-// }
 
 const _isNavOpen = ref('false')
 const isNavOpen = computed({
   set: (isOpen: boolean) => {
     const temp = isOpen ? 'true' : 'false'
     _isNavOpen.value = temp
-    localStorage.setItem('isNavOpen', temp)
+    setLocalStorage('isNavOpen', temp)
   },
   get: () => {
     return _isNavOpen.value === 'true'
@@ -128,13 +93,13 @@ const isNavHover = computed({
     }
     const temp = isHover ? 'true' : 'false'
     _isNavHover.value = temp
-    localStorage.setItem('isNavHover', temp)
+    setLocalStorage('isNavHover', temp)
 
     // hover 一段時間 自動取消
     if (isHover) {
       timeoutId = setTimeout(() => {
         _isNavHover.value = 'false'
-        localStorage.setItem('isNavHover', 'false')
+        setLocalStorage('isNavHover', 'false')
       }, 2500)
     }
   },
@@ -144,17 +109,17 @@ const isNavHover = computed({
 })
 
 onMounted(() => {
-  const isNavOpenLocale = localStorage.getItem('isNavOpen')
+  const isNavOpenLocale = getLocalStorage('isNavOpen')
   if ([null, undefined, ''].includes(isNavOpenLocale)) {
-    localStorage.setItem('isNavOpen', 'false')
+    setLocalStorage('isNavOpen', 'false')
   }
-  _isNavOpen.value = localStorage.getItem('isNavOpen') ?? ''
+  _isNavOpen.value = getLocalStorage('isNavOpen') ?? ''
 
-  const isNavHoverLocale = localStorage.getItem('isNavHover')
+  const isNavHoverLocale = getLocalStorage('isNavHover')
   if ([null, undefined, ''].includes(isNavHoverLocale)) {
-    localStorage.setItem('isNavHover', 'false')
+    setLocalStorage('isNavHover', 'false')
   }
-  _isNavHover.value = localStorage.getItem('isNavHover') ?? ''
+  _isNavHover.value = getLocalStorage('isNavHover') ?? ''
 })
 
 </script>
@@ -166,11 +131,10 @@ onMounted(() => {
       :class="isNavOpen ? 'is-open' : 'is-close'"
     >
       <SideContent
-        ref="sideRef"
+        ref="SideContentRef"
         v-model:isNavOpen="isNavOpen"
         :isNavHover="isNavHover"
         :show-routes="props.showRoutes"
-        :current-navigation="props.currentNavigation"
         :current-route-name="props.currentRouteName"
       >
         <template #logo="{ isOpen }">
@@ -186,14 +150,13 @@ onMounted(() => {
       <div class="layout-header">
         <HeaderContent
           v-model:is-open="isNavOpen"
-          :auth-data="props.authData"
-          :breadcrumb-name="props.breadcrumbName"
-          :breadcrumb-title="props.breadcrumbTitle"
-          @logout="emit('logout')"
-          @preference="emit('preference')"
           @router-change="onRouterChange"
           @set-router="onBreadCrumbClick"
-        />
+        >
+          <template #MenuUser>
+            <slot name="MenuUser"></slot>
+          </template>
+        </HeaderContent>
       </div>
 
       <div class="layout-view">

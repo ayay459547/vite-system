@@ -2,63 +2,61 @@ import type { PropType } from 'vue'
 
 export const version = '__CustomSteps_1.0.0__'
 
-export declare namespace Types {
-  type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success'
-  type Option = {
+export interface Types {
+  statusType: 'wait' | 'process' | 'finish' | 'error' | 'success'
+  option: {
     label?: string
     description?: string
-    status?: StatusType | ''
+    status?: Types['statusType'] | ''
     [key: string]: any
   }
 }
 
-export declare namespace Props {
-  type Space = string | number
-  type Direction = 'vertical' | 'horizontal'
-  type Active = number
-  type ProcessStatus = Types.StatusType
-  type FinishStatus = Types.StatusType
-  type AlignCenter = boolean
-  type Simple = boolean
-  type Options = Array<Types.Option>
+export interface Props {
+  space: string | number
+  direction: 'vertical' | 'horizontal'
+  active: number
+  processStatus: Types['statusType']
+  finishStatus: Types['statusType']
+  alignCenter: boolean
+  simple: boolean
+  options: Array<Types['option']>
 }
 export const props = {
   space: {
-    type: [String, Number] as PropType<Props.Space>,
+    type: [String, Number] as PropType<Props['space']>,
     default: ''
   },
   direction: {
-    type: String as PropType<Props.Direction>,
+    type: String as PropType<Props['direction']>,
     default: 'horizontal'
   },
   active: {
-    type: Number as PropType<Props.Active>,
+    type: Number as PropType<Props['active']>,
     default: 0
   },
   processStatus: {
-    type: String as PropType<Props.ProcessStatus>,
+    type: String as PropType<Props['processStatus']>,
     default: 'process'
   },
   finishStatus: {
-    type: String as PropType<Props.FinishStatus>,
+    type: String as PropType<Props['finishStatus']>,
     default: 'finish'
   },
   alignCenter: {
-    type: Boolean as PropType<Props.AlignCenter>,
+    type: Boolean as PropType<Props['alignCenter']>,
     default: false
   },
   simple: {
-    type: Boolean as PropType<Props.Simple>,
+    type: Boolean as PropType<Props['simple']>,
     default: false
   },
   options: {
-    type: Array as PropType<Props.Options>,
-    default() {
-      return []
-    }
+    type: Array as PropType<Props['options']>,
+    default: () => []
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

@@ -1,16 +1,18 @@
 ## CustomCard
 
+### 卡片
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import type { ButtonSize } from '@/components'
-import { CustomButton } from '@/components'
+import type { CustomButtonProps } from '@/components/feature'
+import { CustomButton } from '@/components/feature'
 
 const test = () => {
   console.log('test click')
 }
-const size: ButtonSize = 'large'
+const size: CustomButtonProps['size'] = 'large'
 </script>
 
 <template>

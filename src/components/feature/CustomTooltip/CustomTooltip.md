@@ -1,10 +1,12 @@
 ## CustomTooltip
 
+### 提示框, 效果類似 CustomPopover
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomTooltip, CustomButton } from '@/components'
+import { CustomTooltip, CustomButton } from '@/components/feature'
 </script>
 
 <template>

@@ -18,30 +18,30 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const onScroll: Emits.Scroll = ($event: Types.OnScrollParams) => {
+const onScroll: Emits['scroll'] = ($event: Types['onScrollParams']) => {
   const { scrollLeft, scrollTop } = $event
   emit('scroll', { scrollLeft, scrollTop })
 }
 
 // exposes
-const elScrollbarRef = ref()
-const handleScroll: Expose.HandleScroll = () => {
-  elScrollbarRef?.value?.handleScroll()
+const ElScrollbarRef = ref<typeof ElScrollbar>()
+const handleScroll: Expose['handleScroll'] = () => {
+  ElScrollbarRef.value?.handleScroll()
 }
-const scrollTo: Expose.ScrollTo = (options, yCoord) => {
-  elScrollbarRef?.value?.scrollTo(options, yCoord)
+const scrollTo: Expose['scrollTo'] = (options, yCoord) => {
+  ElScrollbarRef.value?.scrollTo(options, yCoord)
 }
-const setScrollTop: Expose.SetScrollTop = scrollTop => {
-  elScrollbarRef?.value?.setScrollTop(scrollTop)
+const setScrollTop: Expose['setScrollTop'] = scrollTop => {
+  ElScrollbarRef.value?.setScrollTop(scrollTop)
 }
-const setScrollLeft: Expose.SetScrollLeft = scrollLeft => {
-  elScrollbarRef?.value?.setScrollLeft(scrollLeft)
+const setScrollLeft: Expose['setScrollLeft'] = scrollLeft => {
+  ElScrollbarRef.value?.setScrollLeft(scrollLeft)
 }
-const update: Expose.Update = () => {
-  elScrollbarRef?.value?.update()
+const update: Expose['update'] = () => {
+  ElScrollbarRef.value?.update()
 }
-const wrapRef: Expose.WrapRef = () => {
-  return elScrollbarRef?.value?.wrapRef
+const wrapRef: Expose['wrapRef'] = () => {
+  return ElScrollbarRef.value?.wrapRef
 }
 
 defineExpose({
@@ -56,9 +56,10 @@ defineExpose({
 
 <template>
   <ElScrollbar
-    ref="elScrollbarRef"
+    ref="ElScrollbarRef"
     :height="props.height"
     :max-height="props.maxHeight"
+    :native="props.native"
     :wrap-style="props.wrapStyle"
     :wrap-class="props.wrapClass"
     :view-style="props.viewStyle"
@@ -71,6 +72,7 @@ defineExpose({
     :role="props.role"
     :aria-label="props.ariaLabel"
     :aria-orientation="props.ariaOrientation"
+    :tabindex="props.tabindex"
     :class="scopedId"
     @scroll="onScroll"
   >

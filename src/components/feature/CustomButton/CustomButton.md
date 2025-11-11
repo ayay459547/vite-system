@@ -1,10 +1,12 @@
 ## CustomButton
 
+### 按鈕, 有提供icon參數
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomButton } from '@/components'
+import { CustomButton } from '@/components/feature'
 
 </script>
 

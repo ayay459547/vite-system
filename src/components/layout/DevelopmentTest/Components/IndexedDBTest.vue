@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { FormInput, CustomIcon, CustomButton } from '@/components'
+import { FormInput } from '@/components/input' // 系統組件: 輸入
+import { CustomIcon, CustomButton } from '@/components/feature' // 系統組件: 功能
 import {
   getPageSetting,
   setPageSetting,

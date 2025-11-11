@@ -2,9 +2,9 @@
 import { ref, computed, useSlots, nextTick, onMounted } from 'vue'
 import { ElText } from 'element-plus'
 
-import { CustomTooltip } from '@/components' // 系統組件
+import { CustomTooltip } from '@/components/feature' // 系統組件
 import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
-import debounce from '@/lib/lib_debounce'
+import { debounce } from '@/lib/lib_lodash'
 import { version, props as textProps } from './CustomTextInfo'
 
 const scopedId = getUuid(version)
@@ -69,6 +69,11 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+:global(.el-text .text-label){
+  // font-size: 1rem;
+  font-size: 1em;
+}
+
 [class*="__CustomText"] {
   width: 100%;
   // height: 100%;

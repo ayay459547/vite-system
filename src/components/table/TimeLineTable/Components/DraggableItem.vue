@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed } from 'vue'
-import type { ColumnItem } from '@/declare/columnSetting'
+import type { ColumnItem } from '@/types/types_columnSetting'
 
-import { CustomButton } from '@/components' // 系統組件
+import { CustomButton } from '@/components/feature' // 系統組件: 功能
 
 const props = defineProps({
   index: {
@@ -36,7 +36,6 @@ const emit = defineEmits(['changeKey'])
 const changeTimeLineDateKey = () => {
   emit('changeKey', props.column.key)
 }
-
 </script>
 
 <template>
@@ -70,12 +69,11 @@ const changeTimeLineDateKey = () => {
     padding: 8px;
 
     &.is-active {
-      background-color: var(--el-color-warning-light-7);
+      background-color: var(--el-color-warning-light-8);
     }
   }
-
-  .btn-is-active {
-    color: var(--i-color-orange);
-  }
+}
+.btn-is-active {
+  color: var(--i-color-orange);
 }
 </style>

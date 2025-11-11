@@ -21,15 +21,15 @@ const emit = defineEmits([
   'close-auto-focus'
 ])
 
-const onOpen: Emits.Open = () => emit('open')
-const onOpened: Emits.Opened = () => emit('opened')
-const onClose: Emits.Close = () => emit('close')
-const onClosed: Emits.Closed = () => emit('closed')
-const onOpenAutoFocus: Emits.OpenAutoFocus = () => emit('open-auto-focus')
-const onCloseAutoFocus: Emits.CloseAutoFocus = () => emit('close-auto-focus')
+const onOpen: Emits['open'] = () => emit('open')
+const onOpened: Emits['opened'] = () => emit('opened')
+const onClose: Emits['close'] = () => emit('close')
+const onClosed: Emits['closed'] = () => emit('closed')
+const onOpenAutoFocus: Emits['openAutoFocus'] = () => emit('open-auto-focus')
+const onCloseAutoFocus: Emits['closeAutoFocus'] = () => emit('close-auto-focus')
 
-const ElDrawerRef = ref()
-const handleClose: Expose.HandleClose = () => {
+const ElDrawerRef = ref<InstanceType<typeof ElDrawer>>()
+const handleClose: Expose['handleClose'] = () => {
   if (ElDrawerRef.value) {
     ElDrawerRef.value.handleClose()
   }

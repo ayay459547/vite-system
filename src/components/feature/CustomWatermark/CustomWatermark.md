@@ -1,10 +1,12 @@
 ## CustomWatermark
 
+### 浮水印
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomWatermark } from '@/components'
+import { CustomWatermark } from '@/components/feature'
 
 const mainFont = {
   color: 'rgba(0,0,255,1)',

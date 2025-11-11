@@ -2,7 +2,7 @@
 import { useSlots, computed, inject } from 'vue'
 import { ElTour, ElTourStep } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomTourInfo'
@@ -21,7 +21,7 @@ const emit = defineEmits([
   'step-close'
 ])
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -32,17 +32,17 @@ const getText = (text: string, i18nText: string | string[]) => {
 
 const openValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 const currentValue = computed({
   get: () => props.current,
-  set: (value: Props.Current) => emit('update:current', value)
+  set: (value: Props['current']) => emit('update:current', value)
 })
 
-const onClose: Emits.Close = current => emit('close', current)
-const onFinish: Emits.Finish = () => emit('finish')
-const onChange: Emits.Change = current => emit('change', current)
-const onStepClose: Emits.StepClose = () => emit('step-close')
+const onClose: Emits['close'] = current => emit('close', current)
+const onFinish: Emits['finish'] = () => emit('finish')
+const onChange: Emits['change'] = current => emit('change', current)
+const onStepClose: Emits['stepClose'] = () => emit('step-close')
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {

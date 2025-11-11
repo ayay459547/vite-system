@@ -12,7 +12,7 @@ const scopedId = getUuid(version)
 const props = defineProps(carouselProps)
 
 const emit = defineEmits(['change'])
-const onChange: Emits.Change = (curIndex: number, prevIndex: number) => {
+const onChange: Emits['change'] = (curIndex: number, prevIndex: number) => {
   emit('change', curIndex, prevIndex)
 }
 
@@ -21,23 +21,23 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const carouselRef = ref<typeof ElCarousel>()
+const ElCarouselRef = ref<typeof ElCarousel>()
 /**
  * 切換至指定的 Carousel
  * @param {Number|String} item
  * number: index in items
  * string: name of item
  */
-const setActiveItem: Expose.SetActiveItem = item => {
-  carouselRef.value?.setActiveItem(item)
+const setActiveItem: Expose['setActiveItem'] = (item: any) => {
+  ElCarouselRef.value?.setActiveItem(item)
 }
 // 切換至上一張 Carousel
-const prev: Expose.Prev = () => {
-  carouselRef.value?.prev()
+const prev: Expose['prev'] = () => {
+  ElCarouselRef.value?.prev()
 }
 // 切換至下一張 Carousel
-const next: Expose.Next = () => {
-  carouselRef.value?.next()
+const next: Expose['next'] = () => {
+  ElCarouselRef.value?.next()
 }
 defineExpose({ setActiveItem, prev, next })
 </script>
@@ -45,7 +45,7 @@ defineExpose({ setActiveItem, prev, next })
 <template>
   <div :class="scopedId">
     <ElCarousel
-      ref="carouselRef"
+      ref="ElCarouselRef"
       :height="props.height"
       :initialIndex="props.initialIndex"
       :trigger="props.trigger"

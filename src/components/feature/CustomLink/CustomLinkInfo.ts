@@ -2,76 +2,77 @@ import type { PropType } from 'vue'
 
 export const version = '__CustomLink_1.0.0__'
 
-export declare namespace Types {
-  type LinkType = 'default' | 'success' | 'warning' | 'info' | 'primary' | 'danger'
-  type LinkOption = {
+export interface Types {
+  linkType: 'default' | 'success' | 'warning' | 'info' | 'primary' | 'danger'
+  linkOption: {
     fromPage?: string
     toPage: string
     description?: string
     i18nDescription?: string
     data?: string
     storageKey?: string
-    disabled?: boolean
+    disabled?: boolean | ((params?:any) => boolean)
     isModal?: boolean
   }
 }
 
-export declare namespace Props {
-  type Label = string | null
-  type Type = Types.LinkType
-  type Underline = boolean | null
-  type Description = string | null
-  type FromPage = string | null
-  type Data = string | null
-  type StorageKey = string | null
-  type Options = Array<Types.LinkOption>
+export interface Props {
+  label: string | null
+  type: Types['linkType']
+  underline: boolean | null
+  description: string | null
+  fromPage: string | null
+  data: string | null
+  storageKey: string | null
+  options: Array<Types['linkOption']>
+  params: any
 }
 export const props = {
   // 預設El-link顯示內容
   label: {
-    type: String as PropType<Props.Label>,
+    type: String as PropType<Props['label']>,
     required: false,
     default: '',
     description: 'ElLink 連結顯示文字內容'
   },
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['type']>,
     required: false,
     default: 'primary',
     description: 'ElLink 連結顯示文字樣式'
   },
   underline: {
-    type: Boolean as PropType<Props.Underline>,
+    type: Boolean as PropType<Props['underline']>,
     required: false,
     default: false,
     description: 'ElLink 連結顯示有無底線'
   },
   description: {
-    type: String as PropType<Props.Description>,
+    type: String as PropType<Props['description']>,
     required: false,
     default: null,
     description: 'ToolTip 顯示提示文字'
   },
   // 跳轉用參數
   fromPage: {
-    type: String as PropType<Props.FromPage>,
+    type: String as PropType<Props['fromPage']>,
     required: true,
     description: '連結跳轉來源(當前頁面)'
   },
   data: {
-    type: String as PropType<Props.Data>,
+    type: String as PropType<Props['data']>,
     required: false,
     default: '',
     description: '路由夾帶資料'
   },
   storageKey: {
-    type: String as PropType<Props.StorageKey>,
+    type: String as PropType<Props['storageKey']>,
     required: false,
     default: null,
     description: 'localStorage 設置Key'
   },
   options: {
-    type: Array as PropType<Props.Options>,
+    type: Array as PropType<Props['options']>,
     required: true,
     description: `
       ToolTip 連結選項
@@ -85,9 +86,17 @@ export const props = {
         disabled?: boolean 連結是否可以使用
       }
     `
+  },
+  params: {
+    type: Object as PropType<Props['params']>,
+    required: false,
+    description: `
+      提供給函式用的參數
+      (params)=> {}
+    `
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

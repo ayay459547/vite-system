@@ -1,11 +1,13 @@
 ## CustomIcon
 
+### 圖示
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import type { IconType } from '@/components'
-import { CustomIcon } from '@/components'
+import type { IconType } from '@/components/feature'
+import { CustomIcon } from '@/components/feature'
 
 const testIcon: [IconType, string] = ['fas', 'check']
 const testType: IconType = 'far'
@@ -31,7 +33,8 @@ const testName = 'folder-open'
 [https://www.xicons.org/#/](https://www.xicons.org/#/)
 
 ### 使用 slot
-[https://www.svgrepo.com/](https://www.svgrepo.com/)
+* 可使用 CustomSvg
+* 圖示參考 [https://www.svgrepo.com/](https://www.svgrepo.com/)
 
 ### Attributes ( props )
 
@@ -43,3 +46,17 @@ const testName = 'folder-open'
 | name      | 圖示名稱   | string | 'circle-question' |
 | size      | 大小       | string | 'default'         |
 | iconClass | 圖示 class | string | ''                |
+
+### Slots
+
+| 插槽名  | 說明          | 類型   |
+| ------- | ------------ | ------ |
+| default | 自訂顯示圖示  |        |
+
+### Events ( emits )
+
+無
+
+### Expose
+
+無

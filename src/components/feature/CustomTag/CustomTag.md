@@ -1,10 +1,12 @@
 ## CustomTag
 
+### 標籤
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomTag } from '@/components'
+import { CustomTag } from '@/components/feature'
 </script>
 
 <template>

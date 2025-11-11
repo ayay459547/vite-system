@@ -1,26 +1,22 @@
 ## CustomProgress
 
+### 進度表
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomPopover, CustomButton } from '@/components'
+import { CustomProgress } from '@/components/feature'
 </script>
 
 <template>
-  <CustomPopover>
-    <div>顯示內容1 Popover</div>
-    <template #reference>
-      <CustomButton label="滑鼠點擊 Popover" />
-    </template>
-  </CustomPopover>
-
-  <CustomPopover :width="300" title="內容2標題" trigger="hover" placement="right">
-    <div>顯示內容2 Popover --------------</div>
-    <template #reference>
-      <CustomButton label="滑鼠移入 Popover" />
-    </template>
-  </CustomPopover>
+  <CustomProgress
+    :percentage="80"
+    striped-flow
+    :stroke-width="18"
+    status=""
+    striped
+  />
 </template>
 ```
 

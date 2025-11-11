@@ -4,58 +4,58 @@ import type { CustomSize } from '@/components' // 系統組件
 
 export const version = '__CustomText_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Size = CustomSize
-  type Type = '' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
-  type Truncated = boolean
-  type LineClamp = number
-  type Tag = string
+export interface Props {
+  type: '' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
+  size: CustomSize
+  truncated: boolean
+  lineClamp: number
+  tag: string
 
-  type Label = string
+  label: string
 }
 export const props = {
   // Element UI
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['type']>,
     required: false,
     default: undefined,
     description: '類型'
   },
   size: {
-    type: String as PropType<Props.Size>,
+    type: String as PropType<Props['size']>,
     required: false,
     default: undefined,
     description: '尺寸'
   },
   truncated: {
-    type: Boolean as PropType<Props.Truncated>,
+    type: Boolean as PropType<Props['truncated']>,
     required: false,
     default: false,
     description: '顯示省略號'
   },
   lineClamp: {
-    type: Number as PropType<Props.LineClamp>,
+    type: Number as PropType<Props['lineClamp']>,
     required: false,
     default: undefined,
     description: '最大行數'
   },
   tag: {
-    type: String as PropType<Props.Tag>,
+    type: String as PropType<Props['tag']>,
     required: false,
     default: 'span',
     description: '自訂元素標籤'
   },
   // Custom
   label: {
-    type: String as PropType<Props.Label>,
+    type: String as PropType<Props['label']>,
     required: false,
     default: '',
     description: '文字'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

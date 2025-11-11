@@ -2,16 +2,16 @@
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElTreeSelect } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits, Expose } from './FormSelectTreeInfo'
 import { version, props as formSelectTreeProps } from './FormSelectTreeInfo'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -30,17 +30,17 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 // event
 const onEvent: {
-  focus: Emits.Focus
-  clear: Emits.Clear
-  blur: Emits.Blur
-  change: Emits.Change
-  removeTag: Emits.RemoveTag
-  visibleChange: Emits.VisibleChange
+  focus: Emits['focus']
+  clear: Emits['clear']
+  blur: Emits['blur']
+  change: Emits['change']
+  removeTag: Emits['removeTag']
+  visibleChange: Emits['visibleChange']
 } = {
   focus: $event => emit('focus', $event),
   clear: (): void => emit('clear'),
@@ -51,13 +51,9 @@ const onEvent: {
 }
 
 // expose
-const elSelectTreeRef = ref()
-const focus: Expose.Focus = () => {
-  elSelectTreeRef.value?.focus()
-}
-const blur: Expose.Blur = () => {
-  elSelectTreeRef.value?.blur()
-}
+const ElTreeSelectRef = ref<InstanceType<typeof ElTreeSelect>>()
+const focus: Expose['focus'] = () => ElTreeSelectRef.value?.focus()
+const blur: Expose['blur'] = () => ElTreeSelectRef.value?.blur()
 defineExpose({ focus, blur })
 
 // slot
@@ -70,7 +66,7 @@ const hasSlot = (prop: string): boolean => {
 <template>
   <div>
     <ElTreeSelect
-      ref="elSelectTreeRef"
+      ref="ElTreeSelectRef"
       :class="scopedId"
       v-model="inputValue"
       :multiple="props.multiple"

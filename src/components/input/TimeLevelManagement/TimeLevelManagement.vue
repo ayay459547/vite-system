@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import {
-  CustomPopover,
-  CustomIcon,
-  CustomInput,
-  CustomButton
-} from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import CustomInput from '@/components/input/CustomInput/CustomInput.vue'
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
 
 import type { Types } from './TimeLevelManagementInfo'
 import { props as managementProps } from './TimeLevelManagementInfo'
 
 const props = defineProps(managementProps)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
@@ -38,30 +36,30 @@ const timeLevelActive = computed(() => {
   }
 })
 
-const setTimeLevelActive = (timeLevel: Types.TimeLevelOption) => {
+const setTimeLevelActive = (timeLevel: Types['timeLevelOption']) => {
   // 切換 checkBox
   timeLevel.active = !timeLevel.active
   emit('activeChange')
 }
-const setBaseLevel = (timeLevel: Types.TimeLevelOption) => {
+const setBaseLevel = (timeLevel: Types['timeLevelOption']) => {
   emit('update:baseLevelIndex', timeLevel.index)
   emit('baseChange', timeLevel.index)
 }
 
-const isBaseLevel = (timeLevel: Types.TimeLevelOption) => {
+const isBaseLevel = (timeLevel: Types['timeLevelOption']) => {
   return timeLevel.index === baseLevelIndex.value
 }
-const isUpperLevel = (timeLevel: Types.TimeLevelOption) => {
+const isUpperLevel = (timeLevel: Types['timeLevelOption']) => {
   return timeLevel.index >= baseLevelIndex.value
 }
-const getOptionClass = (timeLevel: Types.TimeLevelOption) => {
+const getOptionClass = (timeLevel: Types['timeLevelOption']) => {
   if(isBaseLevel(timeLevel)) return 'base-level' // 基準時間維度
   if(isUpperLevel(timeLevel)) return 'upper-level' // 大於基準維度的時間維度
   return 'lower-level' // 小於基準維度的時間維度
 }
 
 // i18nTranslate
-const getTranslateLabel = (timeLevel: Types.TimeLevelOption) => {
+const getTranslateLabel = (timeLevel: Types['timeLevelOption']) => {
   const label = i18nTest(timeLevel?.i18nLabel ?? '')
     ? i18nTranslate(timeLevel.i18nLabel)
     : (timeLevel?.label ?? timeLevel?.name)

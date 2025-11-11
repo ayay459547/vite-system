@@ -1,5 +1,9 @@
 ## 使用說明
 
+### 使用須知
+1. /demo-rest/api/ipaspTable/retrieveIpaspTableFromView 預設, 資料傳送格式配合這隻API
+2. /demo-rest/api/ipaspTable/retrieveColumnOperatorFromView (可選), 限制進階搜尋
+
 ### 可用參數
 | 參數           | 說明    | 輸入資料型態                      |
 | ------------- | ------- | --------------------------------  |

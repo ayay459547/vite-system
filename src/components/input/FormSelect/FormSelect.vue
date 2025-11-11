@@ -2,16 +2,16 @@
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelect, ElOptionGroup, ElOption } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits, Expose } from './FormSelectInfo'
 import { version, props as formSelectProps } from './FormSelectInfo'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -30,25 +30,21 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 // event
-const onChange: Emits.Change = value => emit('change', value)
-const onVisibleChange: Emits.VisibleChange = visible => emit('visible-change', visible)
-const onRemoveTag: Emits.RemoveTag = tagValue => emit('remove-tag', tagValue)
-const onClear: Emits.Clear = () => emit('clear')
-const onBlur: Emits.Blur = event => emit('blur', event)
-const onFocus: Emits.Focus = event => emit('focus', event)
+const onChange: Emits['change'] = value => emit('change', value)
+const onVisibleChange: Emits['visibleChange'] = visible => emit('visible-change', visible)
+const onRemoveTag: Emits['removeTag'] = tagValue => emit('remove-tag', tagValue)
+const onClear: Emits['clear'] = () => emit('clear')
+const onBlur: Emits['blur'] = event => emit('blur', event)
+const onFocus: Emits['focus'] = event => emit('focus', event)
 
 // expose
-const elSelectRef = ref()
-const focus: Expose.Focus = () => {
-  elSelectRef.value?.focus()
-}
-const blur: Expose.Blur = () => {
-  elSelectRef.value?.blur()
-}
+const ElSelectRef = ref<InstanceType<typeof ElSelect>>()
+const focus: Expose['focus'] = () => ElSelectRef.value?.focus()
+const blur: Expose['blur'] = () => ElSelectRef.value?.blur()
 defineExpose({ focus, blur })
 
 // slot
@@ -60,7 +56,7 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElSelect
-    ref="elSelectRef"
+    ref="ElSelectRef"
     :class="scopedId"
     v-model="inputValue"
     :multiple="props.multiple"
@@ -200,5 +196,12 @@ div[class*="FormSelect"] {
 .search-more {
   color: inherit;
   opacity: 0.5;
+}
+</style>
+<style lang="scss">
+html.dark {
+  :where(.el-select__wrapper) {
+    box-shadow: 0 0 0 1px var(--el-color-info-dark-2, var(--el-border-color)) inset;
+  }
 }
 </style>
