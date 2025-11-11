@@ -3,11 +3,11 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 import GlobalView from '@/components/GlobalView.vue'
-import { CustomTooltip, SimpleQRcode } from '@/components' // 系統組件
+import { CustomTooltip, SimpleQRcode } from '@/components/feature' // 系統組件: 功能
 
-import logo from '@/assets/images/Vue-logo?url'
-import qrcode from '@/assets/images/Vue-logo.png?url'
-import menuLogo from'@/assets/images/Vue-logo.png?url'
+import logo from '@/assets/images/logo.png?url'
+import qrcode from '@/assets/images/logo.png?url'
+import menuLogo from'@/assets/images/logo.png?url'
 
 export default defineComponent({
   name: 'AppView',
@@ -37,35 +37,40 @@ export default defineComponent({
     <GlobalView>
       <template #logo="{ env }">
         <div class="menu-logo" @click="toHome">
-          <img class="vue-img" src="@/assets/images/Vue-logo.png" alt="vue" />
-          <h2 class="vue-text">{{ env.customer }}</h2>
+          <img class="menu-img" src="@/assets/images/logo.png" alt="aat" />
+          <span class="menu-text">{{ env.customer }}</span>
         </div>
       </template>
 
       <template #version="{ env }">
         <CustomTooltip
           :width="200"
-          trigger="click"
+          trigger="hover"
           placement="top-start"
           class="menu-footer-tip"
           popper-class="menu-footer-popper"
         >
           <template #content>
             <div class="tip-list">
-              <h3 class="tip-item system">{{ env.system }}</h3>
-
               <SimpleQRcode text="https://vuejs.org/" :size="250" :logoSrc="qrcodeImg" />
 
-              <span class="tip-item build-version">{{ env.buildVersion }}</span>
+              <span class="tip-item company">{{ env.company }}</span>
+              <span class="tip-item phone">(TEL)+888-0-1111-2222</span>
+              <span class="tip-item address">(000)XX市XX區XX路一段123號</span>
+
+              <div class="tip-item footer">
+                <span class="system">{{ env.system }}</span>
+                <span class="build-version">{{ `( ${env.buildVersion} )` }}</span>
+              </div>
             </div>
           </template>
           <template #default>
             <div class="menu-footer">
               <div class="gear-img">
-                <img src="@/assets/images/Vue-logo.png" alt="menu-logo" />
+                <img src="@/assets/images/logo.png" alt="demo" />
               </div>
-              <div class="gear-menu flex-row align-center content-between">
-                <span>{{ `${env.version}` }}</span>
+              <div class="gear-ipasp flex-row align-center content-between">
+                <span>{{ env.version }}</span>
               </div>
             </div>
           </template>
@@ -128,7 +133,7 @@ export default defineComponent({
     }
   }
 }
-.tip-menu {
+.tip-ipasp {
   transition: 0.3s color;
   color: var(--i-color-menu);
 
@@ -148,7 +153,7 @@ export default defineComponent({
     }
   }
 
-  &-menu {
+  &-ipasp {
     gap: 80px;
   }
 }
@@ -178,17 +183,23 @@ export default defineComponent({
   &-item {
     display: flex;
     align-items: center;
-    margin: 0 20px;
+    padding: 0 20px;
 
-    &.system{
+    &.footer {
       width: 100%;
-      text-align: center;
-    }
-    &.build-version {
-      font-size: 0.7em;
-      opacity: 0.5;
-      display: inline-block;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
       padding-top: 12px;
+
+      .system{
+        font-size: 1em;
+        opacity: 0.7;
+      }
+      .build-version {
+        font-size: 0.7em;
+        opacity: 0.5;
+      }
     }
   }
 }
