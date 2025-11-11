@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+
 import {
   ref, shallowReactive, computed,
   onBeforeMount, onMounted, onBeforeUnmount,
@@ -15,22 +16,25 @@ import {
 import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
 
 import { ElConfigProvider } from 'element-plus' // element ui plus config
-import { useLocaleStore } from '@/stores/stores_locale' // locale
+import { useI18nStore } from '@/stores/useI18nStore' // i18n
 
 // system init
-import { useAuthStore } from '@/stores/stores_auth'
-import { useRoutesStore } from '@/stores/stores_routes'
+import { useAuthStore } from '@/stores/useAuthStore'
+import { useRoutesStore } from '@/stores/useRoutesStore'
 
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 
+// login
+import { refreshToken } from '@/lib/lib_token'
+import ifvisible from 'ifvisible.js'
+
 // hook
-import type { UseHook, UseHookOptions, UseHookReturn, CustomPopoverQueue } from '@/declare/hook' // 全域功能類型
+import type { UseHook, UseHookOptions, UseHookReturn, CustomPopoverQueue } from '@/types/types_hook' // 全域功能類型
 import HookLoader from './hook/HookLoader.vue'
 import HookPopover from '@/components/hook/HookPopover.vue'
 
-import { useGlobalI18n } from '@/i18n/i18n_excel'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import { defaultPermission, getPermission } from '@/lib/lib_permission' // 權限
 
@@ -38,28 +42,31 @@ import { defaultPermission, getPermission } from '@/lib/lib_permission' // 權�
 import SystemLayout from '@/components/layout/SystemLayout.vue'
 import PageContent from '@/components/layout/PageContent.vue'
 
-// 網路狀態
+// 網路狀態(開發才顯示)
 import NetworkView from '@/components/layout/NetworkView.vue'
 // 開發測試用
 import DevelopmentTest from '@/components/layout/DevelopmentTest/DevelopmentTest.vue'
 
+// 選表格資料 配合 ModalSelect 使用
+import ModalSelectManagement from '@/components/input/ModalSelectManagement/ModalSelectManagement.vue'
+
 // hook
-const customLoader: Ref<InstanceType<typeof HookLoader> | null> = ref(null)
-const customPopover: Ref<InstanceType<typeof HookPopover> | null> = ref(null)
+const HookLoaderRef: Ref<InstanceType<typeof HookLoader> | null> = ref()
+const HookPopoverRef: Ref<InstanceType<typeof HookPopover> | null> = ref()
 
 const queueId = ref(0)
 const customPopoverQueue: CustomPopoverQueue[] = shallowReactive([])
 const deleteCustomPopoverQueue = () => customPopoverQueue.pop()
 
-const loading: UseHookReturn.Loading = (isOpen, message) => {
-  if (!customLoader.value) return
+const loading: UseHookReturn['loading'] = (isOpen, message) => {
+  if (!HookLoaderRef.value) return
 
   if (isOpen) {
     const _message = message ?? 'loading'
 
-    customLoader.value.openLoader(_message)
+    HookLoaderRef.value.openLoader(_message)
   } else {
-    customLoader.value.closeLoader()
+    HookLoaderRef.value.closeLoader()
   }
 }
 // 系統參數
@@ -72,6 +79,8 @@ const systemEnv = computed(() => {
     system: _env.VITE_API_SYSTEM_TYPE,
 
     customer: _env.VITE_API_CUSTOMER,
+
+    company: _env.VITE_API_COMPANY,
 
     version: _env.VITE_API_VERSION,
     buildVersion: _env.VITE_API_BUILD_VERSION,
@@ -90,21 +99,24 @@ const systemEnv = computed(() => {
 })
 
 // store
-const localeStore = useLocaleStore()
 
+// 翻譯檔
+const i18nStore = useI18nStore()
+const { i18nTest, i18nTranslate } = i18nStore
+const { elLocale, i18nLangMap } = storeToRefs(i18nStore)
+
+// 使用者資料
 const authStore = useAuthStore()
 const { initAuthData, setAuthStatus, clearAuthStatus, checkAuthStatus } = authStore
 const { isLogin, authData } = storeToRefs(authStore)
 
+// 路由資料
 const routesStore = useRoutesStore()
 const { setNavigationRoutes } = routesStore
 
 const {
   navigationMap,
   navigationRoutes,
-
-  breadcrumbName,
-  breadcrumbTitle,
   currentNavigation
 } = storeToRefs(routesStore)
 
@@ -123,6 +135,9 @@ const routerBusListener = async (event: string) => {
       break
     case 'routerChange':
       isLoading.value = false // 載入組件後 關閉
+
+      // 關閉 loading
+      loading(false, 'loading')
       break
   }
 }
@@ -133,13 +148,7 @@ onBeforeUnmount(() => {
   routerBus.off(routerBusListener)
 })
 
-const systemLayoutRef = ref()
-
-// 翻譯檔
-const { initModuleLangMap, i18nTest, i18nTranslate, langMap } = useGlobalI18n()
-onMounted(() => {
-  initModuleLangMap()
-})
+const SystemLayoutRef = ref<InstanceType<typeof SystemLayout>>()
 
 const isInitSystem = ref(false)
 
@@ -150,17 +159,18 @@ const router = useRouter()
  */
 const initSystemData = async (routeName?: string) => {
   isInitSystem.value = false
+
   await initAuthData()
   setNavigationRoutes(authData.value)
-
   if (!isEmpty(routeName)) {
     router.push({ name: routeName })
-    setLayoutInfo()
   }
 
   await nextTick()
   loading(false, 'loading')
   isInitSystem.value = true
+
+  layoutInit()
 }
 
 onMounted(() => {
@@ -170,20 +180,19 @@ onBeforeMount(() => {
   initSystemData()
 })
 
-// 路由切換
-const setLayoutInfo = async () => {
+// 初始化 layout
+const layoutInit = async () => {
   await nextTick()
-  // 給 480 毫秒 確保路由跳轉完成後 才執行
-  await awaitTime(480)
-  if (systemLayoutRef.value) {
-    systemLayoutRef.value.init()
+  // 給 500 毫秒 確保路由跳轉完成後 才執行
+  await awaitTime(500)
+  if (SystemLayoutRef.value) {
+    SystemLayoutRef.value.init()
   }
 }
 
 // 登入
 const login = async (userId: number) => {
   if (isLogin.value) return
-
   await nextTick()
   loading(true, i18nTranslate('login', defaultModuleType))
 
@@ -194,7 +203,6 @@ const login = async (userId: number) => {
 // 登出
 const logout = async () => {
   if (!isLogin.value) return
-
   await nextTick()
   loading(true, i18nTranslate('logout', defaultModuleType))
 
@@ -202,12 +210,43 @@ const logout = async () => {
   initSystemData('login')
 }
 
-// 保存時間 (分鐘)
-const expiresTime = Number.parseInt(systemEnv.value.tokenTime) * 60 * 1000
-// 保存時間: 測試(秒)
+// 環境變數 TokenTime (分鐘)
+const envTokenTime = Number.parseInt(systemEnv.value.tokenTime)
+// 保存時間: (秒 => 豪秒) 測試用
 // const expiresTime = Number.parseInt(systemEnv.value.tokenTime) * 1000
-let checkTimer: number | undefined
+// 保存時間 (分鐘 => 豪秒)
+const expiresTime =  envTokenTime * 60 * 1000
+// 更新時間 (分鐘 => 秒)
+const tokenRereshTime = Math.ceil(envTokenTime / 10 * 60)
+// 閒置時間 (秒)
+const webIdleTime = 60
+ifvisible.setIdleDuration(webIdleTime)
+
+const checkLogin = async () => {
+  const authStatus = await checkAuthStatus()
+  if (isEmpty(authStatus)) {
+    // 清除登入資訊 強制登出
+    // logout()
+    // 清除登入資訊 頁面重整會登出
+    clearAuthStatus()
+  }
+}
+ifvisible.wakeup(checkLogin)
+
+const onEveryStart = () => {
+  ifvisible.onEvery(tokenRereshTime, () => {
+    // console.log('EVERY', dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    refreshToken('Using')
+  })
+}
+onMounted(() => {
+  onEveryStart()
+})
+
+
+
 // 定期檢查登入狀態
+let checkTimer: number | undefined
 watch(isLogin, (newLogin, oldLogin) => {
   if (newLogin !== oldLogin && isLogin.value) {
     clearInterval(checkTimer)
@@ -229,7 +268,7 @@ watch(isLogin, (newLogin, oldLogin) => {
 }, { deep: false, immediate: true })
 
 // 開發測試用 DevelopmentTest
-const developmentTestRef = ref()
+const DevelopmentTestRef = ref<InstanceType<typeof DevelopmentTest>>()
 const isShowDevelopmentTest = ref(false)
 
 /**
@@ -258,11 +297,12 @@ const useHook: UseHook = (options?: UseHookOptions) => {
   return {
     loading,
     i18nTranslate: (key, _i18nModule?) => {
+      // debug用 紀錄頁面有使用的翻譯
       if (isShowDevelopmentTest.value) {
         const { name } = currentNavigation?.value ?? { name: null }
 
         if (name) {
-          developmentTestRef.value?.addI18nUsageRecord({
+          DevelopmentTestRef.value?.addI18nUsageRecord({
             routeName: name,
             i18nKey: key,
             i18nModule: _i18nModule ?? i18nModule
@@ -308,14 +348,14 @@ const useHook: UseHook = (options?: UseHookOptions) => {
         ...options
       })
     },
-    permission: (routeName = null) => {
+    permission: (routeName = null, hiddenLog?: boolean) => {
       let _pageName: string | null = routeName
       let _pagePermission: number = defaultPermission
 
       // 指定路由
       if (!isEmpty(routeName) && typeof routeName === 'string') {
-        const routerPermission = navigationMap.value.get(routeName)
-        _pagePermission = (routerPermission?.meta?.permission ?? defaultPermission) as number
+        const routeData = navigationMap.value.get(routeName)
+        _pagePermission = (routeData?.meta?.permission ?? defaultPermission) as number
 
       // 當前路由
       } else {
@@ -325,12 +365,24 @@ const useHook: UseHook = (options?: UseHookOptions) => {
       }
 
       const resPagePermission = getPermission(_pagePermission)
-      tipLog(`${_pageName} 權限`, [
-        routeName,
-        resPagePermission,
-        currentNavigation?.value
-      ])
+      if(!hiddenLog) {
+        tipLog(`${_pageName} 權限`, [
+          routeName,
+          resPagePermission,
+          currentNavigation?.value
+        ])
+      }
       return resPagePermission
+    },
+    routeData: (routeName = null) => {
+      // 指定路由
+      if (!isEmpty(routeName) && typeof routeName === 'string') {
+        const routeData = navigationMap.value.get(routeName)
+        return routeData
+      // 當前路由
+      } else {
+        return currentNavigation?.value
+      }
     },
     env: () => {
       return systemEnv.value
@@ -359,18 +411,15 @@ provide<UseHook>('useHook', useHook)
 </script>
 
 <template>
-  <ElConfigProvider :locale="localeStore.elLocale">
+  <ElConfigProvider :locale="elLocale">
     <!-- 路由切換時 開啟遮罩(使用者看不到) 不能點任何東西 -->
     <div v-show="isDisabled" class="is-disabled"></div>
 
     <!-- layout -->
     <SystemLayout
-      ref="systemLayoutRef"
+      ref="SystemLayoutRef"
       :show-routes="navigationRoutes"
       :current-navigation="currentNavigation"
-      :breadcrumb-name="breadcrumbName"
-      :breadcrumb-title="breadcrumbTitle"
-      :auth-data="authData"
       :is-iframe="systemEnv.isIframe"
       @logout="logout"
     >
@@ -385,38 +434,40 @@ provide<UseHook>('useHook', useHook)
         <PageContent
           :is-init-system="isInitSystem"
           :system-name="systemEnv.system"
-          :is-iframe="systemEnv.isIframe"
           :current-navigation="currentNavigation"
           :navigation-map="navigationMap"
+          :is-iframe="systemEnv.isIframe"
           :is-loading="isLoading"
           @login="login"
-          @setLayoutInfo="setLayoutInfo"
+          @layoutInit="layoutInit"
           @initSystemData="initSystemData"
         ></PageContent>
       </template>
     </SystemLayout>
 
     <!-- hook loading -->
-    <HookLoader ref="customLoader" />
+    <HookLoader ref="HookLoaderRef" />
 
     <!-- hook popover -->
     <template v-if="customPopoverQueue.length > 0">
       <HookPopover
         v-for="popover in customPopoverQueue"
         :key="popover.queueId"
-        ref="customPopover"
+        ref="HookPopoverRef"
         v-bind="popover"
         @close="deleteCustomPopoverQueue"
       />
     </template>
 
-    <NetworkView />
+    <NetworkView v-show="systemEnv.mode === 'development'" />
 
     <DevelopmentTest
-      ref="developmentTestRef"
+      ref="DevelopmentTestRef"
       v-if="isShowDevelopmentTest"
-      :lang-map="langMap"
+      :i18nLangMap="i18nLangMap"
     />
+
+    <ModalSelectManagement />
 
   </ElConfigProvider>
 </template>

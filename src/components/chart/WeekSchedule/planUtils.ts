@@ -11,6 +11,8 @@ export const twentyFourHourHeight = oneHourHeight * 24
 // 23:59 秒數的高度(趨近於24:00)
 export const maxHeight = twentyFourHourHeight
 
+// 1分鐘秒數
+export const oneMinuteSecond = 1 * 60
 // 1小時秒數
 export const oneHourSecond = 1 * 60 * 60
 // 24小時秒數
