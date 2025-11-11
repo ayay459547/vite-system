@@ -1,0 +1,90 @@
+[
+  {
+    "employeeName": "engineering (ETL)",
+    "lastVersion": "IsLast",
+    "process": {
+      "lastVersion": "IsLast",
+      "autoGeneratingId": false,
+      "wayOfPostProcessForFinish": 0,
+      "factoryNo": "AA",
+      "hiberversion": 0,
+      "pk": {
+        "id": "BAKE_1"
+      },
+      "wayOfPreProcessForFinish": 0,
+      "type": 0,
+      "allowFinishForPostProcess": false
+    },
+    "autoGeneratingId": false,
+    "combineLogic": "OR",
+    "logicRestrictions": [
+      {
+        "_type": "MachineProcessProductionConstraint",
+        "_value": {
+          "lastVersion": "IsLast",
+          "autoGeneratingId": false,
+          "combineLogic": "AND",
+          "logicRestrictions": [],
+          "factoryNo": "AA",
+          "restrictions": [
+            {
+              "_type": "StrRestriction",
+              "_value": {
+                "compareType": "restrictionValue",
+                "restrictionType": "PRODUCT_NO",
+                "autoGeneratingId": false,
+                "strMatchingType": "FULL",
+                "valueArrayNeedFullMatch": false,
+                "positive": true,
+                "valueInArray": "InPt_0408",
+                "inputValueCanRedundant": true,
+                "mark": "add"
+              }
+            }
+          ],
+          "hiberversion": 0,
+          "positive": true
+        }
+      }
+    ],
+    "factoryNo": "AA",
+    "restrictions": [
+      {
+        "_type": "StrRestriction",
+        "_value": {
+          "compareType": "restrictionValue",
+          "restrictionType": "PRODUCT_NO",
+          "autoGeneratingId": false,
+          "strMatchingType": "FULL",
+          "valueArrayNeedFullMatch": false,
+          "positive": true,
+          "valueInArray": "InPt_0408",
+          "inputValueCanRedundant": true,
+          "mark": "add"
+        }
+      }
+    ],
+    "positive": true,
+    "constraintType": "engineering",
+    "machine": {
+      "note": "待機(閒置)",
+      "lastVersion": "IsLast",
+      "maxSite": 0,
+      "autoGeneratingId": false,
+      "factoryNo": "AA",
+      "presetTime": 0,
+      "humansOfAMachine": 0,
+      "crossNoCapabilityContinueProduce": false,
+      "internalUsage": false,
+      "hiberversion": 0,
+      "pk": {
+        "id": "Ma_0041"
+      },
+      "subMOWorkTime": 0,
+      "crossStopContinueProduce": false,
+      "machineSchedulingType": "General"
+    },
+    "hiberversion": 0,
+    "mark": "add"
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "id": "6",
+    "rangeType": "forward",
+    "isOneStopProduct": false,
+    "extraSettings": null,
+    "enableProcessBetweenCount": false,
+    "processBetweenCountMatchingType": "EQUAL",
+    "processBetweenCount": 0,
+    "onlySpecifiedProcessFollowingMachine": false,
+    "machines": [],
+    "startProcessMatcher": {
+      "positiveConstraint": {
+        "_type": "OneStopProducingConstraint",
+        "_value": {
+          "restrictions": [
+            {
+              "_type": "StrGenericRestriction",
+              "_value": {
+                "restrictionTypeAttr": {
+                  "id": "MO_ITEM_PROCESS"
+                },
+                "strMatchingType": "FULL",
+                "valueInArray": "PT0003"
+              }
+            }
+          ]
+        }
+      },
+      "negativeConstraint": null
+    },
+    "endProcessMatcher": {
+      "positiveConstraint": {
+        "_type": "OneStopProducingConstraint",
+        "_value": {
+          "restrictions": [
+            {
+              "_type": "StrGenericRestriction",
+              "_value": {
+                "restrictionTypeAttr": {
+                  "id": "MO_ITEM_PROCESS"
+                },
+                "strMatchingType": "FULL",
+                "valueInArray": "PT0008"
+              }
+            }
+          ]
+        }
+      },
+      "negativeConstraint": null
+    },
+    "processBetweenMatcher": null,
+    "commonAttrMatcher": null
+  }
+]
