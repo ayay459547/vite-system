@@ -3,11 +3,9 @@ import * as echarts from 'echarts'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
+import { debounce, throttle } from '@/lib/lib_lodash'
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
-import { useLayoutStore } from '@/stores/stores_layout'
+import { useLayoutStore } from '@/stores/useLayoutStore'
 
 import type { Types, Emits, Expose } from './CustomChartsInfo'
 import { version, props as customChartsProps } from './CustomChartsInfo'
@@ -20,11 +18,11 @@ export default defineComponent({
     const scopedId = getUuid(version)
 
     // 監聽外框大小變化
-    const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
+    const ROcallback = throttle<ResizeObserverCallback>((entries: ResizeObserverEntry[]) => {
       entries.forEach(() => {
         init()
       })
-    }, 300) as ResizeObserverCallback
+    }, 300)
     const RO = new ResizeObserver(ROcallback)
     const charts = ref<HTMLElement | null>(null)
 
@@ -41,7 +39,7 @@ export default defineComponent({
 
     let myChart: any
 
-    const debounceClickCallback: Emits.Click = debounce(function (params: any) {
+    const debounceClickCallback: Emits['click'] = debounce(function (params: any) {
       context.emit('click', params)
     }, 200)
 
@@ -49,11 +47,11 @@ export default defineComponent({
     const layoutStore = useLayoutStore()
     const { isDark } = storeToRefs(layoutStore)
 
-    const setOption = (option: Types.BuildOptions) => {
+    const setOption = (option: Types['buildOptions']) => {
       myChart.setOption(option)
     }
 
-    const init: Expose.Init = () => {
+    const init: Expose['init'] = () => {
       const chartDom = document.getElementsByClassName(`chart-dom-${scopedId}`)[0]
       if (isEmpty(props.options) || isEmpty(chartDom)) return
 

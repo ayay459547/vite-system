@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { nextTick, reactive, computed, ref, inject } from 'vue'
+import { nextTick, reactive, computed, ref, shallowRef, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { defaultModuleType } from '@/i18n/i18n_setting'
-import throttle from '@/lib/lib_throttle'
-import { isEmpty, getProxyData } from '@/lib/lib_utils' // 工具
-import { CustomPopover, CustomButton, FormTimePicker } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { defaultModuleType } from '@/declare/declare_i18n'
+import { throttle } from '@/lib/lib_lodash'
+import { isEmpty, getProxyData, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
+import { useMouseInElement, onKeyStroke } from '@/lib/lib_hook'
+import { CustomPopover, CustomButton, CustomIcon } from '@/components/feature' // 系統組件
+import { FormTimePicker } from '@/components/input' // 系統組件
+import { useWeekScheduleStore } from '@/stores/stores_components/useWeekScheduleStore'
 
 import type { Types } from '../WeekScheduleInfo'
 
@@ -16,16 +20,23 @@ import {
   secondToTop,
   topToSecond,
   secondToTime,
-  timeToSecond
+  timeToSecond,
+  oneHourSecond,
+  oneMinuteSecond,
+  maxSecond
 } from '../planUtils'
 
 const props = defineProps({
+  dayId: {
+    type: Number as PropType<number>,
+    required: true
+  },
   uuid: {
     type: String as PropType<string>,
     required: true
   },
   planTime: {
-    type: Object as PropType<Types.PlanTime>,
+    type: Object as PropType<Types['planTime']>,
     required: true
   },
   scheduleContainer: {
@@ -33,35 +44,38 @@ const props = defineProps({
     required: true
   },
   // originPlan: {
-  //   type: [Object, undefined] as PropType<Types.Origin | undefined>,
+  //   type: [Object, undefined] as PropType<Types['origin'] | undefined>,
   //   required: true
   // }
   originPlanMap: {
-    type: [Object, undefined] as PropType<Record<string, Types.Origin>>,
-    required: true
-  },
-  isEdit: {
-    type: Boolean as PropType<boolean>,
+    type: [Object, undefined] as PropType<Record<string, Types['origin']>>,
     required: true
   }
 })
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
-const emit = defineEmits(['update:planTime', 'copyPlan', 'removePlan'])
+const emit = defineEmits([
+  'update:planTime',
+  'removePlan',
+  'change'
+])
 
-const plan = computed<Types.PlanTime>({
-  get() {
-    return props.planTime
-  },
-  set (v: Types.PlanTime) {
-    const _planTime = props.planTime as Types.PlanTime
+const plan = computed<Types['planTime']>({
+  get: () => props.planTime,
+  set: (v: Types['planTime']) => {
+    const _planTime = props.planTime as Types['planTime']
     const status = _planTime.status === 'new' ? 'new' : v.status
     emit('update:planTime', { ..._planTime, ...v, status })
   }
+})
+
+// 設定聚焦元素
+const isFocused = computed(() => {
+  return focusedId.value === props.uuid
 })
 
 // 原來的位置 Types.Origin
@@ -69,7 +83,12 @@ const origin = computed(() => {
   // const _originPlan = props.originPlan
   const _originPlan = props.originPlanMap[props.uuid]
 
-  const { originStart, originStartSecond, originEnd, originEndSecond } = _originPlan ?? {
+  const {
+    originStart,
+    originStartSecond = 0,
+    originEnd,
+    originEndSecond = 0
+  } = _originPlan ?? {
     originStart: '00:00',
     originStartSecond: 0,
     originEnd: '00:00',
@@ -89,9 +108,10 @@ const origin = computed(() => {
   }
 })
 
-const planStyle = computed<Types.PlanStyle>(() => {
-  const startSecond = plan.value.startSecond
-  const endSecond = plan.value.endSecond
+// 分配顯示位置
+const planStyle = computed<Types['planStyle']>(() => {
+  const startSecond = plan.value.startSecond ?? 0
+  const endSecond = plan.value.endSecond ?? 0
 
   return {
     top: secondToTop(startSecond),
@@ -99,15 +119,13 @@ const planStyle = computed<Types.PlanStyle>(() => {
   }
 })
 
-const isCheck = ref(false)
-
 // 改分配 時間 + 位置
 const isMove = ref(false)
 let moveEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const moveDataPlan = ($event: MouseEvent) => {
-  if (isMove.value || isCheck.value || isEmpty(props.scheduleContainer)) return
+  if (isMove.value || isEmpty(props.scheduleContainer)) return
   const { originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
@@ -129,12 +147,7 @@ const moveDataPlan = ($event: MouseEvent) => {
       endSecond,
       status: 'update'
     }
-
-    // 移動編輯區
-    if (updateInfo.isShow) {
-      updateInfo.top = mouseMoveY
-    }
-  }, FPS, { isNoLeading: true, isNoTrailing: true })
+  }, FPS, { leading: false, trailing: false })
 
   moveEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', moveEvent)
@@ -144,7 +157,7 @@ let setStartEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const setStartPlan = ($event: MouseEvent) => {
-  if (isMove.value || isCheck.value || isEmpty(props.scheduleContainer)) return
+  if (isMove.value || isEmpty(props.scheduleContainer)) return
   const { originTop } = origin.value
   const { clientY: mouseDownY } = $event
 
@@ -163,7 +176,7 @@ const setStartPlan = ($event: MouseEvent) => {
       startSecond,
       status: 'update'
     }
-  }, FPS, { isNoLeading: true, isNoTrailing: true })
+  }, FPS, { leading: false, trailing: false })
 
   setStartEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', setStartEvent)
@@ -173,7 +186,7 @@ let setEndEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 const setEndPlan = ($event: MouseEvent) => {
-  if (isMove.value || isCheck.value || isEmpty(props.scheduleContainer)) return
+  if (isMove.value || isEmpty(props.scheduleContainer)) return
   const { originTop, originHeight } = origin.value
   const { clientY: mouseDownY } = $event
 
@@ -192,7 +205,7 @@ const setEndPlan = ($event: MouseEvent) => {
       endSecond,
       status: 'update'
     }
-  }, FPS, { isNoLeading: true, isNoTrailing: true })
+  }, FPS, { leading: false, trailing: false })
 
   setEndEvent = throttleMousemoveEvent
   props.scheduleContainer.addEventListener('mousemove', setEndEvent)
@@ -201,8 +214,6 @@ const setEndPlan = ($event: MouseEvent) => {
 // 編輯單個工時安排
 const updateInfo = reactive<{
   isShow: boolean
-  left: number
-  top: number
 
   // 決定是否顯示用
   mousedownLeft: number
@@ -211,15 +222,12 @@ const updateInfo = reactive<{
   mouseupTop: number
 }>({
   isShow: false,
-  left: 0,
-  top: 0,
 
   mousedownLeft: -1,
   mousedownTop: -1,
   mouseupLeft: -1,
   mouseupTop: -1
 })
-
 
 const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
   const { clientX, clientY } = $event
@@ -237,18 +245,16 @@ const openUpdate = async ($event: MouseEvent, mouseEvent: string) => {
       Math.abs(updateInfo.mousedownLeft - updateInfo.mouseupLeft) < 3 &&
       Math.abs(updateInfo.mousedownTop - updateInfo.mouseupTop) < 3
     ) {
-      // 位置位移不超過3 => click 打開編輯
-      updateInfo.left = clientX
-      updateInfo.top = clientY
+      // 位置位移不超過3 => 打開編輯
       updateInfo.isShow = true
     }
   }
 }
 
 const formTimeValue = computed<any>({
-  get () {
+  get: () => {
     let res = []
-    if ([null, undefined].includes(plan.value)) {
+    if (plan.value === null || plan.value === undefined) {
       res = ['00:00', '00:00']
     } else {
       const [start, end] = [
@@ -259,7 +265,7 @@ const formTimeValue = computed<any>({
     }
     return res
   },
-  set (v: [string, string]) {
+  set: (v: [string, string]) => {
     const [start, end] = v
     plan.value = {
       start,
@@ -271,15 +277,30 @@ const formTimeValue = computed<any>({
   }
 })
 
+// 跨天處理資料
+const weekScheduleStore = useWeekScheduleStore()
+const {
+  checkTimeIsExist,
+  insertData,
+  removeData
+} = weekScheduleStore
+const {
+  planData,
+  focusedId,
+  isHasFocusedPlan
+} = storeToRefs(weekScheduleStore)
+
 // 關閉編輯
-const closeUpdate = () => {
-  updateInfo.isShow = false
+const closeUpdate = async () => {
+  await nextTick()
+  setTimeout(() => {
+    updateInfo.isShow = false
+    focusedId.value = ''
+  }, 0)
 }
 
 // 刪除分配
 const removePlan = async () => {
-  closeUpdate()
-
   await nextTick()
   if (plan.value.status !== 'new') {
     plan.value = {
@@ -290,47 +311,156 @@ const removePlan = async () => {
   }
 }
 
-// 複製分配
-const copyPlan = async () => {
-  closeUpdate()
-
-  await nextTick()
-  emit('copyPlan')
-}
+const targetRef = shallowRef<HTMLDivElement>()
+// 滑鼠是否在元素中
+const { isOutside } = useMouseInElement(targetRef)
 
 /**
- * 編輯時間
- * 時間(HH:mm) => 秒數
- * 秒數 => top
+ * 使用方向鍵 移動
+ *
+ * 上下移動 移動單位
+ * Ctrl ? 小時 : 分鐘
+ *
+ * 左右移動 移動單位
+ * Ctrl ? 2天 : 1天
+ *
+ * 加上 Shift 只移動開始時間
+ * 加上 Alt 只移動結束時間
+ *
+ * Esc 可清空聚焦
  */
- const onTimePickerChange = async (time: string) => {
-  console.log(time)
-  isCheck.value = false
+onKeyStroke(async (event: KeyboardEvent) => {
+  // 有聚焦時只移動一個 且移動會檢查
+  const isSingleMove = isHasFocusedPlan.value
+  if (isSingleMove && !isFocused.value) return
+
+  if (isFocused.value && event.key === 'Escape') {
+    focusedId.value = '' // 清空聚焦
+  }
+
+  switch (event.key) {
+    case 'ArrowUp': // 向上移動
+    case 'ArrowDown': { // 向下移動
+      const isUp = event.key === 'ArrowUp'
+
+      // 移動單位 = Ctrl ? 小時 : 分鐘
+      const moveSecond = event.ctrlKey ? oneHourSecond : oneMinuteSecond
+
+      const isOnlyUp = event.shiftKey // 只移動開始時間
+      const isOnlyDown = event.altKey // 只移動結束時間
+
+      const newStartSecond = isOnlyDown ? plan.value.startSecond : (
+        isUp ?
+        Math.max(plan.value.startSecond - moveSecond, 0) :
+        Math.max(plan.value.startSecond + moveSecond, 0)
+      )
+
+      const newEndSecond = isOnlyUp ? plan.value.endSecond : (
+        isUp ?
+        Math.min(plan.value.endSecond - moveSecond, maxSecond) :
+        Math.min(plan.value.endSecond + moveSecond, maxSecond)
+      )
+
+      plan.value = {
+        start: secondToTime(newStartSecond),
+        startSecond: newStartSecond,
+        end: secondToTime(newEndSecond),
+        endSecond: newEndSecond,
+        status: 'update'
+      }
+      emit('change')
+      event.preventDefault()
+      break
+    }
+    case 'ArrowRight': // 向右移動
+    case 'ArrowLeft': { // 向左移動
+      const isRight = event.key === 'ArrowRight'
+      const moveDay = event.ctrlKey ? 2 : 1
+
+      // 插入位置
+      const insertPosition = {
+        '-1': '6',
+        '0': '7',
+        '1': '1',
+        '2': '2',
+        '3': '3',
+        '4': '4',
+        '5': '5',
+        '6': '6',
+        '7': '7',
+        '8': '1',
+        '9': '2'
+      }
+      const __insertDayId__ = isRight ? props.dayId + moveDay : props.dayId - moveDay
+      const insertDayId = insertPosition[__insertDayId__]
+
+      if (!hasOwnProperty(planData.value, insertDayId)) return
+
+      const { isTimeExist } = await checkTimeIsExist(insertDayId, {
+        startSecond: props.planTime.startSecond,
+        endSecond: props.planTime.endSecond
+      })
+      // 所有一起移動不檢查
+      if (!isSingleMove || !isTimeExist) {
+        const movePlanTime = {
+          ...props.planTime,
+          uuid: props.uuid
+        }
+        // 移動不用將 status => delete
+        // 直接複製到下一個區塊
+        emit('removePlan')
+        await nextTick()
+        insertData(insertDayId, movePlanTime)
+      }
+      emit('change')
+      event.preventDefault()
+      break
+    }
+  }
+})
+
+// 複製一周
+const copyPlanWeek = async () => {
+  await nextTick()
+  for (const dayId in planData.value) {
+    const { isTimeExist } = await checkTimeIsExist(dayId, {
+      startSecond: props.planTime.startSecond,
+      endSecond: props.planTime.endSecond
+    })
+    if (!isTimeExist) {
+      insertData(dayId, {
+        ...props.planTime,
+        uuid: getUuid('new'),
+        status: 'new'
+      })
+    }
+  }
+}
+// 刪除一周
+const removePlanWeek = async () => {
+  await nextTick()
+  for (const dayId in planData.value) {
+    removeData(dayId, props.planTime)
+  }
 }
 
-const checkUpdatePlan = (checkTimeIsExist: Types.CheckTimeIsExist) => {
-  isCheck.value = true
-
+const getPlanInfo = async () => {
+  await nextTick()
+  const planTime = getProxyData<Types['planTime']>(plan.value)
+  return { uuid: props.uuid, planTime }
+}
+const removeEvent = async () => {
+  await nextTick()
   // 移除 EventListener
   props.scheduleContainer.removeEventListener('mousemove', moveEvent)
   props.scheduleContainer.removeEventListener('mousemove', setStartEvent)
   props.scheduleContainer.removeEventListener('mousemove', setEndEvent)
   isMove.value = false
-
-  const planTime = getProxyData<Types.PlanTime>(plan.value)
-  const { startSecond, endSecond } = planTime
-  const isExist = checkTimeIsExist(startSecond, endSecond, props.uuid)
-
-  isCheck.value = false
-  return {
-    isExist,
-    uuid: props.uuid,
-    planTime
-  }
 }
 
 defineExpose({
-  checkUpdatePlan
+  getPlanInfo,
+  removeEvent
 })
 
 </script>
@@ -340,89 +470,122 @@ defineExpose({
     class="schedule-data-plan"
     :class="[
       isMove ? 'schedule-is-move' : '',
+      isFocused ? 'schedule-is-focused' : '',
       `schedule-status-${plan.status}`
     ]"
     :style="{
-      top: `${planStyle.top - 1}px`,
-      height: `${planStyle.height}px`
+      top: `${(planStyle?.top ?? 0) - 1}px`,
+      height: `${(planStyle?.height ?? 0)}px`
     }"
     @mousedown.stop="openUpdate($event, 'mousedown')"
     @mouseup="openUpdate($event, 'mouseup')"
   >
-    <div
-      class="schedule-data-plan-before"
-      @mousedown="setStartPlan($event)"
-      @mouseup="isCheck = true"
-    ></div>
+    <!-- 向上延伸 -->
+    <div class="schedule-data-plan-before" @mousedown="setStartPlan($event)"></div>
+
     <!-- 移動 -->
     <div
-      class="schedule-data-plan-text"
-      @mousedown="moveDataPlan($event)"
-      @mouseup="isCheck = true"
+      ref="targetRef"
+      tabindex="-1"
+      class="schedule-data-plan-content"
+      @mousedown.self="moveDataPlan($event)"
     >
-      <!-- 開始時間 -->
-      <span>{{ `${plan.start}` }}</span>
-      <span> - </span>
-      <!-- 結束時間 -->
-      <span>{{ `${plan.end}` }}</span>
-      <!-- 狀態 -->
-      <!-- <span> {{ plan?.status ?? 'none' }} </span> -->
-    </div>
-    <div
-      class="schedule-data-plan-after"
-      @mousedown="setEndPlan($event)"
-      @mouseup="isCheck = true"
-    ></div>
+      <div class="schedule-data-plan-text">
+        <!-- 開始時間 -->
+        <span>{{ `${plan.start}` }}</span>
+        <span> - </span>
+        <!-- 結束時間 -->
+        <span>{{ `${plan.end}` }}</span>
 
-    <!-- 編輯 -->
-    <div
-      class="schedule-update"
-      :style="{
-        top: `${updateInfo.top}px`,
-        left: `${updateInfo.left}px`
-      }"
-    >
+        <!-- 狀態 debug 使用 -->
+        <!-- <div class="i-my-sm text-danger">
+          <div>{{ props.uuid }}</div>
+          <div>{{ plan?.status ?? 'none' }}</div>
+          <div>{{ `isFocused: ${isFocused}` }}</div>
+          <div>{{ `isShow: ${updateInfo.isShow}` }}</div>
+        </div> -->
+
+      </div>
+
+      <!-- 刪除區塊 -->
+      <div
+        v-show="!isOutside"
+        class="schedule-data-plan-remove"
+        @click.stop="removePlan()"
+      >
+        <CustomIcon name="close" />
+      </div>
+
+      <!-- 編輯 Popver -->
       <CustomPopover
-        :visible="updateInfo.isShow && isEdit"
-        :width="320"
-        placement="right"
+        :visible="updateInfo.isShow && isFocused"
+        :width="360"
+        :offset="4"
+        placement="right-start"
         :show-arrow="false"
+        :teleported="false"
+        :virtual-ref="targetRef"
+        virtual-triggering
       >
         <template #reference>
           <div></div>
         </template>
-        <div class="schedule-update-container">
+        <div class="schedule-update-container" tabindex="-1">
           <div class="schedule-update-header">
             <span class="update-label">{{ i18nTranslate('edit-time-range') }}</span>
-            <CustomButton icon-name="close" text @click="closeUpdate" />
+            <CustomButton
+              icon-name="close"
+              text
+              @click.stop="closeUpdate"
+            />
           </div>
           <div class="schedule-update-body">
+            <!-- 編輯區塊 -->
             <FormTimePicker
               v-model="formTimeValue"
               is-range
               format="HH:mm"
-              @change="onTimePickerChange($event)"
+              value-format="HH:mm"
+              :teleported="false"
+              @change="() => emit('change')"
             />
           </div>
           <div class="schedule-update-footer">
+            <div class="flex-row i-ga-xs">
+              <!-- 複製一周 -->
+              <CustomButton
+                :label="i18nTranslate('sync-week')"
+                type="primary"
+                plain
+                icon-name="copy"
+                icon-move="scale"
+                @click.stop="copyPlanWeek"
+              />
+              <!-- 刪除一周 -->
+              <CustomButton
+                :label="i18nTranslate('remove-week')"
+                type="danger"
+                plain
+                icon-type="far"
+                icon-name="trash-can"
+                icon-move="scale"
+                @click.stop="removePlanWeek"
+              />
+            </div>
+            <!-- 刪除區塊 -->
             <CustomButton
-              :label="i18nTranslate('delete-block')"
-              type="danger"
-              icon-name="close"
-              icon-move="scale"
-              @click="removePlan"
-            />
-            <CustomButton
-              :label="i18nTranslate('sync-week')"
-              type="primary"
-              icon-name="copy"
-              icon-move="scale"
-              @click="copyPlan"
+              :label="i18nTranslate('confirm-yes')"
+              type="success"
+              icon-name="check"
+              @click.stop="closeUpdate"
             />
           </div>
         </div>
       </CustomPopover>
     </div>
+
+    <!-- 向下延伸 -->
+    <div class="schedule-data-plan-after" @mousedown="setEndPlan($event)"></div>
   </div>
 </template>
 
@@ -431,6 +594,9 @@ defineExpose({
   &-is-move {
     cursor: move !important;
     z-index: 9;
+  }
+  &-is-focused {
+    box-shadow: 0px 0px 6px 1px #337ecc;
   }
   &-status-delete {
     display: none !important;
@@ -442,7 +608,7 @@ defineExpose({
     min-height: 12px;
     border-radius: 4px;
     border: 1px solid #337ecc;
-    background-color: #a0cfffc0;
+    background-color: #a0cfff84;
     cursor: pointer;
 
     display: flex;
@@ -461,12 +627,30 @@ defineExpose({
     &-after {
       transform: translateY(2px);
     }
-    &-text {
+
+    &-content {
+      width: 100%;
       height: calc(100% - 8px);
-      transform: translateY(-2px);
+      display: flex;
+      align-items: start;
+    }
+    &-text {
       width: 100%;
       text-align: center;
       overflow: visible;
+      pointer-events: none;
+    }
+    &-remove {
+      position: absolute;
+      right: 0;
+      top: 0;
+      cursor: pointer;
+      padding: 4px 6px;
+      transition-duration: 0.2s;
+      color: var(--el-color-danger);
+      &:hover {
+        color: var(--el-color-danger-light-3);
+      }
     }
   }
 
@@ -490,12 +674,12 @@ defineExpose({
     &-body {
       // border: 2px solid skyblue;
       height: fit-content;
-      min-height: 100px;
+      min-height: 80px;
       padding: 24px 0;
     }
     &-footer {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       gap: 12px;
     }
