@@ -31,7 +31,7 @@ export default defineComponent({
     el: {
       type: Object as PropType<Element>,
       required: false,
-      default() {
+      default: () => {
         return document.querySelector('body > div')
       },
       description: 'hover Element'
@@ -60,10 +60,10 @@ export default defineComponent({
       return elType === '[object HTMLDivElement]'
     },
     isVisible: {
-      get () {
+      get() {
         return this.isShow
       },
-      set (v: boolean) {
+      set(v: boolean) {
         this.isShow = v
       }
     }

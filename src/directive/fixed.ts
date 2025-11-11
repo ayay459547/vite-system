@@ -3,7 +3,6 @@ import { createApp } from 'vue'
 import type { Placement } from 'element-plus'
 import { vOnClickOutside } from '@vueuse/components'
 
-// import debounce from '@/lib/lib_debounce'
 import VFixed from './VFixed.vue'
 import { awaitTime } from '@/lib/lib_utils' // 工具
 
@@ -15,13 +14,13 @@ export const vFixed = {
   //   el.addEventListener(mouseenter, createHandler.bind(el, options))
   //   el.addEventListener(mouseleave, removeHandler.bind(el, options))
   // },
-  mounted(el: Element, { value: options }) {
+  mounted(el: Element, { value: options }: any) {
     el.addEventListener(mouseenter, createHandler.bind(el, options))
-    el.addEventListener(mouseleave, removeHandler.bind(el, options))
+    el.addEventListener(mouseleave, removeHandler.bind(el))
   },
-  unmounted(el: Element, { value: options }) {
+  unmounted(el: Element, { value: options }: any) {
     el.removeEventListener(mouseenter, createHandler.bind(el, options))
-    el.removeEventListener(mouseleave, removeHandler.bind(el, options))
+    el.removeEventListener(mouseleave, removeHandler.bind(el))
   }
 }
 

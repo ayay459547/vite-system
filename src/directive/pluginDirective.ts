@@ -13,10 +13,12 @@ import {
   // vScroll,
 
   vOnClickOutside,
+  vElementBounding,
   vElementSize,
   vElementVisibility,
   vOnKeyStroke,
-  vElementHover
+  vElementHover,
+  vMouseInElement
 } from '@vueuse/components'
 
 // 文字懸浮
@@ -47,6 +49,8 @@ const pluginDirective = {
 
     // https://vueuse.org/core/onClickOutside/#directive-usage
     app.directive('on-click-outside', vOnClickOutside)
+    // https://vueuse.org/core/useElementBounding/#directive-usage
+    app.directive('element-bounding', vElementBounding)
     // https://vueuse.org/core/useElementSize/#directive-usage
     app.directive('element-size', vElementSize)
     // https://vueuse.org/core/useElementVisibility/#directive-usage
@@ -55,6 +59,8 @@ const pluginDirective = {
     app.directive('on-key-stroke', vOnKeyStroke)
     // https://vueuse.org/core/useElementHover/#directive-usage
     app.directive('element-hover', vElementHover)
+    // https://vueuse.org/core/useMouseInElement/#directive-usage
+    app.directive('mouse-in-element', vMouseInElement)
 
     app.directive('fixed', vFixed)
   }
