@@ -1,10 +1,12 @@
 ## CustomImage
 
+### 圖片
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomImage } from '@/components'
+import { CustomImage } from '@/components/feature'
 
 const onLoad = (e: Event) => {
   console.log(e)
@@ -54,3 +56,7 @@ const size: ButtonSize = 'large'
 | switch | 預覽切換 |
 | close  | 關閉預覽 |
 | show   | 開啟預覽 |
+
+### Expose
+
+無

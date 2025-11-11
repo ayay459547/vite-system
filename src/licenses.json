@@ -1,0 +1,2601 @@
+{
+  "@babel/helper-string-parser@7.27.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\helper-string-parser",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\helper-string-parser\\LICENSE"
+  },
+  "@babel/helper-validator-identifier@7.27.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\helper-validator-identifier",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\helper-validator-identifier\\LICENSE"
+  },
+  "@babel/parser@7.27.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\parser",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\parser\\LICENSE"
+  },
+  "@babel/runtime@7.27.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\runtime",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\runtime\\LICENSE"
+  },
+  "@babel/types@7.27.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\types",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@babel\\types\\LICENSE"
+  },
+  "@codemirror/autocomplete@6.18.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/autocomplete",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\autocomplete",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\autocomplete\\LICENSE"
+  },
+  "@codemirror/commands@6.8.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/commands",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\commands",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\commands\\LICENSE"
+  },
+  "@codemirror/lang-angular@0.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-angular",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-angular",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-angular\\LICENSE"
+  },
+  "@codemirror/lang-cpp@6.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-cpp",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-cpp",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-cpp\\LICENSE"
+  },
+  "@codemirror/lang-css@6.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-css",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-css",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-css\\LICENSE"
+  },
+  "@codemirror/lang-go@6.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-go",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-go",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-go\\LICENSE"
+  },
+  "@codemirror/lang-html@6.4.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-html",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-html",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-html\\LICENSE"
+  },
+  "@codemirror/lang-java@6.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-java",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-java",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-java\\LICENSE"
+  },
+  "@codemirror/lang-javascript@6.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-javascript",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-javascript",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-javascript\\LICENSE"
+  },
+  "@codemirror/lang-json@6.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-json",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-json",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-json\\LICENSE"
+  },
+  "@codemirror/lang-less@6.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-less",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-less",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-less\\LICENSE"
+  },
+  "@codemirror/lang-liquid@6.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-liquid",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-liquid",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-liquid\\LICENSE"
+  },
+  "@codemirror/lang-markdown@6.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-markdown",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-markdown",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-markdown\\LICENSE"
+  },
+  "@codemirror/lang-php@6.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-php",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-php",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-php\\LICENSE"
+  },
+  "@codemirror/lang-python@6.1.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-python",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-python",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-python\\LICENSE"
+  },
+  "@codemirror/lang-rust@6.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-rust",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-rust",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-rust\\LICENSE"
+  },
+  "@codemirror/lang-sass@6.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-sass",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-sass",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-sass\\LICENSE"
+  },
+  "@codemirror/lang-sql@6.8.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-sql",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-sql",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-sql\\LICENSE"
+  },
+  "@codemirror/lang-vue@0.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-vue",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-vue",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-vue\\LICENSE"
+  },
+  "@codemirror/lang-wast@6.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-wast",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-wast",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-wast\\LICENSE"
+  },
+  "@codemirror/lang-xml@6.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-xml",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-xml",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-xml\\LICENSE"
+  },
+  "@codemirror/lang-yaml@6.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lang-yaml",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-yaml",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lang-yaml\\LICENSE"
+  },
+  "@codemirror/language-data@6.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/language-data",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\language-data",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\language-data\\LICENSE"
+  },
+  "@codemirror/language@6.11.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/language",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\language",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\language\\LICENSE"
+  },
+  "@codemirror/legacy-modes@6.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/legacy-modes",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\legacy-modes",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\legacy-modes\\LICENSE"
+  },
+  "@codemirror/lint@6.8.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/lint",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lint",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\lint\\LICENSE"
+  },
+  "@codemirror/search@6.5.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/search",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\search",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\search\\LICENSE"
+  },
+  "@codemirror/state@6.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/state",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\state",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\state\\LICENSE"
+  },
+  "@codemirror/view@6.36.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/view",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\view",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@codemirror\\view\\LICENSE"
+  },
+  "@ctrl/tinycolor@3.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/scttcper/tinycolor",
+    "publisher": "Scott Cooper",
+    "email": "scttcper@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@ctrl\\tinycolor",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@ctrl\\tinycolor\\LICENSE"
+  },
+  "@dagrejs/dagre@1.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dagrejs/dagre",
+    "publisher": "Chris Pettitt",
+    "email": "cpettitt@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@dagrejs\\dagre",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@dagrejs\\dagre\\LICENSE"
+  },
+  "@dagrejs/graphlib@2.2.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dagrejs/graphlib",
+    "publisher": "Chris Pettitt",
+    "email": "cpettitt@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@dagrejs\\graphlib",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@dagrejs\\graphlib\\LICENSE"
+  },
+  "@element-plus/icons-vue@2.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/element-plus/element-plus-icons",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@element-plus\\icons-vue",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@element-plus\\icons-vue\\LICENSE"
+  },
+  "@fast-csv/format@4.3.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/C2FO/fast-csv",
+    "publisher": "doug-martin",
+    "email": "doug@dougamartin.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fast-csv\\format",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fast-csv\\format\\LICENSE"
+  },
+  "@fast-csv/parse@4.3.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/C2FO/fast-csv",
+    "publisher": "doug-martin",
+    "email": "doug@dougamartin.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fast-csv\\parse",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fast-csv\\parse\\LICENSE"
+  },
+  "@floating-ui/core@1.6.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "atomiks",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@floating-ui\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@floating-ui\\core\\LICENSE"
+  },
+  "@floating-ui/dom@1.6.13": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "atomiks",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@floating-ui\\dom",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@floating-ui\\dom\\LICENSE"
+  },
+  "@floating-ui/utils@0.2.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "atomiks",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@floating-ui\\utils",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@floating-ui\\utils\\LICENSE"
+  },
+  "@fortawesome/fontawesome-common-types@6.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "The Font Awesome Team",
+    "url": "https://github.com/orgs/FortAwesome/people",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\fontawesome-common-types",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\fontawesome-common-types\\LICENSE.txt"
+  },
+  "@fortawesome/fontawesome-svg-core@6.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "The Font Awesome Team",
+    "url": "https://github.com/orgs/FortAwesome/people",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\fontawesome-svg-core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\fontawesome-svg-core\\LICENSE.txt"
+  },
+  "@fortawesome/free-brands-svg-icons@6.7.2": {
+    "licenses": "(CC-BY-4.0 AND MIT)",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "The Font Awesome Team",
+    "url": "https://github.com/orgs/FortAwesome/people",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\free-brands-svg-icons",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\free-brands-svg-icons\\LICENSE.txt"
+  },
+  "@fortawesome/free-regular-svg-icons@6.7.2": {
+    "licenses": "(CC-BY-4.0 AND MIT)",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "The Font Awesome Team",
+    "url": "https://github.com/orgs/FortAwesome/people",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\free-regular-svg-icons",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\free-regular-svg-icons\\LICENSE.txt"
+  },
+  "@fortawesome/free-solid-svg-icons@6.7.2": {
+    "licenses": "(CC-BY-4.0 AND MIT)",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "The Font Awesome Team",
+    "url": "https://github.com/orgs/FortAwesome/people",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\free-solid-svg-icons",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\free-solid-svg-icons\\LICENSE.txt"
+  },
+  "@fortawesome/vue-fontawesome@3.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FortAwesome/vue-fontawesome",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\vue-fontawesome",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fortawesome\\vue-fontawesome\\LICENSE.txt"
+  },
+  "@interactjs/types@1.10.27": {
+    "licenses": "MIT",
+    "repository": "https://github.com/taye/interact.js",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@interactjs\\types",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@interactjs\\types\\LICENSE"
+  },
+  "@intlify/core-base@11.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/intlify/vue-i18n",
+    "publisher": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@intlify\\core-base",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@intlify\\core-base\\LICENSE"
+  },
+  "@intlify/message-compiler@11.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/intlify/vue-i18n",
+    "publisher": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@intlify\\message-compiler",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@intlify\\message-compiler\\LICENSE"
+  },
+  "@intlify/shared@11.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/intlify/vue-i18n",
+    "publisher": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@intlify\\shared",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@intlify\\shared\\LICENSE"
+  },
+  "@jridgewell/sourcemap-codec@1.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jridgewell/sourcemap-codec",
+    "publisher": "Rich Harris",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@jridgewell\\sourcemap-codec",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@jridgewell\\sourcemap-codec\\LICENSE"
+  },
+  "@lezer/common@1.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/common",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\common",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\common\\LICENSE"
+  },
+  "@lezer/cpp@1.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/cpp",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\cpp",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\cpp\\LICENSE"
+  },
+  "@lezer/css@1.1.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/css",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\css",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\css\\LICENSE"
+  },
+  "@lezer/go@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/go",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\go",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\go\\LICENSE"
+  },
+  "@lezer/highlight@1.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/highlight",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\highlight",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\highlight\\LICENSE"
+  },
+  "@lezer/html@1.3.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/html",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\html",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\html\\LICENSE"
+  },
+  "@lezer/java@1.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/java",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\java",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\java\\LICENSE"
+  },
+  "@lezer/javascript@1.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/javascript",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\javascript",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\javascript\\LICENSE"
+  },
+  "@lezer/json@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/json",
+    "publisher": "Arun Srinivasan",
+    "email": "rulfzid@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\json",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\json\\LICENSE"
+  },
+  "@lezer/lr@1.4.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/lr",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\lr",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\lr\\LICENSE"
+  },
+  "@lezer/markdown@1.4.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/markdown",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\markdown",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\markdown\\LICENSE"
+  },
+  "@lezer/php@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/php",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\php",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\php\\LICENSE"
+  },
+  "@lezer/python@1.1.18": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/python",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\python",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\python\\LICENSE"
+  },
+  "@lezer/rust@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/rust",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\rust",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\rust\\LICENSE"
+  },
+  "@lezer/sass@1.0.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/sass",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\sass",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\sass\\LICENSE"
+  },
+  "@lezer/xml@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/xml",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\xml",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\xml\\LICENSE"
+  },
+  "@lezer/yaml@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lezer-parser/yaml",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\yaml",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@lezer\\yaml\\LICENSE"
+  },
+  "@marijn/find-cluster-break@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/marijnh/find-cluster-break",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@marijn\\find-cluster-break",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@marijn\\find-cluster-break\\LICENSE"
+  },
+  "@sxzz/popperjs-es@2.11.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/popperjs/popper-core",
+    "publisher": "Federico Zivolo",
+    "email": "federico.zivolo@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@popperjs\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@popperjs\\core\\LICENSE.md"
+  },
+  "@types/linkify-it@5.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\linkify-it",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\linkify-it\\LICENSE"
+  },
+  "@types/lodash-es@4.17.12": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\lodash-es",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\lodash-es\\LICENSE"
+  },
+  "@types/lodash@4.17.16": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\lodash",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\lodash\\LICENSE"
+  },
+  "@types/markdown-it@14.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\markdown-it",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\markdown-it\\LICENSE"
+  },
+  "@types/mdurl@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\mdurl",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\mdurl\\LICENSE"
+  },
+  "@types/node@14.18.63": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fast-csv\\format\\node_modules\\@types\\node",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@fast-csv\\format\\node_modules\\@types\\node\\LICENSE"
+  },
+  "@types/raf@3.4.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\raf",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\raf\\LICENSE"
+  },
+  "@types/trusted-types@2.0.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\trusted-types",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\trusted-types\\LICENSE"
+  },
+  "@types/web-bluetooth@0.0.16": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@types\\web-bluetooth",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@types\\web-bluetooth\\LICENSE"
+  },
+  "@types/web-bluetooth@0.0.20": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@types\\web-bluetooth",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@types\\web-bluetooth\\LICENSE"
+  },
+  "@types/web-bluetooth@0.0.21": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\web-bluetooth",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@types\\web-bluetooth\\LICENSE"
+  },
+  "@vavt/cm-extension@1.9.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/imzbf/md-editor-extension",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vavt\\cm-extension",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vavt\\cm-extension\\LICENSE"
+  },
+  "@vavt/copy2clipboard@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/imzbf/copy2clipboard",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vavt\\copy2clipboard",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vavt\\copy2clipboard\\LICENSE"
+  },
+  "@vavt/util@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/imzbf/vavt-util",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vavt\\util",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vavt\\util\\README.md"
+  },
+  "@vue-flow/background@1.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bcakmakoglu/vue-flow/packages/plugins/background",
+    "publisher": "Burak Cakmakoglu",
+    "email": "78412429+bcakmakoglu@users.noreply.github.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\background",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\background\\LICENSE"
+  },
+  "@vue-flow/controls@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bcakmakoglu/vue-flow/packages/plugins/controls",
+    "publisher": "Burak Cakmakoglu",
+    "email": "78412429+bcakmakoglu@users.noreply.github.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\controls",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\controls\\LICENSE"
+  },
+  "@vue-flow/core@1.43.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bcakmakoglu/vue-flow",
+    "publisher": "Burak Cakmakoglu",
+    "email": "78412429+bcakmakoglu@users.noreply.github.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\LICENSE"
+  },
+  "@vue-flow/minimap@1.5.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bcakmakoglu/vue-flow/packages/plugins/minimap",
+    "publisher": "Burak Cakmakoglu",
+    "email": "78412429+bcakmakoglu@users.noreply.github.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\minimap",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\minimap\\LICENSE"
+  },
+  "@vue-flow/node-resizer@1.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bcakmakoglu/vue-flow/packages/plugins/node-resizer",
+    "publisher": "Burak Cakmakoglu",
+    "email": "78412429+bcakmakoglu@users.noreply.github.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\node-resizer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\node-resizer\\LICENSE"
+  },
+  "@vue-flow/node-toolbar@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bcakmakoglu/vue-flow/packages/plugins/node-toolbar",
+    "publisher": "Burak Cakmakoglu",
+    "email": "78412429+bcakmakoglu@users.noreply.github.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\node-toolbar",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\node-toolbar\\LICENSE"
+  },
+  "@vue/compiler-core@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-core\\LICENSE"
+  },
+  "@vue/compiler-dom@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-dom",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-dom\\LICENSE"
+  },
+  "@vue/compiler-sfc@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-sfc",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-sfc\\LICENSE"
+  },
+  "@vue/compiler-ssr@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-ssr",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\compiler-ssr\\LICENSE"
+  },
+  "@vue/devtools-api@6.6.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/vue-devtools",
+    "publisher": "Guillaume Chau",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-i18n\\node_modules\\@vue\\devtools-api"
+  },
+  "@vue/devtools-api@7.7.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/devtools",
+    "publisher": "webfansplz",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\devtools-api",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\devtools-api\\LICENSE"
+  },
+  "@vue/devtools-kit@7.7.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/devtools",
+    "publisher": "webfansplz",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\devtools-kit",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\devtools-kit\\LICENSE"
+  },
+  "@vue/devtools-shared@7.7.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/devtools",
+    "publisher": "webfansplz",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\devtools-shared",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\devtools-shared\\LICENSE"
+  },
+  "@vue/reactivity@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\reactivity",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\reactivity\\LICENSE"
+  },
+  "@vue/runtime-core@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\runtime-core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\runtime-core\\LICENSE"
+  },
+  "@vue/runtime-dom@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\runtime-dom",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\runtime-dom\\LICENSE"
+  },
+  "@vue/server-renderer@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\server-renderer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\server-renderer\\LICENSE"
+  },
+  "@vue/shared@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\shared",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\shared\\LICENSE"
+  },
+  "@vueuse/components@13.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Jacob Clevenger",
+    "email": "https://github.com/wheatjs",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\components",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\components\\LICENSE"
+  },
+  "@vueuse/core@10.11.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\core\\LICENSE"
+  },
+  "@vueuse/core@13.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\core\\LICENSE"
+  },
+  "@vueuse/core@9.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@vueuse\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@vueuse\\core\\LICENSE"
+  },
+  "@vueuse/metadata@10.11.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\metadata",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\metadata\\LICENSE"
+  },
+  "@vueuse/metadata@13.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\metadata",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\metadata\\LICENSE"
+  },
+  "@vueuse/metadata@9.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@vueuse\\metadata",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@vueuse\\metadata\\LICENSE"
+  },
+  "@vueuse/shared@10.11.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\shared",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\shared\\LICENSE"
+  },
+  "@vueuse/shared@13.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\shared",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vueuse\\shared\\LICENSE"
+  },
+  "@vueuse/shared@9.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@vueuse\\shared",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\node_modules\\@vueuse\\shared\\LICENSE"
+  },
+  "@vxe-ui/core@4.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/x-extends/vxe-core",
+    "publisher": "Xu Liangzhan",
+    "email": "xu_liangzhan@163.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vxe-ui\\core",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vxe-ui\\core\\LICENSE"
+  },
+  "archiver-utils@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/archiverjs/archiver-utils",
+    "publisher": "Chris Talkington",
+    "url": "http://christalkington.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\archiver-utils",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\archiver-utils\\LICENSE"
+  },
+  "archiver-utils@3.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/archiverjs/archiver-utils",
+    "publisher": "Chris Talkington",
+    "url": "http://christalkington.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\zip-stream\\node_modules\\archiver-utils",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\zip-stream\\node_modules\\archiver-utils\\LICENSE"
+  },
+  "archiver@5.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/archiverjs/node-archiver",
+    "publisher": "Chris Talkington",
+    "url": "http://christalkington.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\archiver",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\archiver\\LICENSE"
+  },
+  "argparse@2.0.1": {
+    "licenses": "Python-2.0",
+    "repository": "https://github.com/nodeca/argparse",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\argparse",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\argparse\\LICENSE"
+  },
+  "async-validator@4.2.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/yiminghe/async-validator",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\async-validator",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\async-validator\\LICENSE.md"
+  },
+  "async@3.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/caolan/async",
+    "publisher": "Caolan McMahon",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\async",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\async\\LICENSE"
+  },
+  "asynckit@0.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alexindigo/asynckit",
+    "publisher": "Alex Indigo",
+    "email": "iam@alexindigo.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\asynckit",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\asynckit\\LICENSE"
+  },
+  "atob@2.1.2": {
+    "licenses": "(MIT OR Apache-2.0)",
+    "repository": "git://git.coolaj86.com/coolaj86/atob.js",
+    "publisher": "AJ ONeal",
+    "email": "coolaj86@gmail.com",
+    "url": "https://coolaj86.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\atob",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\atob\\LICENSE"
+  },
+  "axios@1.9.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/axios/axios",
+    "publisher": "Matt Zabriskie",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\axios",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\axios\\LICENSE"
+  },
+  "balanced-match@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/balanced-match",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\balanced-match",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\balanced-match\\LICENSE.md"
+  },
+  "base64-arraybuffer@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/base64-arraybuffer",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "https://hertzen.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\base64-arraybuffer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\base64-arraybuffer\\LICENSE"
+  },
+  "base64-js@1.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/beatgammit/base64-js",
+    "publisher": "T. Jameson Little",
+    "email": "t.jameson.little@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\base64-js",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\base64-js\\LICENSE"
+  },
+  "big-integer@1.6.52": {
+    "licenses": "Unlicense",
+    "repository": "https://github.com/peterolson/BigInteger.js",
+    "publisher": "Peter Olson",
+    "email": "peter.e.c.olson+npm@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\big-integer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\big-integer\\LICENSE"
+  },
+  "binary@0.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-binary",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\binary",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\binary\\README.markdown"
+  },
+  "birpc@2.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/antfu/birpc",
+    "publisher": "Anthony Fu",
+    "email": "anthonyfu117@hotmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\birpc",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\birpc\\LICENSE"
+  },
+  "bl@4.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rvagg/bl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\bl",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\bl\\LICENSE.md"
+  },
+  "bluebird@3.4.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/petkaantonov/bluebird",
+    "publisher": "Petka Antonov",
+    "email": "petka_antonov@hotmail.com",
+    "url": "http://github.com/petkaantonov/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\unzipper\\node_modules\\bluebird",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\unzipper\\node_modules\\bluebird\\LICENSE"
+  },
+  "brace-expansion@1.1.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/brace-expansion",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\glob\\node_modules\\brace-expansion",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\glob\\node_modules\\brace-expansion\\LICENSE"
+  },
+  "brace-expansion@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/brace-expansion",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\brace-expansion",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\brace-expansion\\LICENSE"
+  },
+  "btoa@1.2.1": {
+    "licenses": "(MIT OR Apache-2.0)",
+    "repository": "git://git.coolaj86.com/coolaj86/btoa.js",
+    "publisher": "AJ ONeal",
+    "email": "coolaj86@gmail.com",
+    "url": "https://coolaj86.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\btoa",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\btoa\\LICENSE"
+  },
+  "buffer-crc32@0.2.13": {
+    "licenses": "MIT",
+    "repository": "https://github.com/brianloveswords/buffer-crc32",
+    "publisher": "Brian J. Brennan",
+    "email": "brianloveswords@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffer-crc32",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffer-crc32\\LICENSE"
+  },
+  "buffer-indexof-polyfill@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sarosia/buffer-indexof-polyfill",
+    "publisher": "https://github.com/sarosia",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffer-indexof-polyfill",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffer-indexof-polyfill\\LICENSE"
+  },
+  "buffer@5.7.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffer\\LICENSE"
+  },
+  "buffers@0.1.1": {
+    "licenses": "Custom: http://github.com/substack/node-bufferlist",
+    "repository": "https://github.com/substack/node-buffers",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffers",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\buffers\\README.markdown"
+  },
+  "call-bind-apply-helpers@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/call-bind-apply-helpers",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\call-bind-apply-helpers",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\call-bind-apply-helpers\\LICENSE"
+  },
+  "canvg@3.0.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/canvg/canvg",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\canvg",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\canvg\\LICENSE"
+  },
+  "chainsaw@0.1.0": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/substack/node-chainsaw",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\chainsaw",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\chainsaw\\README.markdown"
+  },
+  "chokidar@4.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/paulmillr/chokidar",
+    "publisher": "Paul Miller",
+    "url": "https://paulmillr.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\chokidar",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\chokidar\\LICENSE"
+  },
+  "codemirror@6.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/codemirror/basic-setup",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijnh@gmail.com",
+    "url": "http://marijnhaverbeke.nl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\codemirror",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\codemirror\\LICENSE"
+  },
+  "combined-stream@1.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/felixge/node-combined-stream",
+    "publisher": "Felix Geisendörfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\combined-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\combined-stream\\License"
+  },
+  "commander@2.20.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tj/commander.js",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xss\\node_modules\\commander",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xss\\node_modules\\commander\\LICENSE"
+  },
+  "compress-commons@4.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/archiverjs/node-compress-commons",
+    "publisher": "Chris Talkington",
+    "url": "http://christalkington.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\compress-commons",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\compress-commons\\LICENSE"
+  },
+  "concat-map@0.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-concat-map",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\concat-map",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\concat-map\\LICENSE"
+  },
+  "copy-anything@3.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mesqueeb/copy-anything",
+    "publisher": "Luca Ban - Mesqueeb",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\copy-anything",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\copy-anything\\LICENSE"
+  },
+  "core-js@3.41.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zloirock/core-js",
+    "publisher": "Denis Pushkarev",
+    "email": "zloirock@zloirock.ru",
+    "url": "http://zloirock.ru",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\core-js",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\core-js\\LICENSE"
+  },
+  "core-util-is@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/isaacs/core-util-is",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\core-util-is",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\core-util-is\\LICENSE"
+  },
+  "crc-32@1.2.2": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/SheetJS/js-crc32",
+    "publisher": "sheetjs",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crc-32",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crc-32\\LICENSE"
+  },
+  "crc32-stream@4.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/archiverjs/node-crc32-stream",
+    "publisher": "Chris Talkington",
+    "url": "http://christalkington.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crc32-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crc32-stream\\LICENSE"
+  },
+  "crelt@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/marijnh/crelt",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crelt",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crelt\\LICENSE"
+  },
+  "crypto-js@4.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/brix/crypto-js",
+    "publisher": "Evan Vosberg",
+    "url": "http://github.com/evanvosberg",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crypto-js",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\crypto-js\\LICENSE"
+  },
+  "css-line-break@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/css-line-break",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "https://hertzen.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\css-line-break",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\css-line-break\\LICENSE"
+  },
+  "cssfilter@0.0.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/leizongmin/js-css-filter",
+    "publisher": "Zongmin Lei",
+    "email": "leizongmin@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\cssfilter",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\cssfilter\\LICENSE"
+  },
+  "csstype@3.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/frenic/csstype",
+    "publisher": "Fredrik Nicol",
+    "email": "fredrik.nicol@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\runtime-dom\\node_modules\\csstype",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue\\runtime-dom\\node_modules\\csstype\\LICENSE"
+  },
+  "d3-color@3.1.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-color",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-color",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-color\\LICENSE"
+  },
+  "d3-dispatch@3.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-dispatch",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-dispatch",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-dispatch\\LICENSE"
+  },
+  "d3-drag@3.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-drag",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-drag",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-drag\\LICENSE"
+  },
+  "d3-ease@3.0.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-ease",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-ease",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-ease\\LICENSE"
+  },
+  "d3-interpolate@3.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-interpolate",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-interpolate",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-interpolate\\LICENSE"
+  },
+  "d3-selection@3.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-selection",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-selection",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-selection\\LICENSE"
+  },
+  "d3-timer@3.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-timer",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-timer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-timer\\LICENSE"
+  },
+  "d3-transition@3.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-transition",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-transition",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-transition\\LICENSE"
+  },
+  "d3-zoom@3.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/d3/d3-zoom",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-zoom",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\d3-zoom\\LICENSE"
+  },
+  "dayjs@1.11.13": {
+    "licenses": "MIT",
+    "repository": "https://github.com/iamkun/dayjs",
+    "publisher": "iamkun",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dayjs",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dayjs\\LICENSE"
+  },
+  "decompress-response@6.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/decompress-response",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "https://sindresorhus.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\decompress-response",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\decompress-response\\license"
+  },
+  "delayed-stream@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/felixge/node-delayed-stream",
+    "publisher": "Felix Geisendörfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\delayed-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\delayed-stream\\License"
+  },
+  "dom-zindex@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/x-extends/dom-zindex",
+    "publisher": "Xu Liangzhan",
+    "email": "xu_liangzhan@163.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dom-zindex",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dom-zindex\\LICENSE"
+  },
+  "dompurify@3.2.5": {
+    "licenses": "(MPL-2.0 OR Apache-2.0)",
+    "repository": "https://github.com/cure53/DOMPurify",
+    "publisher": "Dr.-Ing. Mario Heiderich, Cure53",
+    "email": "mario@cure53.de",
+    "url": "https://cure53.de/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dompurify",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dompurify\\LICENSE"
+  },
+  "dunder-proto@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/dunder-proto",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dunder-proto",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\dunder-proto\\LICENSE"
+  },
+  "duplexer2@0.1.4": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/deoxxa/duplexer2",
+    "publisher": "Conrad Pankoff",
+    "email": "deoxxa@fknsrs.biz",
+    "url": "http://www.fknsrs.biz/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\duplexer2",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\duplexer2\\LICENSE.md"
+  },
+  "echarts@5.6.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/apache/echarts",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\echarts",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\echarts\\LICENSE",
+    "noticeFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\echarts\\NOTICE"
+  },
+  "element-plus@2.9.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/element-plus/element-plus",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\element-plus\\README.md"
+  },
+  "end-of-stream@1.4.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/end-of-stream",
+    "publisher": "Mathias Buus",
+    "email": "mathiasbuus@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\end-of-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\end-of-stream\\LICENSE"
+  },
+  "entities@4.5.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/fb55/entities",
+    "publisher": "Felix Boehm",
+    "email": "me@feedic.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\entities",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\entities\\LICENSE"
+  },
+  "es-define-property@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-define-property",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-define-property",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-define-property\\LICENSE"
+  },
+  "es-errors@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-errors",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-errors",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-errors\\LICENSE"
+  },
+  "es-object-atoms@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-object-atoms",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-object-atoms",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-object-atoms\\LICENSE"
+  },
+  "es-set-tostringtag@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/es-set-tostringtag",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-set-tostringtag",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\es-set-tostringtag\\LICENSE"
+  },
+  "escape-html@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/escape-html",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\escape-html",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\escape-html\\LICENSE"
+  },
+  "estree-walker@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Rich-Harris/estree-walker",
+    "publisher": "Rich Harris",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\estree-walker",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\estree-walker\\LICENSE"
+  },
+  "exceljs@4.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/exceljs/exceljs",
+    "publisher": "Guyon Roche",
+    "email": "guyon@live.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\exceljs",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\exceljs\\LICENSE"
+  },
+  "fast-csv@4.3.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/C2FO/fast-csv",
+    "publisher": "Doug Martin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fast-csv",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fast-csv\\LICENSE"
+  },
+  "fflate@0.8.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/101arrowz/fflate",
+    "publisher": "Arjun Barrett",
+    "email": "arjunbarrett@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fflate",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fflate\\LICENSE"
+  },
+  "follow-redirects@1.15.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/follow-redirects/follow-redirects",
+    "publisher": "Ruben Verborgh",
+    "email": "ruben@verborgh.org",
+    "url": "https://ruben.verborgh.org/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\follow-redirects",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\follow-redirects\\LICENSE"
+  },
+  "form-data@4.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/form-data/form-data",
+    "publisher": "Felix Geisendörfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\form-data",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\form-data\\License"
+  },
+  "fs-constants@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/fs-constants",
+    "publisher": "Mathias Buus",
+    "url": "@mafintosh",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fs-constants",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fs-constants\\LICENSE"
+  },
+  "fs.realpath@1.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/fs.realpath",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fs.realpath",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fs.realpath\\LICENSE"
+  },
+  "fstream@1.0.12": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/fstream",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fstream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\fstream\\LICENSE"
+  },
+  "function-bind@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/function-bind",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\function-bind",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\function-bind\\LICENSE"
+  },
+  "get-intrinsic@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/get-intrinsic",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\get-intrinsic",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\get-intrinsic\\LICENSE"
+  },
+  "get-proto@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/get-proto",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\get-proto",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\get-proto\\LICENSE"
+  },
+  "glob@7.2.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-glob",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\glob",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\glob\\LICENSE"
+  },
+  "glob@8.1.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-glob",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-qr\\node_modules\\glob",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-qr\\node_modules\\glob\\LICENSE"
+  },
+  "gopd@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/gopd",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\gopd",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\gopd\\LICENSE"
+  },
+  "graceful-fs@4.2.11": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-graceful-fs",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\graceful-fs",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\graceful-fs\\LICENSE"
+  },
+  "has-symbols@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/inspect-js/has-symbols",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\has-symbols",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\has-symbols\\LICENSE"
+  },
+  "has-tostringtag@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/inspect-js/has-tostringtag",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\has-tostringtag",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\has-tostringtag\\LICENSE"
+  },
+  "hasown@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/inspect-js/hasOwn",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\hasown",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\hasown\\LICENSE"
+  },
+  "hookable@5.5.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unjs/hookable",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\hookable",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\hookable\\LICENSE.md"
+  },
+  "html2canvas@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/html2canvas",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "https://hertzen.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\html2canvas",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\html2canvas\\LICENSE"
+  },
+  "idb@8.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/jakearchibald/idb",
+    "publisher": "Jake Archibald",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\idb",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\idb\\LICENSE"
+  },
+  "ieee754@1.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/feross/ieee754",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\ieee754",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\ieee754\\LICENSE"
+  },
+  "ifvisible.js@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/serkanyersen/ifvisible.js",
+    "publisher": "Serkan Yersen",
+    "email": "serkanyersen@gmail.com",
+    "url": "http://serkan.io/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\ifvisible.js",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\ifvisible.js\\LICENSE.md"
+  },
+  "immediate@3.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/calvinmetcalf/immediate",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\immediate",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\immediate\\LICENSE.txt"
+  },
+  "inflight@1.0.6": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/inflight",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\inflight",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\inflight\\LICENSE"
+  },
+  "inherits@2.0.4": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/inherits",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\inherits",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\inherits\\LICENSE"
+  },
+  "interactjs@1.10.27": {
+    "licenses": "MIT",
+    "repository": "https://github.com/taye/interact.js",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\interactjs",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\interactjs\\LICENSE"
+  },
+  "is-what@4.1.16": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mesqueeb/is-what",
+    "publisher": "Luca Ban - Mesqueeb",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\is-what",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\is-what\\LICENSE"
+  },
+  "isarray@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/isarray",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\isarray",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\isarray\\README.md"
+  },
+  "js-binary-schema-parser@2.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/matt-way/jsBinarySchemaParser",
+    "publisher": "Matt Way",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\js-binary-schema-parser",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\js-binary-schema-parser\\LICENSE"
+  },
+  "js-cookie@3.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/js-cookie/js-cookie",
+    "publisher": "Klaus Hartl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\js-cookie",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\js-cookie\\LICENSE"
+  },
+  "jspdf-autotable@5.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/simonbengtsson/jsPDF-AutoTable",
+    "publisher": "Simon Bengtsson",
+    "email": "dev@simonbengtsson.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\jspdf-autotable",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\jspdf-autotable\\LICENSE.txt"
+  },
+  "jspdf@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/MrRio/jsPDF",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\jspdf",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\jspdf\\LICENSE"
+  },
+  "jszip@3.10.1": {
+    "licenses": "(MIT OR GPL-3.0-or-later)",
+    "repository": "https://github.com/Stuk/jszip",
+    "publisher": "Stuart Knightley",
+    "email": "stuart@stuartk.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\jszip",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\jszip\\LICENSE.markdown"
+  },
+  "lazystream@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jpommerening/node-lazystream",
+    "publisher": "Jonas Pommerening",
+    "email": "jonas.pommerening@gmail.com",
+    "url": "https://npmjs.org/~jpommerening",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\LICENSE"
+  },
+  "lie@3.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/calvinmetcalf/lie",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lie",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lie\\license.md"
+  },
+  "linkify-it@5.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/linkify-it",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\linkify-it",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\linkify-it\\LICENSE"
+  },
+  "listenercount@1.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/jden/node-listenercount",
+    "publisher": "jden",
+    "email": "jason@denizac.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\listenercount",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\listenercount\\LICENSE.md"
+  },
+  "lodash-es@4.17.21": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash-es",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash-es\\LICENSE"
+  },
+  "lodash-unified@1.0.3": {
+    "licenses": "MIT",
+    "publisher": "Jack Works",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash-unified"
+  },
+  "lodash.defaults@4.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.defaults",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.defaults\\LICENSE"
+  },
+  "lodash.difference@4.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.difference",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.difference\\LICENSE"
+  },
+  "lodash.escaperegexp@4.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.escaperegexp",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.escaperegexp\\LICENSE"
+  },
+  "lodash.flatten@4.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.flatten",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.flatten\\LICENSE"
+  },
+  "lodash.groupby@4.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.groupby",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.groupby\\LICENSE"
+  },
+  "lodash.isboolean@3.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isboolean",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isboolean\\LICENSE"
+  },
+  "lodash.isequal@4.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isequal",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isequal\\LICENSE"
+  },
+  "lodash.isfunction@3.0.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isfunction",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isfunction\\LICENSE"
+  },
+  "lodash.isnil@4.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isnil",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isnil\\LICENSE"
+  },
+  "lodash.isplainobject@4.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isplainobject",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isplainobject\\LICENSE"
+  },
+  "lodash.isundefined@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isundefined",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.isundefined\\LICENSE.txt"
+  },
+  "lodash.union@4.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.union",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.union\\LICENSE"
+  },
+  "lodash.uniq@4.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "url": "http://allyoucanleet.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.uniq",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash.uniq\\LICENSE"
+  },
+  "lodash@4.17.21": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lodash\\LICENSE"
+  },
+  "lru-cache@11.1.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-lru-cache",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\md-editor-v3\\node_modules\\lru-cache",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\md-editor-v3\\node_modules\\lru-cache\\LICENSE"
+  },
+  "lucide-vue-next@0.453.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/lucide-icons/lucide",
+    "publisher": "Eric Fennis",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lucide-vue-next",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lucide-vue-next\\LICENSE"
+  },
+  "magic-string@0.30.17": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rich-harris/magic-string",
+    "publisher": "Rich Harris",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\magic-string",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\magic-string\\LICENSE"
+  },
+  "markdown-it-image-figures@2.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Antonio-Laguna/markdown-it-image-figures",
+    "publisher": "Antonio Laguna",
+    "email": "antonio@laguna.es",
+    "url": "https://antonio.laguna.es",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it-image-figures",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it-image-figures\\LICENSE"
+  },
+  "markdown-it-sub@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/markdown-it-sub",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it-sub",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it-sub\\LICENSE"
+  },
+  "markdown-it-sup@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/markdown-it-sup",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it-sup",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it-sup\\LICENSE"
+  },
+  "markdown-it@14.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/markdown-it",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\markdown-it\\LICENSE"
+  },
+  "math-intrinsics@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/math-intrinsics",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\math-intrinsics",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\math-intrinsics\\LICENSE"
+  },
+  "md-editor-v3@5.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/imzbf/md-editor-v3",
+    "publisher": "zbf",
+    "url": "https://github.com/imzbf",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\md-editor-v3",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\md-editor-v3\\LICENSE"
+  },
+  "mdurl@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/mdurl",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mdurl",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mdurl\\LICENSE"
+  },
+  "medium-zoom@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/francoischalifour/medium-zoom",
+    "publisher": "Francois Chalifour",
+    "email": "francois.chalifour@gmail.com",
+    "url": "https://francoischalifour.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\medium-zoom",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\medium-zoom\\LICENSE"
+  },
+  "memoize-one@6.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alexreardon/memoize-one",
+    "publisher": "Alex Reardon",
+    "email": "alexreardon@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\memoize-one",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\memoize-one\\LICENSE"
+  },
+  "mime-db@1.52.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-db",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mime-db",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mime-db\\LICENSE"
+  },
+  "mime-types@2.1.35": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-types",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mime-types",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mime-types\\LICENSE"
+  },
+  "mimic-response@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/mimic-response",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "https://sindresorhus.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mimic-response",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mimic-response\\license"
+  },
+  "minimatch@3.1.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/minimatch",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\glob\\node_modules\\minimatch",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\glob\\node_modules\\minimatch\\LICENSE"
+  },
+  "minimatch@5.1.6": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/minimatch",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readdir-glob\\node_modules\\minimatch",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readdir-glob\\node_modules\\minimatch\\LICENSE"
+  },
+  "minimist@1.2.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/minimistjs/minimist",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\minimist",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\minimist\\LICENSE"
+  },
+  "mitt@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/developit/mitt",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mitt",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mitt\\LICENSE"
+  },
+  "mkdirp@0.5.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-mkdirp",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mkdirp",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\mkdirp\\LICENSE"
+  },
+  "nanoid@3.3.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ai/nanoid",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\nanoid",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\nanoid\\LICENSE"
+  },
+  "normalize-path@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jonschlinkert/normalize-path",
+    "publisher": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\normalize-path",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\normalize-path\\LICENSE"
+  },
+  "normalize-wheel-es@1.2.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/sxzz/normalize-wheel-es",
+    "publisher": "Bas Stottelaar",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\normalize-wheel-es",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\normalize-wheel-es\\LICENSE"
+  },
+  "once@1.4.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/once",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\once",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\once\\LICENSE"
+  },
+  "pako@1.0.11": {
+    "licenses": "(MIT AND Zlib)",
+    "repository": "https://github.com/nodeca/pako",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\pako",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\pako\\LICENSE"
+  },
+  "parenthesis@3.1.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dy/parenthesis",
+    "publisher": "Dmitry Yv",
+    "email": "df.creative@gmail.com",
+    "url": "http://github.com/dy",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\parenthesis",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\parenthesis\\LICENSE"
+  },
+  "path-is-absolute@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/path-is-absolute",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\path-is-absolute",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\path-is-absolute\\license"
+  },
+  "perfect-debounce@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unjs/perfect-debounce",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\perfect-debounce",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\perfect-debounce\\LICENSE"
+  },
+  "performance-now@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/braveg1rl/performance-now",
+    "publisher": "Braveg1rl",
+    "email": "braveg1rl@outlook.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\performance-now",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\performance-now\\license.txt"
+  },
+  "picocolors@1.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/alexeyraspopov/picocolors",
+    "publisher": "Alexey Raspopov",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\picocolors",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\picocolors\\LICENSE"
+  },
+  "pinia@3.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/pinia",
+    "publisher": "Eduardo San Martin Morote",
+    "email": "posva13@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\pinia",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\pinia\\LICENSE"
+  },
+  "postcss@8.5.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/postcss/postcss",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\postcss",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\postcss\\LICENSE"
+  },
+  "process-nextick-args@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/calvinmetcalf/process-nextick-args",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\process-nextick-args",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\process-nextick-args\\license.md"
+  },
+  "proxy-from-env@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Rob--W/proxy-from-env",
+    "publisher": "Rob Wu",
+    "email": "rob@robwu.nl",
+    "url": "https://robwu.nl/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\proxy-from-env",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\proxy-from-env\\LICENSE"
+  },
+  "punycode.js@2.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mathiasbynens/punycode.js",
+    "publisher": "Mathias Bynens",
+    "url": "https://mathiasbynens.be/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\punycode.js",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\punycode.js\\LICENSE-MIT.txt"
+  },
+  "raf@3.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chrisdickinson/raf",
+    "publisher": "Chris Dickinson",
+    "email": "chris@neversaw.us",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\raf",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\raf\\LICENSE"
+  },
+  "readable-stream@2.3.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/readable-stream",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\node_modules\\readable-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\node_modules\\readable-stream\\LICENSE"
+  },
+  "readable-stream@3.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/readable-stream",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readable-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readable-stream\\LICENSE"
+  },
+  "readdir-glob@1.1.3": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/Yqnn/node-readdir-glob",
+    "publisher": "Yann Armelin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readdir-glob",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readdir-glob\\LICENSE"
+  },
+  "readdirp@4.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/paulmillr/readdirp",
+    "publisher": "Thorsten Lorenz",
+    "email": "thlorenz@gmx.de",
+    "url": "thlorenz.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readdirp",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\readdirp\\LICENSE"
+  },
+  "regenerator-runtime@0.13.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/regenerator/tree/main/packages/runtime",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\canvg\\node_modules\\regenerator-runtime",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\canvg\\node_modules\\regenerator-runtime\\LICENSE"
+  },
+  "regenerator-runtime@0.14.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/regenerator/tree/main/packages/runtime",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\regenerator-runtime",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\regenerator-runtime\\LICENSE"
+  },
+  "rfdc@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/davidmarkclements/rfdc",
+    "publisher": "David Mark Clements",
+    "email": "david.clements@nearform.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\rfdc",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\rfdc\\LICENSE"
+  },
+  "rgbcolor@1.0.1": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/yetzt/node-rgbcolor",
+    "publisher": "Sebastian Vollnhals",
+    "email": "sebastian@vollnhals.info",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\rgbcolor",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\rgbcolor\\LICENSE.md"
+  },
+  "rimraf@2.7.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/rimraf",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\rimraf",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\rimraf\\LICENSE"
+  },
+  "rt-aps@1.0.7": {
+    "licenses": "UNLICENSED",
+    "private": true,
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\LICENSE"
+  },
+  "safe-buffer@5.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/safe-buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\node_modules\\safe-buffer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\node_modules\\safe-buffer\\LICENSE"
+  },
+  "safe-buffer@5.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/safe-buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\safe-buffer",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\safe-buffer\\LICENSE"
+  },
+  "saxes@5.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/lddubeau/saxes",
+    "publisher": "Louis-Dominique Dubeau",
+    "email": "ldd@lddubeau.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\saxes",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\saxes\\README.md"
+  },
+  "setimmediate@1.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/YuzuJS/setImmediate",
+    "publisher": "YuzuJS",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\setimmediate",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\setimmediate\\LICENSE.txt"
+  },
+  "simple-concat@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/simple-concat",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\simple-concat",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\simple-concat\\LICENSE"
+  },
+  "simple-get@4.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/simple-get",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\simple-get",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\simple-get\\LICENSE"
+  },
+  "sortablejs@1.14.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/SortableJS/Sortable",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\sortablejs",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\sortablejs\\LICENSE"
+  },
+  "source-map-js@1.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/7rulnik/source-map-js",
+    "publisher": "Valentin 7rulnik Semirulnik",
+    "email": "v7rulnik@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\source-map-js",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\source-map-js\\LICENSE"
+  },
+  "speakingurl@14.0.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/pid/speakingurl",
+    "publisher": "Sascha Droste",
+    "email": "pid@posteo.net",
+    "url": "https://twitter.com/SaschaDroste",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\speakingurl",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\speakingurl\\LICENSE"
+  },
+  "stackblur-canvas@2.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/flozz/StackBlur",
+    "publisher": "Mario Klingemann",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\stackblur-canvas",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\stackblur-canvas\\LICENSE-MIT.txt"
+  },
+  "string-split-by@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dy/string-split-by",
+    "publisher": "Dmitry Yv",
+    "email": "dfcreative@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\string-split-by",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\string-split-by\\readme.md"
+  },
+  "string_decoder@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/string_decoder",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\node_modules\\string_decoder",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\lazystream\\node_modules\\string_decoder\\LICENSE"
+  },
+  "string_decoder@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/string_decoder",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\string_decoder",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\string_decoder\\LICENSE"
+  },
+  "style-mod@4.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/marijnh/style-mod",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\style-mod",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\style-mod\\LICENSE"
+  },
+  "superjson@2.2.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blitz-js/superjson",
+    "publisher": "Simon Knott",
+    "email": "info@simonknott.de",
+    "url": "https://simonknott.de",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\superjson",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\superjson\\LICENSE"
+  },
+  "svg-pathdata@6.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nfroidure/svg-pathdata",
+    "publisher": "Nicolas Froidure",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\svg-pathdata",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\svg-pathdata\\LICENSE"
+  },
+  "sweetalert2@11.21.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sweetalert2/sweetalert2",
+    "publisher": "Limon Monte",
+    "url": "https://limonte.github.io",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\sweetalert2",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\sweetalert2\\LICENSE"
+  },
+  "tar-stream@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/tar-stream",
+    "publisher": "Mathias Buus",
+    "email": "mathiasbuus@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\tar-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\tar-stream\\LICENSE"
+  },
+  "text-segmentation@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/text-segmentation",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "https://hertzen.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\text-segmentation",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\text-segmentation\\LICENSE"
+  },
+  "tmp@0.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/raszi/node-tmp",
+    "publisher": "KARASZI István",
+    "email": "github@spam.raszi.hu",
+    "url": "http://raszi.hu/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\tmp",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\tmp\\LICENSE"
+  },
+  "traverse@0.3.9": {
+    "licenses": "MIT*",
+    "repository": "https://github.com/substack/js-traverse",
+    "publisher": "James Halliday",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\traverse",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\traverse\\LICENSE"
+  },
+  "tslib@2.3.0": {
+    "licenses": "0BSD",
+    "repository": "https://github.com/Microsoft/tslib",
+    "publisher": "Microsoft Corp.",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\tslib",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\tslib\\LICENSE.txt"
+  },
+  "typescript@5.8.3": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/microsoft/TypeScript",
+    "publisher": "Microsoft Corp.",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\typescript",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\typescript\\LICENSE.txt"
+  },
+  "uc.micro@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/markdown-it/uc.micro",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\uc.micro",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\uc.micro\\LICENSE.txt"
+  },
+  "unzipper@0.10.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ZJONSSON/node-unzipper",
+    "publisher": "Evan Oxfeld",
+    "email": "eoxfeld@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\unzipper",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\unzipper\\LICENSE"
+  },
+  "util-deprecate@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TooTallNate/util-deprecate",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://n8.io/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\util-deprecate",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\util-deprecate\\LICENSE"
+  },
+  "utrie@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/utrie",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "https://hertzen.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\utrie",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\utrie\\LICENSE"
+  },
+  "uuid@11.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/uuidjs/uuid",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\uuid",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\uuid\\LICENSE.md"
+  },
+  "uuid@8.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/uuidjs/uuid",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\exceljs\\node_modules\\uuid",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\exceljs\\node_modules\\uuid\\LICENSE.md"
+  },
+  "vue-demi@0.14.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/antfu/vue-demi",
+    "publisher": "Anthony Fu",
+    "email": "anthonyfu117@hotmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\shared\\node_modules\\vue-demi",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\@vue-flow\\core\\node_modules\\@vueuse\\shared\\node_modules\\vue-demi\\LICENSE"
+  },
+  "vue-i18n@11.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/intlify/vue-i18n",
+    "publisher": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-i18n",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-i18n\\LICENSE"
+  },
+  "vue-qr@4.0.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Binaryify/vue-qr",
+    "publisher": "Binaryify",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-qr",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-qr\\LICENSE.txt"
+  },
+  "vue-router@4.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/router",
+    "publisher": "Eduardo San Martin Morote",
+    "email": "posva13@gmail.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-router",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue-router\\LICENSE"
+  },
+  "vue@3.5.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vue\\LICENSE"
+  },
+  "vuedraggable@4.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/SortableJS/Vue.Draggable",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vuedraggable",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vuedraggable\\LICENSE"
+  },
+  "vxe-pc-ui@4.5.34": {
+    "licenses": "MIT",
+    "repository": "https://github.com/x-extends/vxe-pc-ui",
+    "publisher": "Xu Liangzhan",
+    "email": "xu_liangzhan@163.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vxe-pc-ui",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vxe-pc-ui\\LICENSE"
+  },
+  "vxe-table@4.8.16": {
+    "licenses": "MIT",
+    "repository": "https://github.com/x-extends/vxe-table",
+    "publisher": "Xu Liangzhan",
+    "email": "xu_liangzhan@163.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vxe-table",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\vxe-table\\LICENSE"
+  },
+  "w3c-keyname@2.2.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/marijnh/w3c-keyname",
+    "publisher": "Marijn Haverbeke",
+    "email": "marijn@haverbeke.berlin",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\w3c-keyname",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\w3c-keyname\\LICENSE"
+  },
+  "wrappy@1.0.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/wrappy",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\wrappy",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\wrappy\\LICENSE"
+  },
+  "xe-utils@3.7.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/x-extends/xe-utils",
+    "publisher": "Xu Liangzhan",
+    "email": "xu_liangzhan@163.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xe-utils",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xe-utils\\LICENSE"
+  },
+  "xlsx@0.20.3": {
+    "licenses": "Apache-2.0",
+    "repository": "https://git.sheetjs.com/SheetJS/sheetjs",
+    "publisher": "sheetjs",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xlsx",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xlsx\\LICENSE"
+  },
+  "xmlchars@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lddubeau/xmlchars",
+    "publisher": "Louis-Dominique Dubeau",
+    "email": "ldd@lddubeau.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xmlchars",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xmlchars\\LICENSE"
+  },
+  "xss@1.0.15": {
+    "licenses": "MIT",
+    "repository": "https://github.com/leizongmin/js-xss",
+    "publisher": "Zongmin Lei",
+    "email": "leizongmin@gmail.com",
+    "url": "http://ucdok.com",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xss",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\xss\\LICENSE"
+  },
+  "zip-stream@4.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/archiverjs/node-zip-stream",
+    "publisher": "Chris Talkington",
+    "url": "http://christalkington.com/",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\zip-stream",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\zip-stream\\LICENSE"
+  },
+  "zrender@5.6.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/ecomfe/zrender",
+    "path": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\zrender",
+    "licenseFile": "C:\\Users\\AAT\\Desktop\\iPASP_vue備份檔案\\svn_project\\Demo\\ux-dev-Demo\\node_modules\\zrender\\LICENSE"
+  }
+}
+

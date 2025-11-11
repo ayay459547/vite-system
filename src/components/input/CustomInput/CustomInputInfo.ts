@@ -1,7 +1,7 @@
 import type { PropType, Ref } from 'vue'
 
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import type { ValidateType } from '@/lib/lib_validate'
 
 import { props as formInputProps } from '@/components/input/FormInput/FormInputInfo'
@@ -14,40 +14,43 @@ import { props as formAutocompleteProps } from '@/components/input/FormAutocompl
 import { props as formRadioProps } from '@/components/input/FormRadio/FormRadioInfo'
 import { props as formCheckboxProps } from '@/components/input/FormCheckbox/FormCheckboxInfo'
 
+import type { Props as ModalSelectProps } from '@/components/input/ModalSelect/ModalSelectInfo'
+
 export const version = '__CustomInput_2.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type ModelValue = any
-  type IsValidate = boolean
-  type ValidateKey = string
-  type Direction = 'column' | 'row'
-  type Label = string
-  type HiddenLabel = boolean
-  type HiddenErrorMessage = boolean
-  type OnlyNumber = boolean
-  type Round = number | null
-  type Floor = number | null
-  type Ceil = number | null
-  type Max = number | null
-  type Min = number | null
-  type Required = boolean
-  type Validate = ValidateType[] | ValidateType
-  type Text = boolean
-  type I18nModule = ScopeKey
-  type I18nLabel = string
-  type __key__ = string
+export interface Props {
+  modelValue: any
+  type: string
+  isValidate: boolean
+  direction: 'column' | 'row'
+  label: string
+  hiddenLabel: boolean
+  hiddenErrorMessage: boolean
+  round: number | null
+  floor: number | null
+  ceil: number | null
+  max: number | null
+  min: number | null
+  required: boolean
+  validate: ValidateType[] | ValidateType
+  text: boolean
+  i18nModule: ScopeKey
+  i18nLabel: string
+  __key__: string
+
+  modalSelect: ModalSelectProps
 }
 
 const customProps = {
   modelValue: {
-    type: [Array, String, Number, Boolean, null, undefined] as PropType<Props.ModelValue>,
+    type: [Array, String, Number, Boolean, null, undefined] as PropType<Props['modelValue']>,
     required: true,
     description: '綁定值 v-model="..." '
   },
   isValidate: {
-    type: Boolean as PropType<Props.IsValidate>,
+    type: Boolean as PropType<Props['isValidate']>,
     require: false,
     default: false,
     description: `
@@ -55,31 +58,31 @@ const customProps = {
       會引響高度 部分元素是否顯示`
   },
   direction: {
-    type: String as PropType<Props.Direction>,
+    type: String as PropType<Props['direction']>,
     required: false,
     default: 'column',
     description: '方向 column:直 row:橫'
   },
   label: {
-    type: String as PropType<Props.Label>,
+    type: String as PropType<Props['label']>,
     required: false,
     default: '',
     description: '文字'
   },
   hiddenLabel: {
-    type: Boolean as PropType<Props.HiddenLabel>,
+    type: Boolean as PropType<Props['hiddenLabel']>,
     required: false,
     default: false,
     description: '是否隱藏文字'
   },
   hiddenErrorMessage: {
-    type: Boolean as PropType<Props.HiddenErrorMessage>,
+    type: Boolean as PropType<Props['hiddenErrorMessage']>,
     required: false,
     default: false,
     description: '是否隱藏驗證錯誤訊息'
   },
   required: {
-    type: Boolean as PropType<Props.Required>,
+    type: Boolean as PropType<Props['required']>,
     required: false,
     default: false,
     description: `
@@ -87,7 +90,7 @@ const customProps = {
       是否必填`
   },
   validate: {
-    type: [Array, String, null] as PropType<Props.Validate>,
+    type: [Array, String, null] as PropType<Props['validate']>,
     required: false,
     default: null,
     description: `
@@ -96,13 +99,13 @@ const customProps = {
       參考檔案: lib_validate.ts`
   },
   text: {
-    type: Boolean as PropType<Props.Text>,
+    type: Boolean as PropType<Props['text']>,
     required: false,
     default: false,
     description: '是否顯示純文字 隱藏輸入框 顯示 modelValue 的值'
   },
   i18nModule: {
-    type: String as PropType<Props.I18nModule>,
+    type: String as PropType<Props['i18nModule']>,
     required: false,
     default: defaultModuleType,
     description: `
@@ -110,7 +113,7 @@ const customProps = {
     `
   },
   i18nLabel: {
-    type: String as PropType<Props.I18nLabel>,
+    type: String as PropType<Props['i18nLabel']>,
     required: false,
     default: null,
     description: `
@@ -119,7 +122,7 @@ const customProps = {
     `
   },
   __key__: {
-    type: String as PropType<Props.__key__>,
+    type: String as PropType<Props['__key__']>,
     required: false,
     default: '',
     description: 'validateKey 識別驗證的key'
@@ -138,6 +141,11 @@ const formProps: any = {
   ...formRadioProps,
   // 不同 input 有衝突的key
   type: {
+    type: String as PropType<any>,
+    required: false,
+    default: 'text'
+  },
+  operatorType: {
     type: String as PropType<any>,
     required: false,
     default: 'text'
@@ -171,24 +179,32 @@ const formProps: any = {
     type: [String, Number] as PropType<any>,
     required: false,
     default: undefined
+  },
+  modalSelect: {
+    type: Object as PropType<Props['modalSelect']>,
+    required: false,
+    default: undefined
   }
 }
 
 export const props = { ...formProps, ...customProps }
 
-export declare namespace Emits {}
+export interface Emits {
+  modalSelectSubmit: (selectedValue: any[]) => void
+}
 
-export declare namespace Expose {
-  type Key = string
-  type Value = Ref<any>
-  type ResetValidate = () => void
-  type Validate = () => Promise<{
+export interface Expose {
+  key: string
+  value: Ref<any>
+  resetValidate: () => void
+  validate: () => Promise<{
     errors: string[]
     valid: boolean
     value?: any
     validateKey?: string
   }>
-  type GetDom = () => Element | null
-  type Focus = () => void
-  type Blur = () => void
+  getDom: () => Element | null
+  focus: () => void
+  blur: () => void
+  openModal: () => void
 }

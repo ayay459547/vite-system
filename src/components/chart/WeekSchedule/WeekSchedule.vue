@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import type { VNodeRef } from 'vue'
-import { onMounted, reactive, ref, inject, nextTick } from 'vue'
+import { onMounted, ref, inject, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { isEmpty, getProxyData, getUuid, awaitTime } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
+import { useWeekScheduleStore } from '@/stores/stores_components/useWeekScheduleStore'
 
 import type { Types, Props, Expose } from './WeekScheduleInfo'
 import { version, props as weekScheduleProps } from './WeekScheduleInfo'
-
-import { tableHeight, timeToSecond } from './planUtils'
+import {
+  tableHeight,
+  timeToSecond,
+  secondToTime,
+  oneHourSecond,
+  maxSecond
+} from './planUtils'
 import PlanDay from './Components/PlanDay.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
 
 const scopedId = getUuid(version)
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -23,7 +30,11 @@ const bodyHeight = `${tableHeight}px`
 
 const props = defineProps(weekScheduleProps)
 
-const dayList = [
+const dayList: Array<{
+  id: number
+  label: string
+  i18nLabel: string
+}> = [
   { id: 1, label: 'monday', i18nLabel: 'datetime-monday' },
   { id: 2, label: 'tuesday', i18nLabel: 'datetime-tuesday' },
   { id: 3, label: 'wednesday', i18nLabel: 'datetime-wednesday' },
@@ -36,18 +47,50 @@ const dayList = [
 const isLoading = ref(true)
 
 const scheduleContainer = ref(null)
-const planDayMapRef = reactive({})
 
-// 工時分配資料
-const planData: Record<number, Types.PlanTime[]> = reactive({
-  1: [],
-  2: [],
-  3: [],
-  4: [],
-  5: [],
-  6: [],
-  7: []
-})
+// 跨天處理資料
+const weekScheduleStore = useWeekScheduleStore()
+const {
+  checkTimeIsExist,
+  insertData,
+  setPlanDayRef,
+  initPlanDay,
+  getPlanDayData
+} = weekScheduleStore
+const { planData, focusedId } = storeToRefs(weekScheduleStore)
+
+// 對應小時 新增一周資料
+const insertHourToWeek = (hour: number) => {
+  dayList.forEach(async dayItem => {
+    const insertDayId = `${dayItem.id}`
+
+    const startSecond = hour * oneHourSecond
+    const start = secondToTime(startSecond)
+
+    const endSecond = Math.min(maxSecond, (startSecond + oneHourSecond))
+    const end = secondToTime(endSecond)
+
+    const { isTimeExist } = await checkTimeIsExist(insertDayId, {
+      startSecond,
+      endSecond
+    })
+    if (!isTimeExist) {
+      insertData(insertDayId, {
+        start,
+        startSecond,
+        end,
+        endSecond,
+        uuid: getUuid('new'),
+        status: 'new'
+      })
+    }
+  })
+}
+
+// 移除一天的所有分配
+const removeDay = (dayId: number) => {
+  initPlanDay(`${dayId}`, [])
+}
 
 /**
  * 更新 分配畫面
@@ -56,38 +99,45 @@ const planData: Record<number, Types.PlanTime[]> = reactive({
 const renderKey = ref(1)
 
 // 初始化
-const init: Expose.Init = async (scheduleList: Props.ScheduleList) => {
+const init: Expose['init'] = async (scheduleList: Props['scheduleList']) => {
   isLoading.value = true
   await nextTick()
   // 清除資料
-  for (let dayId in planData) {
-    planData[dayId].splice(0)
+  for (const dayId in planData.value) {
+    planData.value[dayId].splice(0)
   }
 
   // 設定原始資料
   scheduleList.forEach(scheduleItem => {
     const { id, dayId, status, start, end } = scheduleItem
 
-    // 新增分配資料
-    planData[dayId].push({
-      uuid: getUuid('old'),
-      id: `${id}`,
-      dayId,
-      status,
-      start,
-      startSecond: timeToSecond(start),
-      end,
-      endSecond: timeToSecond(end)
-    })
+    if (
+      typeof dayId === 'number' &&
+      typeof start === 'string' &&
+      typeof end === 'string'
+    ) {
+      // 新增分配資料
+      planData.value[dayId].push({
+        uuid: getUuid('old'),
+        id: `${id}`,
+        dayId,
+        status,
+        start,
+        startSecond: timeToSecond(start),
+        end,
+        endSecond: timeToSecond(end)
+      })
+    }
   })
 
   // 原始資料設定在每天中
   await awaitTime(80)
-  for (let dayId in planData) {
-    const planList: Types.PlanTime[] = getProxyData(planData[dayId])
-    if (planDayMapRef[dayId]) {
-      planDayMapRef[dayId].init(planList)
-    }
+  for (const dayId in planData.value) {
+    const planList: Types['planTime'][] = getProxyData(planData.value[dayId])
+    initPlanDay(dayId, planList)
+    // if (planDayMapRef[dayId]) {
+    //   planDayMapRef[dayId].init(planList)
+    // }
   }
 
   await nextTick()
@@ -96,21 +146,12 @@ const init: Expose.Init = async (scheduleList: Props.ScheduleList) => {
   }, 300)
 }
 
-// 複製到其他天
-const copyPlan = (planTime: Types.PlanTime) => {
-  for (let dayId in planData) {
-    if (planDayMapRef[dayId]) {
-      planDayMapRef[dayId].insertData(planTime)
-    }
-  }
-}
-
 onMounted(() => {
   init(props.scheduleList)
 })
 
 // 取資料
-const getData: Expose.GetData = async () => {
+const getData: Expose['getData'] = async () => {
   await nextTick()
 
   const createList = []
@@ -119,23 +160,21 @@ const getData: Expose.GetData = async () => {
   const oldList = []
   const allList = []
 
-  for (let dayId in planData) {
-    const planList: Types.PlanTime[] = getProxyData(planData[dayId])
-    if (planDayMapRef[dayId]) {
-      const {
-        create = [],
-        update = [],
-        remove = [],
-        old = [],
-        all = []
-      } = await planDayMapRef[dayId].getData(planList)
+  for (const dayId in planData.value) {
+    // 在各天整理後的資料
+    const {
+      create = [],
+      update = [],
+      remove = [],
+      old = [],
+      all = []
+    } = await getPlanDayData(dayId)
 
-      createList.push(...create)
-      updateList.push(...update)
-      removeList.push(...remove)
-      oldList.push(...old)
-      allList.push(...all)
-    }
+    createList.push(...create)
+    updateList.push(...update)
+    removeList.push(...remove)
+    oldList.push(...old)
+    allList.push(...all)
   }
 
   return {
@@ -185,7 +224,15 @@ defineExpose({ init, getData })
       <div class="schedule-time">
         <div class="schedule-time-zero">{{ '00:00' }}</div>
         <ul class="schedule-time-list">
-          <li v-for="hour in 23" :key="`hour-${hour}`" class="schedule-time-item">
+          <li
+            v-for="hour in 24"
+            :key="`hour-${hour}`"
+            class="schedule-time-item"
+            @click="insertHourToWeek(hour - 1)"
+          >
+            <div class="insert text-primary">
+              <CustomIcon name="right-long" />
+            </div>
             <div class="text">{{ `${hour}:00`.padStart(5, '0') }}</div>
           </li>
         </ul>
@@ -202,22 +249,42 @@ defineExpose({ init, getData })
             :class="[6, 7].includes(dayItem.id) ? 'text-danger' : ''"
           >
             {{ i18nTranslate(dayItem.i18nLabel) }}
+
+            <div
+              class="remove-day
+              text-danger"
+              @click="removeDay(dayItem.id)"
+            >
+              <CustomIcon name="xmark" />
+            </div>
           </li>
         </ul>
         <!-- 表格 -->
-        <div ref="scheduleContainer" class="schedule-container" :key="renderKey">
+        <div
+          ref="scheduleContainer"
+          class="schedule-container"
+          :key="renderKey"
+          @click="() => {
+            focusedId = '' // 清空聚焦
+          }"
+          @mouseleave="() => {
+            focusedId = '' // 清空聚焦
+          }"
+        >
           <!-- 每日分配結果 -->
           <PlanDay
             v-for="dayItem in dayList"
             :key="`PlanDay-${dayItem.id}`"
-            :ref="(el: VNodeRef) => {
-              if (el) { planDayMapRef[`${dayItem.id}`] = el }
+            :ref="(el: InstanceType<typeof PlanDay>) => {
+              if (el) {
+                setPlanDayRef(`${dayItem.id}`, el)
+                // planDayMapRef[`${dayItem.id}`] = el
+              }
               return el
             }"
             :dayId="dayItem.id"
             :planList="planData[dayItem.id]"
             :scheduleContainer="scheduleContainer"
-            @copyPlan="copyPlan"
           />
         </div>
       </div>
@@ -272,6 +339,11 @@ $body-height: v-bind(bodyHeight);
       height: $header-height;
       transform: translateY(22px);
     }
+    &-max {
+      width: 100%;
+      height: $header-height;
+      transform: translateY(-8px);
+    }
     &-list {
       width: 100%;
       height: $body-height;
@@ -279,7 +351,25 @@ $body-height: v-bind(bodyHeight);
       grid-template-rows: repeat(24, 1fr);
     }
     &-item {
+      position: relative;
+      cursor: pointer;
       color: var(--el-text-color-primary);
+
+      .insert {
+        width: fit-content;
+        position: absolute;
+        right: 0;
+        z-index: 5;
+        display: none;
+        transform: translateX(100%);
+        font-size: 1.5em;
+      }
+      &:hover {
+        .insert {
+          display: block;
+        }
+      }
+
       .text {
         transform: translateY(32px);
       }
@@ -305,6 +395,20 @@ $body-height: v-bind(bodyHeight);
       white-space: nowrap;
       text-overflow: ellipsis;
       color: var(--el-text-color-primary);
+      position: relative;
+
+      .remove-day {
+        position: absolute;
+        display: none;
+        cursor: pointer;
+        right: 0;
+        padding: 4px;
+      }
+      &:hover {
+        .remove-day {
+          display: block;
+        }
+      }
     }
   }
 

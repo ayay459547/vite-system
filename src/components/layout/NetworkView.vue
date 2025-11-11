@@ -2,24 +2,36 @@
 import { reactive, computed } from 'vue'
 
 import { useNetwork } from '@/lib/lib_hook' // 自訂Composition API
-import { CustomIcon } from '@/components' // 系統組件
+import { message, getProxyData } from '@/lib/lib_utils' // 自訂Composition API
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
 
 /**
  * 網路狀態
  * navigator.connection
-  {
-    isSupported: true, // 瀏覽器是否支援
-    isOnline: true, // 是否 連上網路
-    saveData: false, // 是否為 數據節省模式
-    onlineAt: 1730164863498, // 最後連上網路時間
-    downlink 1.6, // 下載速度 Mbps
-    effectiveType: "4g", // 類型 4g/3g/2g/slow-2g
-    rtt: 0 // 估算的往返時間(Round Trip Time) ms
-  }
- *
+ * {
+ *   isSupported: true, // 瀏覽器是否支援
+ *   isOnline: true, // 是否 連上網路
+ *   saveData: false, // 是否為 數據節省模式
+ *   onlineAt: 1730164863498, // 最後連上網路時間
+ *   downlink 1.6, // 下載速度 Mbps
+ *   effectiveType: "4g", // 類型 4g/3g/2g/slow-2g
+ *   rtt: 0 // 估算的往返時間(Round Trip Time) ms
+ * }
  */
 const network = reactive(useNetwork())
 const isOnline = computed(() => {
+  if (!network.isOnline) {
+    message({
+      type: 'error',
+      message: `<div class="ajax-message">
+        <h2>Network interruption</h2>
+      </div>`,
+      customClass: 'i-message',
+      dangerouslyUseHTMLString: true,
+      duration: 5000
+    })
+    console.log(getProxyData(network))
+  }
   return network.isOnline
 })
 </script>
@@ -38,13 +50,14 @@ const isOnline = computed(() => {
 <style lang="scss" scoped>
 .network {
   &-wifi {
+    pointer-events: none;
     position: fixed;
     z-index: 9999;
     bottom: 8px;
     right: 8px;
     width: fit-content;
     height: fit-content;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     transition: 0.3s;
     opacity: 0.7;
 

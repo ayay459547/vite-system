@@ -19,11 +19,11 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 // event
-const onChange: Emits.Change = value => emit('change', value)
+const onChange: Emits['change'] = value => emit('change', value)
 
 const getStyle = (isSelected: boolean, color?: string) => {
   if (!isSelected || isEmpty(color)) return {}
@@ -75,6 +75,13 @@ div[class*="FormRadio"] {
     input[type="radio"] i {
       margin: 3px 3px 0px 5px;
     }
+  }
+}
+</style>
+<style lang="scss">
+html.dark {
+  :where(.el-radio__inner) {
+    border: var(--el-border-width) var(--el-border-style) var(--el-color-info-dark-2);
   }
 }
 </style>

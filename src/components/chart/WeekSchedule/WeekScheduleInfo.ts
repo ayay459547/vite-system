@@ -2,36 +2,33 @@ import type { PropType } from 'vue'
 
 export const version = '__WeekSchedule_1.0.0__'
 
-export declare namespace Types {
-  type Option = {
+export interface Types {
+  option: {
     label: string
     value: any
     color: string
   }
-
   // 分配時間
-  type PlanTime = {
+  planTime: {
     uuid?: string
     id?: string
     dayId?: number
     // 新增 | 修改 | 舊資料(無變更) | 刪除
-    status?: 'new' | 'update' | 'old' | 'delete'
+    status?: 'new' | 'update' | 'old' | 'delete' | string
 
     start?: string
     startSecond?: number
     end?: string
     endSecond?: number
   }
-
   // 分配樣式
-  type PlanStyle = {
+  planStyle: {
     top?: number
     height?: number
     display?: 'none' | 'block'
   }
-
   // 分配原始位置
-  type Origin = {
+  origin: {
     originStart?: string
     originStartSecond?: number
     originEnd?: string
@@ -40,43 +37,44 @@ export declare namespace Types {
     originTop?: number
     originHeight?: number
   }
-
   // 確認是否存在
-  type CheckTimeIsExist = (
+  checkTimeIsExistOptions: {
     startSecond: number,
     endSecond: number,
     filterId?: Array<string> | string | null | undefined
-  ) => boolean
+  }
+  checkTimeIsExistReturn: {
+    sameIdList: string[]
+    existIdList: string[]
+    isTimeExist: boolean
+  }
+  checkTimeIsExist: (options: Types['checkTimeIsExistOptions']) => Promise<Types['checkTimeIsExistReturn']>
 }
 
-export declare namespace Props {
-  type Title = string
-  type ScheduleList = Array<Types.PlanTime>
-  type Options = Array<Types.Option>
+export interface Props {
+  title: string
+  scheduleList: Array<Types['planTime']>
+  options: Array<Types['option']>
 
 }
 export const props = {
   title: {
-    type: String as PropType<Props.Title>,
+    type: String as PropType<Props['title']>,
     required: false,
     default: '',
     description: '標題'
   },
-  options: {
-    type: Array as PropType<Props.Options>,
-    required: false,
-    default() {
-      return []
-    },
-    description: '類型選項(暫時沒用到)'
-  },
   scheduleList: {
-    type: Array as PropType<Props.ScheduleList>,
+    type: Array as PropType<Props['scheduleList']>,
     required: false,
-    default() {
-      return []
-    },
+    default: () => [],
     description: '資料列表'
+  },
+  options: {
+    type: Array as PropType<Props['options']>,
+    required: false,
+    default: () => [],
+    description: '類型選項(暫時沒用到)'
   },
   isCreate: {
     type: Boolean as PropType<boolean>,
@@ -98,11 +96,11 @@ export const props = {
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {
-  type Init = (scheduleList: Props.ScheduleList) => void
-  type GetData = () => Promise<{
+export interface Expose {
+  init: (scheduleList: Props['scheduleList']) => void
+  getData: () => Promise<{
     create: Array<any>
     update: Array<any>
     remove: Array<any>

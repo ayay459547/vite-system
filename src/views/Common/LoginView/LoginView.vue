@@ -2,19 +2,21 @@
 import { ref, inject } from 'vue'
 import { ElForm } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useFormSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils' // 工具
-import { CustomIcon, CustomInput, CustomImage } from '@/components' // 系統組件
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { CustomIcon, CustomImage } from '@/components/feature' // 系統組件
+import { CustomInput } from '@/components/input' // 系統組件輸入
+import { defaultModuleType } from '@/declare/declare_i18n'
 
-import LogoImage from '@/assets/images/Vue-logo.png?url'
+import LogoImage from '@/assets/images/logo.png?url'
 import { loginSystem } from './api'
 
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, swal } = useHook({
   i18nModule: defaultModuleType
 })
+
 const emit = defineEmits(['login'])
 
 const isLoading = ref(false)
@@ -55,7 +57,7 @@ const columnSetting = {
     i18nLabel: 'input-account',
     fitler: {
       type: 'text',
-      default: 'admin',
+      default: '',
       required: true
     }
   },
@@ -64,8 +66,8 @@ const columnSetting = {
     i18nLabel: 'input-password',
     fitler: {
       // type: 'password',
-      default: 'admin',
       showPassword: true,
+      default: '',
       required: false
     }
   }
@@ -82,41 +84,25 @@ const {
   validate: validateForm,
   reset: resetForm
 } = useFormSetting<Form>(columnSetting, 'fitler')
-
-const svg = `
-  <path class="path" d="
-    M 30 15
-    L 28 17
-    M 25.61 25.61
-    A 15 15, 0, 0, 1, 15 30
-    A 15 15, 0, 1, 1, 27.99 7.5
-    L 15 15
-  " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-`
 </script>
 
 <template>
   <div
     v-loading="isLoading"
     element-loading-text="Loading..."
-    :element-loading-spinner="svg"
-    element-loading-svg-view-box="-10, -10, 50, 50"
     element-loading-background="rgba(236, 245, 255, 0.8)"
     class="login-wrapper"
   >
-    <img class="login-img-lg" src="@/assets/images/common/login-lg.svg" alt="login" />
-
     <div class="login-container">
+      <div class="login-container-before"></div>
+      <div class="login-container-after"></div>
       <div class="login-form">
-        <img class="login-img-xs" src="@/assets/images/common/login-xs.svg" alt="login" />
-
         <div class="login-logo">
-          <CustomImage :src="LogoImage" alt="vue" />
-          <!-- <img src="@/assets/images/Vue-logo.png" alt="vue" /> -->
+          <CustomImage :src="LogoImage" alt="demo" />
         </div>
 
         <ElForm
-          class="fill-x flex-column i-ga-md"
+          class="fill-x flex-column i-ga-xl"
           autocomplete="on"
           @submit.prevent="userLogin"
         >
@@ -191,38 +177,39 @@ $gradient-color: var(--i-color-login-move);
     border-radius: 6px;
     transition-duration: 0.3s;
     position: relative;
-    transform: translateX(50%);
     overflow: hidden;
     box-shadow: 2px 2px 8px 1px var(--i-color-login-container);
 
     @media (max-width: 1200px) {
-      transform: translateX(40%);
       width: 50%;
     }
     @media (max-width: 992px) {
-      transform: translateX(0);
       width: 70%;
+    }
+
+    @media (max-height: 600px) {
+      height: 90%;
     }
     @media (max-width: 576px) {
       width: 99%;
       height: 99%;
     }
 
-    &::before,
-    &::after {
+    &-before,
+    &-after {
       content: '';
       position: absolute;
       width: 100%;
       height: 100%;
       animation: animate 6s linear infinite;
     }
-    &::before {
+    &-before {
       top: -50%;
       left: -50%;
       background: linear-gradient(0deg, transparent, $gradient-color, $gradient-color);
       transform-origin: bottom right;
     }
-    &::after {
+    &-after {
       top: 50%;
       left: 50%;
       background: linear-gradient(180deg, transparent, $gradient-color, $gradient-color);
@@ -238,44 +225,9 @@ $gradient-color: var(--i-color-login-move);
     }
   }
 
-  &-img-lg {
-    position: absolute;
-    left: 32px;
-    bottom: 10%;
-    width: 40%;
-    transition-duration: 0.3s;
-    visibility: visible;
-
-    @media (max-width: 992px) {
-      visibility: hidden;
-    }
-  }
-
-  &-img-xs {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    width: 30%;
-    transition-duration: 0.3s;
-    visibility: hidden;
-
-    @media (max-width: 992px) {
-      visibility: visible;
-    }
-
-    @media (max-width: 576px) {
-      width: 50%;
-      visibility: visible;
-    }
-
-    @media (max-height: 800px) {
-      visibility: hidden;
-    }
-  }
-
   &-form {
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -283,19 +235,23 @@ $gradient-color: var(--i-color-login-move);
     padding: 36px;
     gap: 28px;
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: 2px;
+    left: 2px;
     z-index: 1;
     overflow: auto;
 
     @media (max-width: 992px) {
       padding: 24px 36px;
     }
+
+    @media (max-height: 600px) {
+      gap: 12px;
+    }
   }
 
   &-logo {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 120px;
     display: block;
 
     @media (max-width: 992px) {
@@ -304,10 +260,6 @@ $gradient-color: var(--i-color-login-move);
 
     @media (max-width: 576px) {
       width: 100px;
-    }
-
-    @media (max-height: 600px) {
-      display: none;
     }
 
     & > img {
@@ -357,7 +309,7 @@ $dark-color: (
 );
 
 @mixin set-css-vars($color-map) {
-  // var(--i-color-system-bg)
+  // var(--i-color-login-wrapper)
   @each $type, $color in $color-map {
     @include utils.set-css-var-value(('color', $type), $color);
   }

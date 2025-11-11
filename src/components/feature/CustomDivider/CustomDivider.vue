@@ -22,7 +22,10 @@ const hasSlot = (prop: string): boolean => {
     :border-style="props.borderStyle"
     :content-position="props.contentPosition"
     class="divider-container"
-    :class="scopedId"
+    :class="[
+      `divider-${props.direction}`,
+      scopedId
+    ]"
   >
     <template v-if="hasSlot('default')" #default>
       <slot></slot>
@@ -33,12 +36,17 @@ const hasSlot = (prop: string): boolean => {
 <style lang="scss" scoped>
 div[class*="__CustomDivider"].divider {
   &-container {
-    width: 100%;
-    margin: 16px 0 !important;
-
     :deep(.el-divider__text) {
       border-radius: 6px;
     }
+  }
+  &-horizontal {
+    width: 100%;
+    margin: 16px 0 !important;
+  }
+  &-vertical {
+    height: 100%;
+    margin: 0 16px !important;
   }
 }
 </style>

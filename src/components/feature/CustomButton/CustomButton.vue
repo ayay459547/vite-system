@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useSlots } from 'vue'
+import { useSlots, ref, computed } from 'vue'
 import { ElButton } from 'element-plus'
 
-import { CustomIcon } from '@/components' // 系統組件
-import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue' // 系統組件
+import { getUuid, hasOwnProperty, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomButtonInfo'
 import { version, props as buttonProps } from './CustomButtonInfo'
@@ -13,7 +13,7 @@ const scopedId = getUuid(version)
 const props = defineProps(buttonProps)
 
 const emit = defineEmits(['click'])
-const onClick: Emits.Click = ($event: Event) => {
+const onClick: Emits['click'] = ($event: Event) => {
   emit('click', $event)
 }
 
@@ -21,6 +21,16 @@ const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
+
+const btnHover = ref<boolean>(!props.hoverDisplay)
+const setHover = (isHover: boolean) => btnHover.value = isHover
+const btnContentClass = computed(() => {
+  if (isEmpty(props.label) && !hasSlot('default')) return 'hidden'
+  if (!props.hoverDisplay) return 'display'
+  if (btnHover.value) return 'display'
+  else return 'hidden'
+})
+
 </script>
 
 <template>
@@ -39,12 +49,15 @@ const hasSlot = (prop: string): boolean => {
     :icon="props.icon"
     :dark="props.dark"
     :autofocus="props.autofocus"
+    :native-type="props.nativeType"
     :autoInsertSpace="props.autoInsertSpace"
     :color="props.color"
     class="button button-container"
     :style="props.style"
-    :class="[scopedId, `button-size-${props.size ?? 'default'}`]"
+    :class="[scopedId, `button-size-${props.size ?? 'default'}`, btnContentClass]"
     @click="onClick"
+    @mouseover="setHover(true)"
+    @mouseleave="setHover(false)"
   >
     <template v-if="hasSlot('icon') || (!props.loading && props.iconName.length > 0)" #icon>
       <CustomIcon
@@ -64,11 +77,13 @@ const hasSlot = (prop: string): boolean => {
     </template>
 
     <template v-if="props.label.length > 0 || hasSlot('default')" #default>
-      <slot>
-        <span class="button-label" :style="{ color: props.textColor }">
-          {{ props.label }}
-        </span>
-      </slot>
+      <div class="button-content" :class="btnContentClass">
+        <slot>
+          <span class="button-label" :style="{ color: props.textColor }">
+            {{ props.label }}
+          </span>
+        </slot>
+      </div>
     </template>
   </ElButton>
 </template>
@@ -101,7 +116,14 @@ button[class*="__CustomButton"] {
 
     align-items: center;
     padding: 8px 12px;
+
+    transition-property: gap;
+    transition-duration: 0.5s;
     gap: 6px;
+    &.hidden {
+      gap: 0px;
+      transition-duration: 0.3s;
+    }
 
     &.is-circle {
       padding: 8px;
@@ -129,6 +151,22 @@ button[class*="__CustomButton"] {
     &-size-small {
       @include button-size(28px, 0.8em)
     }
+  }
+}
+
+
+
+.button-content {
+  // position: absolute;
+  overflow: hidden;
+  transition-property: max-width margin-left;
+  transition-duration: 0.5s;
+  &.display {
+    max-width: 500px;
+  }
+  &.hidden {
+    width: 0px;
+    max-width: 0px;
   }
 }
 </style>

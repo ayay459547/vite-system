@@ -1,13 +1,15 @@
 ## CustomBadge
 
+### 徽章, Dom元素右上角顯示 標記/訊息
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import type { BadgeType } from '@/components'
-import { CustomBadge } from '@/components'
+import type { CustomBadgeProps } from '@/components/feature'
+import { CustomBadge } from '@/components/feature'
 
-const type = ref<BadgeType>('primary')
+const type = ref<BadgeType['type']>('primary')
 </script>
 
 <template>
@@ -38,9 +40,10 @@ const type = ref<BadgeType>('primary')
 
 ### Slots
 
-| 插槽名  | 說明         |
-| ------- | ------------ |
-| default | 文字顯示內容 |
+| 插槽名  | 說明          | 類型   |
+| ------- | ------------ | ------ |
+| default | 自訂預設內容  |        |
+| content | 自訂顯示內容  | object |
 
 ### Events ( emits )
 

@@ -4,7 +4,7 @@ import { ref, computed, inject } from 'vue'
 import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { ElTabs, ElTabPane } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { getUuid } from '@/lib/lib_utils' // 工具
 
 import type { Option } from '@/components' // 系統組件
@@ -29,7 +29,7 @@ const onTabRemove =	(name: TabPaneName) => emit('tab-remove', name)
 const onTabAdd = () => emit('tab-add')
 const onEdit = (paneName: TabPaneName | undefined, action: 'remove' | 'add') => emit('edit', paneName, action)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
@@ -39,19 +39,19 @@ const getTranslateLabel = (option: Option) => {
   return label
 }
 
-const tempValue: WritableComputedRef<Props.ModelValue> = computed({
+const tempValue: WritableComputedRef<Props['modelValue']> = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
-const elTabsRef = ref()
+const ElTabsRef = ref<typeof ElTabs>()
 
 </script>
 
 <template>
   <div class="tabs-wrapper" :class="scopedId">
     <ElTabs
-      ref="elTabsRef"
+      ref="ElTabsRef"
       v-model="tempValue"
       :type="props.type"
       :closable="props.closable"

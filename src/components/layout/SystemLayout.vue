@@ -3,59 +3,45 @@ import type { PropType } from 'vue'
 import { computed, ref, inject, reactive, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { Navigation } from '@/declare/routes'
-import type { AuthData, UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomModal } from '@/components' // 系統組件
+import type { Navigation } from '@/types/types_routes'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
-import { useLayoutStore } from '@/stores/stores_layout'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { useLayoutStore } from '@/stores/useLayoutStore'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import { tipLog } from '@/lib/lib_utils' // 工具
 
-const Layout1 = useAsyncComponent(() => import('@/components/layout/Layout-1/Layout-1.vue'), 'rect')
-const Layout2 = useAsyncComponent(() => import('@/components/layout/Layout-2/Layout-2.vue'), 'rect')
-const Layout3 = useAsyncComponent(() => import('@/components/layout/Layout-3/Layout-3.vue'), 'rect')
-const UserPreference = useAsyncComponent(() => import('@/components/layout/Preference/UserPreference.vue'), 'rect')
+import CustomModal from '@/components/feature/CustomModal/CustomModal.vue'
+import MenuUser from '@/components/layout/Menu/MenuUser.vue'
 
-const useHook = inject('useHook') as UseHook 
+const Layout1 = useAsyncComponent<typeof import('@/components/layout/Layout-1/Layout-1.vue')['default']>(
+  () => import('@/components/layout/Layout-1/Layout-1.vue'), 'rect'
+)
+const Layout2 = useAsyncComponent<typeof import('@/components/layout/Layout-2/Layout-2.vue')['default']>(
+  () => import('@/components/layout/Layout-2/Layout-2.vue'), 'rect'
+)
+const Layout3 = useAsyncComponent<typeof import('@/components/layout/Layout-3/Layout-3.vue')['default']>(
+  () => import('@/components/layout/Layout-3/Layout-3.vue'), 'rect'
+)
+// 偏好設定
+const UserPreference = useAsyncComponent<typeof import('@/components/layout/Preference/UserPreference.vue')['default']>(
+  () => import('@/components/layout/Preference/UserPreference.vue'), 'rect'
+)
+
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
 const props = defineProps({
+  showRoutes: {
+    type: Array as PropType<Navigation[]>,
+    default: () => []
+  },
   currentNavigation: {
     type: [Object, null] as PropType<Navigation | null>,
     default: () => {
       return {}
-    }
-  },
-  showRoutes: {
-    type: Array as PropType<Navigation[]>,
-    default: () => {
-      return []
-    }
-  },
-  breadcrumbName: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
-  },
-  breadcrumbTitle: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
-  },
-  authData: {
-    type: Object as PropType<AuthData>,
-    default: () => {
-      return {
-        user: {},
-        role: {},
-        roleFunction: [],
-        groups: []
-      } as AuthData
     }
   },
   isIframe: {
@@ -75,7 +61,11 @@ export type CurrentRouteName = {
   level3: string
 }
 const currentRouteName = computed(() => {
-  const [level1Active = '', level2Active = '', level3Active = ''] = props.breadcrumbName
+  const [
+    level1Active = '',
+    level2Active = '',
+    level3Active = ''
+  ] = props.currentNavigation?.breadcrumbName ?? []
 
   return {
     level1: level1Active,
@@ -88,33 +78,28 @@ const layoutAttr = computed(() => {
   return {
     showRoutes: props.showRoutes,
     currentNavigation: props.currentNavigation,
-
-    currentRouteName: currentRouteName.value,
-    authData: props.authData,
-
-    breadcrumbName: props.breadcrumbName,
-    breadcrumbTitle: props.breadcrumbTitle
+    currentRouteName: currentRouteName.value
   }
 })
 
-const layoutEvent = {
-  // 登出
-  logout: () => emit('logout'),
   // 打開偏好設定
-  preference: () => {
-    modal.preference = true
-  }
+const preference = () => {
+  modal.preference = true
+}
+
+// 登出
+const logout = () => {
+  emit('logout')
 }
 
 // modal
-const preferenceRef = ref(null)
 const modal = reactive({
   preference: false
 })
 
-const layout1Ref = ref()
-const layout2Ref = ref()
-const layout3Ref = ref()
+const Layout1Ref = ref<InstanceType<typeof Layout1>>()
+const Layout2Ref = ref<InstanceType<typeof Layout2>>()
+const Layout3Ref = ref<InstanceType<typeof Layout3>>()
 
 const init = async () => {
   await nextTick()
@@ -122,13 +107,13 @@ const init = async () => {
   setTimeout(() => {
     switch (layout.value) {
       case 'layout1':
-        layout1Ref.value?.init()
+        Layout1Ref.value?.init()
         break
       case 'layout2':
-        layout2Ref.value?.init()
+        Layout2Ref.value?.init()
         break
       case 'layout3':
-        layout3Ref.value?.init()
+        Layout3Ref.value?.init()
         break
       default:
         tipLog('找不到對應的Layout', [layout.value])
@@ -141,39 +126,29 @@ defineExpose({
   init
 })
 
-const onLayoutChange = () => {
-  init()
-}
-
 </script>
 
 <template>
   <div class="system-layout">
     <template v-if="!props.isIframe">
-      <div class="user-modal">
-        <CustomModal
-          v-model="modal.preference"
-          :modal="false"
-          hidden-footer
-          draggable
-          :hidden-collapse="false"
-        >
-          <template #header>
-            <label>{{ i18nTranslate('preference', defaultModuleType) }}</label>
-          </template>
-          <UserPreference
-            ref="preferenceRef"
-            :is-dark="isDark"
-            @layout-change="onLayoutChange"
-          />
-        </CustomModal>
-      </div>
+      <!-- 偏好設定 -->
+      <CustomModal
+        v-model="modal.preference"
+        :modal="false"
+        hidden-footer
+        draggable
+        :hidden-collapse="false"
+      >
+        <template #header>
+          <label>{{ i18nTranslate('preference', defaultModuleType) }}</label>
+        </template>
+        <UserPreference :is-dark="isDark" @init="init" />
+      </CustomModal>
 
       <Layout1
-        ref="layout1Ref"
+        ref="Layout1Ref"
         v-if="layout === 'layout1'"
         v-bind="layoutAttr"
-        v-on="layoutEvent"
       >
         <template #logo>
           <slot name="logo"></slot>
@@ -184,14 +159,16 @@ const onLayoutChange = () => {
 
         <template #content>
           <slot name="content"></slot>
+        </template>
+        <template #MenuUser>
+          <MenuUser @preference="preference" @logout="logout" />
         </template>
       </Layout1>
 
       <Layout2
-        ref="layout2Ref"
+        ref="Layout2Ref"
         v-else-if="layout === 'layout2'"
         v-bind="layoutAttr"
-        v-on="layoutEvent"
       >
         <template #logo>
           <slot name="logo"></slot>
@@ -202,14 +179,16 @@ const onLayoutChange = () => {
 
         <template #content>
           <slot name="content"></slot>
+        </template>
+        <template #MenuUser>
+          <MenuUser @preference="preference" @logout="logout" />
         </template>
       </Layout2>
 
       <Layout3
-        ref="layout3Ref"
+        ref="Layout3Ref"
         v-else-if="layout === 'layout3'"
         v-bind="layoutAttr"
-        v-on="layoutEvent"
       >
         <template #logo>
           <slot name="logo"></slot>
@@ -220,6 +199,9 @@ const onLayoutChange = () => {
 
         <template #content>
           <slot name="content"></slot>
+        </template>
+        <template #MenuUser>
+          <MenuUser @preference="preference" @logout="logout" />
         </template>
       </Layout3>
 

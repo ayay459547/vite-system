@@ -14,7 +14,7 @@ const props = defineProps({
   error: {
     type: Object as PropType<Error>,
     required: false,
-    default() {
+    default: () => {
       return {
         name: 'Error',
         message: 'Error'
@@ -91,5 +91,6 @@ const title = computed(() => {
   background-color: var(--i-color-system-page);
   overflow: hidden;
   margin: 2px;
+  max-height: 1200px;
 }
 </style>

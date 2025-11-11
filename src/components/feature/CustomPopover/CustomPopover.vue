@@ -17,14 +17,11 @@ const emit = defineEmits<{
 const tempVisible = ref(false)
 
 const tempValue = computed({
-  get() {
-    if (typeof props.visible === 'boolean') {
-      return props.visible
-    } else {
-      return tempVisible.value
-    }
+  get: () => {
+    if (typeof props.visible === 'boolean') return props.visible
+    return tempVisible.value
   },
-  set(value: boolean) {
+  set: (value: boolean) => {
     tempVisible.value = value
     emit('update:visible', value)
   }
@@ -35,13 +32,13 @@ const hasSlot = (prop: string): boolean => {
   return hasOwnProperty(slots, prop)
 }
 
-const popoverRef = ref()
+const ElPopoverRef = ref<typeof ElPopover>()
 // const updatePopper = async () => {
 //   console.log('updatePopper')
 //   await nextTick()
-//   if(popoverRef.value) {
-//     console.log(popoverRef.value)
-//     // popoverRef.value?.updatePopper()
+//   if(ElPopoverRef.value) {
+//     console.log(ElPopoverRef.value)
+//     // ElPopoverRef.value?.updatePopper()
 //   }
 // }
 // defineExpose({
@@ -51,7 +48,7 @@ const popoverRef = ref()
 
 <template>
   <ElPopover
-    ref="popoverRef"
+    ref="ElPopoverRef"
     :class="scopedId"
     :trigger="props.trigger"
     :title="props.title"
@@ -79,7 +76,7 @@ const popoverRef = ref()
     <template v-if="hasSlot('reference')" #reference>
       <slot name="reference"></slot>
     </template>
-    <template #default>
+    <template v-if="hasSlot('default')" #default>
       <slot></slot>
     </template>
   </ElPopover>

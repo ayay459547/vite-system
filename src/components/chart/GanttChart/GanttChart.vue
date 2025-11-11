@@ -3,12 +3,10 @@ import * as echarts from 'echarts'
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-import debounce from '@/lib/lib_debounce'
+import { debounce, throttle } from '@/lib/lib_lodash'
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { numberFormat, formatDatetime } from '@/lib/lib_format' // 格式化
-import { useLayoutStore } from '@/stores/stores_layout'
+import { useLayoutStore } from '@/stores/useLayoutStore'
 
 import type { Expose } from './GanttChartInfo'
 import { version, props as ganttChartProps } from './GanttChartInfo'
@@ -21,13 +19,13 @@ export default defineComponent({
     const scopedId = getUuid(version)
 
     // 監聽外框大小變化
-    const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
+    const ROcallback = throttle<ResizeObserverCallback>((entries: ResizeObserverEntry[]) => {
       entries.forEach(() => {
         init()
       })
-    }, 300) as ResizeObserverCallback
+    }, 300)
     const RO = new ResizeObserver(ROcallback)
-    const ganttContainer = ref(null)
+    const ganttContainer = ref<HTMLDivElement>()
 
     onMounted(() => {
       setTimeout(() => {
@@ -51,8 +49,8 @@ export default defineComponent({
     const GANTT_VALUE_INDEX = 4
 
     let _yEnd = 100
-    let _ganttData = []
-    let _typeData = []
+    const _ganttData: any[] = []
+    const _typeData: any[] = []
 
     const debounceClickCallback = debounce(function (params: any) {
       // console.log(params)
@@ -70,7 +68,7 @@ export default defineComponent({
       }
     }, 200)
 
-    const init: Expose.Init = () => {
+    const init: Expose['init'] = () => {
       _typeData.splice(0)
       _ganttData.splice(0)
 
@@ -146,8 +144,7 @@ export default defineComponent({
             bottom: 20,
             start: 0,
             end: props.dataZoomX,
-            handleIcon:
-              'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleIcon: 'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
             handleSize: '80%',
             showDetail: false
           },

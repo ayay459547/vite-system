@@ -1,10 +1,12 @@
 ## CustomPopover
 
+### 對話框, 效果類似 CustomTooltip
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomPopover, CustomButton } from '@/components'
+import { CustomPopover, CustomButton } from '@/components/feature'
 </script>
 
 <template>

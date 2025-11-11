@@ -7,7 +7,7 @@ SimpleTable_2.0.0 統一使用 template 寫法, 以方便維護
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { SimpleTable } from '@/components'
+import { SimpleTable } from '@/components/table'
 </script>
 
 <template></template>

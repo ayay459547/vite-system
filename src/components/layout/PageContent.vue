@@ -3,25 +3,31 @@ import type { PropType, VNode } from 'vue'
 import { inject, nextTick, onBeforeMount, onBeforeUnmount, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { Navigation } from '@/declare/routes'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
 import { scrollToEl, hasOwnProperty } from '@/lib/lib_utils' // 工具
 import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
-import { permission, hasPermission } from '@/lib/lib_permission' // 權限
+import { PermissionEnum, hasPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 
-import { useRoutesStore } from '@/stores/stores_routes'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { useRoutesStore } from '@/stores/useRoutesStore'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 import Async_Skeleton from '@/views/Common/Async_Skeleton.vue'
 // import Async_Error from '@/views/Common/Async_Error.vue'
 
 // 無此權限
-const NoPermissions = useAsyncComponent(() => import('@/views/Common/NoPermissions.vue'), 'rect')
+const NoPermissions = useAsyncComponent<typeof import('@/views/Common/NoPermissions.vue')['default']>(
+  () => import('@/views/Common/NoPermissions.vue'), 'rect'
+)
 // 功能開發中
-const InProgress = useAsyncComponent(() => import('@/views/Common/InProgress.vue'), 'rect')
+const InProgress = useAsyncComponent<typeof import('@/views/Common/InProgress.vue')['default']>(
+  () => import('@/views/Common/InProgress.vue'), 'rect'
+)
 // 功能維護中
-const FixView = useAsyncComponent(() => import('@/views/Common/FixView.vue'), 'rect')
+const FixView = useAsyncComponent<typeof import('@/views/Common/FixView.vue')['default']>(
+  () => import('@/views/Common/FixView.vue'), 'rect'
+)
 
 const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
@@ -37,10 +43,6 @@ const props = defineProps({
     type: String as PropType<string>,
     default: ''
   },
-  isIframe: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   currentNavigation: {
     type: Object as PropType<Navigation | null>,
     default: null
@@ -51,6 +53,10 @@ const props = defineProps({
       return new Map()
     }
   },
+  isIframe: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
   isLoading: {
     type: Boolean as PropType<boolean>,
     default: false
@@ -59,7 +65,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   'login',
-  'setLayoutInfo',
+  'layoutInit',
   'initSystemData'
 ])
 
@@ -135,11 +141,7 @@ onBeforeUnmount(() => {
 })
 
 const routesStore = useRoutesStore()
-const {
-  setBreadcrumbName, // 麵包屑(翻譯)
-  setBreadcrumbTitle, // 麵包屑 沒有對應翻譯使用
-  setCurrentNavigation // 設定當前路由
-} = routesStore
+const { setCurrentNavigation } = routesStore
 
 // 當前路由
 const route = useRoute()
@@ -153,16 +155,10 @@ const routeChange = () => {
   if ([null, undefined, name].includes(routeName as string)) return
 
   if (hasOwnProperty(defaultRouter, routeName)) {
-    setBreadcrumbName([routeName])
-    setBreadcrumbTitle([defaultRouter[routeName]])
     setCurrentNavigation(null)
 
   } else if (props.navigationMap.has(routeName)) {
     const currentRoute = props.navigationMap.get(routeName)
-    const { breadcrumbName, breadcrumbTitle } = currentRoute ?? {}
-
-    setBreadcrumbName(breadcrumbName ?? [])
-    setBreadcrumbTitle(breadcrumbTitle ?? [])
     setCurrentNavigation(currentRoute ?? null)
   }
 
@@ -173,15 +169,14 @@ const routeChange = () => {
 }
 
 /**
- * 權限順序 (stores_routes)
+ * 權限 (對應 stores_routes.ts => _getRouterPermission)
  * 1. 後端資料
- * 2. 路由設定
+ * 2. 路由設定: 停用
  * 3. 系統預設
- * 4. 0 (無權限)
  */
- const pagePermission = computed(() => {
+const pagePermission = computed(() => {
   const routerPermission = props.navigationMap.get(route.name as string)
-  return (routerPermission?.meta?.permission ?? 0)
+  return routerPermission?.meta?.permission ?? defaultPermission
 })
 
 const routerBus = useEventBus<string>('router')
@@ -193,8 +188,8 @@ const onVnodeMounted = (vNode: VNode) => {
 const login = (userId: number) => {
   emit('login', userId)
 }
-const setLayoutInfo = () => {
-  emit('setLayoutInfo')
+const layoutInit = () => {
+  emit('layoutInit')
 }
 const initSystemData = (routeName: string) => {
   emit('initSystemData', routeName)
@@ -226,7 +221,7 @@ const initSystemData = (routeName: string) => {
           v-else-if="route.name === 'locatehome'"
           key="locatehome"
           :is="Component"
-          @router-change="setLayoutInfo"
+          @router-change="layoutInit"
           @vue:mounted="onVnodeMounted"
         />
         <component
@@ -236,8 +231,9 @@ const initSystemData = (routeName: string) => {
           @vue:mounted="onVnodeMounted"
         />
 
+        <!-- 有權限設定 才判斷 -->
         <NoPermissions
-          v-else-if="!hasPermission(pagePermission, permission.read)"
+          v-else-if="!hasPermission(pagePermission, PermissionEnum.Read)"
           @vue:mounted="onVnodeMounted"
         />
         <InProgress v-else-if="route.meta.isInProgress" @vue:mounted="onVnodeMounted" />

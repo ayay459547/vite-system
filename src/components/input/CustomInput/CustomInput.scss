@@ -1,6 +1,6 @@
 @use 'sass:color';
 
-$danger-color: #f56c6c;
+$danger-color: #f56c6c; // 等同 var(--i-color-danger)
 $danger-border: 1px solid $danger-color;
 
 @mixin validate-error($style) {

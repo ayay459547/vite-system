@@ -4,17 +4,17 @@ import type { Option as CommonOption, CustomSize } from '@/components' // 系統
 
 export const version = '__FormRadio_1.0.0__'
 
-export declare namespace Types {
-  type RadioValue = number | string | boolean | null | any
+export interface Types {
+  radioValue: number | string | boolean | null | any
 
   // props (Radio)
-  type Option = CommonOption & {
+  option: CommonOption & {
     // custom
     data?: any
     color?: string
 
     // element plus ui
-    value?: Types.RadioValue
+    value?: Types['radioValue']
     label?: string
     disabled?: boolean
     border?: boolean
@@ -23,30 +23,28 @@ export declare namespace Types {
   }
 }
 
-export declare namespace Props {
-  type Options = Array<Types.Option>
-  type RadioType = 'radio' | 'button'
+export interface Props {
+  options: Array<Types['option']>
+  radioType: 'radio' | 'button'
 
-  type ModelValue = Types.RadioValue
-  type Size = CustomSize
-  type Disabled = boolean
-  type TextColor = string
-  type Fill = string
-  type ValidateEvent = boolean
-  type AriaLabel = string
-  type Id = string
-  type Name = string
+  modelValue: Types['radioValue']
+  size: CustomSize
+  disabled: boolean
+  textColor: string
+  fill: string
+  validateEvent: boolean
+  ariaLabel: string
+  id: string
+  name: string
 }
 export const props = {
   // custom
   options: {
-    type: Array as PropType<Props.Options>,
-    default() {
-      return []
-    }
+    type: Array as PropType<Props['options']>,
+    default: () => []
   },
   radioType: {
-    type: String as PropType<Props.RadioType>,
+    type: String as PropType<Props['radioType']>,
     required: false,
     default: 'radio',
     description: `類型:
@@ -56,65 +54,65 @@ export const props = {
   },
   // element ui plus (RadioGroup)
   modelValue: {
-    type: [Boolean, String, Number, null] as PropType<Props.ModelValue>,
+    type: [Boolean, String, Number, null] as PropType<Props['modelValue']>,
     required: true
   },
   size: {
-    type: String as PropType<Props.Size>,
+    type: String as PropType<Props['size']>,
     required: false,
     default: undefined,
     description: '輸入框尺寸'
   },
   disabled: {
-    type: Boolean as PropType<Props.Disabled>,
+    type: Boolean as PropType<Props['disabled']>,
     required: false,
     default: false,
     description: '是否禁用'
   },
   textColor: {
-    type: String as PropType<Props.TextColor>,
+    type: String as PropType<Props['textColor']>,
     required: false,
     default: undefined,
     description: '按鈕形式的 Radio 啟動時的文字顏色'
   },
   fill: {
-    type: String as PropType<Props.Fill>,
+    type: String as PropType<Props['fill']>,
     required: false,
     default: undefined,
     description: '按鈕形式的 Radio 啟動時的填充色和邊框色'
   },
   validateEvent: {
-    type: Boolean as PropType<Props.ValidateEvent>,
+    type: Boolean as PropType<Props['validateEvent']>,
     required: false,
     default: false,
     description: '輸入時是否觸發表單的驗證'
   },
   ariaLabel: {
-    type: String as PropType<Props.AriaLabel>,
+    type: String as PropType<Props['ariaLabel']>,
     required: false,
     default: undefined,
     description: '等價於原生 input aria-label 屬性 (a11y)'
   },
   id: {
-    type: String as PropType<Props.Id>,
+    type: String as PropType<Props['id']>,
     required: false,
     default: undefined,
     description: '原生 id 屬性'
   },
   name: {
-    type: String as PropType<Props.Name>,
+    type: String as PropType<Props['name']>,
     required: false,
     default: undefined,
     description: '原生 name 屬性'
   }
 }
 
-export declare namespace Emits {
-  type Change = (value: Props.ModelValue) => void
+export interface Emits {
+  change: (value: Props['modelValue']) => void
 }
 
-export declare namespace Expose {
-  type Focus = () => void
-  type Blur = () => void
+export interface Expose {
+  focus: () => void
+  blur: () => void
 }
 

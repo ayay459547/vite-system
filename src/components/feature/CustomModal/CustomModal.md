@@ -1,11 +1,13 @@
-## CustomModal API
+## CustomModal
+
+### 彈窗
 
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomModal, CustomButton } from '@/components'
+import { CustomModal, CustomButton } from '@/components/feature'
 
 const modalShow = ref<boolean>(false)
 
@@ -57,8 +59,8 @@ const onModalSubmit = () => {
 
 ### Events ( emit )
 
-| 事件名            | 說明         | 傳值類型 |
-| ----------------- | ------------ | -------- |
+| 事件名             | 說明         | 傳值類型 |
+| ------------------ | ------------ | -------- |
 | update:model-value | v-modal 用   | boolean  |
-| cancel            | 取消按鈕按下 |          |
-| submit            | 確認按鈕按下 |          |
+| cancel             | 取消按鈕按下 |          |
+| submit             | 確認按鈕按下 |          |

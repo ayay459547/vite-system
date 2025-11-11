@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, inject, computed, nextTick } from 'vue'
+import { ref, inject, computed, nextTick, reactive } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { ColumnItem, TableIDBSetting } from '@/declare/columnSetting'
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { ColumnItem, TableIDBSetting } from '@/types/types_columnSetting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import { getColumnSetting, setColumnSetting, delColumnSetting } from '@/lib/lib_idb'
 import { isEmpty, getProxyData, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
-import type { CustomTableProps } from '@/components' // 系統組件
-import { CustomButton, CustomIcon, CustomPopover, CustomInput, CustomDraggable } from '@/components' // 系統組件
+import type { CustomTableProps } from '@/components/table' // 系統組件: 表格
+import CustomInput from '@/components/input/CustomInput/CustomInput.vue'
+import CustomDraggable from '@/components/feature/CustomDraggable/CustomDraggable.vue'
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
 
 const props = defineProps({
   i18nModule: {
@@ -20,19 +24,19 @@ const props = defineProps({
     description: 'i18nModule'
   },
   columns: {
-    type: Object as PropType<CustomTableProps.TableColumns>,
-    default() {
+    type: Object as PropType<CustomTableProps['tableColumns']>,
+    default: () => {
       return {}
     }
   },
   version: {
-    type: String as PropType<CustomTableProps.Version>,
+    type: String as PropType<CustomTableProps['version']>,
     default: '1.0.0',
     description: `欄位設定 版本
       如果版本更換 會重置欄位設定`
   },
   settingKey: {
-    type: String as PropType<CustomTableProps.SettingKey>,
+    type: String as PropType<CustomTableProps['settingKey']>,
     required: true,
     description: '欄位設定 在 indexedDB 上的 key'
   },
@@ -49,7 +53,7 @@ const props = defineProps({
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -58,16 +62,63 @@ const emit = defineEmits(['change', 'resize'])
 
 const columnList = ref<ColumnItem[]>([])
 
-const showColumnList = computed<Array<ColumnItem>>({
-  get () {
-    return columnList.value.filter(item => {
-      return !(item?.isOperations ?? false)
-    })
+
+// Fixed: 'left', 'right', null 三種欄位
+// 由columnList分割而來
+const leftColumnList = ref<Array<ColumnItem>>([])
+const centerColumnList = ref<Array<ColumnItem>>([])
+const rightColumnList = ref<Array<ColumnItem>>([])
+
+// 欄位分類
+const setGroupColumnList = () => {
+  const leftColumns = columnList.value.filter(item => item?.fixed  === 'left')
+  const centerColumns = columnList.value.filter(item => !item?.fixed )
+  const rightColumns = columnList.value.filter(item => item?.fixed  === 'right')
+
+  leftColumnList.value = leftColumns
+  centerColumnList.value = centerColumns
+  rightColumnList.value = rightColumns
+}
+
+const concatGroupColumns = () => {
+  const columns = groupItems.reduce((list, group) => {
+    return list.concat(group.columns)
+  }, [])
+  return columns
+}
+
+const groupItems = reactive([
+  {
+    i18nLabel: 'table-fixed-left',
+    columns: leftColumnList,
+    onEmit: {
+      add: event => {
+        const column = event.item.__draggable_context.element
+        column.fixed = 'left'
+      }
+    }
   },
-  set (v: Array<ColumnItem>) {
-    setColumnList(v)
+  {
+    i18nLabel: 'table-fixed-none',
+    columns: centerColumnList,
+    onEmit: {
+      add: event => {
+        const column = event.item.__draggable_context.element
+        column.fixed = null
+      }
+    }
+  },
+  {
+    i18nLabel: 'table-fixed-right',
+    columns: rightColumnList,
+    onEmit: {
+      add: event => {
+        const column = event.item.__draggable_context.element
+        column.fixed = 'right'
+      }
+    }
   }
-})
+])
 
 const defulatColumns = computed(() => {
   return props.columns.map(column => {
@@ -79,7 +130,7 @@ const defulatColumns = computed(() => {
       key: column.key,
       label: column.label,
       i18nLabel: column.i18nLabel,
-      fixed: column?.fixed,
+      fixed: column?.fixed ?? null,
       width: column?.width ?? null,
       minWidth: column?.minWidth ?? null,
       isOperations: column.isOperations
@@ -101,8 +152,9 @@ const getColumnList = async () => {
 
   return defulatColumns.value
 }
-const setColumnList = (columns: Array<ColumnItem>) => {
+const setColumnList = (columns: Array<ColumnItem>, keepGroup?: boolean) => {
   columnList.value = columns
+  if(!keepGroup)  setGroupColumnList()
 }
 
 /**
@@ -111,12 +163,12 @@ const setColumnList = (columns: Array<ColumnItem>) => {
  * @param newValue 新的資料
  */
  const setColumnInfo = (props: string, newValue: Partial<ColumnItem>) => {
-  let temp: ColumnItem = columnList.value.find(columnItem => {
+  const temp: ColumnItem = columnList.value.find(columnItem => {
     return columnItem.key === props
   })
   if (isEmpty(temp)) return
 
-  for (let prop in newValue) {
+  for (const prop in newValue) {
     temp[prop] = newValue[prop]
   }
 }
@@ -290,6 +342,7 @@ const updateSetting = async (isEmitChange = true) => {
     settingKey: props.settingKey,
     columns: getProxyData(columnList.value)
   }
+
   await setColumnSetting(props.settingKey, settingData)
 
   if (isEmitChange) {
@@ -298,6 +351,10 @@ const updateSetting = async (isEmitChange = true) => {
 }
 
 const onDragend = () => {
+  // 拖曳完後調整columns順序
+  const tempColumns = concatGroupColumns()
+  setColumnList(tempColumns, true)
+
   drag.value = false
   updateSetting(true)
 }
@@ -307,7 +364,7 @@ const onDragend = () => {
   <div class="__column-setting">
     <CustomPopover
       placement="bottom-start"
-      :width="props.settingWidth"
+      :width="props.settingWidth * 3"
       trigger="click"
       popper-style="padding: 4px;"
     >
@@ -315,44 +372,59 @@ const onDragend = () => {
         <CustomButton
           icon-name="list-check"
           :label="i18nTranslate('columnSetting', defaultModuleType)"
+          plain
+          hover-display
         />
       </template>
 
       <div>
-        <div :style="{ maxHeight: props.settingHeight, overflow: 'auto' }">
-          <CustomDraggable
-            v-model="showColumnList"
-            @start="drag = true"
-            @end="onDragend"
-            item-key="key"
-            class="__column-list"
-            :handle="`.setting-move`"
-            :style="{}"
-          >
-            <template #item="{ element }">
-              <div v-if="!element.isOperations" class="__column-item setting-move">
-                <div class="__column-item-left">
-                  <div>
-                    <CustomInput
-                      v-model="element.isShow"
-                      type="checkbox"
-                      :validate-key="`ColumnSetting:${element.key}`"
-                      hidden-label
-                      :label="i18nTranslate(element?.i18nLabel ?? element.label)"
-                      @change="updateSetting(true)"
-                    />
-                  </div>
-                </div>
-
-                <div class="__column-item-right">
-                  <CustomIcon
-                    x-type="tabler"
-                    name="ArrowsUpDown"
-                  />
-                </div>
+        <div class="__column-group-container">
+          <template v-for="groupItem in groupItems" :key="groupItem">
+            <div class="__column-group-item"
+              :style="{ maxHeight: props.settingHeight}"
+            >
+              <div class="__column-group-item-header">
+                <span> {{ i18nTranslate(groupItem.i18nLabel, defaultModuleType) }} </span>
               </div>
-            </template>
-          </CustomDraggable>
+              <div class="__column-group-item-body">
+                <CustomDraggable
+                  v-model="groupItem.columns"
+                  @start="drag = true"
+                  @end="onDragend"
+                  v-on="groupItem.onEmit"
+                  item-key="key"
+                  class="__column-list"
+                  :handle="`.setting-move`"
+                  :style="{}"
+                >
+                  <template #item="{ element }">
+                    <div class="__column-item setting-move">
+                      <div class="__column-item-left">
+                        <div>
+                          <CustomInput
+                            v-model="element.isShow"
+                            type="checkbox"
+                            :validate-key="`ColumnSetting:${element.key}`"
+                            hidden-label
+                            :label="i18nTranslate(element?.i18nLabel ?? element.label)"
+                            @change="updateSetting(true)"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="__column-item-right">
+                        <CustomIcon
+                          x-type="tabler"
+                          size="small"
+                          name="ArrowsUpDown"
+                        />
+                      </div>
+                    </div>
+                  </template>
+                </CustomDraggable>
+              </div>
+            </div>
+          </template>
         </div>
 
         <div class="__column-footer">
@@ -384,6 +456,41 @@ const onDragend = () => {
     height: fit-content;
   }
 
+  &-group {
+    &-container {
+      display: flex;
+      width: 100%;
+      border: 1px solid var(--el-border-color);
+    }
+    &-item {
+      display: flex;
+      flex-direction: column;
+      width: calc(100% /3);
+      border-right: 2px dotted  var(--el-border-color);
+
+      &-header {
+        width: 100%;
+        height: 37px;
+        background-color: var(--vxe-ui-table-header-background-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid var(--el-border-color);
+      }
+      &-body {
+        flex: 1;
+        overflow-y: auto;
+        // overflow-x: hidden;
+        padding: 4px;
+      }
+    }
+    &-item:last-child {
+      border-right: none;
+    }
+  }
+
   &-list {
     display: flex;
     flex-direction: column;
@@ -400,13 +507,13 @@ const onDragend = () => {
     border-bottom: 1px solid var(--el-border-color);
 
     &-left {
-      width: calc(100% - 48px);
+      width: calc(100% - 40px);
       display: flex;
       gap: 8px;
       overflow: hidden;
     }
     &-right {
-      width: 40px;
+      width: 30px;
     }
 
     & {
@@ -422,7 +529,7 @@ const onDragend = () => {
   &-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     flex-wrap: wrap;
     gap: 6px;
     padding: 4px;

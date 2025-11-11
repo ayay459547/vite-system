@@ -2,17 +2,17 @@
 import { computed, customRef, useSlots, ref, onMounted, inject, nextTick } from 'vue'
 import { ElInput, ElSelect, ElOption } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { numberFormat } from '@/lib/lib_format' // 格式化
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Types, Props, Emits, Expose } from './FormOperatorInfo'
 import { version, props as formOperatorProps } from './FormOperatorInfo'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -50,9 +50,9 @@ onMounted(() => {
 })
 // 共用事件
 const onEvent: {
-  focus: Emits.Focus
-  clear: Emits.Clear
-  blur: Emits.Blur
+  focus: Emits['focus']
+  clear: Emits['clear']
+  blur: Emits['blur']
 } = {
   focus: $event => {
     isFocus.value = true
@@ -72,14 +72,14 @@ const onEvent: {
 }
 
 // [select, input]
-const tempValue = customRef<Props.ModelValue>((track, trigger) => {
+const tempValue = customRef<Props['modelValue']>((track, trigger) => {
   return {
     get: () => {
       track()
-      if (isEmpty(props.modelValue)) return ['', ''] as Props.ModelValue
+      if (isEmpty(props.modelValue)) return ['', ''] as Props['modelValue']
       return props.modelValue
     },
-    set: (value: Props.ModelValue) => {
+    set: (value: Props['modelValue']) => {
       emit('update:model-value', value)
       trigger()
     }
@@ -88,12 +88,12 @@ const tempValue = customRef<Props.ModelValue>((track, trigger) => {
 
 // 選擇框事件
 const onInputEvent = {
-  input: (value: Types.OperatorValue) => {
+  input: (value: Types['operatorValue']) => {
     isFocus.value = true
     const [_selectValue] = [...tempValue.value]
     emit('input', [_selectValue, value])
   },
-  change: (value: Types.OperatorValue) => {
+  change: (value: Types['operatorValue']) => {
     isFocus.value = false
     const [_selectValue, _inputValue] = [...tempValue.value]
 
@@ -135,7 +135,7 @@ const onInputEvent = {
       _value = _value.replace(/^(\s+)|(\s+)$/g, '')
     }
 
-    const emitValue: Props.ModelValue = [_selectValue, _value]
+    const emitValue: Props['modelValue'] = [_selectValue, _value]
     tempValue.value = emitValue
 
     /**
@@ -179,14 +179,14 @@ const onSelectEvent = {
 
 const selectValue = computed({
   get: () => tempValue.value[0],
-  set: (value: Types.OperatorOptions) => {
+  set: (value: Types['operatorOptions']) => {
     tempValue.value = [value, tempValue.value[1]]
   }
 })
 
 const inputValue = computed({
   get: () => tempValue.value[1],
-  set: (value: Types.OperatorValue) => {
+  set: (value: Types['operatorValue']) => {
     tempValue.value = [tempValue.value[0], value]
   }
 })
@@ -203,13 +203,9 @@ const onEnter = async () => {
 }
 
 // expose
-const elInputRef = ref()
-const focus: Expose.Blur = () => {
-  elInputRef.value?.focus()
-}
-const blur: Expose.Blur = () => {
-  elInputRef.value?.blur()
-}
+const ElInputRef = ref<InstanceType<typeof ElInput>>()
+const focus: Expose['focus'] = () => ElInputRef.value?.focus()
+const blur: Expose['blur'] = () => ElInputRef.value?.blur()
 defineExpose({ focus, blur })
 
 // slot
@@ -221,11 +217,14 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElInput
-    ref="elInputRef"
+    ref="ElInputRef"
     v-model="inputValue"
     :class="scopedId"
     :placeholder="i18nTranslate('pleaseInput', defaultModuleType)"
     :validate-event="false"
+    :type="props.type"
+    :max="props.max"
+    :min="props.min"
     v-bind="bindAttributes"
     v-on="{...onEvent, ...onInputEvent}"
     clearable
@@ -285,6 +284,7 @@ div[class*="FormOperator"] {
     padding: 0;
     max-width: 100px;
     width: 100%;
+    background-color: var(--el-input-bg-color,var(--el-fill-color-blank));
 
     .el-select__wrapper {
       box-shadow: none !important;

@@ -5,7 +5,7 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { FormInput } from '@/components'
+import { FormInput } from '@/components/input'
 
 const value = ref('')
 </script>

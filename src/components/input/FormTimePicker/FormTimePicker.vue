@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, inject } from 'vue'
+import type { DatePickerInstance } from 'element-plus'
 import { ElTimePicker } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits, Expose } from './FormTimePickerInfo'
 import { version, props as formTimePickerProps } from './FormTimePickerInfo'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -30,29 +31,29 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 // event
-const onChange: Emits.Change = value => emit('change', value)
-const onBlur: Emits.Blur = e => emit('blur', e)
-const onFocus: Emits.Focus = e => emit('focus', e)
-const onClear: Emits.Clear = () => emit('clear')
-const onVisibleChange: Emits.VisibleChange = visibility => emit('visible-change', visibility)
+const onChange: Emits['change'] = value => emit('change', value)
+const onBlur: Emits['blur'] = e => emit('blur', e)
+const onFocus: Emits['focus'] = e => emit('focus', e)
+const onClear: Emits['clear'] = () => emit('clear')
+const onVisibleChange: Emits['visibleChange'] = visibility => emit('visible-change', visibility)
 
 // expose
-const elTimePickerRef = ref()
-const focus: Expose.Focus = () => {
-  elTimePickerRef.value?.focus()
+const ElTimePickerRef = ref<DatePickerInstance>()
+const focus: Expose['focus'] = () => {
+  ElTimePickerRef.value?.focus()
 }
-const blur: Expose.Blur = () => {
-  elTimePickerRef.value?.blur()
+const blur: Expose['blur'] = () => {
+  ElTimePickerRef.value?.blur()
 }
-const handleOpen : Expose.HandleOpen = () => {
-  elTimePickerRef.value?.handleOpen ()
+const handleOpen : Expose['handleOpen'] = () => {
+  ElTimePickerRef.value?.handleOpen ()
 }
-const handleClose : Expose.HandleClose = () => {
-  elTimePickerRef.value?.handleClose ()
+const handleClose : Expose['handleClose'] = () => {
+  ElTimePickerRef.value?.handleClose ()
 }
 defineExpose({ focus, blur, handleOpen, handleClose   })
 
@@ -60,7 +61,7 @@ defineExpose({ focus, blur, handleOpen, handleClose   })
 
 <template>
   <ElTimePicker
-    ref="elTimePickerRef"
+    ref="ElTimePickerRef"
     :class="scopedId"
     v-model="inputValue"
     :readonly="props.readonly"

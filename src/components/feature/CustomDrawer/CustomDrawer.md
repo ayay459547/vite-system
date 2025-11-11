@@ -1,11 +1,13 @@
 ## CustomDrawer
 
+### 抽屜
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CustomButton, CustomDrawer } from '@/components'
+import { CustomButton, CustomDrawer } from '@/components/feature'
 
 const isShow = ref(false)
 

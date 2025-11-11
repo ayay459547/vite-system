@@ -1,80 +1,77 @@
 import type { PropType } from 'vue'
 
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
+import type { Emits as CustomDraggableEmits } from '@/components/feature/CustomDraggable/CustomDraggableInfo'
 
 export const version = '__SimpleTable_2.0.0__'
 
-export declare namespace Types {
-  type RowCallback<T> = ((
-      data: {
-        row: any
-        rowIndex: number
-      },
-      ...payload: any[]
-    ) => T)
-  | null | undefined
+export interface Types {
+  rowCallback: (
+    data: {
+      row: any
+      rowIndex: number
+    },
+    ...payload: any[]
+  ) => any
 
-  type CellCallback<T> = ((
-      data: {
-        row: any
-        column: any
-        rowIndex: number
-        columnIndex: number
-      },
-      ...payload: any[]
-    ) => T)
-  | null | undefined
+  cellCallback: (
+    data: {
+      row: any
+      column: any
+      rowIndex: number
+      columnIndex: number
+    },
+    ...payload: any[]
+  ) => any
 
-  type ExpandOptions = {
+  expandOptions: {
     rowKey: number | string
     row: any
     rowIndex: number
   }
 }
 
-export declare namespace Props {
-  type ModelValue = Array<any> | any
-  type IsDraggable = boolean | any
-  type Handle = string | any
-  type ItemKey = string | any
-  type Move = Function | any
-  type Disabled = Function | boolean | undefined
+export interface Props {
+  modelValue: Array<any> | any
+  isDraggable: boolean | any
+  handle: string | any
+  itemKey: string | any
+  move: Function | any
+  disabled: Function | boolean | undefined
 
-  type TableData = Array<any> | any
-  type TableColumns = Array<any> | any
+  tableData: Array<any> | any
+  tableColumns: Array<any> | any
 
-  type RowClassName = Types.RowCallback<string>
-  type RowStyle = Types.RowCallback<Record<string, any>>
-  type CellClassName = Types.CellCallback<string>
-  type CellStyle = Types.CellCallback<Record<string, any>>
+  rowClassName: Types['rowCallback']
+  rowStyle: Types['rowCallback']
+  cellClassName: Types['cellCallback']
+  cellStyle: Types['cellCallback']
 
-  type I18nModule = ScopeKey
-  type HideHeader = boolean
+  i18nModule: ScopeKey
+  hideHeader: boolean
 }
 
 export const props = {
   // row 可拖拉 table
   modelValue: {
-    type: Array as PropType<Props.ModelValue>,
-    default() {
-      return []
-    }
+    type: Array as PropType<Props['modelValue']>,
+    default: () => []
   },
   isDraggable: {
-    type: Boolean as PropType<Props.IsDraggable>,
+    type: Boolean as PropType<Props['isDraggable']>,
     default: false
   },
   handle: {
-    type: String as PropType<Props.Handle>,
+    type: String as PropType<Props['handle']>,
     default: undefined
   },
   group: {
-    type: String as PropType<Props.ModelValue>,
+    type: String as PropType<Props['modelValue']>,
     default: 'name'
   },
   itemKey: {
-    type: String as PropType<Props.ItemKey>,
+    type: String as PropType<Props['itemKey']>,
     default: 'id',
     description: `
       功能類似 CustomTable: rowKey
@@ -82,7 +79,7 @@ export const props = {
     `
   },
   move: {
-    type: Function as PropType<Props.Move>,
+    type: Function as PropType<Props['move']>,
     required: false,
     default: null,
     description: `
@@ -90,55 +87,58 @@ export const props = {
     `
   },
   disabled: {
-    type: [Function, Boolean, undefined] as PropType<Props.Disabled>,
+    type: [Function, Boolean, undefined] as PropType<Props['disabled']>,
     required: false,
     default: false,
     description: '定義是否可移動'
   },
   // 一般 table
   rowClassName: {
-    type: [Function, null] as PropType<Props.RowClassName>,
+    type: Function as PropType<Props['rowClassName']>,
+    default: undefined,
     description: 'row class callback'
   },
   rowStyle: {
-    type: [Function, null] as PropType<Props.RowStyle>,
+    type: Function as PropType<Props['rowStyle']>,
+    default: undefined,
     description: 'row style callback'
   },
   cellClassName: {
-    type: [Function, null] as PropType<Props.CellClassName>,
+    type: Function as PropType<Props['cellClassName']>,
+    default: undefined,
     description: 'cell class callback'
   },
   cellStyle: {
-    type: [Function, null] as PropType<Props.CellStyle>,
+    type: Function as PropType<Props['cellStyle']>,
+    default: undefined,
     description: 'cell style callback'
   },
   i18nModule: {
-    type: String as PropType<Props.I18nModule>,
+    type: String as PropType<Props['i18nModule']>,
     default: defaultModuleType
   },
   hideHeader: {
-    type: Boolean as PropType<Props.HideHeader>,
+    type: Boolean as PropType<Props['hideHeader']>,
     default: false
   },
   tableData: {
-    type: Array as PropType<Props.TableData>,
-    default() {
-      return []
-    }
+    type: Array as PropType<Props['tableData']>,
+    default: () => []
   },
   tableColumns: {
-    type: Array as PropType<Props.TableColumns>,
-    default() {
-      return []
-    }
+    type: Array as PropType<Props['tableColumns']>,
+    default: () => []
   }
 }
 
-export declare namespace Emits {
-  type ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => void
+export interface Emits {
+  expandChange: (row: any, expanded: boolean, rowIndex: number, rowKey: any) => void
+  start: CustomDraggableEmits['start']
+  end: CustomDraggableEmits['end']
+  change: CustomDraggableEmits['change']
 }
 
-export declare namespace Expose {
-  type SetExpand = (options: Types.ExpandOptions, expanded?: boolean) => void
-  type ToggleRowExpansion = (row: any, expanded?: boolean) => void
+export interface Expose {
+  setExpand: (options: Types['expandOptions'], expanded?: boolean) => void
+  toggleRowExpansion: (row: any, expanded?: boolean) => void
 }

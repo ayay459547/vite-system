@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 import { reactive } from 'vue'
 
-import throttle from '@/lib/lib_throttle'
-import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
+import { throttle } from '@/lib/lib_lodash'
+import { isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Types } from '../WeekScheduleInfo'
 
@@ -29,13 +29,13 @@ const props = defineProps({
 })
 
 // 暫時的工時分配
-const tempPlanTime = reactive<Types.PlanTime>({
+const tempPlanTime = reactive<Types['planTime']>({
   start: '00:00',
   startSecond: 0,
   end: '00:00',
   endSecond: 0
 })
-const tempPlanStyle = reactive<Types.PlanStyle>({
+const tempPlanStyle = reactive<Types['planStyle']>({
   top: 0,
   height: 0,
   display: 'none'
@@ -45,8 +45,8 @@ let mousemoveEvent = ($event: MouseEvent) => {
   console.log($event)
 }
 
-// 建立暫時的工時分配
-const createTempPlan = ($event: MouseEvent, hour: number) => {
+// 開啟 暫時的工時分配
+const openTempPlan = ($event: MouseEvent, hour: number) => {
   const { clientY: mouseDownY } = $event
 
   // 表格
@@ -85,7 +85,7 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
       tempPlanTime.end = secondToTime(_changeEndSecond)
 
       tempPlanStyle.height = _change
-    }, FPS, { isNoLeading: true, isNoTrailing: true })
+    }, FPS, { leading: false, trailing: false })
 
     mousemoveEvent = throttleMousemoveEvent
     props.scheduleContainer.addEventListener('mousemove', mousemoveEvent)
@@ -95,46 +95,31 @@ const createTempPlan = ($event: MouseEvent, hour: number) => {
   }
 }
 
-// 確認有暫時分配 新增
-const checkCreatePlan = (checkTimeIsExist: Types.CheckTimeIsExist) => {
+// 關閉 暫時的工時分配
+const closeTempPlan = () => {
   // 移除 EventListener
   props.scheduleContainer.removeEventListener('mousemove', mousemoveEvent)
 
-  // 有暫時的工時分配
-  if (tempPlanStyle.display === 'block') {
-    const { start, startSecond, end, endSecond } = tempPlanTime
+  tempPlanStyle.display = 'none'
+}
 
-    const isExist = checkTimeIsExist(startSecond, endSecond)
-
-    // 隱藏暫時的工時分配
-    tempPlanStyle.display = 'none'
-
-    const uuid = getUuid('new')
-    return {
-      isExist,
-      newUuid: uuid,
-      planTime: {
-        uuid,
-        id: uuid,
-        status: 'new',
-        start,
-        startSecond,
-        end,
-        endSecond
-      }
-    }
-  }
+// 取得 暫時的工時分配 資訊
+const getTempPlanInfo = () => {
+  const { start, startSecond = 0, end, endSecond = 0 } = tempPlanTime
 
   return {
-    isExist: true,
-    newUuid: null,
-    planTime: null
+    isTempPlanExist: tempPlanStyle.display === 'block',
+    start,
+    startSecond,
+    end,
+    endSecond
   }
 }
 
 defineExpose({
-  createTempPlan,
-  checkCreatePlan
+  openTempPlan,
+  closeTempPlan,
+  getTempPlanInfo
 })
 
 </script>
@@ -144,19 +129,21 @@ defineExpose({
     class="schedule-temp-plan"
     :style="{
       display: tempPlanStyle.display,
-      top: `${tempPlanStyle.top - 1}px`,
-      height: `${tempPlanStyle.height}px`
+      top: `${(tempPlanStyle?.top ?? 0) - 1}px`,
+      height: `${(tempPlanStyle?.height ?? 0)}px`
     }"
   >
-    <span>{{ `${tempPlanTime.start}` }}</span>
-    <span> - </span>
-    <span>{{ `${tempPlanTime.end}` }}</span>
+    <div class="schedule-temp-text">
+      <span>{{ `${tempPlanTime.start}` }}</span>
+      <span> - </span>
+      <span>{{ `${tempPlanTime.end}` }}</span>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.schedule {
-  &-temp-plan {
+.schedule-temp {
+  &-plan {
     width: calc(100% - 2px);
     position: absolute;
     top: 0;
@@ -166,7 +153,10 @@ defineExpose({
     background-color: #dddddd70;
     border-top: 1px solid var(--el-color-info-light-5);
     text-align: center;
-    padding-top: 2px;
+    padding: 2px 0;
+  }
+  &-text {
+    width: 100%;
   }
 }
 </style>

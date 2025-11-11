@@ -1,11 +1,16 @@
 ## CustomDraggable
 
+### 列表拖拉
+
+### Draggable v4
+https://sortablejs.github.io/vue.draggable.next/#/simple
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomDraggable } from '@/components'
 import { ref } from 'vue'
+import { CustomDraggable } from '@/components/feature'
 
 const list = ref([
   { id: 1, label: 'test-1', value: 'test-1' },

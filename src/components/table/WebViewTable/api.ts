@@ -1,15 +1,15 @@
-import type { Api, ViewParams } from '@/declare/ajax'
+import type { ViewParams } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { message, isEmpty, tipLog } from '@/lib/lib_utils' // 工具
 
 import type { Types, Props } from './WebViewTableInfo'
 
 // 通用api url
-export const webViewUrl = '/api/demoTable/retrievedemoTableFromView'
+export const webViewUrl = '/api/ipaspTable/retrieveIpaspTableFromView'
 // 進階搜尋可用選項
-export const webViewUrlOperator = '/api/demoTable/retrieveColumnOperatorFromView'
+export const webViewUrlOperator = '/api/ipaspTable/retrieveColumnOperatorFromView'
 
-export const getUrlParams = (params: Types.UrlParams) => {
+export const getUrlParams = (params: Types['urlParams']) => {
   const { baseURL = '', url = webViewUrl } = params
 
   if (!isEmpty(baseURL)) return { url, baseURL }
@@ -37,14 +37,19 @@ export const getWebViewParams = (params: ViewParams, isWebView: boolean) => {
 }
 
 const getData = async (
-  callback: (row: Types.ResponseData) => Types.TableData,
+  url: Types['urlParams'],
   params: any,
-  fakeData: Props.FakeData,
-  isFakeData: boolean,
-  isLog: boolean,
-  url: Types.UrlParams
-): Promise<Types.ResponseTableData> => {
-  const resData = await ajax<Api<Array<Types.ResponseData>>>(
+  callback: (row: Types['responseData']) => Types['tableData'],
+  ajaxOptions: {
+    isFakeData: Props['useFakeData'],
+    fakeDataPath: Props['fakeDataPath'],
+    fakeData: Props['fakeData'],
+    isLog: Props['isLog']
+  }
+): Promise<Types['responseTableData']> => {
+  const { isFakeData, fakeDataPath, fakeData, isLog } = ajaxOptions
+
+  const resData = await ajax<Array<Types['responseData']>>(
     {
       ...url,
       method: 'post',
@@ -52,6 +57,7 @@ const getData = async (
     },
     {
       isFakeData,
+      fakeDataPath,
       fakeData: {
         data: fakeData,
         size: fakeData.length,
@@ -62,8 +68,10 @@ const getData = async (
     }
   )
   const {
-    data, size: dataSize, status,
-    msg, message: _message, errorMsg
+    data,
+    size: dataSize,
+    status,
+    msg
   } = resData
 
   if (status === 'success') {
@@ -71,7 +79,7 @@ const getData = async (
   } else {
     message({
       type: 'error',
-      message: msg ?? _message ?? errorMsg ?? 'WebView getData Error',
+      message: msg ?? 'WebView getData Error',
       duration: 10000
     })
     return [[], 0]
@@ -80,63 +88,67 @@ const getData = async (
 
 // excel
 export const getExcelData = async (
+  url: Types['urlParams'],
   params: any,
-  formatExcel: Props.FormatExcel,
-  fakeData: Props.FakeData,
-  isFakeData: boolean,
-  isLog: boolean,
-  url: Types.UrlParams
-): Promise<Array<Types.ExcelData>> => {
-  const [excelData] = await getData(formatExcel, params, fakeData, isFakeData, isLog, url)
+  formatExcel: Props['formatExcel'],
+  ajaxOptions: {
+    isFakeData: Props['useFakeData'],
+    fakeDataPath: Props['fakeDataPath'],
+    fakeData: Props['fakeData'],
+    isLog: Props['isLog']
+  }
+): Promise<Array<Types['excelData']>> => {
+  const [excelData] = await getData(url, params, formatExcel, ajaxOptions)
   return excelData
 }
 
 // table
 export const getTableData = async (
+  url: Types['urlParams'],
   params: any,
-  formatTable: Props.FormatTable,
-  fakeData: Props.FakeData,
-  isFakeData: boolean,
-  isLog: boolean,
-  url: Types.UrlParams
-): Promise<Types.ResponseTableData> => {
-  const [tableData, tableDataCount] = await getData(formatTable, params, fakeData, isFakeData, isLog, url)
+  formatTable: Props['formatTable'],
+  ajaxOptions: {
+    isFakeData: Props['useFakeData'],
+    fakeDataPath: Props['fakeDataPath'],
+    fakeData: Props['fakeData'],
+    isLog: Props['isLog']
+  }
+): Promise<Types['responseTableData']> => {
+  const [tableData, tableDataCount] = await getData(url, params, formatTable, ajaxOptions)
   return [tableData, tableDataCount]
 }
 
 // 進階搜尋可用選項
-export const getColumnOperator = async (params: any, url: Types.UrlParams) => {
-  const resData = await ajax<Api<any>>(
+export const getColumnOperator = async (
+  params: any,
+  isFakeData: boolean,
+  isLog: boolean,
+  url: Types['urlParams']
+) => {
+  const resData = await ajax<any>(
     {
       ...url,
       method: 'post',
       data: { ...params }
     },
     {
-      isFakeData: false,
+      isFakeData,
+      isLog,
       fakeData: {
-        data: {
-          machineId: [
-            'LessThanOrEqualTo',
-            'NotIn',
-            'IsNull'
-          ],
-          machineName: []
-        },
+        data: {},
         status: 'success'
       },
-      isLog: false,
       delay: 300
     }
   )
-  const { data, status, msg, message: _message, errorMsg } = resData
+  const { data, status, msg } = resData
 
   if (status === 'success') {
     return data
   } else {
     message({
       type: 'error',
-      message: msg ?? _message ?? errorMsg ?? 'WebView getColumnOperator Error',
+      message: msg ?? 'WebView getColumnOperator Error',
       duration: 10000
     })
     return {}

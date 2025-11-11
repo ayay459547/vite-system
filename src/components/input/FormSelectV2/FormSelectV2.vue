@@ -2,16 +2,16 @@
 import { computed, useSlots, ref, inject } from 'vue'
 import { ElSelectV2 } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits, Expose } from './FormSelectV2Info'
 import { version, props as formSelectV2Props } from './FormSelectV2Info'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -30,25 +30,21 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 // event
-const onChange: Emits.Change = val => emit('change', val)
-const onVisibleChange: Emits.VisibleChange = visible => emit('visible-change', visible)
-const onRemoveTag: Emits.RemoveTag = tagValue => emit('remove-tag', tagValue)
-const onClear: Emits.Clear = () => emit('clear')
-const onBlur: Emits.Blur = event => emit('blur', event)
-const onFocus: Emits.Focus = event => emit('focus', event)
+const onChange: Emits['change'] = val => emit('change', val)
+const onVisibleChange: Emits['visibleChange'] = visible => emit('visible-change', visible)
+const onRemoveTag: Emits['removeTag'] = tagValue => emit('remove-tag', tagValue)
+const onClear: Emits['clear'] = () => emit('clear')
+const onBlur: Emits['blur'] = event => emit('blur', event)
+const onFocus: Emits['focus'] = event => emit('focus', event)
 
 // expose
-const elSelectV2Ref = ref()
-const focus: Expose.Focus = () => {
-  elSelectV2Ref.value?.focus()
-}
-const blur: Expose.Blur = () => {
-  elSelectV2Ref.value?.blur()
-}
+const ElSelectV2Ref = ref<InstanceType<typeof ElSelectV2>>()
+const focus: Expose['focus'] = () => ElSelectV2Ref.value?.focus()
+const blur: Expose['blur'] = () => ElSelectV2Ref.value?.blur()
 defineExpose({ focus, blur })
 
 // slot
@@ -60,7 +56,7 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElSelectV2
-    ref="elSelectV2Ref"
+    ref="ElSelectV2Ref"
     :class="scopedId"
     v-model="inputValue"
     :options="props.options"
@@ -101,7 +97,7 @@ const hasSlot = (prop: string): boolean => {
     :show-arrow="props.showArrow"
     :placement="props.placement"
     :fallback-placements="props.fallbackPlacements"
-    :collapse-tags-tooltip="props.remote"
+    :collapse-tags-tooltip="props.collapseTagsTooltip"
     :max-collapse-tags="props.maxCollapseTags"
     :tag-type="props.tagType"
     :tag-effect="props.tagEffect"

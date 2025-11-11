@@ -1,39 +1,39 @@
 import type { PropType } from 'vue'
 import type { Placement as ElPlacement } from 'element-plus'
 
-export const version = '1.0.0'
+export const version = '__SimpleFilter_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Columns = Record<string, any>
-  type Width = string | number
-  type Class = string
-  type Placement = ElPlacement
+export interface Props {
+  columns: Record<string, any>
+  width: string | number
+  class: string
+  placement: ElPlacement
 }
 
 export const props = {
   columns: {
-    type: Object as PropType<Props.Columns>,
+    type: Object as PropType<Props['columns']>,
     default: () => {
       return {}
     },
     required: false
   },
   width: {
-    type: [String, Number] as PropType<Props.Width>,
+    type: [String, Number] as PropType<Props['width']>,
     default: '55vw'
   },
   class: {
-    type: String as PropType<Props.Class>,
+    type: String as PropType<Props['class']>,
     default: ''
   },
   placement: {
-    type: String as PropType<Props.Placement>,
+    type: String as PropType<Props['placement']>,
     default: 'bottom-start'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

@@ -1,0 +1,116 @@
+<script setup lang="ts">
+import type { PropType } from 'vue'
+
+import type { TableOptions } from '@/types/types_columnSetting' // 表格設定類型
+import { CustomLink } from '@/components/feature' // 系統組件: 功能
+import { WebViewTable } from '@/components/table' // 系統組件: 表格
+
+import { useOrderInfo } from '@/declare/declare_order/useOrderInfo'
+import { columnSetting, linkSetting } from '@/declare/declare_order/columns'
+
+import { useModalSelectData } from '../hook'
+
+const props = defineProps({
+  multiple: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+    description: '是否多選'
+  },
+  multipleLimit: {
+    type: Number as PropType<number>,
+    required: false,
+    default: 0,
+    description: 'multiple 屬性設定為 true 時，代表多重選擇場景下使用者最多可選擇的項目數， 為 0 則不限制'
+  }
+})
+
+const {
+  i18nTranslate,
+  formatParams,
+  formatExcel,
+  formatTable
+} = useOrderInfo({
+  i18nModule: 'auto_common'
+})
+
+const {
+  WebViewTableRef,
+  onWebViewTableMounted,
+  toggleSelection,
+  getSelectionRows,
+  selectedValue,
+  selectedSet,
+  onSelect,
+  onSelectAll
+} = useModalSelectData(props)
+
+// 表格設定
+const tableOptions: TableOptions = {
+  title: '訂單基本資訊',
+  i18nTitle: 'auto-36',
+  i18nModule: 'auto_common',
+  version: '1.0.1',
+  settingKey: 'ModalSelect_order',
+  rowKey: 'rowId',
+  isSorting: true,
+  selection: true,
+  selectable: (row: any) => {
+    if (
+      !props.multiple ||
+      props.multipleLimit === 0 ||
+      selectedSet.value.has(row.rowId)
+    ) return true
+
+    return selectedValue.value.length < props.multipleLimit
+  }
+}
+
+defineExpose({
+  toggleSelection,
+  getSelectionRows
+})
+</script>
+
+<template>
+  <div class="i-page">
+    <WebViewTable
+      ref="WebViewTableRef"
+      webfuno="auto_36"
+      :table-options="tableOptions"
+      :column-setting="columnSetting"
+      :format-params="formatParams"
+      :format-excel="formatExcel"
+      :format-table="formatTable"
+      :fake-data="[]"
+      fake-data-path="/declare/order_fakeData.json"
+      :is-mounted-init="false"
+      @select="onSelect"
+      @select-all="onSelectAll"
+      @mounted="onWebViewTableMounted"
+    >
+      <template #column-status="{ prop, data }">
+        {{ i18nTranslate(columnSetting[prop].getI18nValue(data)) }}
+      </template>
+      <template #column-classCode="{ prop, data }">
+        {{ i18nTranslate(columnSetting[prop].getI18nValue(data)) }}
+      </template>
+
+      <!-- Redirect Link -->
+      <template
+        v-for="(item, columnKey) in linkSetting"
+        :key="`link-${columnKey}`"
+        #[`column-${columnKey}`]="{data}"
+      >
+        <CustomLink
+          v-if="data"
+          :label="data"
+          :data="data"
+          v-bind="item"
+        />
+      </template>
+    </WebViewTable>
+  </div>
+</template>
+
+<style lang="scss" scoped></style>

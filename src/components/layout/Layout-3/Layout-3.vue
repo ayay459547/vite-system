@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, nextTick, ref, onMounted } from 'vue'
+import { nextTick, ref } from 'vue'
 // import type { RouteLocationNormalized } from 'vue-router'
 
-import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { CustomDividerView } from '@/components' // 系統組件
+import { isEmpty } from '@/lib/lib_utils'
+
+import CustomDividerView from '@/components/feature/CustomDividerView/CustomDividerView.vue'
 
 import SideContent from './SideContent/SideContent.vue'
-import HeaderContent from './HeaderContent/HeaderContent.vue'
+import HeaderContent from './HeaderContent.vue'
 
 const props = defineProps({
   showRoutes: {
     type: Array as PropType<Navigation[]>,
-    default: () => {
-      return []
-    }
+    default: () => []
   },
   currentNavigation: {
     type: Object as PropType<Navigation>,
@@ -33,144 +32,55 @@ const props = defineProps({
         level3: ''
       }
     }
-  },
-  authData: {
-    type: Object as PropType<AuthData>,
-    default: () => {
-      return {
-        user: {},
-        role: {},
-        roleFunction: [],
-        groups: []
-      } as AuthData
-    }
-  },
-  breadcrumbName: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
-  },
-  breadcrumbTitle: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
   }
 })
 
-const emit = defineEmits(['logout', 'preference'])
-
-const sideRef = ref()
+const SideContentRef = ref<InstanceType<typeof SideContent>>()
 
 const init = async () => {
   await nextTick()
-
-  sideRef.value?.init()
+  if (isEmpty(props.currentNavigation)) return
+  SideContentRef.value?.init()
 }
 
 const onRouterChange = async () => {
   await nextTick()
-  sideRef.value.setOpen(false)
+  SideContentRef.value?.setOpen(false)
 }
 
 defineExpose({
   init
 })
 
-const customDividerViewRef = ref<typeof CustomDividerView>()
-let defaultLeftWidth = ref(350)
+const CustomDividerViewRef = ref<InstanceType<typeof CustomDividerView>>()
+const defaultLeftWidth = ref(350)
 const setDefaultLeftWidth = (currentLeftWidth: number) => {
   defaultLeftWidth.value = currentLeftWidth
-  customDividerViewRef.value?.initDefaultCenter()
+  CustomDividerViewRef.value?.initDefaultCenter()
 }
 
 const onBreadCrumbClick = (targetRoutePath: string[]) => {
   if (targetRoutePath.length === 0) {
-    isNavOpen.value = false
-    sideRef.value?.setOpen(false)
+    SideContentRef.value?.setOpen(false)
   }
 
   // level1 被點擊
   if (targetRoutePath.length === 1) {
-    isNavOpen.value = true
-    sideRef.value?.setOpen(false)
+    SideContentRef.value?.setOpen(false)
     // level2 被點擊
   } else if (targetRoutePath.length === 2) {
-    isNavOpen.value = true
-    sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
+    SideContentRef.value?.breadCrumbSetLevel2(targetRoutePath)
     // level3 被點擊
   } else {
-    isNavOpen.value = true
-    sideRef.value?.breadCrumbSetLevel2(targetRoutePath)
+    SideContentRef.value?.breadCrumbSetLevel2(targetRoutePath)
   }
 }
-
-// 如果是另開視窗 將選單縮起來
-// const setModalView = async (currentRoute: RouteLocationNormalized) => {
-//   const isModal = currentRoute?.query?.isModal ?? 'false'
-
-//   if (isModal === 'true') {
-//     console.log()
-//   }
-// }
-
-const _isNavOpen = ref('false')
-const isNavOpen = computed({
-  set: (isOpen: boolean) => {
-    const temp = isOpen ? 'true' : 'false'
-    _isNavOpen.value = temp
-    localStorage.setItem('isNavOpen', temp)
-  },
-  get: () => {
-    return _isNavOpen.value === 'true'
-  }
-})
-
-let timeoutId: number | undefined
-const _isNavHover = ref('false')
-const isNavHover = computed({
-  set: (isHover: boolean) => {
-    if (timeoutId) {
-      clearInterval(timeoutId)
-    }
-    const temp = isHover ? 'true' : 'false'
-    _isNavHover.value = temp
-    localStorage.setItem('isNavHover', temp)
-
-    // hover 一段時間 自動取消
-    if (isHover) {
-      timeoutId = setTimeout(() => {
-        _isNavHover.value = 'false'
-        localStorage.setItem('isNavHover', 'false')
-      }, 2500)
-    }
-  },
-  get: () => {
-    return _isNavHover.value === 'true'
-  }
-})
-
-onMounted(() => {
-  const isNavOpenLocale = localStorage.getItem('isNavOpen')
-  if ([null, undefined, ''].includes(isNavOpenLocale)) {
-    localStorage.setItem('isNavOpen', 'false')
-  }
-  _isNavOpen.value = localStorage.getItem('isNavOpen') ?? ''
-
-  const isNavHoverLocale = localStorage.getItem('isNavHover')
-  if ([null, undefined, ''].includes(isNavHoverLocale)) {
-    localStorage.setItem('isNavHover', 'false')
-  }
-  _isNavHover.value = localStorage.getItem('isNavHover') ?? ''
-})
-
 </script>
 
 <template>
   <div class="layout-wrapper">
     <CustomDividerView
-      ref="customDividerViewRef"
+      ref="CustomDividerViewRef"
       :left-width="defaultLeftWidth"
       @change="setDefaultLeftWidth"
     >
@@ -178,9 +88,7 @@ onMounted(() => {
         <!-- 側邊選單 -->
         <div class="layout-left">
           <SideContent
-            ref="sideRef"
-            v-model:isNavOpen="isNavOpen"
-            :isNavHover="isNavHover"
+            ref="SideContentRef"
             :show-routes="props.showRoutes"
             :current-navigation="props.currentNavigation"
             :current-route-name="props.currentRouteName"
@@ -196,18 +104,16 @@ onMounted(() => {
       </template>
       <template #right>
         <!-- header + view -->
-        <div class="layout-right" :class="isNavOpen ? 'is-open' : 'is-close'">
+        <div class="layout-right">
           <div class="layout-header">
             <HeaderContent
-              v-model:is-open="isNavOpen"
-              :auth-data="props.authData"
-              :breadcrumb-name="props.breadcrumbName"
-              :breadcrumb-title="props.breadcrumbTitle"
-              @logout="emit('logout')"
-              @preference="emit('preference')"
               @router-change="onRouterChange"
               @set-router="onBreadCrumbClick"
-            />
+            >
+              <template #MenuUser>
+                <slot name="MenuUser"></slot>
+              </template>
+            </HeaderContent>
           </div>
 
           <div class="layout-view">

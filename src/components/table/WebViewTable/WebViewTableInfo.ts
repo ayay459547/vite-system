@@ -1,65 +1,69 @@
 import type { PropType } from 'vue'
 
-import type { ViewParams } from '@/declare/ajax'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { ViewParams } from '@/types/types_ajax'
+import type { TableOptions } from '@/types/types_columnSetting'
 
 export const version = '__WebViewTable_1.0.0__'
 
-export declare namespace Types {
-  type CommonData = Record<string, any>
+export interface Types {
+  commonData: Record<string, any>
 
-  type ResponseData = Types.CommonData
-  type FilterData = Types.CommonData
-  type TableData = Types.CommonData
-  type ExcelData = Types.CommonData
+  responseData: Types['commonData']
+  filterData: Types['commonData']
+  tableData: Types['commonData']
+  excelData: Types['commonData']
 
-  type ResponseTableData = [Array<Types.TableData>, number]
+  responseTableData: [Array<Types['tableData']>, number]
 
-  type WebViewTableOptions = TableOptions
-  type Params = ViewParams & {
+  webViewTableOptions: TableOptions
+  params: ViewParams & {
     [key: string]: any
   } & any
 
-  type UrlParams = {
+  urlParams: {
     baseURL?: string
     url?: string
   }
 }
 
-export declare namespace Props {
-  type Baseurl = string
-  type Apiurl = string
-  type ApiOperator = string
-  type Webfuno = string
-  type Funoviewsuffix = string
-  type Designatedview = string
-  type TableOptions = Types.WebViewTableOptions
-  type ColumnSetting = Record<any, any>
-  type TableKey = string
-  type FilterKey = string
-  type FormatParams = (params: Types.Params) => any
-  type FormatExcel = (row: any) => any
-  type FormatTable = (row: any) => any
-  type FormatData = (row: any) => any
-  type FormatSorting = (row: any) => any
-  type UseFakeData = boolean
-  type FakeData = Array<any>
-  type IsMountedInit = boolean
-  type DownloadExcel = any
-  type IsHiddenPrepend = boolean
-  type IsShowTimeLineTable = boolean
+export interface Props {
+  baseurl: string
+  apiurl: string
+  apiOperator: string
+  webfuno: string
+  funoviewsuffix: string
+  designatedview: string
+  tableOptions: Types['webViewTableOptions']
+  columnSetting: Record<any, any>
+  tableKey: string
+  filterKey: string
+  formatParams: (params: Types['params']) => any
+  formatExcel: (row: any) => any
+  formatTable: (row: any) => any
+  formatData: (row: any) => any
+  formatSorting: (row: any) => any
+  useFakeData: boolean
+  fakeDataPath: string
+  isLog: boolean
+  fakeData: Array<any>
+  isMountedInit: boolean
+  downloadExcel: any
+  isHiddenPrepend: boolean
+  isShowTimeLineTable: boolean
+  beforeInitCallBack: () => void
+  afterInitCallBack: () => void
 }
 
 export const props = {
   baseurl: {
-    type: String as PropType<Props.Baseurl>,
+    type: String as PropType<Props['baseurl']>,
     required: false,
     description: `api baseURL 參數
       baseURL: props.baseurl
     `
   },
   apiurl: {
-    type: String as PropType<Props.Apiurl>,
+    type: String as PropType<Props['apiurl']>,
     required: false,
     description: `api url 參數
       apiurl 存在時
@@ -67,12 +71,12 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiurl 不存在時
-      url: /api/demoTable/retrievedemoTableFromView
+      url: /api/ipaspTable/retrieveIpaspTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },
   apiOperator: {
-    type: String as PropType<Props.ApiOperator>,
+    type: String as PropType<Props['apiOperator']>,
     required: false,
     description: `api url 參數: 進階搜尋選項
       apiOperator 存在時
@@ -80,23 +84,23 @@ export const props = {
       webfuno, funoviewsuffix, designatedview無效
 
       apiOperator 不存在時
-      url: /api/demoTable/retrievedemoTableFromView
+      url: /api/ipaspTable/retrieveIpaspTableFromView
       webfuno, funoviewsuffix,  designatedview有效
     `
   },
   webfuno: {
-    type: String as PropType<Props.Webfuno>,
+    type: String as PropType<Props['webfuno']>,
     required: false,
     description: 'api webfuno 參數'
   },
   funoviewsuffix: {
-    type: String as PropType<Props.Funoviewsuffix>,
+    type: String as PropType<Props['funoviewsuffix']>,
     required: false,
     default: '',
     description: 'api funoviewsuffix 參數'
   },
   designatedview: {
-    type: String as PropType<Props.Designatedview>,
+    type: String as PropType<Props['designatedview']>,
     required: false,
     default: '',
     description: `api designatedview 參數
@@ -104,49 +108,49 @@ export const props = {
     `
   },
   tableOptions: {
-    type: Object as PropType<Props.TableOptions>,
+    type: Object as PropType<Props['tableOptions']>,
     required: true,
     description: `CustomTable 參數設定
       CustomTable Props 最後會加在 tableSetting 中
     `
   },
   columnSetting: {
-    type: Object as PropType<Props.ColumnSetting>,
+    type: Object as PropType<Props['columnSetting']>,
     required: true,
     description: '欄位設定'
   },
   tableKey: {
-    type: String as PropType<Props.TableKey>,
+    type: String as PropType<Props['tableKey']>,
     required: false,
     default: 'table',
     description: 'useTableSetting 使用 columnSetting中對應的key'
   },
   filterKey: {
-    type: String as PropType<Props.FilterKey>,
+    type: String as PropType<Props['filterKey']>,
     required: false,
     default: 'filter',
     description: 'useFormSetting 使用 columnSetting中對應的key'
   },
   formatParams: {
-    type: Function as PropType<Props.FormatParams>,
+    type: Function as PropType<Props['formatParams']>,
     required: false,
     default: (params: any) => params,
     description: '自訂送出的api格式'
   },
   formatExcel: {
-    type: Function as PropType<Props.FormatExcel>,
+    type: Function as PropType<Props['formatExcel']>,
     required: false,
     // default: (row: any) => row,
     description: '自訂Excel資料格式'
   },
   formatTable: {
-    type: Function as PropType<Props.FormatTable>,
+    type: Function as PropType<Props['formatTable']>,
     required: false,
     // default: (row: any) => row,
     description: '自訂Table資料格式'
   },
   formatData: {
-    type: Function as PropType<Props.FormatData>,
+    type: Function as PropType<Props['formatData']>,
     required: false,
     default: (row: any) => row,
     description: `
@@ -155,13 +159,13 @@ export const props = {
     `
   },
   formatSorting: {
-    type: Function as PropType<Props.FormatSorting>,
+    type: Function as PropType<Props['formatSorting']>,
     required: false,
     default: (row: any) => row,
     description: '自訂SortingMap資料格式'
   },
   useFakeData: {
-    type: Boolean as PropType<Props.UseFakeData>,
+    type: Boolean as PropType<Props['useFakeData']>,
     required: false,
     default: false,
     description: `
@@ -169,29 +173,36 @@ export const props = {
       如果為true則不送出API responseData會使用fakeData
     `
   },
+  fakeDataPath: {
+    type: String as PropType<Props['fakeDataPath']>,
+    required: false,
+    default: undefined,
+    description: '假資料get路徑'
+  },
   isLog: {
-    type: Boolean as PropType<Props.UseFakeData>,
+    type: Boolean as PropType<Props['isLog']>,
     required: false,
     default: false,
     description: '是否顯示 ajax 訊息'
   },
   fakeData: {
-    type: Array as PropType<Props.FakeData>,
+    type: Array as PropType<Props['fakeData']>,
     required: false,
-    default() {
-      return []
-    },
+    default: () => [],
     description: '替代實際API輸出資料的假資料'
   },
   isMountedInit: {
-    type: Boolean as PropType<Props.IsMountedInit>,
+    type: Boolean as PropType<Props['isMountedInit']>,
     required: false,
-    default: true,
-    description: '是否在 onMounted 初始化'
+    default: false,
+    description: `
+      是否在 onMounted 初始化
+      預設 false, 因為由 DataLoader 來取資料
+    `
   },
   // Custom Download Excel
   downloadExcel: {
-    type: Function as PropType<Props.DownloadExcel>,
+    type: Function as PropType<Props['downloadExcel']>,
     required: false,
     default: null,
     description: `
@@ -200,19 +211,31 @@ export const props = {
     `
   },
   isHiddenPrepend: {
-    type: Boolean as PropType<Props.IsHiddenPrepend>,
+    type: Boolean as PropType<Props['isHiddenPrepend']>,
     required: false,
     default: false,
     description: '是否在 隱藏 slot #prepend'
   },
   isShowTimeLineTable: {
-    type: Boolean as PropType<Props.IsShowTimeLineTable>,
+    type: Boolean as PropType<Props['isShowTimeLineTable']>,
     required: false,
     default: false,
     description: '是否顯示時間線表格'
+  },
+  beforeInitCallBack: {
+    type: Function as PropType<Props['beforeInitCallBack']>,
+    required: false,
+    default: undefined,
+    description: '初始化前執行'
+  },
+  afterInitCallBack: {
+    type: Function as PropType<Props['afterInitCallBack']>,
+    required: false,
+    default: undefined,
+    description: '初始化後執行'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

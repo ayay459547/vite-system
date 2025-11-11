@@ -1,11 +1,13 @@
-import type { RouterTree } from '@/declare/routes'
+import type { RouterTree } from '@/types/types_routes'
+import { totalPermission } from '@/lib/lib_permission' // 權限
 
 const testRoutes: RouterTree[] = [
   {
     name: 'system',
     title: '開發工具',
     meta: {
-      systemType: ['system'],
+      isEnabled: true,
+      permission: totalPermission,
       icon: 'code'
     },
     leaves: [
@@ -14,8 +16,8 @@ const testRoutes: RouterTree[] = [
         title: '功能列表',
         component: () => import('@/views/Development/FeatureList/FeatureList.vue'),
         meta: {
-          keepAlive: false,
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         }
       },
       {
@@ -23,8 +25,8 @@ const testRoutes: RouterTree[] = [
         title: '翻譯值列表',
         component: () => import('@/views/Development/I18nList/I18nList.vue'),
         meta: {
-          keepAlive: false,
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         }
       },
       {
@@ -32,8 +34,8 @@ const testRoutes: RouterTree[] = [
         title: 'Excel工具',
         component: () => import('@/views/Development/ExcelUtils/ExcelUtils.vue'),
         meta: {
-          keepAlive: false,
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         }
       },
       {
@@ -41,8 +43,8 @@ const testRoutes: RouterTree[] = [
         title: '功能樹狀表',
         component: () => import('@/views/Development/SearchView/SearchView.vue'),
         meta: {
-          keepAlive: true,
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         }
       },
       {
@@ -50,8 +52,8 @@ const testRoutes: RouterTree[] = [
         title: '工作進度表',
         component: () => import('@/views/Development/ScheduleView/ScheduleView.vue'),
         meta: {
-          keepAlive: true,
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         }
       }
     ]

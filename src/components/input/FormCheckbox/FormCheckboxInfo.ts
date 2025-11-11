@@ -1,12 +1,14 @@
 import type { PropType } from 'vue'
 import type { CheckboxValueType, CheckboxGroupValueType } from 'element-plus'
 
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import type { Option as CommonOption } from '@/components' // 系統組件
 
 export const version = '__FormCheckbox_1.0.0__'
 
-export declare namespace Types {
-  type Option = CommonOption & {
+export interface Types {
+  option: CommonOption & {
     label: string
     value: string | number | boolean | null
     disabled?: boolean
@@ -15,50 +17,60 @@ export declare namespace Types {
   }
 }
 
-export declare namespace Props {
-  type Options = Array<Types.Option>
-  type Label = string
+export interface Props {
+  options: Array<Types['option']>
+  label: string
+  i18nLabel: string
+  i18nModule: ScopeKey
 
-  type ModelValue = CheckboxValueType | CheckboxGroupValueType | any
-  type Disabled = boolean
-  type Indeterminate = boolean
+  modelValue: CheckboxValueType | CheckboxGroupValueType | any
+  disabled: boolean
+  indeterminate: boolean
 }
 export const props = {
   options: {
-    type: Array as PropType<Props.Options>,
+    type: Array as PropType<Props['options']>,
     required: false,
-    default() {
-      return []
-    },
+    default: () => [],
     description: '選項'
   },
   label: {
-    type: String as PropType<Props.Label>,
+    type: String as PropType<Props['label']>,
     default: ''
+  },
+  i18nLabel: {
+    type: String as PropType<Props['i18nLabel']>,
+    default: ''
+  },
+  i18nModule: {
+    type: String as PropType<Props['i18nModule']>,
+    required: false,
+    default: defaultModuleType,
+    description: '翻譯模組'
   },
   // element ui plus
   modelValue: {
-    type: [Array, String, Number, Boolean] as PropType<Props.ModelValue>,
+    type: [Array, String, Number, Boolean] as PropType<Props['modelValue']>,
     required: false,
     default: undefined,
     description: '綁定值 v-model="..." '
   },
   disabled: {
-    type: Boolean as PropType<Props.Disabled>,
+    type: Boolean as PropType<Props['disabled']>,
     required: false,
     default: false,
     description: '是否禁用'
   },
   indeterminate: {
-    type: Boolean as PropType<Props.Indeterminate>,
+    type: Boolean as PropType<Props['indeterminate']>,
     default: false
   }
 }
 
-export declare namespace Emits {
+export interface Emits {
   // CheckboxGroupValueType | CheckboxValueType
-  type Change<T> = (value: T) => void
+  change: (value: any) => void
 }
 
-export declare namespace Expose {}
+export interface Expose {}
 

@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { ref, computed, inject, nextTick } from 'vue'
-import {
-  CustomButton,
-  CustomModal,
-  CustomInput,
-  CustomDraggable
-} from '@/components'
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
+
+import CustomInput from '@/components/input/CustomInput/CustomInput.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import CustomModal from '@/components/feature/CustomModal/CustomModal.vue'
+import CustomDraggable from '@/components/feature/CustomDraggable/CustomDraggable.vue'
+import CustomSvg from '@/components/feature/CustomSvg/CustomSvg.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
+
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { createWorkbook } from '@/lib/lib_files'
 
 import { isEmpty } from '@/lib/lib_utils'
@@ -15,19 +21,27 @@ import PdfPreview from './DownloadPreview.vue'
 
 const props = defineProps({
   modelValue: {
-    type: Boolean,
+    type: Boolean as PropType<boolean>,
     require: true
+  },
+  i18nModule: {
+    type: String as PropType<ScopeKey>,
+    required: false,
+    default: defaultModuleType,
+    description: '翻譯模組'
   }
 })
 
 const useHook = inject('useHook') as UseHook
-const { i18nTranslate } = useHook()
+const { i18nTranslate, i18nTest } = useHook({
+  i18nModule: props.i18nModule
+})
 
 const emit = defineEmits(['update:model-value'])
 
 const pdfModal = computed({
   get: () => props.modelValue,
-  set: value =>  emit('update:model-value', value)
+  set: value => emit('update:model-value', value)
 })
 
 const tableData = ref([])
@@ -36,7 +50,13 @@ const pdfColumns = ref([])
 const downloadExcel = ref()
 const spanInfo = ref()
 
-const allSpanTableData = []
+const getTranslateLabel = (element: any) => {
+  if (isEmpty(element)) return ''
+  const { i18nLabel, label, value } = element ?? {}
+  return i18nTest(i18nLabel) ? i18nTranslate(i18nLabel) : (label ?? value)
+}
+
+// const allSpanTableData = []
 const spanTableData = ref([])
 const setActiveColumns = () => {
   const topColumns = previewColumns.value
@@ -45,7 +65,7 @@ const setActiveColumns = () => {
     const { key } = column
     const subTableInfo = topPropsSubTableInfoMap.get(key)
     const baseColumns = subTableInfo.columns
-    const hasChildren = baseColumns.length > 1 ? true : false
+    const hasChildren = (baseColumns.length > 1)
     const depth = subTableInfo.depth
 
     return {
@@ -79,8 +99,7 @@ const setActiveColumns = () => {
         const columnData = { name, key, colSpan, rowSpan }
         headerRow.push(columnData)
         return colSpan
-      }
-      else {
+      } else {
         const colSpan = setHeaderRows(children, rowIndex + 1)
         const rowSpan = 1
         const columnData = { name, key, colSpan, rowSpan }
@@ -90,7 +109,6 @@ const setActiveColumns = () => {
     })
 
     return columnsSize.reduce((totalSize, curSize) => totalSize + curSize, 0)
-
   }
 
 
@@ -109,15 +127,15 @@ const setActiveColumns = () => {
   tableData.value.forEach(rowData => {
     let maxSubRowSize = 1
     columnsInfo.forEach(columnInfo => {
-      if(columnInfo.hasChildren) {
+      if (columnInfo.hasChildren) {
         const subTableData = rowData[columnInfo.key] ?? []
         const subRowSize = subTableData.length
-        if(subRowSize > maxSubRowSize) maxSubRowSize = subRowSize
+        if (subRowSize > maxSubRowSize) maxSubRowSize = subRowSize
       }
     })
 
     const subRows = []
-    for(let i = 0; i < maxSubRowSize; i++) {
+    for (let i = 0; i < maxSubRowSize; i++) {
       subRows.push([])
     }
     subRows.forEach((subRow, index) => {
@@ -128,10 +146,10 @@ const setActiveColumns = () => {
           baseProps
         } = columnInfo
 
-        if(hasChildren) {
+        if (hasChildren) {
           baseProps.forEach(prop => {
             const subTableData = rowData[key]
-            if(index >= subTableData.length) {
+            if (index >= subTableData.length) {
               const context = ''
               const colSpan = 1
               const rowSpan = 1
@@ -142,8 +160,7 @@ const setActiveColumns = () => {
                 colSpan,
                 rowSpan
               })
-            }
-            else {
+            } else {
               const subRowData = rowData[key][index]
               const context = spanInfo.value.getSubDisplayData(rowData, subRowData, prop) ?? ''
               const colSpan = 1
@@ -156,12 +173,10 @@ const setActiveColumns = () => {
                 rowSpan
               })
             }
-
           })
 
-        }
-        else {
-          if(index === 0) {
+        } else {
+          if (index === 0) {
             const context = rowData[key] ?? ''
             const colSpan = 1
             const rowSpan = maxSubRowSize
@@ -172,8 +187,7 @@ const setActiveColumns = () => {
               colSpan,
               rowSpan
             })
-          }
-          else {
+          } else {
             const context = ''
             const colSpan = 0
             const rowSpan = 0
@@ -190,15 +204,14 @@ const setActiveColumns = () => {
       })
     })
 
-
     subRows.forEach(subRow => spanTableData.value.push(subRow))
   })
 }
 
 
-const setPdfSetting = setting => {
+const setPdfSetting = (setting: any) => {
   const params = Object.keys(setting)
-  // 儲存參數'
+  // 儲存參數
   params.forEach(key => {
     switch(key) {
       case 'data': tableData.value = setting[key]; break
@@ -209,20 +222,18 @@ const setPdfSetting = setting => {
     }
   })
 
-
   setActiveColumns()
   // columns, spanMethod => headerRows
   // console.log(spanTableData.value)
 }
 
-
-
 const printPdf = () => {
   switch (fileType.value) {
-    case 'pdf': previewRef.value.print(); break
+    case 'pdf': PdfPreviewRef.value.print(); break
     case 'xlsx': printExcel(); break // downloadExcel.value(tableData.value)
   }
 }
+
 const printExcel = () => {
   const _tableData = spanTableData.value.map(rowData => {
     return rowData.map(columnData => columnData.context ?? '')
@@ -263,7 +274,7 @@ const printExcel = () => {
 
     worksheet.getCell(rowIndex, colIndex).value = name
     worksheet.getCell(rowIndex, colIndex).alignment = { horizontal: 'left', vertical: 'top' }
-    if(isEmpty(children)) {
+    if (isEmpty(children)) {
       worksheet.mergeCells(rowIndex, colIndex, headerRowsSize, colIndex)
       colIndex = colIndex + 1
 
@@ -279,9 +290,7 @@ const printExcel = () => {
         }
       })
 
-
-    }
-    else {
+    } else {
       const recordColIndex = colIndex
       const nextSlotKey = slotKey.concat([key])
 
@@ -295,50 +304,47 @@ const printExcel = () => {
 
   const adjustColumnWidth = worksheet => {
     worksheet.columns.forEach(column => {
-    const lengths = column.values.map(v => {
-      const str = v.toString()
-      const chineseStr = str.match(/[\u4E00-\u9FA5]/g) ?? ''
+      const lengths = column.values.map(v => {
+        const str = v.toString()
+        const chineseStr = str.match(/[\u4E00-\u9FA5]/g) ?? ''
 
-      // 中文字元每字2.5單位 非中文字元每字1.2單位
-      const size = Math.ceil(chineseStr.length * 1.3 + str.length * 1.2) + 2
-      return size
-    })
-
-    const maxLength = Math.max(...lengths.filter(v => typeof v === 'number'))
-    console.log(column.values, lengths, maxLength )
-    column.width = maxLength
-  })
-}
-    subTableTree.forEach(topColumn => {
-      mergeExcelHeader(topColumn, 1, [])
-    })
-    worksheet.columns = excelColumns
-    worksheet.addRows(_tableData)
-
-    adjustColumnWidth(worksheet)
-    // 表格裡面的資料都填寫完成之後，訂出下載的callback function
-    // 異步的等待他處理完之後，創建url與連結，觸發下載
-    workbook.xlsx.writeBuffer().then(content => {
-      const a = document.createElement('a')
-      const blobData = new Blob([content], {
-        type: 'application/vnd.ms-excel;charset=utf-8;'
+        // 中文字元每字2.5單位 非中文字元每字1.2單位
+        const size = Math.ceil(chineseStr.length * 1.3 + str.length * 1.2) + 2
+        return size
       })
 
-      // a.download = `${title}.xlsx`
-      a.download = `${pdfTitle.value}.xlsx`
-      a.href = URL.createObjectURL(blobData)
-      a.click()
+      const maxLength = Math.max(...lengths.filter(v => typeof v === 'number'))
+      // console.log(column.values, lengths, maxLength )
+      column.width = maxLength
+    })
+  }
+
+  subTableTree.forEach(topColumn => {
+    mergeExcelHeader(topColumn, 1, [])
+  })
+  worksheet.columns = excelColumns
+  worksheet.addRows(_tableData)
+
+  adjustColumnWidth(worksheet)
+  // 表格裡面的資料都填寫完成之後，訂出下載的callback function
+  // 異步的等待他處理完之後，創建url與連結，觸發下載
+  workbook.xlsx.writeBuffer().then(content => {
+    const a = document.createElement('a')
+    const blobData = new Blob([content], {
+      type: 'application/vnd.ms-excel;charset=utf-8;'
     })
 
-    //
-    workbook.removeWorksheet(worksheet.id)
+    // a.download = `${title}.xlsx`
+    a.download = `${pdfTitle.value}.xlsx`
+    a.href = URL.createObjectURL(blobData)
+    a.click()
+  })
 
-
-
+  workbook.removeWorksheet(worksheet.id)
 }
 
 
-const allHeaderRow = []
+// const allHeaderRow = []
 const headerRow = ref([])
 const pdfSize = ref('A4')
 const pdfSizeOptions = [
@@ -355,10 +361,10 @@ const pdfSizeOptions = [
 const dragContainerStyle = {
   'box-shadow': '0px 0px 1px 1px #dcdfe6',
   'border-radius': '4px',
-  border: 'none'
+  'border': 'none'
 }
 const dragItemStyle = {
-  height: '32px',
+  'height': '32px',
   'padding': '4px 0px 4px 4px',
   'align-items': 'center',
   'border-bottom': '1px solid #dcdfe6'
@@ -366,10 +372,10 @@ const dragItemStyle = {
 const onDrag = async () => {
   setActiveColumns()
   await nextTick()
-  previewRef.value.initPage()
+  PdfPreviewRef.value.initPage()
 }
 
-const previewRef = ref(null)
+const PdfPreviewRef = ref<InstanceType<typeof PdfPreview>>()
 const previewOrientation = ref<'p' | 'l'>('p')
 const previewColumns = computed(() => {
   const columns = pdfColumns.value.filter(column => column.active)
@@ -381,17 +387,17 @@ const showOrientation = computed(() => {
 })
 const getOrientationText = () => {
   const i18nKey = `orientation-${previewOrientation.value}`
-  return i18nTranslate(i18nKey)
+  return i18nTranslate(i18nKey, defaultModuleType)
 }
 const changeOrientation = () => {
-  if(previewOrientation.value === 'p' ) previewOrientation.value = 'l'
+  if (previewOrientation.value === 'p' ) previewOrientation.value = 'l'
   else previewOrientation.value = 'p'
 
-  previewRef.value.initPage()
+  PdfPreviewRef.value.initPage()
 }
 
 const sizeChange = () => {
-  previewRef.value.initPage()
+  PdfPreviewRef.value.initPage()
 }
 
 const curPageIndex = ref(1)
@@ -400,25 +406,28 @@ const pageCutRowIndexs = ref([])
 const activeChange = async () => {
   setActiveColumns()
   await nextTick()
-  previewRef.value.initPage()
+  PdfPreviewRef.value.initPage()
 }
 
 // FileType
 const fileType = ref('pdf')
-const fileTypeButtonStyle = button => {
+const fileTypeButtonType = (button: string) => {
   return button === fileType.value ? 'primary' : 'info'
 }
-const fileTypeButtonClick = button => {
+const fileTypeButtonText = (button: string) => {
+  return button !== fileType.value
+}
+const fileTypeButtonClick = (button: string) => {
   fileType.value = button
   switch (button) {
     case 'xlsx': {
       pdfSize.value = 'response'
-      previewRef.value.initPage()
+      PdfPreviewRef.value.initPage()
       break
     }
     case 'pdf': {
       pdfSize.value = 'A4'
-      previewRef.value.initPage()
+      PdfPreviewRef.value.initPage()
       break
     }
   }
@@ -430,16 +439,16 @@ const showPageController = computed(() => {
 })
 
 // 下一頁
-const addCurPage = value => {
+const addCurPage = (value: number) => {
   const nextPage = curPageIndex.value + value
   if(nextPage > pageCutRowIndexs.value.length) return
   if(nextPage < 1) return
   setCurPage(nextPage)
 }
 // 跳至指定頁數
-const setCurPage = nextPage => {
+const setCurPage = (nextPage: number) => {
   curPageIndex.value = nextPage
-  previewRef.value.scrollToPage(nextPage)
+  PdfPreviewRef.value.scrollToPage(nextPage)
 }
 
 // Expose
@@ -456,11 +465,12 @@ defineExpose({
     heightSize="large"
     :hidden-collapse="false"
   >
-    <template #header>{{ '下載設定' /* i18nTranslate('setting-pdf-download') */ }}</template>
+    <template #header>{{ i18nTranslate('setting-download', defaultModuleType) }}</template>
     <div class="pdf-wrapper">
       <div class="pdf-preview">
         <div class="pdf-preview-body">
-          <PdfPreview ref="previewRef"
+          <PdfPreview
+            ref="PdfPreviewRef"
             :title="pdfTitle"
             :columns="previewColumns"
             :table-data="tableData"
@@ -476,28 +486,43 @@ defineExpose({
       <div class="pdf-side">
         <div class="pdf-setting">
           <div class="pdf-setting-item">
-            <div class="item-row title">{{ i18nTranslate('setting-file') }}</div>
+            <div class="item-row title">{{ i18nTranslate('setting-file', defaultModuleType) }}</div>
             <!-- File Type -->
               <div class="item-row between">
-                <div class="text-header">{{ '類型' /* i18nTranslate('name') */ }}</div>
+                <div class="text-header">{{ i18nTranslate('type', defaultModuleType) }}</div>
                 <div class="button-group">
-                  <CustomButton
-                    icon-name="file-excel"
-                    label="Excel"
-                    :type="fileTypeButtonStyle('xlsx')"
-                    @click="fileTypeButtonClick('xlsx')"
-                  ></CustomButton>
-                  <CustomButton
-                    label="Pdf"
-                    icon-name="file-pdf"
-                    :type="fileTypeButtonStyle('pdf')"
-                    @click="fileTypeButtonClick('pdf')"
-                  ></CustomButton>
+                  <CustomTooltip placement="top" :show-after="300">
+                    <template #content>Excel</template>
+                    <CustomButton
+                      icon-name="file-excel"
+                      :type="fileTypeButtonType('xlsx')"
+                      :text="fileTypeButtonText('xlsx')"
+                      @click="fileTypeButtonClick('xlsx')"
+                    >
+                      <template #icon>
+                        <CustomSvg name="xlsx"/>
+                      </template>
+                    </CustomButton>
+                  </CustomTooltip>
+
+                  <CustomTooltip placement="top" :show-after="300">
+                    <template #content>PDF</template>
+                    <CustomButton
+                      icon-name="file-pdf"
+                      :type="fileTypeButtonType('pdf')"
+                      :text="fileTypeButtonText('pdf')"
+                      @click="fileTypeButtonClick('pdf')"
+                    >
+                      <template #icon>
+                        <CustomSvg name="pdf"/>
+                      </template>
+                    </CustomButton>
+                  </CustomTooltip>
                 </div>
               </div>
             <!-- File Name -->
             <div class="item-row">
-              <div class="text-header">{{ i18nTranslate('name') }}</div>
+              <div class="text-header">{{ i18nTranslate('name', defaultModuleType) }}</div>
             </div>
             <div class="item-row">
               <CustomInput
@@ -511,7 +536,7 @@ defineExpose({
             <!-- File Format -->
              <template v-if="fileType === 'pdf'">
                 <div class="item-row between">
-                <div class="text-header">{{ i18nTranslate('format') }}</div>
+                <div class="text-header">{{ i18nTranslate('format', defaultModuleType) }}</div>
                   <CustomButton v-if="showOrientation"
                     :label="getOrientationText()"
                     icon-name="rotate"
@@ -532,7 +557,7 @@ defineExpose({
 
           </div>
           <div class="pdf-setting-item">
-            <div class="item-row title">{{ i18nTranslate('columnSetting') }}</div>
+            <div class="item-row title">{{ i18nTranslate('columnSetting', defaultModuleType) }}</div>
             <div>
               <CustomDraggable
                 v-model="pdfColumns"
@@ -551,7 +576,7 @@ defineExpose({
                     />
                   </div>
                   <div class="column-name">
-                    {{ element.name }}
+                    {{ getTranslateLabel(element) }}
                   </div>
                 </template>
               </CustomDraggable>
@@ -565,40 +590,40 @@ defineExpose({
       <div class="modal-footer">
         <CustomButton
           type="primary"
-          :label="i18nTranslate('download')"
+          :label="i18nTranslate('download', defaultModuleType)"
           @click="printPdf"
         />
         <div class="page-controller" v-if="showPageController">
-            <div class="page-controller-icon">
-              <CustomButton
-                text
-                icon-name="angle-left"
-                :disabled="curPageIndex === 1"
-                @click="addCurPage(-1)"
-              />
-            </div>
-            <div class="page-controller-input">
-              <CustomInput
-                v-model="curPageIndex"
-                type="number"
-                :min="1"
-                :max="pageCutRowIndexs.length"
-                :floor="0"
-                hiddenLabel
-                @change="setCurPage"
-              >
-                <template #append>{{ `/ ${pageCutRowIndexs.length}`}}</template>
-              </CustomInput>
-            </div>
+          <div class="page-controller-icon">
+            <CustomButton
+              text
+              icon-name="angle-left"
+              :disabled="curPageIndex === 1"
+              @click="addCurPage(-1)"
+            />
+          </div>
+          <div class="page-controller-input">
+            <CustomInput
+              v-model="curPageIndex"
+              type="number"
+              :min="1"
+              :max="pageCutRowIndexs.length"
+              :floor="0"
+              hiddenLabel
+              @change="setCurPage"
+            >
+              <template #append>{{ `/ ${pageCutRowIndexs.length}`}}</template>
+            </CustomInput>
+          </div>
 
-            <div class="page-controller-icon">
-              <CustomButton
-                text
-                icon-name="angle-right"
-                :disabled="curPageIndex === pageCutRowIndexs.length"
-                @click="addCurPage(1)"
-              />
-            </div>
+          <div class="page-controller-icon">
+            <CustomButton
+              text
+              icon-name="angle-right"
+              :disabled="curPageIndex === pageCutRowIndexs.length"
+              @click="addCurPage(1)"
+            />
+          </div>
         </div>
       </div>
     </template>
@@ -731,7 +756,6 @@ defineExpose({
   .button {
     &-group {
       display: flex;
-      flex-direction: row;
       gap: 8px;
     }
   }

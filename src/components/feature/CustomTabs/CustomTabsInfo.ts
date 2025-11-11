@@ -1,31 +1,31 @@
 import type { PropType } from 'vue'
 import type { TabsPaneContext, TabPaneName } from 'element-plus'
 
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import type { Option } from '@/components' // 系統組件
 
 export const version = '__CustomTabs_1.0.0__'
 
-export declare namespace Types {
-  type Action = 'remove' | 'add'
+export interface Types {
+  action: 'remove' | 'add'
 }
 
-export declare namespace Props {
-  type ModelValue = string | number | null
-  type Options = Array<Option<string | number>>
-  type Type = '' | 'card' | 'border-card'
-  type Closable = boolean
-  type Addable = boolean
-  type Editable = boolean
-  type TabPosition = 'top' | 'right' | 'bottom' | 'left'
-  type Stretch = boolean
-  type BeforeLeave = (activeName: TabPaneName, oldActiveName: TabPaneName) => void | boolean
+export interface Props {
+  modelValue: string | number | null
+  options: Array<Option<string | number>>
+  type: '' | 'card' | 'border-card'
+  closable: boolean
+  addable: boolean
+  editable: boolean
+  tabPosition: 'top' | 'right' | 'bottom' | 'left'
+  stretch: boolean
+  beforeLeave: (activeName: TabPaneName, oldActiveName: TabPaneName) => void | boolean
 }
 export const props = {
   // custom
   options: {
-    type: Array as PropType<Props.Options>,
+    type: Array as PropType<Props['options']>,
     required: true,
     description: 'tabs 列表'
   },
@@ -39,44 +39,44 @@ export const props = {
   },
   // element plus ui
   modelValue: {
-    type: [String, Number, null] as PropType<Props.ModelValue>,
+    type: [String, Number, null] as PropType<Props['modelValue']>,
     required: true,
     description: 'v-model'
   },
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['type']>,
     required: false,
     default: '',
     description: '類型'
   },
   closable: {
-    type: Boolean as PropType<Props.Closable>,
+    type: Boolean as PropType<Props['closable']>,
     default: false,
     description: '是否可刪除'
   },
   addable: {
-    type: Boolean as PropType<Props.Addable>,
+    type: Boolean as PropType<Props['addable']>,
     default: false,
     description: '是否可新增'
   },
   editable: {
-    type: Boolean as PropType<Props.Editable>,
+    type: Boolean as PropType<Props['editable']>,
     default: false,
     description: '是否可新增+刪除'
   },
   tabPosition: {
-    type: String as PropType<Props.TabPosition>,
+    type: String as PropType<Props['tabPosition']>,
     required: false,
     default: 'top',
     description: '位置'
   },
   stretch: {
-    type: Boolean as PropType<Props.Stretch>,
+    type: Boolean as PropType<Props['stretch']>,
     default: false,
     description: '是否自動撐開'
   },
   beforeLeave: {
-    type: Function as PropType<Props.BeforeLeave>,
+    type: Function as PropType<Props['beforeLeave']>,
     default: () => {
       return () => true
     },
@@ -84,12 +84,12 @@ export const props = {
   }
 }
 
-export declare namespace Emits {
-  type TabClick = (pane: TabsPaneContext, ev: Event) => void
-  type TabChange =	(name: TabPaneName) => void
-  type TabRemove =	(name: TabPaneName) => void
-  type TabAdd = () => void
-  type Edit = (paneName: TabPaneName | undefined, action: Types.Action) => void
+export interface Emits {
+  tabClick: (pane: TabsPaneContext, ev: Event) => void
+  tabChange:	(name: TabPaneName) => void
+  tabRemove:	(name: TabPaneName) => void
+  tabAdd: () => void
+  edit: (paneName: TabPaneName | undefined, action: Types['action']) => void
 }
 
-export declare namespace Expose {}
+export interface Expose {}

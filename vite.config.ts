@@ -150,7 +150,7 @@ const userConfigFnObject: UserConfigFnObject = ({ command, mode }: ConfigEnv) =>
       })
     ],
     server: {
-      port: 6060, // 服務器 port號
+      port: 4040, // 服務器 port號
       host: '0.0.0.0',
       open: true, // 是否啟動服務時 打開瀏覽器
       cors: true, // 是否跨域 配合 proxy 使用
@@ -167,7 +167,7 @@ const userConfigFnObject: UserConfigFnObject = ({ command, mode }: ConfigEnv) =>
         '/ws-api/webSocket': {
           target: wsUrl,
           ws: true
-        },
+        }
       },
       // 預先 轉換/緩存 的文件
       warmup: {

@@ -1,10 +1,12 @@
 ## CustomEmpty
 
+### 空值
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomEmpty, CustomIcon } from '@/components'
+import { CustomEmpty, CustomIcon } from '@/components/feature'
 </script>
 
 <template>
