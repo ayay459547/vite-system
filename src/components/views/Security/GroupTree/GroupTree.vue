@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { type PropType, computed, ref, reactive, onMounted, nextTick, inject } from 'vue'
 // import type Node from 'element-plus/es/components/tree/src/model/node'
 import { isEmpty } from '@/lib/lib_utils' // 工具
@@ -36,7 +36,7 @@ const props = defineProps({
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, swal } = useHook({
   i18nModule: 'nodoc_common'
 })

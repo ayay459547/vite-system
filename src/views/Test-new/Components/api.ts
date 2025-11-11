@@ -1,4 +1,4 @@
-import type { Api } from '@/declare/ajax'
+import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal, isEmpty } from '@/lib/lib_utils' // 工具
 

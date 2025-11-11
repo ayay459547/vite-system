@@ -2,15 +2,15 @@
 import { onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
 
-import { CustomCharts } from '@/components' // 系統組件
+import { CustomCharts } from '@/components/chart' // 系統組件
 
 import { chart6Data } from './fakeData'
 
 function splitData(rawData: any) {
-  var categoryData = []
-  var values = []
-  var volumns = []
-  for (var i = 0; i < rawData.length; i++) {
+  const categoryData = []
+  const values = []
+  const volumns = []
+  for (let i = 0; i < rawData.length; i++) {
     categoryData.push(rawData[i].splice(0, 1)[0])
     values.push(rawData[i])
     volumns.push(rawData[i][4])
@@ -23,14 +23,14 @@ function splitData(rawData: any) {
 }
 
 function calculateMA(dayCount: any, data: any) {
-  var result = []
-  for (var i = 0, len = data.values.length; i < len; i++) {
+  const result = []
+  for (let i = 0, len = data.values.length; i < len; i++) {
     if (i < dayCount) {
       result.push('-')
       continue
     }
-    var sum = 0
-    for (var j = 0; j < dayCount; j++) {
+    let sum = 0
+    for (let j = 0; j < dayCount; j++) {
       sum += data.values[i - j][1]
     }
     result.push(+(sum / dayCount).toFixed(3))
@@ -55,7 +55,7 @@ const options = () => {
       },
       backgroundColor: 'rgba(255, 255, 255, 0.8)',
       position: function (pos, params, el, elRect, size) {
-        var obj = { top: 10 }
+        const obj = { top: 10 }
         obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30
         return obj
       },
@@ -128,7 +128,7 @@ const options = () => {
         axisPointer: {
           label: {
             formatter: function (params) {
-              var seriesValue = (params.seriesData[0] || {}).value
+              const seriesValue = (params.seriesData[0] || {}).value
               return (
                 params.value +
                 (seriesValue !== null ? '\n' + echarts.format.addCommas(seriesValue) : '')

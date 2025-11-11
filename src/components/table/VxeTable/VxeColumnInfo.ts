@@ -2,8 +2,8 @@ import type { PropType } from 'vue'
 
 export const version = '__VxeColumn_1.0.0__'
 
-export declare namespace Types {
-  type ClassCallbackParams = {
+export interface Types {
+  ClassCallbackParams: {
     row?: any
     rowIndex?: number
     $rowIndex?: number
@@ -13,94 +13,94 @@ export declare namespace Types {
   }
 }
 
-export declare namespace Props {
-  type Type = string
+export interface Props {
+  Type: string
     | 'seq'
     | 'checkbox'
     | 'radio'
     | 'expand'
     | 'html'
 
-  type Field = string
-  type Title = string
-  type Width = string | number | undefined
-  type MinWidth = string | number | undefined
-  type Fixed = String | any
+  Field: string
+  Title: string
+  Width: string | number | undefined
+  MinWidth: string | number | undefined
+  Fixed: string | any
     | 'left'
     | 'right'
 
-  type Align = String | any
+  Align: string | any
     | 'center'
     | 'left'
     | 'right'
 
-  type ClassName = string | ((params: Types.ClassCallbackParams) => any) | undefined
-  type HeaderClassName = string | ((params: Types.ClassCallbackParams) => any) | undefined
-  type FooterRowClassName = string | ((params: Types.ClassCallbackParams) => any) | undefined
+  ClassName: string | ((params: Types['ClassCallbackParams']) => any) | undefined
+  HeaderClassName: string | ((params: Types['ClassCallbackParams']) => any) | undefined
+  FooterRowClassName: string | ((params: Types['ClassCallbackParams']) => any) | undefined
 }
 export const props = {
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['Type']>,
     required: false,
     default: '',
     description: '欄位類型'
   },
   field: {
-    type: String as PropType<Props.Field>,
+    type: String as PropType<Props['Field']>,
     required: false,
     default: undefined,
     description: '資料key'
   },
   title: {
-    type: String as PropType<Props.Title>,
+    type: String as PropType<Props['Title']>,
     required: false,
     default: '',
     description: '欄位名稱'
   },
   width: {
-    type: [String, Number] as PropType<Props.Width>,
+    type: [String, Number] as PropType<Props['Width']>,
     required: false,
     default: undefined,
     description: '寬度'
   },
   minWidth: {
-    type: [String, Number] as PropType<Props.MinWidth>,
+    type: [String, Number] as PropType<Props['MinWidth']>,
     required: false,
     default: undefined,
     description: '最小寬度'
   },
   fixed: {
-    type: String as PropType<Props.Fixed>,
+    type: String as PropType<Props['Fixed']>,
     required: false,
     default: undefined,
     description: '固定位置'
   },
   align: {
-    type: String as PropType<Props.Align>,
+    type: String as PropType<Props['Align']>,
     required: false,
     default: undefined,
     description: '對齊方式'
   },
   className: {
-    type: [Function, String] as PropType<Props.ClassName>,
+    type: [Function, String] as PropType<Props['ClassName']>,
     required: false,
     default: undefined,
     description: '將表格的行附加 className'
   },
   headerClassName: {
-    type: [Function, String] as PropType<Props.HeaderClassName>,
+    type: [Function, String] as PropType<Props['HeaderClassName']>,
     required: false,
     default: undefined,
     description: '將表頭的行附加 className'
   },
   footerClassName: {
-    type: [Function, String] as PropType<Props.FooterRowClassName>,
+    type: [Function, String] as PropType<Props['FooterRowClassName']>,
     required: false,
     default: undefined,
     description: '將表頭的行附加 className'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

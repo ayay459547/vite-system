@@ -39,6 +39,8 @@ export interface ModuleType {
   rtds_common?: string
   // 系統
   iPASP_common?: string
+  system_common?: string
+  system?: string
 }
 
 export type ScopeKey = keyof ModuleType | ''

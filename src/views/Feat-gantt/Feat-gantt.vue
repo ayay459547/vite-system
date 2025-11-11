@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomCharts } from '@/components' // 系統組件
+import { CustomCharts } from '@/components/chart' // 系統組件
 import { options } from './options'
 </script>
 

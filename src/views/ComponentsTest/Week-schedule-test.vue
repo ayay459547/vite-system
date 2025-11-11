@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { WeekSchedule } from '@/components' // 系統組件
 
 const useHook: UseHook = inject('useHook')

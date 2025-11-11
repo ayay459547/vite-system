@@ -2,9 +2,9 @@
 import { type PropType, defineComponent } from 'vue'
 import { mapStores } from 'pinia'
 
-import type { Navigation } from '@/declare/routes'
+import type { Navigation } from '@/types/types_routes'
 import { CustomIcon, CustomButton, CustomTooltip } from '@/components' // 系統組件
-import { useRoutesStore } from '@/stores/stores_routes'
+import { useRoutesStore } from '@/stores/useRoutesStore'
 
 export default defineComponent({
   name: 'FeatureTree',
@@ -101,7 +101,6 @@ export default defineComponent({
       }
     },
     newWindow(route: Navigation): void {
-      //@ts-ignore
       const routeData = this.$router.resolve({
         name: route.name,
         query: { isModal: 'true' }
@@ -120,7 +119,6 @@ export default defineComponent({
       )
     },
     newPage(route: Navigation): void {
-      //@ts-ignore
       const routeData = this.$router.resolve({
         name: route.name
       })

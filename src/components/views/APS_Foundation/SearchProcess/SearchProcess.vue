@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { inject, onMounted, ref, nextTick, onBeforeMount, computed } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import {
   CustomInput,
   CustomButton,
@@ -14,7 +14,7 @@ import {
 import { getProcessList } from './api'
 import { scrollToEl } from '@/lib/lib_utils' // 工具
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, swal } = useHook({
   i18nModule: 'fund_common'
 })
@@ -31,9 +31,9 @@ const props = defineProps({
     type: String as PropType<SearchType>,
     required: true,
     description: `
-      以 站點編號 或 站點名稱 進行搜尋 
+      以 站點編號 或 站點名稱 進行搜尋
       no  : 站點編號
-      name: 站點名稱 
+      name: 站點名稱
     `
   }
 })

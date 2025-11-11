@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue'
 
 import { CustomTable, CustomInput, CustomButton } from '@/components' // 系統組件
 import { useTableSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/types/types_columnSetting'
 
 const columnSetting = {
   date: {

@@ -6,7 +6,7 @@ import type { PropType } from 'vue'
 import { inject, ref, onMounted, computed, onUnmounted, watch } from 'vue'
 
 // 全域功能類型
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import type { CustomButtonProps } from '@/components' // 系統組件
 import { CustomIcon, CustomButton, CustomPopover, CustomProgress } from '@/components' // 系統組件
 import { isEmpty } from '@/lib/lib_utils'
@@ -14,7 +14,7 @@ import { isEmpty } from '@/lib/lib_utils'
 import { useWebSocket } from '@/lib/lib_hook'
 // import { fake_useWebSocket } from './wsTest' // 測試用
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: 'auto_common'
 })

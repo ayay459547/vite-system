@@ -6,7 +6,7 @@ import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableData } from './api'
 import { getData, getDataCount, getOptions } from './api'
 import { columnSetting } from './columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/types/types_columnSetting'
 
 import FilterView from './FilterView.vue'
 

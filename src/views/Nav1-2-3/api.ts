@@ -1,4 +1,4 @@
-import type { Api } from '@/declare/ajax'
+import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal, cutTableData } from '@/lib/lib_utils' // 工具
 import type { CustomTableTypes } from '@/components' // 系統組件

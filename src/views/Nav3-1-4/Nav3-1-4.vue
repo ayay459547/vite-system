@@ -1,8 +1,8 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { onMounted, ref, inject, nextTick } from 'vue'
 
 // 全域功能類型
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 import { getData } from './api'
 import { columnSetting } from './columns'

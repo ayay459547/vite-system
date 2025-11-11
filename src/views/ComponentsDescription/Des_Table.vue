@@ -5,7 +5,7 @@ import markdown from '@/components/table/CustomTable/CustomTable.md?raw'
 import type { CustomTableTypes } from '@/components' // 系統組件
 import { CustomDivider, CustomMarkdown, CustomTable, CustomButton } from '@/components' // 系統組件
 import { useTableSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/types/types_columnSetting'
 
 const columnSetting = {
   name: {

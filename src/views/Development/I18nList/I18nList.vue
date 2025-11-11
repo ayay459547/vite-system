@@ -3,7 +3,7 @@ import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
 import { CustomTable, CustomInput } from '@/components' // 系統組件
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
-import type { TableOptions } from '@/declare/columnSetting'
+import type { TableOptions } from '@/types/types_columnSetting'
 
 import { columnSetting } from './columns'
 import { type TableData, getData, getDataCount } from './api'

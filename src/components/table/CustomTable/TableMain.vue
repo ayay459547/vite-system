@@ -4,8 +4,8 @@ import { useSlots, ref, inject, onMounted, onUnmounted, computed, watch, effectS
 import type { ElTable as ElTableType, TableColumnCtx } from 'element-plus'
 import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import throttle from '@/lib/lib_throttle'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { throttle } from '@/lib/lib_lodash'
 import { CustomButton } from '@/components' // 系統組件
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
 import { defaultModuleType } from '@/i18n/i18n_setting'
@@ -134,7 +134,7 @@ const props = defineProps({
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
