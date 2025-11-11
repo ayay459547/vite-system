@@ -1,12 +1,18 @@
 {
   "extends": "./tsconfig.app.json",
-  // "include": [],
+  "include": ["src/**/__tests__/*", "env.d.ts"],
+  "exclude": [],
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
-    "strict": false,
-    "allowJs": true,
-    "composite": true,
-    "lib": [],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+
+    "target": "ES2023",
+    "lib": [
+      "ES2023",
+      "ES2023.Array",
+      "ES2022",
+      "ES2022.Array",
+      "DOM"
+    ],
     "types": ["node", "jsdom"]
   }
 }

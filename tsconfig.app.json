@@ -1,25 +1,24 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": [
-    // "shims-vue.d.ts",
-    "vite-env-override.d.ts",
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./src/**/*.vue",
-    "./tests/**/*.ts",
-    "./tests/**/*.tsx"
-  ],
-  "exclude": ["node_modules", "src/**/__tests__/*"],
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
-    "composite": true,
-    "baseUrl": ".",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    
     "paths": {
-      "@/*": ["./src/*"],
-      "$/*": ["./public/*"]
+      "@/*": ["./src/*"]
     },
-    // "preserveValueImports": true,
-    // "importsNotUsedAsValues": "error",
-    "verbatimModuleSyntax": true,
+    "strict": false,
+    "noImplicitThis": false, // this
+    "noImplicitAny": false, // any
+    "target": "ES2023",
+    "lib": [
+      "ES2023",
+      "ES2023.Array",
+      "ES2022",
+      "ES2022.Array",
+      "DOM"
+    ],
+    "incremental": true
   }
 }
