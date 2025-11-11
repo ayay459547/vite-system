@@ -2,40 +2,40 @@ import type { PropType } from 'vue'
 
 export const version = '__SimpleQRcode_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Text = string
-  type Size = number
-  type BgSrc = string
-  type LogoSrc = string
+export interface Props {
+  text: string
+  size: number
+  bgSrc: string
+  logoSrc: string
 }
 export const props = {
   text: {
-    type: String as PropType<Props.Text>,
+    type: String as PropType<Props['text']>,
     required: true,
     description: 'text'
   },
   size: {
-    type: Number as PropType<Props.Size>,
+    type: Number as PropType<Props['size']>,
     required: false,
     default: 200,
     description: 'qucode size'
   },
   bgSrc: {
-    type: String as PropType<Props.BgSrc>,
+    type: String as PropType<Props['bgSrc']>,
     required: false,
     default: null,
     description: '背景圖片 src'
   },
   logoSrc: {
-    type: String as PropType<Props.LogoSrc>,
+    type: String as PropType<Props['logoSrc']>,
     required: false,
     default: null,
     description: '中心logo src'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

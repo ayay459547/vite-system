@@ -1,10 +1,12 @@
 ## CustomDivider
 
+### 分隔線
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomDivider } from '@/components'
+import { CustomDivider } from '@/components/feature'
 </script>
 
 <template>
@@ -33,3 +35,11 @@ import { CustomDivider } from '@/components'
 | 插槽名  | 說明         |
 | ------- | ------------ |
 | default | 文字顯示內容 |
+
+### Events ( emits )
+
+無
+
+### Expose
+
+無

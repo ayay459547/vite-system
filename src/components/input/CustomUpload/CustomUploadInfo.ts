@@ -1,10 +1,12 @@
 import type { PropType } from 'vue'
 
-export const version = '1.0.0'
+import { fileTypeMap } from '@/lib/lib_files'
 
-export declare namespace Types {
-  type FileType = 'file' | 'image' | 'excel' | 'word' | 'powerpoint' | 'zip'
-  interface Info {
+export const version = '__CustomUpload_1.0.0__'
+
+export interface Types {
+  fileType: (keyof typeof fileTypeMap)
+  info: {
     src?: string
     fileSize?: string
     fileType?: string
@@ -12,59 +14,52 @@ export declare namespace Types {
     excel?: any[]
     properties?: any
   }
-  interface FileInfo extends Partial<File>, Types.Info {
+  fileInfo: Partial<File> & Types['info'] & {
     uuid: string
   }
-  type FilesInfo = Array<Types.FileInfo>
-  type UploadFile = File
+  filesInfo: Array<Types['fileInfo']>
+  uploadFile: File
 }
 
-export declare namespace Props {
-  // type Type = FileType
-  type Overwrite = boolean
-  type Multiple = boolean
-  type LimitCount = number | null
-  type LimitType = Types.FileType | Array<Types.FileType>
+export interface Props {
+  overwrite: boolean
+  multiple: boolean
+  limitCount: number | null
+  limitType: Types['fileType'] | Array<Types['fileType']>
 }
 
 export const props = {
-  // type: {
-  //   type: String as PropType<Props.Type>,
-  //   required: false,
-  //   default: 'file',
-  //   description: '上傳類型'
-  // },
   overwrite: {
-    type: Boolean as PropType<Props.Overwrite>,
+    type: Boolean as PropType<Props['overwrite']>,
     required: false,
     default: false,
     description: '是否再上傳清空原來的檔案'
   },
   multiple: {
-    type: Boolean as PropType<Props.Multiple>,
+    type: Boolean as PropType<Props['multiple']>,
     required: false,
     default: false,
     description: '是否可上傳多個檔案'
   },
   limitCount: {
-    type: [Number, null] as PropType<Props.LimitCount>,
+    type: [Number, null] as PropType<Props['limitCount']>,
     required: false,
     default: null,
     description: '限制檔案數量'
   },
   limitType: {
-    type: [Array, String] as PropType<Props.LimitType>,
+    type: [Array, String] as PropType<Props['limitType']>,
     required: false,
     default: null,
     description: '限制檔案類型'
   }
 }
 
-export declare namespace Emits {
-  type File = (files: Types.FilesInfo, targetList: Types.UploadFile[]) => void | any
+export interface Emits {
+  file: (files: Types['filesInfo'], targetList: Types['uploadFile'][]) => void | any
 }
 
-export declare namespace Expose {
-  type GetFormData = () => FormData
-  type GetFiles = () => Types.FilesInfo
+export interface Expose {
+  getFormData: () => FormData
+  getFiles: () => Types['filesInfo']
 }

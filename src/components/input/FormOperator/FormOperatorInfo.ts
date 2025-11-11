@@ -4,61 +4,61 @@ import type { Options as CommonOptions } from '@/components' // 系統組件
 
 export const version = '__FormOperator_1.0.0__'
 
-export declare namespace Types {
-  type OperatorOptions = 'equal' | 'greatthan' | 'lessthan' | '' | string | null
-  type OperatorValue = string | number | null
+export interface Types {
+  operatorOptions: 'equal' | 'greatthan' | 'lessthan' | '' | string | null
+  operatorValue: string | number | null
 }
 
-export declare namespace Props {
-  type ModelValue = [Types.OperatorOptions, Types.OperatorValue] | any
-  type Type = string
-  type OnlyNumber = boolean
-  type Round = number | null
-  type Max = number | null
-  type Min = number | null
-  type Clearable = boolean
-  type Disabled = boolean
-  type Options = CommonOptions
-  type Placeholder = string
+export interface Props {
+  modelValue: [Types['operatorOptions'], Types['operatorValue']] | any
+  Type: string
+  OnlyNumber: boolean
+  round: number | null
+  max: number | null
+  min: number | null
+  clearable: boolean
+  disabled: boolean
+  options: CommonOptions
+  placeholder: string
 }
 export const props = {
   modelValue: {
-    type: Array as PropType<Props.ModelValue>,
+    type: Array as PropType<Props['modelValue']>,
     required: false,
     default: undefined,
     description: '綁定值 v-model="..." '
   },
   // 數字
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['Type']>,
     required: false,
     default: 'text',
     description: '類型'
   },
   round: {
-    type: [Number, null] as PropType<Props.Round>,
+    type: [Number, null] as PropType<Props['round']>,
     default: null
   },
   max: {
-    type: [Number, null] as PropType<Props.Max>,
+    type: [Number, null] as PropType<Props['max']>,
     default: null
   },
   min: {
-    type: [Number, null] as PropType<Props.Min>,
+    type: [Number, null] as PropType<Props['min']>,
     default: null
   },
   // element ui plus
   clearable: {
-    type: Boolean as PropType<Props.Clearable>,
+    type: Boolean as PropType<Props['clearable']>,
     default: false
   },
   disabled: {
-    type: Boolean as PropType<Props.Disabled>,
+    type: Boolean as PropType<Props['disabled']>,
     default: false
   },
   options: {
-    type: Array as PropType<Props.Options>,
-    default() {
+    type: Array as PropType<Props['options']>,
+    default: () => {
       return [
         // { label: '=', value: 'equal' },
         // { label: '>', value: 'greatterThan' },
@@ -70,21 +70,21 @@ export const props = {
     }
   },
   placeholder: {
-    type: String as PropType<Props.Placeholder>,
+    type: String as PropType<Props['placeholder']>,
     required: false
   }
 }
 
-export declare namespace Emits {
-  type Focus = ($event: FocusEvent) => void
-  type Clear = () => void
-  type Blur = ($event: FocusEvent) => Promise<void>
-  type Change = (value: Props.ModelValue) => void
-  type Input = (value: Props.ModelValue) => void
+export interface Emits {
+  focus: ($event: FocusEvent) => void
+  clear: () => void
+  blur: ($event: FocusEvent) => Promise<void>
+  change: (value: Props['modelValue']) => void
+  input: (value: Props['modelValue']) => void
 }
 
-export declare namespace Expose {
-  type Focus = () => void
-  type Blur = () => void
+export interface Expose {
+  focus: () => void
+  blur: () => void
 }
 

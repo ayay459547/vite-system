@@ -1,30 +1,30 @@
 import type { PropType } from 'vue'
 
-import type { CustomButtonProps } from '@/components' // 系統組件
+import type { CustomButtonProps } from '@/components/feature' // 系統組件: 功能
 
 export const version = '__CustomButtonGroup_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Size = CustomButtonProps.Size
-  type Type = CustomButtonProps.Type
+export interface Props {
+  size: CustomButtonProps['size']
+  type: CustomButtonProps['type']
 }
 export const props = {
   size: {
-    type: String as PropType<Props.Size>,
+    type: String as PropType<Props['size']>,
     required: false,
     default: undefined,
     description: '尺寸'
   },
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['type']>,
     required: false,
     default: undefined,
     description: '類型'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

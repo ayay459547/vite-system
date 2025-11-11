@@ -1,85 +1,113 @@
+import type Color from 'element-plus/es/components/color-picker/src/utils/color.mjs'
 import type { PropType } from 'vue'
 
 export const version = '__CustomColor_1.0.0__'
 
-export declare namespace Types {
-  type Size = '' | 'large' | 'default' | 'small'
-  type ColorFormat = 'hsl' | 'hsv' | 'hex' | 'rgb'
+export interface Types {
+  size: 'large' | 'default' | 'small'
+  colorFormat: 'hsl' | 'hsv' | 'hex' | 'rgb'
 }
 
-export declare namespace Props {
-  type ModelValue = string
-  type Size = Types.Size
-  // type Disabled = boolean
-  // type ShowAlpha = boolean
-  // type ColorFormat = Types.ColorFormat
-  // type PopperClass = string
-  // type Predefine = Array<string>
-  // type ValidateEvent = boolean
-  // type TabIndex = string | number
-  // type Label = string
-  // type AriaLabel = string
-  // type Id = string
-  // type Teleported = boolean
+export interface Props {
+  modelValue: string
+  disabled: boolean
+  size: Types['size']
+  showAlpha: boolean
+  colorFormat: Types['colorFormat']
+  popperClass: string
+  predefine: Array<string>
+  validateEvent: boolean
+  tabIndex: string | number
+  ariaLabel: string
+  id: string
+  teleported: boolean
 }
 export const props = {
   modelValue: {
-    type: String as PropType<Props.ModelValue>,
-    required: true
+    type: String as PropType<Props['modelValue']>,
+    required: false,
+    default: undefined,
+    description: '選取項目綁定值'
+  },
+  disabled: {
+    type: Boolean as PropType<Props['disabled']>,
+    required: false,
+    default: false,
+    description: '是否取消'
   },
   size: {
-    type: String as PropType<Props.Size>,
-    default: ''
+    type: String as PropType<Props['size']>,
+    required: false,
+    default: undefined,
+    description: '尺寸'
+  },
+  showAlpha: {
+    type: Boolean as PropType<Props['showAlpha']>,
+    required: false,
+    default: false,
+    description: '是否支援寬度選擇'
+  },
+  colorFormat: {
+    type: String as PropType<Props['colorFormat']>,
+    required: false,
+    default: 'rgb',
+    description: '寫入v-model的顏色的格式'
+  },
+  popperClass: {
+    type: String as PropType<Props['popperClass']>,
+    required: false,
+    default: undefined,
+    description: '寫入v-model的顏色的格式'
+  },
+  predefine: {
+    type: Array as PropType<Props['predefine']>,
+    required: false,
+    default: undefined,
+    description: '預定義顏色'
+  },
+  validateEvent: {
+    type: Boolean as PropType<Props['validateEvent']>,
+    required: false,
+    default: false,
+    description: '輸入時是否觸發表單的校驗'
+  },
+  tabIndex: {
+    type: [String, Number] as PropType<Props['tabIndex']>,
+    required: false,
+    default: 0,
+    description: 'ColorPicker 的 tabindex'
+  },
+  ariaLabel: {
+    type: String as PropType<Props['ariaLabel']>,
+    required: false,
+    default: undefined,
+    description: 'ColorPicker 的 aria-label'
+  },
+  id: {
+    type: String as PropType<Props['id']>,
+    required: false,
+    default: undefined,
+    description: 'ColorPicker 的 id'
+  },
+  teleported: {
+    type: Boolean as PropType<Props['teleported']>,
+    required: false,
+    default: undefined,
+    description: '是否將popover的下拉清單渲染到body下'
   }
-  // disabled: {
-  //   type: Boolean as PropType<Props.Disabled>,
-  //   default: false
-  // },
-
-  // showAlpha: {
-  //   type: Boolean as PropType<Props.ShowAlpha>,
-  //   default: false
-  // },
-  // colorFormat: {
-  //   type: String as PropType<Props.ColorFormat>,
-  //   default: 'rgb'
-  // },
-  // popperClass: {
-  //   type: String as PropType<Props.PopperClass>
-  //   // default: ''
-  // },
-  // predefine: {
-  //   type: Array as PropType<Props.Predefine>
-  //   // default: []
-  // },
-  // validateEvent: {
-  //   type: Boolean as PropType<Props.ValidateEvent>,
-  //   default: true
-  // },
-  // tabIndex: {
-  //   type: [String, Number] as PropType<Props.TabIndex>,
-  //   default: 0
-  // },
-  // label: {
-  //   type: String as PropType<Props.Label>
-  //   // default:
-  // },
-  // ariaLabel: {
-  //   type: String as PropType<Props.AriaLabel>
-  //   // default:
-  // },
-  // id: {
-  //   type: String as PropType<Props.Id>
-  //   // default:
-  // },
-  // teleported: {
-  //   type: Boolean as PropType<Props.Teleported>,
-  //   default: true
-  // }
 }
 
-export declare namespace Emits {
-  type Change = (value: string) => void
+export interface Emits {
+  change: (value: string) => void
+  activeChange: (value: string) => void
+  focus: (event: FocusEvent) => void
+  blur: (event: FocusEvent) => void
 }
 
-export declare namespace Expose {}
+export interface Expose {
+  color: Color
+  show: () => void
+  hide: () => void
+  focus: () => void
+  blur: () => void
+}

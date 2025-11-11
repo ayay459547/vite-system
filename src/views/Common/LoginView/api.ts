@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export type TokenData = number | string
@@ -6,7 +6,7 @@ export type TokenData = number | string
 const fakeTokenData = '1'
 
 export const loginSystem = async (account: string, password: string): Promise<ApiRes<TokenData>> => {
-  const resData = await ajax<Api<TokenData>>(
+  const resData = await ajax<TokenData>(
     {
       baseURL: '/rest-common',
       url: '/user/loginCheckAndGetUserId',
@@ -17,7 +17,7 @@ export const loginSystem = async (account: string, password: string): Promise<Ap
       }
     },
     {
-      isFakeData: true,
+      isFakeData: false,
       fakeData: {
         data: fakeTokenData,
         status: 'success'
@@ -26,11 +26,11 @@ export const loginSystem = async (account: string, password: string): Promise<Ap
     }
   )
 
-  const { data, errorMsg, status } = resData
+  const { data, msg, status } = resData
 
   if (['success', true].includes(status)) {
-    return { status: 'success', data, msg: errorMsg }
+    return { status: 'success', data, msg }
   } else {
-    return { status: 'error', data: null, msg: errorMsg }
+    return { status: 'error', data: null, msg }
   }
 }

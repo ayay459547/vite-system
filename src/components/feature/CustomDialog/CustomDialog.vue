@@ -13,9 +13,9 @@ const props = defineProps(dialogProps)
 
 const emit = defineEmits(['update:model-value'])
 
-const tempValue = computed<Props.ModelValue>({
+const tempValue = computed<Props['modelValue']>({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 const slots = useSlots()

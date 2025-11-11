@@ -2,33 +2,33 @@ import type { PropType } from 'vue'
 
 export const version = '__CustomEmpty_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Image = string
-  type ImageSize = number
-  type Description = string
+export interface Props {
+  image: string
+  imageSize: number
+  description: string
 }
 export const props = {
   image: {
-    type: String as PropType<Props.Image>,
+    type: String as PropType<Props['image']>,
     required: false,
     default: '',
     description: '圖片的 url'
   },
   imageSize: {
-    type: Number as PropType<Props.ImageSize>,
+    type: Number as PropType<Props['imageSize']>,
     required: false,
     description: '圖片 寬度 width'
   },
   description: {
-    type: String as PropType<Props.Description>,
+    type: String as PropType<Props['description']>,
     required: false,
     default: '',
     description: '文字訊息'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

@@ -2,27 +2,19 @@ import type { PropType } from 'vue'
 
 export const version = '__CustomDivider_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Direction = 'horizontal' | 'vertical'
-  type BorderStyle =
-    | 'none'
-    | 'hidden'
-    | 'dotted'
-    | 'dashed'
-    | 'solid'
-    | 'double'
-    | 'groove'
-    | 'ridge'
-    | 'inset'
-    | 'outset'
-  type ContentPosition = 'left' | 'right' | 'center'
+export interface Props {
+  direction: 'horizontal' | 'vertical'
+  borderStyle: 'none' | 'hidden'
+    | 'dotted' | 'dashed' | 'solid' | 'double'
+    | 'groove' | 'ridge' | 'inset' | 'outset'
+  contentPosition: 'left' | 'right' | 'center'
 }
 
 export const props = {
   direction: {
-    type: String as PropType<Props.Direction>,
+    type: String as PropType<Props['direction']>,
     required: false,
     default: 'horizontal',
     description: `方向
@@ -30,7 +22,7 @@ export const props = {
       vertical: 垂直`
   },
   borderStyle: {
-    type: String as PropType<Props.BorderStyle>,
+    type: String as PropType<Props['borderStyle']>,
     required: false,
     default: 'solid',
     description: `線的類型
@@ -38,13 +30,13 @@ export const props = {
     `
   },
   contentPosition: {
-    type: String as PropType<Props.ContentPosition>,
+    type: String as PropType<Props['contentPosition']>,
     required: false,
     default: 'center',
     description: '文字位置'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

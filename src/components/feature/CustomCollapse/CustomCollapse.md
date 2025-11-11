@@ -1,10 +1,12 @@
 ## CustomCollapse
 
+### 摺疊
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomCollapse } from '@/components'
+import { CustomCollapse } from '@/components/feature'
 
 const active = ref([])
 </script>

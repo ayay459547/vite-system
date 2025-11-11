@@ -2,8 +2,8 @@
 import { useSlots, computed, inject } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomEmpty } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { CustomEmpty } from '@/components/feature' // 系統組件
 import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Props, Emits } from './CustomCollapseInfo'
@@ -13,19 +13,19 @@ const scopedId = getUuid(version)
 
 const props = defineProps(collapseProps)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
 
 const emit = defineEmits(['update:model-value', 'change'])
-const onChange: Emits.Change = (active: Props.ModelValue) => {
+const onChange: Emits['change'] = (active: Props['modelValue']) => {
   emit('change', active)
 }
 
-const tempValue = computed<Props.ModelValue>({
+const tempValue = computed<Props['modelValue']>({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 const slots = useSlots()

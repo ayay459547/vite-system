@@ -2,20 +2,19 @@
 import type { PropType } from 'vue'
 import { computed, ref, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
-import type { CustomTableTypes } from '@/components' // 系統組件
-import {
-  CustomPopover,
-  CustomButton,
-  CustomDraggable,
-  CustomInput,
-  CustomBadge,
-  CustomIcon,
-  CustomTooltip
-} from '@/components' // 系統組件
+import type { CustomTableTypes } from '@/components/table' // 系統組件: 表格
+
+import CustomInput from '@/components/input/CustomInput/CustomInput.vue'
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import CustomDraggable from '@/components/feature/CustomDraggable/CustomDraggable.vue'
+import CustomBadge from '@/components/feature/CustomBadge/CustomBadge.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
 
 const props = defineProps({
   i18nModule: {
@@ -25,7 +24,7 @@ const props = defineProps({
     description: 'i18nModule'
   },
   modelValue: {
-    type: Array as PropType<CustomTableTypes.Sorting[]>,
+    type: Array as PropType<CustomTableTypes['sorting'][]>,
     required: true
   },
   settingWidth: {
@@ -41,7 +40,7 @@ const props = defineProps({
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -50,7 +49,7 @@ const emit = defineEmits(['update:model-value', 'reset-sorting', 'submit'])
 
 const tempValue = computed({
   get: () => props.modelValue,
-  set: (value: CustomTableTypes.Sorting[]) => {
+  set: (value: CustomTableTypes['sorting'][]) => {
     emit('update:model-value', value)
   }
 })
@@ -68,7 +67,7 @@ const activeIndexMap = computed(() => {
   }, {})
 })
 
-const setSortingValue = (order: CustomTableTypes.Order, key: string) => {
+const setSortingValue = (order: CustomTableTypes['order'], key: string) => {
   const columnIndex = props.modelValue.findIndex(item => item.key === key)
   const _temp = props.modelValue[columnIndex]
 
@@ -107,6 +106,8 @@ const submit = () => {
         <CustomButton
           icon-name="arrow-down-short-wide"
           :label="i18nTranslate('sorting', defaultModuleType)"
+          plain
+          hover-display
         />
       </template>
 
@@ -240,8 +241,6 @@ const submit = () => {
     }
 
     &-text {
-      font-size: 1.2em;
-      font-weight: 400;
       color: var(--el-text-color-primary);
     }
   }

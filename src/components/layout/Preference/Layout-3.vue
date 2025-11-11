@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 布局3 選單在左側
-import { CustomIcon } from '@/components' // 系統組件
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
 </script>
 
 <template>

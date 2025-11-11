@@ -2,7 +2,6 @@
 import { ref, computed, watchEffect } from 'vue'
 import { MdEditor as MdEditorV3, config } from 'md-editor-v3'
 // import existing language
-import 'md-editor-v3/lib/style.css'
 import ZH_TW from '@vavt/cm-extension/dist/locale/zh-TW'
 
 /**
@@ -19,12 +18,8 @@ const props = defineProps(markdownProps)
 
 const __textValue__ = ref()
 const textValue = computed({
-  get: () => {
-    return __textValue__.value
-  },
-  set: (v: string) => {
-    __textValue__.value = v
-  }
+  get: () => __textValue__.value,
+  set: (v: string) => __textValue__.value = v
 })
 
 config({
@@ -36,7 +31,6 @@ config({
 watchEffect(() => {
   textValue.value = props.text
 })
-
 </script>
 
 <template>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {}
+export interface Props {}
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {
-  type OpenLoader = (message: string) => void
-  type CloseLoader = () => void
+export interface Expose {
+  openLoader: (message: string) => void
+  closeLoader: () => void
 }
 
 const isOpen = ref(false)
@@ -23,7 +23,7 @@ const barPercentage = ref(0)
 let timer = null
 
 // 開啟遮罩
-const openLoader: Expose.OpenLoader = (message: string) => {
+const openLoader: Expose['openLoader'] = (message: string) => {
   barPercentage.value = 0
   massage.value = message
 
@@ -51,7 +51,7 @@ const close = async () => {
   }, 200)
 }
 // 關閉遮罩
-const closeLoader: Expose.CloseLoader = () => {
+const closeLoader: Expose['closeLoader'] = () => {
   if (!isOpen.value) return
 
   if (Date.now() >= openTime.value + minTime) {

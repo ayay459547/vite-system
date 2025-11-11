@@ -3,19 +3,21 @@ import type { PropType } from 'vue'
 import { inject, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
-import { CustomIcon, FormRadio } from '@/components' // 系統組件
-import { options as langOptions } from '@/i18n'
-import { useLocaleStore } from '@/stores/stores_locale'
-import { useLayoutStore } from '@/stores/stores_layout'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { useI18nStore } from '@/stores/useI18nStore'
+import { useLayoutStore } from '@/stores/useLayoutStore'
+import { defaultModuleType, langOptions } from '@/declare/declare_i18n'
 
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import FormRadio from '@/components/input/FormRadio/FormRadio.vue'
+import CustomDivider from '@/components/feature/CustomDivider/CustomDivider.vue'
+
+import TranslationSettings from './TranslationSettings/TranslationSettings.vue'
 import Layout1 from './Layout-1.vue'
 import Layout2 from './Layout-2.vue'
 import Layout3 from './Layout-3.vue'
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -27,20 +29,18 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['layout-change'])
+const emit = defineEmits(['init'])
 
 // 語言
-const localeStore = useLocaleStore()
-const { systemLocale } = storeToRefs(localeStore)
-const i18nBus = useEventBus<string>('i18n')
+const i18nStore = useI18nStore()
+const { systemLocale } = storeToRefs(i18nStore)
 
 const langValue = computed({
-  get() {
+  get: () => {
     return systemLocale.value
   },
-  set(lang: string) {
-    localeStore.setSystemLocale(lang)
-    i18nBus.emit('langChange', lang)
+  set: (lang: string) => {
+    i18nStore.setSystemLocale(lang)
   }
 })
 
@@ -51,10 +51,8 @@ const browserViewOptions = [
   { label: 'full-screen', value: 'full-screen' }
 ]
 const browserValue = computed({
-  get() {
-    return browserView.value
-  },
-  set(view: string) {
+  get: () => browserView.value,
+  set: (view: string) => {
     browserView.value = view
 
     if (document.fullscreenElement) {
@@ -80,20 +78,15 @@ const layoutStore = useLayoutStore()
 const { layout } = storeToRefs(layoutStore)
 
 // 色調
-const colorToneBus = useEventBus<string>('colorTone')
 
 const colorToneOptions = [
   { label: 'light', value: 'light' },
   { label: 'dark', value: 'dark' }
 ]
 const colorTone = computed({
-  get() {
-    return props.isDark ? 'dark' : 'light'
-  },
-  set(colorTone: string) {
-    const _isDark = colorTone === 'dark'
-    layoutStore.toggleDark(_isDark)
-    colorToneBus.emit('colorToneChange', colorTone)
+  get: () => props.isDark ? 'dark' : 'light',
+  set: (colorTone: string) => {
+    layoutStore.setColorTone(colorTone)
   }
 })
 
@@ -110,7 +103,7 @@ const getLayoutView = (layoutNumber: string) => {
 
 const onClickLayout = (layoutType: string) => {
   layoutStore.setLayout(layoutType)
-  emit('layout-change')
+  emit('init')
 }
 </script>
 
@@ -199,6 +192,12 @@ const onClickLayout = (layoutType: string) => {
           <component :is="getLayoutView(layoutOption.label)" />
         </div>
       </div>
+    </div>
+
+    <CustomDivider>{{ i18nTranslate('setting-advanced') }}</CustomDivider>
+    <!-- 進階設定 -->
+    <div class="grid-col-xs-24">
+      <TranslationSettings />
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getUuid } from '@/lib/lib_utils' // 工具
-import { CustomIcon } from '@/components' // 系統組件
+import { CustomIcon } from '@/components/feature' // 系統組件
 
 import { version, props as lockViewProps } from './CustomLockViewInfo'
 
@@ -77,7 +77,7 @@ div[class*="__CustomLockView"] {
     }
     &-icon {
       color: var(--el-color-primary);
-      font-size: 3em;
+      font-size: 3rem;
     }
     &-text {
       font: {

@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElLink } from 'element-plus' // 引入組件原型
 
-// 引入類型
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-// 引入組件原型
-import { ElLink } from 'element-plus'
-import { CustomTooltip, CustomIcon } from '@/components' // 系統組件
-// 工具包
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+
+import { setLocalStorage } from '@/lib/lib_storage'
 import { aesEncrypt, getUuid } from '@/lib/lib_utils' // 工具
-// 組件參數設定
-import { version, props as linkProps } from './CustomLinkInfo'
+import { version, props as linkProps } from './CustomLinkInfo' // 組件參數設定
 
 // 接收 GlobalView.vue 的 useHook
-const useHook = inject('useHook') as UseHook 
-const { env, i18nTranslate, i18nTest } = useHook()
+const useHook = inject('useHook') as UseHook
+const { env, i18nTranslate, i18nTest, permission } = useHook()
 
 const scopedId = getUuid(version)
 
@@ -29,11 +28,11 @@ const newWindow = (link: any) => {
   const data = link?.data ?? props?.data
   const isModal = link?.isModal ?? false
 
-  const currentEnv = env()
+  const systemEnv = env()
 
-  if(storageKey) localStorage.setItem(storageKey, data)
+  if (storageKey) setLocalStorage(storageKey, data)
 
-  const queryData = aesEncrypt(storageKey ?? data, currentEnv.QUERY_KEY)
+  const queryData = aesEncrypt(storageKey ?? data, systemEnv.QUERY_KEY)
 
   const routeData = router.resolve({
     name: toPage,
@@ -69,11 +68,35 @@ const getI18nTranslate = (link: any) => {
   return i18nTranslate(link.toPage)
 }
 
+const activeOptions = ref([])
+const setActiveOptions = () => {
+  activeOptions.value = props.options.filter(option => {
+    const { toPage } = option
+    const permissionInfo = permission(toPage, true)
+    return permissionInfo?.read
+  })
+}
+
+const getDisalbed = link => {
+  if(!link?.disabled) return false
+  if(typeof(link.disabled) === 'function') return link.disabled(props.params)
+  return link?.disabled
+}
+
+onMounted(() => {
+  setActiveOptions()
+})
+
 </script>
 
 <template>
   <div :class="scopedId">
+    <!-- 沒有可拜訪選項時只顯示文字 -->
+    <div v-if="activeOptions.length === 0">
+      {{ props.label }}
+    </div>
     <CustomTooltip
+      v-else
       placement="right"
       :offset="10"
       :show-after="200"
@@ -93,11 +116,11 @@ const getI18nTranslate = (link: any) => {
 
       <template #content>
         <div class="tooltip-options">
-          <template v-for="(link) in props.options" :key="`link-${link}-${scopedId}`">
+          <template v-for="(link) in activeOptions" :key="`link-${link}-${scopedId}`">
             <ElLink
               :type="props.type"
               :underline="props.underline"
-              :disabled="link?.disabled"
+              :disabled="getDisalbed(link)"
               @click="newWindow(link)"
             >
               {{ getI18nTranslate(link) }}

@@ -1,18 +1,17 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { inject, computed, ref, useSlots } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomButton, CustomPopover } from '@/components' // 系統組件
-import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
-import { object_reduce } from '@/lib/lib_object'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
 
-import styles from './SimpleFilter.module.scss'
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
+import { object_reduce } from '@/lib/lib_object'
 
 import { version, props as simpleFilterProps } from './SimpleFilterInfo'
 
 const props = defineProps(simpleFilterProps)
 const emit = defineEmits(['reset', 'submit'])
-const slots: Record<string, any> = useSlots()
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook()
@@ -22,30 +21,9 @@ const scopedId = getUuid('__i-simple-filter__')
 const columnList = computed(() => {
   return object_reduce<any[]>(props.columns, (res: any[], curr: any) => {
     res.push(curr)
-
     return res
   }, [])
 })
-
-const getSlot = (key: string, column: Record<string, any>) => {
-  if (!isEmpty(slots[`filter-${key}`])) {
-    return slots[`filter-${key}`]({
-      key,
-      prop: key,
-      label: column.label,
-      column
-    })
-  }
-  if (!isEmpty(slots['filter-all'])) {
-    return slots['filter-all']({
-      key,
-      prop: key,
-      label: column.label,
-      column
-    })
-  }
-  return null
-}
 
 const isVisible = ref(false)
 
@@ -55,97 +33,117 @@ defineExpose({
   }
 })
 
-const SimpleFilterTemplate = () => (
-  <div class={[`SimpleFilter_${version}`, `${scopedId}`, styles['__i-simple-filter__']]}>
-    <CustomPopover
-      visible={isVisible.value}
-      placement={props.placement}
-      width={props.width}
-      popper-style='padding: 0px;'
-    >
-      {{
-        // v-slot:default
-        default: () => (
-          <div
-            class={styles['filter-container']}
-            // v-on-click-outside={(e: MouseEvent) => {
-            //   isVisible.value = false
-            //   e.stopPropagation()
-            // }}
-          >
-            <div class={styles['filter-header']}>
-              <CustomButton
-                iconName='close'
-                text
-                onClick={(e: MouseEvent) => {
-                  isVisible.value = false
-                  e.stopPropagation()
-                }}
-              />
-            </div>
-
-            <div class={`${styles['filter-body']} ${props.class}`}>
-              {columnList.value.length > 0
-                ? columnList.value.map(column => {
-                    const { key } = column
-                    return getSlot(key, column)
-                  }).filter(item => !isEmpty(item))
-                : 'empty'}
-            </div>
-
-            <div class={styles['filter-footer']}>
-              <CustomButton
-                iconName='chevron-left'
-                iconMove='translate'
-                label={i18nTranslate('return')}
-                onClick={(e: MouseEvent) => {
-                  isVisible.value = false
-                  e.stopPropagation()
-                }}
-              />
-              <CustomButton
-                iconName='arrow-rotate-left'
-                iconMove='rotate'
-                type='warning'
-                label={i18nTranslate('reset')}
-                onClick={(e: MouseEvent) => {
-                  emit('reset')
-                  e.stopPropagation()
-                }}
-              />
-              <CustomButton
-                iconName='search'
-                iconMove='scale'
-                type='success'
-                label={i18nTranslate('search')}
-                onClick={(e: MouseEvent) => {
-                  // isVisible.value = false
-                  emit('submit')
-                  e.stopPropagation()
-                }}
-              />
-            </div>
-          </div>
-        ),
-        // v-slot:reference
-        reference: () => (
-          <CustomButton
-            iconName='filter'
-            type='primary'
-            label={i18nTranslate('filter')}
-            onClick={(e: MouseEvent) => {
-              isVisible.value = !isVisible.value
-              e.stopPropagation()
-            }}
-          />
-        )
-      }}
-    </CustomPopover>
-  </div>
-)
+const slots: Record<string, any> = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return hasOwnProperty(slots, prop)
+}
 
 </script>
 
 <template>
-  <SimpleFilterTemplate />
+  <div class="__i-simple-filter__" :class="[`SimpleFilter_${version}`, `${scopedId}`]">
+    <CustomPopover
+      :visible="isVisible"
+      :placement="props.placement"
+      :width="props.width"
+      popper-style="padding: 0px;"
+    >
+      <template #default>
+        <div class="filter-container">
+          <div class="filter-header">
+            <CustomButton
+              icon-name="close"
+              text
+              @click="isVisible = false"
+            ></CustomButton>
+          </div>
+
+          <div class="filter-body" :class="props.class">
+            <template v-for="column in columnList" :key="`filter-${column.key}-${scopedId}`">
+              <template v-if="hasSlot(`filter-${column.key}`)">
+                <slot
+                  :name="`filter-${column.key}`"
+                  :key="column.key"
+                  :prop="column.key"
+                  :label="column.label"
+                  :column="column"
+                ></slot>
+              </template>
+              <template v-else-if="hasSlot('filter-all')">
+                <slot
+                  name="filter-all"
+                  :key="column.key"
+                  :prop="column.key"
+                  :label="column.label"
+                  :column="column"
+                ></slot>
+              </template>
+              <div v-else>empty</div>
+            </template>
+          </div>
+
+          <div class="filter-footer">
+            <CustomButton
+              icon-name='chevron-left'
+              icon-move='translate'
+              :label="i18nTranslate('return')"
+              @click="isVisible = false"
+            ></CustomButton>
+            <CustomButton
+              icon-name='arrow-rotate-left'
+              icon-move='rotate'
+              type='warning'
+              :label="i18nTranslate('reset')"
+              @click="emit('reset')"
+            ></CustomButton>
+            <CustomButton
+              icon-name='search'
+              icon-move='scale'
+              type='success'
+              :label="i18nTranslate('search')"
+              @click="emit('submit')"
+            ></CustomButton>
+          </div>
+        </div>
+      </template>
+      <template #reference>
+        <CustomButton
+          icon-name='filter'
+          type='primary'
+          :label="i18nTranslate('filter')"
+          @click="isVisible = !isVisible"
+        ></CustomButton>
+      </template>
+    </CustomPopover>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.__i-simple-filter__ {
+  width: fit-content;
+  height: fit-content;
+}
+
+.filter {
+  &-container {
+    width: 100%;
+    padding: 8px 24px;
+  }
+
+  &-header,
+  &-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &-footer {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  &-body {
+    width: 100%;
+  }
+}
+</style>

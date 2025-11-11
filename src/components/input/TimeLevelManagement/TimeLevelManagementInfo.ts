@@ -1,13 +1,13 @@
 import type { PropType } from 'vue'
 
-import type { CustomPopoverProps, CustomIconProps } from '@/components' // 系統組件
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { CustomPopoverProps, CustomIconProps } from '@/components/feature' // 系統組件: 功能
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 export const version = '1.0.0'
 
-export declare namespace Types {
-  type TimeLevelOption = {
+export interface Types {
+  timeLevelOption: {
     name: string // name of TimeLevel
     index: number // index of TimeLevel
     active?: boolean // TimeLevel is active or not
@@ -19,28 +19,28 @@ export declare namespace Types {
   }
 }
 
-export declare namespace Props {
-  type TimeLevelOptions = Array<Types.TimeLevelOption>
-  type LevelIndex = number
-  type LevelIndexs = Array<number> | null
-  type Placement = CustomPopoverProps.Placement
-  type IconSize = CustomIconProps.Size
-  type I18nModule = ScopeKey
+export interface Props {
+  timeLevelOptions: Array<Types['timeLevelOption']>
+  levelIndex: number
+  levelIndexs: Array<number> | null
+  placement: CustomPopoverProps['placement']
+  iconSize: CustomIconProps['size']
+  i18nModule: ScopeKey
 }
 
 export const props = {
   options: {
-    type: Array as PropType<Props.TimeLevelOptions>,
+    type: Array as PropType<Props['timeLevelOptions']>,
     require: true,
     description: '可用的時間維度選項'
   },
   baseLevelIndex: {
-    type: Number as PropType<Props.LevelIndex>,
+    type: Number as PropType<Props['levelIndex']>,
     required: true,
     description: '用來當基準的時間維度'
   },
   activeLevelIndexs: {
-    type: [ Array, null ] as PropType<Props.LevelIndexs>,
+    type: [ Array, null ] as PropType<Props['levelIndexs']>,
     description: `
       現在使用中的時間維度
       如果有設置activeLevelIndexs的話
@@ -48,21 +48,21 @@ export const props = {
     `
   },
   placement: {
-    type: String as PropType<Props.Placement>,
+    type: String as PropType<Props['placement']>,
     default: 'left-start'
   },
   iconSize: {
-    type: String as PropType<Props.IconSize>,
+    type: String as PropType<Props['iconSize']>,
     default: 'small'
   },
   i18nModule: {
-    type: String as PropType<Props.I18nModule>,
+    type: String as PropType<Props['i18nModule']>,
     required: false,
     default: defaultModuleType,
     description: 'label, options 使用 i18nLabel 時套用的翻譯模組'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

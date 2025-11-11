@@ -2,7 +2,7 @@
 import { useSlots } from 'vue'
 import { ElTag } from 'element-plus'
 
-import { CustomIcon } from '@/components' // 系統組件
+import { CustomIcon } from '@/components/feature' // 系統組件
 import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import type { Emits } from './CustomTagInfo'
@@ -13,10 +13,10 @@ const scopedId = getUuid(version)
 const props = defineProps(tagProps)
 
 const emit = defineEmits(['click', 'close'])
-const onClick: Emits.Click = (evt: MouseEvent) => {
+const onClick: Emits['click'] = (evt: MouseEvent) => {
   emit('click', evt)
 }
-const onClose: Emits.Close = (evt: MouseEvent) => {
+const onClose: Emits['close'] = (evt: MouseEvent) => {
   emit('close', evt)
 }
 

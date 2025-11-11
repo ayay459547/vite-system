@@ -2,26 +2,22 @@
 import type { PropType } from 'vue'
 import { inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { VxeColgroup, VxeColumn } from '@/components' // 系統組件
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { VxeColgroup, VxeColumn } from '@/components/table' // 系統組件: 表格
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 const props = defineProps({
   groupDateColumns: {
     type: Array as PropType<any[]>,
     required: false,
-    default: () => {
-      return []
-    },
+    default: () => [],
     description: '日期欄位群組資料'
   },
   dateColumns: {
     type: Array as PropType<any[]>,
     required: false,
-    default: () => {
-      return []
-    },
+    default: () => [],
     description: '日期線顯示欄位資料'
   },
   baseWidth: {
@@ -39,7 +35,7 @@ const props = defineProps({
 })
 // GroupDateColumn
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })

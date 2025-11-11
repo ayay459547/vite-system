@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { inject, useSlots, computed, reactive } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomDraggable, CustomScrollbar, CustomIcon } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import CustomDraggable from '@/components/feature/CustomDraggable/CustomDraggable.vue'
+import CustomScrollbar from '@/components/feature/CustomScrollbar/CustomScrollbar.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Types, Emits, Expose } from './SimpleTableInfo'
@@ -14,7 +17,10 @@ const props = defineProps(simpleCustomTableProps)
 
 const emit = defineEmits([
   'update:model-value',
-  'expand-change'
+  'expand-change',
+  'start',
+  'end',
+  'change'
 ])
 
 const useHook = inject('useHook') as UseHook
@@ -29,9 +35,7 @@ const hasSlot = (prop: string): boolean => {
 
 const tempValue = computed<any[]>({
   get: () => {
-    if(!isEmpty(props.modelValue)) {
-      return props.modelValue
-    }
+    if(!isEmpty(props.modelValue)) return props.modelValue
     return props.tableData
   },
   set: (value: any[]) => {
@@ -119,7 +123,7 @@ const getCellStyle = (options: any) => {
     }, [])
   }
 
-  let showStyle: Record<string, any> = {...cellStyle}
+  const showStyle: Record<string, any> = {...cellStyle}
   if (width > 0) {
     showStyle['width'] = `${width}px`
     showStyle['max-width'] = `${width}px`
@@ -157,7 +161,7 @@ const getCellClass = (options: any) => {
 // expand
 const expandSet = reactive(new Set())
 
-const changeExpand = (options: Types.ExpandOptions, expanded?: boolean) => {
+const changeExpand = (options: Types['expandOptions'], expanded?: boolean) => {
   const { rowKey, row, rowIndex } = options
   const _expanded = expanded ?? !expandSet.has(rowKey)
   if (_expanded) {
@@ -168,12 +172,15 @@ const changeExpand = (options: Types.ExpandOptions, expanded?: boolean) => {
 
   onExpandChange(row, expandSet.has(rowKey), rowIndex, rowKey)
 }
-const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => {
+const onExpandChange: Emits['expandChange'] = (row: any, expanded: boolean, rowIndex: number, rowKey: any) => {
   emit('expand-change', row, expanded, rowIndex, rowKey)
 }
+const onCustomDraggableStart: Emits['start'] = $event => emit('start', $event)
+const onCustomDraggableEnd: Emits['end'] = $event => emit('end', $event)
+const onCustomDraggableChange: Emits['change'] = $event => emit('change', $event)
 
 // 用於可擴展的表格或樹表格，如果某行擴展，則切換。 使用第二個參數，您可以直接設定該行應該被擴展或折疊。
-const toggleRowExpansion: Expose.ToggleRowExpansion = (row: any, expanded?: boolean) => {
+const toggleRowExpansion: Expose['toggleRowExpansion'] = (row: any, expanded?: boolean) => {
   const rowKey = row[props.itemKey] ?? ''
   const rowIndex = tempValue.value.findIndex(rowData => {
     return rowKey === rowData[props.itemKey]
@@ -222,6 +229,9 @@ defineExpose({ toggleRowExpansion })
           :move="props.move"
           :disabled="props.isDraggable ? props.disabled : true"
           class="simple-table-body"
+          @start="onCustomDraggableStart"
+          @end="onCustomDraggableEnd"
+          @change="onCustomDraggableChange"
         >
           <template #item="{ element: rowData, index: rowIndex }">
             <div class="simple-table-row-container">
@@ -292,6 +302,7 @@ div[class*="__SimpleTable"] {
     width: 100%;
     height: 100%;
     // overflow: auto;
+    font-size: 0.9rem;
   }
   .simple-table {
     &-container {
@@ -313,11 +324,13 @@ div[class*="__SimpleTable"] {
       top: 0;
       transform: translateY(-1px);
       color: var(--el-text-color-primary);
+      font-size: 0.9rem;
+      font-weight: 600;
     }
 
     &-emtpy {
       padding: 12px 16px;
-      font-size: 1.2em;
+      font-size: 1.2rem;
       width: 100%;
       height: 100%;
       display: flex;

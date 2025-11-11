@@ -2,32 +2,32 @@ import type { PropType } from 'vue'
 
 export const version = '__GroupSearch_1.0.0__'
 
-export declare namespace Types {}
+export interface Types {}
 
-export declare namespace Props {
-  type Columns = Record<string, Record<string, any>>
-  type Class = string
-  type Size = string | number
+export interface Props {
+  columns: Record<string, Record<string, any>>
+  class: string
+  size: string | number
 }
 
 export const props = {
   columns: {
-    type: Object as PropType<Props.Columns>,
+    type: Object as PropType<Props['columns']>,
     default: () => {
       return {}
     },
     required: false
   },
   class: {
-    type: String as PropType<Props.Class>,
+    type: String as PropType<Props['class']>,
     default: ''
   },
   size: {
-    type: [String, Number] as PropType<Props.Size>,
+    type: [String, Number] as PropType<Props['size']>,
     default: 360
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

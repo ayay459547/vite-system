@@ -3,14 +3,17 @@ import type { PropType } from 'vue'
 import { ref, shallowRef, inject } from 'vue'
 import type { NavigationFailure } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { Navigation } from '@/declare/routes'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
 import { useRoutesHook } from '@/lib/lib_routes'
-import { CustomIcon, CustomScrollbar, CustomTooltip } from '@/components' // 系統組件
+
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import { isEmpty } from '@/lib/lib_utils' // 工具
 
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomScrollbar from '@/components/feature/CustomScrollbar/CustomScrollbar.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
 import SubNavigationView from './SubNavigationView.vue'
 
 const useHook = inject('useHook') as UseHook
@@ -19,15 +22,9 @@ const { i18nTest, i18nTranslate } = useHook({
 })
 
 const props = defineProps({
-  isNavOpen: {
-    type: Boolean as PropType<boolean>,
-    default: false
-  },
   level1List: {
     type: Array as PropType<Navigation[]>,
-    default: () => {
-      return []
-    }
+    default: () => []
   },
   currentRouteName: {
     type: Object as PropType<CurrentRouteName>,
@@ -114,7 +111,6 @@ defineExpose({
     <CustomScrollbar
       class="nav-level1-container"
       :class="[
-        `${props.isNavOpen ? 'nav-is-open' : 'nav-is-close'}`,
         `${isLevel2Open ? 'is-close' : 'is-open'}`
       ]"
     >
@@ -132,9 +128,11 @@ defineExpose({
             >
               <CustomTooltip
                 placement="right"
+                trigger="hover"
+                popper-class="cursor-events-none"
                 :disabled="!isLevel2Open"
                 :offset="12"
-                :show-after="160"
+                :show-after="300"
               >
                 <CustomIcon v-bind="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
                 <template #content>
@@ -161,9 +159,11 @@ defineExpose({
             >
               <CustomTooltip
                 placement="right"
+                trigger="hover"
+                popper-class="cursor-events-none"
                 :disabled="!isLevel2Open"
                 :offset="12"
-                :show-after="160"
+                :show-after="300"
               >
                 <CustomIcon v-bind="getRouteIcon(level1Item)" class="item-icon"></CustomIcon>
                 <template #content>
@@ -202,21 +202,6 @@ defineExpose({
     height: 100%;
     padding: 0 2px;
     position: relative;
-
-    &:hover {
-      .nav-level1-container {
-        &.is-close {
-          opacity: 0.2;
-
-          &:hover {
-            opacity: 1;
-          }
-        }
-        &.is-open {
-          opacity: 1;
-        }
-      }
-    }
   }
 
   &-level1 {

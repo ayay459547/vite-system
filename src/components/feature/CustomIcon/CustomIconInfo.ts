@@ -3,31 +3,36 @@ import type { CustomSize } from '@/components' // 系統組件
 
 export const version = '__CustomIcon_1.0.0__'
 
-export declare namespace Types {
-  type IconType = 'fas' | 'far' | 'fab'
-  type XIconType = '' | 'fluent' | 'ionicons4' | 'ionicons5' | 'antd' | 'material' | 'fa' | 'tabler' | 'carbon' | null | undefined
+export interface Types {
+  iconType: 'fas' | 'far' | 'fab'
+  xIconType: '' | string
+    | 'fluent' | 'ionicons4' | 'ionicons5'
+    | 'antd' | 'material' | 'fa'
+    | 'tabler' | 'carbon'
+    | null | undefined
 }
 
 /**
  * 預設使用 fontawesome 的 icon
  * icon 和 type, name 選一種給
  *
- * 如果有 xType 使用 xicons
+ * 如果有 xType 使用 xicons, name 對應顯示圖示
  */
-export declare namespace Props {
+export interface Props {
   // fontawesome
-  type Icon = [Types.IconType, string] | []
-  type Type = Types.IconType
-  type Name = string
-  // xicons
-  type XType = Types.XIconType
+  icon: [Types['iconType'], string] | []
+  type: Types['iconType']
 
-  type Size = CustomSize
-  type IconClass = string
+  // xicons
+  xType: Types['xIconType']
+
+  name: string
+  size: CustomSize | string
+  iconClass: string
 }
 export const props = {
   icon: {
-    type: Array as unknown as PropType<Props.Icon>,
+    type: Array as unknown as PropType<Props['icon']>,
     required: false,
     default: () => {
       return []
@@ -35,37 +40,37 @@ export const props = {
     description: '[類型, 名稱]'
   },
   type: {
-    type: String as PropType<Props.Type>,
+    type: String as PropType<Props['type']>,
     required: false,
     default: 'fas',
     description: '類型'
   },
   xType: {
-    type: [String, null] as PropType<Props.XType>,
+    type: [String, null] as PropType<Props['xType']>,
     required: false,
     default: '',
     description: 'XIcon類型'
   },
   name: {
-    type: String as PropType<Props.Name>,
+    type: String as PropType<Props['name']>,
     required: false,
     default: 'circle-question',
     description: '名稱'
   },
   size: {
-    type: String as PropType<Props.Size>,
+    type: String as PropType<Props['size']>,
     required: false,
     default: 'default',
     description: '大小'
   },
   iconClass: {
-    type: String as PropType<Props.IconClass>,
+    type: String as PropType<Props['iconClass']>,
     required: false,
     default: '',
     description: 'class 樣式'
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

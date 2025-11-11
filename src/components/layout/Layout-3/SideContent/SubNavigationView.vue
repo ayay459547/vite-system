@@ -3,12 +3,14 @@ import type { PropType, WritableComputedRef } from 'vue'
 import { computed, inject, ref, nextTick } from 'vue'
 import type { NavigationFailure } from 'vue-router'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { Navigation } from '@/declare/routes'
-import { CustomIcon, CustomScrollbar, CustomTooltip } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
 import { useRoutesHook } from '@/lib/lib_routes'
 import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
+
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomScrollbar from '@/components/feature/CustomScrollbar/CustomScrollbar.vue'
 
 const props = defineProps({
   isLevel2Open: {
@@ -46,7 +48,7 @@ const { getRouteTitle } = useRoutesHook({
   i18nTest
 })
 
-const tempIsOpen: WritableComputedRef<Boolean> = computed({
+const tempIsOpen: WritableComputedRef<boolean> = computed({
   get: () => props.isLevel2Open,
   set: value => emit('update:isLevel2Open', value)
 })
@@ -90,12 +92,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                 class="nav-item-left"
                 :class="{ active: props.currentRouteName.level2 === routerItem.name }"
               >
-                <CustomTooltip :show-after="800">
-                  <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                  <template #content>
-                    <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                  </template>
-                </CustomTooltip>
+                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
               </div>
 
               <CustomIcon
@@ -134,12 +131,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                     )
                   "
                 >
-                  <CustomTooltip :show-after="800">
-                    <span class="item-title">{{ getRouteTitle(leaf) }}</span>
-                    <template #content>
-                      <span class="item-title">{{ getRouteTitle(leaf) }}</span>
-                    </template>
-                  </CustomTooltip>
+                  <span class="item-title">{{ getRouteTitle(leaf) }}</span>
                 </div>
 
                 <div class="nav-item-right"></div>
@@ -167,12 +159,7 @@ const onRouterLinkClick = async (navigate: Navigate, routerName: string, active:
                 )
               "
             >
-              <CustomTooltip :show-after="800">
-                <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                <template #content>
-                  <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
-                </template>
-              </CustomTooltip>
+              <span class="item-title">{{ getRouteTitle(routerItem) }}</span>
             </div>
 
             <div class="nav-item-right"></div>

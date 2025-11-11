@@ -1,11 +1,13 @@
-import type { RouterTree } from '@/declare/routes'
+import type { RouterTree } from '@/types/types_routes'
+import { totalPermission } from '@/lib/lib_permission' // 權限
 
 const descriptionRoutes: RouterTree[] = [
   {
     name: 'components-description',
     title: '組件說明',
     meta: {
-      systemType: ['system', 'test'],
+      isEnabled: true,
+      permission: totalPermission,
       icon: 'book'
     },
     leaves: [
@@ -13,7 +15,8 @@ const descriptionRoutes: RouterTree[] = [
         name: 'description-1',
         title: '輸入框組件',
         meta: {
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         },
         leaves: []
       },
@@ -21,7 +24,8 @@ const descriptionRoutes: RouterTree[] = [
         name: 'description-2',
         title: '表格組件',
         meta: {
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         },
         leaves: [
           {
@@ -29,8 +33,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomTable',
             component: () => import('@/views/ComponentsDescription/Des_Table.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           }
         ]
@@ -39,7 +43,8 @@ const descriptionRoutes: RouterTree[] = [
         name: 'description-3',
         title: '常用組件',
         meta: {
-          systemType: ['system']
+          isEnabled: true,
+          permission: totalPermission
         },
         leaves: [
           {
@@ -47,8 +52,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomButton',
             component: () => import('@/views/ComponentsDescription/Des_Button.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -56,8 +61,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomIcon',
             component: () => import('@/views/ComponentsDescription/Des_Icon.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -65,8 +70,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomModal',
             component: () => import('@/views/ComponentsDescription/Des_Modal.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           }
         ]
@@ -75,7 +80,8 @@ const descriptionRoutes: RouterTree[] = [
         name: 'description-4',
         title: '其他組件',
         meta: {
-          systemType: ['system']
+      isEnabled: true,
+      permission: totalPermission
         },
         leaves: [
           {
@@ -83,8 +89,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomBadge',
             component: () => import('@/views/ComponentsDescription/Des_Badge.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -92,8 +98,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomDivider',
             component: () => import('@/views/ComponentsDescription/Des_Divider.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -101,8 +107,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomDrawer',
             component: () => import('@/views/ComponentsDescription/Des_Drawer.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -110,8 +116,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomEmpty',
             component: () => import('@/views/ComponentsDescription/Des_Empty.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -119,8 +125,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomImage',
             component: () => import('@/views/ComponentsDescription/Des_Image.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -128,8 +134,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomPopover',
             component: () => import('@/views/ComponentsDescription/Des_Popover.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -137,8 +143,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomTooltip',
             component: () => import('@/views/ComponentsDescription/Des_Tooltip.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -146,8 +152,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomCollapse',
             component: () => import('@/views/ComponentsDescription/Des_Collapse.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           },
           {
@@ -155,8 +161,8 @@ const descriptionRoutes: RouterTree[] = [
             title: 'CustomSwitch',
             component: () => import('@/views/ComponentsDescription/Des_Switch.vue'),
             meta: {
-              keepAlive: false,
-              systemType: ['system', 'test']
+              isEnabled: true,
+              permission: totalPermission
             }
           }
         ]

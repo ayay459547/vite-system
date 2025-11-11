@@ -1,0 +1,59 @@
+[
+  {
+    "process": {
+      "pk": {
+        "id": "BC0001"
+      }
+    },
+    "machine": {
+      "pk": {
+        "id": "C05500002"
+      }
+    },
+    "constraintType": "engineering",
+    "employeeName": "aat",
+    "logicRestrictions": [
+      {
+        "_type": "machineProcessProductionConstraint",
+        "_value": {
+          "process": {
+            "pk": {
+              "id": "BC0001"
+            }
+          },
+          "machine": {
+            "pk": {
+              "id": "C05500002"
+            }
+          },
+          "constraintType": "engineering",
+          "employeeName": "aat",
+          "restrictions": [
+            {
+              "_type": "StrRestriction",
+              "_value": {
+                "restrictionTypeAttr": {
+                  "id": "CUSTOMER_NO"
+                },
+                "positive": true,
+                "strMatchingType": "FULL",
+                "valueInArray": "T003"
+              }
+            },
+            {
+              "_type": "StrRestriction",
+              "_value": {
+                "restrictionTypeAttr": {
+                  "id": "CUSTOMER_NO"
+                },
+                "positive": true,
+                "strMatchingType": "FROM_TAIL",
+                "valueInArray": "T004"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

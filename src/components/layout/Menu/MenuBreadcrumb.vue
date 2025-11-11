@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { type ComputedRef, computed, inject } from 'vue'
+import type { ComputedRef } from 'vue'
+import { computed, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomIcon, CustomTooltip } from '@/components' // 系統組件
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { defaultModuleType } from '@/declare/declare_i18n'
+import { useRoutesStore } from '@/stores/useRoutesStore'
+
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
 
 type TextAlign = 'start' | 'end'
+type Breadcrumb = {
+  type: string
+  name: string
+}
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
 const props = defineProps<{
-  breadcrumbName: string[]
-  breadcrumbTitle: string[]
   textAlign: TextAlign
 }>()
 
@@ -22,27 +29,27 @@ const emit = defineEmits<{
   (e: 'setRouter', value: string[]): void
 }>()
 
-type Breadcrumb = {
-  type: string
-  name: string
-}
+
+// 路由
+const routesStore = useRoutesStore()
+const { breadcrumbName, breadcrumbTitle } = storeToRefs(routesStore)
+
 const currentPath: ComputedRef<Breadcrumb[]> = computed(() => {
-  return props.breadcrumbName.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
-    const name = i18nTest(crumb) ? i18nTranslate(crumb) : props.breadcrumbTitle[crumbIndex]
+  return breadcrumbName.value.reduce((res: Breadcrumb[], crumb, crumbIndex): Breadcrumb[] => {
+    const name = i18nTest(crumb) ? i18nTranslate(crumb) : breadcrumbTitle.value[crumbIndex]
 
     if (crumbIndex === 0) {
       res.push({ type: 'text', name })
     } else {
       res.push({ type: 'icon', name: ' / ' }, { type: 'text', name })
     }
-
     return res
   }, [])
 })
 
 const onBreadcrumbTextClick = (index: number) => {
   const targetLength = Math.floor(index / 2)
-  const targetRoutePath = props.breadcrumbName.slice(0, targetLength + 1)
+  const targetRoutePath = breadcrumbName.value.slice(0, targetLength + 1)
 
   emit('setRouter', targetRoutePath)
 }
@@ -51,29 +58,40 @@ const onBreadcrumbTextClick = (index: number) => {
 <template>
   <div class="breadcrumb-container">
     <div class="breadcrumb-lg" :class="props.textAlign">
-      <CustomIcon name="location-dot" class="breadcrumb-icon" icon-class="text-danger" />
-      <div
-        v-for="(item, index) in currentPath"
-        :key="index"
-        class="breadcrumb-path"
-        @click="onBreadcrumbTextClick(index)"
-      >
-        {{ item.name }}
+      <CustomIcon
+        name="location-dot"
+        class="breadcrumb-icon"
+        icon-class="text-danger"
+      />
+      <div class="breadcrumb-path">
+        <div
+          v-for="(item, index) in currentPath"
+          :key="index"
+          class="breadcrumb-text"
+          @click="onBreadcrumbTextClick(index)"
+        >
+          {{ item.name }}
+        </div>
       </div>
     </div>
 
     <div class="breadcrumb-xs">
-      <CustomTooltip placement="right">
-        <CustomIcon name="location-dot" class="breadcrumb-icon" icon-class="text-danger" />
-
+      <CustomTooltip trigger="click" placement="right" :show-after="300">
+        <CustomIcon
+          name="location-dot"
+          class="breadcrumb-icon"
+          icon-class="text-danger"
+        />
         <template #content>
-          <div
-            v-for="(item, index) in currentPath"
-            :key="index"
-            class="breadcrumb-text"
-            @click="onBreadcrumbTextClick(index)"
-          >
-            <div v-if="item.type === 'text'">{{ item.name }}</div>
+          <div class="breadcrumb-path">
+            <div
+              v-for="(item, index) in currentPath"
+              :key="index"
+              class="breadcrumb-text"
+              @click="onBreadcrumbTextClick(index)"
+            >
+              {{ item.name }}
+            </div>
           </div>
         </template>
       </CustomTooltip>
@@ -85,19 +103,24 @@ const onBreadcrumbTextClick = (index: number) => {
 .breadcrumb {
   &-container {
     width: 100%;
+    max-width: 50vw;
     height: fit-content;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
   }
 
   &-icon {
     position: relative;
   }
+  &-path {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
   &-text {
     cursor: pointer;
-    padding: 8px;
-    font-size: 1.5em;
-  }
-  &-path {
-    cursor: pointer;
+    font-size: 18px;
     transition: 0.3s color;
     color: var(--i-color-breadcrumb-text);
     &:hover {
@@ -114,37 +137,12 @@ const onBreadcrumbTextClick = (index: number) => {
     position: relative;
     gap: 8px;
     &.start {
-      .icon,
-      .text {
-        position: absolute;
-        cursor: pointer;
-      }
-      .text {
-        max-width: 100%;
-        width: fit-content;
-        // 文字超出 ellipsis
-        left: 36px;
-      }
+      justify-content: flex-start;
     }
     &.end {
       justify-content: flex-end;
-      gap: 12px;
-    }
-
-    &.end {
-      .icon,
-      .text {
-        cursor: pointer;
-      }
-      .text {
-        max-width: 100%;
-        width: fit-content;
-        // 文字超出 ellipsis
-        right: 12px;
-      }
     }
   }
-
   &-xs {
     display: none;
   }

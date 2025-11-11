@@ -37,4 +37,10 @@ const hasSlot = (prop: string): boolean => {
   </ElCard>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-card {
+  --el-card-border-color: var(--el-border-color-light);
+  --el-card-border-radius: 4px;
+  --el-card-padding: 16px;
+}
+</style>

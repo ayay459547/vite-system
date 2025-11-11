@@ -3,6 +3,7 @@ import {
   useSlots,
   inject,
   ref,
+  reactive,
   shallowRef,
   shallowReactive,
   computed,
@@ -11,29 +12,34 @@ import {
 } from 'vue'
 import { ElPagination } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { ColumnItem } from '@/declare/columnSetting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { ColumnItem } from '@/types/types_columnSetting'
 import { isEmpty, getProxyData, getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 import { object_findIndex } from '@/lib/lib_object'
 import { numberFormat } from '@/lib/lib_format' // 格式化
-import { printElement } from '@/lib/lib_utils' // 工具
-import {
-  CustomButton,
-  CustomPopover,
-  CustomInput,
-  CustomIcon,
-  CustomTooltip,
-  CustomText
-} from '@/components' // 系統組件
+import { setLocalStorage, getLocalStorage } from '@/lib/lib_storage'
+// import { printElement } from '@/lib/lib_utils' // 工具
+
+import CustomInput from '@/components/input/CustomInput/CustomInput.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomIcon from '@/components/feature/CustomIcon/CustomIcon.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
+import CustomText from '@/components/feature/CustomText/CustomText.vue'
+import CustomSvg from '@/components/feature/CustomSvg/CustomSvg.vue'
+
+// 表格
+import { useTableSlot } from '@/components/table/BasicTable/hook'
+import BasicTable from '@/components/table/BasicTable/BasicTable.vue'
 
 // 欄位設定
+import { rowOperationsColumn, rowNoColumn } from './extendColumns'
 import ColumnSetting from './Components/ColumnSetting.vue'
 // 欄位排序
 import ColumnSorting from './Components/ColumnSorting.vue'
 // 群組排序
 import GroupSorting from './Components/GroupSorting.vue'
-import TableMain from './TableMain.vue'
 
 import type { Types, Emits } from './CustomTableInfo'
 import { version, props as tableProps } from './CustomTableInfo'
@@ -42,7 +48,7 @@ const scopedId = getUuid('__i-table__')
 
 const props = defineProps(tableProps)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, message } = useHook({
   i18nModule: props.i18nModule
 })
@@ -75,33 +81,33 @@ const isRender = ref(false)
 // const isResizing = ref(false)
 
 // 點擊 excel
-const excelIsShow = ref(false)
+const isShowExcel = ref(false)
 const onExcelClick = (type: 'all' | 'page') => {
   emit('excel', {
     type,
     tableColumns: props.tableColumns,
     tableData: props.tableData
   })
-  excelIsShow.value = false
+  isShowExcel.value = false
 }
 
 // 點擊 pdf
 const isHiddenPdf = () => {
-  if(!props.useDownloadModal) return true
+  return !props.useDownloadModal
 }
-const pdfIsShow = ref(false)
+const isShowPdf = ref(false)
 const onPdfClick = (type: 'all' | 'page') => {
   emit('pdf', type)
-  pdfIsShow.value = false
+  isShowPdf.value = false
 }
 
 // 列印
-const printData = () => {
-  const tableElement = document.querySelector(`.${scopedId} .el-table__inner-wrapper`)
-  if (tableElement) {
-    printElement(tableElement)
-  }
-}
+// const printData = () => {
+//   const tableElement = document.querySelector(`.${scopedId} .el-table__inner-wrapper`)
+//   if (tableElement) {
+//     printElement(tableElement)
+//   }
+// }
 
 // 每頁顯示筆數
 let lastValue: number = props.pageSize
@@ -161,7 +167,14 @@ const onPageChange = (v: number) => {
   pageChange(v, tempPageSize)
 }
 
-const pageChange: Types.PageChange = (page, pageSize) => {
+// 計算行數的編號
+const getRowNo = (rowIndex?: number) => {
+  const rowNo = (rowIndex ?? -1) + 1
+  if (props.isLazyLoading) return rowNo
+  return rowNo + ((currentPage.value - 1) * pageSize.value)
+}
+
+const pageChange: Types['pageChange'] = (page, pageSize) => {
   currentPage.value = page
 
   emit('page-change', { page, pageSize })
@@ -175,7 +188,7 @@ const pageChange: Types.PageChange = (page, pageSize) => {
 }
 
 // 單欄排序
-const currentSort = shallowRef<Types.Sort>({
+const currentSort = shallowRef<Types['sort']>({
   key: null,
   order: null
 })
@@ -201,10 +214,10 @@ const onSortChange = (props: {
   })
 }
 // 多欄排序
-const sortingList = ref<Types.SortingList>([])
-const emitSortingData = computed<Types.SortingMap>(() => {
+const sortingList = ref<Types['sortingList']>([])
+const emitSortingData = computed<Types['sortingMap']>(() => {
   // return sortingList.value.filter(item => item.order !== 'none')
-  return sortingList.value.reduce<Types.SortingMap>((res, curr) => {
+  return sortingList.value.reduce<Types['sortingMap']>((res, curr) => {
     const { key, order } = curr
 
     if (typeof key === 'string') {
@@ -218,7 +231,7 @@ const emitSortingData = computed<Types.SortingMap>(() => {
       }
     }
 
-    return res as Types.SortingMap
+    return res as Types['sortingMap']
   }, {})
 })
 
@@ -241,8 +254,9 @@ const activeSort = () => {
     }
   })
 }
+// 初始化排序設定
 const initSortingList = async () => {
-  sortingList.value = tempColumns.value.reduce<Types.SortingList>((res, column) => {
+  sortingList.value = tempColumns.value.reduce<Types['sortingList']>((res, column) => {
     const _isOperations = column?.isOperations ?? false
 
     if (!_isOperations && (column?.isSorting ?? true)) {
@@ -250,21 +264,36 @@ const initSortingList = async () => {
         label: column.label,
         i18nLabel: column.i18nLabel,
         key: column.key,
-        order: (column?.order ?? 'none') as Types.Order,
+        order: (column?.order ?? 'none') as Types['order'],
         orderIndex: (column?.orderIndex ?? -1) as number
       })
     }
     return res
   }, [])
-
   activeSort()
   await nextTick()
 }
-const resetSorting = () => {
-  sortingList.value = sortingList.value.map(sortingItem => {
-    return { ...sortingItem, order: 'none', orderIndex: -1 }
-  })
+// 重置排序
+const resetSorting = async () => {
+  sortingList.value = extendTableColumns.value.reduce<Types['sortingList']>((res, column) => {
+    const _isOperations = column?.isOperations ?? false
+
+    if (!_isOperations && (column?.isSorting ?? true)) {
+      res.push({
+        label: column.label,
+        i18nLabel: column.i18nLabel,
+        key: column.key,
+        order: (column?.order ?? 'none') as Types['order'],
+        orderIndex: (column?.orderIndex ?? -1) as number
+      })
+    }
+    return res
+  }, [])
+  activeSort()
+  // onSortingChange()
+  await nextTick()
 }
+// 排序異動 (設定新的排序資料到 indexedDB)
 const onSortingChange = () => {
   activeSort()
   emit('sorting-change', getProxyData(emitSortingData.value))
@@ -338,7 +367,10 @@ const setElementWidth = (column: any, trIndex: number): Promise<any> => {
           const headerColumnElement = document.querySelectorAll(`.${scopedId} tr:nth-child(${trIndex}) th:nth-child(${cellIndex})`)
           const bodyColumnElements = document.querySelectorAll(`.${scopedId} tr td:nth-child(${cellIndex})`)
 
-          const columnElements = [...headerColumnElement, ...bodyColumnElements]
+          const columnElements = [
+            ...Array.from(headerColumnElement),
+            ...Array.from(bodyColumnElements)
+          ]
           columnElements.forEach(element => {
             element.classList.add('__is-resizing__') // 添加類別
           })
@@ -376,7 +408,6 @@ const setColumnWidth = async (prop: any, newWidth: number) => {
   emit('column-width-change', prop, newWidth )
 }
 
-
 // Column 欄位寬度最適化
 const optimizeColumnWidth = (column: any) => {
   setElementWidth(column, 1).then(() => {
@@ -394,32 +425,32 @@ const optimizeAllColumnWidth = () => {
 }
 
 // Emit
-const onRowClick: Emits.RowClick = (row, column, event) => {
+const onRowClick: Emits['rowClick'] = (row, column, event) => {
   emit('row-click', row, column, event)
 }
-const onHeaderClick: Emits.HeaderClick = (column, event) => {
+const onHeaderClick: Emits['headerClick'] = (column, event) => {
   emit('header-click', column, event)
 }
-const onExpandChange: Emits.ExpandChange = (row, expanded) => {
+const onExpandChange: Emits['expandChange'] = (row, expanded) => {
   emit('expand-change', row, expanded)
 }
-const onHeaderDragend: Emits.HeaderDragend = (newWidth: number, oddWidth: number, column: any, event: Event) => {
+const onHeaderDragend: Emits['headerDragend'] = (newWidth: number, oddWidth: number, column: any, event: Event) => {
   if (columnSetting.value) {
     const props = column?.rawColumnKey ?? column?.property
     setColumnWidth(props, newWidth)
   }
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const onSelect: Emits.Select = (selection, row) => {
+const onSelect: Emits['select'] = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll: Emits.SelectAll = (selection: any) => {
+const onSelectAll: Emits['selectAll'] = (selection: any) => {
   emit('select-all', selection)
 }
-const onSelectionChange: Emits.SelectionChange = (newSelection: any) => {
+const onSelectionChange: Emits['selectionChange'] = (newSelection: any) => {
   emit('selection-change', newSelection)
 }
-const onRowContextmenu: Emits.RowContextmenu = (row, column, event) => {
+const onRowContextmenu: Emits['rowContextmenu'] = (row, column, event) => {
   emit('row-contextmenu', row, column, event)
 }
 const onLoad = () => {
@@ -437,7 +468,7 @@ const onLoad = () => {
  * 頁碼
  * 排序
  */
-const onShowChange = (props: { page: number; pageSize: number; sort: Types.Sort, emitType?: string }) => {
+const onShowChange = (props: { page: number; pageSize: number; sort: Types['sort'], emitType?: string }) => {
   const { page, pageSize, sort, emitType = 'show-change' } = props
 
   emit('show-change', {
@@ -461,9 +492,24 @@ const showData = computed(() => {
   }
 })
 
+
+
+const hasSlotReactive = reactive({
+  rowOperations: false,
+  rowNo: false
+})
+const extendTableColumns =  computed(() => {
+  const tableColumns = [...props.tableColumns]
+
+  if(hasSlotReactive.rowOperations) tableColumns.push(rowOperationsColumn)
+  if(hasSlotReactive.rowNo) tableColumns.unshift(rowNoColumn)
+
+  return tableColumns // props.tableColumns
+})
+
 const columnSetting = ref<typeof ColumnSetting>()
-const tempColumns = shallowRef([...props.tableColumns])
-const showColumns = shallowReactive([...props.tableColumns])
+const tempColumns = shallowRef([...extendTableColumns.value])
+const showColumns = shallowReactive([...extendTableColumns.value])
 
 // 初始化顯示欄位
 const initShowColumns = async (setting?: any) => {
@@ -485,7 +531,7 @@ const initShowColumns = async (setting?: any) => {
 
     const resColumns = tempColumns.value.reduce<any[]>((resColumn, tempColumn) => {
       if (tempColumn.isShow) {
-        const showColumn = props.tableColumns.find(column => {
+        const showColumn = extendTableColumns.value.find(column => {
           return tempColumn.key === column.key
         })
 
@@ -524,22 +570,24 @@ onMounted(async () => {
   }, 0)
 })
 
-const tableMainRef = ref<typeof TableMain>()
+const BasicTableRef = ref<InstanceType<typeof BasicTable>>()
 const resetScroll = () => {
-  tableMainRef.value?.resetScroll()
+  BasicTableRef.value?.resetScroll()
 }
 const toggleSelection = (rows: any[]) => {
-  tableMainRef.value?.toggleSelection(rows)
+  BasicTableRef.value?.toggleSelection(rows)
 }
 const getSelectionRows = () => {
-  const selectionRows = tableMainRef.value?.getSelectionRows() ?? []
+  const selectionRows = BasicTableRef.value?.getSelectionRows() ?? []
   return getProxyData(selectionRows)
 }
 
 defineExpose({
+  // BasicTable
   resetScroll,
   toggleSelection,
   getSelectionRows,
+  // custom
   pageChange,
   getTableParams: () => {
     return {
@@ -551,7 +599,7 @@ defineExpose({
     }
   },
   setTableParams: (params: {
-    [P in keyof Types.TableParams]?: Types.TableParams[P]
+    [P in keyof Types['tableParams']]?: Types['tableParams'][P]
   }) => {
     const { page, size, sort, sortingList: _sortingList } = params
 
@@ -560,7 +608,7 @@ defineExpose({
     }
     if (!isEmpty(size)) {
       const _index = sizeOptions.findIndex(option => {
-        option.value === size
+        return option.value === size
       })
 
       if (_index >= 0 && typeof size === 'number') {
@@ -574,51 +622,6 @@ defineExpose({
       sortingList.value = _sortingList
     }
   }
-})
-
-const slots = useSlots()
-const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
-}
-
-/**
- * slot 優先順序
- * 1. header-{ slotKey }
- * 2. header-all
- *
- * 1. column-{ slotKey }
- * 2. column-all
- */
-const getSlot = (slotKey: string, type: 'header' | 'column'): string => {
-  switch (type) {
-    case 'header':
-      if (hasSlot(`header-${slotKey}`)) return `header-${slotKey}`
-      if (hasSlot('header-all') || props.isSorting) return 'header-all'
-      break
-    case 'column':
-      if (hasSlot(`column-${slotKey}`)) return `column-${slotKey}`
-      if (hasSlot('column-all')) return 'column-all'
-      break
-  }
-  return 'null'
-}
-const getHeaderSlot = (slotKey: string): string => {
-  return getSlot(slotKey, 'header')
-}
-const getColumnSlot = (slotKey: string): string => {
-  return getSlot(slotKey, 'column')
-}
-
-const slotKeyList = computed<string[]>(() => {
-  return showColumns.flatMap(column => {
-    if (column.columns && column.columns.length > 0) {
-      return [
-        ...column.columns.map((child: any) => `${column.slotKey}-${child.slotKey}`),
-        column.slotKey
-      ]
-    }
-    return column.slotKey
-  })
 })
 
 // 欄位設定高度不超過 table 本身
@@ -636,28 +639,41 @@ const onUpdateSize = (newSize: TableSizeSetting) => {
 
 const _isPrependOpen = ref(false)
 const isPrependOpen = computed<boolean>({
-  get() {
-    return _isPrependOpen.value
-  },
-  set(value) {
-    localStorage.setItem('isPrependOpen', `${value}`)
+  get: () => _isPrependOpen.value,
+  set: (value: boolean) => {
+    setLocalStorage('isPrependOpen', `${value}`)
     _isPrependOpen.value = value
   }
 })
 onMounted(() => {
-  const _isPrependOpen = localStorage.getItem('isPrependOpen')
+  const _isPrependOpen = getLocalStorage('isPrependOpen')
   if (isEmpty(_isPrependOpen)) {
-    localStorage.setItem('isPrependOpen', 'true')
+    setLocalStorage('isPrependOpen', 'true')
     isPrependOpen.value = true
   } else {
     isPrependOpen.value = _isPrependOpen === 'true'
   }
+
+  hasSlotReactive.rowOperations = hasSlot('row-operations')
+  hasSlotReactive.rowNo = hasSlot('row-no')
 })
+
+// slot
+const slots = useSlots()
+const hasSlot = (prop: string): boolean => {
+  return !!slots[prop]
+}
+
+const {
+  slotKeyList,
+  getHeaderSlot,
+  getColumnSlot
+} = useTableSlot(showColumns)
 </script>
 
 <template>
   <div v-loading="isLoading" class="__table-wrapper" :class="`CustomTable_${version} ${scopedId}`">
-    <template v-if="hasSlot('prepend')">
+    <!-- <template v-if="hasSlot('prepend')">
       <div class="__table-prepend">
         <Transition name="fixed">
           <div v-show="isPrependOpen" class="__table-prepend-content">
@@ -678,52 +694,73 @@ onMounted(() => {
           @click="isPrependOpen = !isPrependOpen"
         />
       </div>
-    </template>
+    </template> -->
 
     <div class="__table-setting">
-      <div class="setting-left">
-        <div style="width: 85px; overflow: hidden">
-          <CustomTooltip placement="top" :show-after="300">
-            <template #content>
-              <!-- 顯示更多 : 分頁 -->
-              <div>{{ i18nTranslate(props.isLazyLoading ? 'load-count' : 'show-count', defaultModuleType) }}</div>
-            </template>
-            <CustomInput
-              v-model="pageSize"
-              validate-key="CustomTable:pageSize"
-              type="select"
-              :options="sizeOptions"
-              hidden-label
-              :filterable="false"
-              :allow-create="false"
-              :default-first-option="false"
-              @change="onSizeChange"
-            />
-          </CustomTooltip>
-        </div>
+      <div class="setting-left" v-if="hasSlot('prepend')">
+        <slot name="prepend"></slot>
+      </div>
 
-        <!-- 顯示更多 -->
-        <div v-if="props.isLazyLoading">
-          <label>
-            {{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}
-          </label>
-        </div>
+      <div class="setting-center">
+        <slot name="setting-center">
+          <CustomText>
+            <strong class="setting-center-title">
+              <slot name="title">
+                {{ i18nTranslate(props?.i18nTitle ?? props.title) }}
+              </slot>
+            </strong>
+          </CustomText>
+        </slot>
+      </div>
 
-        <!-- Download -->
-        <!-- <CustomPopover
-          v-if="!isHiddenPdf()"
-          v-model:visible="pdfIsShow"
+      <div class="setting-right">
+        <slot name="setting-left"></slot>
+        <!-- Excel -->
+        <CustomPopover
+          v-if="!props.isHiddenExcel"
+          v-model:visible="isShowExcel"
           placement="bottom"
           :width="150"
           trigger="click"
           popper-style="padding: 4px;"
         >
           <template #reference>
-            <CustomButton
-              plain
-              icon-name="file-arrow-down"
-            />
+            <CustomButton icon-name="file-excel" text>
+              <template #icon>
+                <CustomSvg name="xlsx"/>
+              </template>
+            </CustomButton>
           </template>
+          <!-- 列印全部資料 列印分頁資料 -->
+          <div class="__excel-list">
+            <div class="__excel-item" @click="onExcelClick('all')">
+              <CustomIcon name="table-list" class="icon" />
+              <div class="text">{{ i18nTranslate('all-data', defaultModuleType) }}</div>
+            </div>
+            <div class="__excel-item" @click="onExcelClick('page')">
+              <CustomIcon type="far" name="file-lines" class="icon" />
+              <div class="text">{{ i18nTranslate('page-data', defaultModuleType) }}</div>
+            </div>
+          </div>
+        </CustomPopover>
+
+        <!-- Pdf -->
+        <CustomPopover
+          v-if="!isHiddenPdf()"
+          v-model:visible="isShowPdf"
+          placement="bottom"
+          :width="150"
+          trigger="click"
+          popper-style="padding: 4px;"
+        >
+          <template #reference>
+            <CustomButton icon-name="file-pdf" text>
+              <template #icon>
+                <CustomSvg name="pdf"/>
+              </template>
+            </CustomButton>
+          </template>
+          <!-- 列印全部資料 列印分頁資料 -->
           <div class="__excel-list">
             <div class="__excel-item" @click="onPdfClick('all')">
               <CustomIcon name="table-list" class="icon" />
@@ -734,116 +771,11 @@ onMounted(() => {
               <div class="text">{{ i18nTranslate('page-data', defaultModuleType) }}</div>
             </div>
           </div>
-        </CustomPopover> -->
-
-        <div class="flex-row-center">
-          <!-- Excel -->
-          <CustomPopover
-            v-if="!props.isHiddenExcel"
-            v-model:visible="excelIsShow"
-            placement="bottom"
-            :width="150"
-            trigger="click"
-            popper-style="padding: 4px;"
-          >
-            <template #reference>
-              <CustomButton icon-name="file-excel" text>
-                <template #icon>
-                  <svg viewBox="0 0 32 32" style="font-size: 1.5em;">
-                    <path d="M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z" style="fill:#20744a;fill-rule:evenodd"/>
-                    <rect x="22.487" y="7.439" width="4.323" height="2.2" style="fill:#20744a"/>
-                    <rect x="22.487" y="10.94" width="4.323" height="2.2" style="fill:#20744a"/>
-                    <rect x="22.487" y="14.441" width="4.323" height="2.2" style="fill:#20744a"/>
-                    <rect x="22.487" y="17.942" width="4.323" height="2.2" style="fill:#20744a"/>
-                    <rect x="22.487" y="21.443" width="4.323" height="2.2" style="fill:#20744a"/>
-                    <polygon points="6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673" style="fill:#ffffff;fill-rule:evenodd"/>
-                  </svg>
-                </template>
-              </CustomButton>
-            </template>
-            <!-- 列印全部資料 列印分頁資料 -->
-            <div class="__excel-list">
-              <div class="__excel-item" @click="onExcelClick('all')">
-                <CustomIcon name="table-list" class="icon" />
-                <div class="text">{{ i18nTranslate('all-data', defaultModuleType) }}</div>
-              </div>
-              <div class="__excel-item" @click="onExcelClick('page')">
-                <CustomIcon type="far" name="file-lines" class="icon" />
-                <div class="text">{{ i18nTranslate('page-data', defaultModuleType) }}</div>
-              </div>
-            </div>
-          </CustomPopover>
-
-          <!-- Pdf -->
-          <CustomPopover
-            v-if="!isHiddenPdf()"
-            v-model:visible="pdfIsShow"
-            placement="bottom"
-            :width="150"
-            trigger="click"
-            popper-style="padding: 4px;"
-          >
-            <template #reference>
-              <CustomButton icon-name="file-pdf" text>
-                <template #icon>
-                  <svg  viewBox="0 0 56 56" style="font-size: 1.4em;">
-                    <g>
-                      <path style="fill:#E9E9E0;" d="M36.985,0H7.963C7.155,0,6.5,0.655,6.5,1.926V55c0,0.345,0.655,1,1.463,1h40.074   c0.808,0,1.463-0.655,1.463-1V12.978c0-0.696-0.093-0.92-0.257-1.085L37.607,0.257C37.442,0.093,37.218,0,36.985,0z"/>
-                      <polygon style="fill:#D9D7CA;" points="37.5,0.151 37.5,12 49.349,12  "/>
-                      <path style="fill:#CC4B4C;" d="M19.514,33.324L19.514,33.324c-0.348,0-0.682-0.113-0.967-0.326   c-1.041-0.781-1.181-1.65-1.115-2.242c0.182-1.628,2.195-3.332,5.985-5.068c1.504-3.296,2.935-7.357,3.788-10.75   c-0.998-2.172-1.968-4.99-1.261-6.643c0.248-0.579,0.557-1.023,1.134-1.215c0.228-0.076,0.804-0.172,1.016-0.172   c0.504,0,0.947,0.649,1.261,1.049c0.295,0.376,0.964,1.173-0.373,6.802c1.348,2.784,3.258,5.62,5.088,7.562   c1.311-0.237,2.439-0.358,3.358-0.358c1.566,0,2.515,0.365,2.902,1.117c0.32,0.622,0.189,1.349-0.39,2.16   c-0.557,0.779-1.325,1.191-2.22,1.191c-1.216,0-2.632-0.768-4.211-2.285c-2.837,0.593-6.15,1.651-8.828,2.822   c-0.836,1.774-1.637,3.203-2.383,4.251C21.273,32.654,20.389,33.324,19.514,33.324z M22.176,28.198   c-2.137,1.201-3.008,2.188-3.071,2.744c-0.01,0.092-0.037,0.334,0.431,0.692C19.685,31.587,20.555,31.19,22.176,28.198z    M35.813,23.756c0.815,0.627,1.014,0.944,1.547,0.944c0.234,0,0.901-0.01,1.21-0.441c0.149-0.209,0.207-0.343,0.23-0.415   c-0.123-0.065-0.286-0.197-1.175-0.197C37.12,23.648,36.485,23.67,35.813,23.756z M28.343,17.174   c-0.715,2.474-1.659,5.145-2.674,7.564c2.09-0.811,4.362-1.519,6.496-2.02C30.815,21.15,29.466,19.192,28.343,17.174z    M27.736,8.712c-0.098,0.033-1.33,1.757,0.096,3.216C28.781,9.813,27.779,8.698,27.736,8.712z"/>
-                      <path style="fill:#CC4B4C;" d="M48.037,56H7.963C7.155,56,6.5,55.345,6.5,54.537V39h43v15.537C49.5,55.345,48.845,56,48.037,56z"/>
-                      <g>
-                        <path style="fill:#FFFFFF;" d="M17.385,53h-1.641V42.924h2.898c0.428,0,0.852,0.068,1.271,0.205    c0.419,0.137,0.795,0.342,1.128,0.615c0.333,0.273,0.602,0.604,0.807,0.991s0.308,0.822,0.308,1.306    c0,0.511-0.087,0.973-0.26,1.388c-0.173,0.415-0.415,0.764-0.725,1.046c-0.31,0.282-0.684,0.501-1.121,0.656    s-0.921,0.232-1.449,0.232h-1.217V53z M17.385,44.168v3.992h1.504c0.2,0,0.398-0.034,0.595-0.103    c0.196-0.068,0.376-0.18,0.54-0.335c0.164-0.155,0.296-0.371,0.396-0.649c0.1-0.278,0.15-0.622,0.15-1.032    c0-0.164-0.023-0.354-0.068-0.567c-0.046-0.214-0.139-0.419-0.28-0.615c-0.142-0.196-0.34-0.36-0.595-0.492    c-0.255-0.132-0.593-0.198-1.012-0.198H17.385z"/>
-                        <path style="fill:#FFFFFF;" d="M32.219,47.682c0,0.829-0.089,1.538-0.267,2.126s-0.403,1.08-0.677,1.477s-0.581,0.709-0.923,0.937    s-0.672,0.398-0.991,0.513c-0.319,0.114-0.611,0.187-0.875,0.219C28.222,52.984,28.026,53,27.898,53h-3.814V42.924h3.035    c0.848,0,1.593,0.135,2.235,0.403s1.176,0.627,1.6,1.073s0.74,0.955,0.95,1.524C32.114,46.494,32.219,47.08,32.219,47.682z     M27.352,51.797c1.112,0,1.914-0.355,2.406-1.066s0.738-1.741,0.738-3.09c0-0.419-0.05-0.834-0.15-1.244    c-0.101-0.41-0.294-0.781-0.581-1.114s-0.677-0.602-1.169-0.807s-1.13-0.308-1.914-0.308h-0.957v7.629H27.352z"/>
-                        <path style="fill:#FFFFFF;" d="M36.266,44.168v3.172h4.211v1.121h-4.211V53h-1.668V42.924H40.9v1.244H36.266z"/>
-                      </g>
-                    </g>
-                  </svg>
-                </template>
-              </CustomButton>
-            </template>
-            <!-- 列印全部資料 列印分頁資料 -->
-            <div class="__excel-list">
-              <div class="__excel-item" @click="onPdfClick('all')">
-                <CustomIcon name="table-list" class="icon" />
-                <div class="text">{{ i18nTranslate('all-data', defaultModuleType) }}</div>
-              </div>
-              <div class="__excel-item" @click="onPdfClick('page')">
-                <CustomIcon type="far" name="file-lines" class="icon" />
-                <div class="text">{{ i18nTranslate('page-data', defaultModuleType) }}</div>
-              </div>
-            </div>
-          </CustomPopover>
-
-          <!-- Print: 開發中 尚未完成 -->
-          <CustomButton
-            icon-name="print"
-            text
-            class="i-hidden"
-            @click="printData"
-          />
-        </div>
-
-
-        <slot name="setting-left"></slot>
-      </div>
-
-      <div class="setting-center">
-        <slot name="setting-center">
-          <CustomText>
-            <slot name="title">
-              {{ i18nTranslate(props?.i18nTitle ?? props.title) }}
-            </slot>
-          </CustomText>
-        </slot>
-      </div>
-
-      <div class="setting-right">
-        <slot name="setting-right"></slot>
+        </CustomPopover>
         <ColumnSetting
           v-show="!props.isHiddenColumnSetting"
           ref="columnSetting"
-          :columns="props.tableColumns"
+          :columns="extendTableColumns"
           :i18n-module="props.i18nModule"
           :version="props.version"
           :setting-key="props.settingKey"
@@ -852,7 +784,6 @@ onMounted(() => {
           @change="initShowColumns"
           @resize="optimizeAllColumnWidth"
         />
-
         <GroupSorting
           v-if="props.isSorting"
           v-model="sortingList"
@@ -862,13 +793,14 @@ onMounted(() => {
           @reset-sorting="resetSorting"
           @submit="onSortingChange"
         />
+        <slot name="setting-right"></slot>
       </div>
     </div>
 
     <div class="__table-container">
-      <TableMain
+      <BasicTable
         v-if="isRender"
-        ref="tableMainRef"
+        ref="BasicTableRef"
         :is-show-no="props.isShowNo"
         :render-key="renderKey"
         :show-data="showData"
@@ -887,6 +819,7 @@ onMounted(() => {
         :load="props.load"
         :tree-props="props.treeProps"
         :selection="props.selection"
+        :selectable="props.selectable"
         :is-lazy-loading="isLazyLoading"
         :lazy-loading-status="props.lazyLoadingStatus"
         :i18n-module="props.i18nModule"
@@ -906,14 +839,47 @@ onMounted(() => {
           <slot name="empty"></slot>
         </template>
 
+        <!-- 展開 自訂內容 -->
+        <template v-if="hasSlot('row-expand-header')" #row-expand-header="scope">
+          <slot name="row-expand-header" v-bind="scope"></slot>
+        </template>
         <template v-if="hasSlot('row-expand')" #row-expand="scope">
           <slot name="row-expand" v-bind="scope"></slot>
+        </template>
+
+        <!-- 勾選 checkbox -->
+        <template v-if="hasSlot('row-selection-header')" #row-selection-header="scope">
+          <!-- 目前 Element Plus UI 不開放設定 -->
+          <slot name="row-selection-header" v-bind="scope"></slot>
+        </template>
+        <template v-if="hasSlot('row-selection')" #row-selection="scope">
+          <slot name="row-selection" v-bind="scope"></slot>
+        </template>
+
+        <!-- Extend Row Columns -->
+        <!-- 顯示行數編號  -->
+        <template v-if="hasSlot('row-no-header')" #column-row-no-header="scope">
+          <slot name="row-no-header" v-bind="scope"></slot>
+        </template>
+        <template v-if="hasSlot('row-no')" #column-row-no="scope">
+          <slot name="row-no" v-bind="scope" :no="getRowNo(scope?.$index)">
+            {{ getRowNo(scope?.$index) }}
+          </slot>
+        </template>
+
+        <!-- 顯示操作 slot row-expand 會決定是否 顯示此欄位 -->
+        <template #header-row-operations="scope">
+          <slot name="row-operations-header" v-bind="scope"></slot>
+        </template>
+        <!-- 配合欄位設定使用 slot: column-rowOperations -->
+        <template v-if="hasSlot('row-operations')" #column-row-operations="scope">
+          <slot name="row-operations" v-bind="scope"></slot>
         </template>
 
         <template
           v-for="slotKey in slotKeyList"
           :key="`header-slotKey-${slotKey}-${scopedId}`"
-          #[getHeaderSlot(slotKey)]="scope"
+          #[getHeaderSlot(`${slotKey}`)]="scope"
         >
           <div
             :id="`header-${scope.column.key}`"
@@ -927,7 +893,7 @@ onMounted(() => {
             ]"
             :resizing-key="scope.column.key"
           >
-            <slot :name="getHeaderSlot(slotKey)" v-bind="scope">
+            <slot :name="getHeaderSlot(`${slotKey}`)" v-bind="scope">
               <label>{{ i18nTranslate(scope?.column?.i18nLabel ?? scope?.column?.label) }}</label>
             </slot>
           </div>
@@ -950,31 +916,100 @@ onMounted(() => {
         <template
           v-for="slotKey in slotKeyList"
           :key="`column-slotKey-${slotKey}-${scopedId}`"
-          #[getColumnSlot(slotKey)]="scope"
+          #[getColumnSlot(`${slotKey}`)]="scope"
         >
-          <slot :name="getColumnSlot(slotKey)" v-bind="scope"></slot>
+          <slot :name="getColumnSlot(`${slotKey}`)" v-bind="scope"></slot>
         </template>
-      </TableMain>
+
+
+      </BasicTable>
     </div>
 
-    <div v-if="!props.isLazyLoading" class="__table-pagination">
-      <div class="__table-pagination-left"></div>
-      <div class="__table-pagination-center">
-        <ElPagination
-          v-show="props.tableDataCount > 0"
-          background
-          layout="prev, pager, next"
-          :total="props.tableDataCount"
-          :page-size="pageSize"
-          :current-page="currentPage"
-          @update:current-page="onPageChange"
-        />
-      </div>
-      <div class="__table-pagination-right">
-        <span>{{
-          `${i18nTranslate('total-amount', defaultModuleType)}：${props.tableDataCount}`
-        }}</span>
-      </div>
+    <div class="__table-pagination">
+
+      <template v-if="!props.isLazyLoading" >
+        <div class="__table-pagination-left">
+          <template v-if="hasSlot('append')">
+            <slot name="append"></slot>
+          </template>
+          <div style="width: 85px; overflow: hidden">
+            <CustomTooltip placement="top" :show-after="300">
+              <template #content>
+                <!-- 顯示更多 : 分頁 -->
+                <div>{{ i18nTranslate(props.isLazyLoading ? 'load-count' : 'show-count', defaultModuleType) }}</div>
+              </template>
+              <CustomInput
+                v-model="pageSize"
+                validate-key="CustomTable:pageSize"
+                type="select"
+                :options="sizeOptions"
+                hidden-label
+                :filterable="false"
+                :allow-create="false"
+                :default-first-option="false"
+                @change="onSizeChange"
+              />
+            </CustomTooltip>
+          </div>
+
+          <!-- 顯示更多 -->
+          <div v-if="props.isLazyLoading">
+            <label>
+              {{ `${i18nTranslate('data-count', defaultModuleType)}：${props.tableDataCount}` }}
+            </label>
+          </div>
+
+        </div>
+        <div class="__table-pagination-center">
+          <ElPagination
+            background
+            layout="prev, pager, next"
+            :total="props.tableDataCount"
+            :page-size="pageSize"
+            :current-page="currentPage"
+            @update:current-page="onPageChange"
+          />
+        </div>
+        <div class="__table-pagination-right">
+          <span>{{ `${i18nTranslate('total-amount', defaultModuleType)}`}}</span>
+          <span>：</span>
+          <span>{{ `${props.tableDataCount}` }}</span>
+        </div>
+      </template>
+      <template v-else>
+        <div class="__table-pagination-left">
+          <template v-if="hasSlot('append')">
+            <slot name="append"></slot>
+          </template>
+          <div style="width: 85px; overflow: hidden">
+            <CustomTooltip placement="top" :show-after="300">
+              <template #content>
+                <!-- 顯示更多 : 分頁 -->
+                <div>{{ i18nTranslate(props.isLazyLoading ? 'load-count' : 'show-count', defaultModuleType) }}</div>
+              </template>
+              <CustomInput
+                v-model="pageSize"
+                validate-key="CustomTable:pageSize"
+                type="select"
+                :options="sizeOptions"
+                hidden-label
+                :filterable="false"
+                :allow-create="false"
+                :default-first-option="false"
+                @change="onSizeChange"
+              />
+            </CustomTooltip>
+          </div>
+        </div>
+        <div class="__table-pagination-center">
+        </div>
+        <div class="__table-pagination-right">
+          <span>{{ `${i18nTranslate('total-amount', defaultModuleType)}`}}</span>
+          <span>：</span>
+          <span>{{ `${props.tableDataCount}` }}</span>
+        </div>
+      </template>
+
     </div>
   </div>
 </template>
@@ -992,12 +1027,6 @@ $border-style: 1px solid var(--i-color-table-border);
     display: flex;
     flex-direction: column;
     position: relative;
-
-    .header-slot {
-      width: calc(100% - 24px);
-      padding-right: 8px;
-      display: inline-block;
-    }
   }
 
   &-prepend {
@@ -1034,10 +1063,14 @@ $border-style: 1px solid var(--i-color-table-border);
     width: 100%;
     height: fit-content;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     background-color: var(--i-color-table-setting);
     padding: 6px;
+    border: {
+      radius: 6px 6px 0 0;
+    }
     overflow: hidden {
       x: scroll;
     }
@@ -1072,16 +1105,27 @@ $border-style: 1px solid var(--i-color-table-border);
 
       &-left {
         justify-content: flex-start;
+        flex: 1;
+        // @media (max-width: 800px) {
+        //   width: 100%;
+        // }
+        // @media (min-width: 801px) {
+        //   flex: 1;
+        // }
       }
       &-center {
         justify-content: center;
-        font-weight: 600;
 
         @media (max-width: 1200px) {
           overflow: hidden;
         }
+        &-title {
+          padding: 0px 8px;
+          font-size: 1rem; //0.95rem;
+        }
       }
       &-right {
+        flex: 1;
         justify-content: flex-end;
       }
     }

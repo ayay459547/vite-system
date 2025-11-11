@@ -2,17 +2,16 @@
 import { useSlots, ref, computed, inject } from 'vue'
 import { ElInputNumber } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
-
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits, Expose } from './FormNumberInfo'
 import { version, props as formInputProps } from './FormNumberInfo'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -30,18 +29,18 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 // event
-const onBlur: Emits.Blur = event => emit('focus', event)
-const onFocus: Emits.Focus = event => emit('focus', event)
-const onChange: Emits.Change = value => emit('change', value)
+const onBlur: Emits['blur'] = event => emit('focus', event)
+const onFocus: Emits['focus'] = event => emit('focus', event)
+const onChange: Emits['change'] = value => emit('change', value)
 
 // expose
-const ElNumberRef = ref()
-const blur: Expose.Blur = () => ElNumberRef.value?.blur()
-const focus: Expose.Focus = () => ElNumberRef.value?.focus()
+const ElNumberRef = ref<InstanceType<typeof ElInputNumber>>()
+const blur: Expose['blur'] = () => ElNumberRef.value?.blur()
+const focus: Expose['focus'] = () => ElNumberRef.value?.focus()
 defineExpose({ blur, focus })
 
 // slot

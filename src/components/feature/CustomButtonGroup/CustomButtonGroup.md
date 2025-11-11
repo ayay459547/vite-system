@@ -1,10 +1,12 @@
 ## CustomButtonGroup
 
+### 按鈕群組, 配合 CustomButton 使用
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomButton, CustomButtonGroup } from '@/components'
+import { CustomButton, CustomButtonGroup } from '@/components/feature'
 
 </script>
 

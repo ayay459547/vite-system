@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, useSlots, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomDrawer, CustomButton } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { CustomDrawer, CustomButton } from '@/components/feature' // 系統組件
 import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import { version, props as groupSearchProps } from './GroupSearchInfo'
 
@@ -14,7 +14,7 @@ const props = defineProps(groupSearchProps)
 
 const isShow = ref(false)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -49,6 +49,7 @@ defineExpose({
       icon-name="filter"
       type="primary"
       @click="isShow = true"
+      hover-display
     />
 
     <CustomDrawer v-model="isShow" :size="props.size" direction="ttb">
@@ -85,26 +86,31 @@ defineExpose({
 
       <template #footer>
         <div class="__group-footer">
-          <CustomButton
-            icon-name="chevron-left"
-            icon-move="translate"
-            :label="i18nTranslate('return')"
-            @click="isShow = false"
-          />
-          <CustomButton
-            icon-name="arrow-rotate-left"
-            icon-move="rotate"
-            type="warning"
-            :label="i18nTranslate('reset')"
-            @click="onResetClick"
-          />
-          <CustomButton
-            icon-name="search"
-            icon-move="scale"
-            type="success"
-            :label="i18nTranslate('search')"
-            @click="onSubmitClick"
-          />
+          <div class="__group-footer-left">
+            <slot name="footer"></slot>
+          </div>
+          <div class="__group-footer-right">
+            <CustomButton
+              icon-name="chevron-left"
+              icon-move="translate"
+              :label="i18nTranslate('return')"
+              @click="isShow = false"
+            />
+            <CustomButton
+              icon-name="arrow-rotate-left"
+              icon-move="rotate"
+              type="warning"
+              :label="i18nTranslate('reset')"
+              @click="onResetClick"
+            />
+            <CustomButton
+              icon-name="search"
+              icon-move="scale"
+              type="success"
+              :label="i18nTranslate('search')"
+              @click="onSubmitClick"
+            />
+          </div>
         </div>
       </template>
     </CustomDrawer>
@@ -123,8 +129,16 @@ defineExpose({
   &-footer {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 8px;
+
+    &-left, &-right {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      width: fit-content;
+      gap: 8px;
+    }
   }
 }
 </style>

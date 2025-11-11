@@ -4,9 +4,9 @@
 
 ```vue
 <script setup lang="ts">
-import { CustomTable } from '@/components'
+import { CustomTable } from '@/components/table'
 
-import { getTableSetting } from '@/lib/lib_columns'
+import { useTableSetting } from '@/lib/lib_columns'
 
 const tableData1 = [
   { name: '小名', age: 13, address: '台北市大安區' },
@@ -47,7 +47,7 @@ const tableOptions = {
   version: '1.0.0',
   settingKey: 'test'
 }
-const { tableSetting, downloadExcel } = getTableSetting(columnSetting, 'table', tableOptions)
+const { tableSetting, downloadExcel } = useTableSetting(columnSetting, 'table', tableOptions)
 
 const download = () => {
   downloadExcel(tableData2)

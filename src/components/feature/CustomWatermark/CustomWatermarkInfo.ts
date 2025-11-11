@@ -3,23 +3,23 @@ import type { PropType } from 'vue'
 export const version = '__CustomWatermark_1.0.0__'
 const system = (import.meta as any).env.VITE_API_SYSTEM_TYPE
 
-export declare namespace Types {
-  type FontWeight = 'normal' | 'light' | 'weight' | number
-  type FontStyle = 'none' | 'normal' | 'italic' | 'oblique'
-  type TextAlign = 'left' | 'right' | 'center' | 'start' | 'end'
-  type TextBaseline = 'top' | 'hanging' | 'middle' | 'alphabetic' | 'ideographic' | 'bottom'
-  type Font = {
+export interface Types {
+  fontWeight: 'normal' | 'light' | 'weight' | number
+  fontStyle: 'none' | 'normal' | 'italic' | 'oblique'
+  textAlign: 'left' | 'right' | 'center' | 'start' | 'end'
+  textBaseline: 'top' | 'hanging' | 'middle' | 'alphabetic' | 'ideographic' | 'bottom'
+  font: {
     color?: string
     fontSize?: number
-    fontWeight?: FontWeight
+    fontWeight?: Types['fontWeight']
     fontFamily?: string
-    fontStyle?: FontStyle
-    textAlign?: TextAlign
-    textBaseline?: TextBaseline
+    fontStyle?: Types['fontStyle']
+    textAlign?: Types['textAlign']
+    textBaseline?: Types['textBaseline']
   }
-  type SubWatermark = {
+  subWatermark: {
     content?: string | string[]
-    font?: Font
+    font?: Types['font']
     image?: string
     width?: number
     height?: number
@@ -27,34 +27,34 @@ export declare namespace Types {
   }
 }
 
-export declare namespace Props {
-  type Width = number
-  type Height = number
-  type Rotate = number
-  type ZIndex = number
-  type Image = string
-  type Content = string | string[]
-  type Font = Types.Font
-  type Gap = [number, number]
-  type Offset = [number, number]
-  type SizeFit = 'parent' | 'children'
-  type Sub = Array<Types.SubWatermark>
+export interface Props {
+  width: number
+  height: number
+  rotate: number
+  zIndex: number
+  image: string
+  content: string | string[]
+  font: Types['font']
+  gap: [number, number]
+  offset: [number, number]
+  sizeFit: 'parent' | 'children'
+  sub: Array<Types['subWatermark']>
 }
 export const props = {
   width: {
-    type: Number as PropType<Props.Width>,
+    type: Number as PropType<Props['width']>,
     required: false,
     default: undefined,
     description: '浮水印 的寬度'
   },
   height: {
-    type: Number as PropType<Props.Height>,
+    type: Number as PropType<Props['height']>,
     required: false,
     default: undefined,
     description: '浮水印 的高度'
   },
   rotate: {
-    type: Number as PropType<Props.Rotate>,
+    type: Number as PropType<Props['rotate']>,
     required: false,
     default: -22,
     description: `
@@ -63,13 +63,13 @@ export const props = {
     `
   },
   zIndex: {
-    type: Number as PropType<Props.ZIndex>,
+    type: Number as PropType<Props['zIndex']>,
     required: false,
     default: 9,
     description: '浮水印 的 zIndex'
   },
   image: {
-    type: [String] as PropType<Props.Image>,
+    type: [String] as PropType<Props['image']>,
     required: false,
     default: undefined,
     description: `
@@ -78,7 +78,7 @@ export const props = {
     `
   },
   content: {
-    type: [String, Array] as PropType<Props.Content>,
+    type: [String, Array] as PropType<Props['content']>,
     required: false,
     default: system,
     description: `
@@ -87,7 +87,7 @@ export const props = {
     `
   },
   font: {
-    type: Object as PropType<Props.Font>,
+    type: Object as PropType<Props['font']>,
     required: false,
     default: undefined,
     description: `
@@ -104,19 +104,19 @@ export const props = {
     `
   },
   gap: {
-    type: Object as PropType<Props.Gap>,
+    type: Object as PropType<Props['gap']>,
     required: false,
     default: [100, 100],
     description: '浮水印 之間的 [ x , y ] 相隔間距'
   },
   offset: {
-    type: Object as PropType<Props.Offset>,
+    type: Object as PropType<Props['offset']>,
     required: false,
     default: undefined,
     description: '浮水印 的 [ x , y ] 位移量，預設值為gap的一半'
   },
   sizeFit: {
-    type: String as PropType<Props.SizeFit>,
+    type: String as PropType<Props['sizeFit']>,
     required: false,
     default: 'parent',
     description: `
@@ -126,7 +126,7 @@ export const props = {
     `
   },
   sub: {
-    type: Object as PropType<Props.Sub>,
+    type: Object as PropType<Props['sub']>,
     required: false,
     default: [],
     description: `
@@ -134,12 +134,12 @@ export const props = {
       content image shift 預設為空值
       其餘屬性預設皆與主浮水印相同
       增加的浮水印數量等同於陣列中存在的物件數
-      
+
       shift定義子浮水印的位移，受rotate影響
     `
   }
 }
 
-export declare namespace Emits {}
+export interface Emits {}
 
-export declare namespace Expose {}
+export interface Expose {}

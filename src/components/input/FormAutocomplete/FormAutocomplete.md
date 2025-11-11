@@ -6,7 +6,7 @@
 
 ```vue
 <script setup lang="ts">
-import { CustomButton } from '@/components'
+import { CustomButton } from '@/components/feature'
 
 </script>
 
@@ -57,5 +57,5 @@ import { CustomButton } from '@/components'
 
 | 事件名 | 說明     |
 | ------ | ------- |
-| focus  |  |
-| blur   |  |
+| focus  |         |
+| blur   |         |

@@ -11,14 +11,14 @@ const scopedId = getUuid(version)
 
 const props = defineProps(switchProps)
 
-const tempValue = computed<Props.ModelValue>({
+const tempValue = computed<Props['modelValue']>({
   get: () => (props?.modelValue ?? false),
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
 const emit = defineEmits(['update:model-value', 'change'])
 
-const onChange: Emits.Change = (val: string | number | boolean) => {
+const onChange: Emits['change'] = (val: string | number | boolean) => {
   emit('change', val)
 }
 

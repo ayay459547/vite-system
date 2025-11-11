@@ -3,68 +3,28 @@ import type { PropType } from 'vue'
 import { computed, inject } from 'vue'
 import { ElMenu, ElMenuItem } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import type { Navigation } from '@/declare/routes'
-import type { AuthData } from '@/declare/hook' // 全域功能類型
-import type { CurrentRouteName } from '@/components/layout/SystemLayout.vue'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import type { Navigation } from '@/types/types_routes'
 import { useRoutesHook } from '@/lib/lib_routes'
-import { defaultModuleType } from '@/i18n/i18n_setting'
-import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
-import MenuUser from '@/components/layout/Menu/MenuUser.vue'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
+import MenuBreadcrumb from '@/components/layout/Menu/MenuBreadcrumb.vue'
 import ElNavigation from './ElNavigation.vue'
 
 const props = defineProps({
   showRoutes: {
     type: Array as PropType<Navigation[]>,
-    default: () => {
-      return []
-    }
+    default: () => []
   },
   currentNavigation: {
     type: Object as PropType<Navigation>,
     default: () => {
       return {}
     }
-  },
-  currentRouteName: {
-    type: Object as PropType<CurrentRouteName>,
-    default: () => {
-      return {
-        level1: '',
-        level2: '',
-        level3: ''
-      }
-    }
-  },
-  authData: {
-    type: Object as PropType<AuthData>,
-    default: () => {
-      return {
-        user: {},
-        role: {},
-        roleFunction: [],
-        groups: []
-      } as AuthData
-    }
-  },
-  breadcrumbName: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
-  },
-  breadcrumbTitle: {
-    type: Array as PropType<string[]>,
-    default: () => {
-      return []
-    }
   }
 })
 
-const emit = defineEmits(['logout', 'preference'])
-
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTest, i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -77,7 +37,6 @@ const { getRouteTitle } = useRoutesHook({
 const activeIndex = computed(() => {
   return props.currentNavigation?.name ?? ''
 })
-
 </script>
 
 <template>
@@ -111,19 +70,11 @@ const activeIndex = computed(() => {
     </div>
 
     <div class="menu-breadcrumb">
-      <MenuBreadcrumb
-        :breadcrumb-name="props.breadcrumbName"
-        :breadcrumb-title="props.breadcrumbTitle"
-        text-align="end"
-      />
+      <MenuBreadcrumb text-align="end" />
     </div>
 
     <div class="menu-user">
-      <MenuUser
-        :auth-data="props.authData"
-        @logout="emit('logout')"
-        @preference="emit('preference')"
-      />
+      <slot name="MenuUser"></slot>
     </div>
   </div>
 </template>

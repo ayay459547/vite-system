@@ -1,25 +1,25 @@
 import type { PropType } from 'vue'
 
-import type { Option } from '@/declare/columnSetting'
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { Option } from '@/types/types_columnSetting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 export const version = '__CustomCollapse_1.0.0__'
 
-export declare namespace Types {
-  type CollapseValue = string | number
+export interface Types {
+  collapseValue: string | number
 }
 
-export declare namespace Props {
-  type ModelValue = Types.CollapseValue | Array<Types.CollapseValue>
-  type Accordion = boolean
-  type Options = Array<Option<Types.CollapseValue>>
-  type I18nModule = ScopeKey
+export interface Props {
+  modelValue: Types['collapseValue'] | Array<Types['collapseValue']>
+  accordion: boolean
+  options: Array<Option<Types['collapseValue']>>
+  i18nModule: ScopeKey
 }
 
 export const props = {
   modelValue: {
-    type: [Array, String] as PropType<Props.ModelValue>,
+    type: [Array, String] as PropType<Props['modelValue']>,
     default: '',
     description: `
       v-model 綁定是否顯示
@@ -27,26 +27,24 @@ export const props = {
       手風琴模式 值為字串: 只能展開一個`
   },
   accordion: {
-    type: Boolean as PropType<Props.Accordion>,
+    type: Boolean as PropType<Props['accordion']>,
     default: false,
     description: '是否為手風琴模式'
   },
   options: {
-    type: Array as PropType<Props.Options>,
-    default() {
-      return []
-    }
+    type: Array as PropType<Props['options']>,
+    default: () => []
   },
   i18nModule: {
-    type: String as PropType<Props.I18nModule>,
+    type: String as PropType<Props['i18nModule']>,
     required: false,
     default: defaultModuleType,
     description: 'i18nModule'
   }
 }
 
-export declare namespace Emits {
-  type Change = (active: Props.ModelValue) => void
+export interface Emits {
+  change: (active: Props['modelValue']) => void
 }
 
-export declare namespace Expose {}
+export interface Expose {}

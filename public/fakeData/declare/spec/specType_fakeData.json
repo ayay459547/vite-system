@@ -1,0 +1,98 @@
+[
+  {
+    "dataType": "SBBING",
+    "name": "封裝尺寸",
+    "id": "BodySize",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "Customer編號",
+    "id": "CustId",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "Customer訂單號碼",
+    "id": "CustOrderNo",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "產期代碼",
+    "id": "DateCode",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "廠區編號",
+    "id": "FactoryArea",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "工廠廠別",
+    "id": "FactoryNo",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "機台區域",
+    "id": "MachineLocation",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "材料供應商",
+    "id": "MaterialProvider",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "工單合併旗標",
+    "id": "MergeFlag",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "封裝供應商",
+    "id": "PackageProvider",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "封裝類型",
+    "id": "PackageType",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "PN號碼",
+    "id": "PNumber",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.536"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "產品線",
+    "id": "ProductLine",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.537"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "工單所在儲位",
+    "id": "SubInventory",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.537"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "產品包裝方式",
+    "id": "TrayOrTr",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.537"
+  },
+  {
+    "dataType": "SBBING",
+    "name": "晶圓供應商",
+    "id": "WaferProvider",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:21.537"
+  }
+]

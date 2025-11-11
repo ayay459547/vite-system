@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, useSlots, ref, inject } from 'vue'
+import type { DatePickerInstance } from 'element-plus'
 import { ElDatePicker } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits, Expose } from './FormDatePickerInfo'
 import { version, props as formDatePickerProps } from './FormDatePickerInfo'
 
 const scopedId = getUuid(version)
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: defaultModuleType
 })
@@ -32,10 +33,10 @@ const emit = defineEmits([
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value: Props.ModelValue) => emit('update:model-value', value)
+  set: (value: Props['modelValue']) => emit('update:model-value', value)
 })
 
-const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
+const getTranslateShortcuts = (shortcuts: Props['shortcuts']) => {
   if (!Array.isArray(shortcuts)) return []
   return shortcuts.map(shortcut => {
     const { i18nLabel, label, text, value } = shortcut
@@ -48,29 +49,29 @@ const getTranslateShortcuts = (shortcuts: Props.Shortcuts) => {
 }
 
 // event
-const onChange: Emits.Change = val => emit('change', val)
-const onBlur: Emits.Blur = e => emit('blur', e)
-const onFocus: Emits.Focus = e => emit('focus', e)
-const onClear: Emits.Clear = () => emit('clear')
-const onCalendarChange: Emits.CalendarChange = val => emit('calendar-change', val)
-const onPanelChange: Emits.PanelChange = date => emit('panel-change', date)
-const onVisibleChange: Emits.VisibleChange = visibility => emit('visible-change', visibility)
+const onChange: Emits['change'] = val => emit('change', val)
+const onBlur: Emits['blur'] = e => emit('blur', e)
+const onFocus: Emits['focus'] = e => emit('focus', e)
+const onClear: Emits['clear'] = () => emit('clear')
+const onCalendarChange: Emits['calendarChange'] = val => emit('calendar-change', val)
+const onPanelChange: Emits['panelChange'] = date => emit('panel-change', date)
+const onVisibleChange: Emits['visibleChange'] = visibility => emit('visible-change', visibility)
 
 // expose
-const elDatePickerRef = ref()
-const focus: Expose.Focus = () => {
-  elDatePickerRef.value?.focus()
-  elDatePickerRef.value?.handleOpen()
+const ElDatePickerRef = ref<DatePickerInstance>()
+const focus: Expose['focus'] = () => {
+  ElDatePickerRef.value?.focus()
+  ElDatePickerRef.value?.handleOpen()
 }
-const blur: Expose.Blur = () => {
-  elDatePickerRef.value?.blur()
-  elDatePickerRef.value?.handleClose()
+const blur: Expose['blur'] = () => {
+  ElDatePickerRef.value?.blur()
+  ElDatePickerRef.value?.handleClose()
 }
-const handleOpen: Expose.HandleOpen = () => {
-  elDatePickerRef.value?.handleOpen()
+const handleOpen: Expose['handleOpen'] = () => {
+  ElDatePickerRef.value?.handleOpen()
 }
-const handleClose: Expose.HandleClose = () => {
-  elDatePickerRef.value?.handleClose()
+const handleClose: Expose['handleClose'] = () => {
+  ElDatePickerRef.value?.handleClose()
 }
 defineExpose({ focus, blur, handleOpen, handleClose })
 
@@ -83,7 +84,7 @@ const hasSlot = (prop: string): boolean => {
 
 <template>
   <ElDatePicker
-    ref="elDatePickerRef"
+    ref="ElDatePickerRef"
     :class="scopedId"
     v-model="inputValue"
     :readonly="props.readonly"
@@ -150,5 +151,10 @@ div[class*="FormDatePicker"] {
   width: 100% !important;
   height: fit-content;
   border-radius: 4px;
+}
+html.dark {
+  :where(.el-date-editor.el-input__wrapper) {
+    box-shadow: 0 0 0 1px var(--el-color-info-dark-2, var(--el-border-color)) inset;
+  }
 }
 </style>

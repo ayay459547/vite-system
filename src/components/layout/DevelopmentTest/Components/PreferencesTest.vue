@@ -3,15 +3,14 @@ import type { PropType } from 'vue'
 import { onMounted, onUnmounted, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { useEventBus } from '@/lib/lib_hook' // 自訂Composition API
-import { useLocaleStore } from '@/stores/stores_locale'
-import { useLayoutStore } from '@/stores/stores_layout'
+import { useI18nStore } from '@/stores/useI18nStore'
+import { useLayoutStore } from '@/stores/useLayoutStore'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomButton, CustomButtonGroup } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { CustomButton, CustomButtonGroup } from '@/components/feature' // 系統組件: 功能
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType, langList, langOptions } from '@/declare/declare_i18n'
 
 // excel
 import type { ExcelColumn, Worksheet } from '@/lib/lib_files'
@@ -23,14 +22,18 @@ const props = defineProps({
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
 
 // excel
 const createHeader = (worksheet: Worksheet) => {
-  const columnKeyList = ['i18nKey', 'zhTw', 'zhCn', 'en', 'i18nModule']
+  const columnKeyList = [
+    'i18nKey',
+    ...langList,
+    'i18nModule'
+  ]
 
   return columnKeyList.reduce<Partial<ExcelColumn>[]>((res, columnKey, columnIndex) => {
     res.push({
@@ -60,31 +63,24 @@ const createRows = (worksheet: Worksheet, tableData: any[]) => {
 }
 
 // 語言
-const localeStore = useLocaleStore()
-const { systemLocale } = storeToRefs(localeStore)
-const i18nBus = useEventBus<string>('i18n')
+const i18nStore = useI18nStore()
+const { systemLocale } = storeToRefs(i18nStore)
 
 const changeLang = (lang?: string) => {
-  if (!isEmpty(lang)) {
-    localeStore.setSystemLocale(lang)
-    i18nBus.emit('langChange', lang)
-  } else {
-    let lang = 'zhTw'
-    switch (systemLocale.value) {
-      case 'zhTw':
-        lang = 'zhCn'
-        break
-      case 'zhCn':
-        lang = 'en'
-        break
-      case 'en':
-      default:
-        lang = 'zhTw'
-        break
-    }
-    localeStore.setSystemLocale(lang)
-    i18nBus.emit('langChange', lang)
+  let __lang__ = lang
+
+  // 自動切換到下一個語言
+  if (isEmpty(lang)) {
+    const currentLang = systemLocale.value
+    const currentLangIndex = langList.findIndex(langItem => langItem === currentLang)
+    const nextLangIndex = currentLangIndex + 1
+
+    // 如果已經是最後一個了 換成第一個
+    const nextLang = langList[(langList.length === nextLangIndex ? 0 : nextLangIndex)]
+    __lang__ = nextLang
   }
+
+  i18nStore.setSystemLocale(__lang__)
 }
 
 const i18nTitle = '下載 i18n 使用紀錄'
@@ -92,7 +88,7 @@ const customDownloadExcel = () => {
   try {
     const workbook = createWorkbook()
 
-    for (let routeName in props.i18nUsageRecord) {
+    for (const routeName in props.i18nUsageRecord) {
       const worksheet = workbook.addWorksheet(routeName, {
         views: [{ state: 'frozen', xSplit: 0, ySplit: 1 }]
       })
@@ -119,20 +115,9 @@ const customDownloadExcel = () => {
 const layoutStore = useLayoutStore()
 const { isDark, layout } = storeToRefs(layoutStore)
 // 色系
-const colorToneBus = useEventBus<string>('colorTone')
-const changeTone = (mode?: string) => {
-  const colorTone = isDark.value ? 'light' : 'dark'
-
-  if (
-    (mode === 'dark' && !isDark.value) ||
-    (mode === 'light' && isDark.value)
-  ) {
-    layoutStore.toggleDark()
-    colorToneBus.emit('colorToneChange', colorTone)
-  } else {
-    layoutStore.toggleDark()
-    colorToneBus.emit('colorToneChange', colorTone)
-  }
+const changeTone = (colorTone?: string) => {
+  const newColorTone = isDark.value ? 'light' : 'dark'
+  layoutStore.setColorTone(colorTone ?? newColorTone)
 }
 
 // 布局
@@ -187,19 +172,11 @@ onUnmounted(() => {
 
       <CustomButtonGroup type="success">
         <CustomButton
-          label="繁體中文"
+          v-for="option in langOptions"
+          :key="option.value"
+          :label="option.label"
           plain
-          @click="changeLang('zhTw')"
-        />
-        <CustomButton
-          label="簡體中文"
-          plain
-          @click="changeLang('zhCn')"
-        />
-        <CustomButton
-          label="英文"
-          plain
-          @click="changeLang('en')"
+          @click="changeLang(option.value)"
         />
       </CustomButtonGroup>
     </div>

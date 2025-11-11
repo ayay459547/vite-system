@@ -47,8 +47,21 @@ const bindStyle = computed(() => {
 })
 
 const skeletonVariant = computed(() => {
-  if (props.variant === 'empty') return 'text'
-  return props.variant
+  switch (props.variant) {
+    case 'p':
+    case 'h1':
+    case 'h3':
+    case 'caption':
+    case 'button':
+    case 'image':
+    case 'circle':
+    case 'rect':
+      return props.variant
+    case 'text':
+    case 'empty':
+    default:
+      return 'text'
+  }
 })
 
 </script>
@@ -86,5 +99,6 @@ const skeletonVariant = computed(() => {
   background-color: var(--i-color-system-page);
   overflow: hidden;
   margin: 2px;
+  max-height: 1200px;
 }
 </style>

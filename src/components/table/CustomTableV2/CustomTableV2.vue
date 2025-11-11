@@ -3,7 +3,7 @@ import { ref, useSlots } from 'vue'
 import type { ElTableV2 as ElTableV2Type, TableV2Instance } from 'element-plus'
 import { ElTableV2, ElAutoResizer } from 'element-plus'
 
-import { getUuid } from '@/lib/lib_utils' // 工具
+import { getUuid, hasOwnProperty } from '@/lib/lib_utils' // 工具
 
 import { version, props as tableV2Props } from './CustomTableV2Info'
 
@@ -13,14 +13,13 @@ const props = defineProps(tableV2Props)
 
 const slots = useSlots()
 const hasSlot = (prop: string): boolean => {
-  return !!slots[prop]
+  return hasOwnProperty(slots, prop)
 }
 
-// const tableV2Ref = ref()
-const elTableV2Ref = ref<InstanceType<typeof ElTableV2Type> & TableV2Instance>()
+const ElTableV2Ref = ref<InstanceType<typeof ElTableV2Type> & TableV2Instance>()
 const resetScroll = (): void => {
-  if ([null, undefined].includes(elTableV2Ref.value)) return
-  elTableV2Ref.value.scrollToTop(0)
+  if ([null, undefined].includes(ElTableV2Ref.value)) return
+  ElTableV2Ref.value.scrollToTop(0)
 }
 
 defineExpose({
@@ -29,13 +28,13 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="tableV2Ref" class="__table-v2-wrapper" :class="`CustomTableV2_${version} ${scopedId}`">
+  <div class="__table-v2-wrapper" :class="`CustomTableV2_${version} ${scopedId}`">
     <div class="__table-v2-container">
       <ElAutoResizer>
         <template #default="{ height, width }">
           <ElTableV2
             :key="props.renderKey"
-            ref="elTableV2Ref"
+            ref="ElTableV2Ref"
             scrollbar-always-on
             :width="width"
             :height="height"

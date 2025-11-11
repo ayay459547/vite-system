@@ -8,7 +8,9 @@ import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import { version, props as iconProps } from './CustomIconInfo'
 
-const XIcon = useAsyncComponent(() => import('./Components/XIcon.vue'), 'rect')
+const XIcon = useAsyncComponent<typeof import('./XIcon/XIcon.vue')['default']>(
+  () => import('./XIcon/XIcon.vue'), 'rect'
+)
 
 const scopedId = getUuid(version)
 
@@ -34,13 +36,13 @@ const getIcon = computed(() => {
     ]"
   >
     <slot>
-      <FontAwesomeIcon v-if="isEmpty(props.xType)" :icon="getIcon" />
       <XIcon
-        v-else
+        v-if="!isEmpty(props.xType)"
         class="x-icon"
         :type="props.xType"
         :name="props.name"
       />
+      <FontAwesomeIcon v-else :icon="getIcon" />
     </slot>
   </div>
 </template>
@@ -50,25 +52,31 @@ div[class*="__CustomIcon"].icon {
   &-container {
     width: fit-content;
     height: fit-content;
+
+    .x-icon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   &-size {
     &-large {
       font-size: 1.3em;
       .x-icon {
-        font-size: 1.4em;
+        font-size: 1.55em;
       }
     }
     &-default {
       font-size: 1.2em;
       .x-icon {
-        font-size: 1.3em;
+        font-size: 1.45em;
       }
     }
     &-small {
       font-size: 1.1em;
       .x-icon {
-        font-size: 1.2em;
+        font-size: 1.35em;
       }
     }
   }

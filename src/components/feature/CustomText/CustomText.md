@@ -1,10 +1,12 @@
 ## CustomText
 
+### 文字
+
 ### 使用範例
 
 ```vue
 <script setup lang="ts">
-import { CustomText } from '@/components'
+import { CustomText } from '@/components/feature'
 
 </script>
 

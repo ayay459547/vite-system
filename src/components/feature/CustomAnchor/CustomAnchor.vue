@@ -2,7 +2,7 @@
 import { ref, inject } from 'vue'
 import { ElAnchor, ElAnchorLink } from 'element-plus'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Emits, Expose } from './CustomAnchorInfo'
@@ -14,7 +14,7 @@ const props = defineProps({ ...anchorProps })
 
 const emit = defineEmits(['change', 'click'])
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -23,17 +23,17 @@ const getText = (text: string, i18nText: string | string[]) => {
   return i18nTranslate(i18nText)
 }
 
-const onChange: Emits.Change = (href: string) => {
+const onChange: Emits['change'] = (href: string) => {
   emit('change', href)
 }
-const onClick: Emits.Click = (event: MouseEvent, href?: string) => {
+const onClick: Emits['click'] = (event: MouseEvent, href?: string) => {
   emit('click', event, href)
   event.preventDefault()
 }
 
-const anchorRef = ref()
-const scrollTo: Expose.ScrollTo = (href: string) => {
-  anchorRef.value?.scrollTo(href)
+const ElAnchorRef = ref<InstanceType<typeof ElAnchor>>()
+const scrollTo: Expose['scrollTo'] = (href: string) => {
+  ElAnchorRef.value?.scrollTo(href)
 }
 
 defineExpose({
@@ -44,7 +44,7 @@ defineExpose({
 
 <template>
   <ElAnchor
-    ref="anchorRef"
+    ref="ElAnchorRef"
     :container="props.container"
     :offset="props.offset"
     :bound="props.bound"
@@ -52,6 +52,7 @@ defineExpose({
     :marker="props.marker"
     :type="props.type"
     :direction="props.direction"
+    :select-scroll-top="props.selectScrollTop"
     :class="scopedId"
     @change="onChange"
     @click="onClick"

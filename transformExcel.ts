@@ -81,8 +81,8 @@ export const transformI18n = (isWatch: boolean, transformList: Transform[]) => {
       return i18nData as Array<any>
     }
 
-    const i18nData = setI18nData(excelPath, [0, 1, 2, 3])
-    const i18nData_Cust = setI18nData(excel_CustPath, [0, 1])
+    const i18nData = setI18nData(excelPath, [0, 1, 2])
+    const i18nData_Cust = setI18nData(excel_CustPath, [0])
 
     const repeatedI18n: Array<any> = []
 

@@ -2,12 +2,12 @@
 import type { PropType } from 'vue'
 import { shallowRef, inject, onMounted } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomDraggable, CustomButton, CustomScrollbar } from '@/components' // 系統組件
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { CustomDraggable, CustomButton, CustomScrollbar } from '@/components/feature' // 系統組件
 
 import { getProxyData } from '@/lib/lib_utils' // 工具
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 const props = defineProps({
   i18nModule: {
@@ -16,25 +16,19 @@ const props = defineProps({
   },
   groupColumns: {
     type: Array as PropType<any[]>,
-    default () {
-      return []
-    }
+    default: () => []
   },
   dateColumns: {
     type: Array as PropType<any[]>,
-    default () {
-      return []
-    }
+    default: () => []
   },
   otherColumns: {
     type: Array as PropType<any[]>,
-    default () {
-      return []
-    }
+    default: () => []
   }
 })
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: props.i18nModule
 })
@@ -68,7 +62,6 @@ const submit = async () => {
 onMounted(() => {
   init()
 })
-
 </script>
 
 <template>

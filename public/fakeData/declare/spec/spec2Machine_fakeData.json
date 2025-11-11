@@ -1,0 +1,902 @@
+[
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-01",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_22",
+    "specTypeId": "CustId",
+    "machineId": "A5000-01",
+    "specTypeName": "Customer編號",
+    "specName": "L029",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 17:15:51.106",
+    "specContent": "L029"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-01",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-01",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-01",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-01",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-01",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-01",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-02",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-02",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-02",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-02",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-02",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-02",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-02",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-03",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-03",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-03",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-03",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-03",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-03",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-03",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-04",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-04",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-04",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-04",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-04",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-04",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-04",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-05",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-05",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-05",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-05",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-05",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-05",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-05",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-06",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-06",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-06",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-06",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-06",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-06",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-06",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-07",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-07",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-07",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-07",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-07",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-07",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-07",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-08",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-08",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-08",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-08",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-08",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-08",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-08",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-09",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-09",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-09",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-09",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-09",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-09",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-09",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-10",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-10",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-10",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-10",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-10",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-10",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-10",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-11",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-11",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-11",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-11",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-11",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-11",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-11",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-12",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-12",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-12",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-12",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-12",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-12",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-12",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-14",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_26",
+    "specTypeId": "CustId",
+    "machineId": "A5000-14",
+    "specTypeName": "Customer編號",
+    "specName": "Cust129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust129"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-14",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-14",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-14",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-14",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-14",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-15",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-15",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "FactoryNo_1",
+    "specTypeId": "FactoryNo",
+    "machineId": "A5000-15",
+    "specTypeName": "工廠廠別",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "MachineLocation_1",
+    "specTypeId": "MachineLocation",
+    "machineId": "A5000-15",
+    "specTypeName": "機台區域",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "machineId": "A5000-15",
+    "specTypeName": "產品線",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "CustId_21",
+    "specTypeId": "CustId",
+    "machineId": "A5000-16",
+    "specTypeName": "Customer編號",
+    "specName": "Cust15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "Cust15"
+  },
+  {
+    "specId": "CustId_38",
+    "specTypeId": "CustId",
+    "machineId": "A5000-16",
+    "specTypeName": "Customer編號",
+    "specName": "L485",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "L485"
+  },
+  {
+    "specId": "FactoryArea_1",
+    "specTypeId": "FactoryArea",
+    "machineId": "A5000-16",
+    "specTypeName": "廠區編號",
+    "specName": "AIT",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:55.337",
+    "specContent": "AIT"
+  }
+]

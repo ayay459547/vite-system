@@ -1,6 +1,5 @@
 <script lang="ts">
 import { h, defineComponent } from 'vue'
-// @ts-ignore
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具

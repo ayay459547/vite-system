@@ -2,15 +2,22 @@
 import { computed, ref, nextTick, useSlots, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { defaultModuleType } from '@/declare/declare_i18n'
 import { useFormListSetting } from '@/lib/lib_columns'
-import { useCustomSearchStore } from '@/stores/stores_CustomSearch'
-import { CustomSwitch, CustomInput, CustomButton, CustomTooltip, FormCheckbox, FormList } from '@/components' // 系統組件
+import { useCustomSearchStore } from '@/stores/stores_components/useCustomSearchStore'
 
-import throttle from '@/lib/lib_throttle'
+import FormCheckbox from '@/components/input/FormCheckbox/FormCheckbox.vue'
+import CustomInput from '@/components/input/CustomInput/CustomInput.vue'
+import FormList from '@/components/input/FormList/FormList.vue'
+import CustomSwitch from '@/components/input/CustomSwitch/CustomSwitch.vue'
+
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
+
+import { throttle } from '@/lib/lib_lodash'
 import { getUuid, hasOwnProperty, isEmpty, getProxyData } from '@/lib/lib_utils' // 工具
-import { conditionOptions } from '@/declare/variable'
+import { conditionOptions } from '@/declare/declare_variable'
 
 import type { Props } from './CustomSearchInfo'
 import { version, props as searchProps } from './CustomSearchInfo'
@@ -38,16 +45,14 @@ const emit = defineEmits([
   'submit'
 ])
 
-const useHook = inject('useHook') as UseHook 
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest } = useHook({
   i18nModule: props.i18nModule
 })
 
 const inpuValue = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value: Props.ModelValue) {
+  get: () => props.modelValue,
+  set: (value: Props['modelValue']) => {
     emit('update:model-value', value)
   }
 })
@@ -69,10 +74,10 @@ const openListenerSize = () => {
   window.addEventListener('resize', resizeEvent, { once: true })
 }
 
-const searchRef = ref()
+const CustomInputRef = ref<InstanceType<typeof CustomInput>>()
 
 const isVisible = computed({
-  get() {
+  get: () => {
     const _isVisible = activeScopedIdSet.value.has(scopedId)
     if (_isVisible) {
       openListenerSize()
@@ -82,13 +87,13 @@ const isVisible = computed({
 
     return _isVisible
   },
-  async set(v: boolean) {
+  set: async (v: boolean) => {
     if (v) {
       customSearchStore.setActiveScopedId(scopedId)
 
       await nextTick()
       if (isActiveConditions.value) return
-      searchRef?.value.focus()
+      CustomInputRef.value?.focus()
 
     } else {
       customSearchStore.removeActiveScopedId(scopedId)
@@ -106,7 +111,7 @@ const visibleChange = async (_isVisible: boolean) => {
 
 // 條件搜尋
 const isActiveConditions = computed({
-  get () {
+  get: () => {
     return props.activeConditions && isActive.value
   },
   set: async (value: boolean) => {
@@ -229,8 +234,8 @@ const updateConditions = () => {
   emit('update:conditions', getProxyData(conditionList))
 }
 const throttleUpdateConditions = throttle<typeof updateConditions>(updateConditions, 200, {
-  isNoLeading: false,
-  isNoTrailing: false
+  leading: true,
+  trailing: true
 })
 
 // 重製 conditions
@@ -362,7 +367,7 @@ const slotList = computed(() => {
     </template>
     <!-- 是否啟用Filter -->
     <template #switch>
-      <CustomSwitch v-model="isActive" />
+      <CustomSwitch v-model="isActive"/>
     </template>
     <!-- 搜尋 -->
     <template #input>
@@ -370,7 +375,7 @@ const slotList = computed(() => {
         <div class="__search-input">
           <!-- 一般搜尋 -->
           <CustomInput
-            ref="searchRef"
+            ref="CustomInputRef"
             v-bind="props"
             :is-validate="false"
             :hidden-error-message="true"
@@ -490,6 +495,7 @@ const slotList = computed(() => {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 0.9rem;
   }
 
   &-detail {

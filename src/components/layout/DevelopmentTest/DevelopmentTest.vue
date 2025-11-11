@@ -2,22 +2,23 @@
 import type { PropType } from 'vue'
 import { ref, computed } from 'vue'
 
-import { CustomTabs, CustomButton, CustomPopover } from '@/components' // 系統組件
+import { CustomTabs, CustomButton, CustomPopover } from '@/components/feature' // 系統組件: 功能
 import { useDraggable, useResizeObserver } from '@/lib/lib_hook' // 自訂Composition API
 import { isEmpty, hasOwnProperty, deepClone } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
+import ReplaceText from './Components/ReplaceText/ReplaceText.vue'
 import PreferencesTest from './Components/PreferencesTest.vue'
 import IndexedDBTest from './Components/IndexedDBTest.vue'
 import UtilsTest from './Components/UtilsTest.vue'
 
 const props = defineProps({
-  langMap: {
+  i18nLangMap: {
     type: Object as PropType<any>
   }
 })
 
-const developmentTestRef = ref<HTMLElement | null>(null)
+const developmentTestRef = ref<HTMLDivElement>()
 const getInitPosition = () => {
   return {
     x: window.innerWidth - 160,
@@ -30,12 +31,12 @@ const { x, y, style, isDragging } = useDraggable(developmentTestRef, {
 
 const _isVisible = ref(false)
 const isVisible = computed({
-  set (v: boolean) {
-    _isVisible.value = v
-  },
-  get () {
+  get: () => {
     // 拖拉不要顯示
     return _isVisible.value && !isDragging.value
+  },
+  set: (v: boolean) => {
+    _isVisible.value = v
   }
 })
 
@@ -65,7 +66,7 @@ defineExpose({
     const i18nKeyList = Array.isArray(i18nKey) ? i18nKey : [i18nKey]
     i18nKeyList.forEach(_i18nKey => {
       if(!hasOwnProperty(i18nUsageRecord[routeName], _i18nKey)) {
-        const langInfo = deepClone({}, props.langMap[_i18nKey])
+        const langInfo = deepClone({}, props.i18nLangMap[_i18nKey])
 
         i18nUsageRecord[routeName][_i18nKey] = {
           i18nKey: _i18nKey,
@@ -79,7 +80,8 @@ defineExpose({
 
 const tab = ref('PreferencesTest')
 const tabs = [
-  { label: 'i18n', value: 'PreferencesTest' },
+  { label: '偏好設定', value: 'PreferencesTest' },
+  { label: '文字替換', value: 'ReplaceText' },
   { label: 'iDB', value: 'IndexedDBTest' },
   { label: '其他', value: 'UtilsTest' }
 ]
@@ -107,10 +109,8 @@ const tabs = [
 
           <KeepAlive>
             <Transition name="fade" mode="out-in">
-              <PreferencesTest
-                v-if="tab === 'PreferencesTest'"
-                :i18n-usage-record="i18nUsageRecord"
-              />
+              <PreferencesTest v-if="tab === 'PreferencesTest'" :i18n-usage-record="i18nUsageRecord" />
+              <ReplaceText v-else-if="tab === 'ReplaceText'" />
               <IndexedDBTest v-else-if="tab === 'IndexedDBTest'" />
               <UtilsTest v-else />
             </Transition>

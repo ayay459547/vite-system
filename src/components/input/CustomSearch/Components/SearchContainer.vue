@@ -2,7 +2,10 @@
 import type { PropType } from 'vue'
 import { computed } from 'vue'
 
-import { CustomPopover, CustomButton, CustomBadge, CustomTooltip } from '@/components' // 系統組件
+import CustomPopover from '@/components/feature/CustomPopover/CustomPopover.vue'
+import CustomButton from '@/components/feature/CustomButton/CustomButton.vue'
+import CustomBadge from '@/components/feature/CustomBadge/CustomBadge.vue'
+import CustomTooltip from '@/components/feature/CustomTooltip/CustomTooltip.vue'
 
 import type { Props } from '../CustomSearchInfo'
 
@@ -21,25 +24,25 @@ const props = defineProps({
   },
   // CustomSearch
   isCondition: {
-    type: Boolean as PropType<Props.IsCondition>,
+    type: Boolean as PropType<Props['isCondition']>,
     required: false,
     default: false,
     description: '是否為條件搜尋'
   },
   width: {
-    type: [String, Number] as PropType<Props.Width>,
+    type: [String, Number] as PropType<Props['width']>,
     required: false,
     default: 300,
     description: '寬度'
   },
   placement: {
-    type: String as PropType<Props.Placement>,
+    type: String as PropType<Props['placement']>,
     required: false,
     default: 'bottom',
     description: '出現位置'
   },
   search: {
-    type: Boolean as PropType<Props.Search>,
+    type: Boolean as PropType<Props['search']>,
     required: false,
     default: false,
     description: '是否只顯示搜尋按鈕'
@@ -55,7 +58,6 @@ const popverWidth = computed(() => {
   if (!props.isCondition) return 300
   return props.isActiveConditions ? 500 : 350
 })
-
 </script>
 
 <template>
@@ -126,8 +128,6 @@ const popverWidth = computed(() => {
 .__search {
   &-container {
     width: 100%;
-    max-width: 100%;
-    min-width: fit-content;
     height: fit-content;
   }
   &-top {
