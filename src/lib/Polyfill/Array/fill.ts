@@ -1,5 +1,4 @@
 /* eslint-disable prefer-rest-params */
-
 const fill = () => {
   if (!Array.prototype.fill) {
     Object.defineProperty(Array.prototype, 'fill', {

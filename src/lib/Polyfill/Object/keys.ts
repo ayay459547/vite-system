@@ -1,12 +1,10 @@
-/* eslint-disable prefer-rest-params */
-
 const keys = () => {
   if (!Object.keys) {
     Object.defineProperty(Object.prototype, 'keys', {
       value: function () {
         'use strict'
         const hasOwnProperty = Object.prototype.hasOwnProperty
-        // eslint-disable-next-line no-prototype-builtins
+
         const hasDontEnumBug = !{ toString: null }.propertyIsEnumerable('toString')
         const dontEnums = [
           'toString',

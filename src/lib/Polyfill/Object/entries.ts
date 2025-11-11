@@ -1,5 +1,3 @@
-/* eslint-disable prefer-rest-params */
-
 const entries = () => {
   if (!Object.entries) {
     Object.defineProperty(Object.prototype, 'entries', {

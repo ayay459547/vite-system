@@ -1,5 +1,3 @@
-/* eslint-disable prefer-rest-params */
-
 const includes = () => {
   if (!Array.prototype.includes) {
     Object.defineProperty(Array.prototype, 'includes', {

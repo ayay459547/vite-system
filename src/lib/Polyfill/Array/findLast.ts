@@ -1,7 +1,4 @@
-/* eslint-disable prefer-rest-params */
-
 const findLast = () => {
-  // @ts-ignore
   if (!Array.prototype.findLast) {
     Object.defineProperty(Array.prototype, 'findLast', {
       value: function (callback: (value: any, index: number, that: any) => boolean): any | undefined {

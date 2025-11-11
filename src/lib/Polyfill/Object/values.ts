@@ -1,5 +1,3 @@
-/* eslint-disable prefer-rest-params */
-
 const values = () => {
   if (!Object.values) {
     Object.defineProperty(Object.prototype, 'values', {

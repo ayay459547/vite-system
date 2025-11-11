@@ -1,9 +1,8 @@
 /* eslint-disable prefer-rest-params */
-
 const map = () => {
   if (!Array.prototype.map) {
     Object.defineProperty(Array.prototype, 'map', {
-      value: function (callback: (T: any, kValue: any, k: string, O: any) => any /*, thisArg*/) {
+      value: function (callback: (T: any, kValue: any, k: string, O: any) => any /* thisArg */) {
         let T = null
         let A = null
         let k = null
