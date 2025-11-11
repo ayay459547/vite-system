@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, inject } from 'vue'
 
-import type { UseHook } from '@/declare/hook' // 全域功能類型
-import { CustomWatermark } from '@/components' // 系統組件
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { UseHook } from '@/types/types_hook' // 全域功能類型
+import { CustomWatermark } from '@/components/feature' // 系統組件: 功能
+import { defaultModuleType } from '@/declare/declare_i18n'
+import { throttle } from '@/lib/lib_lodash'
 
-import type { ResizeObserverCallback } from '@/lib/lib_throttle'
-import throttle from '@/lib/lib_throttle'
-
-const useHook: UseHook = inject('useHook')
+const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   i18nModule: defaultModuleType
 })
@@ -29,13 +27,13 @@ const throttleSetImgStyle = throttle(setImgStyle, 100) as (payload: MouseEvent) 
 const container = ref(null)
 const centerPoint = reactive({ x: 0, y: 0 })
 
-const ROcallback = throttle((entries: ResizeObserverEntry[]) => {
+const ROcallback = throttle<ResizeObserverCallback>((entries: ResizeObserverEntry[]) => {
   entries.forEach(entry => {
     const { x, y, width, height } = entry.contentRect
     centerPoint.x = x + width / 2
     centerPoint.y = y + height / 2
   })
-}, 100) as ResizeObserverCallback
+}, 100)
 
 const RO = new ResizeObserver(ROcallback)
 
@@ -54,7 +52,7 @@ onUnmounted(() => {
     <div ref="container" class="page" @mousemove="throttleSetImgStyle">
       <div class="page-circle"></div>
       <h1 class="page-title" :style="titleStyle">
-        {{ i18nTranslate('page-inProgress') }}
+        {{ i18nTranslate('page-noPermissions') }}
       </h1>
 
       <img class="page-img" src="@/assets/images/common/noPermissions.svg" alt="404" />
@@ -68,6 +66,7 @@ onUnmounted(() => {
   height: 100%;
   overflow: hidden;
   position: relative;
+  opacity: 0.8;
 
   flex-direction: column;
   @extend %flex-center;

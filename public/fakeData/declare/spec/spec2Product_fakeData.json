@@ -1,0 +1,902 @@
+[
+  {
+    "specId": "BodySize_103",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "176840018",
+    "specName": "6\"WAFER",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6\"WAFER"
+  },
+  {
+    "specId": "BodySize_122",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "176840018",
+    "specName": "7.85*8.55mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 17:16:53.436",
+    "specContent": "7.85*8.55mm"
+  },
+  {
+    "specId": "BodySize_133",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "176840018",
+    "specName": "9.8*9.6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 17:17:02.213",
+    "specContent": "9.8*9.6mm"
+  },
+  {
+    "specId": "BodySize_22",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "176840018",
+    "specName": "11.8*11mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 17:16:53.436",
+    "specContent": "11.8*11mm"
+  },
+  {
+    "specId": "CustId_4",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "176840018",
+    "specName": "F102",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F102"
+  },
+  {
+    "specId": "BodySize_134",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "1TC400B02A1-AIT",
+    "specName": "NA",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "NA"
+  },
+  {
+    "specId": "CustId_20",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "1TC400B02A1-AIT",
+    "specName": "L002",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "L002"
+  },
+  {
+    "specId": "PackageType_1",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "1TC400B02A1-AIT",
+    "specName": "12\"WAFER",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "12\"WAFER"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "1TC400B02A1-AIT",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-265-346",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-265-346",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-265-346",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-265-346",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-265-347",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-265-347",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-265-347",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-265-347",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-265-379",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-265-379",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-265-379",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-265-379",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-265-380",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-265-380",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-265-380",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-265-380",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-265-411",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-265-411",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-265-411",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-265-411",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-269-191",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-269-191",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-269-191",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-269-191",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-269-344",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-269-344",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-269-344",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-269-344",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-276-422",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-276-422",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-276-422",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-276-422",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-276-425",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-276-425",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-276-425",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-276-425",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-276-426",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-276-426",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-276-426",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-276-426",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-276-919",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-276-919",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-276-919",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-276-919",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-276-920",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-276-920",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-276-920",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-276-920",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.806",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-277-396",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-277-396",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-277-396",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-277-396",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-304-077",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-304-077",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_231",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-304-077",
+    "specName": "VFBGA 105B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "VFBGA 105B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-304-077",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_105",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "2000-320-018",
+    "specName": "6*7mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "6*7mm"
+  },
+  {
+    "specId": "CustId_13",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "2000-320-018",
+    "specName": "F186",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F186"
+  },
+  {
+    "specId": "PackageType_39",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "2000-320-018",
+    "specName": "FCCSP-C 132B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "FCCSP-C 132B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "2000-320-018",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_82",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "231B0-01-2",
+    "specName": "4*4mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "4*4mm"
+  },
+  {
+    "specId": "CustId_2",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "231B0-01-2",
+    "specName": "F071",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F071"
+  },
+  {
+    "specId": "PackageType_140",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "231B0-01-2",
+    "specName": "QFN 24L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "QFN 24L"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "231B0-01-2",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_6",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "277C0-01-2",
+    "specName": "10*10mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "10*10mm"
+  },
+  {
+    "specId": "CustId_2",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "277C0-01-2",
+    "specName": "F071",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F071"
+  },
+  {
+    "specId": "PackageType_156",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "277C0-01-2",
+    "specName": "QFN 88L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "QFN 88L"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "277C0-01-2",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_6",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "278B0-01-2",
+    "specName": "10*10mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "10*10mm"
+  },
+  {
+    "specId": "CustId_2",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "278B0-01-2",
+    "specName": "F071",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F071"
+  },
+  {
+    "specId": "PackageType_156",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "278B0-01-2",
+    "specName": "QFN 88L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "QFN 88L"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "278B0-01-2",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_104",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "34101SGQXFAC-RF",
+    "specName": "6*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "6*6mm"
+  },
+  {
+    "specId": "CustId_6",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "34101SGQXFAC-RF",
+    "specName": "F128",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F128"
+  },
+  {
+    "specId": "PackageType_207",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "34101SGQXFAC-RF",
+    "specName": "TFBGA 84B",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "TFBGA 84B"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "34101SGQXFAC-RF",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_89",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "58974QRTBC01-RF",
+    "specName": "5*5mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "5*5mm"
+  },
+  {
+    "specId": "CustId_6",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "58974QRTBC01-RF",
+    "specName": "F128",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F128"
+  },
+  {
+    "specId": "PackageType_250",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "58974QRTBC01-RF",
+    "specName": "VQFN 32L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "VQFN 32L"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "58974QRTBC01-RF",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_89",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "58974QRTBC02-RF",
+    "specName": "5*5mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "5*5mm"
+  },
+  {
+    "specId": "CustId_6",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "58974QRTBC02-RF",
+    "specName": "F128",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F128"
+  },
+  {
+    "specId": "PackageType_250",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "58974QRTBC02-RF",
+    "specName": "VQFN 32L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "VQFN 32L"
+  },
+  {
+    "specId": "ProductLine_2",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "58974QRTBC02-RF",
+    "specName": "RF",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "RF"
+  },
+  {
+    "specId": "BodySize_91",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "6012CE-FT",
+    "specName": "5*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "5*6mm"
+  },
+  {
+    "specId": "CustId_16",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "6012CE-FT",
+    "specName": "F245",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F245"
+  },
+  {
+    "specId": "PackageType_157",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "6012CE-FT",
+    "specName": "QFN 8L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "QFN 8L"
+  },
+  {
+    "specId": "ProductLine_1",
+    "specTypeId": "ProductLine",
+    "specTypeName": "產品線",
+    "productId": "6012CE-FT",
+    "specName": "ANALOGY",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "ANALOGY"
+  },
+  {
+    "specId": "BodySize_91",
+    "specTypeId": "BodySize",
+    "specTypeName": "封裝尺寸",
+    "productId": "6012C-FBBA",
+    "specName": "5*6mm",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "5*6mm"
+  },
+  {
+    "specId": "CustId_16",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "productId": "6012C-FBBA",
+    "specName": "F245",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "F245"
+  },
+  {
+    "specId": "PackageType_157",
+    "specTypeId": "PackageType",
+    "specTypeName": "封裝類型",
+    "productId": "6012C-FBBA",
+    "specName": "QFN 8L",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:04:53.807",
+    "specContent": "QFN 8L"
+  }
+]

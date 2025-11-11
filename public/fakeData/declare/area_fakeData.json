@@ -1,0 +1,128 @@
+[
+  {
+    "areaId": "ALL",
+    "areaName": "ALL",
+    "parentNo": "ALL",
+    "lastUpdateDate": "2025-04-15 16:41:52.217",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "AR_MS ALL",
+    "areaName": "AR_MSALL",
+    "parentNo": "AR_MSALL",
+    "lastUpdateDate": "2025-04-15 16:41:52.246",
+    "areaCategory": "AR_MS"
+  },
+  {
+    "areaId": "RWS Unknown",
+    "areaName": "RWSUK",
+    "parentNo": "RWSUK",
+    "lastUpdateDate": "2025-04-15 16:41:52.259",
+    "areaCategory": "RWS"
+  },
+  {
+    "areaId": "1A",
+    "areaName": "1A",
+    "parentNo": "1A",
+    "lastUpdateDate": "2025-04-15 16:48:14.368",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "1B",
+    "areaName": "1B",
+    "parentNo": "1B",
+    "lastUpdateDate": "2025-04-15 16:48:14.376",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "1C",
+    "areaName": "1C",
+    "parentNo": "1C",
+    "lastUpdateDate": "2025-04-15 16:48:14.378",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "1D",
+    "areaName": "1D",
+    "parentNo": "1D",
+    "lastUpdateDate": "2025-04-15 16:48:14.379",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "1E",
+    "areaName": "1E",
+    "parentNo": "1E",
+    "lastUpdateDate": "2025-04-15 16:48:14.38",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "1O",
+    "areaName": "1O",
+    "parentNo": "1O",
+    "lastUpdateDate": "2025-04-15 16:48:14.382",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "2A",
+    "areaName": "2A",
+    "parentNo": "2A",
+    "lastUpdateDate": "2025-04-15 16:48:14.383",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "2B",
+    "areaName": "2B",
+    "parentNo": "2B",
+    "lastUpdateDate": "2025-04-15 16:48:14.385",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "2C",
+    "areaName": "2C",
+    "parentNo": "2C",
+    "lastUpdateDate": "2025-04-15 16:48:14.387",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "2O",
+    "areaName": "2O",
+    "parentNo": "2O",
+    "lastUpdateDate": "2025-04-15 16:48:14.388",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "3A",
+    "areaName": "3A",
+    "parentNo": "3A",
+    "lastUpdateDate": "2025-04-15 16:48:14.39",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "4A",
+    "areaName": "4A",
+    "parentNo": "4A",
+    "lastUpdateDate": "2025-04-15 16:48:14.393",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "4B",
+    "areaName": "4B",
+    "parentNo": "4B",
+    "lastUpdateDate": "2025-04-15 16:48:14.395",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "5A",
+    "areaName": "5A",
+    "parentNo": "5A",
+    "lastUpdateDate": "2025-04-15 16:48:14.396",
+    "areaCategory": "APS"
+  },
+  {
+    "areaId": "5B",
+    "areaName": "5B",
+    "parentNo": "5B",
+    "lastUpdateDate": "2025-04-15 16:48:14.398",
+    "areaCategory": "APS"
+  }
+]

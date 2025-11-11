@@ -1,0 +1,10 @@
+[
+  {
+    "productCategoryId": "Chip",
+    "productCategoryName": "晶片"
+  },
+  {
+    "productCategoryId": "Wafer",
+    "productCategoryName": "晶圓"
+  }
+]
