@@ -1,5 +1,4 @@
 // import fill from './Array/fill'
-import findLast from './Array/includes'
 // import includes from './Array/includes'
 // import map from './Array/map'
 
@@ -9,7 +8,6 @@ import findLast from './Array/includes'
 
 const injectList = [
   // fill,
-  findLast
   // includes,
   // map,
 
