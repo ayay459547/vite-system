@@ -3,20 +3,18 @@ import { defineStore } from 'pinia'
 
 import { isEmpty } from '@/lib/lib_utils' // 工具
 
-export const useCustomModalStore = defineStore('customModal', () => {
+export const useCustomModalStore = defineStore('CustomModal', () => {
   // 正在使用的 modal 要浮在最上面
   const modalIndexMap = reactive<Record<string, number>>({})
   const count = ref(0)
   const modalMax = ref(0)
 
   const modalCount = computed({
-    get() {
-      if (count.value <= 0) {
-        clearModal()
-      }
+    get: () => {
+      if (count.value <= 0) clearModal()
       return count.value
     },
-    set(v: number) {
+    set: (v: number) => {
       count.value = Math.max(0, v)
     }
   })

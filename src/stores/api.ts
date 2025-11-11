@@ -1,38 +1,8 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
-import type { AuthData, PermissionData } from '@/declare/hook' // 全域功能類型
+import type { AuthData } from '@/types/types_hook' // 全域功能類型
 
-import { fakeUserData, allPermissionData } from './fakeData'
-
-export const getRoutesPermission = async (userId: number) => {
-  const resData = await ajax<Api<PermissionData[]>>(
-    {
-      url: '/api/getTableDataCount',
-      method: 'get',
-      data: {
-        id: userId
-      }
-    },
-    {
-      isFakeData: true,
-      fakeData: {
-        data: allPermissionData,
-        status: 'success'
-      },
-      delay: 500,
-      callback: (config, fakeData) => {
-        if (config.data.id) {
-          return fakeData
-        } else {
-          return []
-        }
-      }
-    }
-  )
-  return resData
-}
-
-export const defaultAuthData = {
+export const defaultAuthData: any = {
   user: {
     id: null,
     loginName: null,
@@ -49,21 +19,27 @@ export const defaultAuthData = {
   groups: [{ id: null, fullName: null }]
 }
 
-export const getAuthData = async (token: number): Promise<ApiRes<AuthData>> => {
-  const resData = await ajax<Api<AuthData>>(
+export const getAuthData = async (userId: number): Promise<ApiRes<AuthData>> => {
+  const resData = await ajax<AuthData>(
     {
       baseURL: '/rest-common',
       // url: '/role/getRole',
       url: '/role/getRoleByUserId',
       method: 'get',
       params: {
-        id: token
+        id: userId
       }
     },
     {
       isFakeData: false,
+      fakeDataPath: '/stores/fakeData_auth.json',
       fakeData: {
-        data: fakeUserData,
+        data: {
+          user: null,
+          role: null,
+          roleFunction: [],
+          groups: []
+        },
         status: 'success'
       },
       delay: 300
