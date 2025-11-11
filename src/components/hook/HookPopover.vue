@@ -2,41 +2,42 @@
 import type { PropType } from 'vue'
 import { ref, shallowRef, onMounted } from 'vue'
 
-import type { EventOptions, EventItem } from '@/declare/hook' // 全域功能類型
-import { CustomPopover } from '@/components' // 系統組件
-import throttle from '@/lib/lib_throttle'
+import type { EventOptions, EventItem } from '@/types/types_hook' // 全域功能類型
+import { CustomPopover, CustomIcon } from '@/components/feature' // 系統組件
+import { throttle } from '@/lib/lib_lodash'
+import { isEmpty } from '@/lib/lib_utils'
 
-export declare namespace Types {
-  type Placement =
+export interface Types {
+  placement:
     | 'top' | 'top-start' | 'top-end'
     | 'bottom' | 'bottom-start' | 'bottom-end'
     | 'left' | 'left-start' | 'left-end'
     | 'right' | 'right-start' | 'right-end'
 }
 
-export declare namespace Props {
-  type ClientX = number
-  type ClientY = number
-  type EventList = EventItem[]
-  type Options = EventOptions
+export interface Props {
+  clientX: number
+  clientY: number
+  eventList: EventItem[]
+  options: EventOptions
 }
 
-export declare namespace Emits {
-  type Close = () => void
+export interface Emits {
+  Close: () => void
 }
 
-export declare namespace Expose {
-  type OpenPopover = (
+export interface Expose {
+  openPopover: (
     clientX: number,
     clientY: number,
     eventList: EventItem[],
     options?: EventOptions
   ) => void
-  type ClosePopover = () => void
+  closePopover: () => void
 }
 
 const visible = ref<boolean>(false)
-const placement = ref<Types.Placement>('bottom')
+const placement = ref<Types['placement']>('bottom')
 const left = ref<number>(0)
 const top = ref<number>(0)
 
@@ -45,19 +46,19 @@ const popoverWidth = ref(150)
 
 const props = defineProps({
   clientX: {
-    type: Number as PropType<Props.ClientX>,
+    type: Number as PropType<Props['clientX']>,
     default: 0
   },
   clientY: {
-    type: Number as PropType<Props.ClientY>,
+    type: Number as PropType<Props['clientY']>,
     default: 0
   },
   eventList: {
-    type: Array as PropType<Props.EventList>,
+    type: Array as PropType<Props['eventList']>,
     default: () => []
   },
   options: {
-    type: Object as PropType<Props.Options>,
+    type: Object as PropType<Props['options']>,
     default: () => {
       return { width: 150 }
     }
@@ -66,13 +67,18 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
+const iconAttr = (attr: any) => {
+  if (Array.isArray(attr)) return { icon: attr }
+  if (typeof attr === 'object') return { ...attr }
+  return {}
+}
+
 const callEvent = (callback: Function, disabled: boolean) => {
   if (typeof disabled === 'boolean' && disabled) return
-
   callback()
 }
 
-const openPopover: Expose.OpenPopover = (clientX, clientY, eventList, options) => {
+const openPopover: Expose['openPopover'] = (clientX, clientY, eventList, options) => {
   if (visible.value) return
   left.value = clientX
   top.value = clientY + 10
@@ -95,7 +101,7 @@ const openPopover: Expose.OpenPopover = (clientX, clientY, eventList, options) =
   }, 100)
 }
 
-const closePopover: Expose.ClosePopover = () => {
+const closePopover: Expose['closePopover'] = () => {
   window.removeEventListener('wheel', throttleClosePopover)
   window.removeEventListener('resize', throttleClosePopover)
 
@@ -120,7 +126,7 @@ defineExpose({ openPopover, closePopover })
 
 <template>
   <div
-    class="popover-container"
+    class="hook-event-container"
     :style="{
       left: left + 'px',
       top: top + 'px'
@@ -132,23 +138,27 @@ defineExpose({ openPopover, closePopover })
       :width="popoverWidth"
       popper-style="padding: 0;"
     >
-      <ul v-if="callbackList.length > 0" class="popover-list">
+      <ul v-if="callbackList.length > 0" class="hook-event-list">
         <li
           v-for="(callbackItem, callbackIndex) in callbackList"
-          class="popover-item"
+          class="hook-event-item"
           :key="callbackIndex"
-          :class="{
-            disabled: callbackItem.disabled,
-            active: callbackItem.active
-          }"
+          :class="[
+            `${callbackItem?.class ?? ''}`,
+            {
+              disabled: callbackItem.disabled,
+              active: callbackItem.active
+            }
+          ]"
+          :id="callbackItem?.id ?? ''"
           @click="callEvent(callbackItem.event, callbackItem.disabled)"
           @touchstart="callEvent(callbackItem.event, callbackItem.disabled)"
         >
           <div style="width: fit-content">
-            <FontAwesomeIcon
-              v-if="callbackItem.icon.length > 0"
-              :icon="callbackItem.icon"
+            <CustomIcon
+              v-if="!isEmpty(callbackItem.icon)"
               style="width: 24px"
+              v-bind="iconAttr(callbackItem.icon)"
             />
           </div>
           <span>{{ callbackItem.label }}</span>
@@ -159,7 +169,7 @@ defineExpose({ openPopover, closePopover })
       <template #reference>
         <div
           v-on-click-outside="deletePopover"
-          class="popover-test"
+          class="hook-event-test"
           @click="visible = !visible"
         ></div>
       </template>
@@ -168,7 +178,7 @@ defineExpose({ openPopover, closePopover })
 </template>
 
 <style lang="scss" scoped>
-.popover {
+.hook-event {
   &-container {
     width: fit-content;
     height: fit-content;
@@ -184,7 +194,7 @@ defineExpose({ openPopover, closePopover })
     // line-height: 24px;
     display: flex;
     gap: 12px;
-    font-size: 1.1em;
+    font-size: 0.9em;
     align-items: center;
     cursor: pointer;
 
