@@ -20,6 +20,7 @@ declare module 'vue' {
     ChartWeekScheduleComponentsPlanItem: typeof import('./src/components/chart/WeekSchedule/Components/PlanItem.vue')['default']
     ChartWeekScheduleComponentsPlanTemp: typeof import('./src/components/chart/WeekSchedule/Components/PlanTemp.vue')['default']
     ChartWeekScheduleWeekSchedule: typeof import('./src/components/chart/WeekSchedule/WeekSchedule.vue')['default']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     FeatureCustomAnchorCustomAnchor: typeof import('./src/components/feature/CustomAnchor/CustomAnchor.vue')['default']
     FeatureCustomBadgeCustomBadge: typeof import('./src/components/feature/CustomBadge/CustomBadge.vue')['default']
     FeatureCustomButtonCustomButton: typeof import('./src/components/feature/CustomButton/CustomButton.vue')['default']
@@ -137,5 +138,8 @@ declare module 'vue' {
     ViewsAPSFoundationBlockSortingBlockSorting: typeof import('./src/components/views/APS_Foundation/BlockSorting/BlockSorting.vue')['default']
     ViewsAPSFoundationSearchProcessSearchProcess: typeof import('./src/components/views/APS_Foundation/SearchProcess/SearchProcess.vue')['default']
     ViewsSecurityGroupTreeGroupTree: typeof import('./src/components/views/Security/GroupTree/GroupTree.vue')['default']
+  }
+  export interface GlobalDirectives {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
