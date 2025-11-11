@@ -1,0 +1,1513 @@
+{
+  "role": {
+    "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+    "roleName": "admin",
+    "description": "admin",
+    "updateAt": "2025-01-01 18:12:05.135",
+    "id": 2,
+    "createAt": "2025-01-01 12:00:01.001",
+    "createDate": "2025-01-01 12:00:01.001"
+  },
+  "roleFunction": [
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apskpi-11",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apskpi-12",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apskpi-13",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apskpi-14",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apskpi-15",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-11",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-12",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-31",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-32",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-33",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-34",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-38",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-41",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-42",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-45",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-51",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apspub-52",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apswarning-11",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apswarning-12",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apswarning-13",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "apswarning-14",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-112",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-113",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-114",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-115",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-13",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-14",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-31-SG",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-32-SG",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-33",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-33-vue",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-34",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-35",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-36",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-37",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "auto-38",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-113",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-115",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-121",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-126",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-127",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-131",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-132",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1411",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1412",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1413",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1414",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1415",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1417",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 10:43:16.937",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1419",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 10:43:16.937"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1422",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1424",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1426",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1427",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1429",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1431",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1432",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1433",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1434",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1435",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1436",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1441",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1442",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1601",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1602",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1603",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1604",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1605",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1606",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1607",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1608",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1609",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "fund-1610",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-11",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-12",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-13",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-21",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-31",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-32",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-33",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-34",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-35",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-41",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-42",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-43",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-44",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-45",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-46",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-47",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "mulsolrtd-51",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-21",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-22",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-24",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-25",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-26",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-27",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "optimiz-31",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-11",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-12",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-13",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-15",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-16",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-17",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "rtds-18",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    },
+    {
+      "readPermissions": true,
+      "lastUpdateTimestamp": "2025-01-01 12:00:01.001",
+      "deletePermissions": true,
+      "autoGeneratingId": false,
+      "createPermissions": true,
+      "pk": {
+        "functionID": "security",
+        "roleID": 2
+      },
+      "executePermissions": true,
+      "updatePermissions": true,
+      "createDate": "2025-01-01 12:00:01.001"
+    }
+  ],
+  "groups": [
+    {
+      "lastUpdateTimestamp": "2025-01-01 18:10:29.09",
+      "children": null,
+      "autoGeneratingId": false,
+      "roles": null,
+      "fullName": "admin",
+      "description": "admin",
+      "updateAt": "2025-01-01 18:10:29.09",
+      "id": 2,
+      "users": null,
+      "createAt": "2025-01-01 18:10:29.09",
+      "createDate": "2025-01-01 18:10:29.09"
+    }
+  ],
+  "user": {
+    "autoGeneratingId": false,
+    "roles": null,
+    "fullName": "admin",
+    "description": "",
+    "updateAt": "2024-03-04 10:24:31.743",
+    "groups": null,
+    "enabled": true,
+    "createAt": "2025-01-01 18:10:40.453",
+    "password": "123",
+    "lastUpdateTimestamp": "2025-01-01 18:10:40.453",
+    "loginName": "admin",
+    "id": 2,
+    "createDate": "2025-01-01 18:10:40.453"
+  }
+}
