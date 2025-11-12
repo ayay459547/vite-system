@@ -1,4 +1,3 @@
-import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils' // 工具
 import type { Options } from '@/components' // 系統組件
@@ -79,7 +78,7 @@ export type TableData = {
 }
 
 export const getVersionOptions = async (): Promise<Options> => {
-  const resData = await ajax<Api<string[]>>(
+  const resData = await ajax<string[]>(
     {
       url: '/maintainResourceCompareResult/retrieveNewestVersionBySetting',
       method: 'get'
@@ -126,7 +125,7 @@ export const getVersionOptions = async (): Promise<Options> => {
 // table
 export const getData = async (params: any): Promise<ResponseData[]> => {
   const { dateOfPlan = [], dateVersion = '', showCorrectCompare = false } = params
-  const resData = await ajax<Api<ResponseData[]>>(
+  const resData = await ajax<ResponseData[]>(
     {
       url: '/maintainResourceCompareResult/retrieveByFilter',
       method: 'post',

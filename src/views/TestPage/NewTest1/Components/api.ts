@@ -28,7 +28,7 @@ export type UpdateParams = {} & FormParams
 export const createData = async (form: CreateFormData) => {
   const { column1, column2, column3, column4, column5 } = form
 
-  const resData = await ajax<Api<null>>(
+  const resData = await ajax<null>(
     {
       url: '/api/create',
       method: 'post',
@@ -66,7 +66,7 @@ export const createData = async (form: CreateFormData) => {
 export const updateData = async (form: UpdateFormData) => {
   const { column1, column2, column3, column4, column5 } = form
 
-  const resData = await ajax<Api<null>>(
+  const resData = await ajax<null>(
     {
       url: '/api/update',
       method: 'put',

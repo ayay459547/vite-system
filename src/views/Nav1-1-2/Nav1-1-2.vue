@@ -11,7 +11,6 @@ import type { TableOptions } from '@/types/types_columnSetting'
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData } from './api'
 import { columnSetting } from './columns'
-// import i18nMessage from './i18n'
 
 import DetailModal from './Components/DetailModal.vue'
 

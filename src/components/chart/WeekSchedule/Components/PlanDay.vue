@@ -9,8 +9,8 @@ import { useWeekScheduleStore } from '@/stores/stores_components/useWeekSchedule
 
 import type { Types } from '../WeekScheduleInfo'
 import { secondToTime } from '../planUtils'
-import PlanDayItem from './PlanDayItem.vue'
-import PlanDayTemp from './PlanDayTemp.vue'
+import PlanDayItem from './PlanItem.vue'
+import PlanDayTemp from './PlanTemp.vue'
 
 const props = defineProps({
   dayId: {

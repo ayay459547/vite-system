@@ -1,4 +1,3 @@
-import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export type TableData = {
@@ -62,7 +61,7 @@ export const fakeTableData: TableData[] = [
 
 // api
 export const getData = async () => {
-  const resData = await ajax<Api<TableData[]>>(
+  const resData = await ajax<TableData[]>(
     {
       url: '/api/getTableDataCount',
       method: 'post',
@@ -81,7 +80,7 @@ export const getData = async () => {
 }
 
 export const getDataCount = async () => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/api/getTableDataCount',
       method: 'post',
@@ -100,7 +99,7 @@ export const getDataCount = async () => {
 }
 
 export const createData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page1/create',
       method: 'post',
@@ -119,7 +118,7 @@ export const createData = async (postData: TableData) => {
 }
 
 export const updateData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page1/update',
       method: 'post',

@@ -4,7 +4,7 @@ import { message } from '@/lib/lib_utils' // 工具
 import type { TableData } from '../api'
 
 export const createData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page/create',
       method: 'post',
@@ -42,7 +42,7 @@ export const createData = async (postData: TableData) => {
 }
 
 export const updateData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page1/update',
       method: 'post',

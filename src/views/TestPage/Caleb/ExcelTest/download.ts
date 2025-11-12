@@ -1,4 +1,5 @@
-import { XLSX, downloadMatrix, ExcelJs } from '@/lib/lib_files'
+import * as XLSX from 'xlsx'
+import { downloadMatrix, ExcelJs } from '@/lib/lib_files'
 
 import type { Workbook } from 'exceljs'
 

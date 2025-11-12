@@ -1,4 +1,4 @@
-import { formatDateTimeRange, formatOperator } from '@/lib/lib_format' // 格式化
+import { webViewFormat } from '@/lib/lib_format' // 格式化
 
 export interface Params {
   erpNo: string
@@ -132,7 +132,7 @@ export const formatParams = (params: any): Params => {
   return {
     erpNo,
     // sequence,
-    ...formatOperator('sequence', sequence),
+    ...webViewFormat.operator('sequence', sequence),
     custDeviceNo,
     bom_Id,
     bom_ver,
@@ -140,8 +140,8 @@ export const formatParams = (params: any): Params => {
     no,
     isMultiple_severity: severity,
 
-    ...formatOperator('predeinedAmount', predeinedAmount),
-    ...formatOperator('quantityOfQualification', quantityOfQualification),
+    ...webViewFormat.operator('predeinedAmount', predeinedAmount),
+    ...webViewFormat.operator('quantityOfQualification', quantityOfQualification),
 
     cust,
     custNo,
@@ -151,13 +151,13 @@ export const formatParams = (params: any): Params => {
     scheduledMachine_Id,
     isMultiple_status: status,
 
-    ...formatDateTimeRange('CREATE_DATE', CREATE_DATE),
-    ...formatDateTimeRange('LAST_UPDATE_TIMESTAMP', LAST_UPDATE_TIMESTAMP),
-    ...formatDateTimeRange('predefinedstartdatetime', predefinedstartdatetime),
-    ...formatDateTimeRange('predefinedCompleteDate', predefinedCompleteDate),
+    ...webViewFormat.dateTimeRange('CREATE_DATE', CREATE_DATE),
+    ...webViewFormat.dateTimeRange('LAST_UPDATE_TIMESTAMP', LAST_UPDATE_TIMESTAMP),
+    ...webViewFormat.dateTimeRange('predefinedstartdatetime', predefinedstartdatetime),
+    ...webViewFormat.dateTimeRange('predefinedCompleteDate', predefinedCompleteDate),
 
     machine_areaName,
-    ...formatOperator('numPriority', numPriority),
-    ...formatDateTimeRange('moveInTime', moveInTime)
+    ...webViewFormat.operator('numPriority', numPriority),
+    ...webViewFormat.dateTimeRange('moveInTime', moveInTime)
   }
 }

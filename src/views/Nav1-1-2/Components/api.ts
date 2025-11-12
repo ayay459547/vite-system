@@ -1,4 +1,3 @@
-import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils' // 工具
 
@@ -33,7 +32,7 @@ export type UserData = {
 }
 
 export const getData = async (userId: number) => {
-  const resData = await ajax<Api<UserData[]>>(
+  const resData = await ajax<UserData[]>(
     {
       url: '/page/getData',
       method: 'get',

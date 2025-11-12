@@ -12,7 +12,6 @@ import { object_filter } from '@/lib/lib_object'
 import type { TableData } from './api'
 import { getData, getDataCount, getExcelData, deleteData } from './api'
 import { columnSetting } from './columns'
-// import i18nMessage from './i18n'
 
 import CreateModal from './Components/CreateModal.vue'
 import UpdateModal from './Components/UpdateModal.vue'

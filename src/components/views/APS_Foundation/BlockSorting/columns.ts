@@ -1,4 +1,4 @@
-import { blockSortingTypes, checkInOptions } from '@/declare/variable'
+import { blockSortingTypes, checkInOptions } from '@/declare/declare_logicRestriction/scheduleBlock'
 import type { Options } from '@/components' // 系統組件
 
 export const defaultSortingByOptions: Options<number> = blockSortingTypes.filter(item => {

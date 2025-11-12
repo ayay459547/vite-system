@@ -94,7 +94,7 @@ onMounted(() => {
   testPushOptions()
 })
 
-const options2 = [
+const options2: any[] = [
   {
     label: 'Danger',
     timestamp: '2018-04-12 20:46',

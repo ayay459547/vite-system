@@ -103,7 +103,7 @@ export const getData = async (params: any) => {
     groupName
   }
 
-  const resData = await ajax<Api<TableData[]>>(
+  const resData = await ajax<TableData[]>(
     {
       url: '/api/getTableDataCount',
       method: 'post',
@@ -156,7 +156,7 @@ export const getDataCount = async (params: any) => {
     groupName
   }
 
-  const resData = await ajax<Api<TableData[]>>(
+  const resData = await ajax<TableData[]>(
     {
       url: '/api/getTableDataCount',
       method: 'post',
@@ -188,7 +188,7 @@ export const getDataCount = async (params: any) => {
 }
 
 export const createData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page1/create',
       method: 'post',
@@ -207,7 +207,7 @@ export const createData = async (postData: TableData) => {
 }
 
 export const updateData = async (postData: TableData) => {
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page1/update',
       method: 'post',

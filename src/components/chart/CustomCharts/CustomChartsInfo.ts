@@ -4,14 +4,14 @@ import type { EChartsOption } from 'echarts/types/dist/shared'
 export const version = '__CustomCharts_1.0.0__'
 
 export interface Types {
-  BuildOptions: (EChartsOption & {
+  buildOptions: (EChartsOption & {
     [key: string]: any
   }) | any
-  BuildFunction: () => Types['BuildOptions']
+  buildFunction: () => Types['buildOptions']
 }
 
 export interface Props {
-  Options: Types['BuildOptions'] | Types['BuildFunction']
+  Options: Types['buildOptions'] | Types['buildFunction']
 }
 export const props = {
   options: {
@@ -21,9 +21,9 @@ export const props = {
 }
 
 export interface Emits {
-  Click: (params: any) => void
+  click: (params: any) => void
 }
 
 export interface Expose {
-  Init: () => void
+  init: () => void
 }

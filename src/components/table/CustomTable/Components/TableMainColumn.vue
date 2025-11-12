@@ -12,11 +12,9 @@ const scopedId = getUuid('__column__')
 
 const props = defineProps({
   showColumns: {
-    type: Array as PropType<Props.TableColumns>,
+    type: Array as PropType<Props['tableColumns']>,
     required: false,
-    default: () => {
-      return []
-    },
+    default: () => [],
     description: '顯示欄位'
   }
 })
