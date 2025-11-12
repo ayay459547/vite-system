@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 
-import { CustomTabs, CustomEmpty } from '@/components' // 系統組件
+import { CustomTabs, CustomEmpty } from '@/components/feature'
 
 import ToJson from './Components/ToJson.vue'
 import ToChart1 from './Components/ToChart1.vue'

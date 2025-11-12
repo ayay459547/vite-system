@@ -2,14 +2,14 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
-import type { CustomDrawerProps } from '@/components' // 系統組件
+import type { CustomDrawerProps } from '@/components/feature'
 import {
-  CustomInput,
   CustomDivider,
   CustomMarkdown,
   CustomButton,
   CustomDrawer
-} from '@/components' // 系統組件
+} from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 const directionOptions = [
   { label: 'rtl', value: 'rtl' },
@@ -17,7 +17,7 @@ const directionOptions = [
   { label: 'ttb', value: 'ttb' },
   { label: 'btt', value: 'btt' }
 ]
-const direction = ref<CustomDrawerProps.Direction>('rtl')
+const direction = ref<CustomDrawerProps['direction']>('rtl')
 
 const sizeOptions = [
   { label: '300', value: '300' },

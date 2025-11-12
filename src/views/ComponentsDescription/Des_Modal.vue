@@ -2,22 +2,23 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomModal/CustomModal.md?raw'
-import type { CustomModalProps } from '@/components' // 系統組件
-import { CustomInput, CustomDivider, CustomMarkdown, CustomModal, CustomButton } from '@/components' // 系統組件
+import type { CustomModalProps } from '@/components/feature'
+import { CustomDivider, CustomMarkdown, CustomModal, CustomButton } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 const widthOptions = [
   { label: 'large', value: 'large' },
   { label: 'default', value: 'default' },
   { label: 'small', value: 'small' }
 ]
-const widthSize = ref<CustomModalProps.WidthSize>('default')
+const widthSize = ref<CustomModalProps['widthSize']>('default')
 
 const heightOptions = [
   { label: 'large', value: 'large' },
   { label: 'default', value: 'default' },
   { label: 'small', value: 'small' }
 ]
-const heightSize = ref<CustomModalProps.HeightSize>('default')
+const heightSize = ref<CustomModalProps['heightSize']>('default')
 
 // slot
 const slotText = ref('slot default')

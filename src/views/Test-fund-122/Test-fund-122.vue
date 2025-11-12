@@ -2,15 +2,9 @@
 import { ref, shallowRef, inject, reactive, onMounted, onBeforeMount, nextTick } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import {
-  CustomButton,
-  CustomTable,
-  CustomModal,
-  CustomIcon,
-  SimpleTable,
-  GroupSearch,
-  CustomSearch
-} from '@/components' // 系統組件
+import { CustomButton, CustomModal, CustomIcon } from '@/components/feature'
+import { CustomTable, SimpleTable } from '@/components/table'
+import { GroupSearch, CustomSearch } from '@/components/input'
 import { useTableSetting, useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import { throttle } from '@/lib/lib_lodash'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限

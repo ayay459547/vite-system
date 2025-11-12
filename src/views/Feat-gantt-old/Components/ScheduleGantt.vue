@@ -3,16 +3,16 @@ import type { PropType } from 'vue'
 import { reactive, computed, ref, onMounted, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import type { Options, Option } from '@/components' // 系統組件
+import type { Options, Option } from '@/components'
 import {
-  GanttChart,
   CustomTabs,
-  CustomInput,
   CustomEmpty,
   CustomIcon,
   CustomPopover,
   CustomModal
-} from '@/components' // 系統組件
+} from '@/components/feature'
+import { CustomInput } from '@/components/input'
+import { GanttChart } from '@/components/chart'
 import { isEmpty, hasOwnProperty, getUuid } from '@/lib/lib_utils' // 工具
 import { getMilliseconds } from '@/lib/lib_day'
 import { formatDatetime } from '@/lib/lib_format' // 格式化

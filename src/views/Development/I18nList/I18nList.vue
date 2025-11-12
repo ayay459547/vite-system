@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, shallowRef, onMounted, nextTick } from 'vue'
 
-import { CustomTable, CustomInput } from '@/components' // 系統組件
+import { CustomTable } from '@/components/table'
+import { CustomInput } from '@/components/input'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/types/types_columnSetting'
 

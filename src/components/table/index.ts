@@ -27,6 +27,8 @@ export type {
 } from './CustomTable/CustomTableInfo'
 export { default as CustomTable } from './CustomTable/CustomTable.vue'
 
+export { default as CustomTableV2 } from './CustomTableV2/CustomTableV2.vue'
+
 /**
  * @author Howard
  * @description 下載 Excel / PDF

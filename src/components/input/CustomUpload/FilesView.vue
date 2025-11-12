@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
 
-import { CustomIcon, CustomImage, CustomButton } from '@/components' // 系統組件
+import { CustomIcon, CustomImage, CustomButton } from '@/components/feature' // 系統組件
 import { isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { Types } from './CustomUploadInfo'

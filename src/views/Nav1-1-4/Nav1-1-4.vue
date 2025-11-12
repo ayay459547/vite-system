@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { ElRow, ElCol, ElStatistic, ElCalendar } from 'element-plus'
 
-import { CustomIcon } from '@/components' // 系統組件
+import { CustomIcon } from '@/components/feature'
 
 const value = ref(new Date())
 </script>

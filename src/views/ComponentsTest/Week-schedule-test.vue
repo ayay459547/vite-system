@@ -2,7 +2,7 @@
 import { inject } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { WeekSchedule } from '@/components' // 系統組件
+import { WeekSchedule } from '@/components/chart'
 
 const useHook: UseHook = inject('useHook')
 const { i18nTranslate } = useHook()

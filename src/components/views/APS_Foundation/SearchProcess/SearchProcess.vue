@@ -4,11 +4,11 @@ import { inject, onMounted, ref, nextTick, onBeforeMount, computed } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import {
-  CustomInput,
   CustomButton,
   CustomEmpty,
   CustomText
-} from '@/components' // 系統組件
+} from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 // 取得站點列表
 import { getProcessList } from './api'
@@ -56,8 +56,8 @@ const search = async () => {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'demo_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'demo_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

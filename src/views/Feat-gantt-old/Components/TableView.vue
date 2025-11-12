@@ -3,7 +3,8 @@ import { type PropType, ref, computed, inject } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useTableSetting } from '@/lib/lib_columns'
-import { CustomPopover, CustomButton, CustomTable } from '@/components' // 系統組件
+import { CustomPopover, CustomButton } from '@/components/feature'
+import { CustomTable } from '@/components/table'
 import { cutTableData } from '@/lib/lib_utils' // 工具
 
 import type { TableOptions } from '@/types/types_columnSetting'

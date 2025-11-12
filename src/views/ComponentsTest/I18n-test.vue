@@ -3,7 +3,7 @@ import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomTabs } from '@/components' // 系統組件
+import { CustomTabs } from '@/components/feature'
 
 const { t: testT } = useI18n()
 

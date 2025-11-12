@@ -2,7 +2,8 @@
 import { type PropType, ref, onMounted, reactive, nextTick, inject } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { type CustomTimeLineProps, CustomTimeLine, SimpleTable } from '@/components' // 系統組件
+import { type CustomTimeLineProps, CustomTimeLine } from '@/components/feature'
+import { SimpleTable } from '@/components/table'
 import { scrollToEl, isEmpty } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 
@@ -94,7 +95,7 @@ const init = async () => {
       sequence,
       reasons
     }
-  }) as CustomTimeLineProps.Options
+  }) as CustomTimeLineProps['options']
 
   await nextTick()
   setTimeout(() => {

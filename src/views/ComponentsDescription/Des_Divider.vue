@@ -2,14 +2,15 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomDrawer/CustomDrawer.md?raw'
-import type { CustomDividerProps } from '@/components' // 系統組件
-import { CustomInput, CustomDivider, CustomMarkdown } from '@/components' // 系統組件
+import type { CustomDividerProps } from '@/components/feature'
+import { CustomDivider, CustomMarkdown } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 const directionOptions = [
   { label: 'horizontal', value: 'horizontal' },
   { label: 'vertical', value: 'vertical' }
 ]
-const direction = ref<CustomDividerProps.Direction>('horizontal')
+const direction = ref<CustomDividerProps['direction']>('horizontal')
 
 const styleOptions = [
   { label: 'solid', value: 'solid' },
@@ -20,14 +21,14 @@ const styleOptions = [
   { label: 'ridge', value: 'ridge' },
   { label: 'hidden', value: 'hidden' }
 ]
-const style = ref<CustomDividerProps.BorderStyle>('solid')
+const style = ref<CustomDividerProps['borderStyle']>('solid')
 
 const positionOptions = [
   { label: 'left', value: 'left' },
   { label: 'center', value: 'center' },
   { label: 'right', value: 'right' }
 ]
-const position = ref<CustomDividerProps.ContentPosition>('left')
+const position = ref<CustomDividerProps['contentPosition']>('left')
 
 // slot
 const slotText = ref('slot default')

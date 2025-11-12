@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils' // 工具
-import { CustomInput } from '@/components' // 系統組件
+import { CustomInput } from '@/components/input'
 
 import type { TableData } from '../api'
 import { createData } from '../api'

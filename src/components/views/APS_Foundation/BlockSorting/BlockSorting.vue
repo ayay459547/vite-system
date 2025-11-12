@@ -4,8 +4,8 @@ import { onMounted, reactive, ref, inject, nextTick, computed } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useFormListSetting } from '@/lib/lib_columns'
-import type { Option, Options } from '@/components' // 系統組件
-import { CustomInput, FormList } from '@/components' // 系統組件
+import type { Option, Options } from '@/components'
+import { CustomInput, FormList } from '@/components/input'
 import { getProxyData, isEmpty } from '@/lib/lib_utils' // 工具
 
 import type { FormData } from './api'
@@ -249,7 +249,7 @@ defineExpose({
       if (formLastTypeItemIndex !== 5) {
         swal({
           icon: 'error',
-          title: i18nTranslate('error', 'demo_common'),
+          title: i18nTranslate('error', 'system'),
           text: `${i18nTranslate('BlockSortingType-typeItemIndex-5')}：${i18nTranslate('setting-last')}`,
           showCancelButton: false
         })

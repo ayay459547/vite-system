@@ -3,16 +3,10 @@ import { shallowRef, ref, reactive, onMounted, nextTick, computed, inject } from
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 
-import {
-  type CustomDraggableTypes,
-  CustomDraggable,
-  TableMain,
-  CustomInput,
-  CustomButton,
-  CustomTabs,
-  CustomIcon,
-  CustomSearch
-} from '@/components' // 系統組件
+import type { CustomDraggableTypes } from '@/components/feature'
+import { CustomIcon, CustomTabs, CustomDraggable, CustomButton, } from '@/components/feature'
+import { CustomSearch, CustomInput } from '@/components/input'
+import { BasicTable } from '@/components/table'
 import { isEmpty, scrollToEl, getUuid } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting, useFormSetting } from '@/lib/lib_columns'
 import dayjs from '@/lib/lib_day'
@@ -312,7 +306,7 @@ const initShowTable = async () => {
   }, 300)
 }
 
-const onSortChange = async (draggable: CustomDraggableTypes.DraggableChange) => {
+const onSortChange = async (draggable: CustomDraggableTypes['draggableChange']) => {
   isLoading.value = true
 
   await nextTick()
@@ -583,7 +577,7 @@ const isShowChange = async () => {
     <div class="page-table">
       <CustomTabs v-model="dateTab" :options="dateTabs" @tab-change="initShowTable" />
 
-      <TableMain
+      <BasicTable
         class="page-table"
         :show-data="showData"
         :show-columns="showColumns"
@@ -633,7 +627,7 @@ const isShowChange = async () => {
         >
           <div>{{ `${row[prop]}(${spanMethodMap[prop][row.id]})` }}</div>
         </template>
-      </TableMain>
+      </BasicTable>
     </div>
   </div>
 </template>

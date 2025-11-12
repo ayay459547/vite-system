@@ -2,7 +2,8 @@
 import { ref, inject, nextTick, reactive } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { WebViewTable, CustomButton, CustomModal } from '@/components' // 系統組件
+import { CustomButton, CustomModal } from '@/components/feature'
+import { WebViewTable } from '@/components/table'
 
 import type { TableOptions } from '@/types/types_columnSetting'
 

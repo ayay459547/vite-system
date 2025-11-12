@@ -8,7 +8,7 @@ import {
   CustomDivider,
   // CustomDialog,
   CustomModal
-} from '@/components' // 系統組件
+} from '@/components/feature'
 import { useElementSize } from '@/lib/lib_hook' // 自訂Composition API
 
 import TestKeepAlive from './TestKeepAlive.vue'

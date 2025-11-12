@@ -5,7 +5,7 @@ import {
   VxeTable,
   VxeColumn,
   VxeColgroup
-} from '@/components' // 系統組件
+} from '@/components/table'
 
 import {
   // VxeTable,

@@ -6,9 +6,9 @@ import { ElTable, ElTableColumn, ElAutoResizer } from 'element-plus'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { throttle } from '@/lib/lib_lodash'
-import { CustomButton } from '@/components' // 系統組件
+import { CustomButton } from '@/components/feature' // 系統組件
 import { isEmpty, getUuid } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props, Emits } from './CustomTableInfo'
 
@@ -28,7 +28,7 @@ const props = defineProps({
     description: '重新渲染用的key'
   },
   showColumns: {
-    type: Array as PropType<Props.TableColumns>,
+    type: Array as PropType<Props['tableColumns']>,
     required: false,
     default: () => {
       return []
@@ -36,7 +36,7 @@ const props = defineProps({
     description: '顯示欄位'
   },
   showData: {
-    type: Array as PropType<Props.TableData>,
+    type: Array as PropType<Props['tableData']>,
     required: false,
     default: () => {
       return []
@@ -49,7 +49,7 @@ const props = defineProps({
   //   description: '總資料筆數 計算虛擬渲染用'
   // },
   sort: {
-    type: Object as PropType<Props.Sort>,
+    type: Object as PropType<Props['sort']>,
     required: false,
     default: () => {
       return {
@@ -60,74 +60,74 @@ const props = defineProps({
     description: '資料存在 children 時 預設是否展開'
   },
   isShowNo: {
-    type: Boolean as PropType<Props.IsShowNo>,
+    type: Boolean as PropType<Props['isShowNo']>,
     required: false,
     default: false,
     description: '是否顯示編號'
   },
   // element ui
   rowKey: {
-    type: String as PropType<Props.RowKey>,
+    type: String as PropType<Props['rowKey']>,
     required: false,
     default: 'id',
     description: '每行資料的key 預設是id'
   },
   tableSize: {
-    type: String as PropType<Props.TableSize>,
+    type: String as PropType<Props['tableSize']>,
     required: false,
     description: '表格大小'
   },
   defaultExpandAll: {
-    type: Boolean as PropType<Props.DefaultExpandAll>,
+    type: Boolean as PropType<Props['defaultExpandAll']>,
     required: false,
     description: '資料存在 children 時 預設是否展開'
   },
   spanMethod: {
-    type: Function as PropType<Props.SpanMethod | any>,
+    type: Function as PropType<Props['spanMethod'] | any>,
     description: '資料跨欄'
   },
   rowClassName: {
-    type: Function as PropType<Props.RowClassName | any>,
+    type: Function as PropType<Props['rowClassName'] | any>,
     description: 'row class callback'
   },
   rowStyle: {
-    type: Function as PropType<Props.RowStyle | any>,
+    type: Function as PropType<Props['rowStyle'] | any>,
     description: 'row style callback'
   },
   cellClassName: {
-    type: Function as PropType<Props.CellClassName | any>,
+    type: Function as PropType<Props['cellClassName'] | any>,
     description: 'cell class callback'
   },
   cellStyle: {
-    type: Function as PropType<Props.CellStyle | any>,
+    type: Function as PropType<Props['cellStyle'] | any>,
     description: 'cell style callback'
   },
   lazy: {
-    type: Boolean as PropType<Props.Lazy>,
+    type: Boolean as PropType<Props['lazy']>,
     description: '懶加載子節點'
   },
   load: {
-    type: Function as PropType<Props.Load | any>,
+    type: Function as PropType<Props['load'] | any>,
     description: '懶加載子節點回調函數'
   },
   treeProps: {
-    type: Object as PropType<Props.TreeProps | any>,
+    type: Object as PropType<Props['treeProps'] | any>,
     description: '懶加載子節點回調函數'
   },
   selection: {
-    type: Boolean as PropType<Props.Selection>,
+    type: Boolean as PropType<Props['selection']>,
     description: 'checkbox'
   },
   isLazyLoading: {
-    type: Boolean as PropType<Props.IsLazyLoading>,
+    type: Boolean as PropType<Props['isLazyLoading']>,
     description: '懶加載'
   },
   lazyLoadingStatus: {
-    type: String as PropType<Props.LazyLoadingStatus>,
+    type: String as PropType<Props['lazyLoadingStatus']>,
     description: '懶加載狀態'
   },
   i18nModule: {
-    type: String as PropType<Props.I18nModule>,
+    type: String as PropType<Props['i18nModule']>,
     required: false,
     default: defaultModuleType,
     description: 'i18nModule'
@@ -156,7 +156,7 @@ const emit = defineEmits([
   'update-size'
 ])
 
-const onRowClick: Emits.RowClick = (row, column, event) => {
+const onRowClick: Emits['rowClick'] = (row, column, event) => {
   emit('row-click', row, column, event)
 }
 const onSortChange = (props: {
@@ -167,13 +167,13 @@ const onSortChange = (props: {
   const { column, prop: key = '', order } = props
   emit('sort-change', { column, key, order })
 }
-const onHeaderClick: Emits.HeaderClick = (column: any, event: Event) => {
+const onHeaderClick: Emits['headerClick'] = (column: any, event: Event) => {
   emit('header-click', column, event)
 }
-const onExpandChange: Emits.ExpandChange = (row: any, expanded: boolean) => {
+const onExpandChange: Emits['expandChange'] = (row: any, expanded: boolean) => {
   emit('expand-change', row, expanded)
 }
-const onHeaderDragend: Emits.HeaderDragend = (
+const onHeaderDragend: Emits['headerDragend'] = (
   newWidth: number,
   oddWidth: number,
   column: any,
@@ -181,16 +181,16 @@ const onHeaderDragend: Emits.HeaderDragend = (
 ) => {
   emit('header-dragend', newWidth, oddWidth, column, event)
 }
-const onSelect: Emits.Select = (selection, row) => {
+const onSelect: Emits['select'] = (selection, row) => {
   emit('select', selection, row)
 }
-const onSelectAll: Emits.SelectAll = selection => {
+const onSelectAll: Emits['selectAll'] = selection => {
   emit('select-all', selection)
 }
-const onSelectionChange: Emits.SelectionChange = newSelection => {
+const onSelectionChange: Emits['selectionChange'] = newSelection => {
   emit('selection-change', newSelection)
 }
-const onRowContextmenu: Emits.RowContextmenu = (row, column, event) => {
+const onRowContextmenu: Emits['rowContextmenu'] = (row, column, event) => {
   // event.preventDefault()
   emit('row-contextmenu', row, column, event)
 }
@@ -265,7 +265,7 @@ const clearSelection = () => {
   elTableRef.value?.clearSelection()
 }
 // 傳回目前選取的行
-const getSelectionRows = (): void => {
+const getSelectionRows = (): any[] => {
   const selectionRows = elTableRef.value?.getSelectionRows()
   return selectionRows ?? []
 }

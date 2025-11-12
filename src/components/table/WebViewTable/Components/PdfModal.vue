@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, inject } from 'vue'
-import {
-  CustomButton,
-  CustomModal,
-  CustomInput,
-  CustomDraggable
-} from '@/components'
+import { CustomButton, CustomModal, CustomDraggable } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 
 import PdfPreview from './PdfPreview.vue'

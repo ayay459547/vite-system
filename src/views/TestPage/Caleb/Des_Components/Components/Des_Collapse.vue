@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomCollapse/CustomCollapse.md?raw'
-import type { Options } from '@/components' // 系統組件
+import type { Options } from '@/components'
 import { CustomDivider, CustomMarkdown, CustomCollapse } from '@/components/feature' // 系統組件: 功能
 import { CustomInput } from '@/components/input' // 系統組件: 輸入
 

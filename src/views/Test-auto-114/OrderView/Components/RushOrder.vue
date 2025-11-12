@@ -3,9 +3,9 @@ import type { PropType } from 'vue'
 import { reactive, onMounted, inject, nextTick, ref, computed } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomButton, CustomEmpty } from '@/components' // 系統組件
+import { CustomButton, CustomEmpty } from '@/components/feature'
 import { getUuid, scrollToEl, isEmpty } from '@/lib/lib_utils' // 工具
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { ResValidate } from './api'
 import MachineRushOrderList from './MachineRushOrderList.vue'

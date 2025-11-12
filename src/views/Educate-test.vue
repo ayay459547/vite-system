@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import { CustomInput } from '@/components' // 系統組件
+import { CustomInput } from '@/components/input'
 
 const valueTest = ref<number | null>(null)
 

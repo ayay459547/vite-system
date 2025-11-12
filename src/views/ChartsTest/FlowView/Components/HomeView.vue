@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import type { Node, Edge } from '@vue-flow/core'
-import { CustomIcon } from '@/components'
+import { CustomIcon } from '@/components/feature'
 // 背景 網格點
 // import { Background } from '@vue-flow/background'
 // 右下總覽圖

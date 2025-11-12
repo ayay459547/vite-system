@@ -2,7 +2,8 @@
 import { ref, shallowRef, inject, reactive, onMounted, onBeforeMount } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomButton, CustomTable, CustomModal, CustomIcon } from '@/components' // 系統組件
+import { CustomButton, CustomModal, CustomIcon } from '@/components/feature'
+import { CustomTable } from '@/components/table'
 import { useTableSetting } from '@/lib/lib_columns'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 import type { TableOptions } from '@/types/types_columnSetting'

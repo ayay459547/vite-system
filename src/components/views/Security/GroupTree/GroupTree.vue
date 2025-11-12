@@ -4,7 +4,8 @@ import { type PropType, computed, ref, reactive, onMounted, nextTick, inject } f
 // import type Node from 'element-plus/es/components/tree/src/model/node'
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import { type Group, getGroupList } from './api'
-import { FormCheckbox, FormRadio, CustomTree } from '@/components' // 系統組件
+import { FormCheckbox, FormRadio } from '@/components/input'
+import { CustomTree } from '@/components/feature'
 
 const props = defineProps({
   type: {
@@ -157,8 +158,8 @@ async function* generator() {
   if (status !== 'success') {
     swal({
       icon: 'error',
-      title: i18nTranslate('error-getData', 'demo_common'),
-      text: msg ?? i18nTranslate('warning-contactIT', 'demo_common'),
+      title: i18nTranslate('error-getData', 'system'),
+      text: msg ?? i18nTranslate('warning-contactIT', 'system'),
       showCancelButton: false
     })
   }

@@ -2,14 +2,9 @@
 import { ref, reactive, shallowRef, onMounted, nextTick, inject } from 'vue'
 
 import type { UseHook, SwalResult } from '@/types/types_hook' // 全域功能類型
-import {
-  CustomIcon,
-  CustomModal,
-  CustomButton,
-  CustomTable,
-  CustomSearch,
-  GroupSearch
-} from '@/components' // 系統組件
+import { CustomIcon, CustomModal, CustomButton } from '@/components/feature'
+import { CustomTable } from '@/components/table'
+import { CustomSearch, GroupSearch } from '@/components/input'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import { throttle } from '@/lib/lib_lodash'
 import type { TableOptions } from '@/types/types_columnSetting'

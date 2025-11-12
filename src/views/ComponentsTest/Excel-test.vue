@@ -4,16 +4,16 @@ import ExcelJs from 'exceljs'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useTableSetting } from '@/lib/lib_columns'
-import type { CustomIconProps, CustomButtonProps, CustomTooltipProps } from '@/components' // 系統組件
+import type { CustomIconProps, CustomButtonProps } from '@/components/feature' // 系統組件
 import {
   CustomButton,
   CustomModal,
   CustomIcon,
-  CustomInput,
   CustomPopover,
-  CustomTable,
   CustomTooltip
-} from '@/components' // 系統組件
+} from '@/components/feature'
+import { CustomTable } from '@/components/table'
+import { CustomInput } from '@/components/input'
 import { downloadFile } from '@/lib/lib_utils' // 工具
 import type { TableOptions } from '@/types/types_columnSetting'
 
@@ -61,11 +61,11 @@ function changeLoading() {
   }, 3000)
 }
 
-const testIcon: [CustomIconProps.Type, string] = ['fas', 'check']
-const testType: CustomIconProps.Type = 'far'
+const testIcon: [CustomIconProps['type'], string] = ['fas', 'check']
+const testType: CustomIconProps['type'] = 'far'
 const testName = 'folder-open'
 
-const size: CustomButtonProps.Size = 'large'
+const size: CustomButtonProps['size'] = 'large'
 
 const modalShow = ref<boolean>(false)
 

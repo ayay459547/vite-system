@@ -4,7 +4,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useLocaleStore } from '@/stores/stores_locale'
-import { CustomButton, CustomButtonGroup } from '@/components' // 系統組件
+import { CustomButton, CustomButtonGroup } from '@/components/feature' // 系統組件
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 

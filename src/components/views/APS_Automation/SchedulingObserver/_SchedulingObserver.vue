@@ -7,7 +7,7 @@ import { inject, onMounted, computed, onUnmounted } from 'vue'
 
 // 全域功能類型
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomButton } from '@/components' // 系統組件
+import { CustomButton } from '@/components/feature'
 
 // 引入API
 import { getSchedulingState } from './api'

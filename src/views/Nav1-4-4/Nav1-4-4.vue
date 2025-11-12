@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ElTableV2 } from 'element-plus'
 
-import { CustomDivider, CustomTableV2 } from '@/components' // 系統組件
+import { CustomDivider } from '@/components/feature'
+import { CustomTableV2 } from '@/components/table'
 
 const generateColumns = (length = 10, prefix = 'column-', props?: any) =>
   Array.from({ length }).map((_, columnIndex) => ({

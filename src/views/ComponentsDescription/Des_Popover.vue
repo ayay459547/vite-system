@@ -2,14 +2,10 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomPopover/CustomPopover.md?raw'
-import type { Options, CustomPopoverProps } from '@/components' // 系統組件
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown,
-  CustomPopover,
-  CustomButton
-} from '@/components' // 系統組件
+import type { Options } from '@/components'
+import type { CustomPopoverProps } from '@/components/feature'
+import { CustomDivider, CustomMarkdown, CustomPopover, CustomButton } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 const isVisible = ref(false)
 
@@ -27,13 +23,13 @@ const placementOptions = [
   { label: 'right-start', value: 'right-start' },
   { label: 'right-end', value: 'right-end' }
 ]
-const placement = ref<CustomPopoverProps.Placement>('top')
+const placement = ref<CustomPopoverProps['placement']>('top')
 
 const triggerOptions = [
   { label: 'click', value: 'click' },
   { label: 'hover', value: 'hover' }
 ]
-const trigger = ref<CustomPopoverProps.Trigger>('hover')
+const trigger = ref<CustomPopoverProps['trigger']>('hover')
 
 const showArrowOptions: Options<any> = [
   { label: '是', value: true },

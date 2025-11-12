@@ -1,21 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import { CustomButton, CustomDivider, CustomTree, CustomTreeV2 } from '@/components/feature'
 import {
   FormSelectV2,
-  CustomInput,
-  // CustomSearch,
-  CustomButton,
-  CustomDivider,
-  CustomTree,
-  CustomTreeV2
-} from '@/components' // 系統組件
-
+  // CustomSearch
+  CustomInput
+} from '@/components/input'
 import { useFormSetting } from '@/lib/lib_columns'
 import { scrollToEl } from '@/lib/lib_utils' // 工具
 
-import { ref } from 'vue'
-
 import { initials, treeData, treeV2Data } from './fakeData'
-
 import { columnSetting } from './columns'
 
 const value = ref([])

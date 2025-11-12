@@ -1,32 +1,25 @@
 <script setup lang="ts">
 import { ref, reactive, inject } from 'vue'
 
-// 全域功能類型
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-// 組件
 import {
-  WebViewTable, // 泛用表格
   CustomModal,
   CustomIcon,
   CustomButton,
-  FormRadio,
   CustomLink // 跳轉
- } from '@/components' // 系統組件
- import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
+ } from '@/components/feature'
+import { FormRadio } from '@/components/input'
+import { WebViewTable } from '@/components/table'
+import { useAsyncComponent } from '@/lib/lib_hook' // 自訂Composition API
 
- // 工具
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
 
-// 表格設定類型
 import type { TableOptions } from '@/types/types_columnSetting'
-// 資料格式化
 import type { ResponseData, ExcelData, TableData } from './api'
 import { formatParams } from './api'
-// 欄位設定, 連結設定
 import { columnSetting, linkSetting } from './columns'
-// 假資料
-import fakeTableData from './fakeData.json'
+import fakeTableData from './fakeData.json' // 假資料
 
 const DetailModal = useAsyncComponent(() => import('./Components/DetailModal.vue'), 'rect')
 const PlanInfo = useAsyncComponent(() => import('./Components/PlanInfo.vue'), 'rect')
