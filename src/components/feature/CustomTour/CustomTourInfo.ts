@@ -21,8 +21,8 @@ export interface Types {
     contentStyle: Types['contentStyle']
     mask?: Types['mask']
     type?: Types['type']
-    nextButtonProps?: { children: VNode | string; onClick: Function }
-    prevButtonProps?: { children: VNode | string; onClick: Function }
+    nextButtonProps?: { children: VNode | string; onClick: ((...args: any[]) => any) }
+    prevButtonProps?: { children: VNode | string; onClick: ((...args: any[]) => any) }
     scrollIntoViewOptions?: Types['_scrollIntoViewOptions_']
     showClose: boolean
     closeIcon: string | Component

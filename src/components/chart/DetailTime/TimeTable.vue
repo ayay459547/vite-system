@@ -20,7 +20,7 @@ const props = defineProps({
     required: true
   },
   translate: {
-    type: Function,
+    type: Function as any,
     required: true
   }
 })

@@ -9,7 +9,7 @@ export interface ResizeObserverCallback {
  * @param {Number} delay 延遲
  * @returns {Function}
  */
-export const debounce = <T = Function>(callback: Function, delay: number): T => {
+export const debounce = <T = Function>(callback: ((...args: any[]) => any), delay: number): T => {
   let timeoutId: number | undefined
 
   return new Proxy(() => {}, {

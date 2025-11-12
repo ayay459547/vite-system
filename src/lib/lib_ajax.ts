@@ -224,9 +224,9 @@ type WebSocketConfig = {
   baseWs?: string
   baseUrl?: string
   url: string
-  onopen?: Function
-  onclose?: Function
-  onerror?: Function
+  onopen?: ((...args: any[]) => any)
+  onclose?: ((...args: any[]) => any)
+  onerror?: ((...args: any[]) => any)
   onmessage?: ((this: WebSocket, ev: MessageEvent) => any) | null
 }
 /**
@@ -282,7 +282,7 @@ export class IWebScoket {
   }
 
   // 預設事件
-  #onopen(onopen: Function | undefined) {
+  #onopen(onopen: ((...args: any[]) => any) | undefined) {
     if (typeof onopen === 'function') {
       onopen()
     } else {
@@ -293,7 +293,7 @@ export class IWebScoket {
 
     this.isReConnect = false
   }
-  #onclose(onclose: Function | undefined) {
+  #onclose(onclose: ((...args: any[]) => any) | undefined) {
     if (typeof onclose === 'function') {
       onclose()
     } else {
@@ -312,7 +312,7 @@ export class IWebScoket {
       }
     }
   }
-  #onerror(onerror: Function | undefined) {
+  #onerror(onerror: ((...args: any[]) => any) | undefined) {
     // 至少要連過一次 才會執行
     if (typeof onerror === 'function' && this.connectCount > 0) {
       onerror()

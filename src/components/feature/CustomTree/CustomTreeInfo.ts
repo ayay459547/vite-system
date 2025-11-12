@@ -71,7 +71,7 @@ export const props = {
 
 export interface Emits {
   nodeClick: ($data1: any, $data2: any, $data3: any, $data4: any) => void | any
-  checkChange: ($data1: any, $data2: any, $data3: any) => void | any
+  checkChange: (data: any, checked: boolean, indeterminate: boolean) => void
   check: (nodeDate: any, checkedData: any) => void | any
 }
 

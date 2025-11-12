@@ -29,7 +29,7 @@ export interface Props {
   suffixIcon: string | Component
   rows: number
   autosize: boolean | { minRows?: number, maxRows?: number }
-  autocomplete: string
+  autocomplete: AutoFill
   name: string
   readonly: boolean
   max: number

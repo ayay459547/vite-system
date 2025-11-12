@@ -37,8 +37,8 @@ export interface Props {
   isDraggable: boolean | any
   handle: string | any
   itemKey: string | any
-  move: Function | any
-  disabled: Function | boolean | undefined
+  move: ((...args: any[]) => any) | any
+  disabled: ((...args: any[]) => any) | boolean | undefined
 
   tableData: Array<any> | any
   tableColumns: Array<any> | any

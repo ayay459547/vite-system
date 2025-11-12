@@ -14,7 +14,7 @@ export const fileTypeMap: Record<string, any> = {
  * @param fileTypeList 類型名稱
  * @returns {Array} 所有檔案類型
  */
-export const getFileTypeList = (fileTypeList: Types.FileType[]): string[] => {
+export const getFileTypeList = (fileTypeList: Types['fileType'][]): string[] => {
   return fileTypeList.reduce<string[]>((res, fileType) => {
     return [...res, ...fileTypeMap[fileType]]
   }, [])

@@ -15,7 +15,7 @@ type That = Array<any> | Record<string, any> | any
  *   console.log(key, ' => ', value)
  * })
  */
-export const object_forEach = <T extends any>(that: That, callback: Function, thisArg?: any): T => {
+export const object_forEach = <T extends any>(that: That, callback: ((...args: any[]) => any), thisArg?: any): T => {
   thisArg = thisArg || window
 
   for (const key in that) {
@@ -38,7 +38,7 @@ export const object_forEach = <T extends any>(that: That, callback: Function, th
  *
  * console.log(res) // { a: { a: 1, key: 'a' }, b: { b: '2', key: 'b' }, c: { c: 3, key: 'c' } }
  */
-export const object_map = <T extends any>(that: That, callback: Function, thisArg?: any): T => {
+export const object_map = <T extends any>(that: That, callback: ((...args: any[]) => any), thisArg?: any): T => {
   thisArg = thisArg || window
 
   const resObj = new (that as any).constructor()
@@ -61,7 +61,7 @@ export const object_map = <T extends any>(that: That, callback: Function, thisAr
  *
  * console.log(res) // [{ b: 2}, {c: 3}]
  */
-export const object_filter = <T extends any>(that: That, callback: Function, thisArg?: any): T => {
+export const object_filter = <T extends any>(that: That, callback: ((...args: any[]) => any), thisArg?: any): T => {
   thisArg = thisArg || window
 
   const resObj = new (that as any).constructor()
@@ -84,7 +84,7 @@ export const object_filter = <T extends any>(that: That, callback: Function, thi
  *
  * console.log(res) // true
  */
-export const object_some = (that: That, callback: Function, thisArg?: any): boolean => {
+export const object_some = (that: That, callback: ((...args: any[]) => any), thisArg?: any): boolean => {
   thisArg = thisArg || window
 
   for (const key in that) {
@@ -106,7 +106,7 @@ export const object_some = (that: That, callback: Function, thisArg?: any): bool
  *
  * console.log(res) // false
  */
-export const object_every = (that: That, callback: Function, thisArg?: any): boolean => {
+export const object_every = (that: That, callback: ((...args: any[]) => any), thisArg?: any): boolean => {
   thisArg = thisArg || window
 
   for (const key in that) {
@@ -131,7 +131,7 @@ export const object_every = (that: That, callback: Function, thisArg?: any): boo
  *
  * console.log(res) // [{ b: 2}, {c: 3}]
  */
-export const object_reduce = <T extends any>(that: That, callback: Function, temp: any, thisArg?: any): T => {
+export const object_reduce = <T extends any>(that: That, callback: ((...args: any[]) => any), temp: any, thisArg?: any): T => {
   thisArg = thisArg || window
 
   for (const key in that) {
@@ -153,7 +153,7 @@ export const object_reduce = <T extends any>(that: That, callback: Function, tem
  *
  * console.log(res) // 'b'
  */
-export const object_findIndex = <T extends (number | string | null)>(that: That, callback: Function, thisArg?: any): T | undefined => {
+export const object_findIndex = <T extends (number | string | null)>(that: That, callback: ((...args: any[]) => any), thisArg?: any): T | undefined => {
   thisArg = thisArg || window
 
   for (const key in that) {
@@ -177,7 +177,7 @@ export const object_findIndex = <T extends (number | string | null)>(that: That,
  *
  * console.log(res) // 2
  */
-export const object_find = <T extends any>(that: That, callback: Function, thisArg?: any): (T | undefined) => {
+export const object_find = <T extends any>(that: That, callback: ((...args: any[]) => any), thisArg?: any): (T | undefined) => {
   thisArg = thisArg || window
 
   for (const key in that) {

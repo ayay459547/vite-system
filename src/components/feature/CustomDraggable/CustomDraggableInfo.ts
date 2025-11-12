@@ -34,9 +34,9 @@ export interface Props {
   tag: string
   sort: boolean
   list: Array<any>
-  disabled: Function | boolean | undefined
-  clone: Function
-  move: Function | undefined
+  disabled: ((...args: any[]) => any) | boolean | undefined
+  clone: ((...args: any[]) => any)
+  move: ((...args: any[]) => any) | undefined
   componentData: Record<any, any> | null
   ghostClass: string
   direction: 'column' | 'row'

@@ -70,7 +70,7 @@ export declare interface EventItem {
   label: string
   disabled?: boolean
   active?: boolean
-  event: Function
+  event: ((...args: any[]) => any)
   class?: string
   id?: string // 端對端測試
 }

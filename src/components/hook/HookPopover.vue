@@ -73,7 +73,7 @@ const iconAttr = (attr: any) => {
   return {}
 }
 
-const callEvent = (callback: Function, disabled: boolean) => {
+const callEvent = (callback: ((...args: any[]) => any), disabled: boolean) => {
   if (typeof disabled === 'boolean' && disabled) return
   callback()
 }
