@@ -27,8 +27,8 @@ export interface Props {
   isRemove: boolean
   isShowNo: boolean
   isCollapse: boolean
-  move: Function | any
-  disabled: Function | any
+  move: ((...args: any[]) => any) | any
+  disabled: ((...args: any[]) => any) | any
   setDisabled: (row: any) => boolean
   i18nModule: ScopeKey
 }

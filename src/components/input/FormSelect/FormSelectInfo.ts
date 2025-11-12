@@ -36,9 +36,9 @@ export interface Props {
   placeholder: string
   filterable: boolean
   allowCreate: boolean
-  filterMethod: Function
+  filterMethod: (...args: any[]) => void
   remote: boolean
-  remoteMethod: Function
+  remoteMethod: (...args: any[]) => void
   remoteShowSuffix: boolean
   loading: boolean
   loadingText: string
@@ -65,7 +65,7 @@ export interface Props {
   popperOptions: object
   ariaLabel: string
   emptyValues: Array<any>
-  valueOnClear: string | number | boolean | Function
+  valueOnClear: string | number | boolean | ((...args: any[]) => any)
   // SuffixTransition: boolean
 }
 export const props = {

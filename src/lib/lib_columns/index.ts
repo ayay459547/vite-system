@@ -7,5 +7,5 @@ export type DisplayData = {
   data: any
   rowData?: any
   subRowData?: any
-  i18nTranslate: Function
+  i18nTranslate: ((...args: any[]) => any)
 }

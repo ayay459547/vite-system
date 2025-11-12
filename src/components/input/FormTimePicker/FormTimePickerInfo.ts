@@ -6,7 +6,7 @@ import type { CustomSize } from '@/components' // 系統組件
 export const version = '__FormTimePicker_1.0.0__'
 
 export interface Types {
-  baseValue: string | Date | null
+  baseValue: string | Date | null | any
 
   shortcut: {
     i18nLabel?: string

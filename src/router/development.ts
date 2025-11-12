@@ -39,15 +39,6 @@ const testRoutes: RouterTree[] = [
         }
       },
       {
-        name: 'search-view',
-        title: '功能樹狀表',
-        component: () => import('@/views/Development/SearchView/SearchView.vue'),
-        meta: {
-          isEnabled: true,
-          permission: totalPermission
-        }
-      },
-      {
         name: 'do-scheduling',
         title: '工作進度表',
         component: () => import('@/views/Development/ScheduleView/ScheduleView.vue'),

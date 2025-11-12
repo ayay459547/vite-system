@@ -191,6 +191,17 @@ declare module 'vue' {
     ViewsAPSAutomationSchedulingObserverSchedulingObserver: typeof import('./src/components/views/APS_Automation/SchedulingObserver/SchedulingObserver.vue')['default']
     ViewsAPSFoundationBlockSortingBlockSorting: typeof import('./src/components/views/APS_Foundation/BlockSorting/BlockSorting.vue')['default']
     ViewsAPSFoundationSearchProcessSearchProcess: typeof import('./src/components/views/APS_Foundation/SearchProcess/SearchProcess.vue')['default']
+    ViewsCommonDataLoader: typeof import('./src/components/views/Common/DataLoader.vue')['default']
+    ViewsCommonLogicNestedLogicNested: typeof import('./src/components/views/Common/LogicNested/LogicNested.vue')['default']
+    ViewsCommonLogicNestedNestedDraggableNestedDraggable: typeof import('./src/components/views/Common/LogicNested/NestedDraggable/NestedDraggable.vue')['default']
+    ViewsCommonLogicNestedNestedDraggableNestedDraggableItemNestedDraggableItem: typeof import('./src/components/views/Common/LogicNested/NestedDraggable/NestedDraggableItem/NestedDraggableItem.vue')['default']
+    ViewsCommonLogicNestedTemplateLogicRestrictionTemplate: typeof import('./src/components/views/Common/LogicNested/Template/LogicRestrictionTemplate.vue')['default']
+    ViewsCommonLogicNestedTemplateRestrictionsTemplate: typeof import('./src/components/views/Common/LogicNested/Template/RestrictionsTemplate.vue')['default']
+    ViewsCommonLogicRestrictionFormLogicRestrictionForm: typeof import('./src/components/views/Common/LogicRestrictionForm/LogicRestrictionForm.vue')['default']
+    ViewsCommonMatcherFormMatcherConstraintFormMatcherConstraintForm: typeof import('./src/components/views/Common/MatcherForm/MatcherConstraintForm/MatcherConstraintForm.vue')['default']
+    ViewsCommonMatcherFormMatcherForm: typeof import('./src/components/views/Common/MatcherForm/MatcherForm.vue')['default']
+    ViewsCommonRestrictionsFormDescriptionViewDescriptionView: typeof import('./src/components/views/Common/RestrictionsForm/DescriptionView/DescriptionView.vue')['default']
+    ViewsCommonRestrictionsFormRestrictionsForm: typeof import('./src/components/views/Common/RestrictionsForm/RestrictionsForm.vue')['default']
     ViewsSecurityGroupTreeGroupTree: typeof import('./src/components/views/Security/GroupTree/GroupTree.vue')['default']
   }
   export interface GlobalDirectives {

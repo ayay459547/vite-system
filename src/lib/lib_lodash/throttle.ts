@@ -16,8 +16,8 @@ export type ThrottleOptions = {
  *                 trailing: 是否執行setTimeout的回調函數
  * @returns {Object} 包含回調函數的Proxy
  */
-export const throttle = <T = Function>(
-  callback: Function,
+export const throttle = <T = ((...args: any[]) => any)>(
+  callback: ((...args: any[]) => any),
   delay: number,
   options: ThrottleOptions = {}
 ): T => {

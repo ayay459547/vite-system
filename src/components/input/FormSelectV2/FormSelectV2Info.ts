@@ -41,7 +41,7 @@ export interface Props {
   placeholder: string
   filterable: boolean
   allowCreate: boolean
-  filterMethod: Function
+  filterMethod: (...args: any[]) => void
   loading: boolean
   loadingText: string
   reserveKeyword: boolean
@@ -57,7 +57,7 @@ export interface Props {
   itemHeight: number
   scrollbarAlwaysOn: boolean
   remote: boolean
-  remoteMethod: Function
+  remoteMethod: (...args: any[]) => void
   validateEvent: boolean
   offset: number
   showArrow: boolean
