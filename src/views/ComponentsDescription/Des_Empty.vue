@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomEmpty/CustomEmpty.md?raw'
-import { CustomInput, CustomDivider, CustomMarkdown, CustomEmpty, CustomIcon } from '@/components' // 系統組件
+import { CustomDivider, CustomMarkdown, CustomEmpty, CustomIcon } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 // slot
 const slotText = ref('slot default')

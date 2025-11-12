@@ -2,7 +2,9 @@
 import { ref, shallowRef, reactive, inject, onMounted, nextTick } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomIcon, CustomButton, CustomTable, CustomInput, CustomModal } from '@/components' // 系統組件
+import { CustomIcon, CustomButton, CustomModal } from '@/components/feature'
+import { CustomInput } from '@/components/input'
+import { CustomTable } from '@/components/table'
 import { useTableSetting, useFormSetting } from '@/lib/lib_columns'
 import type { TableOptions } from '@/types/types_columnSetting'
 

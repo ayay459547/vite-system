@@ -7,8 +7,8 @@ import { inject, ref, onMounted, computed, onUnmounted, watch } from 'vue'
 
 // 全域功能類型
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import type { CustomButtonProps } from '@/components' // 系統組件
-import { CustomIcon, CustomButton, CustomPopover, CustomProgress } from '@/components' // 系統組件
+import type { CustomButtonProps } from '@/components/feature'
+import { CustomIcon, CustomButton, CustomPopover, CustomProgress } from '@/components/feature'
 import { isEmpty } from '@/lib/lib_utils'
 
 import { useWebSocket } from '@/lib/lib_hook'
@@ -104,7 +104,7 @@ const schedulingState = computed(() => {
 
 // 依據排程狀態 決定按鈕樣式
 const buttonInfo = computed<{
-  type: CustomButtonProps.Type
+  type: CustomButtonProps['type']
   icon: string
   text: string
 }>(() => {

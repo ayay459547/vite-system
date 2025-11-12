@@ -4,7 +4,7 @@ import type { PropType } from 'vue'
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { nextTick, ref, inject } from 'vue'
 
-import { CustomIcon, CustomModal } from '@/components' // 系統組件
+import { CustomIcon, CustomModal } from '@/components/feature' // 系統組件
 
 import DetailView from './DetailView.vue'
 import type { MachineStateTimeInfo, TimePointInfo, DetailTimeInfo } from './api'

@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { onMounted } from 'vue'
 
-import { FormList } from '@/components' // 系統組件
+import { FormList } from '@/components/input'
 import { useSimpleTableSetting, useFormListSetting } from '@/lib/lib_columns'
 import { isEmpty } from '@/lib/lib_utils' // 工具
 

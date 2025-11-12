@@ -2,7 +2,7 @@
 import { ref, inject } from 'vue'
 import Swal from 'sweetalert2'
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomButton, CustomTooltip, CustomPopover } from '@/components' // 系統組件
+import { CustomButton, CustomTooltip, CustomPopover } from '@/components/feature'
 import { ElTooltip, ElButton } from 'element-plus'
 
 // Custom virtual-ref

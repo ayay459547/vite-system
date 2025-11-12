@@ -2,7 +2,8 @@
 import type { PropType } from 'vue'
 import { onMounted, ref, inject, computed } from 'vue'
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomTooltip, CustomInput } from '@/components' // 系統組件
+import { CustomInput } from '@/components/input'
+import { CustomTooltip } from '@/components/feature'
 
 import type { TimeUnit, MachineStateTimeInfo, DetailTimeInfo, TimePointInfo } from './api'
 import MarkInfo from './MarkInfo.vue'

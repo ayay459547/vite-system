@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { SimpleTable, CustomInput, CustomIcon } from '@/components' // 系統組件
+import { CustomIcon } from '@/components/feature'
+import { CustomInput } from '@/components/input'
+import { SimpleTable } from '@/components/table'
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 
 const columnSetting = {
@@ -134,9 +136,6 @@ const onInput = (value: string) => {
         :table-columns="tableColumns"
         isDraggable
       >
-        <template #row-expand="{ rowData }">
-          <div class="i-page">{{ 55688 + $log(rowData) }}</div>
-        </template>
         <template #header-all="{ data }">
           {{ data }}
         </template>

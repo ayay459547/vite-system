@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
 
-import { CustomInput, CustomDivider, CustomEmpty, CustomProgress, CustomButton } from '@/components' // 系統組件
+import { CustomDivider, CustomEmpty, CustomProgress, CustomButton } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 import { awaitTime } from '@/lib/lib_utils' // 工具
 

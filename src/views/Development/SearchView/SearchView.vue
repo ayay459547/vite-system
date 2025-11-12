@@ -5,7 +5,8 @@ import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import type { Navigation } from '@/types/types_routes'
 import { useRoutesStore } from '@/stores/useRoutesStore'
 import { useFormSetting } from '@/lib/lib_columns'
-import { CustomInput, CustomIcon, CustomButton } from '@/components' // 系統組件
+import { CustomIcon, CustomButton } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 import { scrollToEl } from '@/lib/lib_utils' // 工具
 import { debounce } from '@/lib/lib_lodash'
 

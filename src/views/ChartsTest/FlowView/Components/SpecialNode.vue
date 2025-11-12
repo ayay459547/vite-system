@@ -4,7 +4,7 @@ import { Handle, Position } from '@vue-flow/core'
 import type { NodeProps } from '@vue-flow/core'
 import { ElLink } from 'element-plus'
 
-import { CustomIcon } from '@/components'
+import { CustomIcon } from '@/components/feature'
 
 const props = defineProps<NodeProps>()
 

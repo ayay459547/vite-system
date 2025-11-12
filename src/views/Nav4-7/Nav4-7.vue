@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { ElRow, ElCol, ElAnchor, ElAnchorLink } from 'element-plus'
 
-import { CustomDivider, CustomAnchor } from '@/components' // 系統組件
+import { CustomDivider, CustomAnchor } from '@/components/feature'
 
 const containerRef = ref<HTMLElement | null>(null)
 const containerRef2 = ref<HTMLElement | null>(null)

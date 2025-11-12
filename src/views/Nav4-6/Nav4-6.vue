@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 // import { MoreFilled } from '@element-plus/icons-vue'
-import type { CustomTourProps } from '@/components' // 系統組件
-import { CustomDividerView, CustomTour, CustomButton, CustomDivider } from '@/components' // 系統組件
+import type { CustomTourProps } from '@/components/feature'
+import { CustomDividerView, CustomTour, CustomButton, CustomDivider } from '@/components/feature'
 
 const open = ref(false)
 const current = ref(0)
@@ -11,7 +11,7 @@ const ref1 = ref()
 const ref2 = ref()
 const ref3 = ref()
 
-const steps = reactive<CustomTourProps.Steps>([
+const steps = reactive<CustomTourProps['steps']>([
   {
     target: ref1,
     // target: '.test-1',

@@ -2,14 +2,10 @@
 import { ref } from 'vue'
 
 import markdown from '@/components/feature/CustomTooltip/CustomTooltip.md?raw'
-import type { Options, CustomTooltipProps } from '@/components' // 系統組件
-import {
-  CustomInput,
-  CustomDivider,
-  CustomMarkdown,
-  CustomTooltip,
-  CustomButton
-} from '@/components' // 系統組件
+import type { Options } from '@/components'
+import type { CustomTooltipProps } from '@/components/feature'
+import { CustomDivider, CustomMarkdown, CustomTooltip, CustomButton } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 const isVisible = ref(false)
 
@@ -27,13 +23,13 @@ const placementOptions = [
   { label: 'right-start', value: 'right-start' },
   { label: 'right-end', value: 'right-end' }
 ]
-const placement = ref<CustomTooltipProps.Placement>('top')
+const placement = ref<CustomTooltipProps['placement']>('top')
 
 const triggerOptions = [
   { label: 'click', value: 'click' },
   { label: 'hover', value: 'hover' }
 ]
-const trigger = ref<CustomTooltipProps.Trigger>('hover')
+const trigger = ref<CustomTooltipProps['trigger']>('hover')
 
 const showArrowOptions: Options<any> = [
   { label: '是', value: true },

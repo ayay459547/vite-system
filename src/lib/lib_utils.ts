@@ -68,7 +68,7 @@ export const getType = (value: any): string => {
  * @param {*} value
  * @returns {Boolean}
  */
-export const isEmpty = (value: any): boolean => {
+export const isEmpty = (value: any): value is null | undefined => {
   const valueType = Object.prototype.toString.call(value)
 
   switch (valueType) {

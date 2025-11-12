@@ -2,8 +2,9 @@
 import { ref, computed } from 'vue'
 
 import markdown from '@/components/feature/CustomBadge/CustomBadge.md?raw'
-import type { CustomBadgeProps } from '@/components' // 系統組件
-import { CustomInput, CustomDivider, CustomMarkdown, CustomBadge, CustomButton } from '@/components' // 系統組件
+import type { CustomBadgeProps } from '@/components/feature'
+import { CustomDivider, CustomMarkdown, CustomBadge, CustomButton } from '@/components/feature'
+import { CustomInput } from '@/components/input'
 
 const typeOptions = [
   { label: 'primary', value: 'primary' },
@@ -12,7 +13,7 @@ const typeOptions = [
   { label: 'danger', value: 'danger' },
   { label: 'info', value: 'info' }
 ]
-const type = ref<CustomBadgeProps.Type>('primary')
+const type = ref<CustomBadgeProps['type']>('primary')
 
 const value = ref(20)
 

@@ -2,7 +2,8 @@
 import { ref, inject, nextTick, reactive } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { WebViewTable, CustomTabs, CustomButton, CustomModal, CustomEmpty, CustomLink } from '@/components' // 系統組件
+import { CustomTabs, CustomButton, CustomModal, CustomEmpty, CustomLink } from '@/components/feature'
+import { WebViewTable } from '@/components/table'
 
 import type { TableData } from './api'
 import { formatParams, formatExcel, formatTable } from './api'

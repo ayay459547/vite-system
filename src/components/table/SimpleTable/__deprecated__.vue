@@ -3,10 +3,10 @@ import type { Component } from 'vue'
 import { h, inject, defineComponent } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomDraggable, CustomScrollbar } from '@/components' // 系統組件
+import { CustomDraggable, CustomScrollbar } from '@/components/feature'
 import { getUuid, isEmpty } from '@/lib/lib_utils' // 工具
-import type { ScopeKey } from '@/i18n/i18n_setting'
-import { defaultModuleType } from '@/i18n/i18n_setting'
+import type { ScopeKey } from '@/types/types_i18n'
+import { defaultModuleType } from '@/declare/declare_i18n'
 
 import type { Props } from './SimpleTableInfo'
 import { version, props as simpleCustomTableProps } from './SimpleTableInfo'
@@ -14,8 +14,8 @@ import { version, props as simpleCustomTableProps } from './SimpleTableInfo'
 type GetRowCallbackAttrOptions = {
   rowData: any
   rowIndex: number
-  rowClassName: Props.RowClassName
-  rowStyleCallback: Props.RowStyle
+  rowClassName: Props['rowClassName']
+  rowStyleCallback: Props['rowStyle']
 }
 type GetRowCallbackAttrRes = {
   rowClass: string
@@ -51,8 +51,8 @@ type GetCellCallbackAttrOptions = {
   rowIndex: number
   column: any
   columnIndex: number
-  cellClassName: Props.CellClassName
-  cellStyleCallback: Props.CellStyle
+  cellClassName: Props['cellClassName']
+  cellStyleCallback: Props['cellStyle']
 }
 type GetCellCallbackAttrRes = {
   cellClass: string

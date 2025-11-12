@@ -64,7 +64,7 @@ import {
   CustomAnchor as Anchor,
   CustomScrollbar as Scrollbar,
   CustomMarkdown as Markdown
-} from '@/components' // 系統組件
+} from '@/components/feature'
 
 const markdownRef = ref()
 

@@ -7,7 +7,7 @@ import { ElTabs, ElTabPane } from 'element-plus'
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { getUuid } from '@/lib/lib_utils' // 工具
 
-import type { Option } from '@/components' // 系統組件
+import type { Option } from '@/components'
 import type { Props } from './CustomTabsInfo'
 import { version, props as tabsProps } from './CustomTabsInfo'
 

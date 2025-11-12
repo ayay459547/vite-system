@@ -2,7 +2,8 @@
 import { ref, inject, nextTick } from 'vue'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
-import { CustomUpload, CustomButton, CustomCollapse, SimpleTable, CustomEmpty } from '@/components' // 系統組件
+import { CustomUpload, CustomButton, CustomCollapse, CustomEmpty } from '@/components/feature'
+import { SimpleTable } from '@/components/table'
 import { downloadFile, isEmpty, getProxyData } from '@/lib/lib_utils' // 工具
 import { useSimpleTableSetting } from '@/lib/lib_columns'
 

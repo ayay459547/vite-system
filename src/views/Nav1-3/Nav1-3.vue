@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import { CustomUpload, CustomDivider } from '@/components' // 系統組件
+import { CustomDivider } from '@/components/feature'
+import { CustomUpload } from '@/components/input'
 
 onMounted(() => {
   console.log(123)
