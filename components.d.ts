@@ -127,7 +127,6 @@ declare module 'vue' {
     InputStepRecordStepRecord: typeof import('./src/components/input/StepRecord/StepRecord.vue')['default']
     InputStepRecordUndoButton: typeof import('./src/components/input/StepRecord/UndoButton.vue')['default']
     InputTimeLevelManagementTimeLevelManagement: typeof import('./src/components/input/TimeLevelManagement/TimeLevelManagement.vue')['default']
-    LayoutDevelopmentTestComponentsI18nTest: typeof import('./src/components/layout/DevelopmentTest/Components/I18nTest.vue')['default']
     LayoutDevelopmentTestComponentsIndexedDBTest: typeof import('./src/components/layout/DevelopmentTest/Components/IndexedDBTest.vue')['default']
     LayoutDevelopmentTestComponentsPreferencesTest: typeof import('./src/components/layout/DevelopmentTest/Components/PreferencesTest.vue')['default']
     LayoutDevelopmentTestComponentsReplaceTextReplaceText: typeof import('./src/components/layout/DevelopmentTest/Components/ReplaceText/ReplaceText.vue')['default']

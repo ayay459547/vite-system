@@ -15,7 +15,7 @@ const props = defineProps({
     description: '是否可上傳多個檔案'
   },
   files: {
-    type: Array as PropType<Types.FilesInfo>,
+    type: Array as PropType<Types['filesInfo']>,
     required: false,
     default: null,
     description: '上傳類型'

@@ -90,7 +90,7 @@ const userConfigFnObject: UserConfigFnObject = ({ command, mode }: ConfigEnv) =>
   return {
     base: `${VITE_API_SYSTEM_URL}`, // 路徑
     build: {
-      outDir: 'portal', // 匯出資料夾名稱
+      outDir: 'dist', // 匯出資料夾名稱
       sourcemap: false,
       cssCodeSplit: true,
       chunkSizeWarningLimit: 1000,

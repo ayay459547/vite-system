@@ -14,11 +14,12 @@ const props = defineProps(treeProps)
 
 const emit = defineEmits(['node-click', 'check-change', 'check'])
 
+
 const onNodeClick: Emits['nodeClick'] = ($data1: any, $data2: any, $data3: any, $data4: any) => {
   emit('node-click', $data1, $data2, $data3, $data4)
 }
-const onCheckChange: Emits['nodeClick'] = ($data1: any, $data2: any, $data3: any) => {
-  emit('check-change', $data1, $data2, $data3)
+const onCheckChange: Emits['checkChange'] = (data: any, checked: boolean, indeterminate: boolean) => {
+  emit('check-change', data, checked, indeterminate)
 }
 const onCheck: Emits['check'] = (nodeDate: any, checkedData: any) => {
   emit('check', nodeDate, checkedData)

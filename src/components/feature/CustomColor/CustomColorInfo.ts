@@ -1,4 +1,3 @@
-import type Color from 'element-plus/es/components/color-picker/src/utils/color.mjs'
 import type { PropType } from 'vue'
 
 export const version = '__CustomColor_1.0.0__'
@@ -105,7 +104,7 @@ export interface Emits {
 }
 
 export interface Expose {
-  color: Color
+  // color: Color
   show: () => void
   hide: () => void
   focus: () => void
