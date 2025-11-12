@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export type Group = {
@@ -17,7 +17,7 @@ export type Group = {
 }
 
 export const getGroupList = async (): Promise<ApiRes<Group[]>> => {
-  const resData = await ajax<Api<Group[]>>(
+  const resData = await ajax<Group[]>(
     {
       baseURL: '/rest-common',
       url: '/group/listAllGroup',

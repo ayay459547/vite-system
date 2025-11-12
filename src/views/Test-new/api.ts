@@ -1,4 +1,3 @@
-import type { Api } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { swal } from '@/lib/lib_utils' // 工具
 
@@ -26,7 +25,7 @@ const getData = async (
 ): Promise<TableData[]> => {
   const { page = 1, size = 100 } = params
 
-  const resData = await ajax<Api<ResponseData[]>>(
+  const resData = await ajax<ResponseData[]>(
     {
       url: '/new/test',
       method: 'post',
@@ -102,7 +101,7 @@ export const getTableDataCount = async (params: any): Promise<number> => {
     productName = ''
   } = params
 
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/Cust2InternalProduct/getDataSizeByFilter',
       method: 'post',
@@ -142,7 +141,7 @@ export const getTableDataCount = async (params: any): Promise<number> => {
 export const deleteData = async (rowData: TableData): Promise<string | boolean> => {
   const { column1, column2, column3, column4, column5 } = rowData
 
-  const resData = await ajax<Api<any>>(
+  const resData = await ajax<any>(
     {
       url: '/api/delete',
       method: 'delete',

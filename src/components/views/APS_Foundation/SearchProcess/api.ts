@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 // 站點編號/站點名稱
@@ -7,7 +7,7 @@ export const getProcessList = async (str: string, size: number, processType: str
   const url = isGetProcessId ? '/api/Process/retrievefuzzyProcessId'
     : '/api/Process/retrievefuzzyProcessName'
 
-  const resData = await ajax<Api<any[]>>(
+  const resData = await ajax<any[]>(
     {
       url,
       method: 'get',

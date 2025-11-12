@@ -46,7 +46,7 @@ const getTodosData = async () => {
     }
   )
 
-  todos.value = res
+  todos.value = res.data
   console.log('get todos => ', todos.value)
 }
 
@@ -76,7 +76,7 @@ const getTodosData2 = todos => {
       delay: 300
     }
   ).then(res => {
-    todos2.value = res
+    todos2.value = res.data
     console.log('post todos2 => ', todos2.value)
   })
 }

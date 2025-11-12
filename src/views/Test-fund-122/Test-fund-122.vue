@@ -10,7 +10,6 @@ import { throttle } from '@/lib/lib_lodash'
 import { type Permission, getPermission, defaultPermission } from '@/lib/lib_permission' // 權限
 import type { TableOptions } from '@/types/types_columnSetting'
 
-// import i18nMessage from './i18n'
 import type { TableData } from './api'
 import { getData, getDataCount, deleteData } from './api'
 import { columnSetting, childColumnSetting } from './columns'

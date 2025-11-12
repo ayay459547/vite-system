@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { fakeTableData } from './fakeData'
 
@@ -11,7 +11,7 @@ export type TableData = {
 }
 
 export const getData = async (): Promise<ApiRes<TableData[]>> => {
-  const resData = await ajax<Api<any>>(
+  const resData = await ajax<any>(
     {
       url: '/api/test',
       method: 'get'

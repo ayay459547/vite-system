@@ -9,7 +9,7 @@ import { columnSetting } from './columns'
 // Excel轉JSON.xlsx
 import path from '@/assets/file/WordTest.docx?url'
 
-const options = [
+const options: any[] = [
   {
     timestamp: '8/10 ~ 8/17',
     label: '工作項目(1)',

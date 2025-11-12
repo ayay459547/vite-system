@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export type UploadFileRes = {
@@ -14,7 +14,7 @@ export type UploadFileRes = {
 }
 // 匯入插單上傳檔案
 export const uploadFile = async (formData: FormData): Promise<ApiRes<UploadFileRes | null>> => {
-  const resData = await ajax<Api<UploadFileRes>>(
+  const resData = await ajax<UploadFileRes>(
     {
       url: '/machineDistribution/file',
       method: 'post',
@@ -83,7 +83,7 @@ export type InsertRushOrderList = Array<InsertRushOrderItem>
 export const updateInsertRushOrder = async (
   insertRushOrderList: InsertRushOrderList
 ): Promise<ApiRes> => {
-  const resData = await ajax<Api<null>>(
+  const resData = await ajax<null>(
     {
       url: '/api/insertRushOrder/importByExcelPreview',
       method: 'post',

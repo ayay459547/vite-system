@@ -1,4 +1,4 @@
-import type { Api, ApiRes, ViewParams } from '@/declare/ajax'
+import type { ApiRes, ViewParams } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { isEmpty } from '@/lib/lib_utils' // 工具
 import { formatDatetime } from '@/lib/lib_format' // 格式化
@@ -61,7 +61,7 @@ export const fakeTableData: ResponseData[] = []
 export const getData = async (params: any): Promise<ApiRes<TableData[]>> => {
   const { no = '' } = params
 
-  const resData = await ajax<Api<ResponseData[] | TableData[]>>(
+  const resData = await ajax<ResponseData[] | TableData[]>(
     {
       url: '/api/PreviewSchedulingByProduction/getPreviewSchedulingByProduction',
       method: 'post',
@@ -142,7 +142,7 @@ export type Filter = {
 }
 
 export const getMpgp = async (params: any): Promise<ApiRes<any[]>> => {
-  const resData = await ajax<Api<any[]>>(
+  const resData = await ajax<any[]>(
     {
       url: '/machineDistribution/retrieveHasMpgp',
       method: 'post',

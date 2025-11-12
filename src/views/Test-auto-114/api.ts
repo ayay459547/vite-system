@@ -1,4 +1,4 @@
-import type { Api, ApiRes, ViewParams } from '@/declare/ajax'
+import type { ApiRes, ViewParams } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import type { Options } from '@/components' // 系統組件
 
@@ -15,7 +15,7 @@ export const getProcessList = async (
   lotNo: string,
   disabledList: string[]
 ): Promise<ApiRes<Options>> => {
-  const resData = await ajax<Api<string[]>>(
+  const resData = await ajax<string[]>(
     {
       url: '/api/insertRushOrder/getRushOrderRelatedProcessListByFilter',
       method: 'post',
@@ -65,7 +65,7 @@ export const getErpNoList = async (
   lotNo: string,
   disabledList: string[]
 ): Promise<ApiRes<Options>> => {
-  const resData = await ajax<Api<string[]>>(
+  const resData = await ajax<string[]>(
     {
       url: '/api/insertRushOrder/getRushOrderListByFilter',
       method: 'post',
@@ -116,7 +116,7 @@ export const getMachineList = async (
   machineId: string,
   selectedMachineList?: string[]
 ): Promise<ApiRes<Options>> => {
-  const resData = await ajax<Api<string[]>>(
+  const resData = await ajax<string[]>(
     {
       url: '/ma/machine/getCanBeAssigndMachineList',
       method: 'post',
@@ -195,7 +195,7 @@ export const getRushOrderList = async (
   machine: string,
   lotNo?: ''
 ): Promise<ApiRes<RushOrder[]>> => {
-  const resData = await ajax<Api<RushOrder[]>>(
+  const resData = await ajax<RushOrder[]>(
     {
       url: '/api/table/retrievetableFromView',
       method: 'post',
@@ -256,7 +256,7 @@ export type RushOrderData = Array<{
  */
 export const rushOrderFromWeb = async (rushOrderData: RushOrderData): Promise<ApiRes> => {
   console.log('reportData => ', rushOrderData)
-  const resData = await ajax<Api<any>>(
+  const resData = await ajax<any>(
     {
       // url: '/api/insertRushOrder/importByExcelPreview',
       url: '/api/insertRushOrder/saveRushOrderSettings',

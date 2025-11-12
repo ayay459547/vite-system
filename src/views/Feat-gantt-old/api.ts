@@ -1,4 +1,4 @@
-import type { Api, ApiRes, ViewParams } from '@/declare/ajax'
+import type { Api, ApiRes, ViewParams } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import { fakeGanttData } from './fakeData'
 
@@ -86,7 +86,7 @@ export const getData = async (params: any): Promise<ApiRes<TableData[]>> => {
 
   const [startDate, endDate] = Array.isArray(timeRange) ? timeRange : ['', '']
 
-  const resData = await ajax<Api<ResponseData[] | TableData[]>>(
+  const resData = await ajax<ResponseData[] | TableData[]>(
     {
       url: '/ganttChart2/getGanttChartByParam',
       method: 'post',

@@ -1,4 +1,4 @@
-// import type { Api, ApiRes } from '@/declare/ajax'
+// import type { Api, ApiRes } from '@/types/types_ajax'
 // import { ajax } from '@/lib/lib_ajax'
 // import type { Options } from '@/components' // 系統組件
 

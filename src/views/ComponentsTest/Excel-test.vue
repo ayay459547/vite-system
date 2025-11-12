@@ -4,7 +4,7 @@ import ExcelJs from 'exceljs'
 
 import type { UseHook } from '@/types/types_hook' // 全域功能類型
 import { useTableSetting } from '@/lib/lib_columns'
-import type { CustomIconProps, CustomButtonProps } from '@/components/feature' // 系統組件
+import type { CustomTooltipProps, CustomIconProps, CustomButtonProps } from '@/components/feature' // 系統組件
 import {
   CustomButton,
   CustomModal,
@@ -141,7 +141,7 @@ const tableData2 = [
   }
 ]
 
-const tooltipPlacement: CustomTooltipProps.Trigger = 'click'
+const tooltipPlacement: CustomTooltipProps['trigger'] = 'click'
 
 const isPopoverVisible = ref(false)
 </script>

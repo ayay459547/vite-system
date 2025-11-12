@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 import type { RushOrders } from '../../api'
 
@@ -28,7 +28,7 @@ export type PlanMachineList<T> = Array<{
 export const getPlanMachineList = async (
   erpNo: string
 ): Promise<ApiRes<PlanMachineList<RushOrders>>> => {
-  const resData = await ajax<Api<PlanMachineList<PlanRushOrders>>>(
+  const resData = await ajax<PlanMachineList<PlanRushOrders>>(
     {
       url: '/api/insertRushOrder/retrieveRushOrdersWithSpecificOrder',
       method: 'post',

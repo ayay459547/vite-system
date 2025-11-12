@@ -14,9 +14,9 @@ export type Params = {
 
   page: number
   size: number
-  sort?: CustomTableTypes.Sort
-  sortingList?: CustomTableTypes.SortingList
-  sortingMap?: CustomTableTypes.SortingMap
+  sort?: CustomTableTypes['sort']
+  sortingList?: CustomTableTypes['sortingList']
+  sortingMap?: CustomTableTypes['sortingMap']
 }
 
 export type TableData = {
@@ -39,7 +39,7 @@ export const getExcelData = async (params: any) => {
     }
   } = params as Params
 
-  const resData = await ajax<Api<TableData[]>>(
+  const resData = await ajax<TableData[]>(
     {
       url: '/page/getData',
       method: 'get',
@@ -117,7 +117,7 @@ export const getData = async (params: any) => {
     }
   }
 
-  const resData = await ajax<Api<TableData[]>>(
+  const resData = await ajax<TableData[]>(
     {
       url: '/page/getData',
       method: 'get',
@@ -199,7 +199,7 @@ export const getDataCount = async (params: any) => {
     }
   }
 
-  const resData = await ajax<Api<number>>(
+  const resData = await ajax<number>(
     {
       url: '/page/getDataCount',
       method: 'get',

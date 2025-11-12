@@ -1,4 +1,4 @@
-import type { Api, ApiRes } from '@/declare/ajax'
+import type { ApiRes } from '@/types/types_ajax'
 import { ajax } from '@/lib/lib_ajax'
 
 export type ResponseData = {
@@ -6,7 +6,7 @@ export type ResponseData = {
 }
 
 export const getSchedulingState = async (): Promise<ApiRes<ResponseData>> => {
-  const resData = await ajax<Api<ResponseData>>(
+  const resData = await ajax<ResponseData>(
     {
       url: '/schedulingProgress/isScheduling',
       method: 'get'
