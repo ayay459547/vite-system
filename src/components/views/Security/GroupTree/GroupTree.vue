@@ -39,7 +39,7 @@ const props = defineProps({
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate, swal } = useHook({
-  i18nModule: 'nodoc_common'
+  i18nModule: 'system'
 })
 
 // 單選
@@ -234,7 +234,7 @@ defineExpose({
     <label class="tree-label">
       <span v-show="props.required" class="tree-prefix text-danger">*</span>
 
-      <span>{{ i18nTranslate('group', 'nodoc_common') }}</span>
+      <span>{{ i18nTranslate('group', 'system') }}</span>
     </label>
 
     <CustomTree

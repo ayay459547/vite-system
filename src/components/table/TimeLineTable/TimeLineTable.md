@@ -70,7 +70,7 @@ onMounted(() => {
     :settingKey="tableSetting.settingKey"
     :table-columns="tableSetting.tableColumns"
     :table-data="tableData"
-    i18n-module="auto_common"
+    i18n-module="system"
   ></TimeLineTable>
 </template>
 ```

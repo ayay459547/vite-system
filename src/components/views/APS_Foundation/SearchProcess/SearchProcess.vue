@@ -16,7 +16,7 @@ import { scrollToEl } from '@/lib/lib_utils' // 工具
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate, swal } = useHook({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const emit = defineEmits(['process'])

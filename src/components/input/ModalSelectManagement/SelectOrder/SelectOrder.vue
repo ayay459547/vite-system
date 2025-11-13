@@ -31,7 +31,7 @@ const {
   formatExcel,
   formatTable
 } = useOrderInfo({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -49,7 +49,7 @@ const {
 const tableOptions: TableOptions = {
   title: '訂單基本資訊',
   i18nTitle: 'auto-36',
-  i18nModule: 'auto_common',
+  i18nModule: 'system',
   version: '1.0.1',
   settingKey: 'ModalSelect_order',
   rowKey: 'rowId',

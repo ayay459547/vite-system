@@ -67,7 +67,7 @@ const props = defineProps({
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate, i18nTest, swal } = useHook({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const label = computed(() => {

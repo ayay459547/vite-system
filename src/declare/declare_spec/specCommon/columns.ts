@@ -12,7 +12,7 @@ export const columnSetting = {
       required: true
     },
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       type: 'text',
       default: null,
       validate: ['pkId'],
@@ -38,7 +38,7 @@ export const columnSetting = {
       required: true
     },
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       type: 'text',
       default: null,
       required: true
@@ -63,7 +63,7 @@ export const columnSetting = {
       required: true
     },
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       type: 'text',
       default: null,
       required: true
@@ -88,7 +88,7 @@ export const columnSetting = {
       required: true
     },
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       type: 'select',
       options: [],
       filterable: true,

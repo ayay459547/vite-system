@@ -7,7 +7,7 @@ import { VxeTable, VxeColumn } from '@/components/table' // 系統組件: 表格
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 const props = defineProps({

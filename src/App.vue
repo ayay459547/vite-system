@@ -69,7 +69,7 @@ export default defineComponent({
               <div class="gear-img">
                 <img src="@/assets/images/logo.png" alt="demo" />
               </div>
-              <div class="gear-ipasp flex-row align-center content-between">
+              <div class="gear-system flex-row align-center content-between">
                 <span>{{ env.version }}</span>
               </div>
             </div>
@@ -133,7 +133,7 @@ export default defineComponent({
     }
   }
 }
-.tip-ipasp {
+.tip-system {
   transition: 0.3s color;
   color: var(--i-color-menu);
 
@@ -153,7 +153,7 @@ export default defineComponent({
     }
   }
 
-  &-ipasp {
+  &-system {
     gap: 80px;
   }
 }

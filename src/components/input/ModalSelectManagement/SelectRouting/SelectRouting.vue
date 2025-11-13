@@ -30,7 +30,7 @@ const {
   formatExcel,
   formatTable
 } = useRouteInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -49,7 +49,7 @@ const {
 const tableOptions: TableOptions = {
   title: '生產途程資訊',
   i18nTitle: 'fund-121',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_route',
   rowKey: 'rowId',

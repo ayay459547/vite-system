@@ -52,7 +52,7 @@ export const useMachine2ProcessInput = (inputProps?: Partial<CustomInputProps>) 
     searchMachineId,
     machine2ProcessInputProps: {
       // 可替代
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       modalSelect,
       ...selectProps,
       ...inputProps,

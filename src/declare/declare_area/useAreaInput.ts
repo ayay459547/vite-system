@@ -34,7 +34,7 @@ export const useAreaInput = (inputProps?: Partial<CustomInputProps>) => {
   return {
     areaInputProps: {
       // 可替代
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       modalSelect,
       ...selectProps,
       ...inputProps,

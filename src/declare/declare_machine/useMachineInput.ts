@@ -34,7 +34,7 @@ export const useMachineInput = (inputProps?: Partial<CustomInputProps>) => {
   return {
     machineInputProps: {
       // 可替代
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       modalSelect,
       ...selectProps,
       ...inputProps,

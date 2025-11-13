@@ -34,7 +34,7 @@ export const useProcessInput = (inputProps?: Partial<CustomInputProps>) => {
   return {
     processInputProps: {
       // 可替代
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       modalSelect,
       ...selectProps,
       ...inputProps,

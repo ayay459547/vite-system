@@ -34,7 +34,7 @@ export const useOrderInput = (inputProps?: Partial<CustomInputProps>) => {
   return {
     orderInputProps: {
       // 可替代
-      i18nModule: 'auto_common',
+      i18nModule: 'system',
       modalSelect,
       ...selectProps,
       ...inputProps,

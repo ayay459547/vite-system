@@ -26,21 +26,8 @@ export interface I18n {
 }
 
 export interface ModuleType {
-  // 模組
-  auto_common?: string
-  mulsol_common?: string
-  fund_common?: string
-  apspub_common?: string
-  optimiz_common?: string
-  nodoc_common?: string
-  intelgt_common?: string
-  mmc_common?: string
-  dmd_common?: string
-  rtds_common?: string
-  // 系統
-  iPASP_common?: string
-  system_common?: string
   system?: string
+  common?: string
 }
 
 export type ScopeKey = keyof ModuleType | ''

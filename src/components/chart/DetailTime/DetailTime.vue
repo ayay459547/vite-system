@@ -12,7 +12,7 @@ import { getMODetailTime, getMahineStateTime } from './api'
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 interface MOData {

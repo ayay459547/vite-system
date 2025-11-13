@@ -94,7 +94,7 @@ export const columnSetting = {
   sortingBy: {
     label: '排程優先區',
     i18nLabel: 'sequence-sortingType',
-    i18nModule: 'fund_common',
+    i18nModule: 'system',
     table: {
       minWidth: 150,
       required: true,
@@ -112,7 +112,7 @@ export const columnSetting = {
     form: {
       label: '',
       type: 'select',
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       default: 3,
       required: true,
       hiddenLabel: true,
@@ -123,7 +123,7 @@ export const columnSetting = {
   order: {
     label: '排序方式',
     i18nLabel: 'sequence-order',
-    i18nModule: 'fund_common',
+    i18nModule: 'system',
     table: {
       minWidth: 150,
       required: true,

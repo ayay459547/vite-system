@@ -522,16 +522,6 @@
 
 - WebViewTable: 設定進階條件可用選項, 必需有指定參數
 
-### v2024-12-12.1 (Caleb)
-
-- GlobalView:
-  1. 移除 development 函數
-  2. 開啟開發工具 快捷鍵加上Alt 才可開
-- router: 移除參數 aps, rt-aps, ipasp-rtds, 1.4, development
-- 貨批派機條件管理 fund-1606: 調整key
-  1. machine_id => machineId
-  2. machine_name => machineName
-
 ### v2024-12-11.1 (Caleb)
 
 - env: 系統參數新增客戶
@@ -551,14 +541,7 @@
 ### v2024-12-09.1 (Caleb)
 
 - 調整無權限的顯示方式: 跳頁 => 顯示無權限
-- 機台分配管理 fund-1604:
-  1. 限制機台列表查詢 加開欄位: isEnable
-  2. 新增機台當日所有分配 複製整週
 - 變更浮水印文字大小
-
-### v2024-12-06.2 (Caleb)
-
-- 工作站生產看板 apspub-11: 重構看板架構
 
 ### v2024-12-06.1 (Caleb)
 

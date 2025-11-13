@@ -74,18 +74,18 @@ export const fontPathMap: Partial<LangMapType<string>> = {
 }
 
 // excel 使用
-export const defaultModuleType: ScopeKey = 'iPASP_common'
+export const defaultModuleType: ScopeKey = 'system'
 
 export const scopeList = [
-  { scopeKey: 'auto_common', label: '排程自動化作業', version: '1.1.0' },
-  { scopeKey: 'mulsol_common', label: '多方案模組', version: '1.1.0' },
-  { scopeKey: 'fund_common', label: '排程基本資訊', version: '1.1.0' },
-  { scopeKey: 'apspub_common', label: '排程發放', version: '1.1.0' },
-  { scopeKey: 'optimiz_common', label: '資源管理', version: '1.1.0' },
-  { scopeKey: 'nodoc_common', label: '權限管理', version: '1.1.0' },
-  { scopeKey: 'intelgt_common', label: '排程智慧化', version: '1.1.0' },
-  { scopeKey: 'mmc_common', label: '物控模組', version: '1.1.0' },
-  { scopeKey: 'dmd_common', label: '訂單需求管理', version: '1.1.0' },
-  { scopeKey: 'rtds_common', label: 'RTDS', version: '1.1.0' },
-  { scopeKey: 'iPASP_common', label: 'demo', version: '1.1.0' }
+  { scopeKey: 'system', label: '排程自動化作業', version: '1.1.0' },
+  { scopeKey: 'system', label: '多方案模組', version: '1.1.0' },
+  { scopeKey: 'system', label: '排程基本資訊', version: '1.1.0' },
+  { scopeKey: 'system', label: '排程發放', version: '1.1.0' },
+  { scopeKey: 'system', label: '資源管理', version: '1.1.0' },
+  { scopeKey: 'system', label: '權限管理', version: '1.1.0' },
+  { scopeKey: 'system', label: '排程智慧化', version: '1.1.0' },
+  { scopeKey: 'system', label: '物控模組', version: '1.1.0' },
+  { scopeKey: 'system', label: '訂單需求管理', version: '1.1.0' },
+  { scopeKey: 'system', label: 'RTDS', version: '1.1.0' },
+  { scopeKey: 'system', label: 'demo', version: '1.1.0' }
 ]

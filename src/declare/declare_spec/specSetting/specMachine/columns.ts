@@ -13,7 +13,7 @@ export const columnSetting = {
       sortable: false
     },
     form: {
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       default: '',
       type: 'select',
       options: [],
