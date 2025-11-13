@@ -30,7 +30,7 @@ const {
   formatExcel,
   formatTable
 } = useProcessInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -48,7 +48,7 @@ const {
 const tableOptions: TableOptions = {
   title: '製程基本資訊',
   i18nTitle: 'fund-131',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.0.1',
   settingKey: 'ModalSelect_process',
   rowKey: 'rowId',

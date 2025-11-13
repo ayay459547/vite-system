@@ -29,7 +29,7 @@ const {
   formatExcel,
   formatTable
 } = useProductInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -47,7 +47,7 @@ const {
 const tableOptions: TableOptions = {
   title: '產品基本資訊',
   i18nTitle: 'fund-113',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_product',
   rowKey: 'rowId',

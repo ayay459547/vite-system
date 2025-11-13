@@ -18,7 +18,7 @@ const scopedId = getUuid(version)
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
   // i18nModule: defaultModuleType
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const props = defineProps(helpProps)

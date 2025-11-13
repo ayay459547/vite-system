@@ -14,7 +14,7 @@ import { getSchedulingState } from './api'
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 // 是否使用排停檢查

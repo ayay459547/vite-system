@@ -92,9 +92,7 @@ export const transformI18n = (isWatch: boolean, transformList: Transform[]) => {
       // 只取需要的欄位
       const {
         Key, zh_TW, zh_CN, en,
-        auto_common, mulsol_common, fund_common, apspub_common, optimiz_common,
-        nodoc_common, intelgt_common, mmc_common, dmd_common, rtds_common,
-        iPASP_common
+        system, common
       } = i18n
 
       if (Key) {
@@ -103,9 +101,7 @@ export const transformI18n = (isWatch: boolean, transformList: Transform[]) => {
         }
         tempMap.set(Key, {
           Key, zh_TW, zh_CN, en,
-          auto_common, mulsol_common, fund_common, apspub_common, optimiz_common,
-          nodoc_common, intelgt_common, mmc_common, dmd_common, rtds_common,
-          iPASP_common
+          system, common
         })
       }
       return tempMap

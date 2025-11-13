@@ -30,7 +30,7 @@ const {
   formatExcel,
   formatTable
 } = useMachineInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -48,7 +48,7 @@ const {
 const tableOptions: TableOptions = {
   title: '機台基本資訊',
   i18nTitle: 'fund-1413',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.0.2',
   settingKey: 'ModalSelect_machine',
   rowKey: 'rowId',

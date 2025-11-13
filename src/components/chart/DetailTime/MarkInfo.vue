@@ -7,7 +7,7 @@ import type { UseHook } from '@/types/types_hook' // 全域功能類型
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
-  i18nModule: 'auto_common'
+  i18nModule: 'system'
 })
 
 interface Mark {

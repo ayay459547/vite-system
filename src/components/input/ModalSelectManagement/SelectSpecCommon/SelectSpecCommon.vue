@@ -31,7 +31,7 @@ const {
   formatExcel,
   formatTable
 } = useSpecCommonInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -50,7 +50,7 @@ const {
 const tableOptions: TableOptions = {
   title: '全廠共通規格管理',
   i18nTitle: 'fund-202',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_specCommon',
   rowKey: 'rowId',
@@ -78,7 +78,7 @@ defineExpose({
     <WebViewTable
       ref="WebViewTableRef"
       webfuno="fund_202"
-      designatedview="iPASPWebView_fund_202_RTDSSpecification"
+      designatedview="SystemWebView_fund_202_RTDSSpecification"
       :table-options="tableOptions"
       :column-setting="columnSetting"
       :format-params="formatParams"

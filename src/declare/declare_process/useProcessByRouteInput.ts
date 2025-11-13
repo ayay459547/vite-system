@@ -37,7 +37,7 @@ export const useProcessByRouteInput = (inputProps?: Partial<CustomInputProps>) =
     routeId,
     processInputProps: {
       // 可替代
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       // modalSelect,
       ...selectProps,
       ...inputProps,

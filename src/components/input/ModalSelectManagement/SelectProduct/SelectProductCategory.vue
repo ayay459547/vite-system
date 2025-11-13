@@ -29,7 +29,7 @@ const {
   formatExcel,
   formatTable
 } = useProductCategoryInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -47,7 +47,7 @@ const {
 const tableOptions: TableOptions = {
   title: '產品類別基本資訊',
   i18nTitle: 'fund-117',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_productCategory',
   rowKey: 'rowId',

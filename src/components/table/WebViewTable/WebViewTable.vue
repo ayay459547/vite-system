@@ -619,7 +619,7 @@ const saveFilter = () => {
 
 //   const nameList =  filterSetOptions.value.map(option => option.name)
 //   const formatName = (inputName, count) => {
-//     if(isEmpty(inputName)) return formatName(i18nTranslate('setting', 'iPASP_common'), 1)
+//     if(isEmpty(inputName)) return formatName(i18nTranslate('setting', 'System_common'), 1)
 
 //     const tempName = (count === 1) ? inputName : `${inputName} (${count})`
 //     if(nameList.includes(tempName)) return formatName(inputName, count + 1)
@@ -776,7 +776,7 @@ const displayBatchAction = computed(() => {
               <div class="filter-set-save-btn">
                 <CustomButton
                   type="success"
-                  :label="i18nTranslate('setting-save', 'iPASP_common')"
+                  :label="i18nTranslate('setting-save', 'System_common')"
                   icon-name="save"
                   @click="saveFilterSet(filterSetName)"
                 />
@@ -784,7 +784,7 @@ const displayBatchAction = computed(() => {
               <div class="filter-set-save-input" :class="filterSetSaveHover? 'display': 'hidden'">
                 <CustomInput
                   v-model="filterSetName"
-                  :placeholder="`${i18nTranslate('setting-placeholder', 'iPASP_common')}`"
+                  :placeholder="`${i18nTranslate('setting-placeholder', 'System_common')}`"
                   hiddenLabel
                   direction="row"
                   clearable

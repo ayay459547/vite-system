@@ -7,7 +7,7 @@ export const exampleColumnSetting = {
       sortable: false
     },
     form: {
-      i18nModule: 'apspub_common',
+      i18nModule: 'system',
       type: 'select',
       default: null,
       filterable: true,
@@ -30,7 +30,7 @@ export const exampleColumnSetting = {
       sortable: false
     },
     form: {
-      i18nModule: 'apspub_common',
+      i18nModule: 'system',
       type: 'radio',
       default: 1,
       options: [
@@ -78,7 +78,7 @@ export const exampleColumnSetting = {
     },
     form: {
       type: 'number',
-      i18nModule: 'apspub_common',
+      i18nModule: 'system',
       default: null,
       validate: ['number'],
       required: true,
@@ -100,7 +100,7 @@ export const exampleColumnSetting = {
       align: 'center'
     },
     form: {
-      i18nModule: 'apspub_common',
+      i18nModule: 'system',
       type: 'radio',
       default: true,
       options: [

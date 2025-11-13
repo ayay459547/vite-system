@@ -79,7 +79,7 @@ export const columnSetting = {
     filter: {
       type: 'select',
       default: null,
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       options: [
         { i18nLabel: 'select-true', label: '是', value: 1 },
         { i18nLabel: 'select-false', label: '否', value: 0 }

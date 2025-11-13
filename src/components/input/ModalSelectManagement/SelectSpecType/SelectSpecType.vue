@@ -30,7 +30,7 @@ const {
   formatExcel,
   formatTable
 } = useSpecTypeInfo({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const {
@@ -49,7 +49,7 @@ const {
 const tableOptions: TableOptions = {
   title: '規格類型管理',
   i18nTitle: 'fund-201',
-  i18nModule: 'fund_common',
+  i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_specType',
   rowKey: 'rowId',
@@ -77,7 +77,7 @@ defineExpose({
     <WebViewTable
       ref="WebViewTableRef"
       webfuno="fund_201"
-      designatedview="iPASPWebView_fund_201_SpecificationType"
+      designatedview="SystemWebView_fund_201_SpecificationType"
       :table-options="tableOptions"
       :column-setting="columnSetting"
       :format-params="formatParams"

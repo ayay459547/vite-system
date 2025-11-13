@@ -34,7 +34,7 @@ export const useMachineCategoryInput = (inputProps?: Partial<CustomInputProps>) 
   return {
     machineCategoryInputProps: {
       // 可替代
-      i18nModule: 'fund_common',
+      i18nModule: 'system',
       // modalSelect,
       ...selectProps,
       ...inputProps,
