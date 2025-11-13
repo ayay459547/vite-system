@@ -22,7 +22,8 @@ import {
   DesktopArrowRight24Regular,
   SlideArrowRight24Regular,
   ClipboardArrowRight16Regular,
-  BookQuestionMark24Filled
+  BookQuestionMark24Filled,
+  DocumentTableCube20Filled
 } from '@vicons/fluent'
 
 const fluent: Record<string, any> = {
@@ -49,7 +50,8 @@ const fluent: Record<string, any> = {
   DesktopArrowRight24Regular,
   SlideArrowRight24Regular,
   ClipboardArrowRight16Regular,
-  BookQuestionMark24Filled
+  BookQuestionMark24Filled,
+  DocumentTableCube20Filled
 }
 
 export default fluent

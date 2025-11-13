@@ -3,7 +3,8 @@ import {
   StatsChartSharp,
   ArrowUndo,
   ArrowRedo,
-  HardwareChipSharp
+  HardwareChipSharp,
+  BarChart
 } from '@vicons/ionicons5'
 
 const ionicons5: Record<string, any> = {
@@ -11,7 +12,8 @@ const ionicons5: Record<string, any> = {
   StatsChartSharp,
   ArrowUndo,
   ArrowRedo,
-  HardwareChipSharp
+  HardwareChipSharp,
+  BarChart
 }
 
 export default ionicons5
