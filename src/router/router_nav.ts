@@ -13,6 +13,28 @@ export const navMap: Record<string, RouterTree> = {
       permission: defaultPermission
     }
   },
+  'chart': {
+    name: 'chart',
+    title: '圖表',
+    meta: {
+      icon: {
+        xType: 'ionicons5',
+        name: 'BarChart'
+      },
+      permission: defaultPermission
+    }
+  },
+  'components': {
+    name: 'components',
+    title: '組件',
+    meta: {
+      icon: {
+        xType: 'fluent',
+        name: 'DocumentTableCube20Filled'
+      },
+      permission: defaultPermission
+    }
+  },
   'nav1-1-1': {
     name: 'nav1-1-1',
     title: '功能1',
