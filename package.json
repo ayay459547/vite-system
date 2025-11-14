@@ -71,11 +71,11 @@
   },
   "devDependencies": {
     "@interactjs/types": "^1.10.27",
-    "@tsconfig/node22": "^22.0.2",
+    "@tsconfig/node22": "^22.0.3",
     "@types/crypto-js": "^4.2.2",
     "@types/js-cookie": "^3.0.6",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.16.5",
+    "@types/node": "^24.10.1",
     "@types/uuid": "^10.0.0",
     "@vicons/antd": "^0.13.0",
     "@vicons/carbon": "^0.13.0",
