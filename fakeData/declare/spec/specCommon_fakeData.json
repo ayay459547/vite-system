@@ -1,0 +1,702 @@
+[
+  {
+    "specTypeId": "BodySize",
+    "name": "1.6*1.6mm",
+    "id": "BodySize_1",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.192",
+    "content": "1.6*1.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "10.6*9.8mm",
+    "id": "BodySize_10",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "10.6*9.8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "5.66*6.5mm",
+    "id": "BodySize_100",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "5.66*6.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "5.8*6.05mm",
+    "id": "BodySize_101",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "5.8*6.05mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "5.98*5.62mm",
+    "id": "BodySize_102",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "5.98*5.62mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6\"WAFER",
+    "id": "BodySize_103",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6\"WAFER"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6*6mm",
+    "id": "BodySize_104",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6*6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6*7mm",
+    "id": "BodySize_105",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6*7mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6*8mm",
+    "id": "BodySize_106",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6*8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.06*6.06mm",
+    "id": "BodySize_107",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.06*6.06mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.1*9.5mm",
+    "id": "BodySize_108",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.1*9.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.2*5.4mm",
+    "id": "BodySize_109",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.2*5.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11*11.8mm",
+    "id": "BodySize_11",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11*11.8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.4*6mm",
+    "id": "BodySize_110",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.4*6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.5*4.5mm",
+    "id": "BodySize_111",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.5*4.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.5*6.5mm",
+    "id": "BodySize_112",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.5*6.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.6*6.6mm",
+    "id": "BodySize_113",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.6*6.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.6*7.8mm",
+    "id": "BodySize_114",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.6*7.8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.62*4.78mm",
+    "id": "BodySize_115",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.62*4.78mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "6.9669*6.6582mm",
+    "id": "BodySize_116",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "6.9669*6.6582mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "7*6.6mm",
+    "id": "BodySize_117",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "7*6.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "7*7mm",
+    "id": "BodySize_118",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "7*7mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "7*8.5mm",
+    "id": "BodySize_119",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "7*8.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11*11mm",
+    "id": "BodySize_12",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11*11mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "7.0*6.6mm",
+    "id": "BodySize_120",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "7.0*6.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "7.419*7.459mm",
+    "id": "BodySize_121",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "7.419*7.459mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "7.85*8.55mm",
+    "id": "BodySize_122",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "7.85*8.55mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "8*10mm",
+    "id": "BodySize_123",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "8*10mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "8*6mm",
+    "id": "BodySize_124",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "8*6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "8*8mm",
+    "id": "BodySize_125",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "8*8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "8.1*7.6mm",
+    "id": "BodySize_126",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "8.1*7.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "8.2*10.3mm",
+    "id": "BodySize_127",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "8.2*10.3mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "8.6*11.4mm",
+    "id": "BodySize_128",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "8.6*11.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "9*8.7mm",
+    "id": "BodySize_129",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "9*8.7mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11*15mm",
+    "id": "BodySize_13",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11*15mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "9*9mm",
+    "id": "BodySize_130",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "9*9mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "9.4*9.4mm",
+    "id": "BodySize_131",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "9.4*9.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "9.8*6.4mm",
+    "id": "BodySize_132",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "9.8*6.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "9.8*9.6mm",
+    "id": "BodySize_133",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "9.8*9.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "NA",
+    "id": "BodySize_134",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "NA"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "WLCSP",
+    "id": "BodySize_135",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "WLCSP"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.0*9.4mm",
+    "id": "BodySize_14",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.0*9.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.1*11.1mm",
+    "id": "BodySize_15",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.1*11.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.35*11mm",
+    "id": "BodySize_16",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.35*11mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.4*11mm",
+    "id": "BodySize_17",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.4*11mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.4*9.4mm",
+    "id": "BodySize_18",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.4*9.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.5*8.7mm",
+    "id": "BodySize_19",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.5*8.7mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "1.7*2mm",
+    "id": "BodySize_2",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "1.7*2mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.6*12.1mm",
+    "id": "BodySize_20",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.6*12.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.8*11.8mm",
+    "id": "BodySize_21",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.8*11.8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "11.8*11mm",
+    "id": "BodySize_22",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "11.8*11mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "118mil",
+    "id": "BodySize_23",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "118mil"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12*12mm",
+    "id": "BodySize_24",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12*12mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12*13mm",
+    "id": "BodySize_25",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12*13mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.05*11.35mm",
+    "id": "BodySize_26",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.05*11.35mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.05*12.05mm",
+    "id": "BodySize_27",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.05*12.05mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.1*11.6mm",
+    "id": "BodySize_28",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.1*11.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.1*12.6mm",
+    "id": "BodySize_29",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.1*12.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "1.8*1.3mm",
+    "id": "BodySize_3",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "1.8*1.3mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.2*11.8mm",
+    "id": "BodySize_30",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.2*11.8mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.2*12.2mm",
+    "id": "BodySize_31",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.2*12.2mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.2*9mm",
+    "id": "BodySize_32",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.2*9mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.4*12.05mm",
+    "id": "BodySize_33",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.4*12.05mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.4*12.4mm",
+    "id": "BodySize_34",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.4*12.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.5*10mm",
+    "id": "BodySize_35",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.5*10mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.5*9mm",
+    "id": "BodySize_36",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.5*9mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.6*12.1mm",
+    "id": "BodySize_37",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.6*12.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.6*12.2mm",
+    "id": "BodySize_38",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.6*12.2mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.6*12.6mm",
+    "id": "BodySize_39",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.6*12.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "1.9*1.1mm",
+    "id": "BodySize_4",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "1.9*1.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "12.6*13.1mm",
+    "id": "BodySize_40",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "12.6*13.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "13*13.4mm",
+    "id": "BodySize_41",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "13*13.4mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "13*13mm",
+    "id": "BodySize_42",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "13*13mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "13.1*13.1mm",
+    "id": "BodySize_43",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "13.1*13.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "13.8*15.2mm",
+    "id": "BodySize_44",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "13.8*15.2mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "14*14mm",
+    "id": "BodySize_45",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "14*14mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "14*15.6mm",
+    "id": "BodySize_46",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "14*15.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "14*20mm",
+    "id": "BodySize_47",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "14*20mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "14.5*14mm",
+    "id": "BodySize_48",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "14.5*14mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "15*13mm",
+    "id": "BodySize_49",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "15*13mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "1.95*1.65mm",
+    "id": "BodySize_5",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "1.95*1.65mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "15*15mm",
+    "id": "BodySize_50",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "15*15mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "150mil",
+    "id": "BodySize_51",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "150mil"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "16*11mm",
+    "id": "BodySize_52",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "16*11mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "16*16mm",
+    "id": "BodySize_53",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "16*16mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "16.85*16.85mm",
+    "id": "BodySize_54",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "16.85*16.85mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "17*12mm",
+    "id": "BodySize_55",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "17*12mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "17*17mm",
+    "id": "BodySize_56",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "17*17mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "173mil",
+    "id": "BodySize_57",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "173mil"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "18*18mm",
+    "id": "BodySize_58",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "18*18mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "19*19mm",
+    "id": "BodySize_59",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "19*19mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "10*10mm",
+    "id": "BodySize_6",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "10*10mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2*2.5mm",
+    "id": "BodySize_60",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2*2.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2*2mm",
+    "id": "BodySize_61",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2*2mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2*3mm",
+    "id": "BodySize_62",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2*3mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2.1*1.6mm",
+    "id": "BodySize_63",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2.1*1.6mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2.1*2.1mm",
+    "id": "BodySize_64",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2.1*2.1mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2.1*2.5mm",
+    "id": "BodySize_65",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2.1*2.5mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2.2*2.2mm",
+    "id": "BodySize_66",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2.2*2.2mm"
+  },
+  {
+    "specTypeId": "BodySize",
+    "name": "2.3*2.3mm",
+    "id": "BodySize_67",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-12 11:15:24.195",
+    "content": "2.3*2.3mm"
+  }
+]

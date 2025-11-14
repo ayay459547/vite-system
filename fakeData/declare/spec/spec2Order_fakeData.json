@@ -1,0 +1,326 @@
+[
+  {
+    "specId": "TrayOrTr_1",
+    "specTypeId": "TrayOrTr",
+    "specTypeName": "產品包裝方式",
+    "specName": "T/R",
+    "orderId": "Order-001",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "T/R"
+  },
+  {
+    "specId": "CustId_35",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "specName": "L452",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "L452"
+  },
+  {
+    "specId": "CustOrderNo_1002",
+    "specTypeId": "CustOrderNo",
+    "specTypeName": "Customer訂單號碼",
+    "specName": "P12R37.0U",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "P12R37.0U"
+  },
+  {
+    "specId": "DateCode_165",
+    "specTypeId": "DateCode",
+    "specTypeName": "產期代碼",
+    "specName": "2320",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "2320"
+  },
+  {
+    "specId": "FactoryArea_3",
+    "specTypeId": "FactoryArea",
+    "specTypeName": "廠區編號",
+    "specName": "SGC1P",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC1P"
+  },
+  {
+    "specId": "FactoryNo_2",
+    "specTypeId": "FactoryNo",
+    "specTypeName": "工廠廠別",
+    "specName": "SGC",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC"
+  },
+  {
+    "specId": "MergeFlag_425",
+    "specTypeId": "MergeFlag",
+    "specTypeName": "工單合併旗標",
+    "specName": "2",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "2"
+  },
+  {
+    "specId": "PackageProvider_59",
+    "specTypeId": "PackageProvider",
+    "specTypeName": "封裝供應商",
+    "specName": "TICP",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "TICP"
+  },
+  {
+    "specId": "SubInventory_93",
+    "specTypeId": "SubInventory",
+    "specTypeName": "工單所在儲位",
+    "specName": "1PRFBH/1BNH-13",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "1PRFBH/1BNH-13"
+  },
+  {
+    "specId": "TrayOrTr_1",
+    "specTypeId": "TrayOrTr",
+    "specTypeName": "產品包裝方式",
+    "specName": "T/R",
+    "orderId": "Order-001-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "T/R"
+  },
+  {
+    "specId": "CustId_35",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "specName": "L452",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "L452"
+  },
+  {
+    "specId": "CustOrderNo_1001",
+    "specTypeId": "CustOrderNo",
+    "specTypeName": "Customer訂單號碼",
+    "specName": "P12R37.0H",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "P12R37.0H"
+  },
+  {
+    "specId": "DateCode_151",
+    "specTypeId": "DateCode",
+    "specTypeName": "產期代碼",
+    "specName": "2310",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "2310"
+  },
+  {
+    "specId": "FactoryArea_3",
+    "specTypeId": "FactoryArea",
+    "specTypeName": "廠區編號",
+    "specName": "SGC1P",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC1P"
+  },
+  {
+    "specId": "FactoryNo_2",
+    "specTypeId": "FactoryNo",
+    "specTypeName": "工廠廠別",
+    "specName": "SGC",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC"
+  },
+  {
+    "specId": "MergeFlag_279",
+    "specTypeId": "MergeFlag",
+    "specTypeName": "工單合併旗標",
+    "specName": "152",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "152"
+  },
+  {
+    "specId": "PackageProvider_30",
+    "specTypeId": "PackageProvider",
+    "specTypeName": "封裝供應商",
+    "specName": "KYEC",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "KYEC"
+  },
+  {
+    "specId": "SubInventory_168",
+    "specTypeId": "SubInventory",
+    "specTypeName": "工單所在儲位",
+    "specName": "2f/WR14",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "2f/WR14"
+  },
+  {
+    "specId": "TrayOrTr_1",
+    "specTypeId": "TrayOrTr",
+    "specTypeName": "產品包裝方式",
+    "specName": "T/R",
+    "orderId": "Order-003",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "T/R"
+  },
+  {
+    "specId": "CustId_35",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "specName": "L452",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "L452"
+  },
+  {
+    "specId": "CustOrderNo_1004",
+    "specTypeId": "CustOrderNo",
+    "specTypeName": "Customer訂單號碼",
+    "specName": "P2YA45.00",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "P2YA45.00"
+  },
+  {
+    "specId": "DateCode_199",
+    "specTypeId": "DateCode",
+    "specTypeName": "產期代碼",
+    "specName": "2341",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "2341"
+  },
+  {
+    "specId": "FactoryArea_3",
+    "specTypeId": "FactoryArea",
+    "specTypeName": "廠區編號",
+    "specName": "SGC1P",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC1P"
+  },
+  {
+    "specId": "FactoryNo_2",
+    "specTypeId": "FactoryNo",
+    "specTypeName": "工廠廠別",
+    "specName": "SGC",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC"
+  },
+  {
+    "specId": "MergeFlag_393",
+    "specTypeId": "MergeFlag",
+    "specTypeName": "工單合併旗標",
+    "specName": "1890",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "1890"
+  },
+  {
+    "specId": "PackageProvider_59",
+    "specTypeId": "PackageProvider",
+    "specTypeName": "封裝供應商",
+    "specName": "TICP",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "TICP"
+  },
+  {
+    "specId": "SubInventory_42",
+    "specTypeId": "SubInventory",
+    "specTypeName": "工單所在儲位",
+    "specName": "1P2F-HOLD/HT15",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "1P2F-HOLD/HT15"
+  },
+  {
+    "specId": "TrayOrTr_1",
+    "specTypeId": "TrayOrTr",
+    "specTypeName": "產品包裝方式",
+    "specName": "T/R",
+    "orderId": "Order-007-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "T/R"
+  },
+  {
+    "specId": "CustId_35",
+    "specTypeId": "CustId",
+    "specTypeName": "Customer編號",
+    "specName": "L452",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "L452"
+  },
+  {
+    "specId": "CustOrderNo_1004",
+    "specTypeId": "CustOrderNo",
+    "specTypeName": "Customer訂單號碼",
+    "specName": "P2YA45.00",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "P2YA45.00"
+  },
+  {
+    "specId": "DateCode_199",
+    "specTypeId": "DateCode",
+    "specTypeName": "產期代碼",
+    "specName": "2341",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "2341"
+  },
+  {
+    "specId": "FactoryArea_3",
+    "specTypeId": "FactoryArea",
+    "specTypeName": "廠區編號",
+    "specName": "SGC1P",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC1P"
+  },
+  {
+    "specId": "FactoryNo_2",
+    "specTypeId": "FactoryNo",
+    "specTypeName": "工廠廠別",
+    "specName": "SGC",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "SGC"
+  },
+  {
+    "specId": "MergeFlag_175",
+    "specTypeId": "MergeFlag",
+    "specTypeName": "工單合併旗標",
+    "specName": "133",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "133"
+  },
+  {
+    "specId": "PackageProvider_59",
+    "specTypeId": "PackageProvider",
+    "specTypeName": "封裝供應商",
+    "specName": "TICP",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "TICP"
+  },
+  {
+    "specId": "SubInventory_93",
+    "specTypeId": "SubInventory",
+    "specTypeName": "工單所在儲位",
+    "specName": "1PRFBH/1BNH-13",
+    "orderId": "Order-008-01",
+    "LAST_UPDATE_TIMESTAMP": "2025-02-14 12:05:01.213",
+    "specContent": "1PRFBH/1BNH-13"
+  }
+]

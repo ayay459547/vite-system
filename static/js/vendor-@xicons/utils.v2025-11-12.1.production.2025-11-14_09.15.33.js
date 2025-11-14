@@ -1,0 +1,1 @@
+import{C as e}from"../vendor-css-render.v2025-11-12.1.production.2025-11-14_09.15.33.js";const{c:t}=e(),i=t(".xicon",{width:"1em",height:"1em",display:"inline-flex"},[t("svg",{width:"1em",height:"1em"}),t("svg:not([fill])",{fill:"currentColor"})]),n=()=>{i.mount({id:"xicons-icon"})};export{n as m};

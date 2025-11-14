@@ -1,0 +1,112 @@
+[
+  {
+    "machineId": "Machine_ED",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:36:41.663",
+    "version": 10001,
+    "machineName": "Machine_ED",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "Machine_NA",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:36:41.73",
+    "version": 10001,
+    "machineName": "Machine_NA",
+    "isDummy": 0,
+    "hasWorkingTime": 0
+  },
+  {
+    "machineId": "MA_OM_P_BI_1_1",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.554",
+    "version": 10001,
+    "machineName": "MA_OM_P_BI_1_1",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "MA_OM_P_BI_1_2",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.562",
+    "version": 10001,
+    "machineName": "MA_OM_P_BI_1_2",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "MA_OM_P_DT_1_1",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.566",
+    "version": 10001,
+    "machineName": "MA_OM_P_DT_1_1",
+    "isDummy": 0,
+    "hasWorkingTime": 0
+  },
+  {
+    "machineId": "MA_OM_P_DT_1_2",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.571",
+    "version": 10001,
+    "machineName": "MA_OM_P_DT_1_2",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "MA_OM_P_BR_2_1",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.576",
+    "version": 10001,
+    "machineName": "MA_OM_P_BR_2_1",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "MA_OM_P_BR_2_2",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.58",
+    "version": 10001,
+    "machineName": "MA_OM_P_BR_2_2",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "MA_OM_P_QC_N1_1",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.585",
+    "version": 10001,
+    "machineName": "MA_OM_P_QC_N1_1",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  },
+  {
+    "machineId": "MA_OM_P_QC_N1_2",
+    "areaNo": "ALL",
+    "areaName": "ALL",
+    "machineNote": "待機(閒置)",
+    "horizontal_LAST_UPDATE_TIMESTAMP": "2024-08-29 14:38:15.59",
+    "version": 10001,
+    "machineName": "MA_OM_P_QC_N1_2",
+    "isDummy": 1,
+    "hasWorkingTime": 1
+  }
+]
