@@ -144,28 +144,25 @@ export const columnSetting = {
 // 跳轉設定
 export const linkSetting = {
   processId: {
-    fromPage: 'fund-121',
+    fromPage: 'nav1-1',
     options: [
       {
-        toPage: 'fund-131'
-        // description: '製程基本資訊',
-        // i18nDescription: 'link-fund-131'
+        toPage: 'nav1-2'
+        // description: '製程基本資訊'
       },
       {
-        toPage: 'fund-132'
-        // description: '製程對應機台',
-        // i18nDescription: 'link-process-machine'
+        toPage: 'nav1-3'
+        // description: '製程對應機台'
       }
     ]
 
   },
   routeId: {
-    fromPage: 'fund-121',
+    fromPage: 'nav2-1',
     options: [
       {
-        toPage: 'auto-36'
-        // description: '途程相關訂單',
-        // i18nDescription: 'link-routing-order'
+        toPage: 'nav2-2'
+        // description: '途程相關訂單'
       }
     ]
   }

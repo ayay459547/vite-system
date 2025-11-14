@@ -157,8 +157,8 @@ export const columnSetting = {
     }
   },
   predefinedCompleteDate: {
-    label: '預計完工時間', //2024.04.11 需求日期 -> 預計完工時間
-    i18nLabel: 'estimate-endTime', //2024.04.11 demandDate -> estimate-endTime
+    label: '預計完工時間',
+    i18nLabel: 'estimate-endTime',
     table: {
       width: 200,
       sortable: false
@@ -189,13 +189,13 @@ export const columnSetting = {
       default: [],
       options: [
         // { i18nLabel: 'all', label: '全部', value: '' },
-        { i18nLabel: 'manufacturing-order-auto-32-state3', label: '生產中', value: '3' },
-        { i18nLabel: 'manufacturing-order-auto-32-state2', label: '完工', value: '2' },
-        { i18nLabel: 'manufacturing-order-auto-32-state6', label: '停工中', value: '6' },
-        { i18nLabel: 'manufacturing-order-auto-32-state7', label: '工單到站', value: '7' },
-        { i18nLabel: 'manufacturing-order-auto-32-state8', label: '工單出站', value: '8' },
-        { i18nLabel: 'manufacturing-order-auto-32-state999', label: '已結案', value: '999' },
-        { i18nLabel: 'manufacturing-order-auto-32-state0', label: '未開工', value: '0' }
+        { label: '生產中', value: '3' },
+        { label: '完工', value: '2' },
+        { label: '停工中', value: '6' },
+        { label: '工單到站', value: '7' },
+        { label: '工單出站', value: '8' },
+        { label: '已結案', value: '999' },
+        { label: '未開工', value: '0' }
       ]
     },
     getValue(data?: number) {
@@ -214,26 +214,6 @@ export const columnSetting = {
           return '已結案'
         case 0:
           return '未開工'
-        default:
-          return ''
-      }
-    },
-    getI18nValue(data?: string) {
-      switch (data) {
-        case '生產中':
-          return 'manufacturing-order-auto-32-state3'
-        case '完工':
-          return 'manufacturing-order-auto-32-state2'
-        case '停工中':
-          return 'manufacturing-order-auto-32-state6'
-        case '工單到站':
-          return 'manufacturing-order-auto-32-state7'
-        case '工單出站':
-          return 'manufacturing-order-auto-32-state8'
-        case '已結案':
-          return 'manufacturing-order-auto-32-state999'
-        case '未開工':
-          return 'manufacturing-order-auto-32-state0'
         default:
           return ''
       }
@@ -488,20 +468,18 @@ export const columnSetting = {
 }
 
 // 跳轉設定
-const fromPage = 'auto-32-SG'
+const fromPage = 'nav1-1'
 export const linkSetting = {
   erpNo: {
     fromPage,
     options: [
       {
-        toPage: 'auto-36'
-        // description: '訂單詳細資訊',
-        // i18nDescription: 'link-order-detail'
+        toPage: 'nav1-2'
+        // description: '訂單詳細資訊'
       },
       {
-        toPage: 'auto-113'
-        // description: '訂單報工作業',
-        // i18nDescription: 'link-order-report'
+        toPage: 'nav1-3'
+        // description: '訂單報工作業'
       }
     ]
   },
@@ -509,16 +487,15 @@ export const linkSetting = {
     fromPage,
     options: [
       {
-        toPage: 'fund-131'
-        // description: '製程基本資訊',
-        // i18nDescription: 'link-fund-131'
+        toPage: 'nav2-3'
+        // description: '製程基本資訊'
       },
       {
-        toPage: 'fund-1441' //站點工單排程順序
+        toPage: 'nav2-1'
       },
       {
         fromPage: fromPage + '_process',
-        toPage: 'fund-1415' //產能工時資訊
+        toPage: 'nav1-1'
       }
     ]
   },
@@ -526,9 +503,8 @@ export const linkSetting = {
     fromPage,
     options: [
       {
-        toPage: 'fund-121'
-        // description: '途程詳細資訊',
-        // i18nDescription: 'link-routing-detail'
+        toPage: 'nav1-2'
+        // description: '途程詳細資訊'
       }
     ]
   },
@@ -536,19 +512,14 @@ export const linkSetting = {
     fromPage,
     options: [
       {
-        toPage: 'fund-1413'
-        // description: '機台基本資訊',
-        // i18nDescription: 'link-fund-1413'
+        toPage: 'nav2-1'
+        // description: '機台基本資訊'
       },
       {
-        toPage: 'fund-1414' // 機台演算規則
+        toPage: 'nav2-2'
       },
       {
-        fromPage: fromPage + '_machine',
-        toPage: 'fund-1415' // 產能工時資訊
-      },
-      {
-        toPage: 'fund-1417' // 機台工時資訊
+        toPage: 'nav2-3'
       }
     ]
   },
@@ -556,9 +527,8 @@ export const linkSetting = {
     fromPage,
     options: [
       {
-        toPage: 'fund-1411'
-        // description: '區域資訊',
-        // i18nDescription: 'link-fund-1411'
+        toPage: 'nav2-4'
+        // description: '區域資訊'
       }
     ]
   }

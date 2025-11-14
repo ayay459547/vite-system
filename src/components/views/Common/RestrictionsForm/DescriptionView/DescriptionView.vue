@@ -6,7 +6,7 @@ import type { PascalCaseMatchingType, MatchingTypeValue } from '@/types/types_lo
 
 const useHook = inject('useHook') as UseHook
 const { i18nTranslate } = useHook({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 
 const MaintainMatchingType: Record<PascalCaseMatchingType, {

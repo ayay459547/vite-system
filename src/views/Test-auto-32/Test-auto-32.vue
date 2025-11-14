@@ -67,13 +67,13 @@ const onWebViewTableMounted = () => {
   // 跳轉處理
   if (!isEmpty(queryData)) {
     switch (fromPage) {
-      case 'auto-31-SG': {
+      case 'nav1-1': {
         webViewTableRef?.value?.setFilter({
           no: queryData
         })
         break
       }
-      case 'apspub-11': {
+      case 'nav1-2': {
         webViewTableRef?.value?.setFilter({
           status: queryData
         })

@@ -47,7 +47,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '機台基本資訊',
-  i18nTitle: 'fund-1413',
+  i18nTitle: '機台基本資訊',
   i18nModule: 'system',
   version: '1.0.2',
   settingKey: 'ModalSelect_machine',

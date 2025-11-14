@@ -54,7 +54,7 @@ export const columnSetting = {
       ],
       isValidate: false
     },
-    getValue(data: String) {
+    getValue(data: string) {
       switch (data) {
         case 'Y':
           return '是'
@@ -68,15 +68,14 @@ export const columnSetting = {
 }
 
 // 跳轉設定
-const fromPage = 'auto-114'
+const fromPage = 'nav1-1'
 export const linkSetting = {
   id: {
     fromPage,
     options: [
       {
-        toPage: 'auto-36'
-        // description: '訂單詳細資訊',
-        // i18nDescription: 'link-auto-36'
+        toPage: 'nav1-2'
+        // description: '訂單詳細資訊'
       }
     ]
   }

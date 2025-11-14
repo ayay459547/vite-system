@@ -17,19 +17,19 @@ export const getSortingByCallback = (typeItemIndex: number | string) => {
   const blockSortingType = Number.parseInt(`${typeItemIndex}`)
 
   switch (blockSortingType) {
-    case 1: // 開工區排程排序設定: fund-1426, fund-1441
+    case 1:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex === 995)
-    case 2: // 插單區排程排序設定: fund-1426, fund-1441
+    case 2:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex === 996)
-    case 3: // 鎖定區排程排序設定: fund-1426
+    case 3:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex === 997)
-    case 4: // 預排區排程排序設定: fund-1426, fund-1441
+    case 4:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex <= 15)
-    case 5: // 一般併批排程設定: fund-1429
+    case 5:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex <= 15)
-    case 6: // PN併批排程設定: fund-1429
+    case 6:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex <= 15)
-    case 7: // 緊急貨批工單區排程排序設定(super hot run): fund-1426
+    case 7:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex <= 15)
     default:
       return ((optionTypeItemIndex: number) => optionTypeItemIndex <= 999)

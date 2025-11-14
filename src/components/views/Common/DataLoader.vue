@@ -133,7 +133,7 @@ const defaultChange = async (option:DataOption) =>  {
 
 // Save DataOption
 const saveOption = async (inputName?: string) => {
-  const name = isEmpty(inputName) ? i18nTranslate('setting', 'iPASP_common') : inputName
+  const name = isEmpty(inputName) ? i18nTranslate('setting', 'system') : inputName
   const sameNameOption = dataOptions.value.find(option => option.name === name)
   const key = sameNameOption ? sameNameOption.key : getUuid()
   const date = getCurTime()
@@ -295,7 +295,7 @@ defineExpose({
       <div class="_data-access-save-btn">
         <CustomButton
           type="success"
-          :label="i18nTranslate('setting-save', 'iPASP_common')"
+          :label="i18nTranslate('setting-save', 'system')"
           icon-name="save"
           @click="saveOption(dataName)"
         />
@@ -303,7 +303,7 @@ defineExpose({
       <div class="_data-access-save-input">
         <CustomInput
           v-model="dataName"
-          :placeholder="`${i18nTranslate('setting-placeholder', 'iPASP_common')}`"
+          :placeholder="`${i18nTranslate('setting-placeholder', 'system')}`"
           hiddenLabel
           direction="row"
           clearable

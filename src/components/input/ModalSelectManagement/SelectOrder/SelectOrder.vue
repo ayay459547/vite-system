@@ -48,7 +48,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '訂單基本資訊',
-  i18nTitle: 'auto-36',
+  i18nTitle: '訂單基本資訊',
   i18nModule: 'system',
   version: '1.0.1',
   settingKey: 'ModalSelect_order',

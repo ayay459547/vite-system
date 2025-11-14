@@ -2,7 +2,7 @@ export interface Params {
   id: string
   name: string
   content: string
-  specTypeId: string // 對應 Fund-201
+  specTypeId: string
   LAST_UPDATE_TIMESTAMP: string
 }
 
@@ -10,7 +10,7 @@ export interface ResponseData {
   id: string
   name: string
   content: string
-  specTypeId: string // 對應 Fund-201
+  specTypeId: string
   LAST_UPDATE_TIMESTAMP: string
 }
 

@@ -28,21 +28,15 @@ type SpecTypeItem = {
 type SpecTypeList = Array<SpecTypeItem>
 
 const retrieveProdSpecTypeUrl = {
-  // 機台合併條件限制管理 fund-1419
-  // [MaintainRestrictionType.MergeConstraint]: {
-  //   specType: '/mergeConstraint/retrieveAdditionalSpecTypeForWeb'
-  // },
   [MaintainRestrictionType.MachineMergeConstraint]: {
     specType: '/machineMergeConstraint/retrieveAdditionalSpecTypeForWeb'
   },
   [MaintainRestrictionType.MachineCategoryMergeConstraint]: {
     specType: '/machineCategoryMergeConstraint/retrieveAdditionalSpecTypeForWeb'
   },
-  // 機台換線資訊 fund-1422
   [MaintainRestrictionType.MachineProcessChangeLine]: {
     specType: '/machineProcessChangeLine/retrieveAdditionalSpecTypeForWeb'
   },
-  // 機台生產限制管理 fund-1435
   [MaintainRestrictionType.MachineProcessProductionConstraint]: {
     specType: '/machineProcessProductionConstraint/retrieveAdditionalSpecTypeForWeb'
   }

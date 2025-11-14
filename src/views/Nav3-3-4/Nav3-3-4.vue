@@ -502,7 +502,7 @@ const isShowChange = async () => {
 </script>
 
 <template>
-  <div v-loading="isLoading" class="fund-1608 page-wrapper">
+  <div v-loading="isLoading" class="test page-wrapper">
     <div class="page-feature" :class="isOpen ? 'is-open' : 'is-close'">
       <!-- 縮放箭頭 -->
       <CustomButton
@@ -710,7 +710,7 @@ $feature-width: 270px;
 </style>
 
 <style lang="scss">
-.fund-1608 .list-group {
+.test .list-group {
   gap: 8px;
 }
 </style>

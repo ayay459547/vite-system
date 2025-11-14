@@ -49,7 +49,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '全廠共通規格管理',
-  i18nTitle: 'fund-202',
+  i18nTitle: '全廠共通規格管理',
   i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_specCommon',

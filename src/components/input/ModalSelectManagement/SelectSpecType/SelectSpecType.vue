@@ -48,7 +48,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '規格類型管理',
-  i18nTitle: 'fund-201',
+  i18nTitle: '規格類型管理',
   i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_specType',
