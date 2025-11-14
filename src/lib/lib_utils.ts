@@ -373,7 +373,6 @@ const deepClone_v1 = <T = any>(targetElement: any, origin: T): T => {
 }
 
 /**
- * @author Howard
  * @description 拷貝 array 或 object
  * @param {Object | Array} targetElement 需要被拷貝的對象
  * @param {Object | Array} origin 拷貝來源
@@ -490,8 +489,129 @@ export const cutTableData = (page: number, size: number, data: any[]): any[] => 
 }
 
 /**
+ * 將 Uint8Array → Base64 字串
+ * @param {Uint8Array} bytes
+ * @returns {String}
+ */
+export const toBase64 = (bytes: Uint8Array): string => {
+  return btoa(String.fromCharCode(...bytes))
+}
+
+/**
+ * 將 Uint8Array → Base64 字串
+ * @param {String} b64
+ * @returns {Uint8Array}
+ */
+export const fromBase64 = (b64: string): Uint8Array<ArrayBuffer> => {
+  return Uint8Array.from(atob(b64), c => c.charCodeAt(0))
+}
+
+// AES-GCM 基本設定
+const GCMKey = (import.meta as any).env.VITE_API_GCM_KEY
+const GCMInfo = {
+  algorithm: 'AES-GCM',
+  ivLength: 12,       // GCM 建議使用 12 bytes IV
+  tagLength: 16 * 8   // 128-bit 驗證標籤（GCM 預設）
+}
+
+// 將 base64 key → CryptoKey，並設定可加密/解密
+const GCMImportKey = async (key: string = GCMKey): Promise<CryptoKey> => {
+  const rawKey = fromBase64(key) // base64 → Uint8Array
+
+  return crypto.subtle.importKey(
+    'raw',                       // 直接使用二進位 key
+    rawKey,
+    { name: GCMInfo.algorithm }, // AES-GCM
+    false,                       // 不允許匯出 key
+    ['encrypt', 'decrypt']       // 允許的用途
+  )
+}
+
+/**
  * @author Caleb
- * @coauthor Howard
+ * @description 使用 AES-GCM 加密資料
+ * @param {String} str 要加密的字串
+ */
+export const GCMEncrypt = async (str: string) => {
+  try {
+    const encoder = new TextEncoder()
+    const strBytes = encoder.encode(str) // 字串 → UTF8 bytes
+
+    // 產生隨機 IV（GCM 必須使用 unique IV）
+    const iv = crypto.getRandomValues(new Uint8Array(GCMInfo.ivLength))
+
+    // 匯入 key（從 base64 .env）
+    const key = await GCMImportKey(GCMKey)
+
+    // 執行 AES-GCM 加密
+    const cipherBuffer = await crypto.subtle.encrypt(
+      {
+        name: GCMInfo.algorithm,
+        iv,                     // 加密必須帶入 IV
+        tagLength: GCMInfo.tagLength
+      },
+      key,                     // CryptoKey
+      strBytes                // 要加密的資料
+    )
+
+    const cipherBytes = new Uint8Array(cipherBuffer)
+
+    // 👉 將 IV + cipherText 合併一起，以便解密時取回 IV
+    const combined = new Uint8Array(iv.length + cipherBytes.length)
+    combined.set(iv, 0)
+    combined.set(cipherBytes, iv.length)
+
+    // 最終輸出 base64 字串（方便傳輸與儲存）
+    return toBase64(combined)
+
+  } catch (e) {
+    console.trace(e)
+    return ''
+  }
+}
+
+
+/**
+ * @author Caleb
+ * @description 使用 AES-GCM 解密資料
+ * @param {String} encryptedBase64 加密後的字串
+ */
+export const GCMDecrypt = async (encryptedBase64: string) => {
+  try {
+    // Base64 → Uint8Array（IV + cipher）
+    const combined = fromBase64(encryptedBase64)
+
+    // 從開頭取出 IV
+    const iv = combined.slice(0, GCMInfo.ivLength)
+
+    // 剩下的是 cipherText + Tag
+    const cipherBytes = combined.slice(GCMInfo.ivLength)
+
+    // 匯入 key
+    const key = await GCMImportKey(GCMKey)
+
+    // 執行 AES-GCM 解密
+    const plainBuffer = await crypto.subtle.decrypt(
+      {
+        name: GCMInfo.algorithm,
+        iv,                    // 必須用同一個 IV
+        tagLength: GCMInfo.tagLength
+      },
+      key,                    // CryptoKey
+      cipherBytes             // 加密後的資料
+    )
+
+    const decoder = new TextDecoder()
+    return decoder.decode(plainBuffer) // UTF-8 → 字串
+
+  } catch (e) {
+    console.trace(e)
+    return ''
+  }
+}
+
+/**
+ * @author Caleb
  * @see https://github.com/brix/crypto-js
  * @description 使用 AES 加密資料
  * @param {String} str 要加密的字串
@@ -502,9 +622,7 @@ export const aesEncrypt = (str: string, key: string): string => {
   try {
     const encodeStr = encodeURIComponent(str)
     const ciphertext = cryptoJS.AES.encrypt(encodeStr, `${key}`).toString()
-    // console.log('EncodeStr', str, '=>', encodeStr, ciphertext)
     return ciphertext
-
   } catch (e) {
     console.trace(e)
     return ''
@@ -513,7 +631,6 @@ export const aesEncrypt = (str: string, key: string): string => {
 
 /**
  * @author Caleb
- * @coauthor Howard
  * @see https://github.com/brix/crypto-js
  * @description 使用 AES 解密資料
  * @param {String} str 加密後的字串
@@ -525,9 +642,7 @@ export const aesDecrypt = (str: string, key: string): string => {
     const bytes = cryptoJS.AES.decrypt(str, `${key}`)
     const encodeStr = bytes.toString(cryptoJS.enc.Utf8)
     const decodeStr = decodeURIComponent(encodeStr)
-    // console.log('DecodeStr', str, '=>', bytes, encodeStr, decodeStr)
     return decodeStr
-
   } catch (e) {
     console.trace(e)
     return ''

@@ -34,7 +34,6 @@ export const RestrictionsForm = useAsyncComponent<typeof import('./Common/Restri
 )
 
 /**
- * @author Howard
  * @description 資料讀取
  */
 export { default as DataLoader } from './Common/DataLoader.vue'

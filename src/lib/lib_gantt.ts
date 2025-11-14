@@ -183,7 +183,6 @@ export const setPageGanttSetting = async (pageKey: string, data: any) => {
 }
 
 /**
- * @author Howard
  * @description 建立預設欄位物件與群組
  */
 export const createDefaultLevelFiltersSetting = setting => {
@@ -216,7 +215,6 @@ export const applyLevelFiltersSetting = (levelFilters: any[]) => {
 }
 
 /**
- * @author Howard
  * @description ROOTITEM
  */
 export const createNewRootYItem = () => {
@@ -235,7 +233,6 @@ export const createNewRootYItem = () => {
 }
 
 /**
- * @author Howard
  * @description 重設Orders的對應Marks
  */
 export const initOrdersMark = async (orders: any[], marks: any[]) => {
@@ -253,7 +250,6 @@ export const initOrdersMark = async (orders: any[], marks: any[]) => {
 }
 
 /**
- * @author Howard
  * @description 建立預設Marks
  */
 export const createDefaultOrderMarks = marksSetting => {
@@ -285,7 +281,6 @@ export const applyOrderMarksSetting = (orders: any[], marks: any[]) => {
 }
 
 /**
- * @author Howard
  * @description 建立選擇框設定
  */
 export const createFilterColumns = (orders: any[], dataParams: any) => {
@@ -358,7 +353,6 @@ export const createFilterColumns = (orders: any[], dataParams: any) => {
 
 
 /**
- * @author Howard
  * @description default HIERARCHIESFILTER
  */
 export const defaultHierarchiesFilters: Array<HierarchiesFilter> = [
@@ -576,7 +570,6 @@ const getOrderFilterValueType = (orderFilter:OrderFilter): OrderFilterValue => {
 }
 
 /**
- * @author Howard
  * @description 建立新的OrderFilter, 預設為空
  */
 export const createEmptyOrderFilter = (): OrderFilter => {
@@ -635,7 +628,6 @@ export const operatorOptions: Record<string, Options> = {
 }
 
 /**
- * @author Howard
  * @description Type: Time
  */
 

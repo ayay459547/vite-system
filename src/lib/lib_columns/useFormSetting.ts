@@ -22,7 +22,6 @@ import { getColumnData, checkColumns } from './columnsHookUtils'
 
 /**
  * @author Caleb
- * @coauthor Howard
  * @description 取得多欄輸入框用的參數
  *              使用 Columns 設定
  *              輸入框資料 預設是 key

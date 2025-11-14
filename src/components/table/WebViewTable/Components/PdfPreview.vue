@@ -115,7 +115,6 @@ const pdfTableData = ref<any[]>([])
 const webTableData = ref<any[]>([])
 
 /**
- * @author Howard
  * @description 單位轉換(dpi:72)
  *              更新日期: 2024-12-31, author: Caleb, content: 添加類型
  * @param {Number} value 轉換前值
