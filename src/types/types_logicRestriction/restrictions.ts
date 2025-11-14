@@ -2,11 +2,10 @@ import type { MatchingType, MatchingKeyMap } from './restrictionsMatchingType'
 
 // 規格用
 export type SchAdditionalSpecType = string
-  | 'MachineProcessChangeLine' // fund-1422 製程內機台換線
-  | 'MachineProcessProductionConstraint' // fund-1435製程內機台生產限制
-  // | 'MergeConstraint' // fund-1419 合併限制
-  | 'MachineMergeConstraint' // fund-1419 合併限制
-  | 'MachineCategoryMergeConstraint' // fund-1419 合併限制
+  | 'MachineProcessChangeLine'
+  | 'MachineProcessProductionConstraint'
+  | 'MachineMergeConstraint'
+  | 'MachineCategoryMergeConstraint'
   | 'MachineCleanTiming' // 清機時機
 
 // 比對類型

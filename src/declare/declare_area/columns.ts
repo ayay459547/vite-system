@@ -82,13 +82,13 @@ export const columnSetting = {
 }
 
 // 跳轉設定
-const fromPage = 'fund-1411'
+const fromPage = 'nav1-1'
 export const linkSetting = {
   areaId: {
     fromPage,
     options: [
       {
-        toPage: 'fund-1413'
+        toPage: 'nav1-1'
         // description: '區域所屬機台',
         // i18nDescription: 'link-area-machine'
       }

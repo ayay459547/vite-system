@@ -55,7 +55,7 @@ const init = async () => {
 
 const userPermission = ref<Permission>(getPermission(defaultPermission))
 onMounted(() => {
-  userPermission.value = permission('auto-114')
+  userPermission.value = permission()
   init()
 })
 

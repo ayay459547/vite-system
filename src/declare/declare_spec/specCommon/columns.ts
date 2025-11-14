@@ -123,15 +123,14 @@ export const columnSetting = {
 }
 
 // 跳轉設定
-const fromPage = 'fund-202'
+const fromPage = 'nav1-1'
 export const linkSetting: Record<string, any> = {
   specTypeId: {
     fromPage,
     options: [
       {
-        toPage: 'fund-201'
-        // description: '規格類型管理',
-        // i18nDescription: 'fund-201'
+        toPage: 'nav1-2'
+        // description: '規格類型管理'
       }
     ]
   },
@@ -139,19 +138,16 @@ export const linkSetting: Record<string, any> = {
     fromPage,
     options: [
       {
-        toPage: 'fund-203'
-        // description: '機台規格管理',
-        // i18nDescription: 'fund-203'
+        toPage: 'nav1-3'
+        // description: '機台規格管理'
       },
       {
-        toPage: 'fund-204'
-        // description: '產品規格管理',
-        // i18nDescription: 'fund-204'
+        toPage: 'nav1-4'
+        // description: '產品規格管理'
       },
       {
-        toPage: 'fund-205'
-        // description: '工單規格管理',
-        // i18nDescription: 'fund-205'
+        toPage: 'nav2-1'
+        // description: '工單規格管理'
       }
     ]
   }

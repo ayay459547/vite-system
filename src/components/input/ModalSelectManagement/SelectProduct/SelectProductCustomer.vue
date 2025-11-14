@@ -46,7 +46,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '客戶基本資訊',
-  i18nTitle: 'fund-116',
+  i18nTitle: '客戶基本資訊',
   i18nModule: 'system',
   version: '1.2.0',
   settingKey: 'ModalSelect_productCustomer',

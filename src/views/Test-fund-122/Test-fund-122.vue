@@ -42,7 +42,7 @@ const tableDataCount = ref(0)
 const tableOptions: TableOptions = {
   title: '資訊顯示測試',
   version: '1.0.5',
-  settingKey: 'fund-12',
+  settingKey: 'nav-122',
   isSorting: true
 }
 const { tableSetting, downloadExcel, getParams } = useTableSetting(

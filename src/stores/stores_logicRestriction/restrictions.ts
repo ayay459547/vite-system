@@ -11,10 +11,6 @@ import { isEmpty } from '@/lib/lib_utils'
 
 import { valueInArrayInputArrtMap } from './restrictionsSetting'
 
-// 機台合併條件限制管理 fund-1419
-// 機台換線資訊 fund-1422
-// 機台生產限制管理 fund-1435
-
 export const useRestrictionsStore = defineStore('Restrictions', () => {
   const dynamicColumns = ref([])
   // 動態欄位 設定資訊(送API)

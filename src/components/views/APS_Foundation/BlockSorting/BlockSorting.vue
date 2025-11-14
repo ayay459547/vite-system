@@ -20,16 +20,7 @@ import {
 const props = defineProps({
   blockTypeItemIndex: {
     type: Number as PropType<number>,
-    default: 1,
-    description: `區塊 typeItemIndex
-      1.開工區 (fund-1426, fund-1441)
-      2.插單區 (fund-1426, fund-1441)
-      3.鎖定區 (fund-1426)
-      4.預排區 (fund-1426, fund-1441)
-      5.一般 (fund-1429)
-      6.PN (fund-1429)
-      7.緊急貨批工單區 super hot run (fund-1426)
-    `
+    default: 1
   },
   blocks: {
     type: Array as PropType<Array<FormData>>,

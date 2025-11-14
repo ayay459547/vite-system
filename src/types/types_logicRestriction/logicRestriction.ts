@@ -5,20 +5,13 @@ export type CombineLogic = string | 'OR' | 'AND'
 export type Positive = boolean
 
 export type LogicRestriction_type = string
-  // fund-1435 機台生產限制管理
   | 'MachineProcessProductionConstraint'
-  // fund-1419 機台合併條件限制管理
-  // | 'MergeConstraint'
   | 'MachineMergeConstraint'
   | 'MachineCategoryMergeConstraint'
-  // fund-1422 機台換線管理
   | 'MachineProcessChangeLine'
-  // fund-1427 一貫機連續生產規則管理
   | 'OneStopProducingConstraint'
-  // fund-1434 途程型態分類管理
   | 'RouteClassificationMatcher'
   | 'RouteClassifySettingConstraint'
-  // fund-1431 併批製程識別管理
   | 'OrderRelaySetting'
 
 

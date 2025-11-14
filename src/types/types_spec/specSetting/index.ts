@@ -1,16 +1,16 @@
 export interface Params {
-  specId: string // 對應 Fund-202
+  specId: string
   specName: string
   specContent: string
-  specTypeId: string // 對應 Fund-201
+  specTypeId: string
   LAST_UPDATE_TIMESTAMP: string
 }
 
 export interface ResponseData {
-  specId: string // 對應 Fund-202
+  specId: string
   specName: string
   specContent: string
-  specTypeId: string // 對應 Fund-201
+  specTypeId: string
   LAST_UPDATE_TIMESTAMP: string
 }
 

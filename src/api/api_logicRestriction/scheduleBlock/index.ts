@@ -4,25 +4,21 @@ import type { SettingMode, BlockTypes, SupportedSortingSettings } from '@/types/
 import { ScheduleBlockType } from '@/declare/declare_logicRestriction/enums'
 
 const scheduleBlockUrl = {
-  // 機台工單排程順序管理 fund-1426
   [ScheduleBlockType.Machine]: {
     tabs: '/scheduleBlock/getAllSettingMode',
     blocks: '/scheduleBlock/getAllBlockTypes',
     options: '/scheduleBlock/getSupportedSortingSettings'
   },
-  // 合併工單排程順序管理 fund-1442
   [ScheduleBlockType.MergeMO]: {
     tabs: '/mergeMO/scheduleBlock/getAllSettingMode',
     blocks: '/mergeMO/scheduleBlock/getAllBlockTypes',
     options: '/mergeMO/scheduleBlock/getSupportedSortingSettings'
   },
-  // 站點工單排程順序管理 fund-1441
   [ScheduleBlockType.Process]: {
     tabs: '/process/scheduleBlock/getAllSettingMode',
     blocks: '/process/scheduleBlock/getAllBlockTypes',
     options: '/process/scheduleBlock/getSupportedSortingSettings'
   },
-  // 併批工單排程順序管理 fund-1429
   [ScheduleBlockType.OrderRelay]: {
     tabs: '/orderRelay/scheduleBlock/getAllSettingMode',
     blocks: '/orderRelay/scheduleBlock/getAllBlockTypes',

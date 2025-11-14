@@ -57,7 +57,7 @@ const columnSetting = {
     i18nLabel: 'input-account',
     fitler: {
       type: 'text',
-      default: '',
+      default: 'admin',
       required: true
     }
   },

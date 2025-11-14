@@ -69,5 +69,4 @@ export const columnSetting = {
 }
 
 // 跳轉設定
-// const fromPage = 'fund-201'
 export const linkSetting: Record<string, any> = {}

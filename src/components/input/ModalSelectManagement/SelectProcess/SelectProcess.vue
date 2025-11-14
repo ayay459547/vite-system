@@ -47,7 +47,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '製程基本資訊',
-  i18nTitle: 'fund-131',
+  i18nTitle: '製程基本資訊',
   i18nModule: 'system',
   version: '1.0.1',
   settingKey: 'ModalSelect_process',

@@ -399,20 +399,6 @@ export const subColumnSetting = {
         case 999: return '已結案'
         default: return '未定義'
       }
-    },
-    getI18nValue: (data: number) => {
-      switch (data) {
-        case 0:
-        case 2:
-        case 3:
-        case 6:
-        case 7:
-        case 8:
-        case 999:
-          return 'manufacturing-order-auto-36-state-' + data
-        default:
-          return 'undefined'
-      }
     }
   },
   CREATE_DATE: {
@@ -475,18 +461,17 @@ export const subColumnSetting = {
 }
 
 // 跳轉設定
-const fromPage = 'auto-36'
+const fromPage = 'nav2-1'
 export const linkSetting = {
   id: {
     fromPage,
     options: [
       {
-        toPage: 'auto-112'
-        // description: '訂單排程資訊',
-        // i18nDescription: 'link-auto-112'
+        toPage: 'nav1-1'
+        // description: '訂單排程資訊'
       },
       {
-        toPage: 'auto-113'
+        toPage: 'nav1-2'
         // description: '訂單報工作業',
         // i18nDescription: 'link-order-report'
       }
@@ -496,7 +481,7 @@ export const linkSetting = {
     fromPage,
     options: [
       {
-        toPage: 'fund-121'
+        toPage: 'nav2-1'
         // description: '途程詳細資訊',
         // i18nDescription: 'link-routing-detail'
       }

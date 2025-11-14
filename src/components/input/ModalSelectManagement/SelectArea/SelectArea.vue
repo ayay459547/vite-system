@@ -47,7 +47,7 @@ const {
 // 表格設定
 const tableOptions: TableOptions = {
   title: '區域資訊',
-  i18nTitle: 'fund-1411',
+  i18nTitle: '區域資訊',
   i18nModule: 'system',
   version: '1.2.1',
   settingKey: 'ModalSelect_area',

@@ -16,7 +16,7 @@ import { columnSetting } from './columns'
 
 const useHook = inject('useHook') as UseHook
 const { auth } = useHook({
-  i18nModule: 'fund_common'
+  i18nModule: 'system'
 })
 const authData = auth()
 

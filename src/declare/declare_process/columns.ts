@@ -77,25 +77,22 @@ export const columnSetting = {
 }
 
 // 跳轉設定
-const fromPage = 'fund-131'
+const fromPage = 'nav1-1'
 export const linkSetting = {
   processId: {
     fromPage,
     options: [
       {
-        toPage: 'fund-121'
-        // description: '製程相關途程',
-        // i18nDescription: 'link-process-route'
+        toPage: 'nav2-1'
+        // description: '製程相關途程'
       },
       {
-        toPage: 'fund-132'
-        // description: '製程對應機台',
-        // i18nDescription: 'link-process-machine'
+        toPage: 'nav2-2'
+        // description: '製程對應機台'
       },
       {
-        toPage: 'fund-1441'
-        // description: '排程排序設定',
-        // i18nDescription: 'link-fund-1441'
+        toPage: 'nav2-3'
+        // description: '排程排序設定''
       }
     ]
   }
