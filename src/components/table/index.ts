@@ -15,7 +15,7 @@ export type {
 export { default as BasicTable } from './BasicTable/BasicTable.vue'
 
 /**
- * @contributors Howard, Caleb
+ * @author Caleb
  * @description 專案用表格
  * 功能: 紀錄欄位設定, 提供分頁
  */
@@ -30,7 +30,6 @@ export { default as CustomTable } from './CustomTable/CustomTable.vue'
 export { default as CustomTableV2 } from './CustomTableV2/CustomTableV2.vue'
 
 /**
- * @author Howard
  * @description 下載 Excel / PDF
  * 應用於 WebViewTable.vue 中
  * @see https://github.com/parallax/jsPDF
@@ -58,7 +57,6 @@ export const SimpleTable = useAsyncComponent<typeof import('./SimpleTable/Simple
 )
 
 /**
- * @author Howard
  * @description 子表格
  * 應用於 WebViewTable.vue 中
  */
@@ -66,7 +64,6 @@ export { default as SubTable } from './SubTable/SubTable.vue'
 
 /**
  * @author Caleb
- * @coauthor Howard
  * @description 時間線表格
  */
 export type {
@@ -97,7 +94,7 @@ export { default as VxeColgroup } from './VxeTable/VxeColgroup/VxeColgroup.vue'
 export { default as VxeColumn } from './VxeTable/VxeColumn/VxeColumn.vue'
 
 /**
- * @contributors Howard, Caleb
+ * @author Caleb
  * @description 專案用特殊表格(SQLView) 需配合後端
  * 功能: 多欄位排序, 多欄位搜尋, 進階搜尋
  * @see https://vxetable.cn/#/table/api

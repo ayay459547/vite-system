@@ -9,7 +9,6 @@ import { object_forEach } from '@/lib/lib_object'
 
 /**
  * @author Caleb
- * @coauthor Howard
  * @description 取得單一欄位所需資料
  * @param {Object} column 欄位資料
  * @param {Object} options 選項

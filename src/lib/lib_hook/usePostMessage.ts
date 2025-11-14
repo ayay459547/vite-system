@@ -18,7 +18,6 @@ export type MessageController = {
 }
 
 /**
- * @author Howard
  * @see https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage
  * @description 以 PostMessage 與外層間傳遞資料
  * @param {String} key 與外層協定的事件鍵值

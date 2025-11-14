@@ -2,7 +2,6 @@ import { hasOwnProperty, fetchPublicJsonFile } from '@/lib/lib_utils'
 import { defaultLang, fontPathMap } from '@/declare/declare_i18n'
 
 /**
- * @author Howard
  * @description 設定PDF字型
  *
  * @modifiedBy Caleb

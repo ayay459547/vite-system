@@ -22,7 +22,6 @@ export const CustomCharts = useAsyncComponent<typeof import('./CustomCharts/Cust
 )
 
 /**
- * @author Howard
  * @description 甘特圖使用 詳細時間資訊
  */
 export const DetailTime = useAsyncComponent<typeof import('./DetailTime/DetailTime.vue')['default']>(

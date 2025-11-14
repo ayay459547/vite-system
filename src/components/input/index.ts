@@ -15,7 +15,6 @@ export { default as CustomInput } from './CustomInput/CustomInput.vue'
 
 /**
  * @author Caleb
- * @contributors Howard
  * @description 搜尋用組件
  */
 export type {
@@ -28,7 +27,6 @@ export { default as CustomSearch } from './CustomSearch/CustomSearch.vue'
 
 /**
  * @author Caleb
- * @contributors Howard
  * @description GroupSearch 需搭配 CustomSearch 或 CustomInput 使用
  */
 export type {
@@ -232,7 +230,6 @@ export { default as ModalSelectManagement } from './ModalSelectManagement/ModalS
 
 /**
  * @author Caleb
- * @contributors Howard
  * @description 表單列表
  */
 export type {
@@ -260,13 +257,11 @@ export const SimpleFilter = useAsyncComponent<typeof import('./SimpleFilter/Simp
 )
 
 /**
- * @author Howard
  * @description 步驟紀錄
  */
 export const StepRecorder = useAsyncComponent(() => import('./StepRecord/StepRecord.vue'), 'rect')
 
 /**
- * @author Howard
  * @description 時間維度切換
  */
 export type {

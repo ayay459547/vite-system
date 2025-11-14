@@ -27,7 +27,6 @@ import { getColumnData, checkColumns } from './columnsHookUtils'
 
 /**
  * @author Caleb
- * @coauthor Howard
  * @description 取的 Columns 設定 Table用的資料
  *              slot prop 預設是 key
  * @param {Ojbect} columns

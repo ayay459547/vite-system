@@ -33,7 +33,6 @@ export const CustomBadge = useAsyncComponent<typeof import('./CustomBadge/Custom
 
 /**
  * @author Caleb
- * @contributors Howard
  * @description 按鈕
  * @see https://element-plus.org/en-US/component/button.html
  */
@@ -72,7 +71,6 @@ export const CustomCard = useAsyncComponent<typeof import('./CustomCard/CustomCa
 )
 
 /**
- * @author Howard
  * @description 輪播
  * @see https://element-plus.org/en-US/component/carousel.html
  */
@@ -102,7 +100,6 @@ export const CustomCollapse = useAsyncComponent<typeof import('./CustomCollapse/
 )
 
 /**
- * @author Howard
  * @description 選色器
  * @see https://element-plus.org/en-US/component/color-picker.html
  */
@@ -249,7 +246,6 @@ export const CustomImage = useAsyncComponent<typeof import('./CustomImage/Custom
 )
 
 /**
- * @author Howard
  * @description 跳轉用組件
  * @see https://element-plus.org/en-US/component/link.html
  */
@@ -496,7 +492,6 @@ export const CustomTreeV2 = useAsyncComponent<typeof import('./CustomTreeV2/Cust
 )
 
 /**
- * @author Howard
  * @description 浮水印
  * @see https://element-plus.org/en-US/component/watermark.html
  */
