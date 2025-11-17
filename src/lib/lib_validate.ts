@@ -8,7 +8,7 @@ export type VeeRes = {
 
 export type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
 
-export const checkSumForId = (str: string, isOldARC: boolean) => {
+const checkSumForId = (str: string, isOldARC: boolean = false) => {
   const letterMap: Record<string, number> = {
     A: 10,
     B: 11,
@@ -60,7 +60,43 @@ export const checkSumForId = (str: string, isOldARC: boolean) => {
 }
 
 /**
- * 確認是否統一編號
+ * 確認 台灣身分證
+ * @param {string} str 待驗證字串
+ * @returns {boolean} 是否是台灣身分證
+ */
+export const checkTWId = (str: string): boolean => {
+  if (isEmpty(str)) return false
+  const validateStr = str.trim()
+  if (!/^[A-Z][12]\d{8}$/.test(validateStr)) return false
+  return checkSumForId(validateStr)
+}
+
+/**
+ * 確認 台灣居留證
+ * @param {string} str 待驗證字串
+ * @returns {boolean} 是否是台灣居留證
+ */
+export const checkARCId = (str: string): boolean => {
+  if (isEmpty(str)) return false
+  const validateStr = str.trim()
+
+  // 驗證新式居留證
+  const checkARCId_new = () => {
+    if (!/^[A-Z][89]\d{8}$/.test(validateStr)) return false
+    return checkSumForId(validateStr)
+  }
+
+  // 驗證舊式居留證
+  const checkARCId_old = () => {
+    if (!/^[A-Z]{2}\d{8}$/.test(validateStr)) return false
+    return checkSumForId(validateStr, true)
+  }
+
+  return checkARCId_new() || checkARCId_old()
+}
+
+/**
+ * 確認 統一編號
  * @param {string} str 待驗證字串
  * @returns {boolean} 是否是統一編號
  */
