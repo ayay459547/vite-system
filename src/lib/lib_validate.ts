@@ -1,3 +1,5 @@
+import { isEmpty } from './lib_utils'
+
 export type VeeRes = {
   test: boolean
   label: string
@@ -5,6 +7,113 @@ export type VeeRes = {
 }
 
 export type ValidateType = 'number' | 'identityCard' | 'phone' | 'password' | ''
+
+const checkSumForId = (str: string, isOldARC: boolean = false) => {
+  const letterMap: Record<string, number> = {
+    A: 10,
+    B: 11,
+    C: 12,
+    D: 13,
+    E: 14,
+    F: 15,
+    G: 16,
+    H: 17,
+    I: 34,
+    J: 18,
+    K: 19,
+    L: 20,
+    M: 21,
+    N: 22,
+    O: 35,
+    P: 23,
+    Q: 24,
+    R: 25,
+    S: 26,
+    T: 27,
+    U: 28,
+    V: 29,
+    W: 32,
+    X: 30,
+    Y: 31,
+    Z: 33
+  }
+
+  // 區域碼數值
+  const areaValue = letterMap[str[0]]
+  // 性別碼數值
+  const genderValue = letterMap[str[1]]
+
+  if (isEmpty(areaValue)) return false
+  if (isOldARC && isEmpty(genderValue)) return false
+
+  const n1 = Math.floor(areaValue / 10)
+  const n2 = areaValue % 10
+  const n3 = genderValue % 10
+  const digits = str.slice(isOldARC ? 2 : 1).split('').map((d: string) => Number(d))
+
+  if (digits.some(digit => isNaN(digit))) return false
+
+  const weights = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1]
+  const values = isOldARC ? [n1, n2, n3, ...digits] : [n1, n3, ...digits]
+  const sum = values.reduce((acc, v, i) => acc + v * weights[i], 0)
+  return sum % 10 === 0
+}
+
+/**
+ * 確認 台灣身分證
+ * @param {string} str 待驗證字串
+ * @returns {boolean} 是否是台灣身分證
+ */
+export const checkTWId = (str: string): boolean => {
+  if (isEmpty(str)) return false
+  const validateStr = str.trim()
+  if (!/^[A-Z][12]\d{8}$/.test(validateStr)) return false
+  return checkSumForId(validateStr)
+}
+
+/**
+ * 確認 台灣居留證
+ * @param {string} str 待驗證字串
+ * @returns {boolean} 是否是台灣居留證
+ */
+export const checkARCId = (str: string): boolean => {
+  if (isEmpty(str)) return false
+  const validateStr = str.trim()
+
+  // 驗證新式居留證
+  const checkARCId_new = () => {
+    if (!/^[A-Z][89]\d{8}$/.test(validateStr)) return false
+    return checkSumForId(validateStr)
+  }
+
+  // 驗證舊式居留證
+  const checkARCId_old = () => {
+    if (!/^[A-Z]{2}\d{8}$/.test(validateStr)) return false
+    return checkSumForId(validateStr, true)
+  }
+
+  return checkARCId_new() || checkARCId_old()
+}
+
+/**
+ * 確認 統一編號
+ * @param {string} str 待驗證字串
+ * @returns {boolean} 是否是統一編號
+ */
+export const checkUBNId = (str: string): boolean => {
+  if (isEmpty(str)) return false
+  const validateStr = str.trim()
+  if (!/^\d{8}/.test(validateStr)) return false
+
+  const weights = [1, 2, 1, 2, 1, 2, 4, 1]
+
+  let nSum = 0
+  for (let i = 0; i < validateStr.length; i++) {
+    const product = Number(validateStr[i]) * weights[i]
+    nSum += Math.floor(product / 10) + (product % 10)
+  }
+  return nSum % 10 === 0 || ((nSum + 1) % 10 === 0 && validateStr[6] === '7')
+}
 
 const validateFun = {
   number: (value: string): VeeRes => {
